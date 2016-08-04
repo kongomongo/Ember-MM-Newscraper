@@ -248,6 +248,26 @@ Namespace FileUtils
             End If
         End Function
 
+        Public Shared Function GetOpenFileDialogFilter_Theme() As String
+            Dim lstValidExtensions As New List(Of String)
+
+            For Each nExtension In Master.eSettings.FileSystemValidThemeExts
+                lstValidExtensions.Add(String.Concat("*", nExtension))
+            Next
+
+            Return String.Concat(Master.eLang.GetString(1285, "Themes"), "|", String.Join(";", lstValidExtensions.ToArray))
+        End Function
+
+        Public Shared Function GetOpenFileDialogFilter_Video(ByVal strDescription As String) As String
+            Dim lstValidExtensions As New List(Of String)
+
+            For Each nExtension In Master.eSettings.FileSystemValidExts
+                lstValidExtensions.Add(String.Concat("*", nExtension))
+            Next
+
+            Return String.Concat(strDescription, "|", String.Join(";", lstValidExtensions.ToArray))
+        End Function
+
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>
@@ -297,30 +317,6 @@ Namespace FileUtils
                 Return GetDirectory(strPath).ToLower = "video_ts"
             End If
         End Function
-        ''' <summary>
-        ''' Copy a file from one location to another using a stream/buffer
-        ''' </summary>
-        ''' <param name="sPathFrom">Old path of file to move.</param>
-        ''' <param name="sPathTo">New path of file to move.</param>
-        Public Shared Sub MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String)
-            'TODO Inefficient. Why not use system-provided FileInfo.MoveTo method. Instantaneous if on same system volume as a bonus.
-            'TODO Should do validation checking on input parameters. Should handle Empty or invalid files. Should perhaps handle directory (and content) moves intelligently
-            'TODO Badly named. Should instead be CopyFileWithStream, and use FileInfo.CopyTo method. 
-            Try
-                Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-                    Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-                        Dim StreamBuffer(Convert.ToInt32(SourceStream.Length - 1)) As Byte
-
-                        SourceStream.Read(StreamBuffer, 0, StreamBuffer.Length)
-                        DestinationStream.Write(StreamBuffer, 0, StreamBuffer.Length)
-
-                        StreamBuffer = Nothing
-                    End Using
-                End Using
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        End Sub
         ''' <summary>
         ''' Get the entire path and filename of a file, but without the extension
         ''' </summary>
@@ -556,8 +552,8 @@ Namespace FileUtils
         ''' </list>
         ''' Note that text after the stacking marker are left untouched.
         ''' </remarks>
-        Public Shared Function RemoveStackingMarkers(ByVal strPath As String, Optional ByVal Asterix As Boolean = False) As String
-            'Don't do anything if DisableMultiPartMedia is True or sPath is String.Empty
+        Public Shared Function RemoveStackingMarkers(ByVal strPath As String) As String
+            'Don't do anything if DisableMultiPartMedia is True or strPath is String.Empty
             If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
 
             Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
@@ -1181,7 +1177,7 @@ Namespace FileUtils
                                 End If
                             End If
                         Else
-                            If bForced OrElse (.MovieUseExtended AndAlso .MovieClearArtExtended) Then FilenameList.Add(String.Concat(filePathStack, "-clearart.jpg"))
+                            If bForced OrElse (.MovieUseExtended AndAlso .MovieClearArtExtended) Then FilenameList.Add(String.Concat(filePathStack, "-clearart.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieClearArtExpertMulti) Then
                                 For Each a In .MovieClearArtExpertMulti.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieStackExpertMulti Then
@@ -1214,7 +1210,7 @@ Namespace FileUtils
                             End If
                         ElseIf isBDRip Then
                             If bForced OrElse (.MovieUseAD AndAlso .MovieClearLogoAD) Then FilenameList.Add(Path.Combine(basePath, "logo.png"))
-                            If bForced OrElse (.MovieUseExtended AndAlso .MovieClearLogoExtended) Then FilenameList.Add(Path.Combine(basePath, "clearlogo.jpg"))
+                            If bForced OrElse (.MovieUseExtended AndAlso .MovieClearLogoExtended) Then FilenameList.Add(Path.Combine(basePath, "clearlogo.png"))
                             If .MovieUseExpert AndAlso Not String.IsNullOrEmpty(.MovieClearLogoExpertBDMV) Then
                                 For Each a In .MovieClearLogoExpertBDMV.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If .MovieUseBaseDirectoryExpertBDMV Then
@@ -2370,21 +2366,20 @@ Namespace FileUtils
         ''' <summary>
         ''' Reorganize the media files in the given folder into subfolders.
         ''' </summary>
-        ''' <param name="sPath">Path to be sorted</param>
+        ''' <param name="strSourcePath">Path to be sorted</param>
         ''' <remarks>Occasionally a directory will contain multiple media files (and meta-files) and 
         ''' this method will walk through the files in that directory and move each to its own unique subdirectory.
         ''' This will move all files with the same core name, without extension or fanart/trailer endings.</remarks>
-        Public Sub SortFiles(ByVal sPath As String)
+        Public Sub SortFiles(ByVal strSourcePath As String)
             'TODO Need to test what happens if sPath points to an existing FILE (and not just a directory)
-            Dim tmpAL As New List(Of String)
-            Dim tmpPath As String = String.Empty
-            Dim tmpName As String = String.Empty
             Dim iCount As Integer = 0
+
             Try
-                If Directory.Exists(sPath) Then
+                If Directory.Exists(strSourcePath) Then
                     'Get information about files in the directory
-                    Dim di As New DirectoryInfo(sPath)
+                    Dim di As New DirectoryInfo(strSourcePath)
                     Dim lFi As New List(Of FileInfo)
+                    Dim lMediaList As IOrderedEnumerable(Of FileInfo)
 
                     'Create a List of files in the directory
                     Try
@@ -2392,86 +2387,67 @@ Namespace FileUtils
                     Catch
                     End Try
 
-                    'For each file in the directory...
-                    For Each sFile As FileInfo In lFi
-                        Dim DummyMovie As New Database.DBElement(Enums.ContentType.Movie) With {.Filename = "dummyname.ext", .IsSingle = False}
-                        RaiseEvent ProgressUpdated((iCount \ lFi.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
-                        tmpName = Path.GetFileNameWithoutExtension(sFile.Name)
-                        '...clean fanart and trailer decorations...
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainBanner)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainCharacterArt)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainClearArt)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainClearLogo)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainDiscArt)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainFanart)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainLandscape)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainNFO)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainPoster)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainTheme)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        For Each a In GetFilenameList.Movie(DummyMovie, Enums.ModifierType.MainTrailer)
-                            Dim b As String = Path.GetFileNameWithoutExtension(a)
-                            b = b.Replace("dummyname", String.Empty)
-                            If Not String.IsNullOrEmpty(b) Then tmpName = tmpName.Replace(b, String.Empty)
-                        Next
-                        'tmpName = tmpName.Replace(".fanart", String.Empty)
-                        'tmpName = tmpName.Replace("-fanart", String.Empty)
-                        'tmpName = tmpName.Replace("-trailer", String.Empty)
-                        'tmpName = Regex.Replace(tmpName, "\[trailer(\d+)\]", String.Empty)
-                        tmpName = Common.RemoveStackingMarkers(tmpName)
-                        '...determine the best destination path name...
-                        tmpPath = Path.Combine(sPath, tmpName)
-                        '...create the destination directory if it doesn't already exist
-                        If Not Directory.Exists(tmpPath) Then
-                            Directory.CreateDirectory(tmpPath)
+                    'Create a list of all media files with a valid extension in the directory
+                    lMediaList = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
+                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
+                            Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
+
+                    'For each valid file in the directory...
+                    For Each sFile As FileInfo In lMediaList
+                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.Filename = sFile.FullName, .IsSingle = False}
+                        RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
+
+                        'create a new directory for the movie
+                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.Filename)))
+                        If Not Directory.Exists(strNewPath) Then
+                            Directory.CreateDirectory(strNewPath)
                         End If
-                        '...and move the file into that path
-                        File.Move(sFile.FullName, Path.Combine(tmpPath, sFile.Name))
+
+                        'move movie to the new directory
+                        sFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(nMovie.Filename)))
+
+                        'search for files that belong to this movie
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainBanner, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainCharacterArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainClearArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainClearLogo, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainDiscArt, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainFanart, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainLandscape, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainNFO, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainPoster, True)
+                            If File.Exists(a) Then File.Move(a, Path.Combine(strNewPath, Path.GetFileName(a)))
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainTheme, True)
+                            For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                                If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
+                            Next
+                        Next
+                        For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainTrailer, True)
+                            For Each t As String In Master.eSettings.FileSystemValidExts
+                                If File.Exists(String.Concat(a, t)) Then File.Move(String.Concat(a, t), Path.Combine(strNewPath, Path.GetFileName(String.Concat(a, t))))
+                            Next
+                        Next
                         iCount += 1
                     Next
 
-                    RaiseEvent ProgressUpdated((iCount \ lFi.Count), Master.eLang.GetString(362, "Done "))
-                    lFi = Nothing
-                    di = Nothing
+                    RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), Master.eLang.GetString(362, "Done "))
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

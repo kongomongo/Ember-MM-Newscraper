@@ -267,7 +267,7 @@ Public Class dlgSettings
         SettingsPanels.Add(New Containers.SettingsPanel(Enums.SettingsPanelType.Movie) With {
                            .ChildPanelType = Enums.SettingsPanelType.MovieSearch,
                            .Name = "pnlMovieSearch",
-                           .Text = Master.eLang.GetString(1087, "Scrapers - Search"),
+                           .Text = Master.eLang.GetString(1089, "Scrapers - Search"),
                            .ImageIndex = 12,
                            .Panel = pnlMovieSearch,
                            .Order = 300})
@@ -316,7 +316,7 @@ Public Class dlgSettings
         SettingsPanels.Add(New Containers.SettingsPanel(Enums.SettingsPanelType.MovieSet) With {
                            .ChildPanelType = Enums.SettingsPanelType.MovieSearch,
                            .Name = "pnlMovieSetSearch",
-                           .Text = Master.eLang.GetString(1087, "Scrapers - Search"),
+                           .Text = Master.eLang.GetString(1089, "Scrapers - Search"),
                            .ImageIndex = 12,
                            .Panel = pnlMovieSetSearch,
                            .Order = 300})
@@ -351,7 +351,7 @@ Public Class dlgSettings
         SettingsPanels.Add(New Containers.SettingsPanel(Enums.SettingsPanelType.TV) With {
                            .ChildPanelType = Enums.SettingsPanelType.TVSearch,
                            .Name = "pnlTVScraper",
-                           .Text = Master.eLang.GetString(1087, "Scrapers - Search"),
+                           .Text = Master.eLang.GetString(1089, "Scrapers - Search"),
                            .ImageIndex = 12,
                            .Panel = pnlTVSearch,
                            .Order = 300})
