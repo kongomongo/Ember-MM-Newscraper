@@ -22,9 +22,9 @@ Imports EmberAPI
 Imports NLog
 
 Public Class clsModuleTMDB
-    Implements Interfaces.Base
-    Implements Interfaces.ScraperEngine
-    Implements Interfaces.SearchEngine
+    Implements Interfaces.IBase
+    Implements Interfaces.IScraperEngine
+    Implements Interfaces.ISearchEngine
 
 #Region "Fields"
 
@@ -74,15 +74,15 @@ Public Class clsModuleTMDB
 
 #Region "Events"
 
-    Public Event ModuleNeedsRestart() Implements Interfaces.Base.ModuleNeedsRestart
-    Public Event ModuleSettingsChanged() Implements Interfaces.Base.ModuleSettingsChanged
-    Public Event ModuleStateChanged(ByVal strAssemblyName As String, ByVal tPanelType As Enums.SettingsPanelType, ByVal bIsEnabled As Boolean, ByVal intDifforder As Integer) Implements Interfaces.Base.ModuleStateChanged
+    Public Event ModuleNeedsRestart() Implements Interfaces.IBase.ModuleNeedsRestart
+    Public Event ModuleSettingsChanged() Implements Interfaces.IBase.ModuleSettingsChanged
+    Public Event ModuleStateChanged(ByVal strAssemblyName As String, ByVal tPanelType As Enums.SettingsPanelType, ByVal bIsEnabled As Boolean, ByVal intDifforder As Integer) Implements Interfaces.IBase.ModuleStateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleEnabled(ByVal tType As Enums.SettingsPanelType) As Boolean Implements Interfaces.ScraperEngine.ModuleEnabled, Interfaces.SearchEngine.ModuleEnabled
+    ReadOnly Property ModuleEnabled(ByVal tType As Enums.SettingsPanelType) As Boolean Implements Interfaces.IScraperEngine.ModuleEnabled, Interfaces.ISearchEngine.ModuleEnabled
         Get
             Select Case tType
                 Case Enums.SettingsPanelType.MovieData
@@ -111,13 +111,13 @@ Public Class clsModuleTMDB
         End Get
     End Property
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.Base.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.IBase.ModuleName
         Get
             Return _AssemblyName
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.Base.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.IBase.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -140,12 +140,12 @@ Public Class clsModuleTMDB
         RaiseEvent ModuleStateChanged(_AssemblyName, tPanelType, bIsEnabled, intDifforder)
     End Sub
 
-    Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Base.Init
+    Sub Init(ByVal strAssemblyName As String) Implements Interfaces.IBase.Init
         _AssemblyName = strAssemblyName
         LoadSettings()
     End Sub
 
-    Public Sub ScraperOrderChanged_Movie(ByVal tPanelType As Enums.SettingsPanelType) Implements Interfaces.Base.ModuleOrderChanged
+    Public Sub ScraperOrderChanged_Movie(ByVal tPanelType As Enums.SettingsPanelType) Implements Interfaces.IBase.ModuleOrderChanged
         Select Case tPanelType
             Case Enums.SettingsPanelType.MovieData
                 _sPanel_Data_Movie.orderChanged()
@@ -170,7 +170,7 @@ Public Class clsModuleTMDB
         End Select
     End Sub
 
-    Function QueryCapabilities_Scraper(ByVal tModifierType As Enums.ModifierType, ByVal tContentType As Enums.ContentType) As Boolean Implements Interfaces.ScraperEngine.QueryCapabilities
+    Function QueryCapabilities_Scraper(ByVal tModifierType As Enums.ModifierType, ByVal tContentType As Enums.ContentType) As Boolean Implements Interfaces.IScraperEngine.QueryCapabilities
         Select Case tContentType
             Case Enums.ContentType.Movie
                 Select Case tModifierType
@@ -203,7 +203,7 @@ Public Class clsModuleTMDB
         Return False
     End Function
 
-    Function QueryCapabilities_SearchEngine(ByVal tContentType As Enums.ContentType) As Boolean Implements Interfaces.SearchEngine.QueryCapabilities
+    Function QueryCapabilities_SearchEngine(ByVal tContentType As Enums.ContentType) As Boolean Implements Interfaces.ISearchEngine.QueryCapabilities
         Select Case tContentType
             Case Enums.ContentType.Movie
                 Return _SearchEngineEnabled_Movie
@@ -215,7 +215,7 @@ Public Class clsModuleTMDB
         Return False
     End Function
 
-    Function RunScraper(ByRef DBElement As Database.DBElement) As Interfaces.ScrapeResults Implements Interfaces.ScraperEngine.RunScraper
+    Function RunScraper(ByRef DBElement As Database.DBElement) As Interfaces.ScrapeResults Implements Interfaces.IScraperEngine.RunScraper
         Dim tScraperResults As New Interfaces.ScrapeResults
 
         Select Case DBElement.ContentType
@@ -232,10 +232,10 @@ Public Class clsModuleTMDB
 
                 If DBElement.Movie.TMDBSpecified Then
                     'TMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                    tScraperResults.tResult = _scraper.GetInfo_Movie(DBElement.Movie.TMDB, FilteredModifiers, FilteredOptions)
+                    tScraperResults.tScrapeResult = _scraper.GetInfo_Movie(DBElement.Movie.TMDB, FilteredModifiers, FilteredOptions)
                 ElseIf DBElement.Movie.IMDBSpecified Then
                     'IMDB-ID already available -> scrape and save data into an empty movie container (nMovie)
-                    tScraperResults.tResult = _scraper.GetInfo_Movie(DBElement.Movie.IMDB, FilteredModifiers, FilteredOptions)
+                    tScraperResults.tScrapeResult = _scraper.GetInfo_Movie(DBElement.Movie.IMDB, FilteredModifiers, FilteredOptions)
                 Else
                     logger.Trace("[TMDB] [RunScraper] [Movie] [Abort] No TMDB/IMDB ID")
                     Return New Interfaces.ScrapeResults
@@ -248,7 +248,7 @@ Public Class clsModuleTMDB
         Return tScraperResults
     End Function
 
-    Function RunSearch(ByVal strTitle As String, ByVal intYear As Integer, ByVal strLanguage As String, ByVal tContentType As Enums.ContentType) As Interfaces.SearchResults Implements Interfaces.SearchEngine.RunSearch
+    Function RunSearch(ByVal strTitle As String, ByVal intYear As Integer, ByVal strLanguage As String, ByVal tContentType As Enums.ContentType) As Interfaces.SearchResults Implements Interfaces.ISearchEngine.RunSearch
         Dim nSearchResults As New Interfaces.SearchResults
 
         LoadSettings()
@@ -258,17 +258,17 @@ Public Class clsModuleTMDB
 
         Select Case tContentType
             Case Enums.ContentType.Movie
-                nSearchResults.tResult = _scraper.Search_Movie(strTitle, intYear)
+                nSearchResults.tSearchResult = _scraper.Search_Movie(strTitle, intYear)
             Case Enums.ContentType.MovieSet
-                nSearchResults.tResult.MovieSets = _scraper.Search_MovieSet(strTitle)
+                nSearchResults.tSearchResult.MovieSets = _scraper.Search_MovieSet(strTitle)
             Case Enums.ContentType.TVShow
-                nSearchResults.tResult.TVShows = _scraper.Search_TVShow(strTitle)
+                nSearchResults.tSearchResult.TVShows = _scraper.Search_TVShow(strTitle)
         End Select
 
         Return nSearchResults
     End Function
 
-    Function InjectSettingsPanels() As List(Of Containers.SettingsPanel) Implements Interfaces.Base.InjectSettingsPanels
+    Function InjectSettingsPanels() As List(Of Containers.SettingsPanel) Implements Interfaces.IBase.InjectSettingsPanels
         LoadSettings()
         Dim sPanelList As New List(Of Containers.SettingsPanel)
         sPanelList.Add(InjectSettingsPanel_Data_Movie)
@@ -698,7 +698,7 @@ Public Class clsModuleTMDB
         End Using
     End Sub
 
-    Sub SaveSettingsPanel(ByVal DoDispose As Boolean) Implements Interfaces.Base.SaveSettingsPanel
+    Sub SaveSettingsPanel(ByVal DoDispose As Boolean) Implements Interfaces.IBase.SaveSettingsPanel
         'Data Movie
         ConfigScrapeOptions_Movie.bMainActors = _sPanel_Data_Movie.chkActors.Checked
         ConfigScrapeOptions_Movie.bMainCertifications = _sPanel_Data_Movie.chkCertifications.Checked

@@ -24,7 +24,7 @@ Imports System.Drawing
 Imports System.Windows.Forms
 
 Public Class clsModuleGenreManager
-    Implements Interfaces.Base
+    Implements Interfaces.IBase
 
 #Region "Delegates"
 
@@ -47,21 +47,21 @@ Public Class clsModuleGenreManager
 
 #Region "Events"
 
-    Public Event ModuleNeedsRestart() Implements Interfaces.Base.ModuleNeedsRestart
-    Public Event ModuleSettingsChanged() Implements Interfaces.Base.ModuleSettingsChanged
-    Public Event ModuleStateChanged(ByVal strAssemblyName As String, ByVal tPanelType As Enums.SettingsPanelType, ByVal bIsEnabled As Boolean, ByVal intDifforder As Integer) Implements Interfaces.Base.ModuleStateChanged
+    Public Event ModuleNeedsRestart() Implements Interfaces.IBase.ModuleNeedsRestart
+    Public Event ModuleSettingsChanged() Implements Interfaces.IBase.ModuleSettingsChanged
+    Public Event ModuleStateChanged(ByVal strAssemblyName As String, ByVal tPanelType As Enums.SettingsPanelType, ByVal bIsEnabled As Boolean, ByVal intDifforder As Integer) Implements Interfaces.IBase.ModuleStateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.Base.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.IBase.ModuleName
         Get
             Return _AssemblyName
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.Base.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.IBase.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -71,20 +71,20 @@ Public Class clsModuleGenreManager
 
 #Region "Methods"
 
-    Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Base.Init
+    Sub Init(ByVal strAssemblyName As String) Implements Interfaces.IBase.Init
         _AssemblyName = strAssemblyName
         Enable()
     End Sub
 
-    Function InjectSettingsPanels() As List(Of Containers.SettingsPanel) Implements Interfaces.Base.InjectSettingsPanels
+    Function InjectSettingsPanels() As List(Of Containers.SettingsPanel) Implements Interfaces.IBase.InjectSettingsPanels
         Return New List(Of Containers.SettingsPanel)
     End Function
 
-    Public Sub ScraperOrderChanged_Movie(ByVal tPanelType As Enums.SettingsPanelType) Implements Interfaces.Base.ModuleOrderChanged
+    Public Sub ScraperOrderChanged_Movie(ByVal tPanelType As Enums.SettingsPanelType) Implements Interfaces.IBase.ModuleOrderChanged
         Return
     End Sub
 
-    Sub SaveSettingsPanel(ByVal DoDispose As Boolean) Implements Interfaces.Base.SaveSettingsPanel
+    Sub SaveSettingsPanel(ByVal DoDispose As Boolean) Implements Interfaces.IBase.SaveSettingsPanel
         Return
     End Sub
 

@@ -20,7 +20,7 @@
 
 Public Class Interfaces
 
-    Public Interface Base
+    Public Interface IBase
 
 #Region "Events"
 
@@ -32,7 +32,6 @@ Public Class Interfaces
 
 #Region "Properties"
 
-        ReadOnly Property ModuleConfig As List(Of String)
         ReadOnly Property ModuleName() As String
         ReadOnly Property ModuleVersion() As String
 
@@ -51,7 +50,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface GenericEngine
+    Public Interface IGenericEngine
 
 #Region "Events"
 
@@ -73,7 +72,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface ScraperEngine
+    Public Interface IScraperEngine
 
 #Region "Events"
 
@@ -94,7 +93,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface SearchEngine
+    Public Interface ISearchEngine
 
 #Region "Events"
 
@@ -145,7 +144,7 @@ Public Class Interfaces
 
         Public bBreakChain As Boolean
         Public bCancelled As Boolean
-        Public tResult As MediaContainers.ScrapeResultsContainer
+        Public tScrapeResult As MediaContainers.ScrapeResultsContainer
 
 #End Region 'Fields
 
@@ -157,7 +156,7 @@ Public Class Interfaces
 
         Public bBreakChain As Boolean
         Public bCancelled As Boolean
-        Public tResult As MediaContainers.SearchResultsContainer
+        Public tSearchResult As MediaContainers.SearchResultsContainer
 
 #End Region 'Fields
 

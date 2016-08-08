@@ -22,8 +22,8 @@ Imports EmberAPI
 Imports NLog
 
 Public Class clsModuleYouTube
-    Implements Interfaces.Base
-    Implements Interfaces.ScraperEngine
+    Implements Interfaces.IBase
+    Implements Interfaces.IScraperEngine
 
 #Region "Fields"
 
@@ -39,15 +39,15 @@ Public Class clsModuleYouTube
 
 #Region "Events"
 
-    Public Event ModuleNeedsRestart() Implements Interfaces.Base.ModuleNeedsRestart
-    Public Event ModuleSettingsChanged() Implements Interfaces.Base.ModuleSettingsChanged
-    Public Event ModuleStateChanged(ByVal strAssemblyName As String, ByVal tPanelType As Enums.SettingsPanelType, ByVal bIsEnabled As Boolean, ByVal intDifforder As Integer) Implements Interfaces.Base.ModuleStateChanged
+    Public Event ModuleNeedsRestart() Implements Interfaces.IBase.ModuleNeedsRestart
+    Public Event ModuleSettingsChanged() Implements Interfaces.IBase.ModuleSettingsChanged
+    Public Event ModuleStateChanged(ByVal strAssemblyName As String, ByVal tPanelType As Enums.SettingsPanelType, ByVal bIsEnabled As Boolean, ByVal intDifforder As Integer) Implements Interfaces.IBase.ModuleStateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleEnabled(ByVal tType As Enums.SettingsPanelType) As Boolean Implements Interfaces.ScraperEngine.ModuleEnabled
+    ReadOnly Property ModuleEnabled(ByVal tType As Enums.SettingsPanelType) As Boolean Implements Interfaces.IScraperEngine.ModuleEnabled
         Get
             Select Case tType
                 Case Enums.SettingsPanelType.MovieTrailer
@@ -58,13 +58,13 @@ Public Class clsModuleYouTube
         End Get
     End Property
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.Base.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.IBase.ModuleName
         Get
             Return _AssemblyName
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.Base.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.IBase.ModuleVersion
         Get
             Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
@@ -87,19 +87,19 @@ Public Class clsModuleYouTube
         RaiseEvent ModuleStateChanged(_AssemblyName, tPanelType, bIsEnabled, intDifforder)
     End Sub
 
-    Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Base.Init
+    Sub Init(ByVal strAssemblyName As String) Implements Interfaces.IBase.Init
         _AssemblyName = strAssemblyName
         LoadSettings()
     End Sub
 
-    Public Sub ScraperOrderChanged_Movie(ByVal tPanelType As Enums.SettingsPanelType) Implements Interfaces.Base.ModuleOrderChanged
+    Public Sub ScraperOrderChanged_Movie(ByVal tPanelType As Enums.SettingsPanelType) Implements Interfaces.IBase.ModuleOrderChanged
         Select Case tPanelType
             Case Enums.SettingsPanelType.MovieTrailer
                 _sPanel_Trailer_Movie.orderChanged()
         End Select
     End Sub
 
-    Function QueryCapabilities(ByVal tModifierType As Enums.ModifierType, ByVal tContentType As Enums.ContentType) As Boolean Implements Interfaces.ScraperEngine.QueryCapabilities
+    Function QueryCapabilities(ByVal tModifierType As Enums.ModifierType, ByVal tContentType As Enums.ContentType) As Boolean Implements Interfaces.IScraperEngine.QueryCapabilities
         Select Case tContentType
             Case Enums.ContentType.Movie
                 Select Case tModifierType
@@ -110,7 +110,7 @@ Public Class clsModuleYouTube
         Return False
     End Function
 
-    Function RunScraper(ByRef DBElement As Database.DBElement) As Interfaces.ScrapeResults Implements Interfaces.ScraperEngine.RunScraper
+    Function RunScraper(ByRef DBElement As Database.DBElement) As Interfaces.ScrapeResults Implements Interfaces.IScraperEngine.RunScraper
         Dim tScraperResults As New Interfaces.ScrapeResults
 
         Select Case DBElement.ContentType
@@ -121,7 +121,7 @@ Public Class clsModuleYouTube
 
                 If Not String.IsNullOrEmpty(DBElement.Movie.Title) Then
                     Dim _scraper As New YouTube.clsScraperYouTube()
-                    tScraperResults.tResult = _scraper.GetTrailers(DBElement.Movie.Title)
+                    tScraperResults.tScrapeResult = _scraper.GetTrailers(DBElement.Movie.Title)
                 Else
                     logger.Trace("[YouTube] [RunScraper] [Movie] [Abort] No Title to search")
                     Return New Interfaces.ScrapeResults
@@ -134,7 +134,7 @@ Public Class clsModuleYouTube
         Return tScraperResults
     End Function
 
-    Function InjectSettingsPanels() As List(Of Containers.SettingsPanel) Implements Interfaces.Base.InjectSettingsPanels
+    Function InjectSettingsPanels() As List(Of Containers.SettingsPanel) Implements Interfaces.IBase.InjectSettingsPanels
         LoadSettings()
         Dim sPanelList As New List(Of Containers.SettingsPanel)
         sPanelList.Add(InjectSettingsPanel_Trailer_Movie)
@@ -175,7 +175,7 @@ Public Class clsModuleYouTube
         End Using
     End Sub
 
-    Sub SaveSettingsPanel(ByVal DoDispose As Boolean) Implements Interfaces.Base.SaveSettingsPanel
+    Sub SaveSettingsPanel(ByVal DoDispose As Boolean) Implements Interfaces.IBase.SaveSettingsPanel
         SaveSettings()
 
         If DoDispose Then

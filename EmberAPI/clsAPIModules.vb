@@ -39,7 +39,7 @@ Public Class ModulesManager
     'Singleton Instace for module manager .. allways use this one
     Private Shared Singleton As ModulesManager = Nothing
 
-    Private moduleLocation As String = Path.Combine(Functions.AppPath, "Modules")
+    Private strPathModules As String = Path.Combine(Functions.AppPath, "Modules")
 
     Friend WithEvents bwLoadModules As New System.ComponentModel.BackgroundWorker
 
@@ -131,11 +131,11 @@ Public Class ModulesManager
 
         logger.Trace("[ModulesManager] [LoadModules] [Start]")
 
-        If Directory.Exists(moduleLocation) Then
+        If Directory.Exists(strPathModules) Then
             'add each .dll file to AssemblyList
-            For Each file As String In Directory.GetFiles(moduleLocation, "*.dll")
+            For Each file As String In Directory.GetFiles(strPathModules, "*.dll")
                 Dim nAssembly As Reflection.Assembly = Reflection.Assembly.LoadFile(file)
-                AssemblyList.Add(New ModulesManager.AssemblyListItem With {.Assembly = nAssembly, .AssemblyName = nAssembly.GetName.Name})
+                AssemblyList.Add(New AssemblyListItem With {.Assembly = nAssembly, .AssemblyName = nAssembly.GetName.Name})
             Next
 
             For Each tAssemblyItem As AssemblyListItem In AssemblyList
@@ -143,24 +143,24 @@ Public Class ModulesManager
                 Dim test = tAssemblyItem.Assembly.GetTypes
                 For Each fileType As Type In tAssemblyItem.Assembly.GetTypes
 
-                    Dim fType As Type = fileType.GetInterface("Base")
+                    Dim fType As Type = fileType.GetInterface("IBase")
                     If fType IsNot Nothing Then
-                        Dim Base As Interfaces.Base = CType(Activator.CreateInstance(fileType), Interfaces.Base)
+                        Dim Base As Interfaces.IBase = CType(Activator.CreateInstance(fileType), Interfaces.IBase)
 
                         Dim tExternalModule As New ExternalModule
                         tExternalModule.Base = Base
                         tExternalModule.AssemblyName = tAssemblyItem.AssemblyName
                         tExternalModule.AssemblyFilename = tAssemblyItem.Assembly.ManifestModule.Name
 
-                        fType = fileType.GetInterface("GenericEngine")
+                        fType = fileType.GetInterface("IGenericEngine")
                         If fType IsNot Nothing Then
-                            Dim GenericEngine As Interfaces.GenericEngine = CType(Activator.CreateInstance(fileType), Interfaces.GenericEngine)
+                            Dim GenericEngine As Interfaces.IGenericEngine = CType(Activator.CreateInstance(fileType), Interfaces.IGenericEngine)
                             tExternalModule.GenericEngine = GenericEngine
                         End If
 
-                        fType = fileType.GetInterface("ScraperEngine")
+                        fType = fileType.GetInterface("IScraperEngine")
                         If fType IsNot Nothing Then
-                            Dim ScraperEngine As Interfaces.ScraperEngine = CType(Activator.CreateInstance(fileType), Interfaces.ScraperEngine)
+                            Dim ScraperEngine As Interfaces.IScraperEngine = CType(Activator.CreateInstance(fileType), Interfaces.IScraperEngine)
                             tExternalModule.ScraperEngine = ScraperEngine
 
                             'For Each i As _XMLEmberModuleClass In Master.eSettings.EmberModules.Where(Function(f) f.AssemblyName = tAssemblyItem.AssemblyName AndAlso
@@ -172,9 +172,9 @@ Public Class ModulesManager
                             'Next
                         End If
 
-                        fType = fileType.GetInterface("SearchEngine")
+                        fType = fileType.GetInterface("ISearchEngine")
                         If fType IsNot Nothing Then
-                            Dim SearchEngine As Interfaces.SearchEngine = CType(Activator.CreateInstance(fileType), Interfaces.SearchEngine)
+                            Dim SearchEngine As Interfaces.ISearchEngine = CType(Activator.CreateInstance(fileType), Interfaces.ISearchEngine)
                             tExternalModule.SearchEngine = SearchEngine
                         End If
 
@@ -421,12 +421,12 @@ Public Class ModulesManager
 
         For Each _externalScraperModule As ExternalModule In modules
             ret = _externalScraperModule.SearchEngine.RunSearch(strTitle, intYear, strLanguage, tContentType)
-            If ret.tResult IsNot Nothing Then
-                tSearchResults.Movies.AddRange(ret.tResult.Movies)
-                tSearchResults.MovieSets.AddRange(ret.tResult.MovieSets)
-                tSearchResults.TVEpisodes.AddRange(ret.tResult.TVEpisodes)
-                tSearchResults.TVSeasons.AddRange(ret.tResult.TVSeasons)
-                tSearchResults.TVShows.AddRange(ret.tResult.TVShows)
+            If ret.tSearchResult IsNot Nothing Then
+                tSearchResults.Movies.AddRange(ret.tSearchResult.Movies)
+                tSearchResults.MovieSets.AddRange(ret.tSearchResult.MovieSets)
+                tSearchResults.TVEpisodes.AddRange(ret.tSearchResult.TVEpisodes)
+                tSearchResults.TVSeasons.AddRange(ret.tSearchResult.TVSeasons)
+                tSearchResults.TVShows.AddRange(ret.tSearchResult.TVShows)
             End If
         Next
 
@@ -459,7 +459,7 @@ Public Class ModulesManager
                         ret = _externalScraperModule.ScraperEngine.RunScraper(tDBElement)
 
                         If Not ret.bCancelled Then
-                            tScrapedData.Add(ret.tResult.Movie)
+                            tScrapedData.Add(ret.tScrapeResult.Movie)
 
                             ''set new informations for following scrapers
                             'If ret.tScraperResult.Movie.IDSpecified Then
@@ -482,8 +482,8 @@ Public Class ModulesManager
                             'End If
                         End If
 
-                        If ret.tResult.Images IsNot Nothing Then
-                            tScrapedImages.Add(ret.tResult.Images)
+                        If ret.tScrapeResult.Images IsNot Nothing Then
+                            tScrapedImages.Add(ret.tScrapeResult.Images)
                         End If
                         'RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
                         If ret.bBreakChain Then Exit For
@@ -1707,11 +1707,11 @@ Public Class ModulesManager
 
         Public AssemblyFilename As String
         Public AssemblyName As String
-        Public Base As Interfaces.Base
-        Public GenericEngine As Interfaces.GenericEngine
+        Public Base As Interfaces.IBase
+        Public GenericEngine As Interfaces.IGenericEngine
         Public ModuleConfig As List(Of String)
-        Public ScraperEngine As Interfaces.ScraperEngine
-        Public SearchEngine As Interfaces.SearchEngine
+        Public ScraperEngine As Interfaces.IScraperEngine
+        Public SearchEngine As Interfaces.ISearchEngine
         'Public SettingsPanels As List(Of Interfaces.ScraperModuleSettingsPanel_Data_Movie)
 
 #End Region 'Fields
