@@ -1190,7 +1190,7 @@ mPlot:          'Plot
                             Return GetMovieInfo(r.ExactMatches.Item(0).IMDB, False, FilteredOptions)
                         Else
                             Using dlgSearch As New dlgIMDBSearchResults_Movie(_SpecialSettings, Me)
-                                If dlgSearch.ShowDialog(r, sMovieName, oDBElement.Filename) = DialogResult.OK Then
+                                If dlgSearch.ShowDialog(r, sMovieName, oDBElement.FileItem.FirstStackedFilename) = DialogResult.OK Then
                                     If Not String.IsNullOrEmpty(dlgSearch.Result.IMDB) Then
                                         Return GetMovieInfo(dlgSearch.Result.IMDB, False, FilteredOptions)
                                     End If
@@ -1211,8 +1211,8 @@ mPlot:          'Plot
                         ((r.PartialMatches.Count > 0 AndAlso r.PartialMatches(0).Lev > 5) OrElse r.PartialMatches.Count = 0) Then
                             useAnyway = True
                         End If
-                        Dim exactHaveYear As Integer = FindYear(oDBElement.Filename, r.ExactMatches)
-                        Dim popularHaveYear As Integer = FindYear(oDBElement.Filename, r.PopularTitles)
+                        Dim exactHaveYear As Integer = FindYear(oDBElement.FileItem.FirstStackedFilename, r.ExactMatches)
+                        Dim popularHaveYear As Integer = FindYear(oDBElement.FileItem.FirstStackedFilename, r.PopularTitles)
                         'it seems "popular matches" is a better result than "exact matches" ..... nope
                         'If r.ExactMatches.Count = 1 AndAlso r.PopularTitles.Count = 0 AndAlso r.PartialMatches.Count = 0 Then 'redirected to imdb info page
                         '    b = GetMovieInfo(r.ExactMatches.Item(0).ID, imdbMovie, Master.eSettings.FullCrew, Master.eSettings.FullCast, False, Options, True)

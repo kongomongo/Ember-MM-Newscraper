@@ -204,7 +204,7 @@ Public Class APIXML
         End Try
     End Sub
 
-    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal fName As String, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
+    Public Shared Function GetAVImages(ByVal fiAV As MediaContainers.Fileinfo, ByVal ForTV As Boolean, ByVal videoSource As String) As Image()
         Dim iReturn(18) As Image
         Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
         Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, ForTV)
@@ -415,36 +415,31 @@ Public Class APIXML
         Return imgLanguage
     End Function
 
-    Public Shared Function GetVideoSource(ByVal sPath As String, ByVal isTV As Boolean) As String
+    Public Shared Function GetVideoSource(ByVal tFileItem As FileItem, ByVal isTV As Boolean) As String
         Dim sourceCheck As String = String.Empty
 
-        Try
-            If FileUtils.Common.isVideoTS(sPath) Then
-                Return "dvd"
-            ElseIf FileUtils.Common.isBDRip(sPath) Then
-                Return "bluray"
-            ElseIf Path.GetFileName(sPath).ToLower = "video_ts.ifo" Then
-                Return "dvd"
+        If tFileItem.bIsBDMV Then
+            Return "bluray"
+        ElseIf tFileItem.bIsVideoTS Then
+            Return "dvd"
+        ElseIf Path.GetFileName(tFileItem.FirstStackedFilename).ToLower = "video_ts.ifo" Then
+            Return "dvd"
+        Else
+            If isTV Then
+                sourceCheck = Path.GetFileName(tFileItem.FirstStackedFilename).ToLower
             Else
-                If isTV Then
-                    sourceCheck = Path.GetFileName(sPath).ToLower
-                Else
-                    sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(sPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(sPath).ToLower), Path.GetFileName(sPath).ToLower)
-                End If
-                Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
-                If Not mySources Is Nothing Then
-                    For Each k In mySources
-                        If Regex.IsMatch(sourceCheck, k.Name) Then
-                            Return k.Value
-                        End If
-                    Next
-                End If
+                sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(tFileItem.FirstStackedFilename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(tFileItem.FirstStackedFilename).ToLower), Path.GetFileName(tFileItem.FirstStackedFilename).ToLower)
             End If
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+            Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            mySources = AdvancedSettings.GetComplexSetting("MovieSources")
+            If Not mySources Is Nothing Then
+                For Each k In mySources
+                    If Regex.IsMatch(sourceCheck, k.Name) Then
+                        Return k.Value
+                    End If
+                Next
+            End If
+        End If
 
         Return String.Empty
     End Function

@@ -893,7 +893,7 @@ Public Class frmMain
         MoveInfoPanel()
     End Sub
 
-    Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
+    Private Sub btnMetaDataRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
@@ -903,7 +903,7 @@ Public Class frmMain
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            If dgvMovies.SelectedRows.Count = 1 AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
+            If dgvMovies.SelectedRows.Count = 1 AndAlso currTV.FilenameSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeMeta, True)
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -1653,7 +1653,7 @@ Public Class frmMain
             End If
 
             If MainFanart.Image IsNot Nothing Then
-                If String.IsNullOrEmpty(currTV.Filename) Then
+                If Not currTV.FilenameSpecified Then
                     MainFanart = ImageUtils.AddMissingStamp(MainFanart)
                 ElseIf NeedsGS Then
                     MainFanart = ImageUtils.GrayScale(MainFanart)
@@ -5906,7 +5906,7 @@ Public Class frmMain
                 bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
                 OrElse bwCleanDB.IsBusy OrElse bwRewrite_Movies.IsBusy Then Return
 
-                SetStatus(currMovie.Filename)
+                SetStatus(currMovie.FileItem.Filename)
 
                 If dgvMovies.SelectedRows.Count > 1 Then Return
 
@@ -9284,7 +9284,7 @@ Public Class frmMain
         End If
 
         If Master.eSettings.MovieScraperMetaDataScan Then
-            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, currMovie.Filename, False, currMovie.Movie.VideoSource))
+            SetAVImages(APIXML.GetAVImages(currMovie.Movie.FileInfo, False, currMovie.Movie.VideoSource))
             pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
         Else
@@ -9297,7 +9297,7 @@ Public Class frmMain
         txtIMDBID.Text = currMovie.Movie.IMDB
         txtTMDBID.Text = currMovie.Movie.TMDB
 
-        txtFilePath.Text = currMovie.Filename
+        txtFilePath.Text = currMovie.FileItem.Filename
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
         lblReleaseDate.Text = currMovie.Movie.ReleaseDate
@@ -9369,7 +9369,7 @@ Public Class frmMain
         lblTitle.Text = If(Not currTV.FilenameSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
         txtPlot.Text = currTV.TVEpisode.Plot
         lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
-        txtFilePath.Text = currTV.Filename
+        txtFilePath.Text = currTV.FileItem.Filename
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
 
         Try
@@ -9449,8 +9449,8 @@ Public Class frmMain
         If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
-        If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
-            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, currTV.Filename, True, currTV.TVEpisode.VideoSource))
+        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FilenameSpecified Then
+            SetAVImages(APIXML.GetAVImages(currTV.TVEpisode.FileInfo, True, currTV.TVEpisode.VideoSource))
             pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
         Else
@@ -14730,7 +14730,7 @@ Public Class frmMain
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(738, "Remove episode from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Master.DB.Delete_TVEpisode(DBTVEpisode.Filename, False, BatchMode)
+                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.Filename, False, BatchMode)
                 Return True
             Else
                 Return False

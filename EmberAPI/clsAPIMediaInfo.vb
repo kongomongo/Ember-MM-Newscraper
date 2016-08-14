@@ -76,71 +76,58 @@ Public Class MediaInfo
         Return Nothing
     End Function
 
-    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Database.DBElement)
+    Public Shared Sub UpdateMediaInfo(ByRef tDBElement As Database.DBElement)
         Try
-            'DON'T clear it out
-            'miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
-            Dim tinfo = New MediaContainers.Fileinfo
+            Dim nFileInfo = New MediaContainers.Fileinfo
 
-            Dim pExt As String = Path.GetExtension(miMovie.Filename).ToLower
-            If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
-               pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
+            If Not tDBElement.FileItem.bIsDiscStub AndAlso Master.CanScanDiscImage OrElse Not (tDBElement.FileItem.bIsDiscImage OrElse tDBElement.FileItem.bIsRAR) Then
                 Dim MI As New MediaInfo
-                'MI.GetMIFromPath(miMovie.Movie.FileInfo, miMovie.Filename, False)
-                MI.GetMIFromPath(tinfo, miMovie.Filename, False)
-                If tinfo.StreamDetails.Video.Count > 0 OrElse tinfo.StreamDetails.Audio.Count > 0 OrElse tinfo.StreamDetails.Subtitle.Count > 0 Then
-                    ' overwrite only if it get something from Mediainfo 
+                MI.GetMediaInfoFromFileItem(tDBElement.FileItem, nFileInfo, False)
 
+                If nFileInfo.StreamDetails.Video.Count > 0 OrElse nFileInfo.StreamDetails.Audio.Count > 0 OrElse nFileInfo.StreamDetails.Subtitle.Count > 0 Then
+                    ' overwrite only if it get something from Mediainfo 
                     If Master.eSettings.MovieLockLanguageV Then
-                        Try
-                            'sets old language setting if setting is enabled (lock language)
-                            'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Video.Count = miMovie.Movie.FileInfo.StreamDetails.Video.Count Then
-                                For i = 0 To tinfo.StreamDetails.Video.Count - 1
-                                    'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miMovie.Movie.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Video.Item(i).Language = miMovie.Movie.FileInfo.StreamDetails.Video.Item(i).Language
-                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miMovie.Movie.FileInfo.StreamDetails.Video.Item(i).LongLanguage
-                                    End If
-                                Next
-                            End If
-                        Catch ex As Exception
-                            logger.Error(ex, New StackFrame().GetMethod().Name)
-                        End Try
+                        'sets old language setting if setting is enabled (lock language)
+                        'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
+                        If nFileInfo.StreamDetails.Video.Count = tDBElement.Movie.FileInfo.StreamDetails.Video.Count Then
+                            For i = 0 To nFileInfo.StreamDetails.Video.Count - 1
+                                'only preserve if language tag is filled --> else update!
+                                If Not String.IsNullOrEmpty(tDBElement.Movie.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
+                                    nFileInfo.StreamDetails.Video.Item(i).Language = tDBElement.Movie.FileInfo.StreamDetails.Video.Item(i).Language
+                                    nFileInfo.StreamDetails.Video.Item(i).LongLanguage = tDBElement.Movie.FileInfo.StreamDetails.Video.Item(i).LongLanguage
+                                End If
+                            Next
+                        End If
                     End If
                     If Master.eSettings.MovieLockLanguageA Then
-                        Try
-                            'sets old language setting if setting is enabled (lock language)
-                            'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Audio.Count = miMovie.Movie.FileInfo.StreamDetails.Audio.Count Then
-                                For i = 0 To tinfo.StreamDetails.Audio.Count - 1
-                                    'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miMovie.Movie.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Audio.Item(i).Language = miMovie.Movie.FileInfo.StreamDetails.Audio.Item(i).Language
-                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miMovie.Movie.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
-                                    End If
-                                Next
-                            End If
-
-                        Catch ex As Exception
-                            logger.Error(ex, New StackFrame().GetMethod().Name)
-                        End Try
+                        'sets old language setting if setting is enabled (lock language)
+                        'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
+                        If nFileInfo.StreamDetails.Audio.Count = tDBElement.Movie.FileInfo.StreamDetails.Audio.Count Then
+                            For i = 0 To nFileInfo.StreamDetails.Audio.Count - 1
+                                'only preserve if language tag is filled --> else update!
+                                If Not String.IsNullOrEmpty(tDBElement.Movie.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
+                                    nFileInfo.StreamDetails.Audio.Item(i).Language = tDBElement.Movie.FileInfo.StreamDetails.Audio.Item(i).Language
+                                    nFileInfo.StreamDetails.Audio.Item(i).LongLanguage = tDBElement.Movie.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
+                                End If
+                            Next
+                        End If
                     End If
-                    miMovie.Movie.FileInfo = tinfo
+                    tDBElement.Movie.FileInfo = nFileInfo
                 End If
-                If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.MovieScraperUseMDDuration Then
-                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
+                If tDBElement.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.MovieScraperUseMDDuration Then
+                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(tDBElement.Movie.FileInfo)
                     'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
                     If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
-                        miMovie.Movie.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.MovieScraperDurationRuntimeFormat)
+                        tDBElement.Movie.Runtime = FormatDuration(tVid.Duration, Master.eSettings.MovieScraperDurationRuntimeFormat)
                     End If
                 End If
                 MI = Nothing
             End If
-            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
-                Dim _mi As MediaContainers.Fileinfo
-                _mi = MediaInfo.ApplyDefaults(pExt)
-                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+
+            If tDBElement.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso tDBElement.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso tDBElement.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+                nFileInfo = New MediaContainers.Fileinfo
+                nFileInfo = ApplyDefaults(Path.GetExtension(tDBElement.FileItem.FirstStackedFilename.ToLower))
+                If nFileInfo IsNot Nothing Then tDBElement.Movie.FileInfo = nFileInfo
             End If
 
         Catch ex As Exception
@@ -148,18 +135,18 @@ Public Class MediaInfo
         End Try
     End Sub
 
-    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Database.DBElement)
+    Public Shared Sub UpdateTVMediaInfo(ByRef tDBElement As Database.DBElement)
         Try
             'DON't clear it out
             'miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
             Dim tinfo = New MediaContainers.Fileinfo
 
-            Dim pExt As String = Path.GetExtension(miTV.Filename).ToLower
+            Dim pExt As String = Path.GetExtension(tDBElement.FileItem.FirstStackedFilename).ToLower
             If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
                 Dim MI As New MediaInfo
                 'MI.GetMIFromPath(miTV.TVEp.FileInfo, miTV.Filename, True)
-                MI.GetMIFromPath(tinfo, miTV.Filename, False)
+                MI.GetMediaInfoFromFileItem(tDBElement.FileItem, tinfo, True)
                 If tinfo.StreamDetails.Video.Count > 0 OrElse tinfo.StreamDetails.Audio.Count > 0 OrElse tinfo.StreamDetails.Subtitle.Count > 0 Then
                     ' overwrite only if it get something from Mediainfo 
 
@@ -167,12 +154,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Video.Count = miTV.TVEpisode.FileInfo.StreamDetails.Video.Count Then
+                            If tinfo.StreamDetails.Video.Count = tDBElement.TVEpisode.FileInfo.StreamDetails.Video.Count Then
                                 For i = 0 To tinfo.StreamDetails.Video.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Video.Item(i).Language = miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).Language
-                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(tDBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Video.Item(i).Language = tDBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(i).Language
+                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = tDBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -184,12 +171,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Audio.Count = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count Then
+                            If tinfo.StreamDetails.Audio.Count = tDBElement.TVEpisode.FileInfo.StreamDetails.Audio.Count Then
                                 For i = 0 To tinfo.StreamDetails.Audio.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Audio.Item(i).Language = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).Language
-                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(tDBElement.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Audio.Item(i).Language = tDBElement.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).Language
+                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = tDBElement.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -198,29 +185,35 @@ Public Class MediaInfo
                             logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                     End If
-                    miTV.TVEpisode.FileInfo = tinfo
+                    tDBElement.TVEpisode.FileInfo = tinfo
                 End If
-                If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.TVScraperUseMDDuration Then
-                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(miTV.TVEpisode.FileInfo)
+                If tDBElement.TVEpisode.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.TVScraperUseMDDuration Then
+                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(tDBElement.TVEpisode.FileInfo)
                     'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
                     If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
-                        miTV.TVEpisode.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.TVScraperDurationRuntimeFormat)
+                        tDBElement.TVEpisode.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.TVScraperDurationRuntimeFormat)
                     End If
                 End If
             End If
-            If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+            If tDBElement.TVEpisode.FileInfo.StreamDetails.Video.Count = 0 AndAlso tDBElement.TVEpisode.FileInfo.StreamDetails.Audio.Count = 0 AndAlso tDBElement.TVEpisode.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaContainers.Fileinfo
-                _mi = MediaInfo.ApplyTVDefaults(pExt)
-                If Not _mi Is Nothing Then miTV.TVEpisode.FileInfo = _mi
+                _mi = ApplyTVDefaults(pExt)
+                If Not _mi Is Nothing Then tDBElement.TVEpisode.FileInfo = _mi
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Public Sub GetMIFromPath(ByRef fiInfo As MediaContainers.Fileinfo, ByVal sPath As String, ByVal ForTV As Boolean)
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
-            Dim sExt As String = Path.GetExtension(sPath).ToLower
+    Public Sub GetMediaInfoFromFileItem(ByVal tFileItem As FileItem, ByRef fiInfo As MediaContainers.Fileinfo, ByVal isTVEpisode As Boolean)
+        If Not String.IsNullOrEmpty(tFileItem.Filename) AndAlso File.Exists(tFileItem.FirstStackedFilename) Then
+
+            fiInfo = ScanMI(tFileItem)
+
+
+
+
+            Dim sExt As String = Path.GetExtension(tFileItem.FirstStackedFilename).ToLower
             Dim fiOut As New MediaContainers.Fileinfo
             Dim miVideo As New MediaContainers.Video
             Dim miAudio As New MediaContainers.Audio
@@ -234,147 +227,137 @@ Public Class MediaInfo
             Dim ifoVideo(2) As String
             Dim ifoAudio(2) As String
 
-            If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso (sExt = ".ifo" OrElse sExt = ".vob" OrElse sExt = ".bup") AndAlso cDVD.fctOpenIFOFile(sPath) Then
-                Try
-                    ifoVideo = cDVD.GetIFOVideo
-                    Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
-                    miVideo.Width = vRes(0)
-                    miVideo.Height = vRes(1)
-                    miVideo.Codec = ifoVideo(0)
-                    miVideo.Duration = cDVD.GetProgramChainPlayBackTime(1)
-                    miVideo.Aspect = ifoVideo(2)
+            If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso tFileItem.bIsVideoTS AndAlso cDVD.fctOpenIFOFile(tFileItem.FirstStackedFilename) Then
+                ifoVideo = cDVD.GetIFOVideo
+                Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
+                miVideo.Width = vRes(0)
+                miVideo.Height = vRes(1)
+                miVideo.Codec = ifoVideo(0)
+                miVideo.Duration = cDVD.GetProgramChainPlayBackTime(1)
+                miVideo.Aspect = ifoVideo(2)
 
-                    With miVideo
-                        If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse
+                With miVideo
+                    If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Duration) OrElse Not String.IsNullOrEmpty(.Aspect) OrElse
                         Not String.IsNullOrEmpty(.Height) OrElse Not String.IsNullOrEmpty(.Width) Then
-                            fiOut.StreamDetails.Video.Add(miVideo)
+                        fiOut.StreamDetails.Video.Add(miVideo)
+                    End If
+                End With
+
+                AudioStreams = cDVD.GetIFOAudioNumberOfTracks
+                For a As Integer = 1 To AudioStreams
+                    miAudio = New MediaContainers.Audio
+                    ifoAudio = cDVD.GetIFOAudio(a)
+                    miAudio.Codec = ifoAudio(0)
+                    miAudio.Channels = ifoAudio(2)
+                    aLang = ifoAudio(1)
+                    If Not String.IsNullOrEmpty(aLang) Then
+                        miAudio.LongLanguage = aLang
+                        If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
+                            miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
+                        End If
+                    End If
+                    With miAudio
+                        If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
+                            fiOut.StreamDetails.Audio.Add(miAudio)
                         End If
                     End With
+                Next
 
-                    AudioStreams = cDVD.GetIFOAudioNumberOfTracks
-                    For a As Integer = 1 To AudioStreams
-                        miAudio = New MediaContainers.Audio
-                        ifoAudio = cDVD.GetIFOAudio(a)
-                        miAudio.Codec = ifoAudio(0)
-                        miAudio.Channels = ifoAudio(2)
-                        aLang = ifoAudio(1)
-                        If Not String.IsNullOrEmpty(aLang) Then
-                            miAudio.LongLanguage = aLang
-                            If Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage) <> "" Then
-                                miAudio.Language = Localization.ISOLangGetCode3ByLang(miAudio.LongLanguage)
-                            End If
+                SubtitleStreams = cDVD.GetIFOSubPicNumberOf
+                For s As Integer = 1 To SubtitleStreams
+                    miSubtitle = New MediaContainers.Subtitle
+                    sLang = cDVD.GetIFOSubPic(s)
+                    If Not String.IsNullOrEmpty(sLang) Then
+                        miSubtitle.LongLanguage = sLang
+                        If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
+                            miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
                         End If
-                        With miAudio
-                            If Not String.IsNullOrEmpty(.Codec) OrElse Not String.IsNullOrEmpty(.Channels) OrElse Not String.IsNullOrEmpty(.Language) Then
-                                fiOut.StreamDetails.Audio.Add(miAudio)
-                            End If
-                        End With
-                    Next
-
-                    SubtitleStreams = cDVD.GetIFOSubPicNumberOf
-                    For s As Integer = 1 To SubtitleStreams
-                        miSubtitle = New MediaContainers.Subtitle
-                        sLang = cDVD.GetIFOSubPic(s)
-                        If Not String.IsNullOrEmpty(sLang) Then
-                            miSubtitle.LongLanguage = sLang
-                            If Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage) <> "" Then
-                                miSubtitle.Language = Localization.ISOLangGetCode3ByLang(miSubtitle.LongLanguage)
-                            End If
-                            If Not String.IsNullOrEmpty(miSubtitle.Language) Then
-                                'miSubtitle.SubsForced = Not supported(?)
-                                miSubtitle.SubsType = "Embedded"
-                                fiOut.StreamDetails.Subtitle.Add(miSubtitle)
-                            End If
+                        If Not String.IsNullOrEmpty(miSubtitle.Language) Then
+                            'miSubtitle.SubsForced = Not supported(?)
+                            miSubtitle.SubsType = "Embedded"
+                            fiOut.StreamDetails.Subtitle.Add(miSubtitle)
                         End If
-                    Next
-
-                    cDVD.Close()
-                    cDVD = Nothing
-
-                    fiInfo = fiOut
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-
-                'cocotus 20140118 For more accurate metadata scanning of BLURAY/DVD images use improved mediainfo scanning (ScanMI-function) -> don't hop in this branch!! 
-                '  ElseIf StringUtils.IsStacked(Path.GetFileNameWithoutExtension(sPath), True) OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
-            ElseIf FileUtils.Common.isStacked(sPath) Then
-                Try
-                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(sPath)
-                    Dim sFile As New List(Of String)
-                    Dim bIsVTS As Boolean = False
-
-                    If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
-                        bIsVTS = True
                     End If
+                Next
 
-                    If bIsVTS Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "VTS*.VOB"))
-                        Catch
-                        End Try
-                    ElseIf sExt = ".m2ts" Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, "*.m2ts"))
-                        Catch
-                        End Try
-                    Else
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(sPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)), "*")))
-                        Catch
-                        End Try
-                    End If
+                cDVD.Close()
+                cDVD = Nothing
 
-                    Dim TotalDur As Integer = 0
-                    Dim tInfo As New MediaContainers.Fileinfo
-                    Dim tVideo As New MediaContainers.Video
-                    Dim tAudio As New MediaContainers.Audio
+                fiInfo = fiOut
 
-                    miVideo.Width = "0"
-                    miAudio.Channels = "0"
+            ElseIf tFileItem.bIsStack Then
+                Dim oFile As String = tFileItem.StackedFilename
+                Dim sFile As New List(Of String)
+                Dim bIsVTS As Boolean = False
 
-                    For Each File As String In sFile
-                        'make sure the file is actually part of the stack
-                        'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
-                        'disregards movie.extras.ext in this case
-                        If bIsVTS OrElse (oFile = FileUtils.Common.RemoveStackingMarkers(File)) Then
-                            tInfo = ScanMI(File)
+                If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
+                    bIsVTS = True
+                End If
 
-                            tVideo = NFO.GetBestVideo(tInfo)
-                            tAudio = NFO.GetBestAudio(tInfo, ForTV)
+                If bIsVTS Then
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, "VTS*.VOB"))
+                    Catch
+                    End Try
+                ElseIf sExt = ".m2ts" Then
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, "*.m2ts"))
+                    Catch
+                    End Try
+                Else
+                    Try
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, String.Concat(Path.GetFileNameWithoutExtension(tFileItem.StackedFilename), "*")))
+                    Catch
+                    End Try
+                End If
 
-                            If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
-                                If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
-                                    miVideo = tVideo
-                                End If
+                Dim TotalDur As Integer = 0
+                Dim tInfo As New MediaContainers.Fileinfo
+                Dim tVideo As New MediaContainers.Video
+                Dim tAudio As New MediaContainers.Audio
+
+                miVideo.Width = "0"
+                miAudio.Channels = "0"
+
+                For Each File As String In sFile
+                    'make sure the file is actually part of the stack
+                    'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
+                    'disregards movie.extras.ext in this case
+                    If bIsVTS OrElse (oFile = tFileItem.StackedFilename) Then
+                        tInfo = ScanMI(tFileItem)
+
+                        tVideo = NFO.GetBestVideo(tInfo)
+                        tAudio = NFO.GetBestAudio(tInfo, isTVEpisode)
+
+                        If String.IsNullOrEmpty(miVideo.Codec) OrElse Not String.IsNullOrEmpty(tVideo.Codec) Then
+                            If Not String.IsNullOrEmpty(tVideo.Width) AndAlso Convert.ToInt32(tVideo.Width) >= Convert.ToInt32(miVideo.Width) Then
+                                miVideo = tVideo
                             End If
-
-                            If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
-                                If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
-                                    miAudio = tAudio
-                                End If
-                            End If
-
-                            If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToSeconds(tVideo.Duration, False))
-
-                            For Each sSub As MediaContainers.Subtitle In tInfo.StreamDetails.Subtitle
-                                If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
-                                    fiOut.StreamDetails.Subtitle.Add(sSub)
-                                End If
-                            Next
                         End If
-                    Next
 
-                    fiOut.StreamDetails.Video.Add(miVideo)
-                    fiOut.StreamDetails.Audio.Add(miAudio)
-                    fiOut.StreamDetails.Video(0).Duration = DurationToSeconds(TotalDur.ToString, True)
+                        If String.IsNullOrEmpty(miAudio.Codec) OrElse Not String.IsNullOrEmpty(tAudio.Codec) Then
+                            If Not String.IsNullOrEmpty(tAudio.Channels) AndAlso Convert.ToInt32(tAudio.Channels) >= Convert.ToInt32(miAudio.Channels) Then
+                                miAudio = tAudio
+                            End If
+                        End If
 
-                    fiInfo = fiOut
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
+                        If Not String.IsNullOrEmpty(tVideo.Duration) Then TotalDur += Convert.ToInt32(DurationToSeconds(tVideo.Duration, False))
+
+                        For Each sSub As MediaContainers.Subtitle In tInfo.StreamDetails.Subtitle
+                            If Not fiOut.StreamDetails.Subtitle.Contains(sSub) Then
+                                fiOut.StreamDetails.Subtitle.Add(sSub)
+                            End If
+                        Next
+                    End If
+                Next
+
+                fiOut.StreamDetails.Video.Add(miVideo)
+                fiOut.StreamDetails.Audio.Add(miAudio)
+                fiOut.StreamDetails.Video(0).Duration = DurationToSeconds(TotalDur.ToString, True)
+
+                fiInfo = fiOut
             Else
-                fiInfo = ScanMI(sPath)
+                fiInfo = ScanMI(tFileItem)
             End If
 
             'finally go through all the video streams and reformat the duration
@@ -690,11 +673,12 @@ Public Class MediaInfo
     ''' Use MediaInfo to get/scan subtitle, audio Stream and video information of videofile
     ''' </summary>
     ''' <returns>Mediainfo-Scanresults as MediainfoFileInfoObject</returns>
-    Private Function ScanMI(ByVal sPath As String) As MediaContainers.Fileinfo
+    Private Function ScanMI(ByVal tFileItem As FileItem) As MediaContainers.Fileinfo
         Dim fiOut As New MediaContainers.Fileinfo
         Dim fiIFO As New MediaContainers.Fileinfo
-        Try
-            If Not String.IsNullOrEmpty(sPath) Then
+
+        For Each nFilename In tFileItem.Paths
+            If File.Exists(nFilename) Then
                 Dim miVideo As New MediaContainers.Video
                 Dim miAudio As New MediaContainers.Audio
                 Dim miSubtitle As New MediaContainers.Subtitle
@@ -705,66 +689,61 @@ Public Class MediaInfo
                 Dim aLang As String = String.Empty
                 Dim sLang As String = String.Empty
                 Dim a_Profile As String = String.Empty
-                Dim sExt As String = Path.GetExtension(sPath).ToLower
                 Dim alternativeIFOFile As String = String.Empty
                 Dim strCommandUnmount As String = String.Empty
 
                 'New ISO Handling -> Use either DAEMON Tools or VitualCloneDrive to mount ISO!
-                If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
+                If tFileItem.bIsDiscImage OrElse tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then
 
                     'ISO-File Scanning using either DAIMON Tools / VCDMount.exe to mount and read file!
-                    If sExt = ".iso" Then
+                    If tFileItem.bIsDiscImage Then
 
                         Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
-                        Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
+                        Dim strToolPath As String = Master.eSettings.GeneralDaemonPath
 
                         'Now only use DAEMON Tools to mount ISO if installed on user system
-                        If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then
+                        If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(strToolPath) Then
 
                             'Either DAEMONToolsLite or VirtualCloneDrive (http://www.slysoft.com/en/virtual-clonedrive.html)
-                            If ToolPath.ToLower.Contains("vcdmount") Then
+                            If strToolPath.ToLower.Contains("vcdmount") Then
                                 'Unmount, i.e "C:\Program Files\Elaborate Bytes\VirtualCloneDrive\VCDMount.exe" /u
                                 strCommandUnmount = String.Concat("/u")
-                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
+                                Functions.Run_Process(strToolPath, strCommandUnmount, False, True)
                                 'Mount
                                 'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
-                                Functions.Run_Process(ToolPath, """" & sPath & """", False, True)
+                                Functions.Run_Process(strToolPath, """" & nFilename & """", False, True)
 
                                 'Toolpath doesn't contain vcdmount.exe -> assume daemon tools with DS type drive!
                             Else
                                 'Unmount
-                                strCommandUnmount = String.Concat("-unmount ", Regex.Replace(driveletter, ":\\", String.Empty))
-                                Functions.Run_Process(ToolPath, strCommandUnmount, False, True)
+                                strCommandUnmount = "-unmount dt, 0"
+                                Functions.Run_Process(strToolPath, strCommandUnmount, False, True)
                                 'Mount
-                                'Mount ISO on Daemon Tools (Lite), i.e. C:\Program Files\DAEMON Tools Lite\DTAgent.exe -mount dt, E, "U:\isotest\test2iso.ISO"
-                                Functions.Run_Process(ToolPath, String.Concat("-mount dt, ",
-                                                                              Regex.Replace(driveletter, ":\\", String.Empty),
-                                                                              ", """,
-                                                                              sPath,
-                                                                              """"), False, True)
+                                'Mount ISO on Daemon Tools (Lite), i.e. C:\Program Files\DAEMON Tools Lite\DTAgent.exe -mount dt, 0, "U:\isotest\test2iso.ISO"
+                                Functions.Run_Process(strToolPath, String.Format("-mount dt, 0, ""{0}""", nFilename), False, True)
                             End If
 
                             'now check if it's bluray or dvd image/VIDEO_TS/BMDV Folder-Scanning!
                             If Directory.Exists(String.Concat(driveletter, ":\VIDEO_TS")) Then
-                                sPath = String.Concat(driveletter, ":\VIDEO_TS")
-                                SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
+                                nFilename = String.Concat(driveletter, ":\VIDEO_TS")
+                                SetMediaInfoScanPaths(nFilename, fiIFO, alternativeIFOFile, True)
                                 'get foldersize information
                             ElseIf Directory.Exists(driveletter & ":\BDMV\STREAM") Then
-                                sPath = driveletter & ":\BDMV\STREAM"
-                                SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, True)
+                                nFilename = driveletter & ":\BDMV\STREAM"
+                                SetMediaInfoScanPaths(nFilename, fiIFO, alternativeIFOFile, True)
                             End If
                         End If
 
                         'VIDEO_TS/BMDV Folder-Scanning!
                     Else
-                        If Directory.Exists(Directory.GetParent(sPath).FullName) Then
-                            SetMediaInfoScanPaths(sPath, fiIFO, alternativeIFOFile, False)
+                        If Directory.Exists(Directory.GetParent(nFilename).FullName) Then
+                            SetMediaInfoScanPaths(nFilename, fiIFO, alternativeIFOFile, False)
                         End If
                     End If
                 End If
 
-                If Not sPath = String.Empty Then
+                If Not nFilename = String.Empty Then
                     Handle = MediaInfo_New()
 
                     If Master.isWindows Then
@@ -773,14 +752,14 @@ Public Class MediaInfo
                         UseAnsi = True
                     End If
 
-                    Open(sPath)
+                    Open(nFilename)
 
                     VideoStreams = Count_Get(StreamKind.Visual)
                     AudioStreams = Count_Get(StreamKind.Audio)
                     SubtitleStreams = Count_Get(StreamKind.Text)
 
                     '2014/07/05 Fix for VIDEO_TS scanning: Use second largest (=alternativeIFOFile) IFO File if largest File doesn't contain needed information (=duration)! (rare case!)
-                    If sPath.ToUpper.Contains("VIDEO_TS") Then
+                    If nFilename.ToUpper.Contains("VIDEO_TS") Then
                         miVideo = New MediaContainers.Video
                         'IFO Scan results (used when scanning VIDEO_TS files)
                         If fiIFO.StreamDetails.Video.Count > 0 Then
@@ -828,7 +807,7 @@ Public Class MediaInfo
                     miVideo.Width = Get_(StreamKind.Visual, v, "Width")
                     miVideo.Height = Get_(StreamKind.Visual, v, "Height")
                     miVideo.Codec = ConvertVFormat(Get_(StreamKind.Visual, v, "CodecID"), Get_(StreamKind.Visual, v, "Format"),
-                                                   Get_(StreamKind.Visual, v, "Format_Version"))
+                                                       Get_(StreamKind.Visual, v, "Format_Version"))
 
                     'IFO Scan results (used when scanning VIDEO_TS files)
                     If fiIFO.StreamDetails.Video.Count > 0 Then
@@ -863,8 +842,8 @@ Public Class MediaInfo
                         End If
                     End If
 
-                    If sExt = ".iso" OrElse FileUtils.Common.isVideoTS(sPath) OrElse FileUtils.Common.isBDRip(sPath) Then
-                        miVideo.Filesize = FileUtils.Common.GetFolderSize(Directory.GetParent(sPath).FullName)
+                    If tFileItem.bIsDiscImage OrElse tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then
+                        miVideo.Filesize = FileUtils.Common.GetFolderSize(Directory.GetParent(nFilename).FullName)
                     Else
                         miVideo.Filesize = If(Double.TryParse(Get_(StreamKind.General, 0, "FileSize"), 0), CDbl(Get_(StreamKind.General, 0, "FileSize")), 0)
                     End If
@@ -882,7 +861,7 @@ Public Class MediaInfo
                 For a As Integer = 0 To AudioStreams - 1
                     miAudio = New MediaContainers.Audio
                     miAudio.Codec = ConvertAFormat(Get_(StreamKind.Audio, a, "CodecID"), Get_(StreamKind.Audio, a, "Format"),
-                                                   Get_(StreamKind.Audio, a, "CodecID/Hint"), Get_(StreamKind.Audio, a, "Format_Profile"))
+                                                       Get_(StreamKind.Audio, a, "CodecID/Hint"), Get_(StreamKind.Audio, a, "Format_Profile"))
                     miAudio.Channels = FormatAudioChannel(Get_(StreamKind.Audio, a, "Channel(s)"))
 
                     'cocotus, 2013/02 Added support for new MediaInfo-fields
@@ -945,10 +924,11 @@ Public Class MediaInfo
                 End If
 
                 Close()
+            Else
+                logger.Error(String.Format("File not found: {0}", nFilename))
             End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        Next
+
         Return fiOut
     End Function
 

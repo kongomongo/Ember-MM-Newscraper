@@ -131,16 +131,14 @@ Public Class ThumbGenerator
                 Threading.Thread.Sleep(50)
             End While
         End Sub
-
         ''' <summary>
         ''' Extract thumbs from a movie file.
         ''' </summary>
         Private Sub CreateRandom()
             Try
-                Dim pExt As String = Path.GetExtension(_movie.Filename).ToLower
+                Dim pExt As String = Path.GetExtension(_movie.FileItem.FirstStackedFilename).ToLower
                 Dim eMovieFile As String = String.Empty
-                If Not pExt = ".rar" AndAlso Not pExt = ".iso" AndAlso Not pExt = ".img" AndAlso
-                Not pExt = ".bin" AndAlso Not pExt = ".cue" Then
+                If Not _movie.FileItem.bIsDiscImage AndAlso Not _movie.FileItem.bIsDiscStub AndAlso Not _movie.FileItem.bIsRAR AndAlso Not pExt = ".cue" Then
 
                     Dim intSeconds As Integer = 0
                     Dim intAdd As Integer = 0
@@ -149,20 +147,17 @@ Public Class ThumbGenerator
 
                     If _isedit Then
                         tPath = Path.Combine(Master.TempPath, "extrathumbs")
-                        eMovieFile = _movie.Filename
-                    Else 'TODO: chek VIDEO_TS parent
-                        If FileUtils.Common.isVideoTS(_movie.Filename) Then
-                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.Filename).FullName, "extrathumbs")
-                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
-                        ElseIf FileUtils.Common.isBDRip(_movie.Filename) Then
-                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.Filename).FullName, "extrathumbs")
-                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
+                        eMovieFile = _movie.FileItem.FirstStackedFilename
+                    Else
+                        If _movie.FileItem.bIsBDMV OrElse _movie.FileItem.bIsVideoTS Then
+                            tPath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
+                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedFilename)
                         Else
-                            tPath = Path.Combine(FileUtils.Common.GetMainPath(_movie.Filename).FullName, "extrathumbs")
-                            If FileUtils.Common.isVideoTS(_movie.Filename) OrElse FileUtils.Common.isBDRip(_movie.Filename) Then
-                                eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.Filename)
+                            tPath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
+                            If _movie.FileItem.bIsBDMV OrElse _movie.FileItem.bIsVideoTS Then
+                                eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedFilename)
                             Else
-                                eMovieFile = _movie.Filename
+                                eMovieFile = _movie.FileItem.FirstStackedFilename
                             End If
                         End If
                     End If

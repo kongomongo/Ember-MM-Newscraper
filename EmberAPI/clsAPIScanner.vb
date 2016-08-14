@@ -62,72 +62,61 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="DBMovie">Database.DBElement object</param>
+    ''' <param name="tDBElement">Database.DBElement object</param>
     ''' <param name="bForced">Enable ALL known file naming schemas. Should only be used to search files and not to save files!</param>
-    Public Sub GetFolderContents_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal bForced As Boolean = False)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
+    Public Sub GetFolderContents_Movie(ByRef tDBElement As Database.DBElement, Optional ByVal bForced As Boolean = False)
+        If Not tDBElement.FilenameSpecified Then Return
 
-        Dim currname As String = String.Empty
         Dim atList As New List(Of String)   'actor thumbs list
         Dim efList As New List(Of String)   'extrafanart list
         Dim etList As New List(Of String)   'extrathumbs list
         Dim sList As New List(Of String)    'external subtitles files list
         Dim tList As New List(Of String)    'theme files list
         Dim fList As New List(Of String)    'all other files list
-        Dim fName As String = String.Empty
 
-        Dim parPath As String = String.Empty
-
-        Dim fileName As String = Path.GetFileNameWithoutExtension(DBMovie.Filename)
-        Dim fileNameStack As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename))
-        Dim filePath As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileName)
-        Dim filePathStack As String = Path.Combine(Directory.GetParent(DBMovie.Filename).FullName, fileNameStack)
-        Dim fileParPath As String = Directory.GetParent(filePath).FullName
+        Dim strMainPath As String = tDBElement.FileItem.MainPath.FullName
 
         'remove all known paths
-        DBMovie.ActorThumbs.Clear()
-        DBMovie.ExtrafanartsPath = String.Empty
-        DBMovie.ExtrathumbsPath = String.Empty
-        DBMovie.ImagesContainer = New MediaContainers.ImagesContainer
-        DBMovie.NfoPath = String.Empty
-        DBMovie.Subtitles = New List(Of MediaContainers.Subtitle)
-        DBMovie.Theme = New MediaContainers.Theme
-        DBMovie.Trailer = New MediaContainers.Trailer
+        tDBElement.ActorThumbs.Clear()
+        tDBElement.ExtrafanartsPath = String.Empty
+        tDBElement.ExtrathumbsPath = String.Empty
+        tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
+        tDBElement.NfoPath = String.Empty
+        tDBElement.Subtitles = New List(Of MediaContainers.Subtitle)
+        tDBElement.Theme = New MediaContainers.Theme
+        tDBElement.Trailer = New MediaContainers.Trailer
 
         'first add files to filelists
-        If FileUtils.Common.isVideoTS(DBMovie.Filename) Then
-            parPath = FileUtils.Common.GetMainPath(DBMovie.Filename).FullName
+        If tDBElement.FileItem.bIsVideoTS Then
 
             Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(DBMovie.Filename).FullName))
-                fList.AddRange(Directory.GetFiles(parPath))
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName))
+                fList.AddRange(Directory.GetFiles(strMainPath))
                 If Master.eSettings.MovieUseNMJ Then
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
+                    fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
-        ElseIf FileUtils.Common.isBDRip(DBMovie.Filename) Then
-            parPath = FileUtils.Common.GetMainPath(DBMovie.Filename).FullName
+        ElseIf tDBElement.FileItem.bIsBDMV Then
 
             Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(DBMovie.Filename).FullName).FullName))
-                fList.AddRange(Directory.GetFiles(parPath))
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName).FullName))
+                fList.AddRange(Directory.GetFiles(strMainPath))
                 If Master.eSettings.MovieUseNMJ Then
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(parPath).FullName))
+                    fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Else
-            parPath = FileUtils.Common.GetMainPath(DBMovie.Filename).FullName
 
-            If DBMovie.IsSingle Then
-                fList.AddRange(Directory.GetFiles(parPath))
+            If tDBElement.IsSingle Then
+                fList.AddRange(Directory.GetFiles(strMainPath))
             Else
                 Try
-                    Dim sName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(DBMovie.Filename))
-                    fList.AddRange(Directory.GetFiles(parPath, String.Concat(sName, "*")))
+                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename), "*")))
+                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.StackedFilename), "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -135,31 +124,31 @@ Public Class Scanner
         End If
 
         'secondly add files from special folders to filelists
-        If DBMovie.IsSingle Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainActorThumbs, bForced)
+        If tDBElement.IsSingle Then
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainActorThumbs, bForced)
                 Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
                 If Directory.Exists(parDir) Then
                     atList.AddRange(Directory.GetFiles(parDir))
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainExtrafanarts, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrafanarts, bForced)
                 If Directory.Exists(a) Then
                     efList.AddRange(Directory.GetFiles(a, "*.jpg"))
                     If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainExtrathumbs, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainExtrathumbs, bForced)
                 If Directory.Exists(a) Then
                     etList.AddRange(Directory.GetFiles(a, "*.jpg"))
                     If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainSubtitle, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainSubtitle, bForced)
                 If Directory.Exists(a) Then
                     sList.AddRange(Directory.GetFiles(a))
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTheme, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, bForced)
                 If Directory.Exists(Directory.GetParent(a).FullName) Then
                     tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                 End If
@@ -168,71 +157,71 @@ Public Class Scanner
 
         'actor thumbs
         If atList.Count > 0 Then
-            DBMovie.ActorThumbs.AddRange(atList)
+            tDBElement.ActorThumbs.AddRange(atList)
         End If
 
         'banner
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainBanner, bForced)
-            DBMovie.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Banner.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainBanner, bForced)
+            tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Banner.LocalFilePath) Then Exit For
         Next
 
         'clearart
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainClearArt, bForced)
-            DBMovie.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearArt, bForced)
+            tDBElement.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
         Next
 
         'clearlogo
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainClearLogo, bForced)
-            DBMovie.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainClearLogo, bForced)
+            tDBElement.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
         Next
 
         'discart
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainDiscArt, bForced)
-            DBMovie.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainDiscArt, bForced)
+            tDBElement.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
         Next
 
         'extrafanarts
         For Each ePath In efList
-            DBMovie.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
+            tDBElement.ImagesContainer.Extrafanarts.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
         Next
-        If DBMovie.ImagesContainer.Extrafanarts.Count > 0 Then
-            DBMovie.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName
+        If tDBElement.ImagesContainer.Extrafanarts.Count > 0 Then
+            tDBElement.ExtrafanartsPath = Directory.GetParent(efList.Item(0)).FullName
         End If
 
         'extrathumbs
         For Each ePath In etList
-            DBMovie.ImagesContainer.Extrathumbs.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
+            tDBElement.ImagesContainer.Extrathumbs.Add(New MediaContainers.Image With {.LocalFilePath = ePath})
         Next
-        If DBMovie.ImagesContainer.Extrathumbs.Count > 0 Then
-            DBMovie.ExtrathumbsPath = Directory.GetParent(etList.Item(0)).FullName
+        If tDBElement.ImagesContainer.Extrathumbs.Count > 0 Then
+            tDBElement.ExtrathumbsPath = Directory.GetParent(etList.Item(0)).FullName
         End If
 
         'fanart
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainFanart, bForced)
-            DBMovie.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainFanart, bForced)
+            tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
         Next
 
         'landscape
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainLandscape, bForced)
-            DBMovie.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainLandscape, bForced)
+            tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
         Next
 
         'nfo
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, bForced)
-            DBMovie.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.NfoPath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainNFO, bForced)
+            tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.NfoPath) Then Exit For
         Next
 
         'poster
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainPoster, bForced)
-            DBMovie.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Poster.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainPoster, bForced)
+            tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
         Next
 
         'subtitles (external)
@@ -240,27 +229,27 @@ Public Class Scanner
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    DBMovie.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                 End If
             Next
         Next
 
         'theme
-        If String.IsNullOrEmpty(DBMovie.Theme.LocalFilePath) Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTheme, bForced)
+        If String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath) Then
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTheme, bForced)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
-                    DBMovie.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                    If Not String.IsNullOrEmpty(DBMovie.Theme.LocalFilePath) Then Exit For
+                    tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                    If Not String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath) Then Exit For
                 Next
             Next
         End If
 
         'trailer
-        If String.IsNullOrEmpty(DBMovie.Trailer.LocalFilePath) Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTrailer, bForced)
+        If String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath) Then
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainTrailer, bForced)
                 For Each t As String In Master.eSettings.FileSystemValidExts
-                    DBMovie.Trailer.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                    If Not String.IsNullOrEmpty(DBMovie.Trailer.LocalFilePath) Then Exit For
+                    tDBElement.Trailer.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
+                    If Not String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath) Then Exit For
                 Next
             Next
         End If
@@ -269,142 +258,141 @@ Public Class Scanner
     ''' <summary>
     ''' Check if a directory contains supporting files (nfo, poster, fanart, etc)
     ''' </summary>
-    ''' <param name="DBMovieSet">MovieSetContainer object.</param>
-    Public Sub GetFolderContents_MovieSet(ByRef DBMovieSet As Database.DBElement)
+    ''' <param name="tDBElement">MovieSetContainer object.</param>
+    Public Sub GetFolderContents_MovieSet(ByRef tDBElement As Database.DBElement)
         'remove all known paths
-        DBMovieSet.ImagesContainer = New MediaContainers.ImagesContainer
-        DBMovieSet.NfoPath = String.Empty
+        tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
+        tDBElement.NfoPath = String.Empty
 
         'banner
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainBanner)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainBanner)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.Banner.LocalFilePath = a
+                tDBElement.ImagesContainer.Banner.LocalFilePath = a
                 Exit For
             End If
         Next
 
         'clearart
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainClearArt)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainClearArt)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.ClearArt.LocalFilePath = a
+                tDBElement.ImagesContainer.ClearArt.LocalFilePath = a
                 Exit For
             End If
         Next
 
         'clearlogo
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainClearLogo)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainClearLogo)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath = a
+                tDBElement.ImagesContainer.ClearLogo.LocalFilePath = a
                 Exit For
             End If
         Next
 
         'discart
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainDiscArt)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainDiscArt)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.DiscArt.LocalFilePath = a
+                tDBElement.ImagesContainer.DiscArt.LocalFilePath = a
                 Exit For
             End If
         Next
 
         'fanart
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainFanart)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainFanart)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.Fanart.LocalFilePath = a
+                tDBElement.ImagesContainer.Fanart.LocalFilePath = a
                 Exit For
             End If
         Next
 
         'landscape
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainLandscape)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainLandscape)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.Landscape.LocalFilePath = a
+                tDBElement.ImagesContainer.Landscape.LocalFilePath = a
                 Exit For
             End If
         Next
 
         'nfo
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainNFO)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainNFO)
             If File.Exists(a) Then
-                DBMovieSet.NfoPath = a
+                tDBElement.NfoPath = a
                 Exit For
             End If
         Next
 
         'poster
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainPoster)
+        For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainPoster)
             If File.Exists(a) Then
-                DBMovieSet.ImagesContainer.Poster.LocalFilePath = a
+                tDBElement.ImagesContainer.Poster.LocalFilePath = a
                 Exit For
             End If
         Next
     End Sub
 
-    Public Sub GetFolderContents_TVEpisode(ByRef DBTVEpisode As Database.DBElement)
-        If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
+    Public Sub GetFolderContents_TVEpisode(ByRef tDBElement As Database.DBElement)
+        If Not tDBElement.FilenameSpecified Then Return
 
-        Dim fName As String = String.Empty
         Dim fList As New List(Of String)
 
         'remove all known paths
-        DBTVEpisode.ActorThumbs.Clear()
-        DBTVEpisode.ImagesContainer = New MediaContainers.ImagesContainer
-        DBTVEpisode.NfoPath = String.Empty
-        DBTVEpisode.Subtitles = New List(Of MediaContainers.Subtitle)
+        tDBElement.ActorThumbs.Clear()
+        tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
+        tDBElement.NfoPath = String.Empty
+        tDBElement.Subtitles = New List(Of MediaContainers.Subtitle)
 
         Try
-            fList.AddRange(Directory.GetFiles(Directory.GetParent(DBTVEpisode.Filename).FullName, String.Concat(Path.GetFileNameWithoutExtension(DBTVEpisode.Filename), "*.*")))
+            fList.AddRange(Directory.GetFiles(tDBElement.FileItem.MainPath.FullName))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
 
         'episode actor thumbs
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
-                DBTVEpisode.ActorThumbs.AddRange(Directory.GetFiles(parDir))
+                tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
             End If
         Next
 
         'episode fanart
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeFanart)
-            DBTVEpisode.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeFanart)
+            tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
         Next
 
         'episode poster
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodePoster)
-            DBTVEpisode.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodePoster)
+            tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
         Next
 
         'episode NFO
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeNFO)
-            DBTVEpisode.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(DBTVEpisode.NfoPath) Then Exit For
+        For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
+            tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+            If Not String.IsNullOrEmpty(tDBElement.NfoPath) Then Exit For
         Next
 
         'subtitles (external)
         For Each fFile As String In fList
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
-                Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(DBTVEpisode.Filename).FullName, Path.GetFileNameWithoutExtension(DBTVEpisode.Filename)).ToLower
+                Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName, Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename)).ToLower
                 If fFile.ToLower.StartsWith(FullFilePathWithoutExt) AndAlso fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
-                    DBTVEpisode.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
+                    tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
                 End If
             Next
         Next
     End Sub
 
-    Public Sub GetFolderContents_TVSeason(ByRef DBTVSeason As Database.DBElement)
-        Dim iSeason As Integer = DBTVSeason.TVSeason.Season
+    Public Sub GetFolderContents_TVSeason(ByRef tDBELement As Database.DBElement)
+        Dim iSeason As Integer = tDBELement.TVSeason.Season
         Dim strSeasonPath As String = String.Empty
-        Dim strShowPath As String = DBTVSeason.ShowPath
+        Dim strShowPath As String = tDBELement.ShowPath
         Dim bInside As Boolean = False
         Dim fList As New List(Of String)
 
         'remove all known paths
-        DBTVSeason.ImagesContainer = New MediaContainers.ImagesContainer
+        tDBELement.ImagesContainer = New MediaContainers.ImagesContainer
 
         'check if there is a season directory
         strSeasonPath = Functions.GetSeasonDirectoryFromShowPath(strShowPath, iSeason)
@@ -425,53 +413,53 @@ Public Class Scanner
 
         'season banner
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsBanner)
-                DBTVSeason.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Banner.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBELement, Enums.ModifierType.AllSeasonsBanner)
+                tDBELement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonBanner)
-                DBTVSeason.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Banner.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVSeason(tDBELement, Enums.ModifierType.SeasonBanner)
+                tDBELement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
         End If
 
         'season fanart 
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsFanart)
-                DBTVSeason.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBELement, Enums.ModifierType.AllSeasonsFanart)
+                tDBELement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonFanart)
-                DBTVSeason.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVSeason(tDBELement, Enums.ModifierType.SeasonFanart)
+                tDBELement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         End If
 
         'season landscape
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsLandscape)
-                DBTVSeason.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBELement, Enums.ModifierType.AllSeasonsLandscape)
+                tDBELement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonLandscape)
-                DBTVSeason.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVSeason(tDBELement, Enums.ModifierType.SeasonLandscape)
+                tDBELement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
         End If
 
         'season poster
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsPoster)
-                DBTVSeason.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Poster.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBELement, Enums.ModifierType.AllSeasonsPoster)
+                tDBELement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonPoster)
-                DBTVSeason.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Poster.LocalFilePath) Then Exit For
+            For Each a In FileUtils.GetFilenameList.TVSeason(tDBELement, Enums.ModifierType.SeasonPoster)
+                tDBELement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
+                If Not String.IsNullOrEmpty(tDBELement.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         End If
     End Sub
@@ -629,7 +617,7 @@ Public Class Scanner
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
         Else
-            DBMovie.Movie = NFO.LoadFromNFO_Movie(DBMovie.Filename, DBMovie.IsSingle)
+            DBMovie.Movie = NFO.LoadFromNFO_Movie(DBMovie.FileItem.FirstStackedFilename, DBMovie.IsSingle)
             If Not DBMovie.Movie.FileInfoSpecified AndAlso DBMovie.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
@@ -637,19 +625,19 @@ Public Class Scanner
 
         'Year
         If Not DBMovie.Movie.YearSpecified AndAlso DBMovie.Source.GetYear Then
-            DBMovie.Movie.Year = StringUtils.FilterYearFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
+            DBMovie.Movie.Year = StringUtils.FilterYearFromPath_Movie(DBMovie.FileItem, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         'IMDB ID
         If Not DBMovie.Movie.IMDBSpecified Then
-            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.Filename)
+            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.FileItem.FirstStackedFilename)
         End If
 
         'Title
         If Not DBMovie.Movie.TitleSpecified Then
             'no title so assume it's an invalid nfo, clear nfo path if exists
             DBMovie.NfoPath = String.Empty
-            DBMovie.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
+            DBMovie.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBMovie.FileItem, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         'ListTitle
@@ -685,13 +673,13 @@ Public Class Scanner
             End If
 
             'VideoSource
-            Dim vSource As String = APIXML.GetVideoSource(DBMovie.Filename, False)
+            Dim vSource As String = APIXML.GetVideoSource(DBMovie.FileItem, False)
             DBMovie.VideoSource = String.Empty
             If Not String.IsNullOrEmpty(vSource) Then
                 DBMovie.VideoSource = vSource
                 DBMovie.Movie.VideoSource = vSource
             ElseIf Not DBMovie.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.Filename)), String.Empty, "*EmberAPP")
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.FileItem.FirstStackedFilename)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     DBMovie.VideoSource = vSource
                     DBMovie.Movie.VideoSource = vSource
@@ -763,7 +751,7 @@ Public Class Scanner
 
         GetFolderContents_TVEpisode(DBTVEpisode)
 
-        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.Filename, DBTVEpisode.ShowID)
+        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.FileItem.FirstStackedFilename, DBTVEpisode.ShowID)
             Dim ToNfo As Boolean = False
 
             'It's a clone needed to prevent overwriting information of MultiEpisodes
@@ -821,7 +809,7 @@ Public Class Scanner
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 cEpisode.NfoPath = String.Empty
                 'set title based on episode file
-                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.Filename, cEpisode.TVShow.Title)
+                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstStackedFilename, cEpisode.TVShow.Title)
             End If
 
             'search local actor thumb for each actor in NFO
@@ -859,13 +847,13 @@ Public Class Scanner
             End If
 
             'VideoSource
-            Dim vSource As String = APIXML.GetVideoSource(cEpisode.Filename, True)
+            Dim vSource As String = APIXML.GetVideoSource(cEpisode.FileItem, True)
             cEpisode.VideoSource = String.Empty
             If Not String.IsNullOrEmpty(vSource) Then
                 cEpisode.VideoSource = vSource
                 cEpisode.TVEpisode.VideoSource = vSource
             ElseIf Not cEpisode.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.Filename)), String.Empty, "*EmberAPP")
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.FileItem.FirstStackedFilename)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     cEpisode.VideoSource = vSource
                     cEpisode.TVEpisode.VideoSource = vSource
@@ -991,7 +979,7 @@ Public Class Scanner
                             If tmpSeason Is Nothing OrElse tmpSeason.TVSeason Is Nothing Then
                                 tmpSeason = New Database.DBElement(Enums.ContentType.TVSeason)
                                 tmpSeason = Master.DB.AddTVShowInfoToDBElement(tmpSeason, DBTVShow)
-                                tmpSeason.Filename = DBTVEpisode.Filename 'needed to check if the episode is inside a season folder or not
+                                tmpSeason.FileItem = DBTVEpisode.FileItem  'needed to check if the episode is inside a season folder or not
                                 tmpSeason.TVSeason = New MediaContainers.SeasonDetails With {.Season = iSeason}
 
                                 'check if tvshow.nfo contains any season details
@@ -1040,7 +1028,7 @@ Public Class Scanner
                 If tmpAllSeasons Is Nothing OrElse tmpAllSeasons.TVSeason Is Nothing Then
                     tmpAllSeasons = New Database.DBElement(Enums.ContentType.TVSeason)
                     tmpAllSeasons = Master.DB.AddTVShowInfoToDBElement(tmpAllSeasons, DBTVShow)
-                    tmpAllSeasons.Filename = Path.Combine(DBTVShow.ShowPath, "file.ext")
+                    tmpAllSeasons.FileItem = New FileItem(Path.Combine(DBTVShow.ShowPath, "file.ext"))
                     tmpAllSeasons.TVSeason = New MediaContainers.SeasonDetails With {.Season = 999}
                     GetFolderContents_TVSeason(tmpAllSeasons)
                     DBTVShow.Seasons.Add(tmpAllSeasons)
@@ -1241,7 +1229,7 @@ Public Class Scanner
     ''' <param name="sSource">Structures.Source</param>
     Public Sub ScanForFiles_Movie(ByVal strPath As String, ByVal sSource As Database.DBSource)
         Dim currMovieContainer As Database.DBElement
-        Dim di As DirectoryInfo
+        'Dim di As DirectoryInfo
         Dim lFi As New List(Of FileInfo)
         Dim fList As New List(Of String)
         Dim SkipStack As Boolean = False
@@ -1250,120 +1238,139 @@ Public Class Scanner
         Dim tFile As String = String.Empty
         Dim autoCheck As Boolean = False
 
-        Try
-            If Directory.Exists(Path.Combine(strPath, "VIDEO_TS")) Then
-                di = New DirectoryInfo(Path.Combine(strPath, "VIDEO_TS"))
-                sSource.IsSingle = True
-            ElseIf Directory.Exists(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))) Then
-                di = New DirectoryInfo(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")))
-                sSource.IsSingle = True
-            Else
-                di = New DirectoryInfo(strPath)
-                autoCheck = True
-            End If
 
-            Try
-                lFi.AddRange(di.GetFiles)
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
 
-            If lFi.Count > 0 Then
 
-                If Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
-                    If lFi.Where(Function(s) s.Name.ToLower = "index.bdmv").Count > 0 Then
-                        bdmvSingle = True
-                        tFile = FileUtils.Common.GetLongestFromRip(strPath, True)
-                        If bwPrelim.CancellationPending Then Return
-                    End If
-                End If
+        Dim nFileItemList As New FileItemList(strPath)
+        nFileItemList.Stack()
 
-                If Not bdmvSingle AndAlso Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
-                    Dim hasIfo As Integer = 0
-                    Dim hasVob As Integer = 0
-                    Dim hasBup As Integer = 0
-                    For Each lfile As FileInfo In lFi
-                        If lfile.Extension.ToLower = ".ifo" Then hasIfo = 1
-                        If lfile.Extension.ToLower = ".vob" Then hasVob = 1
-                        If lfile.Extension.ToLower = ".bup" Then hasBup = 1
-                        If lfile.Name.ToLower = "video_ts.ifo" Then
-                            'video_ts.vob takes precedence
-                            tFile = lfile.FullName
-                        ElseIf String.IsNullOrEmpty(tFile) AndAlso lfile.Extension.ToLower = ".vob" Then
-                            'get any vob
-                            tFile = lfile.FullName
-                        End If
-                        vtsSingle = (hasIfo + hasVob + hasBup) > 1
-                        If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.ifo" Then Exit For
-                        If bwPrelim.CancellationPending Then Return
-                    Next
-                End If
+        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not MoviePaths.Contains(f.Filename.ToLower))
+            currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
+            currMovieContainer.FileItem = nFileItem
+            currMovieContainer.IsSingle = sSource.IsSingle
+            currMovieContainer.Language = sSource.Language
+            currMovieContainer.Source = sSource
+            Load_Movie(currMovieContainer, True)
+            bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
+        Next
 
-                If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
-                    If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(tFile.ToLower)) Then
-                        If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(tFile).ToLower) Then
-                            MoviePaths.Add(tFile.ToLower)
-                        Else
-                            MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(tFile).ToLower)
-                        End If
-                        currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
-                        currMovieContainer.ActorThumbs = New List(Of String)
-                        currMovieContainer.Filename = tFile
-                        currMovieContainer.IsSingle = True
-                        currMovieContainer.Language = sSource.Language
-                        currMovieContainer.Source = sSource
-                        currMovieContainer.Subtitles = New List(Of MediaContainers.Subtitle)
-                        Load_Movie(currMovieContainer, True)
-                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
-                    End If
 
-                Else
-                    Dim HasFile As Boolean = False
-                    Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
-                            FileUtils.Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
 
-                    If tList.Count > 1 AndAlso sSource.IsSingle Then
-                        'check if we already have a movie from this folder
-                        If MoviePaths.Where(Function(f) tList.Where(Function(l) FileUtils.Common.RemoveStackingMarkers(l.FullName).ToLower = f).Count > 0).Count > 0 Then
-                            HasFile = True
-                        End If
-                    End If
 
-                    If Not HasFile Then
-                        For Each lFile As FileInfo In tList
 
-                            If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower) Then
-                                If Master.eSettings.FileSystemNoStackExts.Contains(lFile.Extension.ToLower) Then
-                                    MoviePaths.Add(lFile.FullName.ToLower)
-                                    SkipStack = True
-                                Else
-                                    MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower)
-                                End If
-                                fList.Add(lFile.FullName)
-                            End If
-                            If sSource.IsSingle AndAlso Not SkipStack Then Exit For
-                            If bwPrelim.CancellationPending Then Return
-                        Next
-                    End If
 
-                    For Each s As String In fList
-                        currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
-                        currMovieContainer.ActorThumbs = New List(Of String)
-                        currMovieContainer.Filename = s
-                        currMovieContainer.IsSingle = sSource.IsSingle
-                        currMovieContainer.Language = sSource.Language
-                        currMovieContainer.Source = sSource
-                        currMovieContainer.Subtitles = New List(Of MediaContainers.Subtitle)
-                        Load_Movie(currMovieContainer, True)
-                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
-                    Next
-                End If
+        'Try
+        '    If Directory.Exists(Path.Combine(strPath, "VIDEO_TS")) Then
+        '        di = New DirectoryInfo(Path.Combine(strPath, "VIDEO_TS"))
+        '        sSource.IsSingle = True
+        '    ElseIf Directory.Exists(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))) Then
+        '        di = New DirectoryInfo(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")))
+        '        sSource.IsSingle = True
+        '    Else
+        '        di = New DirectoryInfo(strPath)
+        '        autoCheck = True
+        '    End If
 
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+        '    Try
+        '        lFi.AddRange(di.GetFiles)
+        '    Catch ex As Exception
+        '        logger.Error(ex, New StackFrame().GetMethod().Name)
+        '    End Try
+
+        '    If lFi.Count > 0 Then
+
+        '        If Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
+        '            If lFi.Where(Function(s) s.Name.ToLower = "index.bdmv").Count > 0 Then
+        '                bdmvSingle = True
+        '                tFile = FileUtils.Common.GetLongestFromRip(strPath, True)
+        '                If bwPrelim.CancellationPending Then Return
+        '            End If
+        '        End If
+
+        '        If Not bdmvSingle AndAlso Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
+        '            Dim hasIfo As Integer = 0
+        '            Dim hasVob As Integer = 0
+        '            Dim hasBup As Integer = 0
+        '            For Each lfile As FileInfo In lFi
+        '                If lfile.Extension.ToLower = ".ifo" Then hasIfo = 1
+        '                If lfile.Extension.ToLower = ".vob" Then hasVob = 1
+        '                If lfile.Extension.ToLower = ".bup" Then hasBup = 1
+        '                If lfile.Name.ToLower = "video_ts.ifo" Then
+        '                    'video_ts.vob takes precedence
+        '                    tFile = lfile.FullName
+        '                ElseIf String.IsNullOrEmpty(tFile) AndAlso lfile.Extension.ToLower = ".vob" Then
+        '                    'get any vob
+        '                    tFile = lfile.FullName
+        '                End If
+        '                vtsSingle = (hasIfo + hasVob + hasBup) > 1
+        '                If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.ifo" Then Exit For
+        '                If bwPrelim.CancellationPending Then Return
+        '            Next
+        '        End If
+
+        '        If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
+        '            If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(tFile.ToLower)) Then
+        '                If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(tFile).ToLower) Then
+        '                    MoviePaths.Add(tFile.ToLower)
+        '                Else
+        '                    MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(tFile).ToLower)
+        '                End If
+        '                currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
+        '                currMovieContainer.FileItem = New FileItem(tFile)
+        '                currMovieContainer.Filename = tFile
+        '                currMovieContainer.IsSingle = True
+        '                currMovieContainer.Language = sSource.Language
+        '                currMovieContainer.Source = sSource
+        '                Load_Movie(currMovieContainer, True)
+        '                bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
+        '            End If
+
+        '        Else
+        '            Dim HasFile As Boolean = False
+        '            Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
+        '                     Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
+        '                    FileUtils.Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
+
+        '            If tList.Count > 1 AndAlso sSource.IsSingle Then
+        '                'check if we already have a movie from this folder
+        '                If MoviePaths.Where(Function(f) tList.Where(Function(l) FileUtils.Common.RemoveStackingMarkers(l.FullName).ToLower = f).Count > 0).Count > 0 Then
+        '                    HasFile = True
+        '                End If
+        '            End If
+
+        '            If Not HasFile Then
+        '                For Each lFile As FileInfo In tList
+
+        '                    If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower) Then
+        '                        If Master.eSettings.FileSystemNoStackExts.Contains(lFile.Extension.ToLower) Then
+        '                            MoviePaths.Add(lFile.FullName.ToLower)
+        '                            SkipStack = True
+        '                        Else
+        '                            MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower)
+        '                        End If
+        '                        fList.Add(lFile.FullName)
+        '                    End If
+        '                    If sSource.IsSingle AndAlso Not SkipStack Then Exit For
+        '                    If bwPrelim.CancellationPending Then Return
+        '                Next
+        '            End If
+
+        '            For Each s As String In fList
+        '                currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
+        '                currMovieContainer.FileItem = New FileItem(s)
+        '                currMovieContainer.Filename = s
+        '                currMovieContainer.IsSingle = sSource.IsSingle
+        '                currMovieContainer.Language = sSource.Language
+        '                currMovieContainer.Source = sSource
+        '                Load_Movie(currMovieContainer, True)
+        '                bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
+        '            Next
+        '        End If
+
+        '    End If
+        'Catch ex As Exception
+        '    logger.Error(ex, New StackFrame().GetMethod().Name)
+        'End Try
     End Sub
 
     ''' <summary>
@@ -1379,7 +1386,7 @@ Public Class Scanner
                 If Not TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso
                     Not Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
                     (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
-                    tShow.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {.Filename = lFile.FullName, .TVEpisode = New MediaContainers.EpisodeDetails})
+                    tShow.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {.FileItem = New FileItem(lFile.FullName), .TVEpisode = New MediaContainers.EpisodeDetails})
                 ElseIf Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
                     logger.Info(String.Format("[Sanner] [ScanForFiles_TV] File ""{0}"" has been ignored (ignore list)", lFile.FullName))
                 End If
@@ -1409,10 +1416,10 @@ Public Class Scanner
             Dim dInfo As New DirectoryInfo(strScanPath)
             Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
 
-            Try
+            'Try
 
-                'check if there are any movies in this directory
-                If doScan Then ScanForFiles_Movie(strScanPath, sSource)
+            'check if there are any movies in this directory
+            If doScan Then ScanForFiles_Movie(strScanPath, sSource)
 
                 If Master.eSettings.MovieScanOrderModify Then
                     Try
@@ -1436,9 +1443,9 @@ Public Class Scanner
                     End If
                 Next
 
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
+            'Catch ex As Exception
+            'logger.Error(ex, New StackFrame().GetMethod().Name)
+            'End Try
         End If
     End Sub
 

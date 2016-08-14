@@ -93,7 +93,7 @@ Namespace FFmpeg
 
 
             If String.IsNullOrEmpty(ScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.Filename))
+                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.FileItem.FirstStackedFilename))
                 Return lstThumbContainer
             End If
 
@@ -278,17 +278,17 @@ Namespace FFmpeg
                         logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
                     End If
                 Else
-                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.Filename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
+                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.FileItem.FirstStackedFilename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
                 End If
             Next
 
             If sortcrops.Count < 1 Then
-                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.Filename)
+                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.FileItem.FirstStackedFilename)
                 Return String.Empty
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.Filename))
+                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.FileItem.FirstStackedFilename))
                 Return sortcrops(0).Item1
             End If
         End Function
@@ -618,19 +618,19 @@ Namespace FFmpeg
         ''' </remarks>
         Private Shared Function GetVideoFileScanPath(ByVal DBElement As Database.DBElement) As String
             Dim videofilepath As String = String.Empty
-            Dim videofileExt As String = Path.GetExtension(DBElement.Filename).ToLower
+            Dim videofileExt As String = Path.GetExtension(DBElement.FileItem.FirstStackedFilename).ToLower
             If videofileExt = ".rar" AndAlso Not videofileExt = ".img" AndAlso Not videofileExt = ".cue" Then
                 'not supported?!
             End If
             Select Case DBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If FileUtils.Common.isBDRip(DBElement.Filename) Then
+                    If DBElement.FileItem.bIsBDMV Then
                         'filename points to largest m2ts file, i.e:
                         'E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.Filename) Then
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedFilename)
+                    ElseIf DBElement.FileItem.bIsVideoTS Then
                         'filename points to largest VOB  file
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedFilename)
                     ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
                         Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
@@ -643,7 +643,7 @@ Namespace FFmpeg
                                 '  Run_Process(ToolPath, " /u", False, True)
                                 'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
                                 Functions.Run_Process(ToolPath, """" & videofilepath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
+                                Threading.Thread.Sleep(8000)
                                 'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
                             Else
                                 'Unmount
@@ -667,17 +667,10 @@ Namespace FFmpeg
                         End If
                         'default case
                     Else
-                        videofilepath = DBElement.Filename
+                        videofilepath = DBElement.FileItem.FirstStackedFilename
                     End If
                 Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.Filename))
-                    If FileUtils.Common.isBDRip(DBElement.ShowPath) Then
-                        'no tv support for now...
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.ShowPath) Then
-                        'no tv support for now...
-                    Else
-                        'no tv support for now...
-                    End If
+                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.FileItem.FirstStackedFilename))
                 Case Enums.ContentType.TVEpisode
                     'no tv support for now...
             End Select

@@ -267,7 +267,6 @@ Namespace FileUtils
 
             Return String.Concat(strDescription, "|", String.Join(";", lstValidExtensions.ToArray))
         End Function
-
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>
@@ -286,20 +285,6 @@ Namespace FileUtils
                 Return Directory.GetParent(strPath).Name.ToLower = "stream" AndAlso Directory.GetParent(Directory.GetParent(strPath).FullName).Name.ToLower = "bdmv"
             Else
                 Return GetDirectory(strPath).ToLower = "stream" AndAlso Directory.GetParent(strPath).Name.ToLower = "bdmv"
-            End If
-        End Function
-        ''' <summary>
-        ''' Determine whether the given string represents a file that needs to be treated as if it is stacked (single media in multiple files)
-        ''' If the system setting "DisableMultiPartMedia" is False, then always return False
-        ''' </summary>
-        ''' <param name="strPath"><c>String</c> to evaluate</param>
-        ''' <returns><c>True</c> if the string represents a stacked file, or <c>False</c> otherwise</returns>
-        ''' <remarks></remarks>
-        Public Shared Function isStacked(ByVal strPath As String) As Boolean
-            If Not strPath = RemoveStackingMarkers(strPath) Then
-                Return True
-            Else
-                Return False
             End If
         End Function
         ''' <summary>
@@ -400,51 +385,51 @@ Namespace FileUtils
             End Try
         End Sub
 
-        Public Shared Function CheckOnlineStatus_Movie(ByRef dbMovie As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(dbMovie.Filename)
+        Public Shared Function CheckOnlineStatus_Movie(ByRef tDBElement As Database.DBElement, ByVal showMessage As Boolean) As Boolean
+            While Not File.Exists(tDBElement.FileItem.FirstStackedFilename)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     dbMovie.Filename), String.Empty,
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                                                     tDBElement.FileItem.FirstStackedFilename), String.Empty,
+                                       MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = DialogResult.Cancel Then Return False
                 Else
                     Return False
                 End If
             End While
-            dbMovie.IsOnline = True
+            tDBElement.IsOnline = True
             Return True
         End Function
 
-        Public Shared Function CheckOnlineStatus_TVEpisode(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(dbTV.Filename)
+        Public Shared Function CheckOnlineStatus_TVEpisode(ByRef tDBElement As Database.DBElement, ByVal showMessage As Boolean) As Boolean
+            While Not File.Exists(tDBElement.FileItem.FirstStackedFilename)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     dbTV.Filename), String.Empty,
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                                                     tDBElement.FileItem.FirstStackedFilename), String.Empty,
+                                       MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = DialogResult.Cancel Then Return False
                 Else
                     Return False
                 End If
             End While
-            dbTV.IsOnline = True
+            tDBElement.IsOnline = True
             Return True
         End Function
 
-        Public Shared Function CheckOnlineStatus_TVShow(ByRef dbTV As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not Directory.Exists(dbTV.ShowPath)
+        Public Shared Function CheckOnlineStatus_TVShow(ByRef tDBElement As Database.DBElement, ByVal showMessage As Boolean) As Boolean
+            While Not Directory.Exists(tDBElement.ShowPath)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     dbTV.ShowPath), String.Empty,
-                                                 MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                                                     tDBElement.ShowPath), String.Empty,
+                                       MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = DialogResult.Cancel Then Return False
                 Else
                     Return False
                 End If
             End While
-            dbTV.IsOnline = True
+            tDBElement.IsOnline = True
             Return True
         End Function
 
@@ -456,7 +441,7 @@ Namespace FileUtils
         ''' <remarks></remarks>
         Public Shared Function GetFolderSize(ByVal spathDirectory As String) As Long
             Dim size As Long = 0
-            If System.IO.Directory.Exists(spathDirectory) Then
+            If Directory.Exists(spathDirectory) Then
                 ' Take a snapshot of the file system.
                 Dim dir As New DirectoryInfo(spathDirectory)
                 ' This method assumes that the application has discovery permissions
@@ -534,38 +519,6 @@ Namespace FileUtils
                 retval = 0
             End Try
             Return retval
-        End Function
-        ''' <summary>
-        ''' When given a valid path to a video/media file, return the path but without stacking markers.
-        ''' </summary>
-        ''' <param name="strPath"><c>String</c> full file path (including file extension) to clean</param>
-        ''' <returns>The <c>String</c> path with the stacking markers removed</returns>
-        ''' <remarks>The following are default stacking extensions that can be added to file names These are for video file names that are in the same folder:
-        ''' # can be 1 through 9. No spaces between the extension and number. 
-        ''' <list>
-        '''   <item>part#​</item>
-        '''   <item>cd#​</item>
-        '''   <item>dvd#</item>
-        '''   <item>pt#</item>
-        '''   <item>disk#</item>
-        '''   <item>disc#</item>
-        ''' </list>
-        ''' Note that text after the stacking marker are left untouched.
-        ''' </remarks>
-        Public Shared Function RemoveStackingMarkers(ByVal strPath As String) As String
-            'Don't do anything if DisableMultiPartMedia is True or strPath is String.Empty
-            If AdvancedSettings.GetBooleanSetting("DisableMultiPartMedia", False) OrElse String.IsNullOrEmpty(strPath) Then Return strPath
-
-            Dim FilePattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
-            Dim FolderPattern As String = AdvancedSettings.GetSetting("FolderStacking", "((cd|dvd|dis[ck])[0-9]+)$")
-
-            Dim FileStacking = Regex.Match(strPath, FilePattern, RegexOptions.IgnoreCase)
-            If FileStacking.Success Then
-                Dim strPathCleaned As String = strPath.Replace(FileStacking.Groups(2).Value, String.Empty)
-                Return strPathCleaned
-            Else
-                Return strPath
-            End If
         End Function
 
 #End Region 'Methods
@@ -700,203 +653,203 @@ Namespace FileUtils
         ''' <returns><c>True</c> if files were found that are to be deleted, <c>False</c> if not.</returns>
         ''' <remarks>Not used for cleaner, needs to be modified to reflect.</remarks>
         Public Function GetItemsToDelete(ByVal isCleaner As Boolean, ByVal mMovie As Database.DBElement) As List(Of IO.FileSystemInfo)
-            Dim dPath As String = String.Empty
+            'Dim dPath As String = String.Empty
             Dim ItemsToDelete As New List(Of FileSystemInfo)
-            Dim fScanner As New Scanner
+            'Dim fScanner As New Scanner
 
-            Try
-                Dim MovieFile As New FileInfo(mMovie.Filename)
-                Dim MovieDir As DirectoryInfo = MovieFile.Directory
-                'TODO: check VIDEO_TS parent
-                If Common.isVideoTS(MovieDir.FullName) Then
-                    dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
-                ElseIf Common.isBDRip(MovieDir.FullName) Then
-                    dPath = String.Concat(Path.Combine(MovieDir.Parent.Parent.FullName, MovieDir.Parent.Parent.Name), ".ext")
-                Else
-                    dPath = mMovie.Filename
-                End If
+            'Try
+            '    Dim MovieFile As New FileInfo(mMovie.FileItem.FirstStackedFilename)
+            '    Dim MovieDir As DirectoryInfo = MovieFile.Directory
+            '    'TODO: check VIDEO_TS parent
+            '    If mMovie.FileItem.bIsVideoTS Then
+            '        dPath = String.Concat(Path.Combine(MovieDir.Parent.FullName, MovieDir.Parent.Name), ".ext")
+            '    ElseIf mMovie.FileItem.bIsBDMV Then
+            '        dPath = String.Concat(Path.Combine(MovieDir.Parent.Parent.FullName, MovieDir.Parent.Parent.Name), ".ext")
+            '    Else
+            '        dPath = mMovie.FileItem.FirstStackedFilename
+            '    End If
 
-                Dim sOrName As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(dPath))
-                Dim sPathShort As String = Directory.GetParent(dPath).FullName
-                Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
+            '    Dim sOrName As String = Path.GetFileNameWithoutExtension(dPath)
+            '    Dim sPathShort As String = Directory.GetParent(dPath).FullName
+            '    Dim sPathNoExt As String = Common.RemoveExtFromPath(dPath)
 
-                Dim dirInfo As New DirectoryInfo(sPathShort)
-                Dim ioFi As New List(Of FileSystemInfo)
+            '    Dim dirInfo As New DirectoryInfo(sPathShort)
+            '    Dim ioFi As New List(Of FileSystemInfo)
 
-                Try
-                    ioFi.AddRange(dirInfo.GetFiles())
-                Catch
-                End Try
+            '    Try
+            '        ioFi.AddRange(dirInfo.GetFiles())
+            '    Catch
+            '    End Try
 
-                If isCleaner AndAlso Master.eSettings.FileSystemExpertCleaner Then
+            '    If isCleaner AndAlso Master.eSettings.FileSystemExpertCleaner Then
 
-                    For Each sFile As FileInfo In ioFi
-                        If Not Master.eSettings.FileSystemCleanerWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.FileSystemCleanerWhitelist AndAlso Not Master.eSettings.FileSystemValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.FileSystemCleanerWhitelist) Then
-                            sFile.Delete()
-                        End If
-                    Next
+            '        For Each sFile As FileInfo In ioFi
+            '            If Not Master.eSettings.FileSystemCleanerWhitelistExts.Contains(sFile.Extension.ToLower) AndAlso ((Master.eSettings.FileSystemCleanerWhitelist AndAlso Not Master.eSettings.FileSystemValidExts.Contains(sFile.Extension.ToLower)) OrElse Not Master.eSettings.FileSystemCleanerWhitelist) Then
+            '                sFile.Delete()
+            '            End If
+            '        Next
 
-                Else
+            '    Else
 
-                    If Not isCleaner Then
-                        'cleanup backdrops
-                        Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFilePath
-                        Dim tPath As String = String.Empty
-                        If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                            If Common.isVideoTS(fPath) Then
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Common.GetMainPath(fPath).FullName, Common.GetMainPath(fPath).Name), "-fanart.jpg"))
-                            ElseIf Common.isBDRip(fPath) Then
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
-                            Else
-                                tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
-                            End If
-                        End If
-                        If Not String.IsNullOrEmpty(tPath) Then
-                            If IO.File.Exists(tPath) Then
-                                ItemsToDelete.Add(New FileInfo(tPath))
-                            End If
-                        End If
-                    End If
+            '        If Not isCleaner Then
+            '            'cleanup backdrops
+            '            Dim fPath As String = mMovie.ImagesContainer.Fanart.LocalFilePath
+            '            Dim tPath As String = String.Empty
+            '            If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
+            '                If Common.isVideoTS(fPath) Then
+            '                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Path.Combine(Common.GetMainPath(fPath).FullName, Common.GetMainPath(fPath).Name), "-fanart.jpg"))
+            '                ElseIf Common.isBDRip(fPath) Then
+            '                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
+            '                Else
+            '                    tPath = Path.Combine(Master.eSettings.MovieBackdropsPath, String.Concat(Common.GetMainPath(fPath).Name, "-fanart.jpg"))
+            '                End If
+            '            End If
+            '            If Not String.IsNullOrEmpty(tPath) Then
+            '                If IO.File.Exists(tPath) Then
+            '                    ItemsToDelete.Add(New FileInfo(tPath))
+            '                End If
+            '            End If
+            '        End If
 
-                    If Not isCleaner AndAlso mMovie.IsSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
-                        If Common.isVideoTS(MovieDir.FullName) Then
-                            ItemsToDelete.Add(MovieDir.Parent)
-                        ElseIf Common.isBDRip(MovieDir.FullName) Then
-                            ItemsToDelete.Add(MovieDir.Parent.Parent)
-                        Else
-                            'check if there are other folders with movies in them
-                            If Not fScanner.SubDirsHaveMovies(MovieDir) Then
-                                'no movies in sub dirs... delete the whole thing
-                                ItemsToDelete.Add(MovieDir)
-                            Else
-                                'just delete the movie file itself
-                                ItemsToDelete.Add(New FileInfo(mMovie.Filename))
-                            End If
-                        End If
-                    Else
-                        For Each lFI As FileInfo In ioFi
-                            If isCleaner Then
-                                If (Master.eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
-                                    OrElse (Master.eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
-                                    OrElse (Master.eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
-                                    OrElse (Master.eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
-                                    OrElse (Master.eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
-                                    OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
-                                    OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
-                                    File.Delete(lFI.FullName)
-                                    Continue For
-                                End If
-                            End If
+            '        If Not isCleaner AndAlso mMovie.IsSingle AndAlso Not Master.SourcesList.Contains(MovieDir.Parent.ToString) Then
+            '            If Common.isVideoTS(MovieDir.FullName) Then
+            '                ItemsToDelete.Add(MovieDir.Parent)
+            '            ElseIf Common.isBDRip(MovieDir.FullName) Then
+            '                ItemsToDelete.Add(MovieDir.Parent.Parent)
+            '            Else
+            '                'check if there are other folders with movies in them
+            '                If Not fScanner.SubDirsHaveMovies(MovieDir) Then
+            '                    'no movies in sub dirs... delete the whole thing
+            '                    ItemsToDelete.Add(MovieDir)
+            '                Else
+            '                    'just delete the movie file itself
+            '                    ItemsToDelete.Add(New FileInfo(mMovie.FileItem.FirstStackedFilename))
+            '                End If
+            '            End If
+            '        Else
+            '            For Each lFI As FileInfo In ioFi
+            '                If isCleaner Then
+            '                    If (Master.eSettings.CleanFolderJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "folder.jpg")) _
+            '                        OrElse (Master.eSettings.CleanFanartJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "fanart.jpg")) _
+            '                        OrElse (Master.eSettings.CleanMovieTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.tbn")) _
+            '                        OrElse (Master.eSettings.CleanMovieNFO AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.nfo")) _
+            '                        OrElse (Master.eSettings.CleanPosterTBN AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.tbn")) _
+            '                        OrElse (Master.eSettings.CleanPosterJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "poster.jpg")) _
+            '                        OrElse (Master.eSettings.CleanMovieJPG AndAlso lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "movie.jpg")) Then
+            '                        File.Delete(lFI.FullName)
+            '                        Continue For
+            '                    End If
+            '                End If
 
-                            If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
-                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
-                                OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn") _
-                                OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
+            '                If (Master.eSettings.CleanMovieTBNB AndAlso isCleaner) OrElse (Not isCleaner) Then
+            '                    If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".tbn") _
+            '                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.tbn") _
+            '                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.tbn") _
+            '                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".tbn") Then
+            '                        If isCleaner Then
+            '                            File.Delete(lFI.FullName)
+            '                        Else
+            '                            ItemsToDelete.Add(lFI)
+            '                        End If
+            '                        Continue For
+            '                    End If
+            '                End If
 
-                            If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
+            '                If (Master.eSettings.CleanMovieFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+            '                    If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, "-fanart.jpg") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts-fanart.jpg") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index-fanart.jpg") _
+            '                        OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), "-fanart.jpg") Then
+            '                        If isCleaner Then
+            '                            File.Delete(lFI.FullName)
+            '                        Else
+            '                            ItemsToDelete.Add(lFI)
+            '                        End If
+            '                        Continue For
+            '                    End If
+            '                End If
 
-                            If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
+            '                If (Master.eSettings.CleanMovieNFOB AndAlso isCleaner) OrElse (Not isCleaner) Then
+            '                    If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".nfo") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.nfo") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.nfo") _
+            '                        OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".nfo") Then
+            '                        If isCleaner Then
+            '                            File.Delete(lFI.FullName)
+            '                        Else
+            '                            ItemsToDelete.Add(lFI)
+            '                        End If
+            '                        Continue For
+            '                    End If
+            '                End If
 
-                            If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
+            '                If (Master.eSettings.CleanDotFanartJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+            '                    If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".fanart.jpg") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.fanart.jpg") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.fanart.jpg") _
+            '                        OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".fanart.jpg") Then
+            '                        If isCleaner Then
+            '                            File.Delete(lFI.FullName)
+            '                        Else
+            '                            ItemsToDelete.Add(lFI)
+            '                        End If
+            '                        Continue For
+            '                    End If
+            '                End If
 
-                            If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
-                                If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
-                                    OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg") _
-                                    OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
-                                    If isCleaner Then
-                                        File.Delete(lFI.FullName)
-                                    Else
-                                        ItemsToDelete.Add(lFI)
-                                    End If
-                                    Continue For
-                                End If
-                            End If
-                        Next
+            '                If (Master.eSettings.CleanMovieNameJPG AndAlso isCleaner) OrElse (Not isCleaner) Then
+            '                    If lFI.FullName.ToLower = String.Concat(sPathNoExt.ToLower, ".jpg") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "video_ts.jpg") _
+            '                        OrElse lFI.FullName.ToLower = Path.Combine(sPathShort.ToLower, "index.jpg") _
+            '                        OrElse lFI.FullName.ToLower = String.Concat(Path.Combine(sPathShort.ToLower, sOrName.ToLower), ".jpg") Then
+            '                        If isCleaner Then
+            '                            File.Delete(lFI.FullName)
+            '                        Else
+            '                            ItemsToDelete.Add(lFI)
+            '                        End If
+            '                        Continue For
+            '                    End If
+            '                End If
+            '            Next
 
-                        If Not isCleaner Then
+            '            If Not isCleaner Then
 
-                            ioFi.Clear()
-                            Try
-                                If mMovie.IsSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
-                            Catch
-                            End Try
+            '                ioFi.Clear()
+            '                Try
+            '                    If mMovie.IsSingle Then ioFi.AddRange(dirInfo.GetFiles(String.Concat(sOrName, "*.*")))
+            '                Catch
+            '                End Try
 
-                            Try
-                                ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), ".*")))
-                            Catch
-                            End Try
+            '                Try
+            '                    ioFi.AddRange(dirInfo.GetFiles(String.Concat(Path.GetFileNameWithoutExtension(mMovie.Filename), ".*")))
+            '                Catch
+            '                End Try
 
-                            ItemsToDelete.AddRange(ioFi)
+            '                ItemsToDelete.AddRange(ioFi)
 
-                        End If
+            '            End If
 
-                        If Master.eSettings.CleanExtrathumbs Then
-                            If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
-                                If isCleaner Then
-                                    DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
-                                Else
-                                    Dim dir As New DirectoryInfo(Path.Combine(sPathShort, "extrathumbs"))
-                                    If dir.Exists Then
-                                        ItemsToDelete.Add(dir)
-                                    End If
-                                End If
-                            End If
-                        End If
+            '            If Master.eSettings.CleanExtrathumbs Then
+            '                If Directory.Exists(Path.Combine(sPathShort, "extrathumbs")) Then
+            '                    If isCleaner Then
+            '                        DeleteDirectory(Path.Combine(sPathShort, "extrathumbs"))
+            '                    Else
+            '                        Dim dir As New DirectoryInfo(Path.Combine(sPathShort, "extrathumbs"))
+            '                        If dir.Exists Then
+            '                            ItemsToDelete.Add(dir)
+            '                        End If
+            '                    End If
+            '                End If
+            '            End If
 
-                    End If
-                End If
+            '        End If
+            '    End If
 
-                ioFi = Nothing
-                dirInfo = Nothing
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
+            '    ioFi = Nothing
+            '    dirInfo = Nothing
+            'Catch ex As Exception
+            '    logger.Error(ex, New StackFrame().GetMethod().Name)
+            'End Try
             Return ItemsToDelete
         End Function
 
@@ -996,19 +949,19 @@ Namespace FileUtils
         Public Shared Function Movie(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
+            If String.IsNullOrEmpty(DBElement.FileItem.Filename) Then Return FilenameList
 
             Dim basePath As String = String.Empty
-            Dim fPath As String = DBElement.Filename
+            Dim fPath As String = DBElement.FileItem.FirstStackedFilename
             Dim fileName As String = Path.GetFileNameWithoutExtension(fPath)
-            Dim fileNameStack As String = Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(fPath))
+            Dim fileNameStack As String = Path.GetFileNameWithoutExtension(DBElement.FileItem.StackedFilename)
             Dim filePath As String = Path.Combine(Directory.GetParent(fPath).FullName, fileName)
             Dim filePathStack As String = Path.Combine(Directory.GetParent(fPath).FullName, fileNameStack)
             Dim fileParPath As String = Directory.GetParent(filePath).FullName
             Dim isSingle As Boolean = DBElement.IsSingle
 
-            Dim isVideoTS As Boolean = Common.isVideoTS(fPath)
-            Dim isBDRip As Boolean = Common.isBDRip(fPath)
+            Dim isBDRip As Boolean = DBElement.FileItem.bIsBDMV
+            Dim isVideoTS As Boolean = DBElement.FileItem.bIsVideoTS
             Dim isVideoTSFile As Boolean = fileName.ToLower = "video_ts"
 
             If isVideoTS OrElse isBDRip Then basePath = Common.GetMainPath(fPath).FullName
@@ -1943,15 +1896,15 @@ Namespace FileUtils
             Return FilenameList
         End Function
 
-        Public Shared Function TVEpisode(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
+        Public Shared Function TVEpisode(ByVal tDBElement As Database.DBElement, ByVal mType As Enums.ModifierType) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If String.IsNullOrEmpty(DBElement.Filename) Then Return FilenameList
+            If Not tDBElement.FilenameSpecified Then Return FilenameList
 
-            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(DBElement.Filename)
-            Dim fEpisodePath As String = Common.RemoveExtFromPath(DBElement.Filename)
-            Dim fEpisodeParentPath As String = Directory.GetParent(DBElement.Filename).FullName
-            Dim sSeason As String = DBElement.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0"))
+            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename)
+            Dim fEpisodePath As String = Common.RemoveExtFromPath(tDBElement.FileItem.FirstStackedFilename)
+            Dim fEpisodeParentPath As String = tDBElement.FileItem.MainPath.FullName
+            Dim sSeason As String = tDBElement.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0"))
 
             Select Case mType
                 Case Enums.ModifierType.EpisodeActorThumbs
@@ -2338,6 +2291,92 @@ Namespace FileUtils
 #End Region 'Methods
 
     End Class
+
+    Public Class Stacking
+
+#Region "Fields"
+
+        Dim logger As Logger = LogManager.GetCurrentClassLogger()
+
+#End Region 'Fields
+
+#Region "Methods"
+
+        Public Shared Function ConstructStackPath(tItemList As FileItemList, iStack As List(Of Integer)) As String
+            Dim strStackedPath As String = "stack://"
+            Dim strFilename As String = tItemList.GetItem(iStack(0)).FileInfo.FullName
+            'double escape any occurence of commas
+            strFilename = strFilename.Replace(",", ",,")
+            strStackedPath += strFilename
+
+            Dim i As Integer = 1
+            While i < iStack.Count
+                strStackedPath += " , "
+                strFilename = tItemList.GetItem(iStack(i)).FileInfo.FullName
+
+                'double escape any occurence of commas
+                strFilename = strFilename.Replace(",", ",,")
+                strStackedPath += strFilename
+                i += 1
+            End While
+
+            Return strStackedPath
+        End Function
+
+        Public Shared Function GetFirstStackedFile(strFilename As String) As String
+            Dim strFirstFilename As String = String.Empty
+            If strFilename.Contains(" , ") Then
+                strFirstFilename = strFilename.Substring(0, strFilename.IndexOf(" , "))
+            Else 'single filed stacks - should really not happen
+                strFirstFilename = strFilename
+            End If
+
+            'remove "stack://" from the folder
+            strFirstFilename = strFirstFilename.Replace("stack://", String.Empty)
+            strFirstFilename = strFirstFilename.Replace(",,", ",")
+
+            Return strFirstFilename
+        End Function
+
+        Public Shared Function GetPaths(strFilename As String) As List(Of String)
+            Dim lstPaths As New List(Of String)
+            'format Is:
+            'stack://file1 , file2 , file3 , file4
+            'filenames with commas are double escaped (ie replaced with ,,), thus the " , " separator used.
+
+            'remove stack:// from the beginning
+            strFilename = strFilename.Replace("stack://", String.Empty)
+
+            lstPaths = Regex.Split(strFilename, " , ").ToList
+            For Each nPath In lstPaths
+                nPath = nPath.Replace(",,", ",")
+            Next
+
+            Return lstPaths
+        End Function
+
+        Public Shared Function GetStackedPath(strPath As String) As String
+            If String.IsNullOrEmpty(strPath) Then Return String.Empty
+
+            If strPath.StartsWith("stack://") Then
+                Dim strFirstStackedFile As String = GetFirstStackedFile(strPath)
+                Dim strFileStackingPattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
+                Dim rResultFileItem1 As Match = Regex.Match(strFirstStackedFile, strFileStackingPattern, RegexOptions.IgnoreCase)
+                If rResultFileItem1.Success Then
+                    Dim strTitle1 As String = rResultFileItem1.Groups(1).Value
+                    Dim strVolume1 As String = rResultFileItem1.Groups(2).Value
+                    Dim strIgnore1 As String = rResultFileItem1.Groups(3).Value
+                    Dim strExtension1 As String = rResultFileItem1.Groups(4).Value
+
+                    Return String.Concat(strTitle1, strIgnore1, strExtension1)
+                End If
+            End If
+            Return strPath
+        End Function
+
+#End Region 'Methods
+
+    End Class
     ''' <summary>
     ''' This module is a convenience library for sorting files into respective subdirectories.
     ''' This module does NOT need to be instantiated!
@@ -2377,34 +2416,24 @@ Namespace FileUtils
             Try
                 If Directory.Exists(strSourcePath) Then
                     'Get information about files in the directory
-                    Dim di As New DirectoryInfo(strSourcePath)
-                    Dim lFi As New List(Of FileInfo)
-                    Dim lMediaList As IOrderedEnumerable(Of FileInfo)
-
-                    'Create a List of files in the directory
-                    Try
-                        lFi.AddRange(di.GetFiles())
-                    Catch
-                    End Try
-
-                    'Create a list of all media files with a valid extension in the directory
-                    lMediaList = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-                             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
-                            Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
+                    Dim nFileItemList As New FileItemList(strSourcePath)
+                    nFileItemList.Stack()
 
                     'For each valid file in the directory...
-                    For Each sFile As FileInfo In lMediaList
-                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.Filename = sFile.FullName, .IsSingle = False}
-                        RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), String.Concat(Master.eLang.GetString(219, "Moving "), sFile.Name))
+                    For Each nFileItem As FileItem In nFileItemList.FileItems
+                        Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.FileItem = nFileItem, .IsSingle = False}
+                        RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Count), String.Concat(Master.eLang.GetString(219, "Moving "), nFileItem.FirstStackedFilename))
 
                         'create a new directory for the movie
-                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(Common.RemoveStackingMarkers(nMovie.Filename)))
+                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(nMovie.FileItem.StackedFilename))
                         If Not Directory.Exists(strNewPath) Then
                             Directory.CreateDirectory(strNewPath)
                         End If
 
                         'move movie to the new directory
-                        sFile.MoveTo(Path.Combine(strNewPath, Path.GetFileName(nMovie.Filename)))
+                        For Each nFile As String In nFileItem.Paths
+                            File.Move(nFile, Path.Combine(strNewPath, Path.GetFileName(nFile)))
+                        Next
 
                         'search for files that belong to this movie
                         For Each a In GetFilenameList.Movie(nMovie, Enums.ModifierType.MainBanner, True)
@@ -2447,7 +2476,7 @@ Namespace FileUtils
                         iCount += 1
                     Next
 
-                    RaiseEvent ProgressUpdated((iCount \ lMediaList.Count), Master.eLang.GetString(362, "Done "))
+                    RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Count), Master.eLang.GetString(362, "Done "))
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

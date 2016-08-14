@@ -1005,7 +1005,7 @@ Public Class dlgEditTVEpisode
         mTitle = tmpDBElement.TVEpisode.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.Filename
+        tsFilename.Text = tmpDBElement.FileItem.Filename
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
@@ -1060,7 +1060,7 @@ Public Class dlgEditTVEpisode
     Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+                .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
@@ -1134,7 +1134,7 @@ Public Class dlgEditTVEpisode
     Private Sub btnSetPosterLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+                .InitialDirectory = tmpDBElement.FileItem.MainPath.FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With

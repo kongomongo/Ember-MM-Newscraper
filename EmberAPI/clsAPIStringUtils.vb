@@ -387,20 +387,50 @@ Public Class StringUtils
     ''' <summary>
     ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.
     ''' </summary>
-    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get title from</param>
+    ''' <param name="tFileItem"></param>
+    ''' <returns>The filtered title as a <c>String</c></returns>
+    ''' <remarks></remarks>
+    Public Shared Function FilterTitleFromPath_Movie(ByVal tFileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+        If String.IsNullOrEmpty(tFileItem.Filename) Then Return String.Empty
+
+        'removing stack markers
+        'strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
+
+        'get raw title from path
+        Dim strRawTitle As String = String.Empty
+        If tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then
+            strRawTitle = tFileItem.MainPath.Name
+        Else
+            strRawTitle = If(IsSingle AndAlso UseForderName, tFileItem.MainPath.Name, Path.GetFileNameWithoutExtension(tFileItem.FirstStackedFilename))
+        End If
+
+        'filter raw title by filter list
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.MovieFilterCustom)
+
+        'Convert String To Proper Case
+        If Master.eSettings.MovieProperCase Then
+            strTitle = ConvertToProperCase(strTitle)
+        End If
+
+        'everything was filtered out... just set to file or directory name
+        If String.IsNullOrEmpty(strTitle) Then
+            Return strRawTitle.Trim
+        Else
+            Return strTitle.Trim
+        End If
+    End Function
+    ''' <summary>
+    ''' Cleans up a movie path by stripping it down to the basic title with no additional decorations.
+    ''' </summary>
+    ''' <param name="strPath"></param>
     ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
     Public Shared Function FilterTitleFromPath_Movie(ByVal strPath As String, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
         If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
-        'removing stack markers
-        strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
-
         'get raw title from path
         Dim strRawTitle As String = String.Empty
-        If FileUtils.Common.isVideoTS(strPath) Then
-            strRawTitle = FileUtils.Common.GetMainPath(strPath).Name
-        ElseIf FileUtils.Common.isBDRip(strPath) Then
+        If FileUtils.Common.isBDRip(strPath) OrElse FileUtils.Common.isVideoTS(strPath) Then
             strRawTitle = FileUtils.Common.GetMainPath(strPath).Name
         Else
             strRawTitle = If(IsSingle AndAlso UseForderName, FileUtils.Common.GetMainPath(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
@@ -430,9 +460,6 @@ Public Class StringUtils
     ''' <remarks></remarks>
     Public Shared Function FilterTitleFromPath_TVEpisode(ByVal strPath As String, ByVal strTVShowName As String) As String
         If String.IsNullOrEmpty(strPath) Then Return String.Empty
-
-        'removing stack markers
-        strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
 
         'get raw title from path
         Dim strRawTitle As String = Path.GetFileNameWithoutExtension(strPath)
@@ -498,20 +525,18 @@ Public Class StringUtils
     ''' <summary>
     ''' Get the four-digit year from the given <c>String</c>
     ''' </summary>
-    ''' <param name="strPath"><c>String</c> full file path (including file extension) to get year from</param>
+    ''' <param name="tFileItem"></param>
     ''' <returns>Only the year of source <c>String</c> without brackets</returns>
     ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
-    Public Shared Function FilterYearFromPath_Movie(ByVal strPath As String, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If String.IsNullOrEmpty(strPath) Then Return String.Empty
+    Public Shared Function FilterYearFromPath_Movie(ByVal tFileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
+        If String.IsNullOrEmpty(tFileItem.Filename) Then Return String.Empty
 
         'get raw string to get year from
         Dim strRawString As String = String.Empty
-        If FileUtils.Common.isVideoTS(strPath) Then
-            strRawString = FileUtils.Common.GetMainPath(strPath).Name
-        ElseIf FileUtils.Common.isBDRip(strPath) Then
-            strRawString = FileUtils.Common.GetMainPath(strPath).Name
+        If tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then
+            strRawString = tFileItem.MainPath.Name
         Else
-            strRawString = If(IsSingle AndAlso UseForderName, FileUtils.Common.GetMainPath(strPath).Name, Path.GetFileNameWithoutExtension(strPath))
+            strRawString = If(IsSingle AndAlso UseForderName, tFileItem.MainPath.Name, Path.GetFileNameWithoutExtension(tFileItem.FirstStackedFilename))
         End If
 
         Return Regex.Match(strRawString, "((19|20)\d{2})", RegexOptions.RightToLeft).Value.Trim

@@ -173,6 +173,7 @@
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
+    <Compile Include="clsAPIFileItem.vb" />
     <Compile Include="clsAPIFormsUtils.vb">
       <SubType>Component</SubType>
     </Compile>

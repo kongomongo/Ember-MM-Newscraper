@@ -398,7 +398,7 @@ Public Class NFO
                 DBMovie.ListTitle = tTitle
             End If
         Else
-            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.Filename, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
+            DBMovie.ListTitle = StringUtils.FilterTitleFromPath_Movie(DBMovie.FileItem, DBMovie.IsSingle, DBMovie.Source.UseFolderName)
         End If
 
         Return DBMovie
@@ -851,7 +851,7 @@ Public Class NFO
                     Next
 
                     'check if we have a local episode file for this scraped episode
-                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) Not String.IsNullOrEmpty(f.Filename) AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
+                    Dim lEpisodeList = DBTV.Episodes.Where(Function(f) f.FilenameSpecified AndAlso f.TVEpisode.Episode = iEpisode AndAlso f.TVEpisode.Season = iSeason)
 
                     If lEpisodeList IsNot Nothing AndAlso lEpisodeList.Count > 0 Then
                         For Each nEpisode As Database.DBElement In lEpisodeList
@@ -1366,7 +1366,7 @@ Public Class NFO
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
@@ -1384,7 +1384,7 @@ Public Class NFO
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
@@ -1651,7 +1651,7 @@ Public Class NFO
             Catch
             End Try
         Else
-            Dim fName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(sPath)).ToLower
+            Dim fName As String = Path.GetFileNameWithoutExtension(sPath).ToLower
             Dim oName As String = Path.GetFileNameWithoutExtension(sPath)
             fName = If(fName.EndsWith("*"), fName, String.Concat(fName, "*"))
             oName = If(oName.EndsWith("*"), oName, String.Concat(oName, "*"))
@@ -2408,7 +2408,7 @@ Public Class NFO
                             Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
 
                             parID.Value = tDBElement.ID
-                            parFilename.Value = tDBElement.Filename
+                            parFilename.Value = tDBElement.FileItem.Filename
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read
