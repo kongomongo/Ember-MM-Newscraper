@@ -2444,7 +2444,7 @@ Namespace FileUtils
                     nFileItemList.Stack()
 
                     'For each valid file in the directory...
-                    For Each nFileItem As FileItem In nFileItemList.FileItems
+                    For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not f.bIsBDMV AndAlso Not f.bIsVideoTS)
                         Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.FileItem = nFileItem, .IsSingle = False}
                         RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Count), String.Concat(Master.eLang.GetString(219, "Moving "), nFileItem.FirstStackedPath))
 
@@ -2500,7 +2500,7 @@ Namespace FileUtils
                         iCount += 1
                     Next
 
-                    RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Count), Master.eLang.GetString(362, "Done "))
+                    RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not f.bIsBDMV AndAlso Not f.bIsVideoTS).Count), Master.eLang.GetString(362, "Done "))
                 End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)

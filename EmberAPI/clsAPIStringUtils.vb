@@ -391,7 +391,7 @@ Public Class StringUtils
     ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
     Public Shared Function FilterTitleFromPath_Movie(ByVal tFileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If String.IsNullOrEmpty(tFileItem.Path) Then Return String.Empty
+        If String.IsNullOrEmpty(tFileItem.Path) Then Return "unknown"
 
         'removing stack markers
         'strPath = FileUtils.Common.RemoveStackingMarkers(strPath)

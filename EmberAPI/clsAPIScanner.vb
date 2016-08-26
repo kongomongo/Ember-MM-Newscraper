@@ -1247,7 +1247,7 @@ Public Class Scanner
         Dim nFileItemList As New FileItemList(strPath)
         nFileItemList.Stack()
 
-        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not MoviePaths.Contains(f.Path.ToLower))
+        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.Path.ToLower))
             currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
             currMovieContainer.FileItem = nFileItem
             currMovieContainer.IsSingle = sSource.IsSingle
@@ -1404,7 +1404,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="sSource"></param>
     ''' <param name="strPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_Movie(ByVal sSource As Database.DBSource, ByVal doScan As Boolean, Optional ByVal strPath As String = "")
+    Public Sub ScanSourceDirectory_Movie(ByVal sSource As Database.DBSource, ByVal bDisableRecursive As Boolean, Optional ByVal strPath As String = "")
         Dim strScanPath As String = String.Empty
 
         If Not String.IsNullOrEmpty(strPath) Then
@@ -1413,43 +1413,65 @@ Public Class Scanner
             strScanPath = sSource.Path
         End If
 
-        If Directory.Exists(strScanPath) Then
-            Dim strMoviePath As String = String.Empty
+        Try
+            If Not String.IsNullOrEmpty(strScanPath) AndAlso Directory.Exists(strScanPath) Then
 
-            Dim dInfo As New DirectoryInfo(strScanPath)
-            Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
+                Dim nFileItemList As New FileItemList(strScanPath)
+                nFileItemList.Stack()
 
-            'Try
+                For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.Path.ToLower))
+                    Dim currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
+                    currMovieContainer.FileItem = nFileItem
+                    currMovieContainer.IsSingle = sSource.IsSingle
+                    currMovieContainer.Language = sSource.Language
+                    currMovieContainer.Source = sSource
+                    Load_Movie(currMovieContainer, True)
+                    MoviePaths.Add(currMovieContainer.FileItem.Path)
+                    bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
+                Next
 
-            'check if there are any movies in this directory
-            If doScan Then ScanForFiles_Movie(strScanPath, sSource)
-
-            If Master.eSettings.MovieScanOrderModify Then
-                Try
-                    dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            Else
-                Try
-                    dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
-
-            For Each inDir As DirectoryInfo In dList
-                If bwPrelim.CancellationPending Then Return
-                ScanForFiles_Movie(inDir.FullName, sSource)
-                If sSource.Recursive Then
-                    ScanSourceDirectory_Movie(sSource, False, inDir.FullName)
+                If sSource.Recursive AndAlso Not bDisableRecursive Then
+                    For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) f.bIsDirectory AndAlso IsValidDir(f.DirectoryInfo, False))
+                        ScanSourceDirectory_Movie(sSource, Not sSource.Recursive, nFileItem.FirstStackedPath)
+                    Next
                 End If
-            Next
 
-            'Catch ex As Exception
-            'logger.Error(ex, New StackFrame().GetMethod().Name)
-            'End Try
-        End If
+
+
+
+                'Dim dInfo As New DirectoryInfo(strScanPath)
+                'Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
+
+                ''check if there are any movies in this directory
+                'If bSearchFiles Then ScanForFiles_Movie(strScanPath, sSource)
+
+                'If Master.eSettings.MovieScanOrderModify Then
+                '    Try
+                '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
+                '    Catch ex As Exception
+                '        logger.Error(ex, New StackFrame().GetMethod().Name)
+                '    End Try
+                'Else
+                '    Try
+                '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
+                '    Catch ex As Exception
+                '        logger.Error(ex, New StackFrame().GetMethod().Name)
+                '    End Try
+                'End If
+
+                'For Each inDir As DirectoryInfo In dList
+                '    If bwPrelim.CancellationPending Then Return
+                '    ScanForFiles_Movie(inDir.FullName, sSource)
+                '    If sSource.Recursive Then
+                '        ScanSourceDirectory_Movie(sSource, False, inDir.FullName)
+                '    End If
+                'Next
+            Else
+                logger.Error(String.Format("Path ""{0}"" does not exist", strPath))
+            End If
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
     End Sub
 
     ''' <summary>
@@ -1545,24 +1567,6 @@ Public Class Scanner
         End If
     End Sub
 
-    ''' <summary>
-    ''' Check if a path contains movies.
-    ''' </summary>
-    ''' <param name="inDir">DirectoryInfo object of directory to scan</param>
-    ''' <returns>True if directory contains movie files.</returns>
-    Public Function ScanSubDirectory_Movie(ByVal inDir As DirectoryInfo) As Boolean
-        Try
-
-            If inDir.GetFiles.Where(Function(s) Master.eSettings.FileSystemValidExts.Contains(s.Extension.ToLower) AndAlso
-                                                      Not s.Name.ToLower.Contains("-trailer") AndAlso Not s.Name.ToLower.Contains("[trailer") AndAlso
-                                                      Not s.Name.ToLower.Contains("sample")).OrderBy(Function(s) s.Name).Count > 0 Then Return True
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return False
-    End Function
-
     Private Sub ScanSubDirectory_TV(ByRef tShow As Database.DBElement, ByVal strPath As String)
         Dim inInfo As DirectoryInfo
         Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
@@ -1583,30 +1587,6 @@ Public Class Scanner
         bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceID = SourceID, .Folder = Folder})
     End Sub
 
-    ''' <summary>
-    ''' Check if there are movies in the subdirectorys of a path.
-    ''' </summary>
-    ''' <param name="MovieDir">DirectoryInfo object of directory to scan.</param>
-    ''' <returns>True if the path's subdirectories contain movie files, else false.</returns>
-    Public Function SubDirsHaveMovies(ByVal MovieDir As DirectoryInfo) As Boolean
-        Try
-            If Directory.Exists(MovieDir.FullName) Then
-
-                For Each inDir As DirectoryInfo In MovieDir.GetDirectories
-                    If IsValidDir(inDir, False) Then
-                        If ScanSubDirectory_Movie(inDir) Then Return True
-                        SubDirsHaveMovies(inDir)
-                    End If
-                Next
-
-            End If
-            Return False
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            Return False
-        End Try
-    End Function
-
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Master.DB.ClearNew()
@@ -1621,7 +1601,7 @@ Public Class Scanner
                     MoviePaths = Master.DB.GetAllMoviePaths
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            ScanSourceDirectory_Movie(eSource, True, Args.Folder)
+                            ScanSourceDirectory_Movie(eSource, False, Args.Folder)
                         End Using
                         SQLtransaction.Commit()
                     End Using
@@ -1714,7 +1694,7 @@ Public Class Scanner
                                     Catch ex As Exception
                                         logger.Error(ex, New StackFrame().GetMethod().Name)
                                     End Try
-                                    ScanSourceDirectory_Movie(sSource, True)
+                                    ScanSourceDirectory_Movie(sSource, False)
                                 End If
                                 If bwPrelim.CancellationPending Then
                                     e.Cancel = True
