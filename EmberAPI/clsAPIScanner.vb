@@ -41,7 +41,6 @@ Public Class Scanner
 #Region "Events"
 
     Public Event ScannerUpdated(ByVal eProgressValue As ProgressValue)
-
     Public Event ScanningCompleted()
 
 #End Region 'Events
@@ -904,12 +903,16 @@ Public Class Scanner
         Return SeasonAndEpisodeList
     End Function
 
-    Public Function Load_TVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ByVal ReportProgress As Boolean) As Boolean
+    Public Function Load_TVShow(ByRef DBTVShow As Database.DBElement, ByVal isNew As Boolean, ByVal Batchmode As Boolean, ByVal ReportProgress As Boolean) As Enums.ScannerEventType
         Dim newEpisodesList As New List(Of Database.DBElement)
         Dim newSeasonsIndex As New List(Of Integer)
 
+        Dim Result As Enums.ScannerEventType = Enums.ScannerEventType.None
+
         If DBTVShow.EpisodesSpecified OrElse DBTVShow.IDSpecified Then
             If (Not TVShowPaths.ContainsKey(DBTVShow.ShowPath.ToLower) AndAlso isNew) OrElse (DBTVShow.IDSpecified AndAlso Not isNew) Then
+                Result = If(isNew, Enums.ScannerEventType.Added_TVShow, Enums.ScannerEventType.Refresh_TVShow)
+
                 GetFolderContents_TVShow(DBTVShow)
 
                 If DBTVShow.NfoPathSpecified Then
@@ -957,6 +960,8 @@ Public Class Scanner
                     Master.DB.Save_TVShow(DBTVShow, Batchmode, False, False, False)
                 End If
             Else
+                Result = Enums.ScannerEventType.Refresh_TVShow
+
                 Dim newEpisodes As List(Of Database.DBElement) = DBTVShow.Episodes
                 DBTVShow = Master.DB.Load_TVShow(Convert.ToInt64(TVShowPaths.Item(DBTVShow.ShowPath.ToLower)), True, False)
                 DBTVShow.Episodes = newEpisodes
@@ -1061,11 +1066,9 @@ Public Class Scanner
                     Master.DB.Save_TVSeason(tSeason, Batchmode, False, True)
                 End If
             Next
-
-            Return True
-        Else
-            Return False
         End If
+
+        Return Result
     End Function
 
     Private Shared Function RegexGetAiredDate(ByVal reg As Match, ByRef eItem As EpisodeItem) As Boolean
@@ -1499,8 +1502,9 @@ Public Class Scanner
                     ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
                 Next
 
-                If Load_TVShow(currShowContainer, True, True, True) Then
-                    bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Refresh_TVShow, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
+                Dim Result = Load_TVShow(currShowContainer, True, True, True)
+                If Not Result = Enums.ScannerEventType.None Then
+                    bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Result, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
                 End If
             Else
                 For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) IsValidDir(d, True)).OrderBy(Function(d) d.Name)
@@ -1531,8 +1535,9 @@ Public Class Scanner
                         ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
                     Next
 
-                    If Load_TVShow(currShowContainer, True, True, True) Then
-                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Refresh_TVShow, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
+                    Dim Result = Load_TVShow(currShowContainer, True, True, True)
+                    If Not Result = Enums.ScannerEventType.None Then
+                        bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Result, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
                     End If
                 Next
 
@@ -1662,8 +1667,9 @@ Public Class Scanner
                                 ScanForFiles_TV(currShowContainer, sDirs.FullName)
                             Next
 
-                            If Load_TVShow(currShowContainer, True, True, True) Then
-                                bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Refresh_TVShow, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
+                            Dim Result = Load_TVShow(currShowContainer, True, True, True)
+                            If Not Result = Enums.ScannerEventType.None Then
+                                bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Result, .ID = currShowContainer.ID, .Message = currShowContainer.TVShow.Title})
                             End If
                         End If
                     End If
