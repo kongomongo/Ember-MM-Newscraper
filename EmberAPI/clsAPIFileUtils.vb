@@ -386,12 +386,12 @@ Namespace FileUtils
         End Sub
 
         Public Shared Function CheckOnlineStatus_Movie(ByRef tDBElement As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(tDBElement.FileItem.FirstStackedFilename)
+            While Not File.Exists(tDBElement.FileItem.FirstStackedPath)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     tDBElement.FileItem.FirstStackedFilename), String.Empty,
+                                                     tDBElement.FileItem.FirstStackedPath), String.Empty,
                                        MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -402,12 +402,12 @@ Namespace FileUtils
         End Function
 
         Public Shared Function CheckOnlineStatus_TVEpisode(ByRef tDBElement As Database.DBElement, ByVal showMessage As Boolean) As Boolean
-            While Not File.Exists(tDBElement.FileItem.FirstStackedFilename)
+            While Not File.Exists(tDBElement.FileItem.FirstStackedPath)
                 If showMessage Then
                     If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                      Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
                                                      Environment.NewLine, Environment.NewLine,
-                                                     tDBElement.FileItem.FirstStackedFilename), String.Empty,
+                                                     tDBElement.FileItem.FirstStackedPath), String.Empty,
                                        MessageBoxButtons.RetryCancel, MessageBoxIcon.Warning) = DialogResult.Cancel Then Return False
                 Else
                     Return False
@@ -949,12 +949,12 @@ Namespace FileUtils
         Public Shared Function Movie(ByVal DBElement As Database.DBElement, ByVal mType As Enums.ModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
-            If String.IsNullOrEmpty(DBElement.FileItem.Filename) Then Return FilenameList
+            If String.IsNullOrEmpty(DBElement.FileItem.Path) Then Return FilenameList
 
             Dim basePath As String = String.Empty
-            Dim fPath As String = DBElement.FileItem.FirstStackedFilename
+            Dim fPath As String = DBElement.FileItem.FirstStackedPath
             Dim fileName As String = Path.GetFileNameWithoutExtension(fPath)
-            Dim fileNameStack As String = Path.GetFileNameWithoutExtension(DBElement.FileItem.StackedFilename)
+            Dim fileNameStack As String = Path.GetFileNameWithoutExtension(DBElement.FileItem.StackedPath)
             Dim filePath As String = Path.Combine(Directory.GetParent(fPath).FullName, fileName)
             Dim filePathStack As String = Path.Combine(Directory.GetParent(fPath).FullName, fileNameStack)
             Dim fileParPath As String = Directory.GetParent(filePath).FullName
@@ -1901,8 +1901,8 @@ Namespace FileUtils
 
             If Not tDBElement.FilenameSpecified Then Return FilenameList
 
-            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename)
-            Dim fEpisodePath As String = Common.RemoveExtFromPath(tDBElement.FileItem.FirstStackedFilename)
+            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath)
+            Dim fEpisodePath As String = Common.RemoveExtFromPath(tDBElement.FileItem.FirstStackedPath)
             Dim fEpisodeParentPath As String = tDBElement.FileItem.MainPath.FullName
             Dim sSeason As String = tDBElement.TVEpisode.Season.ToString.PadLeft(2, Convert.ToChar("0"))
 
@@ -2323,7 +2323,31 @@ Namespace FileUtils
             Return strStackedPath
         End Function
 
-        Public Shared Function GetFirstStackedFile(strFilename As String) As String
+        Public Shared Function ConstructStackPath(tPaths As List(Of String)) As String
+            If tPaths.Count = 0 Then Return String.Empty
+            If Not tPaths.Count > 1 Then Return tPaths(0)
+
+            Dim strStackedPath As String = "stack://"
+            Dim strFilename As String = tPaths(0)
+            'double escape any occurence of commas
+            strFilename = strFilename.Replace(",", ",,")
+            strStackedPath += strFilename
+
+            Dim i As Integer = 1
+            While i < tPaths.Count
+                strStackedPath += " , "
+                strFilename = tPaths(i)
+
+                'double escape any occurence of commas
+                strFilename = strFilename.Replace(",", ",,")
+                strStackedPath += strFilename
+                i += 1
+            End While
+
+            Return strStackedPath
+        End Function
+
+        Public Shared Function GetFirstStackedPath(strFilename As String) As String
             Dim strFirstFilename As String = String.Empty
             If strFilename.Contains(" , ") Then
                 strFirstFilename = strFilename.Substring(0, strFilename.IndexOf(" , "))
@@ -2338,7 +2362,7 @@ Namespace FileUtils
             Return strFirstFilename
         End Function
 
-        Public Shared Function GetPaths(strFilename As String) As List(Of String)
+        Public Shared Function GetPathList(strFilename As String) As List(Of String)
             Dim lstPaths As New List(Of String)
             'format Is:
             'stack://file1 , file2 , file3 , file4
@@ -2359,7 +2383,7 @@ Namespace FileUtils
             If String.IsNullOrEmpty(strPath) Then Return String.Empty
 
             If strPath.StartsWith("stack://") Then
-                Dim strFirstStackedFile As String = GetFirstStackedFile(strPath)
+                Dim strFirstStackedFile As String = GetFirstStackedPath(strPath)
                 Dim strFileStackingPattern As String = AdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
                 Dim rResultFileItem1 As Match = Regex.Match(strFirstStackedFile, strFileStackingPattern, RegexOptions.IgnoreCase)
                 If rResultFileItem1.Success Then
@@ -2422,16 +2446,16 @@ Namespace FileUtils
                     'For each valid file in the directory...
                     For Each nFileItem As FileItem In nFileItemList.FileItems
                         Dim nMovie As New Database.DBElement(Enums.ContentType.Movie) With {.FileItem = nFileItem, .IsSingle = False}
-                        RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Count), String.Concat(Master.eLang.GetString(219, "Moving "), nFileItem.FirstStackedFilename))
+                        RaiseEvent ProgressUpdated((iCount \ nFileItemList.FileItems.Count), String.Concat(Master.eLang.GetString(219, "Moving "), nFileItem.FirstStackedPath))
 
                         'create a new directory for the movie
-                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(nMovie.FileItem.StackedFilename))
+                        Dim strNewPath As String = Path.Combine(strSourcePath, Path.GetFileNameWithoutExtension(nMovie.FileItem.StackedPath))
                         If Not Directory.Exists(strNewPath) Then
                             Directory.CreateDirectory(strNewPath)
                         End If
 
                         'move movie to the new directory
-                        For Each nFile As String In nFileItem.Paths
+                        For Each nFile As String In nFileItem.PathList
                             File.Move(nFile, Path.Combine(strNewPath, Path.GetFileName(nFile)))
                         Next
 

@@ -422,13 +422,13 @@ Public Class APIXML
             Return "bluray"
         ElseIf tFileItem.bIsVideoTS Then
             Return "dvd"
-        ElseIf Path.GetFileName(tFileItem.FirstStackedFilename).ToLower = "video_ts.ifo" Then
+        ElseIf Path.GetFileName(tFileItem.FirstStackedPath).ToLower = "video_ts.ifo" Then
             Return "dvd"
         Else
             If isTV Then
-                sourceCheck = Path.GetFileName(tFileItem.FirstStackedFilename).ToLower
+                sourceCheck = Path.GetFileName(tFileItem.FirstStackedPath).ToLower
             Else
-                sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(tFileItem.FirstStackedFilename).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(tFileItem.FirstStackedFilename).ToLower), Path.GetFileName(tFileItem.FirstStackedFilename).ToLower)
+                sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(tFileItem.FirstStackedPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(tFileItem.FirstStackedPath).ToLower), Path.GetFileName(tFileItem.FirstStackedPath).ToLower)
             End If
             Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
             mySources = AdvancedSettings.GetComplexSetting("MovieSources")

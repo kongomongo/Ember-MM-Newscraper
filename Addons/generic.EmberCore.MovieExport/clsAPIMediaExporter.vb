@@ -517,11 +517,11 @@ Public Class MediaExporter
     Private Function GetFileSize(ByVal tFileItem As FileItem) As String
         Dim fSize As Long = 0
 
-        If Not String.IsNullOrEmpty(tFileItem.Filename) Then
+        If Not String.IsNullOrEmpty(tFileItem.Path) Then
             If tFileItem.bIsStack OrElse tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then
                 Try
-                    Dim sExt As String = Path.GetExtension(tFileItem.FirstStackedFilename).ToLower
-                    Dim oFile As String = tFileItem.StackedFilename
+                    Dim sExt As String = Path.GetExtension(tFileItem.FirstStackedPath).ToLower
+                    Dim oFile As String = tFileItem.StackedPath
                     Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
@@ -531,18 +531,18 @@ Public Class MediaExporter
 
                     If bIsVTS Then
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, "VTS*.VOB"))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, "VTS*.VOB"))
                         Catch
                         End Try
                     ElseIf sExt = ".m2ts" Then
                         Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, "*.m2ts"))
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, "*.m2ts"))
                         Catch
                         End Try
                     Else
                         Try
-                            Dim strName As String = Path.GetFileNameWithoutExtension(tFileItem.StackedFilename)
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, String.Concat(strName, "*")))
+                            Dim strName As String = Path.GetFileNameWithoutExtension(tFileItem.StackedPath)
+                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, String.Concat(strName, "*")))
                         Catch
                         End Try
                     End If
@@ -553,7 +553,7 @@ Public Class MediaExporter
                 Catch ex As Exception
                 End Try
             Else
-                fSize = New FileInfo(tFileItem.FirstStackedFilename).Length
+                fSize = New FileInfo(tFileItem.FirstStackedPath).Length
             End If
 
             Select Case fSize
@@ -707,10 +707,10 @@ Public Class MediaExporter
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(tMovie.FileItem.MainPath.FullName))
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.Filename)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.Path)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.FileItem)))
         strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.FileItem.FirstStackedFilename))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.FileItem.FirstStackedPath))
 
         'Images
         With tMovie.ImagesContainer
@@ -836,9 +836,9 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", tCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$COUNT_TVEPISODE>", tCounter_TVEpisode.ToString)
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.FileItem.FirstStackedFilename)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.FileItem.FirstStackedPath)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.FileItem)))
-        strRow = strRow.Replace("<$MISSING>", If(tEpisode.FilenameID = -1, "true", "false"))
+        strRow = strRow.Replace("<$MISSING>", If(tEpisode.FileID = -1, "true", "false"))
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.FileItem.MainPath.FullName))
 
         'Images

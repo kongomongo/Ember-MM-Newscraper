@@ -119,7 +119,7 @@ Public Class Trailers
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.FileItem.FirstStackedFilename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.FileItem.FirstStackedPath & ">")
         End Try
     End Sub
     ''' <summary>

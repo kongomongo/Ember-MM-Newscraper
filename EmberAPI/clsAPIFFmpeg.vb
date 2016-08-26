@@ -93,7 +93,7 @@ Namespace FFmpeg
 
 
             If String.IsNullOrEmpty(ScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.FileItem.FirstStackedFilename))
+                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.FileItem.FirstStackedPath))
                 Return lstThumbContainer
             End If
 
@@ -278,17 +278,17 @@ Namespace FFmpeg
                         logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
                     End If
                 Else
-                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.FileItem.FirstStackedFilename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
+                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.FileItem.FirstStackedPath, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
                 End If
             Next
 
             If sortcrops.Count < 1 Then
-                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.FileItem.FirstStackedFilename)
+                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.FileItem.FirstStackedPath)
                 Return String.Empty
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.FileItem.FirstStackedFilename))
+                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.FileItem.FirstStackedPath))
                 Return sortcrops(0).Item1
             End If
         End Function
@@ -618,7 +618,7 @@ Namespace FFmpeg
         ''' </remarks>
         Private Shared Function GetVideoFileScanPath(ByVal DBElement As Database.DBElement) As String
             Dim videofilepath As String = String.Empty
-            Dim videofileExt As String = Path.GetExtension(DBElement.FileItem.FirstStackedFilename).ToLower
+            Dim videofileExt As String = Path.GetExtension(DBElement.FileItem.FirstStackedPath).ToLower
             If videofileExt = ".rar" AndAlso Not videofileExt = ".img" AndAlso Not videofileExt = ".cue" Then
                 'not supported?!
             End If
@@ -627,10 +627,10 @@ Namespace FFmpeg
                     If DBElement.FileItem.bIsBDMV Then
                         'filename points to largest m2ts file, i.e:
                         'E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedFilename)
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedPath)
                     ElseIf DBElement.FileItem.bIsVideoTS Then
                         'filename points to largest VOB  file
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedFilename)
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedPath)
                     ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
                         Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
@@ -667,10 +667,10 @@ Namespace FFmpeg
                         End If
                         'default case
                     Else
-                        videofilepath = DBElement.FileItem.FirstStackedFilename
+                        videofilepath = DBElement.FileItem.FirstStackedPath
                     End If
                 Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.FileItem.FirstStackedFilename))
+                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.FileItem.FirstStackedPath))
                 Case Enums.ContentType.TVEpisode
                     'no tv support for now...
             End Select

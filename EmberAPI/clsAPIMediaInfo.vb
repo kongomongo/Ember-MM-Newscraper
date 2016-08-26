@@ -126,7 +126,7 @@ Public Class MediaInfo
 
             If tDBElement.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso tDBElement.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso tDBElement.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 nFileInfo = New MediaContainers.Fileinfo
-                nFileInfo = ApplyDefaults(Path.GetExtension(tDBElement.FileItem.FirstStackedFilename.ToLower))
+                nFileInfo = ApplyDefaults(Path.GetExtension(tDBElement.FileItem.FirstStackedPath.ToLower))
                 If nFileInfo IsNot Nothing Then tDBElement.Movie.FileInfo = nFileInfo
             End If
 
@@ -141,7 +141,7 @@ Public Class MediaInfo
             'miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
             Dim tinfo = New MediaContainers.Fileinfo
 
-            Dim pExt As String = Path.GetExtension(tDBElement.FileItem.FirstStackedFilename).ToLower
+            Dim pExt As String = Path.GetExtension(tDBElement.FileItem.FirstStackedPath).ToLower
             If Master.CanScanDiscImage OrElse Not (pExt = ".iso" OrElse
                pExt = ".img" OrElse pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".nrg" OrElse pExt = ".rar") Then
                 Dim MI As New MediaInfo
@@ -206,14 +206,14 @@ Public Class MediaInfo
     End Sub
 
     Public Sub GetMediaInfoFromFileItem(ByVal tFileItem As FileItem, ByRef fiInfo As MediaContainers.Fileinfo, ByVal isTVEpisode As Boolean)
-        If Not String.IsNullOrEmpty(tFileItem.Filename) AndAlso File.Exists(tFileItem.FirstStackedFilename) Then
+        If Not String.IsNullOrEmpty(tFileItem.Path) AndAlso File.Exists(tFileItem.FirstStackedPath) Then
 
             fiInfo = ScanMI(tFileItem)
 
 
 
 
-            Dim sExt As String = Path.GetExtension(tFileItem.FirstStackedFilename).ToLower
+            Dim sExt As String = Path.GetExtension(tFileItem.FirstStackedPath).ToLower
             Dim fiOut As New MediaContainers.Fileinfo
             Dim miVideo As New MediaContainers.Video
             Dim miAudio As New MediaContainers.Audio
@@ -227,7 +227,7 @@ Public Class MediaInfo
             Dim ifoVideo(2) As String
             Dim ifoAudio(2) As String
 
-            If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso tFileItem.bIsVideoTS AndAlso cDVD.fctOpenIFOFile(tFileItem.FirstStackedFilename) Then
+            If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso tFileItem.bIsVideoTS AndAlso cDVD.fctOpenIFOFile(tFileItem.FirstStackedPath) Then
                 ifoVideo = cDVD.GetIFOVideo
                 Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
                 miVideo.Width = vRes(0)
@@ -286,7 +286,7 @@ Public Class MediaInfo
                 fiInfo = fiOut
 
             ElseIf tFileItem.bIsStack Then
-                Dim oFile As String = tFileItem.StackedFilename
+                Dim oFile As String = tFileItem.StackedPath
                 Dim sFile As New List(Of String)
                 Dim bIsVTS As Boolean = False
 
@@ -296,17 +296,17 @@ Public Class MediaInfo
 
                 If bIsVTS Then
                     Try
-                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, "VTS*.VOB"))
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, "VTS*.VOB"))
                     Catch
                     End Try
                 ElseIf sExt = ".m2ts" Then
                     Try
-                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, "*.m2ts"))
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, "*.m2ts"))
                     Catch
                     End Try
                 Else
                     Try
-                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedFilename).FullName, String.Concat(Path.GetFileNameWithoutExtension(tFileItem.StackedFilename), "*")))
+                        sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, String.Concat(Path.GetFileNameWithoutExtension(tFileItem.StackedPath), "*")))
                     Catch
                     End Try
                 End If
@@ -323,7 +323,7 @@ Public Class MediaInfo
                     'make sure the file is actually part of the stack
                     'handles movie.cd1.ext, movie.cd2.ext and movie.extras.ext
                     'disregards movie.extras.ext in this case
-                    If bIsVTS OrElse (oFile = tFileItem.StackedFilename) Then
+                    If bIsVTS OrElse (oFile = tFileItem.StackedPath) Then
                         tInfo = ScanMI(tFileItem)
 
                         tVideo = NFO.GetBestVideo(tInfo)
@@ -677,7 +677,7 @@ Public Class MediaInfo
         Dim fiOut As New MediaContainers.Fileinfo
         Dim fiIFO As New MediaContainers.Fileinfo
 
-        For Each nFilename In tFileItem.Paths
+        For Each nFilename In tFileItem.PathList
             If File.Exists(nFilename) Then
                 Dim miVideo As New MediaContainers.Video
                 Dim miAudio As New MediaContainers.Audio

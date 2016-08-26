@@ -5910,7 +5910,7 @@ Public Class frmMain
                 bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
                 OrElse bwCleanDB.IsBusy OrElse bwRewrite_Movies.IsBusy Then Return
 
-                SetStatus(currMovie.FileItem.Filename)
+                SetStatus(currMovie.FileItem.Path)
 
                 If dgvMovies.SelectedRows.Count > 1 Then Return
 
@@ -9301,7 +9301,7 @@ Public Class frmMain
         txtIMDBID.Text = currMovie.Movie.IMDB
         txtTMDBID.Text = currMovie.Movie.TMDB
 
-        txtFilePath.Text = currMovie.FileItem.Filename
+        txtFilePath.Text = currMovie.FileItem.Path
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
         lblReleaseDate.Text = currMovie.Movie.ReleaseDate
@@ -9373,7 +9373,7 @@ Public Class frmMain
         lblTitle.Text = If(Not currTV.FilenameSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
         txtPlot.Text = currTV.TVEpisode.Plot
         lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
-        txtFilePath.Text = currTV.FileItem.Filename
+        txtFilePath.Text = currTV.FileItem.Path
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
 
         Try
@@ -14757,7 +14757,7 @@ Public Class frmMain
         Dim DBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
         Dim epCount As Integer = 0
 
-        If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
+        If DBTVEpisode.FileID = -1 Then Return False 'skipping missing episodes
 
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, showMessage) Then
             fScanner.Load_TVEpisode(DBTVEpisode, False, BatchMode, False)
@@ -14767,7 +14767,7 @@ Public Class frmMain
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(738, "Remove episode from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.Filename, False, BatchMode)
+                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.Path, False, BatchMode)
                 Return True
             Else
                 Return False

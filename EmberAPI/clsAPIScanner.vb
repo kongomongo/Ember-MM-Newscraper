@@ -89,7 +89,7 @@ Public Class Scanner
         If tDBElement.FileItem.bIsVideoTS Then
 
             Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName))
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName))
                 fList.AddRange(Directory.GetFiles(strMainPath))
                 If Master.eSettings.MovieUseNMJ Then
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
@@ -100,7 +100,7 @@ Public Class Scanner
         ElseIf tDBElement.FileItem.bIsBDMV Then
 
             Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName).FullName))
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName))
                 fList.AddRange(Directory.GetFiles(strMainPath))
                 If Master.eSettings.MovieUseNMJ Then
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
@@ -114,8 +114,8 @@ Public Class Scanner
                 fList.AddRange(Directory.GetFiles(strMainPath))
             Else
                 Try
-                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename), "*")))
-                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.StackedFilename), "*")))
+                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath), "*")))
+                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.StackedPath), "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -374,7 +374,7 @@ Public Class Scanner
         'subtitles (external)
         For Each fFile As String In fList
             For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
-                Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName, Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename)).ToLower
+                Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName, Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath)).ToLower
                 If fFile.ToLower.StartsWith(FullFilePathWithoutExt) AndAlso fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                     tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
@@ -616,7 +616,7 @@ Public Class Scanner
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
         Else
-            DBMovie.Movie = NFO.LoadFromNFO_Movie(DBMovie.FileItem.FirstStackedFilename, DBMovie.IsSingle)
+            DBMovie.Movie = NFO.LoadFromNFO_Movie(DBMovie.FileItem.FirstStackedPath, DBMovie.IsSingle)
             If Not DBMovie.Movie.FileInfoSpecified AndAlso DBMovie.Movie.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
@@ -629,7 +629,7 @@ Public Class Scanner
 
         'IMDB ID
         If Not DBMovie.Movie.IMDBSpecified Then
-            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.FileItem.FirstStackedFilename)
+            DBMovie.Movie.IMDB = StringUtils.FilterIMDBIDFromPath(DBMovie.FileItem.FirstStackedPath)
         End If
 
         'Title
@@ -678,7 +678,7 @@ Public Class Scanner
                 DBMovie.VideoSource = vSource
                 DBMovie.Movie.VideoSource = vSource
             ElseIf Not DBMovie.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.FileItem.FirstStackedFilename)), String.Empty, "*EmberAPP")
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(DBMovie.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     DBMovie.VideoSource = vSource
                     DBMovie.Movie.VideoSource = vSource
@@ -742,7 +742,7 @@ Public Class Scanner
 
         'first we have to create a list of all already existing episode information for this file path
         If Not isNew Then
-            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.Load_AllTVEpisodes_ByFileID(DBTVEpisode.FilenameID, False)
+            Dim EpisodesByFilenameList As List(Of Database.DBElement) = Master.DB.Load_AllTVEpisodes_ByFileID(DBTVEpisode.FileID, False)
             For Each eEpisode As Database.DBElement In EpisodesByFilenameList
                 EpisodesToRemoveList.Add(New EpisodeItem With {.Episode = eEpisode.TVEpisode.Episode, .idEpisode = eEpisode.ID, .Season = eEpisode.TVEpisode.Season})
             Next
@@ -750,7 +750,7 @@ Public Class Scanner
 
         GetFolderContents_TVEpisode(DBTVEpisode)
 
-        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.FileItem.FirstStackedFilename, DBTVEpisode.ShowID)
+        For Each sEpisode As EpisodeItem In RegexGetTVEpisode(DBTVEpisode.FileItem.FirstStackedPath, DBTVEpisode.ShowID)
             Dim ToNfo As Boolean = False
 
             'It's a clone needed to prevent overwriting information of MultiEpisodes
@@ -808,7 +808,7 @@ Public Class Scanner
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 cEpisode.NfoPath = String.Empty
                 'set title based on episode file
-                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstStackedFilename, cEpisode.TVShow.Title)
+                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.TVEpisode.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.FileItem.FirstStackedPath, cEpisode.TVShow.Title)
             End If
 
             'search local actor thumb for each actor in NFO
@@ -852,7 +852,7 @@ Public Class Scanner
                 cEpisode.VideoSource = vSource
                 cEpisode.TVEpisode.VideoSource = vSource
             ElseIf Not cEpisode.VideoSourceSpecified AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.FileItem.FirstStackedFilename)), String.Empty, "*EmberAPP")
+                vSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(cEpisode.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
                 If Not String.IsNullOrEmpty(vSource) Then
                     cEpisode.VideoSource = vSource
                     cEpisode.TVEpisode.VideoSource = vSource
@@ -1247,7 +1247,7 @@ Public Class Scanner
         Dim nFileItemList As New FileItemList(strPath)
         nFileItemList.Stack()
 
-        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not MoviePaths.Contains(f.Filename.ToLower))
+        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not MoviePaths.Contains(f.Path.ToLower))
             currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
             currMovieContainer.FileItem = nFileItem
             currMovieContainer.IsSingle = sSource.IsSingle
@@ -1424,27 +1424,27 @@ Public Class Scanner
             'check if there are any movies in this directory
             If doScan Then ScanForFiles_Movie(strScanPath, sSource)
 
-                If Master.eSettings.MovieScanOrderModify Then
-                    Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                Else
-                    Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                End If
+            If Master.eSettings.MovieScanOrderModify Then
+                Try
+                    dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            Else
+                Try
+                    dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse sSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
 
-                For Each inDir As DirectoryInfo In dList
-                    If bwPrelim.CancellationPending Then Return
-                    ScanForFiles_Movie(inDir.FullName, sSource)
-                    If sSource.Recursive Then
-                        ScanSourceDirectory_Movie(sSource, False, inDir.FullName)
-                    End If
-                Next
+            For Each inDir As DirectoryInfo In dList
+                If bwPrelim.CancellationPending Then Return
+                ScanForFiles_Movie(inDir.FullName, sSource)
+                If sSource.Recursive Then
+                    ScanSourceDirectory_Movie(sSource, False, inDir.FullName)
+                End If
+            Next
 
             'Catch ex As Exception
             'logger.Error(ex, New StackFrame().GetMethod().Name)

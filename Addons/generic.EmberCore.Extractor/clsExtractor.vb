@@ -136,7 +136,7 @@ Public Class ThumbGenerator
         ''' </summary>
         Private Sub CreateRandom()
             Try
-                Dim pExt As String = Path.GetExtension(_movie.FileItem.FirstStackedFilename).ToLower
+                Dim pExt As String = Path.GetExtension(_movie.FileItem.FirstStackedPath).ToLower
                 Dim eMovieFile As String = String.Empty
                 If Not _movie.FileItem.bIsDiscImage AndAlso Not _movie.FileItem.bIsDiscStub AndAlso Not _movie.FileItem.bIsRAR AndAlso Not pExt = ".cue" Then
 
@@ -147,17 +147,17 @@ Public Class ThumbGenerator
 
                     If _isedit Then
                         tPath = Path.Combine(Master.TempPath, "extrathumbs")
-                        eMovieFile = _movie.FileItem.FirstStackedFilename
+                        eMovieFile = _movie.FileItem.FirstStackedPath
                     Else
                         If _movie.FileItem.bIsBDMV OrElse _movie.FileItem.bIsVideoTS Then
                             tPath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
-                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedFilename)
+                            eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedPath)
                         Else
                             tPath = Path.Combine(_movie.FileItem.MainPath.FullName, "extrathumbs")
                             If _movie.FileItem.bIsBDMV OrElse _movie.FileItem.bIsVideoTS Then
-                                eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedFilename)
+                                eMovieFile = FileUtils.Common.GetLongestFromRip(_movie.FileItem.FirstStackedPath)
                             Else
-                                eMovieFile = _movie.FileItem.FirstStackedFilename
+                                eMovieFile = _movie.FileItem.FirstStackedPath
                             End If
                         End If
                     End If

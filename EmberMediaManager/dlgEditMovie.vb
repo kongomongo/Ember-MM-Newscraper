@@ -1608,7 +1608,7 @@ Public Class dlgEditMovie
                 tmpDBElement.VideoSource = vSource
                 tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
             ElseIf String.IsNullOrEmpty(tmpDBElement.VideoSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.FileItem.FirstStackedFilename)), String.Empty, "*EmberAPP")
+                tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(tmpDBElement.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
                 tmpDBElement.Movie.VideoSource = tmpDBElement.VideoSource
             ElseIf Not String.IsNullOrEmpty(tmpDBElement.Movie.VideoSource) Then
                 tmpDBElement.VideoSource = tmpDBElement.Movie.VideoSource
@@ -1630,7 +1630,7 @@ Public Class dlgEditMovie
         If tRating > 0 Then BuildStars(tRating)
 
         If DoAll Then
-            Dim pExt As String = Path.GetExtension(tmpDBElement.FileItem.FirstStackedFilename).ToLower
+            Dim pExt As String = Path.GetExtension(tmpDBElement.FileItem.FirstStackedPath).ToLower
             If tmpDBElement.FileItem.bIsDiscImage OrElse tmpDBElement.FileItem.bIsDiscStub OrElse tmpDBElement.FileItem.bIsRAR OrElse pExt = ".cue" OrElse pExt = ".dat" Then
                 tcEdit.TabPages.Remove(tpFrameExtraction)
             Else
@@ -1811,7 +1811,7 @@ Public Class dlgEditMovie
             'DiscStub
             If tmpDBElement.FileItem.bIsDiscStub Then
                 Dim DiscStub As New MediaStub.DiscStub
-                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.FileItem.FirstStackedFilename)
+                DiscStub = MediaStub.LoadDiscStub(tmpDBElement.FileItem.FirstStackedPath)
                 txtMediaStubTitle.Text = DiscStub.Title
                 txtMediaStubMessage.Text = DiscStub.Message
             End If
@@ -2385,7 +2385,7 @@ Public Class dlgEditMovie
         End If
 
         If tmpDBElement.FileItem.bIsDiscStub Then
-            Dim StubFile As String = tmpDBElement.FileItem.FirstStackedFilename
+            Dim StubFile As String = tmpDBElement.FileItem.FirstStackedPath
             Dim Title As String = txtMediaStubTitle.Text
             Dim Message As String = txtMediaStubMessage.Text
             MediaStub.SaveDiscStub(StubFile, Title, Message)
@@ -2464,7 +2464,7 @@ Public Class dlgEditMovie
         Dim mTitle As String = tmpDBElement.Movie.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.FileItem.Filename
+        tsFilename.Text = tmpDBElement.FileItem.Path
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")

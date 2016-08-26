@@ -1005,7 +1005,7 @@ Public Class dlgEditTVEpisode
         mTitle = tmpDBElement.TVEpisode.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.FileItem.Filename
+        tsFilename.Text = tmpDBElement.FileItem.Path
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")

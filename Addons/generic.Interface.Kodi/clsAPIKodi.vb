@@ -435,12 +435,12 @@ Namespace Kodi
                 Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
                     If tDBElement.FileItem.bIsVideoTS Then
                         'Kodi needs the VIDEO_TS folder path
-                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FirstStackedFilename)
-                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName
+                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FirstStackedPath)
+                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
                     ElseIf tDBElement.FileItem.bIsBDMV Then
                         'Kodi needs the BDMV folder path and index.bdmv as filename
                         Dim lFi As New List(Of FileInfo)
-                        Dim di As DirectoryInfo = New DirectoryInfo(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName).FullName)
+                        Dim di As DirectoryInfo = New DirectoryInfo(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName)
                         lFi.AddRange(di.GetFiles)
                         For Each tFile In lFi
                             If tFile.Name.ToLower = "index.bdmv" Then
@@ -448,15 +448,15 @@ Namespace Kodi
                                 Exit For
                             End If
                         Next
-                        tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName).FullName
+                        tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName
                     Else
                         If tDBElement.FileItem.bIsStack Then
                             tPathAndFilename.bIsMultiPart = True
-                            tPathAndFilename.strFilename = tDBElement.FileItem.FirstStackedFilename
-                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName
+                            tPathAndFilename.strFilename = tDBElement.FileItem.FirstStackedPath
+                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
                         Else
-                            tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FirstStackedFilename)
-                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName
+                            tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FirstStackedPath)
+                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
                         End If
                     End If
                 Case Enums.ContentType.TVShow
@@ -731,21 +731,21 @@ Namespace Kodi
             If kMovies IsNot Nothing Then
                 If kMovies.movies IsNot Nothing Then
                     If kMovies.movies.Count = 1 Then
-                        logger.Trace(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename, kMovies.movies.Item(0).movieid))
+                        logger.Trace(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.FileItem.FirstStackedPath, kMovies.movies.Item(0).movieid))
                         Return kMovies.movies.Item(0)
                     ElseIf kMovies.movies.Count > 1 Then
-                        logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                        logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | MORE THAN ONE movie found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                         Return Nothing
                     Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                        logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                         Return Nothing
                     End If
                 Else
-                    logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                    logger.Warn(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                logger.Error(String.Format("[APIKodi] [{0}] [SearchMovie] ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                 Return Nothing
             End If
         End Function
@@ -847,7 +847,7 @@ Namespace Kodi
             If kTVEpisodes IsNot Nothing Then
                 If kTVEpisodes.episodes IsNot Nothing Then
                     If kTVEpisodes.episodes.Count = 1 Then
-                        logger.Trace(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename, kTVEpisodes.episodes.Item(0).episodeid))
+                        logger.Trace(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | OK, found in host database! [ID:{2}]", _currenthost.Label, tDBElement.FileItem.FirstStackedPath, kTVEpisodes.episodes.Item(0).episodeid))
                         Return kTVEpisodes.episodes.Item(0)
                     ElseIf kTVEpisodes.episodes.Count > 1 Then
                         'try to filter MultiEpisode files
@@ -855,22 +855,22 @@ Namespace Kodi
                         If sEpisode.Count = 1 Then
                             Return sEpisode(0)
                         ElseIf sEpisode.Count > 1 Then
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | MORE THAN ONE episode found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | MORE THAN ONE episode found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                             Return Nothing
                         Else
-                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                            logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                             Return Nothing
                         End If
                     Else
-                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                        logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                         Return Nothing
                     End If
                 Else
-                    logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                    logger.Warn(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | NOT found in host database!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                     Return Nothing
                 End If
             Else
-                logger.Error(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.FileItem.FirstStackedFilename))
+                logger.Error(String.Format("[APIKodi] [{0}] SearchTVEpisode: ""{1}"" | No connection to Host!", _currenthost.Label, tDBElement.FileItem.FirstStackedPath))
                 Return Nothing
             End If
         End Function
@@ -1726,8 +1726,8 @@ Namespace Kodi
                     If tDBElement.FileItem.bIsBDMV OrElse tDBElement.FileItem.bIsVideoTS Then
                         strLocalPath = tDBElement.FileItem.MainPath.FullName
                     Else
-                        If Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedFilename).ToLower = "video_ts" Then
-                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedFilename).FullName).FullName
+                        If Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath).ToLower = "video_ts" Then
+                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName
                         Else
                             strLocalPath = tDBElement.FileItem.MainPath.FullName
                         End If

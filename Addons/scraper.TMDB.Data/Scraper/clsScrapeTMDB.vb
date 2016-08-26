@@ -1217,7 +1217,7 @@ Namespace TMDB
                         Return GetMovieInfo(r.Matches.Item(0).TMDB, FilteredOptions, False)
                     Else
                         Using dlgSearch As New dlgTMDBSearchResults_Movie(_SpecialSettings, Me)
-                            If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.FileItem.FirstStackedFilename) = DialogResult.OK Then
+                            If dlgSearch.ShowDialog(r, strMovieName, oDBMovie.FileItem.FirstStackedPath) = DialogResult.OK Then
                                 If Not String.IsNullOrEmpty(dlgSearch.Result.TMDB) Then
                                     Return GetMovieInfo(dlgSearch.Result.TMDB, FilteredOptions, False)
                                 End If

@@ -898,7 +898,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_Movie(ByRef tDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_Movie
@@ -963,14 +963,14 @@ Public Class ModulesManager
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedFilename))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
             Else
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Done] [No Scraper Results] {0}", tDBElement.FileItem.FirstStackedFilename))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Done] [No Scraper Results] {0}", tDBElement.FileItem.FirstStackedPath))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedFilename))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -1052,7 +1052,7 @@ Public Class ModulesManager
     End Function
 
     Public Function ScrapeData_TVEpisode(ByRef tDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVEpisode
@@ -1114,14 +1114,14 @@ Public Class ModulesManager
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Done] {0}", tDBElement.FileItem.FirstStackedFilename))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
             Else
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Done] [No Scraper Results] {0}", tDBElement.FileItem.FirstStackedFilename))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Done] [No Scraper Results] {0}", tDBElement.FileItem.FirstStackedPath))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedFilename))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVEpisode] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -1292,7 +1292,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_Movie(ByRef tDBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_Movie) = externalScrapersModules_Image_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -1332,10 +1332,10 @@ Public Class ModulesManager
                 ImagesContainer.CreateCachePaths(tDBElement)
             End If
 
-            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedFilename))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedFilename))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -1477,7 +1477,7 @@ Public Class ModulesManager
             logger.Trace(String.Format("[ModulesManager] [ScrapeImage_TV] [Done] {0}", tDBElement.TVShow.Title))
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedFilename))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -1490,7 +1490,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
     Public Function ScrapeTheme_Movie(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_Movie) = externalScrapersModules_Theme_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1513,7 +1513,7 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return ret.Cancelled
     End Function
     ''' <summary>
@@ -1561,7 +1561,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
     Public Function ScrapeTrailer_Movie(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Trailer_Movie) = externalScrapersModules_Trailer_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1584,7 +1584,7 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-        logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedFilename))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return ret.Cancelled
     End Function
 

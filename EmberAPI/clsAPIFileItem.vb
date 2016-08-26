@@ -26,9 +26,11 @@ Public Class FileItem
 
 #Region "Fields"
 
+    Private _bisdirectory As Boolean
+    Private _directoryinfo As DirectoryInfo
     Private _fileInfo As FileInfo
-    Private _strfilename As String
-    Private _strstackedfilename As String
+    Private _strpath As String
+    Private _strstackedpath As String
     Private _strstackedtitle As String
 
 #End Region 'Fields
@@ -37,22 +39,31 @@ Public Class FileItem
 
     Public Sub New(ByVal strPath As String)
         If strPath.StartsWith("stack://") Then
-            _fileInfo = New FileInfo(FileUtils.Stacking.GetFirstStackedFile(strPath))
+            _fileInfo = New FileInfo(FileUtils.Stacking.GetFirstStackedPath(strPath))
         Else
             _fileInfo = New FileInfo(strPath)
         End If
-        _strfilename = strPath
+        _strpath = strPath
         Dim strStackedPath = FileUtils.Stacking.GetStackedPath(strPath)
-        _strstackedtitle = Path.GetFileNameWithoutExtension(strStackedPath)
-        _strstackedfilename = strStackedPath
+        _strstackedtitle = IO.Path.GetFileNameWithoutExtension(strStackedPath)
+        _strstackedpath = strStackedPath
+    End Sub
+
+    Public Sub New(ByVal tDirectoryInfo As DirectoryInfo)
+        _directoryinfo = tDirectoryInfo
+        _strpath = tDirectoryInfo.FullName
+        _bisdirectory = True
+        'Dim strStackedPath = FileUtils.Stacking.GetStackedPath(tDirectoryInfo.FullName)
+        '_strstackedtitle = IO.Path.GetFileNameWithoutExtension(strStackedPath)
+        '_strstackedpath = strStackedPath
     End Sub
 
     Public Sub New(ByVal tFileInfo As FileInfo)
         _fileInfo = tFileInfo
-        _strfilename = tFileInfo.FullName
+        _strpath = tFileInfo.FullName
         Dim strStackedPath = FileUtils.Stacking.GetStackedPath(tFileInfo.FullName)
-        _strstackedtitle = Path.GetFileNameWithoutExtension(strStackedPath)
-        _strstackedfilename = strStackedPath
+        _strstackedtitle = IO.Path.GetFileNameWithoutExtension(strStackedPath)
+        _strstackedpath = strStackedPath
     End Sub
 
 #End Region 'Constructors
@@ -65,6 +76,12 @@ Public Class FileItem
         End Get
     End Property
 
+    Public ReadOnly Property bIsDirectory() As Boolean
+        Get
+            Return _bisdirectory
+        End Get
+    End Property
+
     Public ReadOnly Property bIsDiscImage() As Boolean
         Get
             Return IsDiscImage()
@@ -74,6 +91,12 @@ Public Class FileItem
     Public ReadOnly Property bIsDiscStub() As Boolean
         Get
             Return IsDiscStub()
+        End Get
+    End Property
+
+    Public ReadOnly Property bIsOnline() As Boolean
+        Get
+            Return IsOnline()
         End Get
     End Property
 
@@ -110,21 +133,21 @@ Public Class FileItem
         End Set
     End Property
 
-    Public ReadOnly Property Filename() As String
+    Public ReadOnly Property Path() As String
         Get
-            Return _strfilename
+            Return _strpath
         End Get
     End Property
 
-    Public ReadOnly Property FirstStackedFilename() As String
+    Public ReadOnly Property FirstStackedPath() As String
         Get
-            Return GetFirstStackedFilename()
+            Return GetFirstStackedPath()
         End Get
     End Property
 
-    Public ReadOnly Property Paths() As List(Of String)
+    Public ReadOnly Property PathList() As List(Of String)
         Get
-            Return GetPaths()
+            Return GetPathList()
         End Get
     End Property
 
@@ -137,12 +160,12 @@ Public Class FileItem
         End Set
     End Property
 
-    Public Property StackedFilename() As String
+    Public Property StackedPath() As String
         Get
-            Return _strstackedfilename
+            Return _strstackedpath
         End Get
         Set(ByVal value As String)
-            _strstackedfilename = value
+            _strstackedpath = value
         End Set
     End Property
 
@@ -150,15 +173,15 @@ Public Class FileItem
 
 #Region "Methods"
 
-    Private Function GetPaths() As List(Of String)
-        Return FileUtils.Stacking.GetPaths(_strfilename)
+    Private Function GetPathList() As List(Of String)
+        Return FileUtils.Stacking.GetPathList(_strpath)
     End Function
 
-    Private Function GetFirstStackedFilename() As String
+    Private Function GetFirstStackedPath() As String
         If bIsStack Then
-            Return FileUtils.Stacking.GetFirstStackedFile(_strfilename)
+            Return FileUtils.Stacking.GetFirstStackedPath(_strpath)
         Else
-            Return _strfilename
+            Return _strpath
         End If
     End Function
     ''' <summary>
@@ -186,6 +209,13 @@ Public Class FileItem
         Return False
     End Function
 
+    Private Function IsOnline() As Boolean
+        If Not String.IsNullOrEmpty(_strpath) Then
+            If File.Exists(_strpath) Then Return True
+        End If
+        Return False
+    End Function
+
     Private Function IsRAR() As Boolean
         Dim strImageExtension() As String = {".rar"}
         If strImageExtension.Contains(_fileInfo.Extension.ToLower) Then Return True
@@ -199,7 +229,7 @@ Public Class FileItem
     End Function
 
     Private Function IsStack() As Boolean
-        If _strfilename.StartsWith("stack://") Then Return True
+        If _strpath.StartsWith("stack://") Then Return True
         Return False
     End Function
 
@@ -211,7 +241,7 @@ Public Class FileItem
     End Function
 
     Public Sub SetPath(strPath As String)
-        _strfilename = strPath
+        _strpath = strPath
     End Sub
 
 #End Region 'Methods
@@ -235,14 +265,22 @@ Public Class FileItemList
 
     Public Sub New(strPath As String)
         Clear()
-        Dim di As DirectoryInfo = New DirectoryInfo(strPath)
-        Dim fi = di.GetFiles.Where(
+        Dim diPath As DirectoryInfo = New DirectoryInfo(strPath)
+
+        'get all paths
+        Dim lstDirectories = diPath.GetDirectories
+        For Each nDirectoryInfo In lstDirectories
+            _fileitemlist.Add(New FileItem(nDirectoryInfo))
+        Next
+
+        'get all files
+        Dim lstFiles = diPath.GetFiles.Where(
             Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
             Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", AdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
             ((Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))
             ).OrderBy(Function(f) f.FullName)
-        For Each nFileInfo In fi
-            _fileitemlist.Add(New FileItem(nFileInfo.FullName))
+        For Each nFileInfo In lstFiles
+            _fileitemlist.Add(New FileItem(nFileInfo))
         Next
     End Sub
 
@@ -315,7 +353,7 @@ Public Class FileItemList
     End Sub
 
     Public Sub StackFolders()
-
+        'not implemented, does not work in Kodi
     End Sub
 
     Public Sub StackFiles()
