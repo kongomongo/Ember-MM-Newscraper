@@ -433,31 +433,13 @@ Namespace Kodi
 
             Select Case tContentType
                 Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
-                    If tDBElement.FileItem.bIsVideoTS Then
-                        'Kodi needs the VIDEO_TS folder path
-                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FirstStackedPath)
-                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
-                    ElseIf tDBElement.FileItem.bIsBDMV Then
-                        'Kodi needs the BDMV folder path and index.bdmv as filename
-                        Dim lFi As New List(Of FileInfo)
-                        Dim di As DirectoryInfo = New DirectoryInfo(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName)
-                        lFi.AddRange(di.GetFiles)
-                        For Each tFile In lFi
-                            If tFile.Name.ToLower = "index.bdmv" Then
-                                tPathAndFilename.strFilename = tFile.Name
-                                Exit For
-                            End If
-                        Next
-                        tPathAndFilename.strPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName
+                    If Not tDBElement.FileItem.bIsStack Then
+                        tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FullPath)
+                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FullPath).FullName
                     Else
-                        If tDBElement.FileItem.bIsStack Then
-                            tPathAndFilename.bIsMultiPart = True
-                            tPathAndFilename.strFilename = tDBElement.FileItem.FirstStackedPath
-                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
-                        Else
-                            tPathAndFilename.strFilename = Path.GetFileName(tDBElement.FileItem.FirstStackedPath)
-                            tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
-                        End If
+                        tPathAndFilename.bIsStack = True
+                        tPathAndFilename.strFilename = tDBElement.FileItem.FirstStackedPath
+                        tPathAndFilename.strPath = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
                     End If
                 Case Enums.ContentType.TVShow
                     tPathAndFilename.strPath = tDBElement.ShowPath
@@ -701,7 +683,7 @@ Namespace Kodi
             Dim kMovies As VideoLibrary.GetMoviesResponse
 
             Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
-            Dim strFilename As String = If(tPathAndFilename.bIsMultiPart, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
+            Dim strFilename As String = If(tPathAndFilename.bIsStack, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
             Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
@@ -714,7 +696,7 @@ Namespace Kodi
                     filter.and.Add(filterRule_Path)
                     Dim filterRule_Filename As New List.Filter.Rule.Movies
                     filterRule_Filename.field = List.Filter.Fields.Movies.filename
-                    filterRule_Filename.Operator = If(tPathAndFilename.bIsMultiPart, List.Filter.Operators.contains, List.Filter.Operators.Is)
+                    filterRule_Filename.Operator = If(tPathAndFilename.bIsStack, List.Filter.Operators.contains, List.Filter.Operators.Is)
                     filterRule_Filename.value = strFilename
                     filter.and.Add(filterRule_Filename)
 
@@ -817,7 +799,7 @@ Namespace Kodi
             Dim kTVEpisodes As VideoLibrary.GetEpisodesResponse
 
             Dim tPathAndFilename As PathAndFilename = GetPathAndFilename(tDBElement)
-            Dim strFilename As String = If(tPathAndFilename.bIsMultiPart, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
+            Dim strFilename As String = If(tPathAndFilename.bIsStack, GetRemotePath(tPathAndFilename.strFilename), tPathAndFilename.strFilename)
             Dim strRemotePath As String = GetRemotePath(tPathAndFilename.strPath)
 
             If Not String.IsNullOrEmpty(strRemotePath) Then
@@ -830,7 +812,7 @@ Namespace Kodi
                     filter.and.Add(filterRule_Path)
                     Dim filterRule_Filename As New List.Filter.Rule.Episodes
                     filterRule_Filename.field = List.Filter.Fields.Episodes.filename
-                    filterRule_Filename.Operator = List.Filter.Operators.Is
+                    filterRule_Filename.Operator = If(tPathAndFilename.bIsStack, List.Filter.Operators.contains, List.Filter.Operators.Is)
                     filterRule_Filename.value = Path.GetFileName(strFilename)
                     filter.and.Add(filterRule_Filename)
 
@@ -1723,15 +1705,16 @@ Namespace Kodi
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If tDBElement.FileItem.bIsBDMV OrElse tDBElement.FileItem.bIsVideoTS Then
-                        strLocalPath = tDBElement.FileItem.MainPath.FullName
-                    Else
-                        If Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath).ToLower = "video_ts" Then
-                            strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName
-                        Else
-                            strLocalPath = tDBElement.FileItem.MainPath.FullName
-                        End If
-                    End If
+                    strLocalPath = tDBElement.FileItem.MainPath.FullName
+                    'If tDBElement.FileItem.bIsBDMV OrElse tDBElement.FileItem.bIsVideoTS Then
+                    '    strLocalPath = tDBElement.FileItem.MainPath.FullName
+                    'Else
+                    '    If Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath).ToLower = "video_ts" Then
+                    '        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName
+                    '    Else
+                    '        strLocalPath = tDBElement.FileItem.MainPath.FullName
+                    '    End If
+                    'End If
                 Case Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     'workaround for bug in Kodi JSON (needs DirectorySeparatorChar at the end of path to recognize new tv shows)
                     If tDBElement.ShowPath.Contains(Path.DirectorySeparatorChar) Then
@@ -2200,7 +2183,7 @@ Namespace Kodi
 #Region "Nested Types"
 
         Structure PathAndFilename
-            Dim bIsMultiPart As Boolean
+            Dim bIsStack As Boolean
             Dim strPath As String
             Dim strFilename As String
         End Structure
