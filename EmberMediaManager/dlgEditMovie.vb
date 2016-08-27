@@ -2464,7 +2464,7 @@ Public Class dlgEditMovie
         Dim mTitle As String = tmpDBElement.Movie.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.FileItem.Path
+        tsFilename.Text = tmpDBElement.FileItem.FullPath
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         btnChangeMovie.Text = Master.eLang.GetString(32, "Change Movie")

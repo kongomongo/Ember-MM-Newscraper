@@ -917,25 +917,10 @@ Public Class frmMain
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePlay.Click
-        Functions.Launch(txtFilePath.Text, True)
-        'Try
-        '    If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
-        '        If File.Exists(Me.txtFilePath.Text) Then
-        '            If Master.isWindows Then
-        '                Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
-        '            Else
-        '                Using Explorer As New Process
-        '                    Explorer.StartInfo.FileName = "xdg-open"
-        '                    Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.txtFilePath.Text)
-        '                    Explorer.Start()
-        '                End Using
-        '            End If
-
-        '        End If
-        '    End If
-        'Catch ex As Exception
-        '    logger.Error(ex, New StackFrame().GetMethod().Name)
-        'End Try
+        If Not String.IsNullOrEmpty(txtFilePath.Text) Then
+            Dim nFileItem As New FileItem(txtFilePath.Text)
+            Functions.Launch(nFileItem.FirstStackedPath, True)
+        End If
     End Sub
     ''' <summary>
     ''' Launch trailer using system default player
@@ -3946,7 +3931,7 @@ Public Class frmMain
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                    Using Explorer As New Diagnostics.Process
+                    Using Explorer As New Process
 
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
@@ -4160,7 +4145,7 @@ Public Class frmMain
                             ePath = SQLCommand.ExecuteScalar.ToString
 
                             If Not String.IsNullOrEmpty(ePath) Then
-                                Using Explorer As New Diagnostics.Process
+                                Using Explorer As New Process
 
                                     If Master.isWindows Then
                                         Explorer.StartInfo.FileName = "explorer.exe"
@@ -5910,7 +5895,7 @@ Public Class frmMain
                 bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
                 OrElse bwCleanDB.IsBusy OrElse bwRewrite_Movies.IsBusy Then Return
 
-                SetStatus(currMovie.FileItem.Path)
+                SetStatus(currMovie.FileItem.FullPath)
 
                 If dgvMovies.SelectedRows.Count > 1 Then Return
 
@@ -9301,7 +9286,7 @@ Public Class frmMain
         txtIMDBID.Text = currMovie.Movie.IMDB
         txtTMDBID.Text = currMovie.Movie.TMDB
 
-        txtFilePath.Text = currMovie.FileItem.Path
+        txtFilePath.Text = currMovie.FileItem.FullPath
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.Movie.Trailer)
 
         lblReleaseDate.Text = currMovie.Movie.ReleaseDate
@@ -9373,7 +9358,7 @@ Public Class frmMain
         lblTitle.Text = If(Not currTV.FilenameSpecified, String.Concat(currTV.TVEpisode.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.TVEpisode.Title)
         txtPlot.Text = currTV.TVEpisode.Plot
         lblDirectors.Text = String.Join(" / ", currTV.TVEpisode.Directors.ToArray)
-        txtFilePath.Text = currTV.FileItem.Path
+        txtFilePath.Text = currTV.FileItem.FullPath
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.TVEpisode.AiredSpecified, Date.Parse(currTV.TVEpisode.Aired).ToShortDateString, "?"))
 
         Try
@@ -12659,14 +12644,14 @@ Public Class frmMain
 
             If doOpen Then
                 For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                    Using Explorer As New Diagnostics.Process
-
+                    Using Explorer As New Process
+                        Dim nFileItem As New FileItem(sRow.Cells("MoviePath").Value.ToString)
                         If Master.isWindows Then
                             Explorer.StartInfo.FileName = "explorer.exe"
-                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", sRow.Cells("MoviePath").Value)
+                            Explorer.StartInfo.Arguments = String.Format("/select,""{0}""", nFileItem.MainPath)
                         Else
                             Explorer.StartInfo.FileName = "xdg-open"
-                            Explorer.StartInfo.Arguments = String.Format("""{0}""", Path.GetDirectoryName(sRow.Cells("MoviePath").Value.ToString))
+                            Explorer.StartInfo.Arguments = String.Format("""{0}""", nFileItem.MainPath)
                         End If
                         Explorer.Start()
                     End Using
@@ -14767,7 +14752,7 @@ Public Class frmMain
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(738, "Remove episode from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.Path, False, BatchMode)
+                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.FullPath, False, BatchMode)
                 Return True
             Else
                 Return False

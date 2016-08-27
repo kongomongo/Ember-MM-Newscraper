@@ -391,7 +391,7 @@ Public Class StringUtils
     ''' <returns>The filtered title as a <c>String</c></returns>
     ''' <remarks></remarks>
     Public Shared Function FilterTitleFromPath_Movie(ByVal tFileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If String.IsNullOrEmpty(tFileItem.Path) Then Return "unknown"
+        If String.IsNullOrEmpty(tFileItem.FullPath) Then Return "unknown"
 
         'removing stack markers
         'strPath = FileUtils.Common.RemoveStackingMarkers(strPath)
@@ -430,12 +430,12 @@ Public Class StringUtils
 
         Dim nFileItem As New FileItem(strPath)
 
-        'get raw title from path
+        'get raw title from path or file name
         Dim strRawTitle As String = String.Empty
         If nFileItem.bIsBDMV OrElse nFileItem.bIsVideoTS Then
             strRawTitle = nFileItem.MainPath.Name
         Else
-            strRawTitle = If(IsSingle AndAlso UseForderName, nFileItem.MainPath.Name, Path.GetFileNameWithoutExtension(nFileItem.StackedPath))
+            strRawTitle = If(IsSingle AndAlso UseForderName, nFileItem.MainPath.Name, Path.GetFileNameWithoutExtension(nFileItem.FirstStackedPath))
         End If
 
         'filter raw title by filter list
@@ -465,8 +465,8 @@ Public Class StringUtils
 
         Dim nFileItem As New FileItem(strPath)
 
-        'get raw title from path
-        Dim strRawTitle As String = Path.GetFileNameWithoutExtension(nFileItem.StackedPath)
+        'get raw title from file name
+        Dim strRawTitle As String = Path.GetFileNameWithoutExtension(nFileItem.StackedFilename)
 
         'filter raw title by filter list
         Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisodeFilterCustom)
@@ -533,7 +533,7 @@ Public Class StringUtils
     ''' <returns>Only the year of source <c>String</c> without brackets</returns>
     ''' <remarks>The year can only be 4 digits from 1900 - 2099. More or less digits and the string won't be modified.</remarks>
     Public Shared Function FilterYearFromPath_Movie(ByVal tFileItem As FileItem, ByVal IsSingle As Boolean, ByVal UseForderName As Boolean) As String
-        If String.IsNullOrEmpty(tFileItem.Path) Then Return String.Empty
+        If String.IsNullOrEmpty(tFileItem.FullPath) Then Return String.Empty
 
         'get raw string to get year from
         Dim strRawString As String = String.Empty

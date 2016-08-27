@@ -115,7 +115,7 @@ Public Class Scanner
             Else
                 Try
                     fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath), "*")))
-                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.StackedPath), "*")))
+                    fList.AddRange(Directory.GetFiles(strMainPath, String.Concat(Path.GetFileNameWithoutExtension(tDBElement.FileItem.StackedFilename), "*")))
                 Catch ex As Exception
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
@@ -1247,7 +1247,7 @@ Public Class Scanner
         Dim nFileItemList As New FileItemList(strPath)
         nFileItemList.Stack()
 
-        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.Path.ToLower))
+        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.FullPath.ToLower))
             currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
             currMovieContainer.FileItem = nFileItem
             currMovieContainer.IsSingle = sSource.IsSingle
@@ -1419,14 +1419,14 @@ Public Class Scanner
                 Dim nFileItemList As New FileItemList(strScanPath)
                 nFileItemList.Stack()
 
-                For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.Path.ToLower))
+                For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.FullPath.ToLower))
                     Dim currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
                     currMovieContainer.FileItem = nFileItem
                     currMovieContainer.IsSingle = sSource.IsSingle
                     currMovieContainer.Language = sSource.Language
                     currMovieContainer.Source = sSource
                     Load_Movie(currMovieContainer, True)
-                    MoviePaths.Add(currMovieContainer.FileItem.Path)
+                    MoviePaths.Add(currMovieContainer.FileItem.FullPath)
                     bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
                 Next
 

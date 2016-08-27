@@ -26,12 +26,9 @@ Public Class FileItem
 
 #Region "Fields"
 
-    Private _bisdirectory As Boolean
     Private _directoryinfo As DirectoryInfo
-    Private _fileInfo As FileInfo
+    Private _fileinfo As FileInfo
     Private _strpath As String
-    Private _strstackedpath As String
-    Private _strstackedtitle As String
 
 #End Region 'Fields
 
@@ -40,33 +37,23 @@ Public Class FileItem
     Public Sub New(ByVal strPath As String)
         Clear()
         If strPath.StartsWith("stack://") Then
-            _fileInfo = New FileInfo(FileUtils.Stacking.GetFirstStackedPath(strPath))
+            _fileinfo = New FileInfo(FileUtils.Stacking.GetFirstStackedPath(strPath))
         Else
-            _fileInfo = New FileInfo(strPath)
+            _fileinfo = New FileInfo(strPath)
         End If
         _strpath = strPath
-        Dim strStackedPath = FileUtils.Stacking.GetStackedPath(strPath)
-        _strstackedtitle = IO.Path.GetFileNameWithoutExtension(strStackedPath)
-        _strstackedpath = strStackedPath
     End Sub
 
     Public Sub New(ByVal tDirectoryInfo As DirectoryInfo)
         Clear()
         _directoryinfo = tDirectoryInfo
         _strpath = tDirectoryInfo.FullName
-        _bisdirectory = True
-        'Dim strStackedPath = FileUtils.Stacking.GetStackedPath(tDirectoryInfo.FullName)
-        '_strstackedtitle = IO.Path.GetFileNameWithoutExtension(strStackedPath)
-        '_strstackedpath = strStackedPath
     End Sub
 
     Public Sub New(ByVal tFileInfo As FileInfo)
         Clear()
-        _fileInfo = tFileInfo
+        _fileinfo = tFileInfo
         _strpath = tFileInfo.FullName
-        Dim strStackedPath = FileUtils.Stacking.GetStackedPath(tFileInfo.FullName)
-        _strstackedtitle = IO.Path.GetFileNameWithoutExtension(strStackedPath)
-        _strstackedpath = strStackedPath
     End Sub
 
 #End Region 'Constructors
@@ -81,7 +68,7 @@ Public Class FileItem
 
     Public ReadOnly Property bIsDirectory() As Boolean
         Get
-            Return _bisdirectory
+            Return _directoryinfo IsNot Nothing
         End Get
     End Property
 
@@ -135,11 +122,11 @@ Public Class FileItem
 
     Public ReadOnly Property FileInfo() As FileInfo
         Get
-            Return _fileInfo
+            Return _fileinfo
         End Get
     End Property
 
-    Public ReadOnly Property Path() As String
+    Public ReadOnly Property FullPath() As String
         Get
             Return _strpath
         End Get
@@ -157,35 +144,26 @@ Public Class FileItem
         End Get
     End Property
 
-    Public Property StackedTitle() As String
+    Public ReadOnly Property StackedFilename() As String
         Get
-            Return _strstackedtitle
+            Return Path.GetFileName(FileUtils.Stacking.GetStackedPath(FullPath))
         End Get
-        Set(ByVal value As String)
-            _strstackedtitle = value
-        End Set
     End Property
 
-    Public Property StackedPath() As String
-        Get
-            Return _strstackedpath
-        End Get
-        Set(ByVal value As String)
-            _strstackedpath = value
-        End Set
-    End Property
+    'Public ReadOnly Property StackedPath() As String
+    '    Get
+    '        Return ""
+    '    End Get
+    'End Property
 
 #End Region 'Properties
 
 #Region "Methods"
 
     Public Sub Clear()
-        _bisdirectory = False
         _directoryinfo = Nothing
-        _fileInfo = Nothing
+        _fileinfo = Nothing
         _strpath = String.Empty
-        _strstackedpath = String.Empty
-        _strstackedtitle = String.Empty
     End Sub
 
     Private Function GetPathList() As List(Of String)
@@ -204,15 +182,15 @@ Public Class FileItem
     ''' </summary>
     ''' <returns></returns>
     Private Function GetMainPath() As DirectoryInfo
-        If Not _bisdirectory Then
+        If Not bIsDirectory Then
             If IsBDMV() Then
-                Return Directory.GetParent(Directory.GetParent(_fileInfo.FullName).FullName)
-            ElseIf IsVideoTS AndAlso Directory.GetParent(_fileInfo.FullName).Name = "VIDEO_TS" Then
-                Return Directory.GetParent(Directory.GetParent(_fileInfo.FullName).FullName)
-            ElseIf IsVideoTS Then
-                Return Directory.GetParent(_fileInfo.FullName)
+                Return Directory.GetParent(Directory.GetParent(_fileinfo.FullName).FullName)
+            ElseIf IsVideoTS() AndAlso Directory.GetParent(_fileinfo.FullName).Name = "VIDEO_TS" Then
+                Return Directory.GetParent(Directory.GetParent(_fileinfo.FullName).FullName)
+            ElseIf IsVideoTS() Then
+                Return Directory.GetParent(_fileinfo.FullName)
             Else
-                Return Directory.GetParent(_fileInfo.FullName)
+                Return Directory.GetParent(_fileinfo.FullName)
             End If
         Else
             Return _directoryinfo
@@ -220,23 +198,22 @@ Public Class FileItem
     End Function
 
     Private Function IsBDMV() As Boolean
-        If Not _bisdirectory Then
-            Dim strFileName As String = _fileInfo.Name.ToLower
-            Return strFileName = "index.bdmv" OrElse strFileName = "moviembject.bdmv"
+        If Not bIsDirectory Then
+            Return _fileinfo.Name.ToLower = "index.bdmv" OrElse _fileinfo.Name.ToLower = "moviembject.bdmv"
         End If
         Return False
     End Function
 
     Private Function IsDiscImage() As Boolean
-        If Not _bisdirectory Then
-            Dim strImageExtension() As String = {".bin", ".img", ".iso", ".nrg"}
-            If strImageExtension.Contains(_fileInfo.Extension.ToLower) Then Return True
+        If Not bIsDirectory Then
+            Dim strExtensions() As String = {".bin", ".img", ".iso", ".nrg"}
+            If strExtensions.Contains(_fileinfo.Extension.ToLower) Then Return True
         End If
         Return False
     End Function
 
     Private Function IsOnline() As Boolean
-        If Not _bisdirectory Then
+        If Not bIsDirectory Then
             If Not String.IsNullOrEmpty(GetFirstStackedPath) Then
                 If File.Exists(_strpath) Then Return True
             End If
@@ -247,17 +224,17 @@ Public Class FileItem
     End Function
 
     Private Function IsRAR() As Boolean
-        If Not _bisdirectory Then
-            Dim strImageExtension() As String = {".rar"}
-            If strImageExtension.Contains(_fileInfo.Extension.ToLower) Then Return True
+        If Not bIsDirectory Then
+            Dim strExtensions() As String = {".rar"}
+            If strExtensions.Contains(_fileinfo.Extension.ToLower) Then Return True
         End If
         Return False
     End Function
 
     Private Function IsDiscStub() As Boolean
-        If Not _bisdirectory Then
-            Dim strFileExtension As String = _fileInfo.Extension.ToLower
-            If strFileExtension = ".disc" Then Return True
+        If Not bIsDirectory Then
+            Dim strExtensions() As String = {".disc"}
+            If strExtensions.Contains(_fileinfo.Extension.ToLower) Then Return True
         End If
         Return False
     End Function
@@ -268,17 +245,14 @@ Public Class FileItem
     End Function
 
     Private Function IsVideoTS() As Boolean
-        If Not _bisdirectory Then
-            Dim strFileName As String = _fileInfo.Name.ToLower
-            If strFileName = "video_ts.ifo" Then Return True
-            If strFileName.StartsWith("vts_") AndAlso strFileName.EndsWith("_0.ifo") AndAlso strFileName.Length = 12 Then Return True
+        If Not bIsDirectory Then
+            If _fileinfo.Name.ToLower = "video_ts.ifo" Then Return True
+            If _fileinfo.Name.ToLower.StartsWith("vts_") AndAlso
+                _fileinfo.Name.ToLower.EndsWith("_0.ifo") AndAlso
+                _fileinfo.Name.ToLower.Length = 12 Then Return True
         End If
         Return False
     End Function
-
-    Public Sub SetPath(strPath As String)
-        _strpath = strPath
-    End Sub
 
 #End Region 'Methods
 
@@ -488,7 +462,7 @@ Public Class FileItemList
                     'have a stack, remove the items And add the stacked item
                     'dont actually stack a multipart rar set, just remove all items but the first
                     Dim strStackedPath As String = FileUtils.Stacking.ConstructStackPath(Me, iStack)
-                    tFileItem1.SetPath(strStackedPath)
+                    _fileitemlist(i) = New FileItem(strStackedPath)
 
                     'clean up list
                     Dim k As Integer = 1
@@ -496,8 +470,6 @@ Public Class FileItemList
                         RemoveItem(i + 1)
                         k += 1
                     End While
-
-                    tFileItem1.StackedTitle = Path.GetFileNameWithoutExtension(strStackName)
                 End If
             End If
             i += 1

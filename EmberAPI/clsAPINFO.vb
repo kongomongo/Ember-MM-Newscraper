@@ -2408,7 +2408,7 @@ Public Class NFO
                             Dim parFilename As SQLite.SQLiteParameter = SQLCommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
 
                             parID.Value = tDBElement.ID
-                            parFilename.Value = tDBElement.FileItem.Path
+                            parFilename.Value = tDBElement.FileItem.FullPath
 
                             Using SQLreader As SQLite.SQLiteDataReader = SQLCommand.ExecuteReader
                                 While SQLreader.Read

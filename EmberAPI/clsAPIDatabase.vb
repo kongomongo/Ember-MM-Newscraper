@@ -3612,7 +3612,7 @@ Public Class Database
                 _movieDB.Trailer.SaveAllTrailers(_movieDB, ForceFileCleanup)
             End If
 
-            par_movie_MoviePath.Value = _movieDB.FileItem.Path
+            par_movie_MoviePath.Value = _movieDB.FileItem.FullPath
             par_movie_Type.Value = _movieDB.IsSingle
             par_movie_ListTitle.Value = _movieDB.ListTitle
 
@@ -4342,7 +4342,7 @@ Public Class Database
         Using SQLPCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
 
             'first step: remove all existing episode informations for this file and set it to "Missing"
-            Delete_TVEpisode(_episode.FileItem.Path, False, True)
+            Delete_TVEpisode(_episode.FileItem.FullPath, False, True)
 
             'second step: create new episode DBElements and save it to database
             For Each tEpisode As MediaContainers.EpisodeDetails In ListOfEpisodes
@@ -4394,7 +4394,7 @@ Public Class Database
                     Dim parID As SQLiteParameter = SQLpathcommand.Parameters.Add("parFileID", DbType.Int64, 0, "idFile")
                     Dim parFilename As SQLiteParameter = SQLpathcommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
                     parID.Value = _episode.FileID
-                    parFilename.Value = _episode.FileItem.Path
+                    parFilename.Value = _episode.FileItem.FullPath
                     SQLpathcommand.ExecuteNonQuery()
                 End Using
             Else
@@ -4402,7 +4402,7 @@ Public Class Database
                     SQLpathcommand.CommandText = "SELECT idFile FROM files WHERE strFilename = (?);"
 
                     Dim parPath As SQLiteParameter = SQLpathcommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
-                    parPath.Value = _episode.FileItem.Path
+                    parPath.Value = _episode.FileItem.FullPath
 
                     Using SQLreader As SQLiteDataReader = SQLpathcommand.ExecuteReader
                         If SQLreader.HasRows Then
@@ -4413,7 +4413,7 @@ Public Class Database
                                 SQLpcommand.CommandText = String.Concat("INSERT INTO files (",
                                      "strFilename) VALUES (?); SELECT LAST_INSERT_ROWID() FROM files;")
                                 Dim parEpPath As SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "strFilename")
-                                parEpPath.Value = _episode.FileItem.Path
+                                parEpPath.Value = _episode.FileItem.FullPath
 
                                 _episode.FileID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
                             End Using
@@ -5510,7 +5510,7 @@ Public Class Database
 
         Public ReadOnly Property FilenameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_fileitem.Path)
+                Return Not String.IsNullOrEmpty(_fileitem.FullPath)
             End Get
         End Property
 
