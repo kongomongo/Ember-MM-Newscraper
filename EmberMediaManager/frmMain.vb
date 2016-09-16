@@ -11850,8 +11850,8 @@ Public Class frmMain
             sModifier.MainClearArt = ScrapeModifiers.MainClearArt AndAlso ClearArtAllowed
             sModifier.MainClearLogo = ScrapeModifiers.MainClearLogo AndAlso ClearLogoAllowed
             sModifier.MainDiscArt = ScrapeModifiers.MainDiscArt AndAlso DiscArtAllowed
-            sModifier.MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso ExtrafanartsAllowed
-            sModifier.MainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso ExtrathumbsAllowed
+            sModifier.MainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso ExtrafanartsAllowed AndAlso Convert.ToBoolean(drvRow.Item("Type"))
+            sModifier.MainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso ExtrathumbsAllowed AndAlso Convert.ToBoolean(drvRow.Item("Type"))
             sModifier.MainFanart = ScrapeModifiers.MainFanart AndAlso FanartAllowed
             sModifier.MainLandscape = ScrapeModifiers.MainLandscape AndAlso LandscapeAllowed
             sModifier.MainMeta = ScrapeModifiers.MainMeta

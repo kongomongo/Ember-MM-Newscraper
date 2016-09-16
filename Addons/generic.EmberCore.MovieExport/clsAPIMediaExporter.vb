@@ -517,11 +517,11 @@ Public Class MediaExporter
     Private Function GetFileSize(ByVal tFileItem As FileItem) As String
         Dim fSize As Long = 0
 
-        If Not String.IsNullOrEmpty(tFileItem.Path) Then
+        If Not String.IsNullOrEmpty(tFileItem.FullPath) Then
             If tFileItem.bIsStack OrElse tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then
                 Try
                     Dim sExt As String = Path.GetExtension(tFileItem.FirstStackedPath).ToLower
-                    Dim oFile As String = tFileItem.StackedPath
+                    Dim oFile As String = tFileItem.FirstStackedPath
                     Dim sFile As New List(Of String)
                     Dim bIsVTS As Boolean = False
 
@@ -541,7 +541,7 @@ Public Class MediaExporter
                         End Try
                     Else
                         Try
-                            Dim strName As String = Path.GetFileNameWithoutExtension(tFileItem.StackedPath)
+                            Dim strName As String = Path.GetFileNameWithoutExtension(tFileItem.FirstStackedPath)
                             sFile.AddRange(Directory.GetFiles(Directory.GetParent(tFileItem.FirstStackedPath).FullName, String.Concat(strName, "*")))
                         Catch
                         End Try
@@ -707,7 +707,7 @@ Public Class MediaExporter
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", tCounter_Global.ToString)
         strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(tMovie.FileItem.MainPath.FullName))
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.Path)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.FullPath)))
         strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.FileItem)))
         strRow = strRow.Replace("<$NOW>", System.DateTime.Now.ToLongDateString) 'Save Build Date. might be useful info!
         strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.FileItem.FirstStackedPath))

@@ -1710,10 +1710,10 @@ Public Class dlgEditMovie
                 End If
 
                 'Extrafanarts
-                If Master.eSettings.MovieExtrafanartsAnyEnabled Then
-                    'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                    '.btnSetFanartScrape.Enabled = False
-                    'End If
+                If Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso tmpDBElement.IsSingle Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                        btnSetExtrafanartsScrape.Enabled = False
+                    End If
                     If .Extrafanarts.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrafanarts
@@ -1726,10 +1726,10 @@ Public Class dlgEditMovie
                 End If
 
                 'Extrathumbs
-                If Master.eSettings.MovieExtrathumbsAnyEnabled Then
-                    'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                    '.btnSetFanartScrape.Enabled = False
-                    'End If
+                If Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso tmpDBElement.IsSingle Then
+                    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
+                        btnSetExtrathumbsScrape.Enabled = False
+                    End If
                     If .Extrathumbs.Count > 0 Then
                         Dim iIndex As Integer = 0
                         For Each tImg As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)

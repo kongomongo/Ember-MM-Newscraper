@@ -86,21 +86,10 @@ Public Class Scanner
         tDBElement.Trailer = New MediaContainers.Trailer
 
         'first add files to filelists
-        If tDBElement.FileItem.bIsVideoTS Then
+        If tDBElement.FileItem.bIsBDMV OrElse tDBElement.FileItem.bIsVideoTS Then
 
             Try
                 fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName))
-                fList.AddRange(Directory.GetFiles(strMainPath))
-                If Master.eSettings.MovieUseNMJ Then
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        ElseIf tDBElement.FileItem.bIsBDMV Then
-
-            Try
-                fList.AddRange(Directory.GetFiles(Directory.GetParent(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName).FullName))
                 fList.AddRange(Directory.GetFiles(strMainPath))
                 If Master.eSettings.MovieUseNMJ Then
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
@@ -125,7 +114,7 @@ Public Class Scanner
         'secondly add files from special folders to filelists
         If tDBElement.IsSingle Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainActorThumbs, bForced)
-                Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+                Dim parDir As String = Directory.GetParent(a).FullName
                 If Directory.Exists(parDir) Then
                     atList.AddRange(Directory.GetFiles(parDir))
                 End If
@@ -347,7 +336,7 @@ Public Class Scanner
 
         'episode actor thumbs
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeActorThumbs)
-            Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+            Dim parDir As String = Directory.GetParent(a).FullName
             If Directory.Exists(parDir) Then
                 tDBElement.ActorThumbs.AddRange(Directory.GetFiles(parDir))
             End If
@@ -493,7 +482,7 @@ Public Class Scanner
 
         'show actor thumbs
         For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainActorThumbs)
-            Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
+            Dim parDir As String = Directory.GetParent(a).FullName
             If Directory.Exists(parDir) Then
                 DBTVShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
             End If
@@ -585,7 +574,7 @@ Public Class Scanner
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
-            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In AdvancedSettings.GetSetting("NotValidDirIs", ".actors|.trashes|certificate|extrafanart|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower = s Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirIs] Path ""{0}"" has been skipped (path name is ""{1}"")", dInfo.FullName, s))
                     Return False
@@ -1398,41 +1387,60 @@ Public Class Scanner
             End Try
         Next
     End Sub
-
     ''' <summary>
     ''' Get all directories/movies in the parent directory
     ''' </summary>
-    ''' <param name="sSource"></param>
+    ''' <param name="tSource">Source to scan or Source that contains the <c>strPath</c></param>
     ''' <param name="strPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_Movie(ByVal sSource As Database.DBSource, ByVal bDisableRecursive As Boolean, Optional ByVal strPath As String = "")
+    Public Sub ScanDirectory_Movie(ByVal tSource As Database.DBSource, Optional ByVal strPath As String = "")
         Dim strScanPath As String = String.Empty
+        Dim bScanAllowed As Boolean = False
 
         If Not String.IsNullOrEmpty(strPath) Then
             strScanPath = strPath
+            bScanAllowed = tSource.Recursive OrElse
+                strPath.ToLower = tSource.Path.ToLower OrElse
+                New DirectoryInfo(strScanPath).Parent.FullName.ToLower = tSource.Path.ToLower
         Else
-            strScanPath = sSource.Path
+            bScanAllowed = True
+            strScanPath = tSource.Path
         End If
 
         Try
-            If Not String.IsNullOrEmpty(strScanPath) AndAlso Directory.Exists(strScanPath) Then
+            If bScanAllowed AndAlso Not String.IsNullOrEmpty(strScanPath) AndAlso Directory.Exists(strScanPath) Then
 
                 Dim nFileItemList As New FileItemList(strScanPath)
                 nFileItemList.Stack()
 
                 For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.FullPath.ToLower))
+                    'If Not tSource.IsSingle OrElse Not MoviePaths.Where(Function(f) f.) Then
                     Dim currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
                     currMovieContainer.FileItem = nFileItem
-                    currMovieContainer.IsSingle = sSource.IsSingle
-                    currMovieContainer.Language = sSource.Language
-                    currMovieContainer.Source = sSource
+                    currMovieContainer.IsSingle = tSource.IsSingle
+                    currMovieContainer.Language = tSource.Language
+                    currMovieContainer.Source = tSource
                     Load_Movie(currMovieContainer, True)
-                    MoviePaths.Add(currMovieContainer.FileItem.FullPath)
+                    MoviePaths.Add(currMovieContainer.FileItem.FullPath.ToLower)
                     bwPrelim.ReportProgress(-1, New ProgressValue With {.Type = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.Movie.Title})
                 Next
 
-                If sSource.Recursive AndAlso Not bDisableRecursive Then
-                    For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) f.bIsDirectory AndAlso IsValidDir(f.DirectoryInfo, False))
-                        ScanSourceDirectory_Movie(sSource, Not sSource.Recursive, nFileItem.FirstStackedPath)
+                'Scan subdirectories
+                If Master.eSettings.MovieScanOrderModify Then
+                    For Each nFileItem As FileItem In nFileItemList.FileItems.Where(
+                        Function(f) f.bIsDirectory AndAlso
+                        IsValidDir(f.DirectoryInfo, False) AndAlso
+                        (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tSource.Recursive OrElse f.DirectoryInfo.LastWriteTime > SourceLastScan)).
+                        OrderBy(Function(f) f.DirectoryInfo.LastWriteTime)
+
+                        ScanDirectory_Movie(tSource, nFileItem.FirstStackedPath)
+                    Next
+                Else
+                    For Each nFileItem As FileItem In nFileItemList.FileItems.Where(
+                        Function(f) f.bIsDirectory AndAlso
+                        IsValidDir(f.DirectoryInfo, False) AndAlso
+                        (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tSource.Recursive OrElse f.DirectoryInfo.LastWriteTime > SourceLastScan)).
+                        OrderBy(Function(f) f.DirectoryInfo.FullName)
+                        ScanDirectory_Movie(tSource, nFileItem.FirstStackedPath)
                     Next
                 End If
 
@@ -1467,7 +1475,7 @@ Public Class Scanner
                 '    End If
                 'Next
             Else
-                logger.Error(String.Format("Path ""{0}"" does not exist", strPath))
+                logger.Error(String.Format("[Scanner] [ScanDirectory_Movie] Path ""{0}"" does not exist or recursive scanning is not allowed", strPath))
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -1593,6 +1601,7 @@ Public Class Scanner
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
 
+            'Movie folder
             For Each eSource In Master.MovieSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
@@ -1601,7 +1610,7 @@ Public Class Scanner
                     MoviePaths = Master.DB.GetAllMoviePaths
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            ScanSourceDirectory_Movie(eSource, False, Args.Folder)
+                            ScanDirectory_Movie(eSource, Args.Folder)
                         End Using
                         SQLtransaction.Commit()
                     End Using
@@ -1610,6 +1619,7 @@ Public Class Scanner
                 End If
             Next
 
+            'TVShow folder
             For Each eSource In Master.TVShowSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
@@ -1659,6 +1669,7 @@ Public Class Scanner
             Next
         End If
 
+        'Movie source
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
             MoviePaths = Master.DB.GetAllMoviePaths
 
@@ -1694,7 +1705,7 @@ Public Class Scanner
                                     Catch ex As Exception
                                         logger.Error(ex, New StackFrame().GetMethod().Name)
                                     End Try
-                                    ScanSourceDirectory_Movie(sSource, False)
+                                    ScanDirectory_Movie(sSource)
                                 End If
                                 If bwPrelim.CancellationPending Then
                                     e.Cancel = True
@@ -1708,6 +1719,7 @@ Public Class Scanner
             End Using
         End If
 
+        'TVShow source
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
             TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
             TVShowPaths = Master.DB.GetAllTVShowPaths

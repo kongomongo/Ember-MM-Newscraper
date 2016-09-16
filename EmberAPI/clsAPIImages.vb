@@ -128,7 +128,7 @@ Public Class Images
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, ImageType, ForceFileCleanup)
                 Select Case ImageType
                     Case Enums.ModifierType.MainActorThumbs
-                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        Dim tmpPath As String = Directory.GetParent(a).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
                         End If
@@ -197,7 +197,7 @@ Public Class Images
             For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, ImageType)
                 Select Case ImageType
                     Case Enums.ModifierType.EpisodeActorThumbs
-                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        Dim tmpPath As String = Directory.GetParent(a).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
                         End If
@@ -242,7 +242,7 @@ Public Class Images
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, ImageType)
                 Select Case ImageType
                     Case Enums.ModifierType.MainActorThumbs
-                        Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
+                        Dim tmpPath As String = Directory.GetParent(a).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
                         End If
@@ -770,7 +770,7 @@ Public Class Images
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainActorThumbs)
-            tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
+            tPath = a.Replace("!placeholder!", actor.Name.Replace(" ", "_"))
             SaveToFile(tPath)
         Next
 
@@ -958,7 +958,7 @@ Public Class Images
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeActorThumbs)
-            tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
+            tPath = a.Replace("!placeholder!", actor.Name.Replace(" ", "_"))
             SaveToFile(tPath)
         Next
 
@@ -993,7 +993,7 @@ Public Class Images
         Dim tPath As String = String.Empty
 
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainActorThumbs)
-            tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
+            tPath = a.Replace("!placeholder!", actor.Name.Replace(" ", "_"))
             SaveToFile(tPath)
         Next
 

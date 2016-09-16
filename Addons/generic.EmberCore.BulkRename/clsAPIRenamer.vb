@@ -717,7 +717,7 @@ Public Class FileFolderRenamer
             If Path.GetFileName(_DBElement.FileItem.FirstStackedPath.ToLower) = "video_ts.ifo" Then
                 MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath)
             Else
-                MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.StackedPath)
+                MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath)
                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath).Replace(MovieFile.OldFileName, String.Empty).ToLower
                 If Not stackMark = String.Empty AndAlso _DBElement.Movie.Title.ToLower.EndsWith(stackMark) Then
                     MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.FileItem.FirstStackedPath)
@@ -1756,7 +1756,7 @@ Public Class FileFolderRenamer
                 Next
                 _DBElement.FileItem = New FileItem(FileUtils.Stacking.ConstructStackPath(lNewPaths))
             Else
-                _DBElement.FileItem = New FileItem(Path.Combine(Directory.GetParent(_DBElement.FileItem.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBElement.FileItem.Path).Replace(oldFile, newFile)))
+                _DBElement.FileItem = New FileItem(Path.Combine(Directory.GetParent(_DBElement.FileItem.FullPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBElement.FileItem.FullPath).Replace(oldFile, newFile)))
             End If
         End If
 
@@ -1800,7 +1800,7 @@ Public Class FileFolderRenamer
                 Next
                 _DBElement.FileItem = New FileItem(FileUtils.Stacking.ConstructStackPath(lNewPaths))
             Else
-                _DBElement.FileItem = New FileItem(Path.Combine(Directory.GetParent(_DBElement.FileItem.Path).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBElement.FileItem.Path).Replace(oldFile, newFile)))
+                _DBElement.FileItem = New FileItem(Path.Combine(Directory.GetParent(_DBElement.FileItem.FullPath).FullName.Replace(oldPath, newPath), Path.GetFileName(_DBElement.FileItem.FullPath).Replace(oldFile, newFile)))
             End If
         End If
 
@@ -1825,7 +1825,7 @@ Public Class FileFolderRenamer
                 Next
                 _DBElement.FileItem = New FileItem(FileUtils.Stacking.ConstructStackPath(lNewPaths))
             Else
-                _DBElement.FileItem = New FileItem(_DBElement.FileItem.Path.Replace(oldPath, newPath))
+                _DBElement.FileItem = New FileItem(_DBElement.FileItem.FullPath.Replace(oldPath, newPath))
             End If
         End If
         If _DBElement.ShowPathSpecified Then _DBElement.ShowPath = _DBElement.ShowPath.Replace(oldPath, newPath)

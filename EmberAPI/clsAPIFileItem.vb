@@ -384,18 +384,19 @@ Public Class FileItemList
                     If File.Exists(strPath) Then
                         'VIDEO_TS structure found, change folder to file
                         _fileitemlist(i) = New FileItem(strPath)
-                    End If
-                    'check if BDMV
-                    strPath = Path.Combine(tFileItem1.FirstStackedPath, "index.bdmv")
-                    If File.Exists(strPath) Then
-                        'BDMV structure found, change folder to file
-                        _fileitemlist(i) = New FileItem(strPath)
                     Else
-                        strPath = Path.Combine(tFileItem1.FirstStackedPath, "BDMV")
-                        strPath = Path.Combine(strPath, "index.bdmv")
+                        'check if BDMV
+                        strPath = Path.Combine(tFileItem1.FirstStackedPath, "index.bdmv")
                         If File.Exists(strPath) Then
                             'BDMV structure found, change folder to file
                             _fileitemlist(i) = New FileItem(strPath)
+                        Else
+                            strPath = Path.Combine(tFileItem1.FirstStackedPath, "BDMV")
+                            strPath = Path.Combine(strPath, "index.bdmv")
+                            If File.Exists(strPath) Then
+                                'BDMV structure found, change folder to file
+                                _fileitemlist(i) = New FileItem(strPath)
+                            End If
                         End If
                     End If
                 End If

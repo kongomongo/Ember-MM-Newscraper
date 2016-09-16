@@ -5499,15 +5499,6 @@ Public Class Database
             End Set
         End Property
 
-        'Public Property Filename() As String
-        '    Get
-        '        Return _filename
-        '    End Get
-        '    Set(ByVal value As String)
-        '        _filename = value
-        '    End Set
-        'End Property
-
         Public ReadOnly Property FilenameSpecified() As Boolean
             Get
                 Return Not String.IsNullOrEmpty(_fileitem.FullPath)
@@ -5910,7 +5901,6 @@ Public Class Database
             _episodesorting = Enums.EpisodeSorting.Episode
             _extrafanartspath = String.Empty
             _extrathumbspath = String.Empty
-            '_filename = String.Empty
             _fileid = -1
             _id = -1
             _imagescontainer = New MediaContainers.ImagesContainer
