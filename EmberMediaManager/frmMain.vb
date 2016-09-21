@@ -961,7 +961,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("DateAdded"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveFilter_Movies()
+            SaveSorting_Movies()
         End If
     End Sub
     ''' <summary>
@@ -990,7 +990,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("DateModified"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveFilter_Movies()
+            SaveSorting_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1019,7 +1019,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("SortedTitle"), System.ComponentModel.ListSortDirection.Ascending)
             End If
 
-            SaveFilter_Movies()
+            SaveSorting_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1077,7 +1077,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("Rating"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveFilter_Movies()
+            SaveSorting_Movies()
         End If
     End Sub
     ''' <summary>
@@ -1106,7 +1106,7 @@ Public Class frmMain
                 dgvMovies.Sort(dgvMovies.Columns("Year"), System.ComponentModel.ListSortDirection.Descending)
             End If
 
-            SaveFilter_Movies()
+            SaveSorting_Movies()
         End If
     End Sub
 
@@ -3705,6 +3705,7 @@ Public Class frmMain
     End Sub
 
     Private Sub ClearFilters_Movies(Optional ByVal Reload As Boolean = False)
+        lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovies.RemoveFilter()
         FilterArray_Movies.Clear()
         filSearch_Movies = String.Empty
@@ -3793,6 +3794,7 @@ Public Class frmMain
     End Sub
 
     Private Sub ClearFilters_MovieSets(Optional ByVal Reload As Boolean = False)
+        lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsMovieSets.RemoveFilter()
         FilterArray_MovieSets.Clear()
         filSearch_MovieSets = String.Empty
@@ -3858,6 +3860,7 @@ Public Class frmMain
     End Sub
 
     Private Sub ClearFilters_Shows(Optional ByVal Reload As Boolean = False)
+        lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
         bsTVShows.RemoveFilter()
         FilterArray_TVShows.Clear()
         filSearch_TVShows = String.Empty
@@ -5875,7 +5878,7 @@ Public Class frmMain
     Private Sub dgvMovies_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovies.KeyDown
         'stop enter key from selecting next list item
         e.Handled = (e.KeyCode = Keys.Enter)
-        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchMovies.Focus()
+        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.F Then txtSearchMovies.Focus()
     End Sub
 
     Private Sub dgvMovies_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovies.KeyPress
@@ -6157,7 +6160,7 @@ Public Class frmMain
             btnFilterSortDateModified_Movies.Image = Nothing
         End If
 
-        SaveFilter_Movies()
+        SaveSorting_Movies()
     End Sub
 
     Private Sub dgvMovieSets_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellClick
@@ -6379,7 +6382,7 @@ Public Class frmMain
     Private Sub dgvMovieSets_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvMovieSets.KeyDown
         'stop enter key from selecting next list item
         e.Handled = (e.KeyCode = Keys.Enter)
-        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchMovieSets.Focus()
+        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.F Then txtSearchMovieSets.Focus()
     End Sub
 
     Private Sub dgvMovieSets_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvMovieSets.KeyPress
@@ -6591,7 +6594,7 @@ Public Class frmMain
             dgvMovieSets.CurrentCell = dgvMovieSets.Rows(0).Cells("ListTitle")
         End If
 
-        SaveFilter_MovieSets()
+        SaveSorting_MovieSets()
     End Sub
 
     Private Sub dgvTVEpisodes_CellClick(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvTVEpisodes.CellClick
@@ -7683,7 +7686,7 @@ Public Class frmMain
     Private Sub dgvTVShows_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles dgvTVShows.KeyDown
         'stop enter key from selecting next list item
         e.Handled = (e.KeyCode = Keys.Enter)
-        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.S Then txtSearchShows.Focus()
+        If e.Modifiers = Keys.Control AndAlso e.KeyCode = Keys.F Then txtSearchShows.Focus()
     End Sub
 
     Private Sub dgvTVShows_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles dgvTVShows.KeyPress
@@ -8905,13 +8908,13 @@ Public Class frmMain
             EnableFilters_MovieSets(True)
             EnableFilters_Shows(True)
             If doMovies Then
-                RestoreFilter_Movies()
+                RestoreSorting_Movies()
             End If
             If doMovieSets Then
-                RestoreFilter_MovieSets()
+                RestoreSorting_MovieSets()
             End If
             If doTVShows Then
-                RestoreFilter_Shows()
+                RestoreSorting_Shows()
             End If
             If doMovies AndAlso doMovieSets AndAlso doTVShows Then
                 UpdateMainTabCounts()
@@ -15040,6 +15043,8 @@ Public Class frmMain
             dgvMovies.CurrentCell = Nothing
 
             If FilterArray_Movies.Count > 0 Then
+                lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
+
                 Dim strFilterString As String = String.Empty
 
                 If rbFilterAnd_Movies.Checked Then
@@ -15051,6 +15056,12 @@ Public Class frmMain
                 bsMovies.Filter = strFilterString
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = bsMovies.Filter
             Else
+                If chkFilterDuplicates_Movies.Checked Then
+                    lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
+                Else
+                    lblFilter_Movies.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
+                End If
+
                 bsMovies.RemoveFilter()
                 ModulesManager.Instance.RuntimeObjects.FilterMovies = String.Empty
             End If
@@ -15076,6 +15087,8 @@ Public Class frmMain
             dgvMovieSets.CurrentCell = Nothing
 
             If FilterArray_MovieSets.Count > 0 Then
+                lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
+
                 Dim strFilterString As String = String.Empty
 
                 If rbFilterAnd_MovieSets.Checked Then
@@ -15086,6 +15099,8 @@ Public Class frmMain
 
                 bsMovieSets.Filter = strFilterString
             Else
+                lblFilter_MovieSets.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
+
                 bsMovieSets.RemoveFilter()
             End If
 
@@ -15119,6 +15134,8 @@ Public Class frmMain
             dgvTVEpisodes.DataSource = Nothing
 
             If FilterArray_TVShows.Count > 0 Then
+                lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1090, "Active"))
+
                 Dim strFilterString As String = String.Empty
 
                 If rbFilterAnd_Shows.Checked Then
@@ -15130,6 +15147,8 @@ Public Class frmMain
                 bsTVShows.Filter = strFilterString
                 ModulesManager.Instance.RuntimeObjects.FilterTVShows = bsTVShows.Filter
             Else
+                lblFilter_Shows.Text = String.Format("{0} ({1})", Master.eLang.GetString(52, "Filters"), Master.eLang.GetString(1091, "Inactive"))
+
                 bsTVShows.RemoveFilter()
                 ModulesManager.Instance.RuntimeObjects.FilterTVShows = String.Empty
             End If
@@ -15144,7 +15163,7 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub RestoreFilter_Movies()
+    Private Sub RestoreSorting_Movies()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
                 .GeneralMainFilterSortColumn_Movies = 3         'ListTitle in movielist
@@ -15157,7 +15176,7 @@ Public Class frmMain
         End With
     End Sub
 
-    Private Sub RestoreFilter_MovieSets()
+    Private Sub RestoreSorting_MovieSets()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_MovieSets = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
                 .GeneralMainFilterSortColumn_MovieSets = 3         'ListTitle in movielist
@@ -15170,7 +15189,7 @@ Public Class frmMain
         End With
     End Sub
 
-    Private Sub RestoreFilter_Shows()
+    Private Sub RestoreSorting_Shows()
         With Master.eSettings
             If .GeneralMainFilterSortColumn_Shows = 0 AndAlso .GeneralMainFilterSortOrder_Shows = 0 Then
                 .GeneralMainFilterSortColumn_Shows = 1         'ListTitle in tvshowlist
@@ -15183,7 +15202,7 @@ Public Class frmMain
         End With
     End Sub
 
-    Private Sub SaveFilter_Movies()
+    Private Sub SaveSorting_Movies()
         Dim Order As Integer
         If dgvMovies.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
         If dgvMovies.SortOrder = SortOrder.Ascending Then Order = 0
@@ -15193,7 +15212,7 @@ Public Class frmMain
         Master.eSettings.GeneralMainFilterSortOrder_Movies = Order
     End Sub
 
-    Private Sub SaveFilter_MovieSets()
+    Private Sub SaveSorting_MovieSets()
         Dim Order As Integer
         If dgvMovieSets.SortOrder = SortOrder.None Then Order = 0 'ComponentModel.ListSortDirection has only ASC and DESC. So set [None] to ASC
         If dgvMovieSets.SortOrder = SortOrder.Ascending Then Order = 0
@@ -16141,7 +16160,10 @@ Public Class frmMain
         Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
         If currTag.ContentType = Enums.ContentType.TV Then
             If dgvTVShows.RowCount > 0 Then
-                Dim epCount As Integer = Master.DB.GetViewMediaCount(currList_TVShows, True)
+                Dim epCount As Integer = 0
+                For i As Integer = 0 To dgvTVShows.Rows.Count - 1
+                    epCount += CInt(dgvTVShows.Rows(i).Cells("Episodes").Value)
+                Next
                 tcMain.SelectedTab.Text = String.Format("{0} ({1}/{2})", currTag.ContentName, dgvTVShows.RowCount, epCount)
             Else
                 tcMain.SelectedTab.Text = currTag.ContentName
@@ -16272,6 +16294,12 @@ Public Class frmMain
                 'Fanart Only
                 Dim strFanartOnly As String = Master.eLang.GetString(73, "Fanart Only")
                 .mnuScrapeModifierFanart.Text = strFanartOnly
+
+                'Filters (Active/Inactive)
+                Dim strFilters As String = Master.eLang.GetString(52, "Filters")
+                .lblFilter_Movies.Text = String.Format("{0} ({1})", strFilters, If(bsMovies.Filter Is Nothing, Master.eLang.GetString(1091, "Inactive"), Master.eLang.GetString(1090, "Active")))
+                .lblFilter_MovieSets.Text = String.Format("{0} ({1})", strFilters, If(bsMovieSets.Filter Is Nothing, Master.eLang.GetString(1091, "Inactive"), Master.eLang.GetString(1090, "Active")))
+                .lblFilter_Shows.Text = String.Format("{0} ({1})", strFilters, If(bsTVShows.Filter Is Nothing, Master.eLang.GetString(1091, "Inactive"), Master.eLang.GetString(1090, "Active")))
 
                 'Landscape Only
                 Dim strLandscapeOnly As String = Master.eLang.GetString(1061, "Landscape Only")
@@ -16625,9 +16653,6 @@ Public Class frmMain
                 .lblDiscArtTitle.Text = Master.eLang.GetString(1098, "DiscArt")
                 .lblFanartSmallTitle.Text = Master.eLang.GetString(149, "Fanart")
                 .lblFilePathHeader.Text = Master.eLang.GetString(60, "File Path")
-                .lblFilter_Movies.Text = Master.eLang.GetString(52, "Filters")
-                .lblFilter_MovieSets.Text = .lblFilter_Movies.Text
-                .lblFilter_Shows.Text = .lblFilter_Movies.Text
                 .lblFilterCountries_Movies.Text = Master.eLang.GetString(237, "Countries")
                 .lblFilterCountriesClose_Movies.Text = Master.eLang.GetString(19, "Close")
                 .lblFilterCountry_Movies.Text = String.Concat(Master.eLang.GetString(237, "Countries"), ":")
@@ -17598,7 +17623,7 @@ Public Class frmMain
     End Sub
 
     Private Sub bwCheckVersion_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCheckVersion.DoWork
-        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), Master.strVersionOverwrite, Color.Green)
+        Invoke(New UpdatemnuVersionDel(AddressOf UpdatemnuVersion), String.Concat(Master.strVersionOverwrite, " ", If(Master.is32Bit, "x86", "x64")), Color.Green)
         'Try
         '    Dim sHTTP As New EmberAPI.HTTP
         '    'Pull Assembly version info from current Ember repo on github
