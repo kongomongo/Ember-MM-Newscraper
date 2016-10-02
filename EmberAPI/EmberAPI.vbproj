@@ -169,6 +169,7 @@
     <Import Include="System.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="clsAPIModuleSettings.vb" />
     <Compile Include="clsAPIAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
