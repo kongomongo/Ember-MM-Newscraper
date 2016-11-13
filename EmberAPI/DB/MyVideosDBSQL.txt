@@ -736,6 +736,7 @@ CREATE VIEW movielist
         GROUP_CONCAT(DISTINCT credits.strActor) AS Credits,
         GROUP_CONCAT(DISTINCT directors.strActor) AS Director,
         GROUP_CONCAT(DISTINCT genres.strGenre) AS Genre,
+        GROUP_CONCAT(DISTINCT tvshows.Title) AS ShowLink,
         GROUP_CONCAT(DISTINCT studios.strStudio) AS Studio,
         GROUP_CONCAT(DISTINCT tags.strTag) AS 'Tag'
         FROM
@@ -775,6 +776,8 @@ CREATE VIEW movielist
         LEFT OUTER JOIN taglinks AS taglink ON (taglink.idMedia = movie.idMovie)
         AND (taglink.media_type = 'movie')
         LEFT OUTER JOIN tag AS tags ON (tags.idTag = taglink.idTag)
+        LEFT OUTER JOIN movielinktvshow AS tvshowlink ON (tvshowlink.idMovie = movie.idMovie)
+        LEFT OUTER JOIN tvshow AS tvshows ON (tvshows.idShow = tvshowlink.idShow)
         GROUP BY movie.idMovie;
 
 CREATE VIEW setslist

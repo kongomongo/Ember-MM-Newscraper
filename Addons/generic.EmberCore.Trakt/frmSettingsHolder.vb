@@ -26,7 +26,6 @@ Public Class frmSettingsHolder
 
     Public Event ModuleEnabledChanged(ByVal State As Boolean)
     Public Event ModuleSettingsChanged()
-    Public Event AccountSettingsChanged()
 
 #End Region 'Events
 
@@ -55,19 +54,6 @@ Public Class frmSettingsHolder
         gbGetWatchedStateMovies.Text = Master.eLang.GetString(36, "Movies")
         gbGetWatchedStateTVEpisodes.Text = Master.eLang.GetString(682, "Episodes")
         gbSettingsGeneral.Text = Master.eLang.GetString(38, "General Settings")
-        lblPassword.Text = Master.eLang.GetString(426, "Password")
-        lblUsername.Text = Master.eLang.GetString(425, "Username")
-        txtPassword.PasswordChar = "*"c
-    End Sub
-
-    Private Sub txtUsername_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtUsername.TextChanged
-        RaiseEvent ModuleSettingsChanged()
-        RaiseEvent AccountSettingsChanged()
-    End Sub
-
-    Private Sub txtPassword_TextChanged(sender As Object, e As EventArgs) Handles txtPassword.TextChanged
-        RaiseEvent ModuleSettingsChanged()
-        RaiseEvent AccountSettingsChanged()
     End Sub
 
     Private Sub chkGetWatchedState_CheckedChanged(sender As Object, e As EventArgs) Handles chkGetWatchedState.CheckedChanged

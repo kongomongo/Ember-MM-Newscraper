@@ -100,7 +100,7 @@ Public Class dlgTVRegExProfiles
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         lvProfiles.Columns(0).Text = Master.eLang.GetString(820, "RegEx Profile")
-        lblDescription.Text = Master.eLang.GetString(172, "Description:")
+        lblDescription.Text = String.Concat(Master.eLang.GetString(979, "Description"), ":")
     End Sub
 
 #End Region 'Methods

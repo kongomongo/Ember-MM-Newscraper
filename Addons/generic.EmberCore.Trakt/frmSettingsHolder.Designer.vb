@@ -41,10 +41,6 @@ Partial Class frmSettingsHolder
         Me.chkGetWatchedStateScraperSingle_Movie = New System.Windows.Forms.CheckBox()
         Me.gbSettingsGeneral = New System.Windows.Forms.GroupBox()
         Me.tblSettingsGeneral = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtPassword = New System.Windows.Forms.TextBox()
-        Me.lblPassword = New System.Windows.Forms.Label()
-        Me.txtUsername = New System.Windows.Forms.TextBox()
-        Me.lblUsername = New System.Windows.Forms.Label()
         Me.chkGetShowProgress = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.pnlSettings = New System.Windows.Forms.Panel()
@@ -129,9 +125,9 @@ Partial Class frmSettingsHolder
         Me.gbGetWatchedState.Controls.Add(Me.tblGetWatchedState)
         Me.gbGetWatchedState.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbGetWatchedState.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbGetWatchedState.Location = New System.Drawing.Point(3, 109)
+        Me.gbGetWatchedState.Location = New System.Drawing.Point(3, 53)
         Me.gbGetWatchedState.Name = "gbGetWatchedState"
-        Me.gbGetWatchedState.Size = New System.Drawing.Size(383, 140)
+        Me.gbGetWatchedState.Size = New System.Drawing.Size(334, 140)
         Me.gbGetWatchedState.TabIndex = 55
         Me.gbGetWatchedState.TabStop = False
         Me.gbGetWatchedState.Text = "Watched State"
@@ -153,7 +149,7 @@ Partial Class frmSettingsHolder
         Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGetWatchedState.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGetWatchedState.Size = New System.Drawing.Size(377, 119)
+        Me.tblGetWatchedState.Size = New System.Drawing.Size(328, 119)
         Me.tblGetWatchedState.TabIndex = 7
         '
         'chkGetWatchedState
@@ -310,7 +306,7 @@ Partial Class frmSettingsHolder
         Me.gbSettingsGeneral.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSettingsGeneral.Location = New System.Drawing.Point(3, 3)
         Me.gbSettingsGeneral.Name = "gbSettingsGeneral"
-        Me.gbSettingsGeneral.Size = New System.Drawing.Size(383, 100)
+        Me.gbSettingsGeneral.Size = New System.Drawing.Size(334, 44)
         Me.gbSettingsGeneral.TabIndex = 20
         Me.gbSettingsGeneral.TabStop = False
         Me.gbSettingsGeneral.Text = "General Settings"
@@ -318,21 +314,14 @@ Partial Class frmSettingsHolder
         'tblSettingsGeneral
         '
         Me.tblSettingsGeneral.AutoSize = True
-        Me.tblSettingsGeneral.ColumnCount = 3
+        Me.tblSettingsGeneral.ColumnCount = 2
         Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsGeneral.Controls.Add(Me.txtPassword, 1, 1)
-        Me.tblSettingsGeneral.Controls.Add(Me.lblPassword, 0, 1)
-        Me.tblSettingsGeneral.Controls.Add(Me.txtUsername, 1, 0)
-        Me.tblSettingsGeneral.Controls.Add(Me.lblUsername, 0, 0)
-        Me.tblSettingsGeneral.Controls.Add(Me.chkGetShowProgress, 1, 2)
+        Me.tblSettingsGeneral.Controls.Add(Me.chkGetShowProgress, 0, 0)
         Me.tblSettingsGeneral.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsGeneral.Location = New System.Drawing.Point(3, 18)
         Me.tblSettingsGeneral.Name = "tblSettingsGeneral"
-        Me.tblSettingsGeneral.RowCount = 3
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsGeneral.RowCount = 1
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
@@ -341,54 +330,14 @@ Partial Class frmSettingsHolder
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettingsGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettingsGeneral.Size = New System.Drawing.Size(377, 79)
+        Me.tblSettingsGeneral.Size = New System.Drawing.Size(328, 23)
         Me.tblSettingsGeneral.TabIndex = 21
-        '
-        'txtPassword
-        '
-        Me.txtPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtPassword.Location = New System.Drawing.Point(67, 31)
-        Me.txtPassword.Name = "txtPassword"
-        Me.txtPassword.Size = New System.Drawing.Size(200, 22)
-        Me.txtPassword.TabIndex = 41
-        '
-        'lblPassword
-        '
-        Me.lblPassword.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblPassword.AutoSize = True
-        Me.lblPassword.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblPassword.Location = New System.Drawing.Point(3, 35)
-        Me.lblPassword.Name = "lblPassword"
-        Me.lblPassword.Size = New System.Drawing.Size(56, 13)
-        Me.lblPassword.TabIndex = 42
-        Me.lblPassword.Text = "Password"
-        '
-        'txtUsername
-        '
-        Me.txtUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtUsername.Location = New System.Drawing.Point(67, 3)
-        Me.txtUsername.Name = "txtUsername"
-        Me.txtUsername.Size = New System.Drawing.Size(200, 22)
-        Me.txtUsername.TabIndex = 39
-        '
-        'lblUsername
-        '
-        Me.lblUsername.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblUsername.AutoSize = True
-        Me.lblUsername.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblUsername.Location = New System.Drawing.Point(3, 7)
-        Me.lblUsername.Name = "lblUsername"
-        Me.lblUsername.Size = New System.Drawing.Size(58, 13)
-        Me.lblUsername.TabIndex = 40
-        Me.lblUsername.Text = "Username"
         '
         'chkGetShowProgress
         '
         Me.chkGetShowProgress.AutoSize = True
         Me.chkGetShowProgress.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGetShowProgress.Location = New System.Drawing.Point(67, 59)
+        Me.chkGetShowProgress.Location = New System.Drawing.Point(3, 3)
         Me.chkGetShowProgress.Name = "chkGetShowProgress"
         Me.chkGetShowProgress.Size = New System.Drawing.Size(307, 17)
         Me.chkGetShowProgress.TabIndex = 44
@@ -470,10 +419,6 @@ Partial Class frmSettingsHolder
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents gbSettingsGeneral As System.Windows.Forms.GroupBox
     Friend WithEvents tblSettingsGeneral As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtPassword As System.Windows.Forms.TextBox
-    Friend WithEvents lblPassword As System.Windows.Forms.Label
-    Friend WithEvents txtUsername As System.Windows.Forms.TextBox
-    Friend WithEvents lblUsername As System.Windows.Forms.Label
     Friend WithEvents chkGetShowProgress As System.Windows.Forms.CheckBox
     Friend WithEvents gbGetWatchedState As System.Windows.Forms.GroupBox
     Friend WithEvents tblGetWatchedState As System.Windows.Forms.TableLayoutPanel

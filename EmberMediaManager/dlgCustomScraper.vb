@@ -65,6 +65,7 @@ Public Class dlgCustomScraper
     Private oEpisodeRatingAllowed As Boolean
     Private oEpisodeRuntimeAllowed As Boolean
     Private oEpisodeTitleAllowed As Boolean
+    Private oEpisodeUserRatingAllowed As Boolean
     Private oEpisodeWritersAllowed As Boolean
     Private oMainActorsAllowed As Boolean
     Private oMainCertificationsAllowed As Boolean
@@ -89,6 +90,7 @@ Public Class dlgCustomScraper
     Private oMainTitleAllowed As Boolean
     Private oMainTop250Allowed As Boolean
     Private oMainTrailerAllowed As Boolean
+    Private oMainUserRatingAllowed As Boolean
     Private oMainWritersAllowed As Boolean
     Private oMainYearAllowed As Boolean
     Private oSeasonAiredAllowed As Boolean
@@ -176,6 +178,7 @@ Public Class dlgCustomScraper
         chkEpisodeOptionsRating.Checked = False
         chkEpisodeOptionsRuntime.Checked = False
         chkEpisodeOptionsTitle.Checked = False
+        chkEpisodeOptionsUserRating.Checked = False
         chkEpisodeOptionsWriters.Checked = False
 
         CheckEnable()
@@ -228,6 +231,7 @@ Public Class dlgCustomScraper
         chkMainOptionsTitle.Checked = False
         chkMainOptionsTop250.Checked = False
         chkMainOptionsTrailer.Checked = False
+        chkMainOptionsUserRating.Checked = False
         chkMainOptionsWriters.Checked = False
         chkMainOptionsYear.Checked = False
 
@@ -364,6 +368,8 @@ Public Class dlgCustomScraper
                 chkMainOptionsTop250.Enabled = False
                 chkMainOptionsTrailer.Checked = oMainTrailerAllowed
                 chkMainOptionsTrailer.Enabled = False
+                chkMainOptionsUserRating.Checked = oMainUserRatingAllowed
+                chkMainOptionsUserRating.Enabled = False
                 chkMainOptionsWriters.Checked = oMainWritersAllowed
                 chkMainOptionsWriters.Enabled = False
                 chkMainOptionsYear.Checked = oMainYearAllowed
@@ -391,6 +397,7 @@ Public Class dlgCustomScraper
                 chkMainOptionsTitle.Enabled = oMainTitleAllowed
                 chkMainOptionsTop250.Enabled = oMainTop250Allowed
                 chkMainOptionsTrailer.Enabled = oMainTrailerAllowed
+                chkMainOptionsUserRating.Enabled = oMainUserRatingAllowed
                 chkMainOptionsWriters.Enabled = oMainWritersAllowed
                 chkMainOptionsYear.Enabled = oMainYearAllowed
             End If
@@ -453,6 +460,8 @@ Public Class dlgCustomScraper
                     chkEpisodeOptionsRuntime.Enabled = False
                     chkEpisodeOptionsTitle.Checked = oEpisodeTitleAllowed
                     chkEpisodeOptionsTitle.Enabled = False
+                    chkEpisodeOptionsUserRating.Checked = oEpisodeUserRatingAllowed
+                    chkEpisodeOptionsUserRating.Enabled = False
                     chkEpisodeOptionsWriters.Checked = oEpisodeWritersAllowed
                     chkEpisodeOptionsWriters.Enabled = False
                 Else
@@ -464,6 +473,7 @@ Public Class dlgCustomScraper
                     chkEpisodeOptionsRating.Enabled = oEpisodeRatingAllowed
                     chkEpisodeOptionsRuntime.Enabled = oEpisodeRuntimeAllowed
                     chkEpisodeOptionsTitle.Enabled = oEpisodeTitleAllowed
+                    chkEpisodeOptionsUserRating.Enabled = oEpisodeUserRatingAllowed
                     chkEpisodeOptionsWriters.Enabled = oEpisodeWritersAllowed
                 End If
             Else
@@ -561,6 +571,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bEpisodeRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRating.Checked
         CustomUpdater.ScrapeOptions.bEpisodeRuntime = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsRuntime.Checked
         CustomUpdater.ScrapeOptions.bEpisodeTitle = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsTitle.Checked
+        CustomUpdater.ScrapeOptions.bEpisodeUserRating = chkSpecialModifierWithEpisodes.Checked AndAlso chkEpisodeModifierNFO.Checked AndAlso chkEpisodeOptionsUserRating.Checked
         CustomUpdater.ScrapeOptions.bMainActors = chkMainModifierNFO.Checked AndAlso chkMainOptionsActors.Checked
         CustomUpdater.ScrapeOptions.bMainCertifications = chkMainModifierNFO.Checked AndAlso chkMainOptionsCertifications.Checked
         CustomUpdater.ScrapeOptions.bMainCollectionID = chkMainModifierNFO.Checked AndAlso chkMainOptionsCollectionID.Checked
@@ -583,6 +594,7 @@ Public Class dlgCustomScraper
         CustomUpdater.ScrapeOptions.bMainTitle = chkMainModifierNFO.Checked AndAlso chkMainOptionsTitle.Checked
         CustomUpdater.ScrapeOptions.bMainTop250 = chkMainModifierNFO.Checked AndAlso chkMainOptionsTop250.Checked
         CustomUpdater.ScrapeOptions.bMainTrailer = chkMainModifierNFO.Checked AndAlso chkMainOptionsTrailer.Checked
+        CustomUpdater.ScrapeOptions.bMainUserRating = chkMainModifierNFO.Checked AndAlso chkMainOptionsUserRating.Checked
         CustomUpdater.ScrapeOptions.bMainWriters = chkMainModifierNFO.Checked AndAlso chkMainOptionsWriters.Checked
         CustomUpdater.ScrapeOptions.bMainYear = chkMainModifierNFO.Checked AndAlso chkMainOptionsYear.Checked
         CustomUpdater.ScrapeOptions.bSeasonAired = chkSpecialModifierWithSeasons.Checked AndAlso chkMainModifierNFO.Checked AndAlso chkSeasonOptionsAired.Checked   'TODO: check. Atm we save the season infos to tv show NFO
@@ -707,6 +719,7 @@ Public Class dlgCustomScraper
                     oEpisodeRatingAllowed = False
                     oEpisodeRuntimeAllowed = False
                     oEpisodeTitleAllowed = False
+                    oEpisodeUserRatingAllowed = False
                     oEpisodeWritersAllowed = False
                     oMainActorsAllowed = .MovieScraperCast
                     oMainCertificationsAllowed = .MovieScraperCert
@@ -731,6 +744,7 @@ Public Class dlgCustomScraper
                     oMainTitleAllowed = .MovieScraperTitle
                     oMainTop250Allowed = .MovieScraperTop250
                     oMainTrailerAllowed = .MovieScraperTrailer
+                    oMainUserRatingAllowed = .MovieScraperUserRating
                     oMainWritersAllowed = .MovieScraperCredits
                     oMainYearAllowed = .MovieScraperYear
                     oSeasonAiredAllowed = False
@@ -787,6 +801,7 @@ Public Class dlgCustomScraper
                     oEpisodeRatingAllowed = False
                     oEpisodeRuntimeAllowed = False
                     oEpisodeTitleAllowed = False
+                    oEpisodeUserRatingAllowed = False
                     oEpisodeWritersAllowed = False
                     oMainActorsAllowed = False
                     oMainCertificationsAllowed = False
@@ -811,6 +826,7 @@ Public Class dlgCustomScraper
                     oMainTitleAllowed = .MovieSetScraperTitle
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
+                    oMainUserRatingAllowed = False
                     oMainWritersAllowed = False
                     oMainYearAllowed = False
                     oSeasonAiredAllowed = False
@@ -862,6 +878,7 @@ Public Class dlgCustomScraper
                     oEpisodeRatingAllowed = .TVScraperEpisodeRating
                     oEpisodeRuntimeAllowed = .TVScraperEpisodeRuntime
                     oEpisodeTitleAllowed = .TVScraperEpisodeTitle
+                    oEpisodeUserRatingAllowed = .TVScraperEpisodeUserRating
                     oEpisodeWritersAllowed = .TVScraperEpisodeCredits
                     oMainActorsAllowed = .TVScraperShowActors
                     oMainCertificationsAllowed = .TVScraperShowCert
@@ -886,6 +903,7 @@ Public Class dlgCustomScraper
                     oMainTitleAllowed = .TVScraperShowTitle
                     oMainTop250Allowed = False
                     oMainTrailerAllowed = False
+                    oMainUserRatingAllowed = .TVScraperShowUserRating
                     oMainWritersAllowed = False
                     oMainYearAllowed = False
                     oSeasonAiredAllowed = .TVScraperSeasonAired
@@ -1060,6 +1078,7 @@ Public Class dlgCustomScraper
         chkEpisodeOptionsRating.Click,
         chkEpisodeOptionsRuntime.Click,
         chkEpisodeOptionsTitle.Click,
+        chkEpisodeOptionsUserRating.Click,
         chkEpisodeOptionsWriters.Click,
         chkMainModifierActorThumbs.Click,
         chkMainModifierAll.Click,
@@ -1100,6 +1119,7 @@ Public Class dlgCustomScraper
         chkMainOptionsTitle.Click,
         chkMainOptionsTop250.Click,
         chkMainOptionsTrailer.Click,
+        chkMainOptionsUserRating.Click,
         chkMainOptionsWriters.Click,
         chkMainOptionsYear.Click,
         chkSeasonModifierAll.Click,
@@ -1251,6 +1271,7 @@ Public Class dlgCustomScraper
         chkMainOptionsTitle.Text = Master.eLang.GetString(21, "Title")
         chkMainOptionsTop250.Text = Master.eLang.GetString(591, "Top 250")
         chkMainOptionsTrailer.Text = Master.eLang.GetString(151, "Trailer")
+        chkMainOptionsUserRating.Text = Master.eLang.GetString(1464, "User Rating")
         chkMainOptionsWriters.Text = Master.eLang.GetString(394, "Writers")
         chkMainOptionsYear.Text = Master.eLang.GetString(278, "Year")
         gbMainScrapeOptions.Text = Master.eLang.GetString(390, "Options")

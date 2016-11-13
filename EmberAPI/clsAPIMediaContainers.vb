@@ -989,6 +989,7 @@ Namespace MediaContainers
         Private _runtime As String
         Private _scrapersource As String
         Private _sets As New List(Of SetDetails)
+        Private _showlinks As New List(Of String)
         Private _sorttitle As String
         Private _studios As New List(Of String)
         Private _tagline As String
@@ -1726,6 +1727,27 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("showlink")>
+        Public Property ShowLinks() As List(Of String)
+            Get
+                Return _showlinks
+            End Get
+            Set(ByVal value As List(Of String))
+                If value Is Nothing Then
+                    _showlinks.Clear()
+                Else
+                    _showlinks = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property ShowLinksSpecified() As Boolean
+            Get
+                Return _showlinks.Count > 0
+            End Get
+        End Property
+
         <XmlIgnore()>
         Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
             Get
@@ -1960,6 +1982,7 @@ Namespace MediaContainers
             _runtime = String.Empty
             _scrapersource = String.Empty
             _sets.Clear()
+            _showlinks.Clear()
             _sorttitle = String.Empty
             _studios.Clear()
             _tagline = String.Empty

@@ -1071,6 +1071,9 @@ Namespace Kodi
                     'Genres
                     Dim mGenreList As List(Of String) = If(mDBElement.Movie.GenresSpecified, mDBElement.Movie.Genres, New List(Of String))
 
+                    'ShowLinks
+                    Dim mShowLinkList As List(Of String) = If(mDBElement.Movie.ShowLinksSpecified, mDBElement.Movie.ShowLinks, New List(Of String))
+
                     'Studios
                     Dim mStudioList As List(Of String) = If(mDBElement.Movie.StudiosSpecified, mDBElement.Movie.Studios, New List(Of String))
 
@@ -1109,30 +1112,31 @@ Namespace Kodi
                     'artwork.thumb = mPoster ' not supported in Ember?!
 
                     Dim response = Await _kodi.VideoLibrary.SetMovieDetails(KodiElement.movieid,
-                                                                        title:=mTitle,
-                                                                        playcount:=mPlaycount,
-                                                                        runtime:=mRuntime,
-                                                                        director:=mDirectorList,
-                                                                        studio:=mStudioList,
-                                                                        year:=mYear,
-                                                                        plot:=mPlot,
-                                                                        genre:=mGenreList,
-                                                                        rating:=mRating,
-                                                                        mpaa:=mMPAA,
-                                                                        imdbnumber:=mImdbnumber,
-                                                                        votes:=mVotes,
-                                                                        lastplayed:=mLastPlayed,
-                                                                        originaltitle:=mOriginalTitle,
-                                                                        trailer:=mTrailer,
-                                                                        tagline:=mTagline,
-                                                                        plotoutline:=mOutline,
-                                                                        writer:=mWriterList,
-                                                                        country:=mCountryList,
-                                                                        top250:=mTop250,
-                                                                        sorttitle:=mSortTitle,
-                                                                        set:=mSet,
-                                                                        tag:=mTagList,
-                                                                        art:=artwork).ConfigureAwait(False)
+                                                                            title:=mTitle,
+                                                                            playcount:=mPlaycount,
+                                                                            runtime:=mRuntime,
+                                                                            director:=mDirectorList,
+                                                                            studio:=mStudioList,
+                                                                            year:=mYear,
+                                                                            plot:=mPlot,
+                                                                            genre:=mGenreList,
+                                                                            rating:=mRating,
+                                                                            mpaa:=mMPAA,
+                                                                            imdbnumber:=mImdbnumber,
+                                                                            votes:=mVotes,
+                                                                            lastplayed:=mLastPlayed,
+                                                                            originaltitle:=mOriginalTitle,
+                                                                            trailer:=mTrailer,
+                                                                            tagline:=mTagline,
+                                                                            plotoutline:=mOutline,
+                                                                            writer:=mWriterList,
+                                                                            country:=mCountryList,
+                                                                            top250:=mTop250,
+                                                                            sorttitle:=mSortTitle,
+                                                                            set:=mSet,
+                                                                            showlink:=mShowLinkList,
+                                                                            tag:=mTagList,
+                                                                            art:=artwork).ConfigureAwait(False)
                     'not supported right now in Ember
                     'showlink:=mshowlink, _     
                     'thumbnail:=mposter, _

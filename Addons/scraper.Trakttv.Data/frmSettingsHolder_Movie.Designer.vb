@@ -28,13 +28,10 @@ Partial Class frmSettingsHolder_Movie
         Me.pbIconBottom = New System.Windows.Forms.PictureBox()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblScraperFieldsOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkRating = New System.Windows.Forms.CheckBox()
+        Me.chkMainRating = New System.Windows.Forms.CheckBox()
+        Me.chkMainUserRating = New System.Windows.Forms.CheckBox()
         Me.gbScraperFieldsOpts = New System.Windows.Forms.GroupBox()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbScraperOpts = New System.Windows.Forms.GroupBox()
-        Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkUsePersonalRating = New System.Windows.Forms.CheckBox()
-        Me.chkFallbackToGlobalRating = New System.Windows.Forms.CheckBox()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
@@ -49,8 +46,6 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.SuspendLayout()
         Me.gbScraperFieldsOpts.SuspendLayout()
         Me.tblSettingsMain.SuspendLayout()
-        Me.gbScraperOpts.SuspendLayout()
-        Me.tblScraperOpts.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsTop.SuspendLayout()
@@ -113,13 +108,14 @@ Partial Class frmSettingsHolder_Movie
         'tblScraperFieldsOpts
         '
         Me.tblScraperFieldsOpts.AutoSize = True
-        Me.tblScraperFieldsOpts.ColumnCount = 4
+        Me.tblScraperFieldsOpts.ColumnCount = 2
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperFieldsOpts.Controls.Add(Me.chkRating, 0, 0)
-        Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Top
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperFieldsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkMainRating, 0, 0)
+        Me.tblScraperFieldsOpts.Controls.Add(Me.chkMainUserRating, 0, 1)
+        Me.tblScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperFieldsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperFieldsOpts.Name = "tblScraperFieldsOpts"
         Me.tblScraperFieldsOpts.RowCount = 3
@@ -127,19 +123,30 @@ Partial Class frmSettingsHolder_Movie
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblScraperFieldsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(178, 23)
+        Me.tblScraperFieldsOpts.Size = New System.Drawing.Size(214, 46)
         Me.tblScraperFieldsOpts.TabIndex = 98
         '
-        'chkRating
+        'chkMainRating
         '
-        Me.chkRating.AutoSize = True
-        Me.chkRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkRating.Location = New System.Drawing.Point(3, 3)
-        Me.chkRating.Name = "chkRating"
-        Me.chkRating.Size = New System.Drawing.Size(60, 17)
-        Me.chkRating.TabIndex = 6
-        Me.chkRating.Text = "Rating"
-        Me.chkRating.UseVisualStyleBackColor = True
+        Me.chkMainRating.AutoSize = True
+        Me.chkMainRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMainRating.Location = New System.Drawing.Point(3, 3)
+        Me.chkMainRating.Name = "chkMainRating"
+        Me.chkMainRating.Size = New System.Drawing.Size(60, 17)
+        Me.chkMainRating.TabIndex = 6
+        Me.chkMainRating.Text = "Rating"
+        Me.chkMainRating.UseVisualStyleBackColor = True
+        '
+        'chkMainUserRating
+        '
+        Me.chkMainUserRating.AutoSize = True
+        Me.chkMainUserRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMainUserRating.Location = New System.Drawing.Point(3, 26)
+        Me.chkMainUserRating.Name = "chkMainUserRating"
+        Me.chkMainUserRating.Size = New System.Drawing.Size(86, 17)
+        Me.chkMainUserRating.TabIndex = 6
+        Me.chkMainUserRating.Text = "User Rating"
+        Me.chkMainUserRating.UseVisualStyleBackColor = True
         '
         'gbScraperFieldsOpts
         '
@@ -148,8 +155,9 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbScraperFieldsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbScraperFieldsOpts.Location = New System.Drawing.Point(3, 3)
+        Me.gbScraperFieldsOpts.MinimumSize = New System.Drawing.Size(220, 0)
         Me.gbScraperFieldsOpts.Name = "gbScraperFieldsOpts"
-        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(184, 44)
+        Me.gbScraperFieldsOpts.Size = New System.Drawing.Size(220, 67)
         Me.gbScraperFieldsOpts.TabIndex = 3
         Me.gbScraperFieldsOpts.TabStop = False
         Me.gbScraperFieldsOpts.Text = "Scraper Fields - Scraper specific"
@@ -161,79 +169,16 @@ Partial Class frmSettingsHolder_Movie
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsMain.Controls.Add(Me.gbScraperFieldsOpts, 0, 0)
-        Me.tblSettingsMain.Controls.Add(Me.gbScraperOpts, 0, 1)
         Me.tblSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsMain.Name = "tblSettingsMain"
-        Me.tblSettingsMain.RowCount = 4
-        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettingsMain.RowCount = 2
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettingsMain.Size = New System.Drawing.Size(463, 269)
         Me.tblSettingsMain.TabIndex = 0
-        '
-        'gbScraperOpts
-        '
-        Me.gbScraperOpts.AutoSize = True
-        Me.gbScraperOpts.Controls.Add(Me.tblScraperOpts)
-        Me.gbScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbScraperOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbScraperOpts.Location = New System.Drawing.Point(3, 53)
-        Me.gbScraperOpts.Name = "gbScraperOpts"
-        Me.gbScraperOpts.Size = New System.Drawing.Size(184, 67)
-        Me.gbScraperOpts.TabIndex = 1
-        Me.gbScraperOpts.TabStop = False
-        Me.gbScraperOpts.Text = "Scraper Options"
-        '
-        'tblScraperOpts
-        '
-        Me.tblScraperOpts.AutoSize = True
-        Me.tblScraperOpts.ColumnCount = 4
-        Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.Controls.Add(Me.chkUsePersonalRating, 0, 0)
-        Me.tblScraperOpts.Controls.Add(Me.chkFallbackToGlobalRating, 0, 1)
-        Me.tblScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblScraperOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblScraperOpts.Name = "tblScraperOpts"
-        Me.tblScraperOpts.RowCount = 3
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblScraperOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblScraperOpts.Size = New System.Drawing.Size(178, 46)
-        Me.tblScraperOpts.TabIndex = 98
-        '
-        'chkUsePersonalRating
-        '
-        Me.chkUsePersonalRating.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkUsePersonalRating.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkUsePersonalRating, 2)
-        Me.chkUsePersonalRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkUsePersonalRating.Location = New System.Drawing.Point(3, 3)
-        Me.chkUsePersonalRating.Name = "chkUsePersonalRating"
-        Me.chkUsePersonalRating.Size = New System.Drawing.Size(127, 17)
-        Me.chkUsePersonalRating.TabIndex = 4
-        Me.chkUsePersonalRating.Text = "Use personal rating"
-        Me.chkUsePersonalRating.UseVisualStyleBackColor = True
-        '
-        'chkFallbackToGlobalRating
-        '
-        Me.chkFallbackToGlobalRating.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkFallbackToGlobalRating.AutoSize = True
-        Me.tblScraperOpts.SetColumnSpan(Me.chkFallbackToGlobalRating, 2)
-        Me.chkFallbackToGlobalRating.Enabled = False
-        Me.chkFallbackToGlobalRating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkFallbackToGlobalRating.Location = New System.Drawing.Point(3, 26)
-        Me.chkFallbackToGlobalRating.Name = "chkFallbackToGlobalRating"
-        Me.chkFallbackToGlobalRating.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkFallbackToGlobalRating.Size = New System.Drawing.Size(172, 17)
-        Me.chkFallbackToGlobalRating.TabIndex = 4
-        Me.chkFallbackToGlobalRating.Text = "Fallback to global rating"
-        Me.chkFallbackToGlobalRating.UseVisualStyleBackColor = True
         '
         'pnlSettingsMain
         '
@@ -361,10 +306,6 @@ Partial Class frmSettingsHolder_Movie
         Me.gbScraperFieldsOpts.PerformLayout()
         Me.tblSettingsMain.ResumeLayout(False)
         Me.tblSettingsMain.PerformLayout()
-        Me.gbScraperOpts.ResumeLayout(False)
-        Me.gbScraperOpts.PerformLayout()
-        Me.tblScraperOpts.ResumeLayout(False)
-        Me.tblScraperOpts.PerformLayout()
         Me.pnlSettingsMain.ResumeLayout(False)
         Me.pnlSettingsMain.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
@@ -382,12 +323,9 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents pbIconBottom As System.Windows.Forms.PictureBox
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
     Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkRating As System.Windows.Forms.CheckBox
+    Friend WithEvents chkMainRating As System.Windows.Forms.CheckBox
     Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbScraperOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents tblScraperOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkUsePersonalRating As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
@@ -396,5 +334,5 @@ Partial Class frmSettingsHolder_Movie
     Friend WithEvents lblScraperOrder As System.Windows.Forms.Label
     Friend WithEvents btnUp As System.Windows.Forms.Button
     Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
-    Friend WithEvents chkFallbackToGlobalRating As CheckBox
+    Friend WithEvents chkMainUserRating As CheckBox
 End Class

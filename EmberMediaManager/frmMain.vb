@@ -3727,16 +3727,16 @@ Public Class frmMain
             End If
 
             For i As Integer = 0 To lstDataFields.Count - 1
-                Dim bInteger As Boolean = lstDataFields.Item(i) = "Top250"
+                Dim bInteger As Boolean = lstDataFields.Item(i) = "Top250" OrElse lstDataFields.Item(i) = "iUserRating"
                 If cbFilterDataField_Movies.SelectedIndex = 0 Then
                     If bInteger Then
-                        lstDataFields.Item(i) = String.Format("{0} IS NULL", lstDataFields.Item(i))
+                        lstDataFields.Item(i) = String.Format("{0} IS NULL OR {0} = 0", lstDataFields.Item(i))
                     Else
                         lstDataFields.Item(i) = String.Format("{0} IS NULL OR {0} = ''", lstDataFields.Item(i))
                     End If
                 Else
                     If bInteger Then
-                        lstDataFields.Item(i) = String.Format("{0} NOT IS NULL", lstDataFields.Item(i))
+                        lstDataFields.Item(i) = String.Format("{0} NOT IS NULL AND NOT {0} = 0", lstDataFields.Item(i))
                     Else
                         lstDataFields.Item(i) = String.Format("{0} NOT IS NULL AND {0} NOT = ''", lstDataFields.Item(i))
                     End If
@@ -8001,7 +8001,7 @@ Public Class frmMain
     Private Sub Edit_Movie(ByRef DBMovie As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_Movie)
         SetControlsEnabled(False)
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, True) Then
-            Using dEditMovie As New dlgEditMovie
+            Using dEditMovie As New dlgEdit
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, DBMovie)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
                 Select Case dEditMovie.ShowDialog(DBMovie)
@@ -10710,7 +10710,7 @@ Public Class frmMain
 
     Private Sub mnuTagsTag_DropDown(ByVal sender As Object, ByVal e As System.EventArgs) Handles mnuTagsTag.DropDown
         mnuTagsTag.Items.Clear()
-        Dim mTag() As Object = Master.DB.GetAllTags
+        Dim mTag() As Object = Master.DB.GetAll_Tags
         mnuTagsTag.Items.AddRange(mTag)
 
         mnuTagsNew.Text = String.Empty
@@ -11644,7 +11644,7 @@ Public Class frmMain
         mnuScrapeOptionTop250.Click,
         mnuScrapeOptionTrailer.Click,
         mnuScrapeOptionWriters.Click,
-        mnuScrapeOptionYear.Click
+        mnuScrapeOptionYear.Click, mnuScrapeOptionUserRating.Click
 
         Dim ContentType As String = String.Empty
         Dim ScrapeOption As String = String.Empty
@@ -11713,6 +11713,9 @@ Public Class frmMain
                 ScrapeOptions.bMainTop250 = True
             Case "trailer"
                 ScrapeOptions.bMainTrailer = True
+            Case "userrating"
+                ScrapeOptions.bEpisodeUserRating = True
+                ScrapeOptions.bMainUserRating = True
             Case "writers"
                 ScrapeOptions.bEpisodeCredits = True
                 ScrapeOptions.bMainWriters = True
@@ -15847,7 +15850,7 @@ Public Class frmMain
             End Using
 
             clbFilterDataFields_Movies.Items.Clear()
-            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "VideoSource", "Votes", "Year"})
+            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "iUserRating", "VideoSource", "Votes", "Year"})
 
             Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
             SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
@@ -16559,6 +16562,13 @@ Public Class frmMain
         'Skip (Skip If More Than One Match)
         Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
         mnuScrapeTypeSkip.Text = strSkip
+
+        'Tags
+        Dim strTags As String = Master.eLang.GetString(1101, "Tags")
+        lblFilterTag_Movies.Text = String.Concat(strTags, ":")
+        lblFilterTag_Shows.Text = String.Concat(strTags, ":")
+        lblFilterTags_Movies.Text = strTags
+        lblFilterTags_Shows.Text = strTags
 
         'Theme Only
         Dim strThemeOnly As String = Master.eLang.GetString(1125, "Theme Only")
@@ -17598,7 +17608,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterTag_Movies()
         clbFilterTags_Movies.Items.Clear()
-        Dim mTag() As Object = Master.DB.GetAllTags
+        Dim mTag() As Object = Master.DB.GetAll_Tags
         clbFilterTags_Movies.Items.Add(Master.eLang.None)
         clbFilterTags_Movies.Items.AddRange(mTag)
 
@@ -17622,7 +17632,7 @@ Public Class frmMain
 
     Private Sub RefreshFilterTag_Shows()
         clbFilterTags_Shows.Items.Clear()
-        Dim mTag() As Object = Master.DB.GetAllTags
+        Dim mTag() As Object = Master.DB.GetAll_Tags
         clbFilterTags_Shows.Items.Add(Master.eLang.None)
         clbFilterTags_Shows.Items.AddRange(mTag)
 

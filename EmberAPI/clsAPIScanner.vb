@@ -1630,7 +1630,7 @@ Public Class Scanner
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    MoviePaths = Master.DB.GetAllMoviePaths
+                    MoviePaths = Master.DB.GetAll_MoviePaths
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                             ScanSourceDirectory_Movie(eSource, True, Args.Folder)
@@ -1647,8 +1647,8 @@ Public Class Scanner
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
-                    TVShowPaths = Master.DB.GetAllTVShowPaths
+                    TVEpisodePaths = Master.DB.GetAll_TVEpisodePaths
+                    TVShowPaths = Master.DB.GetAll_TVShowPaths
 
                     If Args.Folder.ToLower = eSource.Path.ToLower Then
                         'Args.Folder is a tv show source folder -> scan the whole source
@@ -1692,7 +1692,7 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
-            MoviePaths = Master.DB.GetAllMoviePaths
+            MoviePaths = Master.DB.GetAll_MoviePaths
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1741,8 +1741,8 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
-            TVEpisodePaths = Master.DB.GetAllTVEpisodePaths
-            TVShowPaths = Master.DB.GetAllTVShowPaths
+            TVEpisodePaths = Master.DB.GetAll_TVEpisodePaths
+            TVShowPaths = Master.DB.GetAll_TVShowPaths
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()

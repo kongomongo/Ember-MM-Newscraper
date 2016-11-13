@@ -56,21 +56,8 @@ Public Class frmSettingsHolder_TV
         RaiseEvent SetupScraperChanged(chkEnabled.Checked, 0)
     End Sub
 
-    Private Sub chkScraperShowRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperShowRating.CheckedChanged
+    Private Sub Apply(sender As Object, e As EventArgs) Handles chkEpisodeRating.CheckedChanged, chkEpisodeUserRating.CheckedChanged, chkMainRating.CheckedChanged, chkMainUserRating.CheckedChanged
         RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkScraperEpRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkScraperEpisodeRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkFallbackToGlobalRating_CheckedChanged(sender As Object, e As EventArgs) Handles chkFallbackToGlobalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub chkUsePersonalRatings_CheckedChanged(sender As Object, e As EventArgs) Handles chkUsePersonalRating.CheckedChanged, chkFallbackToGlobalRating.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
-        chkFallbackToGlobalRating.Enabled = chkUsePersonalRating.Checked
     End Sub
 
     Public Sub New()
@@ -91,14 +78,13 @@ Public Class frmSettingsHolder_TV
 
     Private Sub SetUp()
         chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        chkFallbackToGlobalRating.Text = Master.eLang.GetString(1467, "Fallback to global rating")
-        chkScraperEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
-        chkScraperShowRating.Text = Master.eLang.GetString(400, "Rating")
-        chkUsePersonalRating.Text = Master.eLang.GetString(1464, "Use personal rating")
+        chkEpisodeRating.Text = Master.eLang.GetString(400, "Rating")
+        chkEpisodeUserRating.Text = Master.eLang.GetString(1464, "User Rating")
+        chkMainRating.Text = Master.eLang.GetString(400, "Rating")
+        chkMainUserRating.Text = Master.eLang.GetString(1464, "User Rating")
         gbScraperFieldsEpisode.Text = Master.eLang.GetString(727, "Episode")
         gbScraperFieldsOpts.Text = Master.eLang.GetString(791, "Scraper Fields - Scraper specific")
         gbScraperFieldsShow.Text = Master.eLang.GetString(743, "Show")
-        gbScraperOpts.Text = Master.eLang.GetString(1186, "Scraper Options")
         lblInfoBottom.Text = String.Format(Master.eLang.GetString(790, "These settings are specific to this module.{0}Please refer to the global settings for more options."), Environment.NewLine)
         lblScraperOrder.Text = Master.eLang.GetString(168, "Scrape Order")
     End Sub

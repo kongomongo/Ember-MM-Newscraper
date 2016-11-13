@@ -47,7 +47,6 @@ Public Class TraktInterface
     Private _Name As String = "Trakt.tv Manager"
     Private _SpecialSettings As New SpecialSettings
     Private _TraktAPI As clsAPITrakt
-    Private _needNewAPI As Boolean = False
 
 #End Region 'Fields
 
@@ -81,7 +80,8 @@ Public Class TraktInterface
                                                       Enums.ModuleEventType.ScraperSingle_Movie,
                                                       Enums.ModuleEventType.ScraperSingle_TVEpisode,
                                                       Enums.ModuleEventType.ScraperSingle_TVSeason,
-                                                      Enums.ModuleEventType.ScraperSingle_TVShow})
+                                                      Enums.ModuleEventType.ScraperSingle_TVShow,
+                                                      Enums.ModuleEventType.Sync_Movie})
         End Get
     End Property
 
@@ -132,8 +132,8 @@ Public Class TraktInterface
                 If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
-            Case Enums.ModuleEventType.CommandLine
-                _TraktAPI.SyncToEmber_All()
+            'Case Enums.ModuleEventType.CommandLine
+            '    _TraktAPI.SyncToEmber_All()
             Case Enums.ModuleEventType.ScraperMulti_Movie
                 If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperMulti_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
@@ -154,6 +154,10 @@ Public Class TraktInterface
                 If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_TVEpisode(_dbelement)
                 End If
+            Case Enums.ModuleEventType.Sync_Movie
+                If False AndAlso _dbelement IsNot Nothing Then
+                    _TraktAPI.SyncTo_Trakt(_dbelement)
+                End If
         End Select
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
@@ -173,7 +177,9 @@ Public Class TraktInterface
 
     Sub Enable()
         _TraktAPI = New clsAPITrakt(_SpecialSettings)
-        _SpecialSettings.Token = _TraktAPI.Token
+        If _TraktAPI.NewTokenCreated Then
+            SaveSettings()
+        End If
 
         Dim tsi As New ToolStripMenuItem
 
@@ -211,11 +217,7 @@ Public Class TraktInterface
     End Sub
 
     Private Sub Handle_ModuleSettingsChanged()
-        _needNewAPI = True
-    End Sub
-
-    Private Sub Handle_AccountSettingsChanged()
-        _needNewAPI = True
+        RaiseEvent ModuleSettingsChanged()
     End Sub
 
     Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
@@ -236,8 +238,6 @@ Public Class TraktInterface
         _setup.chkGetWatchedStateScraperMulti_TVEpisode.Checked = _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode
         _setup.chkGetWatchedStateScraperSingle_Movie.Checked = _SpecialSettings.GetWatchedStateScraperSingle_Movie
         _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked = _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode
-        _setup.txtPassword.Text = _SpecialSettings.Password
-        _setup.txtUsername.Text = _SpecialSettings.Username
 
         SPanel.Name = _Name
         SPanel.Text = "Trakt.tv Interface"
@@ -248,7 +248,6 @@ Public Class TraktInterface
         SPanel.Panel = _setup.pnlSettings
         AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        AddHandler _setup.AccountSettingsChanged, AddressOf Handle_AccountSettingsChanged
         Return SPanel
     End Function
 
@@ -284,22 +283,12 @@ Public Class TraktInterface
         _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode = _setup.chkGetWatchedStateScraperMulti_TVEpisode.Checked
         _SpecialSettings.GetWatchedStateScraperSingle_Movie = _setup.chkGetWatchedStateScraperSingle_Movie.Checked
         _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode = _setup.chkGetWatchedStateScraperSingle_TVEpisode.Checked
-        _SpecialSettings.Password = _setup.txtPassword.Text
-        _SpecialSettings.Username = _setup.txtUsername.Text
-
-        If _needNewAPI Then
-            _SpecialSettings.Token = String.Empty
-            _TraktAPI = New clsAPITrakt(_SpecialSettings)
-            _SpecialSettings.Token = _TraktAPI.Token
-            _needNewAPI = False
-        End If
 
         SaveSettings()
 
         If DoDispose Then
             RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            RemoveHandler _setup.AccountSettingsChanged, AddressOf Handle_AccountSettingsChanged
             _setup.Dispose()
         End If
     End Sub
@@ -340,13 +329,23 @@ Public Class TraktInterface
         Private _getwatchedstatescrapermulti_tvepisode As Boolean
         Private _getwatchedstatescrapersingle_movie As Boolean
         Private _getwatchedstatescrapersingle_tvepisode As Boolean
-        Private _password As String
-        Private _token As String
-        Private _username As String
+        Private _synctotrakt_movie As Boolean
 
 #End Region 'Fields
 
 #Region "Properties"
+
+        <XmlIgnore>
+        Public Property AccessToken() As String
+            Get
+                Return AdvancedSettings.GetSetting("AccessToken", String.Empty, "scraper.Data.Trakttv")
+            End Get
+            Set(ByVal value As String)
+                Using settings = New AdvancedSettings()
+                    settings.SetSetting("AccessToken", value, "scraper.Data.Trakttv")
+                End Using
+            End Set
+        End Property
 
         <XmlElement("collectionremove_movie")>
         Public Property CollectionRemove_Movie() As Boolean
@@ -355,6 +354,30 @@ Public Class TraktInterface
             End Get
             Set(ByVal value As Boolean)
                 _collectionremove_movie = value
+            End Set
+        End Property
+
+        <XmlIgnore>
+        Public Property CreatedAt() As String
+            Get
+                Return AdvancedSettings.GetSetting("CreatedAt", "0", "scraper.Data.Trakttv")
+            End Get
+            Set(ByVal value As String)
+                Using settings = New AdvancedSettings()
+                    settings.SetSetting("CreatedAt", value, "scraper.Data.Trakttv")
+                End Using
+            End Set
+        End Property
+
+        <XmlIgnore>
+        Public Property ExpiresInSeconds() As String
+            Get
+                Return AdvancedSettings.GetSetting("ExpiresInSeconds", "0", "scraper.Data.Trakttv")
+            End Get
+            Set(ByVal value As String)
+                Using settings = New AdvancedSettings()
+                    settings.SetSetting("ExpiresInSeconds", value, "scraper.Data.Trakttv")
+                End Using
             End Set
         End Property
 
@@ -438,33 +461,25 @@ Public Class TraktInterface
             End Set
         End Property
 
-        <XmlElement("password")>
-        Public Property Password() As String
+        <XmlIgnore>
+        Public Property RefreshToken() As String
             Get
-                Return _password
+                Return AdvancedSettings.GetSetting("RefreshToken", String.Empty, "scraper.Data.Trakttv")
             End Get
             Set(ByVal value As String)
-                _password = value
+                Using settings = New AdvancedSettings()
+                    settings.SetSetting("RefreshToken", value, "scraper.Data.Trakttv")
+                End Using
             End Set
         End Property
 
-        <XmlElement("token")>
-        Public Property Token() As String
+        <XmlElement("synctotrakt_movie")>
+        Public Property SyncToTrakt_Movie() As Boolean
             Get
-                Return _token
+                Return _synctotrakt_movie
             End Get
-            Set(ByVal value As String)
-                _token = value
-            End Set
-        End Property
-
-        <XmlElement("username")>
-        Public Property Username() As String
-            Get
-                Return _username
-            End Get
-            Set(ByVal value As String)
-                _username = value
+            Set(ByVal value As Boolean)
+                _synctotrakt_movie = value
             End Set
         End Property
 
@@ -490,9 +505,7 @@ Public Class TraktInterface
             _getwatchedstatescrapermulti_tvepisode = False
             _getwatchedstatescrapersingle_movie = False
             _getwatchedstatescrapersingle_tvepisode = False
-            _password = String.Empty
-            _token = String.Empty
-            _username = String.Empty
+            _synctotrakt_movie = False
         End Sub
 
 #End Region 'Methods

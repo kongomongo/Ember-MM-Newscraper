@@ -233,10 +233,10 @@
     <Compile Include="dlgEditMovieSet.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditMovie.Designer.vb">
-      <DependentUpon>dlgEditMovie.vb</DependentUpon>
+    <Compile Include="dlgEdit.Designer.vb">
+      <DependentUpon>dlgEdit.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgEditMovie.vb">
+    <Compile Include="dlgEdit.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgEditTVSeason.Designer.vb">
@@ -434,8 +434,8 @@
     <EmbeddedResource Include="dlgEditMovieSet.resx">
       <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditMovie.resx">
-      <DependentUpon>dlgEditMovie.vb</DependentUpon>
+    <EmbeddedResource Include="dlgEdit.resx">
+      <DependentUpon>dlgEdit.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgEditTVSeason.resx">
       <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
