@@ -139,7 +139,7 @@ Public Class MPDB_Image
 
         LoadSettings()
 
-        ImagesContainer = MPDB.GetMPDBPosters(DBMovie.Movie.IMDB)
+        ImagesContainer = MPDB.GetMPDBPosters(DBMovie.MainDetails.IMDB)
 
         Return New Interfaces.ModuleResult With {.breakChain = False}
     End Function

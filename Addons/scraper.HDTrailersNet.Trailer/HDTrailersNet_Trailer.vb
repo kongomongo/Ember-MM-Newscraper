@@ -148,13 +148,13 @@ Public Class HDTrailersNet_Trailer
 
         Dim tTitle As String = String.Empty
 
-        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            tTitle = DBMovie.Movie.Title
+        If String.IsNullOrEmpty(DBMovie.MainDetails.OriginalTitle) Then
+            tTitle = DBMovie.MainDetails.Title
         Else
-            tTitle = DBMovie.Movie.OriginalTitle
+            tTitle = DBMovie.MainDetails.OriginalTitle
         End If
 
-        Dim tHDTrailersNetTrailer As New HDTrailersNet.Scraper(tTitle, DBMovie.Movie.Title)
+        Dim tHDTrailersNetTrailer As New HDTrailersNet.Scraper(tTitle, DBMovie.MainDetails.Title)
 
         If tHDTrailersNetTrailer.TrailerList.Count > 0 Then
             TrailerList = tHDTrailersNetTrailer.TrailerList

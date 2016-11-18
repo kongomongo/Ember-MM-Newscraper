@@ -134,10 +134,10 @@ Public Class dlgBulkRenamer_TV
                                 If Not DBNull.Value.Equals(SQLreader("NfoPath")) AndAlso Not DBNull.Value.Equals(SQLreader("idEpisode")) Then
                                     _tmpPath = SQLreader("NfoPath").ToString
                                     If Not String.IsNullOrEmpty(_tmpPath) Then
-                                        Dim _currShow As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt32(SQLreader("idEpisode")), True)
-                                        If Not _currShow.ID = -1 AndAlso Not _currShow.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currShow.Filename) Then
-                                            bwLoadInfo.ReportProgress(iProg, String.Concat(_currShow.TVShow.Title, ": ", _currShow.TVEpisode.Title))
-                                            Dim EpisodeFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_TVEpisode(_currShow)
+                                        Dim _currTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt32(SQLreader("idEpisode")), True)
+                                        If Not _currTVEpisode.ID = -1 AndAlso Not _currTVEpisode.ShowID = -1 AndAlso Not String.IsNullOrEmpty(_currTVEpisode.Filename) Then
+                                            bwLoadInfo.ReportProgress(iProg, String.Concat(_currTVEpisode.ShowDetails.Title, ": ", _currTVEpisode.MainDetails.Title))
+                                            Dim EpisodeFile As FileFolderRenamer.FileRename = FileFolderRenamer.GetInfo_TVEpisode(_currTVEpisode)
                                             FFRenamer.Add_TVEpisode(EpisodeFile)
                                         End If
                                     End If

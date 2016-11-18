@@ -143,7 +143,7 @@ Public Class MediaExporter
                 If part.ContentType = Enums.ContentType.Movie Then
                     For Each tMovie As Database.DBElement In _tMovieList
                         If Not sfunction Is Nothing Then
-                            If Not sfunction(tMovie.Movie.Title, String.Empty) Then Return Nothing
+                            If Not sfunction(tMovie.MainDetails.Title, String.Empty) Then Return Nothing
                         End If
                         HTMLBodyPart.Append(ProcessPattern_Movie(part, sfunction, tMovie))
                         _iCounter_Global += 1
@@ -153,7 +153,7 @@ Public Class MediaExporter
                 ElseIf part.ContentType = Enums.ContentType.TVShow Then
                     For Each tShow As Database.DBElement In _tTVShowList
                         If Not sfunction Is Nothing Then
-                            If Not sfunction(tShow.TVShow.Title, String.Empty) Then Return Nothing
+                            If Not sfunction(tShow.MainDetails.Title, String.Empty) Then Return Nothing
                         End If
                         HTMLBodyPart.Append(ProcessPattern_TVShow(part, tShow, sfunction))
                         _iCounter_Global += 1
@@ -163,9 +163,9 @@ Public Class MediaExporter
                 ElseIf part.ContentType = Enums.ContentType.TVSeason Then
                     If tTVShow IsNot Nothing Then
                         _iCounter_TVSeason = 1
-                        For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.TVSeason.Season = 999)
+                        For Each tSeason As Database.DBElement In tTVShow.Seasons.Where(Function(f) Not f.MainDetails.Season = 999)
                             If Not sfunction Is Nothing Then
-                                If Not sfunction(tTVShow.TVShow.Title, tSeason.TVSeason.Title) Then Return Nothing
+                                If Not sfunction(tTVShow.MainDetails.Title, tSeason.MainDetails.Title) Then Return Nothing
                             End If
                             HTMLBodyPart.Append(ProcessPattern_TVSeason(part, sfunction, tTVShow, tSeason))
                             _iCounter_TVSeason += 1
@@ -176,9 +176,9 @@ Public Class MediaExporter
                 ElseIf part.ContentType = Enums.ContentType.TVEpisode Then
                     If tTVShow IsNot Nothing AndAlso tTVSeason IsNot Nothing Then
                         _iCounter_TVEpisode = 1
-                        For Each tEpisode As Database.DBElement In tTVShow.Episodes.Where(Function(f) f.TVEpisode.Season = tTVSeason.TVSeason.Season)
+                        For Each tEpisode As Database.DBElement In tTVShow.Episodes.Where(Function(f) f.MainDetails.Season = tTVSeason.MainDetails.Season)
                             If Not sfunction Is Nothing Then
-                                If Not sfunction(tTVShow.TVShow.Title, tEpisode.TVEpisode.Title) Then Return Nothing
+                                If Not sfunction(tTVShow.MainDetails.Title, tEpisode.MainDetails.Title) Then Return Nothing
                             End If
                             HTMLBodyPart.Append(ProcessPattern_TVEpisode(part, sfunction, tTVShow, tEpisode))
                             _iCounter_TVEpisode += 1
@@ -628,9 +628,9 @@ Public Class MediaExporter
             Dim fiAV As New MediaContainers.Fileinfo
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    fiAV = tDBElement.Movie.FileInfo
+                    fiAV = tDBElement.MainDetails.FileInfo
                 Case Enums.ContentType.TVEpisode
-                    fiAV = tDBElement.TVEpisode.FileInfo
+                    fiAV = tDBElement.MainDetails.FileInfo
             End Select
             Dim tVideo As MediaContainers.Video = NFO.GetBestVideo(fiAV)
             Dim tAudio As MediaContainers.Audio = NFO.GetBestAudio(fiAV, False)
@@ -724,53 +724,53 @@ Public Class MediaExporter
 
         'Title
         Dim Title As String = String.Empty
-        If Not String.IsNullOrEmpty(tMovie.Movie.Title) Then
-            Title = tMovie.Movie.Title
+        If Not String.IsNullOrEmpty(tMovie.MainDetails.Title) Then
+            Title = tMovie.MainDetails.Title
         Else
             Title = tMovie.ListTitle
         End If
 
         'Actors
         Dim ActorsList As New List(Of String)
-        For Each tActor As MediaContainers.Person In tMovie.Movie.Actors
+        For Each tActor As MediaContainers.Person In tMovie.MainDetails.Actors
             ActorsList.Add(tActor.Name)
         Next
 
         'NFO Fields
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList.ToArray)))
-        strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Certifications.ToArray)))
-        strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Countries.ToArray)))
-        strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Credits.ToArray)))
+        strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.MainDetails.Certifications.ToArray)))
+        strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.MainDetails.Countries.ToArray)))
+        strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.MainDetails.Credits.ToArray)))
         strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tMovie.DateAdded).ToString("dd.MM.yyyy")))
         strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tMovie.DateModified).ToString("dd.MM.yyyy")))
-        strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Directors.ToArray)))
-        strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Genres.ToArray)))
-        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.Movie.IMDB))
-        strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tMovie.Movie.Language))
-        strRow = strRow.Replace("<$LASTPLAYED>", StringUtils.HtmlEncode(tMovie.Movie.LastPlayed))
+        strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.MainDetails.Directors.ToArray)))
+        strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.MainDetails.Genres.ToArray)))
+        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tMovie.MainDetails.IMDB))
+        strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tMovie.MainDetails.Language))
+        strRow = strRow.Replace("<$LASTPLAYED>", StringUtils.HtmlEncode(tMovie.MainDetails.LastPlayed))
         strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(tMovie.ListTitle))
-        strRow = strRow.Replace("<$MPAA>", StringUtils.HtmlEncode(tMovie.Movie.MPAA))
-        strRow = strRow.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(tMovie.Movie.OriginalTitle))
-        strRow = strRow.Replace("<$OUTLINE>", StringUtils.HtmlEncode(tMovie.Movie.Outline))
-        strRow = strRow.Replace("<$PLAYCOUNT>", CStr(tMovie.Movie.PlayCount))
-        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tMovie.Movie.Plot))
-        strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tMovie.Movie.RatingSpecified, Double.Parse(tMovie.Movie.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-        strRow = strRow.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(tMovie.Movie.ReleaseDate))
-        strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tMovie.Movie.Runtime))
-        strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.Movie.Studios.ToArray)))
-        strRow = strRow.Replace("<$TAGLINE>", StringUtils.HtmlEncode(tMovie.Movie.Tagline))
-        strRow = strRow.Replace("<$TAGS>", If(tMovie.Movie.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tMovie.Movie.Tags.ToArray))), String.Empty))
+        strRow = strRow.Replace("<$MPAA>", StringUtils.HtmlEncode(tMovie.MainDetails.MPAA))
+        strRow = strRow.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(tMovie.MainDetails.OriginalTitle))
+        strRow = strRow.Replace("<$OUTLINE>", StringUtils.HtmlEncode(tMovie.MainDetails.Outline))
+        strRow = strRow.Replace("<$PLAYCOUNT>", CStr(tMovie.MainDetails.PlayCount))
+        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tMovie.MainDetails.Plot))
+        strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tMovie.MainDetails.RatingSpecified, Double.Parse(tMovie.MainDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$RELEASEDATE>", StringUtils.HtmlEncode(tMovie.MainDetails.ReleaseDate))
+        strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tMovie.MainDetails.Runtime))
+        strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tMovie.MainDetails.Studios.ToArray)))
+        strRow = strRow.Replace("<$TAGLINE>", StringUtils.HtmlEncode(tMovie.MainDetails.Tagline))
+        strRow = strRow.Replace("<$TAGS>", If(tMovie.MainDetails.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tMovie.MainDetails.Tags.ToArray))), String.Empty))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
-        strRow = strRow.Replace("<$TMDBCOLID>", StringUtils.HtmlEncode(tMovie.Movie.TMDBColID))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tMovie.Movie.TMDB))
-        strRow = strRow.Replace("<$TOP250>", StringUtils.HtmlEncode(tMovie.Movie.Top250.ToString))
-        strRow = strRow.Replace("<$TRAILER>", StringUtils.HtmlEncode(tMovie.Movie.Trailer))
-        strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tMovie.Movie.VideoSource))
-        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tMovie.Movie.VotesSpecified, Double.Parse(tMovie.Movie.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-        strRow = strRow.Replace("<$YEAR>", tMovie.Movie.Year)
+        strRow = strRow.Replace("<$TMDBCOLID>", StringUtils.HtmlEncode(tMovie.MainDetails.TMDBColID))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tMovie.MainDetails.TMDB))
+        strRow = strRow.Replace("<$TOP250>", StringUtils.HtmlEncode(tMovie.MainDetails.Top250.ToString))
+        strRow = strRow.Replace("<$TRAILER>", StringUtils.HtmlEncode(tMovie.MainDetails.Trailer))
+        strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tMovie.MainDetails.VideoSource))
+        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tMovie.MainDetails.VotesSpecified, Double.Parse(tMovie.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$YEAR>", tMovie.MainDetails.Year)
 
         'FileInfo
-        Dim fInfo As AVSInfo = GetAVSInfo(tMovie.Movie.FileInfo)
+        Dim fInfo As AVSInfo = GetAVSInfo(tMovie.MainDetails.FileInfo)
 
         'Audio
         strRow = strRow.Replace("<$AUDIO>", fInfo.audDetails)
@@ -779,7 +779,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$AUDIOLANGUAGE>", fInfo.audLanguage)
         strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", fInfo.audLongLanguage)
 
-        Dim aInfo As AVSInfo = GetDetailAudioInfo(tMovie.Movie.FileInfo)
+        Dim aInfo As AVSInfo = GetDetailAudioInfo(tMovie.MainDetails.FileInfo)
         strRow = strRow.Replace("<$DETAILALLAUDIO>", aInfo.audDetails)
         strRow = strRow.Replace("<$AUDIOALLBITRATE>", aInfo.audBitrate)
         strRow = strRow.Replace("<$AUDIOALLCHANNELS>", aInfo.audChannels)
@@ -848,38 +848,38 @@ Public Class MediaExporter
 
         'Actors
         Dim ActorsList_Episode As New List(Of String)
-        For Each tActor As MediaContainers.Person In tEpisode.TVEpisode.Actors
+        For Each tActor As MediaContainers.Person In tEpisode.MainDetails.Actors
             ActorsList_Episode.Add(tActor.Name)
         Next
 
         'Guest Stars
         Dim GuestStarsList_Episode As New List(Of String)
-        For Each tActor As MediaContainers.Person In tEpisode.TVEpisode.GuestStars
+        For Each tActor As MediaContainers.Person In tEpisode.MainDetails.GuestStars
             GuestStarsList_Episode.Add(tActor.Name)
         Next
 
         'NFO Fields
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList_Episode.ToArray)))
-        strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Aired))
-        strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.TVEpisode.Credits.ToArray)))
+        strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tEpisode.MainDetails.Aired))
+        strRow = strRow.Replace("<$CREDITS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.MainDetails.Credits.ToArray)))
         strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tEpisode.DateAdded).ToString("dd.MM.yyyy")))
-        strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.TVEpisode.Directors.ToArray)))
-        strRow = strRow.Replace("<$EPISODE>", StringUtils.HtmlEncode(CStr(tEpisode.TVEpisode.Episode)))
+        strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tEpisode.MainDetails.Directors.ToArray)))
+        strRow = strRow.Replace("<$EPISODE>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.Episode)))
         strRow = strRow.Replace("<$GUESTSTARS>", StringUtils.HtmlEncode(String.Join(" / ", GuestStarsList_Episode.ToArray)))
-        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.IMDB))
-        strRow = strRow.Replace("<$LASTPLAYED>", StringUtils.HtmlEncode(tEpisode.TVEpisode.LastPlayed))
-        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Plot))
-        strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.RatingSpecified, Double.Parse(tEpisode.TVEpisode.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-        strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Runtime))
-        strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tEpisode.TVEpisode.Season)))
-        strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tEpisode.TVEpisode.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.TVEpisode.TVDB))
-        strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.TVEpisode.VideoSource))
-        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.TVEpisode.VotesSpecified, Double.Parse(tEpisode.TVEpisode.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.IMDB))
+        strRow = strRow.Replace("<$LASTPLAYED>", StringUtils.HtmlEncode(tEpisode.MainDetails.LastPlayed))
+        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tEpisode.MainDetails.Plot))
+        strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tEpisode.MainDetails.RatingSpecified, Double.Parse(tEpisode.MainDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tEpisode.MainDetails.Runtime))
+        strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.Season)))
+        strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tEpisode.MainDetails.Title))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.TMDB))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.TVDB))
+        strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.MainDetails.VideoSource))
+        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.MainDetails.VotesSpecified, Double.Parse(tEpisode.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         'FileInfo
-        Dim fInfo As AVSInfo = GetAVSInfo(tEpisode.TVEpisode.FileInfo)
+        Dim fInfo As AVSInfo = GetAVSInfo(tEpisode.MainDetails.FileInfo)
 
         'Audio
         strRow = strRow.Replace("<$AUDIO>", fInfo.audDetails)
@@ -888,7 +888,7 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$AUDIOLANGUAGE>", fInfo.audLanguage)
         strRow = strRow.Replace("<$AUDIOLONGLANGUAGE>", fInfo.audLongLanguage)
 
-        Dim aInfo As AVSInfo = GetDetailAudioInfo(tEpisode.TVEpisode.FileInfo)
+        Dim aInfo As AVSInfo = GetDetailAudioInfo(tEpisode.MainDetails.FileInfo)
         strRow = strRow.Replace("<$DETAILALLAUDIO>", aInfo.audDetails)
         strRow = strRow.Replace("<$AUDIOALLBITRATE>", aInfo.audBitrate)
         strRow = strRow.Replace("<$AUDIOALLCHANNELS>", aInfo.audChannels)
@@ -931,7 +931,7 @@ Public Class MediaExporter
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
-        strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Where(Function(f) f.TVEpisode.Season = tSeason.TVSeason.Season).Count)))
+        strRow = strRow.Replace("<$EPISODES>", StringUtils.HtmlEncode(CStr(tShow.Episodes.Where(Function(f) f.MainDetails.Season = tSeason.MainDetails.Season).Count)))
 
         'Images
         With tSeason.ImagesContainer
@@ -942,12 +942,12 @@ Public Class MediaExporter
         End With
 
         'NFO Fields
-        strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tSeason.TVSeason.Aired))
-        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tSeason.TVSeason.Plot))
-        strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tSeason.TVSeason.Season)))
-        strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tSeason.TVSeason.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tSeason.TVSeason.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tSeason.TVSeason.TVDB))
+        strRow = strRow.Replace("<$AIRED>", StringUtils.HtmlEncode(tSeason.MainDetails.Aired))
+        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tSeason.MainDetails.Plot))
+        strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.Season)))
+        strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tSeason.MainDetails.Title))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tSeason.MainDetails.TMDB))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tSeason.MainDetails.TVDB))
 
         Return strRow
     End Function
@@ -978,43 +978,43 @@ Public Class MediaExporter
 
         'Title
         Dim Title As String = String.Empty
-        If Not String.IsNullOrEmpty(tShow.TVShow.Title) Then
-            Title = tShow.TVShow.Title
+        If Not String.IsNullOrEmpty(tShow.MainDetails.Title) Then
+            Title = tShow.MainDetails.Title
         Else
             Title = tShow.ListTitle
         End If
 
         'Actors
         Dim ActorsList As New List(Of String)
-        For Each tActor As MediaContainers.Person In tShow.TVShow.Actors
+        For Each tActor As MediaContainers.Person In tShow.MainDetails.Actors
             ActorsList.Add(tActor.Name)
         Next
 
         'NFO Fields
         strRow = strRow.Replace("<$ACTORS>", StringUtils.HtmlEncode(String.Join(", ", ActorsList.ToArray)))
-        strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Certifications.ToArray)))
-        strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Countries.ToArray)))
-        strRow = strRow.Replace("<$CREATORS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Creators.ToArray)))
+        strRow = strRow.Replace("<$CERTIFICATIONS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Certifications.ToArray)))
+        strRow = strRow.Replace("<$COUNTRIES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Countries.ToArray)))
+        strRow = strRow.Replace("<$CREATORS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Creators.ToArray)))
         strRow = strRow.Replace("<$DATEADDED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tShow.DateAdded).ToString("dd.MM.yyyy")))
         strRow = strRow.Replace("<$DATEMODIFIED>", StringUtils.HtmlEncode(Functions.ConvertFromUnixTimestamp(tShow.DateModified).ToString("dd.MM.yyyy")))
-        strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Directors.ToArray)))
-        strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Genres.ToArray)))
-        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tShow.TVShow.IMDB))
-        strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tShow.TVShow.Language))
+        strRow = strRow.Replace("<$DIRECTORS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Directors.ToArray)))
+        strRow = strRow.Replace("<$GENRES>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Genres.ToArray)))
+        strRow = strRow.Replace("<$IMDBID>", StringUtils.HtmlEncode(tShow.MainDetails.IMDB))
+        strRow = strRow.Replace("<$LANGUAGE>", StringUtils.HtmlEncode(tShow.MainDetails.Language))
         strRow = strRow.Replace("<$LISTTITLE>", StringUtils.HtmlEncode(tShow.ListTitle))
-        strRow = strRow.Replace("<$MPAA>", StringUtils.HtmlEncode(tShow.TVShow.MPAA))
-        strRow = strRow.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(tShow.TVShow.OriginalTitle))
-        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tShow.TVShow.Plot))
-        strRow = strRow.Replace("<$PREMIERED>", StringUtils.HtmlEncode(tShow.TVShow.Premiered))
-        strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tShow.TVShow.RatingSpecified, Double.Parse(tShow.TVShow.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
-        strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tShow.TVShow.Runtime))
-        strRow = strRow.Replace("<$STATUS>", StringUtils.HtmlEncode(tShow.TVShow.Status))
-        strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.TVShow.Studios.ToArray)))
-        strRow = strRow.Replace("<$TAGS>", If(tShow.TVShow.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tShow.TVShow.Tags.ToArray))), String.Empty))
+        strRow = strRow.Replace("<$MPAA>", StringUtils.HtmlEncode(tShow.MainDetails.MPAA))
+        strRow = strRow.Replace("<$ORIGINALTITLE>", StringUtils.HtmlEncode(tShow.MainDetails.OriginalTitle))
+        strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tShow.MainDetails.Plot))
+        strRow = strRow.Replace("<$PREMIERED>", StringUtils.HtmlEncode(tShow.MainDetails.Premiered))
+        strRow = strRow.Replace("<$RATING>", StringUtils.HtmlEncode(If(tShow.MainDetails.RatingSpecified, Double.Parse(tShow.MainDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tShow.MainDetails.Runtime))
+        strRow = strRow.Replace("<$STATUS>", StringUtils.HtmlEncode(tShow.MainDetails.Status))
+        strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Studios.ToArray)))
+        strRow = strRow.Replace("<$TAGS>", If(tShow.MainDetails.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tShow.MainDetails.Tags.ToArray))), String.Empty))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tShow.TVShow.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", tShow.TVShow.TVDB)
-        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.TVShow.VotesSpecified, Double.Parse(tShow.TVShow.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tShow.MainDetails.TMDB))
+        strRow = strRow.Replace("<$TVDBID>", tShow.MainDetails.TVDB)
+        strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.MainDetails.VotesSpecified, Double.Parse(tShow.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         Return strRow
     End Function

@@ -1264,49 +1264,49 @@ Public Class dlgEdit
         End If
 
         chkMarked.Checked = _tmpDBElement.IsMark
-        If _tmpDBElement.Movie.PlayCountSpecified Then
+        If _tmpDBElement.MainDetails.PlayCountSpecified Then
             chkWatched.Checked = True
         Else
             chkWatched.Checked = False
         End If
 
-        lbCertifications.Items.AddRange(_tmpDBElement.Movie.Certifications.ToArray)
-        lbCountries.Items.AddRange(_tmpDBElement.Movie.Countries.ToArray)
-        lbCreditsCreators.Items.AddRange(_tmpDBElement.Movie.Credits.ToArray)
-        lbDirectors.Items.AddRange(_tmpDBElement.Movie.Directors.ToArray)
-        lbStudios.Items.AddRange(_tmpDBElement.Movie.Studios.ToArray)
-        txtIMDB.Text = _tmpDBElement.Movie.IMDB
-        txtTMDB.Text = _tmpDBElement.Movie.TMDB
-        txtTMDBCollection.Text = _tmpDBElement.Movie.TMDBColID
-        txtOriginalTitle.Text = _tmpDBElement.Movie.OriginalTitle
-        txtOutline.Text = _tmpDBElement.Movie.Outline
-        txtPlot.Text = _tmpDBElement.Movie.Plot
-        txtRating.Text = _tmpDBElement.Movie.Rating
-        txtReleaseDate.Text = _tmpDBElement.Movie.ReleaseDate
-        txtRuntime.Text = _tmpDBElement.Movie.Runtime
-        txtSortTitle.Text = _tmpDBElement.Movie.SortTitle
-        txtTagline.Text = _tmpDBElement.Movie.Tagline
-        txtTitle.Text = _tmpDBElement.Movie.Title
-        txtTop250.Text = _tmpDBElement.Movie.Top250.ToString
-        cbUserRating.Text = _tmpDBElement.Movie.UserRating.ToString
-        txtVideoSource.Text = _tmpDBElement.Movie.VideoSource
-        txtVotes.Text = _tmpDBElement.Movie.Votes
-        txtYear.Text = _tmpDBElement.Movie.Year
+        lbCertifications.Items.AddRange(_tmpDBElement.MainDetails.Certifications.ToArray)
+        lbCountries.Items.AddRange(_tmpDBElement.MainDetails.Countries.ToArray)
+        lbCreditsCreators.Items.AddRange(_tmpDBElement.MainDetails.Credits.ToArray)
+        lbDirectors.Items.AddRange(_tmpDBElement.MainDetails.Directors.ToArray)
+        lbStudios.Items.AddRange(_tmpDBElement.MainDetails.Studios.ToArray)
+        txtIMDB.Text = _tmpDBElement.MainDetails.IMDB
+        txtTMDB.Text = _tmpDBElement.MainDetails.TMDB
+        txtTMDBCollection.Text = _tmpDBElement.MainDetails.TMDBColID
+        txtOriginalTitle.Text = _tmpDBElement.MainDetails.OriginalTitle
+        txtOutline.Text = _tmpDBElement.MainDetails.Outline
+        txtPlot.Text = _tmpDBElement.MainDetails.Plot
+        txtRating.Text = _tmpDBElement.MainDetails.Rating
+        txtReleaseDate.Text = _tmpDBElement.MainDetails.ReleaseDate
+        txtRuntime.Text = _tmpDBElement.MainDetails.Runtime
+        txtSortTitle.Text = _tmpDBElement.MainDetails.SortTitle
+        txtTagline.Text = _tmpDBElement.MainDetails.Tagline
+        txtTitle.Text = _tmpDBElement.MainDetails.Title
+        txtTop250.Text = _tmpDBElement.MainDetails.Top250.ToString
+        cbUserRating.Text = _tmpDBElement.MainDetails.UserRating.ToString
+        txtVideoSource.Text = _tmpDBElement.MainDetails.VideoSource
+        txtVotes.Text = _tmpDBElement.MainDetails.Votes
+        txtYear.Text = _tmpDBElement.MainDetails.Year
 
-        If Not String.IsNullOrEmpty(_tmpDBElement.Movie.LastPlayed) Then
+        If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.LastPlayed) Then
             Dim timecode As Double = 0
-            Double.TryParse(_tmpDBElement.Movie.LastPlayed, timecode)
+            Double.TryParse(_tmpDBElement.MainDetails.LastPlayed, timecode)
             If timecode > 0 Then
                 txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
             Else
-                txtLastPlayed.Text = _tmpDBElement.Movie.LastPlayed
+                txtLastPlayed.Text = _tmpDBElement.MainDetails.LastPlayed
             End If
         End If
 
         SelectMPAA()
 
-        If Not String.IsNullOrEmpty(_tmpDBElement.Movie.Trailer) Then
-            txtTrailer.Text = _tmpDBElement.Movie.Trailer
+        If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.Trailer) Then
+            txtTrailer.Text = _tmpDBElement.MainDetails.Trailer
             btnPlayTrailer.Enabled = True
         Else
             btnPlayTrailer.Enabled = False
@@ -1318,10 +1318,10 @@ Public Class dlgEdit
         For i As Integer = 0 To clbGenres.Items.Count - 1
             clbGenres.SetItemChecked(i, False)
         Next
-        If _tmpDBElement.Movie.GenresSpecified Then
-            For g As Integer = 0 To _tmpDBElement.Movie.Genres.Count - 1
-                If clbGenres.FindString(_tmpDBElement.Movie.Genres(g).Trim) > 0 Then
-                    clbGenres.SetItemChecked(clbGenres.FindString(_tmpDBElement.Movie.Genres(g).Trim), True)
+        If _tmpDBElement.MainDetails.GenresSpecified Then
+            For g As Integer = 0 To _tmpDBElement.MainDetails.Genres.Count - 1
+                If clbGenres.FindString(_tmpDBElement.MainDetails.Genres(g).Trim) > 0 Then
+                    clbGenres.SetItemChecked(clbGenres.FindString(_tmpDBElement.MainDetails.Genres(g).Trim), True)
                 End If
             Next
 
@@ -1333,8 +1333,8 @@ Public Class dlgEdit
         End If
 
         'Presect MovieSet
-        If _tmpDBElement.Movie.SetsSpecified Then
-            cbCollection.SelectedValue = _tmpDBElement.Movie.Sets(0)
+        If _tmpDBElement.MainDetails.SetsSpecified Then
+            cbCollection.SelectedValue = _tmpDBElement.MainDetails.Sets(0)
 
             If cbCollection.SelectedIndex = -1 Then
                 cbCollection.SelectedIndex = 0
@@ -1347,10 +1347,10 @@ Public Class dlgEdit
         For i As Integer = 0 To clbShowLinks.Items.Count - 1
             clbShowLinks.SetItemChecked(i, False)
         Next
-        If _tmpDBElement.Movie.ShowLinksSpecified Then
-            For g As Integer = 0 To _tmpDBElement.Movie.ShowLinks.Count - 1
-                If clbShowLinks.FindString(_tmpDBElement.Movie.ShowLinks(g).Trim) > 0 Then
-                    clbShowLinks.SetItemChecked(clbShowLinks.FindString(_tmpDBElement.Movie.ShowLinks(g).Trim), True)
+        If _tmpDBElement.MainDetails.ShowLinksSpecified Then
+            For g As Integer = 0 To _tmpDBElement.MainDetails.ShowLinks.Count - 1
+                If clbShowLinks.FindString(_tmpDBElement.MainDetails.ShowLinks(g).Trim) > 0 Then
+                    clbShowLinks.SetItemChecked(clbShowLinks.FindString(_tmpDBElement.MainDetails.ShowLinks(g).Trim), True)
                 End If
             Next
 
@@ -1365,10 +1365,10 @@ Public Class dlgEdit
         For i As Integer = 0 To clbTags.Items.Count - 1
             clbTags.SetItemChecked(i, False)
         Next
-        If _tmpDBElement.Movie.TagsSpecified Then
-            For g As Integer = 0 To _tmpDBElement.Movie.Tags.Count - 1
-                If clbTags.FindString(_tmpDBElement.Movie.Tags(g).Trim) > 0 Then
-                    clbTags.SetItemChecked(clbTags.FindString(_tmpDBElement.Movie.Tags(g).Trim), True)
+        If _tmpDBElement.MainDetails.TagsSpecified Then
+            For g As Integer = 0 To _tmpDBElement.MainDetails.Tags.Count - 1
+                If clbTags.FindString(_tmpDBElement.MainDetails.Tags(g).Trim) > 0 Then
+                    clbTags.SetItemChecked(clbTags.FindString(_tmpDBElement.MainDetails.Tags(g).Trim), True)
                 End If
             Next
 
@@ -1382,7 +1382,7 @@ Public Class dlgEdit
         'Actors
         Dim lvActorItem As ListViewItem
         lvActors.Items.Clear()
-        For Each nActor As MediaContainers.Person In _tmpDBElement.Movie.Actors
+        For Each nActor As MediaContainers.Person In _tmpDBElement.MainDetails.Actors
             lvActorItem = lvActors.Items.Add(nActor.ID.ToString)
             lvActorItem.Tag = nActor
             lvActorItem.SubItems.Add(nActor.Name)
@@ -1390,16 +1390,16 @@ Public Class dlgEdit
             lvActorItem.SubItems.Add(nActor.URLOriginal)
         Next
 
-        If Not String.IsNullOrEmpty(_tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(_tmpDBElement.Movie.VideoSource) Then
+        If Not String.IsNullOrEmpty(_tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(_tmpDBElement.MainDetails.VideoSource) Then
             Dim vSource As String = APIXML.GetVideoSource(_tmpDBElement.Filename, False)
             If Not String.IsNullOrEmpty(vSource) Then
                 _tmpDBElement.VideoSource = vSource
-                _tmpDBElement.Movie.VideoSource = _tmpDBElement.VideoSource
+                _tmpDBElement.MainDetails.VideoSource = _tmpDBElement.VideoSource
             ElseIf String.IsNullOrEmpty(_tmpDBElement.VideoSource) AndAlso AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
                 _tmpDBElement.VideoSource = AdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(_tmpDBElement.Filename)), String.Empty, "*EmberAPP")
-                _tmpDBElement.Movie.VideoSource = _tmpDBElement.VideoSource
-            ElseIf Not String.IsNullOrEmpty(_tmpDBElement.Movie.VideoSource) Then
-                _tmpDBElement.VideoSource = _tmpDBElement.Movie.VideoSource
+                _tmpDBElement.MainDetails.VideoSource = _tmpDBElement.VideoSource
+            ElseIf Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.VideoSource) Then
+                _tmpDBElement.VideoSource = _tmpDBElement.MainDetails.VideoSource
             End If
         End If
 
@@ -1651,8 +1651,8 @@ Public Class dlgEdit
         'add empty MovieSet
         items.Add(Master.eLang.None, New MediaContainers.SetDetails)
         'add scraped MovieSet
-        If _tmpDBElement.Movie.SetsSpecified Then
-            For Each mSet In _tmpDBElement.Movie.Sets
+        If _tmpDBElement.MainDetails.SetsSpecified Then
+            For Each mSet In _tmpDBElement.MainDetails.Sets
                 Dim eSetDetail = lstSetDetails.Where(Function(f) f.Title = mSet.Title OrElse
                                                          ((f.TMDBSpecified OrElse mSet.TMDBSpecified) AndAlso f.TMDB = mSet.TMDB))
                 If eSetDetail.Count = 0 Then
@@ -1913,12 +1913,12 @@ Public Class dlgEdit
     End Sub
 
     Private Sub SelectMPAA()
-        If Not String.IsNullOrEmpty(_tmpDBElement.Movie.MPAA) Then
+        If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.MPAA) Then
             If Master.eSettings.MovieScraperCertOnlyValue Then
                 Dim sItem As String = String.Empty
                 For i As Integer = 0 To lbMPAA.Items.Count - 1
                     sItem = lbMPAA.Items(i).ToString
-                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = _tmpDBElement.Movie.MPAA Then
+                    If sItem.Contains(":") AndAlso sItem.Split(Convert.ToChar(":"))(1) = _tmpDBElement.MainDetails.MPAA Then
                         lbMPAA.SelectedIndex = i
                         lbMPAA.TopIndex = i
                         Exit For
@@ -1927,7 +1927,7 @@ Public Class dlgEdit
             Else
                 Dim i As Integer = 0
                 For ctr As Integer = 0 To lbMPAA.Items.Count - 1
-                    If _tmpDBElement.Movie.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                    If _tmpDBElement.MainDetails.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                         i = ctr
                         Exit For
                     End If
@@ -1939,11 +1939,11 @@ Public Class dlgEdit
                 Dim strMPAADesc As String = String.Empty
                 If i > 0 Then
                     strMPAA = lbMPAA.Items.Item(i).ToString
-                    strMPAADesc = _tmpDBElement.Movie.MPAA.Replace(strMPAA, String.Empty).Trim
+                    strMPAADesc = _tmpDBElement.MainDetails.MPAA.Replace(strMPAA, String.Empty).Trim
                     txtMPAA.Text = strMPAA
                     txtMPAADesc.Text = strMPAADesc
                 Else
-                    txtMPAA.Text = _tmpDBElement.Movie.MPAA
+                    txtMPAA.Text = _tmpDBElement.MainDetails.MPAA
                 End If
             End If
         End If
@@ -1962,94 +1962,94 @@ Public Class dlgEdit
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
             _tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-            _tmpDBElement.Movie.Language = _tmpDBElement.Language
+            _tmpDBElement.MainDetails.Language = _tmpDBElement.Language
         Else
             _tmpDBElement.Language = "en-US"
-            _tmpDBElement.Movie.Language = _tmpDBElement.Language
+            _tmpDBElement.MainDetails.Language = _tmpDBElement.Language
         End If
 
         _tmpDBElement.IsMark = chkMarked.Checked
 
         _tmpDBElement.ListTitle = StringUtils.ListTitle_Movie(txtTitle.Text, txtYear.Text)
-        _tmpDBElement.Movie.Certifications = lbCertifications.Items.Cast(Of Object).Select(Function(f) lbCertifications.GetItemText(f)).ToList
-        _tmpDBElement.Movie.Countries = lbCountries.Items.Cast(Of Object).Select(Function(f) lbCountries.GetItemText(f)).ToList
-        _tmpDBElement.Movie.Credits = lbCreditsCreators.Items.Cast(Of Object).Select(Function(f) lbCreditsCreators.GetItemText(f)).ToList
-        _tmpDBElement.Movie.Directors = lbDirectors.Items.Cast(Of Object).Select(Function(f) lbDirectors.GetItemText(f)).ToList
-        _tmpDBElement.Movie.Studios = lbStudios.Items.Cast(Of Object).Select(Function(f) lbStudios.GetItemText(f)).ToList
-        _tmpDBElement.Movie.MPAA = String.Concat(txtMPAA.Text, " ", txtMPAADesc.Text).Trim
-        _tmpDBElement.Movie.OriginalTitle = txtOriginalTitle.Text.Trim
-        _tmpDBElement.Movie.Outline = txtOutline.Text.Trim
-        _tmpDBElement.Movie.Plot = txtPlot.Text.Trim
-        _tmpDBElement.Movie.Rating = txtRating.Text.Trim
-        _tmpDBElement.Movie.ReleaseDate = txtReleaseDate.Text.Trim
-        _tmpDBElement.Movie.Runtime = txtRuntime.Text.Trim
-        _tmpDBElement.Movie.SortTitle = txtSortTitle.Text.Trim
-        _tmpDBElement.Movie.Tagline = txtTagline.Text.Trim
-        _tmpDBElement.Movie.Title = txtTitle.Text.Trim
-        _tmpDBElement.Movie.Top250 = If(Integer.TryParse(txtTop250.Text.Trim, 0), CInt(txtTop250.Text.Trim), 0)
-        _tmpDBElement.Movie.Trailer = txtTrailer.Text.Trim
-        _tmpDBElement.Movie.UserRating = If(Integer.TryParse(cbUserRating.Text.Trim, 0), CInt(cbUserRating.Text.Trim), 0)
-        _tmpDBElement.Movie.VideoSource = txtVideoSource.Text.Trim
-        _tmpDBElement.Movie.Votes = txtVotes.Text.Trim
-        _tmpDBElement.Movie.Year = txtYear.Text.Trim
+        _tmpDBElement.MainDetails.Certifications = lbCertifications.Items.Cast(Of Object).Select(Function(f) lbCertifications.GetItemText(f)).ToList
+        _tmpDBElement.MainDetails.Countries = lbCountries.Items.Cast(Of Object).Select(Function(f) lbCountries.GetItemText(f)).ToList
+        _tmpDBElement.MainDetails.Credits = lbCreditsCreators.Items.Cast(Of Object).Select(Function(f) lbCreditsCreators.GetItemText(f)).ToList
+        _tmpDBElement.MainDetails.Directors = lbDirectors.Items.Cast(Of Object).Select(Function(f) lbDirectors.GetItemText(f)).ToList
+        _tmpDBElement.MainDetails.Studios = lbStudios.Items.Cast(Of Object).Select(Function(f) lbStudios.GetItemText(f)).ToList
+        _tmpDBElement.MainDetails.MPAA = String.Concat(txtMPAA.Text, " ", txtMPAADesc.Text).Trim
+        _tmpDBElement.MainDetails.OriginalTitle = txtOriginalTitle.Text.Trim
+        _tmpDBElement.MainDetails.Outline = txtOutline.Text.Trim
+        _tmpDBElement.MainDetails.Plot = txtPlot.Text.Trim
+        _tmpDBElement.MainDetails.Rating = txtRating.Text.Trim
+        _tmpDBElement.MainDetails.ReleaseDate = txtReleaseDate.Text.Trim
+        _tmpDBElement.MainDetails.Runtime = txtRuntime.Text.Trim
+        _tmpDBElement.MainDetails.SortTitle = txtSortTitle.Text.Trim
+        _tmpDBElement.MainDetails.Tagline = txtTagline.Text.Trim
+        _tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
+        _tmpDBElement.MainDetails.Top250 = If(Integer.TryParse(txtTop250.Text.Trim, 0), CInt(txtTop250.Text.Trim), 0)
+        _tmpDBElement.MainDetails.Trailer = txtTrailer.Text.Trim
+        _tmpDBElement.MainDetails.UserRating = If(Integer.TryParse(cbUserRating.Text.Trim, 0), CInt(cbUserRating.Text.Trim), 0)
+        _tmpDBElement.MainDetails.VideoSource = txtVideoSource.Text.Trim
+        _tmpDBElement.MainDetails.Votes = txtVotes.Text.Trim
+        _tmpDBElement.MainDetails.Year = txtYear.Text.Trim
         _tmpDBElement.VideoSource = txtVideoSource.Text.Trim
 
         'cocotus, 2013/02 Playcount/Watched state support added
         'if watched-checkbox is checked -> save Playcount=1 in nfo
         If chkWatched.Checked Then
             'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-            If Not _tmpDBElement.Movie.PlayCountSpecified Then
-                _tmpDBElement.Movie.PlayCount = 1
-                _tmpDBElement.Movie.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            If Not _tmpDBElement.MainDetails.PlayCountSpecified Then
+                _tmpDBElement.MainDetails.PlayCount = 1
+                _tmpDBElement.MainDetails.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
             End If
         Else
             'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-            If _tmpDBElement.Movie.PlayCountSpecified Then
-                _tmpDBElement.Movie.PlayCount = 0
-                _tmpDBElement.Movie.LastPlayed = String.Empty
+            If _tmpDBElement.MainDetails.PlayCountSpecified Then
+                _tmpDBElement.MainDetails.PlayCount = 0
+                _tmpDBElement.MainDetails.LastPlayed = String.Empty
             End If
         End If
         'cocotus End
 
         'Actors
-        _tmpDBElement.Movie.Actors.Clear()
+        _tmpDBElement.MainDetails.Actors.Clear()
         If lvActors.Items.Count > 0 Then
             Dim iOrder As Integer = 0
             For Each lviActor As ListViewItem In lvActors.Items
                 Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
                 addActor.Order = iOrder
                 iOrder += 1
-                _tmpDBElement.Movie.Actors.Add(addActor)
+                _tmpDBElement.MainDetails.Actors.Add(addActor)
             Next
         End If
 
         'Genres
         If clbGenres.CheckedItems.Count = 0 OrElse clbGenres.CheckedIndices.Contains(0) Then
-            _tmpDBElement.Movie.Genres.Clear()
+            _tmpDBElement.MainDetails.Genres.Clear()
         Else
-            _tmpDBElement.Movie.Genres = clbGenres.CheckedItems.Cast(Of Object).Select(Function(f) clbGenres.GetItemText(f)).ToList
+            _tmpDBElement.MainDetails.Genres = clbGenres.CheckedItems.Cast(Of Object).Select(Function(f) clbGenres.GetItemText(f)).ToList
         End If
 
         'MovieSet
         If cbCollection.SelectedIndex <= 0 Then
-            _tmpDBElement.Movie.Sets.Clear()
+            _tmpDBElement.MainDetails.Sets.Clear()
         Else
-            _tmpDBElement.Movie.Sets.Clear()
-            _tmpDBElement.Movie.Sets.Add(CType(cbCollection.SelectedItem, KeyValuePair(Of String, MediaContainers.SetDetails)).Value)
+            _tmpDBElement.MainDetails.Sets.Clear()
+            _tmpDBElement.MainDetails.Sets.Add(CType(cbCollection.SelectedItem, KeyValuePair(Of String, MediaContainers.SetDetails)).Value)
         End If
 
         'ShowLinks
         If clbShowLinks.CheckedItems.Count = 0 OrElse clbShowLinks.CheckedIndices.Contains(0) Then
-            _tmpDBElement.Movie.ShowLinks.Clear()
+            _tmpDBElement.MainDetails.ShowLinks.Clear()
         Else
-            _tmpDBElement.Movie.ShowLinks = clbShowLinks.CheckedItems.Cast(Of Object).Select(Function(f) clbShowLinks.GetItemText(f)).ToList
+            _tmpDBElement.MainDetails.ShowLinks = clbShowLinks.CheckedItems.Cast(Of Object).Select(Function(f) clbShowLinks.GetItemText(f)).ToList
         End If
 
         'Tags
         If clbTags.CheckedItems.Count = 0 OrElse clbTags.CheckedIndices.Contains(0) Then
-            _tmpDBElement.Movie.Tags.Clear()
+            _tmpDBElement.MainDetails.Tags.Clear()
         Else
-            _tmpDBElement.Movie.Tags = clbTags.CheckedItems.Cast(Of Object).Select(Function(f) clbTags.GetItemText(f)).ToList
+            _tmpDBElement.MainDetails.Tags = clbTags.CheckedItems.Cast(Of Object).Select(Function(f) clbTags.GetItemText(f)).ToList
         End If
 
         If Path.GetExtension(_tmpDBElement.Filename) = ".disc" Then
@@ -2059,8 +2059,8 @@ Public Class dlgEdit
             MediaStub.SaveDiscStub(StubFile, Title, Message)
         End If
 
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.Movie.Thumb = pResults.Posters
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.Movie.Fanart = pResults.Fanart
+        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
+        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
 
         Dim removeSubtitles As New List(Of MediaContainers.Subtitle)
         For Each Subtitle In _tmpDBElement.Subtitles
@@ -2130,7 +2130,7 @@ Public Class dlgEdit
         btnSetThemeScrape.Text = strScrape
         btnSetTrailerScrape.Text = strScrape
 
-        Dim mTitle As String = _tmpDBElement.Movie.Title
+        Dim mTitle As String = _tmpDBElement.MainDetails.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
         tsFilename.Text = _tmpDBElement.Filename

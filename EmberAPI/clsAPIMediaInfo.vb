@@ -95,12 +95,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Video.Count = miMovie.Movie.FileInfo.StreamDetails.Video.Count Then
+                            If tinfo.StreamDetails.Video.Count = miMovie.MainDetails.FileInfo.StreamDetails.Video.Count Then
                                 For i = 0 To tinfo.StreamDetails.Video.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miMovie.Movie.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Video.Item(i).Language = miMovie.Movie.FileInfo.StreamDetails.Video.Item(i).Language
-                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miMovie.Movie.FileInfo.StreamDetails.Video.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(miMovie.MainDetails.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Video.Item(i).Language = miMovie.MainDetails.FileInfo.StreamDetails.Video.Item(i).Language
+                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miMovie.MainDetails.FileInfo.StreamDetails.Video.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -112,12 +112,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Audio.Count = miMovie.Movie.FileInfo.StreamDetails.Audio.Count Then
+                            If tinfo.StreamDetails.Audio.Count = miMovie.MainDetails.FileInfo.StreamDetails.Audio.Count Then
                                 For i = 0 To tinfo.StreamDetails.Audio.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miMovie.Movie.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Audio.Item(i).Language = miMovie.Movie.FileInfo.StreamDetails.Audio.Item(i).Language
-                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miMovie.Movie.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(miMovie.MainDetails.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Audio.Item(i).Language = miMovie.MainDetails.FileInfo.StreamDetails.Audio.Item(i).Language
+                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miMovie.MainDetails.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -126,21 +126,21 @@ Public Class MediaInfo
                             logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                     End If
-                    miMovie.Movie.FileInfo = tinfo
+                    miMovie.MainDetails.FileInfo = tinfo
                 End If
-                If miMovie.Movie.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.MovieScraperUseMDDuration Then
-                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(miMovie.Movie.FileInfo)
+                If miMovie.MainDetails.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.MovieScraperUseMDDuration Then
+                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(miMovie.MainDetails.FileInfo)
                     'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
                     If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
-                        miMovie.Movie.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.MovieScraperDurationRuntimeFormat)
+                        miMovie.MainDetails.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.MovieScraperDurationRuntimeFormat)
                     End If
                 End If
                 MI = Nothing
             End If
-            If miMovie.Movie.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.Movie.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+            If miMovie.MainDetails.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.MainDetails.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.MainDetails.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaContainers.Fileinfo
                 _mi = MediaInfo.ApplyDefaults(pExt)
-                If Not _mi Is Nothing Then miMovie.Movie.FileInfo = _mi
+                If Not _mi Is Nothing Then miMovie.MainDetails.FileInfo = _mi
             End If
 
         Catch ex As Exception
@@ -167,12 +167,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new video source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Video.Count = miTV.TVEpisode.FileInfo.StreamDetails.Video.Count Then
+                            If tinfo.StreamDetails.Video.Count = miTV.MainDetails.FileInfo.StreamDetails.Video.Count Then
                                 For i = 0 To tinfo.StreamDetails.Video.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Video.Item(i).Language = miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).Language
-                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miTV.TVEpisode.FileInfo.StreamDetails.Video.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(miTV.MainDetails.FileInfo.StreamDetails.Video.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Video.Item(i).Language = miTV.MainDetails.FileInfo.StreamDetails.Video.Item(i).Language
+                                        tinfo.StreamDetails.Video.Item(i).LongLanguage = miTV.MainDetails.FileInfo.StreamDetails.Video.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -184,12 +184,12 @@ Public Class MediaInfo
                         Try
                             'sets old language setting if setting is enabled (lock language)
                             'First make sure that there is no completely new audio source scanned of the movie --> if so (i.e. more streams) then update!
-                            If tinfo.StreamDetails.Audio.Count = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count Then
+                            If tinfo.StreamDetails.Audio.Count = miTV.MainDetails.FileInfo.StreamDetails.Audio.Count Then
                                 For i = 0 To tinfo.StreamDetails.Audio.Count - 1
                                     'only preserve if language tag is filled --> else update!
-                                    If Not String.IsNullOrEmpty(miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
-                                        tinfo.StreamDetails.Audio.Item(i).Language = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).Language
-                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miTV.TVEpisode.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
+                                    If Not String.IsNullOrEmpty(miTV.MainDetails.FileInfo.StreamDetails.Audio.Item(i).LongLanguage) Then
+                                        tinfo.StreamDetails.Audio.Item(i).Language = miTV.MainDetails.FileInfo.StreamDetails.Audio.Item(i).Language
+                                        tinfo.StreamDetails.Audio.Item(i).LongLanguage = miTV.MainDetails.FileInfo.StreamDetails.Audio.Item(i).LongLanguage
                                     End If
                                 Next
                             End If
@@ -198,20 +198,20 @@ Public Class MediaInfo
                             logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                     End If
-                    miTV.TVEpisode.FileInfo = tinfo
+                    miTV.MainDetails.FileInfo = tinfo
                 End If
-                If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.TVScraperUseMDDuration Then
-                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(miTV.TVEpisode.FileInfo)
+                If miTV.MainDetails.FileInfo.StreamDetails.Video.Count > 0 AndAlso Master.eSettings.TVScraperUseMDDuration Then
+                    Dim tVid As MediaContainers.Video = NFO.GetBestVideo(miTV.MainDetails.FileInfo)
                     'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
                     If Not String.IsNullOrEmpty(tVid.Duration) AndAlso Not tVid.Duration.Trim = "0" Then
-                        miTV.TVEpisode.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.TVScraperDurationRuntimeFormat)
+                        miTV.MainDetails.Runtime = MediaInfo.FormatDuration(tVid.Duration, Master.eSettings.TVScraperDurationRuntimeFormat)
                     End If
                 End If
             End If
-            If miTV.TVEpisode.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.TVEpisode.FileInfo.StreamDetails.Subtitle.Count = 0 Then
+            If miTV.MainDetails.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.MainDetails.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.MainDetails.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaContainers.Fileinfo
                 _mi = MediaInfo.ApplyTVDefaults(pExt)
-                If Not _mi Is Nothing Then miTV.TVEpisode.FileInfo = _mi
+                If Not _mi Is Nothing Then miTV.MainDetails.FileInfo = _mi
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

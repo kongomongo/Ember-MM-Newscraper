@@ -69,11 +69,7 @@ Public Class dlgFileInfo
                     stream = dEditStream.ShowDialog(cbStreamType.SelectedItem.ToString, Nothing, 0)
                     If Not stream Is Nothing Then
                         If Not SettingDefaults Then
-                            If _isEpisode Then
-                                _DBElement.TVEpisode.FileInfo = _FileInfo
-                            Else
-                                _DBElement.Movie.FileInfo = _FileInfo
-                            End If
+                            _DBElement.MainDetails.FileInfo = _FileInfo
                         End If
                         If cbStreamType.SelectedItem.ToString = Master.eLang.GetString(595, "Video Streams") Then
                             _FileInfo.StreamDetails.Video.Add(DirectCast(stream, MediaContainers.Video))
@@ -127,11 +123,7 @@ Public Class dlgFileInfo
             If lvStreams.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvStreams.SelectedItems(0)
                 If Not SettingDefaults Then
-                    If _isEpisode Then
-                        _DBElement.TVEpisode.FileInfo = _FileInfo
-                    Else
-                        _DBElement.Movie.FileInfo = _FileInfo
-                    End If
+                    _DBElement.MainDetails.FileInfo = _FileInfo
                 End If
                 If i.Tag.ToString = Master.eLang.GetString(595, "Video Streams") Then
                     _FileInfo.StreamDetails.Video.RemoveAt(Convert.ToInt16(i.Text))
@@ -160,7 +152,7 @@ Public Class dlgFileInfo
     Private Sub dlgFileInfo_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUp()
         If Not SettingDefaults Then
-            _FileInfo = If(_isEpisode, _DBElement.TVEpisode.FileInfo, _DBElement.Movie.FileInfo)
+            _FileInfo = _DBElement.MainDetails.FileInfo
         End If
         LoadInfo()
     End Sub
@@ -177,11 +169,7 @@ Public Class dlgFileInfo
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, _FileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If Not SettingDefaults Then
-                            If _isEpisode Then
-                                _DBElement.TVEpisode.FileInfo = _FileInfo
-                            Else
-                                _DBElement.Movie.FileInfo = _FileInfo
-                            End If
+                            _DBElement.MainDetails.FileInfo = _FileInfo
                         End If
                         If i.Tag.ToString = Master.eLang.GetString(595, "Video Streams") Then
                             _FileInfo.StreamDetails.Video(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Video)

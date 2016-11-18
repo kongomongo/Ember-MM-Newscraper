@@ -155,13 +155,13 @@ Public Class Apple_Trailer
 
         Dim tTitle As String = String.Empty
 
-        If String.IsNullOrEmpty(DBMovie.Movie.OriginalTitle) Then
-            tTitle = DBMovie.Movie.Title
+        If String.IsNullOrEmpty(DBMovie.MainDetails.OriginalTitle) Then
+            tTitle = DBMovie.MainDetails.Title
         Else
-            tTitle = DBMovie.Movie.OriginalTitle
+            tTitle = DBMovie.MainDetails.OriginalTitle
         End If
 
-        Dim tAppleTrailer As New Apple.Scraper(tTitle, DBMovie.Movie.IMDB)
+        Dim tAppleTrailer As New Apple.Scraper(tTitle, DBMovie.MainDetails.IMDB)
 
         If tAppleTrailer.TrailerList.Count > 0 Then
             TrailerList = tAppleTrailer.TrailerList

@@ -196,7 +196,7 @@ Public Class dlgDeleteConfirm
 
                         Dim tShow As Database.DBElement = Master.DB.Load_TVShow(ShowID, False, False)
 
-                        ItemParentNode = .Nodes.Add(ShowID.ToString, tShow.TVShow.Title)
+                        ItemParentNode = .Nodes.Add(ShowID.ToString, tShow.MainDetails.Title)
                         ItemParentNode.ImageKey = "MOVIE"
                         ItemParentNode.SelectedImageKey = "MOVIE"
                         ItemParentNode.Tag = tShow.ID
@@ -214,7 +214,7 @@ Public Class dlgDeleteConfirm
 
                             Dim tSeason As Database.DBElement = Master.DB.Load_TVSeason(Season.Value, Convert.ToInt32(Season.Key), True, True)
 
-                            ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShow.Title, tSeason.TVSeason.Season))
+                            ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.ShowDetails.Title, tSeason.MainDetails.Season))
                             ItemParentNode.ImageKey = "MOVIE"
                             ItemParentNode.SelectedImageKey = "MOVIE"
                             ItemParentNode.Tag = Season
@@ -280,7 +280,7 @@ Public Class dlgDeleteConfirm
 
                             Dim tEpisode As Database.DBElement = Master.DB.Load_TVEpisode(Ep, True)
 
-                            ItemParentNode = .Nodes.Add(Ep.ToString, tEpisode.TVEpisode.Title)
+                            ItemParentNode = .Nodes.Add(Ep.ToString, tEpisode.MainDetails.Title)
                             ItemParentNode.ImageKey = "MOVIE"
                             ItemParentNode.SelectedImageKey = "MOVIE"
                             ItemParentNode.Tag = Ep

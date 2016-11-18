@@ -38,17 +38,17 @@ Public Class dlgTMDBSearchResults_MovieSet
     'Private TMDBConf As V3.TmdbConfiguration
     'Private TMDBApi As V3.Tmdb
 
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.MovieSet)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.MainDetails)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _filterOptions As Structures.ScrapeOptions
 
-    Private _tmpMovieSet As New MediaContainers.MovieSet
+    Private _tmpMovieSet As New MediaContainers.MainDetails
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.MovieSet
+    Public ReadOnly Property Result As MediaContainers.MainDetails
         Get
             Return _tmpMovieSet
         End Get
@@ -227,7 +227,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         DialogResult = DialogResult.OK
     End Sub
 
-    Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MovieSet)
+    Private Sub SearchMovieSetInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
         pnlLoading.Visible = False
         OK_Button.Enabled = True
 
@@ -274,7 +274,7 @@ Public Class dlgTMDBSearchResults_MovieSet
         tvResults.Nodes.Clear()
         ClearInfo()
         If M IsNot Nothing AndAlso M.Matches.Count > 0 Then
-            For Each MovieSet As MediaContainers.MovieSet In M.Matches
+            For Each MovieSet As MediaContainers.MainDetails In M.Matches
                 tvResults.Nodes.Add(New TreeNode() With {.Text = MovieSet.Title, .Tag = MovieSet.TMDB})
             Next
             tvResults.SelectedNode = tvResults.Nodes(0)
@@ -380,13 +380,13 @@ Public Class dlgTMDBSearchResults_MovieSet
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetMovieSetClone(ByVal original As MediaContainers.MovieSet) As MediaContainers.MovieSet
+    Private Function GetMovieSetClone(ByVal original As MediaContainers.MainDetails) As MediaContainers.MainDetails
         Try
             Using mem As New IO.MemoryStream()
                 Dim bin As New System.Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New System.Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
                 mem.Seek(0, IO.SeekOrigin.Begin)
-                Return DirectCast(bin.Deserialize(mem), MediaContainers.MovieSet)
+                Return DirectCast(bin.Deserialize(mem), MediaContainers.MainDetails)
             End Using
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

@@ -431,7 +431,7 @@ Public Class Interfaces
         ''' <remarks></remarks>
         Public Cancelled As Boolean
 
-        Public Result As MediaContainers.Movie
+        Public Result As MediaContainers.MainDetails
 
 #End Region 'Fields
 
@@ -455,7 +455,7 @@ Public Class Interfaces
         ''' <remarks></remarks>
         Public Cancelled As Boolean
 
-        Public Result As MediaContainers.MovieSet
+        Public Result As MediaContainers.MainDetails
 
 #End Region 'Fields
 
@@ -479,7 +479,7 @@ Public Class Interfaces
         ''' <remarks></remarks>
         Public Cancelled As Boolean
 
-        Public Result As MediaContainers.EpisodeDetails
+        Public Result As MediaContainers.MainDetails
 
 #End Region 'Fields
 
@@ -503,7 +503,7 @@ Public Class Interfaces
         ''' <remarks></remarks>
         Public Cancelled As Boolean
 
-        Public Result As MediaContainers.SeasonDetails
+        Public Result As MediaContainers.MainDetails
 
 #End Region 'Fields
 
@@ -527,7 +527,7 @@ Public Class Interfaces
         ''' <remarks></remarks>
         Public Cancelled As Boolean
 
-        Public Result As MediaContainers.TVShow
+        Public Result As MediaContainers.MainDetails
 
 #End Region 'Fields
 

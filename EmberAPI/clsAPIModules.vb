@@ -903,7 +903,7 @@ Public Class ModulesManager
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_Movie) = externalScrapersModules_Data_Movie.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_Movie
-            Dim ScrapedList As New List(Of MediaContainers.Movie)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
                 Application.DoEvents()
@@ -912,10 +912,10 @@ Public Class ModulesManager
             'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
             If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
                 DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-                DBElement.Movie = New MediaContainers.Movie
+                DBElement.MainDetails = New MediaContainers.MainDetails
 
-                DBElement.Movie.Title = StringUtils.FilterTitleFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
-                DBElement.Movie.Year = StringUtils.FilterYearFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                DBElement.MainDetails.Title = StringUtils.FilterTitleFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
+                DBElement.MainDetails.Year = StringUtils.FilterYearFromPath_Movie(DBElement.Filename, DBElement.IsSingle, DBElement.Source.UseFolderName)
             End If
 
             'create a clone of DBMovie
@@ -937,19 +937,19 @@ Public Class ModulesManager
 
                         'set new informations for following scrapers
                         If ret.Result.IMDBSpecified Then
-                            oDBMovie.Movie.IMDB = ret.Result.IMDB
+                            oDBMovie.MainDetails.IMDB = ret.Result.IMDB
                         End If
                         If ret.Result.OriginalTitleSpecified Then
-                            oDBMovie.Movie.OriginalTitle = ret.Result.OriginalTitle
+                            oDBMovie.MainDetails.OriginalTitle = ret.Result.OriginalTitle
                         End If
                         If ret.Result.TitleSpecified Then
-                            oDBMovie.Movie.Title = ret.Result.Title
+                            oDBMovie.MainDetails.Title = ret.Result.Title
                         End If
                         If ret.Result.TMDBSpecified Then
-                            oDBMovie.Movie.TMDB = ret.Result.TMDB
+                            oDBMovie.MainDetails.TMDB = ret.Result.TMDB
                         End If
                         If ret.Result.YearSpecified Then
-                            oDBMovie.Movie.Year = ret.Result.Year
+                            oDBMovie.MainDetails.Year = ret.Result.Year
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_Movie
@@ -960,7 +960,7 @@ Public Class ModulesManager
                 DBElement = NFO.MergeDataScraperResults_Movie(DBElement, ScrapedList, ScrapeType, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
-                DBElement.Movie.CreateCachePaths_ActorsThumbs()
+                DBElement.MainDetails.CreateCachePaths_ActorsThumbs()
             End If
 
             If ScrapedList.Count > 0 Then
@@ -984,11 +984,11 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie set scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_MovieSet(ByRef DBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Start] {0}", DBElement.MovieSet.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Start] {0}", DBElement.MainDetails.Title))
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_MovieSet) = externalScrapersModules_Data_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult_Data_MovieSet
-        Dim ScrapedList As New List(Of MediaContainers.MovieSet)
+        Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -996,12 +996,12 @@ Public Class ModulesManager
 
         'clean DBMovie if the movie is to be changed. For this, all existing (incorrect) information must be deleted and the images triggers set to remove.
         If (ScrapeType = Enums.ScrapeType.SingleScrape OrElse ScrapeType = Enums.ScrapeType.SingleAuto) AndAlso ScrapeModifiers.DoSearch Then
-            Dim tmpTitle As String = DBElement.MovieSet.Title
+            Dim tmpTitle As String = DBElement.MainDetails.Title
 
             DBElement.ImagesContainer = New MediaContainers.ImagesContainer
-            DBElement.MovieSet = New MediaContainers.MovieSet
+            DBElement.MainDetails = New MediaContainers.MainDetails
 
-            DBElement.MovieSet.Title = tmpTitle
+            DBElement.MainDetails.Title = tmpTitle
         End If
 
         'create a clone of DBMovieSet
@@ -1017,7 +1017,7 @@ Public Class ModulesManager
                 ret = _externalScraperModule.ProcessorModule.Scraper(oDBMovieSet, ScrapeModifiers, ScrapeType, ScrapeOptions)
 
                 If ret.Cancelled Then
-                    logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", DBElement.MovieSet.Title))
+                    logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", DBElement.MainDetails.Title))
                     Return ret.Cancelled
                 End If
 
@@ -1026,10 +1026,10 @@ Public Class ModulesManager
 
                     'set new informations for following scrapers
                     If ret.Result.TitleSpecified Then
-                        oDBMovieSet.MovieSet.Title = ret.Result.Title
+                        oDBMovieSet.MainDetails.Title = ret.Result.Title
                     End If
                     If ret.Result.TMDBSpecified Then
-                        oDBMovieSet.MovieSet.TMDB = ret.Result.TMDB
+                        oDBMovieSet.MainDetails.TMDB = ret.Result.TMDB
                     End If
                 End If
                 RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_MovieSet
@@ -1041,9 +1041,9 @@ Public Class ModulesManager
         End If
 
         If ScrapedList.Count > 0 Then
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Done] {0}", DBElement.MovieSet.Title))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Done] {0}", DBElement.MainDetails.Title))
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Done] [No Scraper Results] {0}", DBElement.MovieSet.Title))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_MovieSet] [Done] [No Scraper Results] {0}", DBElement.MainDetails.Title))
             Return True 'TODO: need a new trigger
         End If
         Return ret.Cancelled
@@ -1057,7 +1057,7 @@ Public Class ModulesManager
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVEpisode
-            Dim ScrapedList As New List(Of MediaContainers.EpisodeDetails)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
                 Application.DoEvents()
@@ -1082,25 +1082,25 @@ Public Class ModulesManager
 
                         'set new informations for following scrapers
                         If ret.Result.AiredSpecified Then
-                            oEpisode.TVEpisode.Aired = ret.Result.Aired
+                            oEpisode.MainDetails.Aired = ret.Result.Aired
                         End If
                         If ret.Result.EpisodeSpecified Then
-                            oEpisode.TVEpisode.Episode = ret.Result.Episode
+                            oEpisode.MainDetails.Episode = ret.Result.Episode
                         End If
                         If ret.Result.IMDBSpecified Then
-                            oEpisode.TVEpisode.IMDB = ret.Result.IMDB
+                            oEpisode.MainDetails.IMDB = ret.Result.IMDB
                         End If
                         If ret.Result.SeasonSpecified Then
-                            oEpisode.TVEpisode.Season = ret.Result.Season
+                            oEpisode.MainDetails.Season = ret.Result.Season
                         End If
                         If ret.Result.TitleSpecified Then
-                            oEpisode.TVEpisode.Title = ret.Result.Title
+                            oEpisode.MainDetails.Title = ret.Result.Title
                         End If
                         If ret.Result.TMDBSpecified Then
-                            oEpisode.TVEpisode.TMDB = ret.Result.TMDB
+                            oEpisode.MainDetails.TMDB = ret.Result.TMDB
                         End If
                         If ret.Result.TVDBSpecified Then
-                            oEpisode.TVEpisode.TVDB = ret.Result.TVDB
+                            oEpisode.MainDetails.TVDB = ret.Result.TVDB
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1111,7 +1111,7 @@ Public Class ModulesManager
                 DBElement = NFO.MergeDataScraperResults_TVEpisode_Single(DBElement, ScrapedList, ScrapeOptions)
 
                 'create cache paths for Actor Thumbs
-                DBElement.TVEpisode.CreateCachePaths_ActorsThumbs()
+                DBElement.MainDetails.CreateCachePaths_ActorsThumbs()
             End If
 
             If ScrapedList.Count > 0 Then
@@ -1128,11 +1128,11 @@ Public Class ModulesManager
     End Function
 
     Public Function ScrapeData_TVSeason(ByRef DBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVSeason
-            Dim ScrapedList As New List(Of MediaContainers.SeasonDetails)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
                 Application.DoEvents()
@@ -1157,10 +1157,10 @@ Public Class ModulesManager
 
                         'set new informations for following scrapers
                         If ret.Result.TMDBSpecified Then
-                            oSeason.TVSeason.TMDB = ret.Result.TMDB
+                            oSeason.MainDetails.TMDB = ret.Result.TMDB
                         End If
                         If ret.Result.TVDBSpecified Then
-                            oSeason.TVSeason.TVDB = ret.Result.TVDB
+                            oSeason.MainDetails.TVDB = ret.Result.TVDB
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1172,14 +1172,14 @@ Public Class ModulesManager
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
             Else
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Abort] [Offline] {0}: Season {1}", DBElement.TVShow.Title, DBElement.TVSeason.Season))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Abort] [Offline] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
             Return True 'Cancelled
         End If
     End Function
@@ -1192,11 +1192,11 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_TVShow(ByRef DBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Start] {0}", DBElement.TVShow.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Start] {0}", DBElement.MainDetails.Title))
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVShow
-            Dim ScrapedList As New List(Of MediaContainers.TVShow)
+            Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
                 Application.DoEvents()
@@ -1209,17 +1209,17 @@ Public Class ModulesManager
                 DBElement.NfoPath = String.Empty
                 DBElement.Seasons.Clear()
                 DBElement.Theme = New MediaContainers.Theme
-                DBElement.TVShow = New MediaContainers.TVShow
+                DBElement.MainDetails = New MediaContainers.MainDetails
 
-                DBElement.TVShow.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
+                DBElement.MainDetails.Title = StringUtils.FilterTitleFromPath_TVShow(DBElement.ShowPath)
 
                 For Each sEpisode As Database.DBElement In DBElement.Episodes
-                    Dim iEpisode As Integer = sEpisode.TVEpisode.Episode
-                    Dim iSeason As Integer = sEpisode.TVEpisode.Season
-                    Dim strAired As String = sEpisode.TVEpisode.Aired
+                    Dim iEpisode As Integer = sEpisode.MainDetails.Episode
+                    Dim iSeason As Integer = sEpisode.MainDetails.Season
+                    Dim strAired As String = sEpisode.MainDetails.Aired
                     sEpisode.ImagesContainer = New MediaContainers.ImagesContainer
                     sEpisode.NfoPath = String.Empty
-                    sEpisode.TVEpisode = New MediaContainers.EpisodeDetails With {.Aired = strAired, .Episode = iEpisode, .Season = iSeason}
+                    sEpisode.MainDetails = New MediaContainers.MainDetails With {.Aired = strAired, .Episode = iEpisode, .Season = iSeason}
                 Next
             End If
 
@@ -1242,19 +1242,19 @@ Public Class ModulesManager
 
                         'set new informations for following scrapers
                         If ret.Result.IMDBSpecified Then
-                            oShow.TVShow.IMDB = ret.Result.IMDB
+                            oShow.MainDetails.IMDB = ret.Result.IMDB
                         End If
                         If ret.Result.OriginalTitleSpecified Then
-                            oShow.TVShow.OriginalTitle = ret.Result.OriginalTitle
+                            oShow.MainDetails.OriginalTitle = ret.Result.OriginalTitle
                         End If
                         If ret.Result.TitleSpecified Then
-                            oShow.TVShow.Title = ret.Result.Title
+                            oShow.MainDetails.Title = ret.Result.Title
                         End If
                         If ret.Result.TMDBSpecified Then
-                            oShow.TVShow.TMDB = ret.Result.TMDB
+                            oShow.MainDetails.TMDB = ret.Result.TMDB
                         End If
                         If ret.Result.TVDBSpecified Then
-                            oShow.TVShow.TVDB = ret.Result.TVDB
+                            oShow.MainDetails.TVDB = ret.Result.TVDB
                         End If
                     End If
                     RemoveHandler _externalScraperModule.ProcessorModule.ScraperEvent, AddressOf Handler_ScraperEvent_TV
@@ -1265,23 +1265,23 @@ Public Class ModulesManager
                 DBElement = NFO.MergeDataScraperResults_TV(DBElement, ScrapedList, ScrapeType, ScrapeOptions, ScrapeModifiers.withEpisodes)
 
                 'create cache paths for Actor Thumbs
-                DBElement.TVShow.CreateCachePaths_ActorsThumbs()
+                DBElement.MainDetails.CreateCachePaths_ActorsThumbs()
                 If ScrapeModifiers.withEpisodes Then
                     For Each tEpisode As Database.DBElement In DBElement.Episodes
-                        tEpisode.TVEpisode.CreateCachePaths_ActorsThumbs()
+                        tEpisode.MainDetails.CreateCachePaths_ActorsThumbs()
                     Next
                 End If
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Done] {0}", DBElement.TVShow.Title))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Done] {0}", DBElement.MainDetails.Title))
             Else
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Done] [No Scraper Results] {0}", DBElement.TVShow.Title))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Done] [No Scraper Results] {0}", DBElement.MainDetails.Title))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Abort] [Offline] {0}", DBElement.TVShow.Title))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVShow] [Abort] [Offline] {0}", DBElement.MainDetails.Title))
             Return True 'Cancelled
         End If
     End Function
@@ -1348,7 +1348,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_MovieSet(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_MovieSet] [Start] {0}", DBElement.MovieSet.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_MovieSet] [Start] {0}", DBElement.MainDetails.Title))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_MovieSet) = externalScrapersModules_Image_MovieSet.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1387,7 +1387,7 @@ Public Class ModulesManager
             ImagesContainer.CreateCachePaths(DBElement)
         End If
 
-        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_MovieSet] [Done] {0}", DBElement.MovieSet.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_MovieSet] [Done] {0}", DBElement.MainDetails.Title))
         Return ret.Cancelled
     End Function
     ''' <summary>
@@ -1399,7 +1399,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_TV(ByRef DBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_TV] [Start] {0}", DBElement.TVShow.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeImage_TV] [Start] {0}", DBElement.MainDetails.Title))
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Image_TV) = externalScrapersModules_Image_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult
@@ -1475,7 +1475,7 @@ Public Class ModulesManager
                 ImagesContainer.CreateCachePaths(DBElement)
             End If
 
-            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_TV] [Done] {0}", DBElement.TVShow.Title))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeImage_TV] [Done] {0}", DBElement.MainDetails.Title))
             Return ret.Cancelled
         Else
             logger.Trace(String.Format("[ModulesManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", DBElement.Filename))
@@ -1526,7 +1526,7 @@ Public Class ModulesManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
     Public Function ScrapeTheme_TVShow(ByRef DBElement As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Start] {0}", DBElement.TVShow.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Start] {0}", DBElement.MainDetails.Title))
         Dim modules As IEnumerable(Of _externalScraperModuleClass_Theme_TV) = externalScrapersModules_Theme_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As Interfaces.ModuleResult
 
@@ -1549,7 +1549,7 @@ Public Class ModulesManager
                 If ret.breakChain Then Exit For
             Next
         End If
-        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Done] {0}", DBElement.TVShow.Title))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeTheme_TVShow] [Done] {0}", DBElement.MainDetails.Title))
         Return ret.Cancelled
     End Function
     ''' <summary>

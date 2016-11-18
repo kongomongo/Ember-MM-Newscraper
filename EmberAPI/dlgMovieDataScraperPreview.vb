@@ -30,7 +30,7 @@ Public Class dlgMovieDataScraperPreview
     Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
 
     Private lvwActorSorter As ListViewColumnSorter
-    Dim _ScrapedList As New List(Of MediaContainers.Movie)
+    Dim _ScrapedList As New List(Of MediaContainers.MainDetails)
 
 #End Region
 
@@ -41,7 +41,7 @@ Public Class dlgMovieDataScraperPreview
     ''' <remarks>
     ''' 2014/09/13 Cocotus - First implementation: 
     ''' </remarks>
-    Public Sub New(ByRef ScrapedList As List(Of MediaContainers.Movie))
+    Public Sub New(ByRef ScrapedList As List(Of MediaContainers.MainDetails))
         InitializeComponent()
         'since its ByRef any changes we do in this class on _ScrapedList will directly alter ScrapedList as well (which is what we want)
         _ScrapedList = ScrapedList
@@ -878,7 +878,7 @@ Public Class dlgMovieDataScraperPreview
     ''' </remarks>
     Private Sub SaveSelectedScraperData()
         'Step 1: First save all selected information in temporay movie container
-        Dim _nmovie As New MediaContainers.Movie
+        Dim _nmovie As New MediaContainers.MainDetails
 
         For Each scraperresult In _ScrapedList
             If tbActors.TabCount > 0 AndAlso tbActors.SelectedTab.Name.ToUpper.Contains(scraperresult.Scrapersource.ToUpper) Then

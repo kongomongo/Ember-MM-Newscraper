@@ -227,7 +227,7 @@ Public Class dlgSourceMovie
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
 
         Dim strSourcePath As String = Regex.Replace(txtSourcePath.Text.Trim, "^(\\)+\\\\", "\\")
-        While strSourcePath.EndsWith(Path.DirectorySeparatorChar) OrElse strSourcePath.EndsWith(Path.AltDirectorySeparatorChar)
+        While strSourcePath.Length > 3 AndAlso (strSourcePath.EndsWith(Path.DirectorySeparatorChar) OrElse strSourcePath.EndsWith(Path.AltDirectorySeparatorChar))
             strSourcePath = strSourcePath.Remove(strSourcePath.Length - 1)
         End While
 

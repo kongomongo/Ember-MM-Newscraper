@@ -563,23 +563,23 @@ Public Class FileFolderRenamer
         MovieFile.ID = _DBElement.ID
 
         'Countries
-        If _DBElement.Movie.CountriesSpecified Then
-            MovieFile.Country = String.Join(" / ", _DBElement.Movie.Countries.ToArray)
+        If _DBElement.MainDetails.CountriesSpecified Then
+            MovieFile.Country = String.Join(" / ", _DBElement.MainDetails.Countries.ToArray)
         End If
 
         'Director
-        If _DBElement.Movie.DirectorsSpecified Then
-            MovieFile.Director = String.Join(" / ", _DBElement.Movie.Directors.ToArray)
+        If _DBElement.MainDetails.DirectorsSpecified Then
+            MovieFile.Director = String.Join(" / ", _DBElement.MainDetails.Directors.ToArray)
         End If
 
         'Genres
-        If _DBElement.Movie.GenresSpecified Then
-            MovieFile.Genre = String.Join(" / ", _DBElement.Movie.Genres.ToArray)
+        If _DBElement.MainDetails.GenresSpecified Then
+            MovieFile.Genre = String.Join(" / ", _DBElement.MainDetails.Genres.ToArray)
         End If
 
         'IMDB
-        If _DBElement.Movie.IMDBSpecified Then
-            MovieFile.IMDB = _DBElement.Movie.IMDB
+        If _DBElement.MainDetails.IMDBSpecified Then
+            MovieFile.IMDB = _DBElement.MainDetails.IMDB
         End If
 
         'IsLock
@@ -594,59 +594,59 @@ Public Class FileFolderRenamer
         End If
 
         'MovieSets
-        If _DBElement.Movie.SetsSpecified Then
-            MovieFile.Collection = _DBElement.Movie.Sets.Item(0).Title
+        If _DBElement.MainDetails.SetsSpecified Then
+            MovieFile.Collection = _DBElement.MainDetails.Sets.Item(0).Title
         End If
 
         'MPAA
-        If _DBElement.Movie.MPAASpecified Then
-            MovieFile.MPAA = SelectMPAA(_DBElement.Movie.MPAA)
+        If _DBElement.MainDetails.MPAASpecified Then
+            MovieFile.MPAA = SelectMPAA(_DBElement.MainDetails.MPAA)
         End If
 
         'OriginalTitle
-        If _DBElement.Movie.OriginalTitleSpecified Then
-            MovieFile.OriginalTitle = _DBElement.Movie.OriginalTitle
+        If _DBElement.MainDetails.OriginalTitleSpecified Then
+            MovieFile.OriginalTitle = _DBElement.MainDetails.OriginalTitle
         End If
 
         'Rating
-        If _DBElement.Movie.RatingSpecified Then
-            MovieFile.Rating = _DBElement.Movie.Rating
+        If _DBElement.MainDetails.RatingSpecified Then
+            MovieFile.Rating = _DBElement.MainDetails.Rating
         End If
 
         'SortTitle
-        If _DBElement.Movie.SortTitleSpecified Then
-            MovieFile.SortTitle = _DBElement.Movie.SortTitle
+        If _DBElement.MainDetails.SortTitleSpecified Then
+            MovieFile.SortTitle = _DBElement.MainDetails.SortTitle
         Else
             MovieFile.SortTitle = _DBElement.ListTitle
         End If
 
         'Title
-        If _DBElement.Movie.TitleSpecified Then
-            MovieFile.Title = _DBElement.Movie.Title
+        If _DBElement.MainDetails.TitleSpecified Then
+            MovieFile.Title = _DBElement.MainDetails.Title
         Else
             MovieFile.Title = _DBElement.ListTitle
         End If
 
         'VideoSource
-        If _DBElement.Movie.VideoSourceSpecified Then
-            MovieFile.VideoSource = _DBElement.Movie.VideoSource
+        If _DBElement.MainDetails.VideoSourceSpecified Then
+            MovieFile.VideoSource = _DBElement.MainDetails.VideoSource
         End If
 
         'Year
-        If _DBElement.Movie.YearSpecified Then
-            MovieFile.Year = _DBElement.Movie.Year
+        If _DBElement.MainDetails.YearSpecified Then
+            MovieFile.Year = _DBElement.MainDetails.Year
         End If
 
-        If _DBElement.Movie.FileInfoSpecified Then
+        If _DBElement.MainDetails.FileInfoSpecified Then
             'Resolution
-            If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.Movie.FileInfo)
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.MainDetails.FileInfo)
                 Dim tRes As String = NFO.GetResFromDimensions(tVid)
                 MovieFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
-            If _DBElement.Movie.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.Movie.FileInfo, False)
+            If _DBElement.MainDetails.FileInfo.StreamDetails.AudioSpecified Then
+                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.MainDetails.FileInfo, False)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -660,31 +660,31 @@ Public Class FileFolderRenamer
             End If
 
             'MultiViewCount
-            If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                If Not String.IsNullOrEmpty(_DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If Not String.IsNullOrEmpty(_DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) AndAlso CDbl(_DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                     MovieFile.MultiViewCount = "3d"
                 End If
             End If
 
             'MultiViewLayout
-            If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewLayoutSpecified Then
-                    MovieFile.MultiViewLayout = _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).MultiViewLayout
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewLayoutSpecified Then
+                    MovieFile.MultiViewLayout = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewLayout
                 End If
             End If
 
             'StereoMode
-            If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).StereoModeSpecified Then
-                    MovieFile.StereoMode = _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).StereoMode
-                    MovieFile.ShortStereoMode = _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).ShortStereoMode
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).StereoModeSpecified Then
+                    MovieFile.StereoMode = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).StereoMode
+                    MovieFile.ShortStereoMode = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).ShortStereoMode
                 End If
             End If
 
             'Video Codec
-            If _DBElement.Movie.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
-                    MovieFile.VideoCodec = _DBElement.Movie.FileInfo.StreamDetails.Video.Item(0).Codec
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
+                    MovieFile.VideoCodec = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).Codec
                 End If
             End If
         End If
@@ -718,7 +718,7 @@ Public Class FileFolderRenamer
             Else
                 MovieFile.OldFileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.Filename))
                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(MovieFile.OldFileName, String.Empty).ToLower
-                If Not stackMark = String.Empty AndAlso _DBElement.Movie.Title.ToLower.EndsWith(stackMark) Then
+                If Not stackMark = String.Empty AndAlso _DBElement.MainDetails.Title.ToLower.EndsWith(stackMark) Then
                     MovieFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
                 End If
             End If
@@ -786,14 +786,14 @@ Public Class FileFolderRenamer
         EpisodeFile.ID = _DBElement.ID
 
         'Aired
-        If _DBElement.TVEpisode.AiredSpecified Then
-            EpisodeFile.Aired = _DBElement.TVEpisode.Aired
+        If _DBElement.MainDetails.AiredSpecified Then
+            EpisodeFile.Aired = _DBElement.MainDetails.Aired
         End If
 
         'Episode Title
         If Not EpisodeFile.IsMultiEpisode Then
-            If _DBElement.TVEpisode.TitleSpecified Then
-                EpisodeFile.Title = _DBElement.TVEpisode.Title
+            If _DBElement.MainDetails.TitleSpecified Then
+                EpisodeFile.Title = _DBElement.MainDetails.Title
             End If
         Else
             Dim lTitles As New List(Of String)
@@ -810,8 +810,8 @@ Public Class FileFolderRenamer
 
         'Rating
         If Not EpisodeFile.IsMultiEpisode Then
-            If _DBElement.TVEpisode.RatingSpecified Then
-                EpisodeFile.Rating = _DBElement.TVEpisode.Rating
+            If _DBElement.MainDetails.RatingSpecified Then
+                EpisodeFile.Rating = _DBElement.MainDetails.Rating
             End If
         Else
             EpisodeFile.Rating = String.Empty
@@ -823,25 +823,25 @@ Public Class FileFolderRenamer
         End If
 
         'Show Title
-        If _DBElement.TVShow.TitleSpecified Then
-            EpisodeFile.ShowTitle = _DBElement.TVShow.Title
+        If _DBElement.ShowDetails.TitleSpecified Then
+            EpisodeFile.ShowTitle = _DBElement.ShowDetails.Title
         End If
 
         'VideoSource
-        If _DBElement.TVEpisode.VideoSourceSpecified Then
-            EpisodeFile.VideoSource = _DBElement.TVEpisode.VideoSource
+        If _DBElement.MainDetails.VideoSourceSpecified Then
+            EpisodeFile.VideoSource = _DBElement.MainDetails.VideoSource
         End If
 
-        If _DBElement.TVEpisode.FileInfoSpecified Then
+        If _DBElement.MainDetails.FileInfoSpecified Then
             'Resolution
-            If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.TVEpisode.FileInfo)
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                Dim tVid As MediaContainers.Video = NFO.GetBestVideo(_DBElement.MainDetails.FileInfo)
                 Dim tRes As String = NFO.GetResFromDimensions(tVid)
                 EpisodeFile.Resolution = String.Format("{0}", If(String.IsNullOrEmpty(tRes), Master.eLang.GetString(138, "Unknown"), tRes))
             End If
 
-            If _DBElement.TVEpisode.FileInfo.StreamDetails.AudioSpecified Then
-                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.TVEpisode.FileInfo, False)
+            If _DBElement.MainDetails.FileInfo.StreamDetails.AudioSpecified Then
+                Dim tAud As MediaContainers.Audio = NFO.GetBestAudio(_DBElement.MainDetails.FileInfo, False)
 
                 'Audio Channels
                 If tAud.ChannelsSpecified Then
@@ -855,31 +855,31 @@ Public Class FileFolderRenamer
             End If
 
             'MultiViewCount
-            If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCountSpecified AndAlso CDbl(_DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewCountSpecified AndAlso CDbl(_DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewCount) > 1 Then
                     EpisodeFile.MultiViewCount = "3d"
                 End If
             End If
 
             'MultiViewLayout
-            If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewLayoutSpecified Then
-                    EpisodeFile.MultiViewLayout = _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).MultiViewLayout
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewLayoutSpecified Then
+                    EpisodeFile.MultiViewLayout = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).MultiViewLayout
                 End If
             End If
 
             'StereoMode
-            If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).StereoModeSpecified Then
-                    EpisodeFile.StereoMode = _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).StereoMode
-                    EpisodeFile.ShortStereoMode = _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).ShortStereoMode
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).StereoModeSpecified Then
+                    EpisodeFile.StereoMode = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).StereoMode
+                    EpisodeFile.ShortStereoMode = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).ShortStereoMode
                 End If
             End If
 
             'Video Codec
-            If _DBElement.TVEpisode.FileInfo.StreamDetails.VideoSpecified Then
-                If _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
-                    EpisodeFile.VideoCodec = _DBElement.TVEpisode.FileInfo.StreamDetails.Video.Item(0).Codec
+            If _DBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified Then
+                If _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).CodecSpecified Then
+                    EpisodeFile.VideoCodec = _DBElement.MainDetails.FileInfo.StreamDetails.Video.Item(0).Codec
                 End If
             End If
         End If
@@ -924,7 +924,7 @@ Public Class FileFolderRenamer
             Else
                 EpisodeFile.OldFileName = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(_DBElement.Filename))
                 Dim stackMark As String = Path.GetFileNameWithoutExtension(_DBElement.Filename).Replace(EpisodeFile.OldFileName, String.Empty).ToLower
-                If Not stackMark = String.Empty AndAlso _DBElement.TVEpisode.Title.ToLower.EndsWith(stackMark) Then
+                If Not stackMark = String.Empty AndAlso _DBElement.MainDetails.Title.ToLower.EndsWith(stackMark) Then
                     EpisodeFile.OldFileName = Path.GetFileNameWithoutExtension(_DBElement.Filename)
                 End If
             End If
@@ -944,8 +944,8 @@ Public Class FileFolderRenamer
         ShowFile.ID = _DBElement.ShowID
 
         'Genres
-        If _DBElement.TVShow.GenresSpecified Then
-            ShowFile.Genre = String.Join(" / ", _DBElement.TVShow.Genres.ToArray)
+        If _DBElement.MainDetails.GenresSpecified Then
+            ShowFile.Genre = String.Join(" / ", _DBElement.MainDetails.Genres.ToArray)
         End If
 
         'IsLock
@@ -960,38 +960,38 @@ Public Class FileFolderRenamer
         End If
 
         'MPAA
-        If _DBElement.TVShow.MPAASpecified Then
-            ShowFile.MPAA = SelectMPAA(_DBElement.TVShow.MPAA)
+        If _DBElement.MainDetails.MPAASpecified Then
+            ShowFile.MPAA = SelectMPAA(_DBElement.MainDetails.MPAA)
         End If
 
         'OriginalTitle
-        If _DBElement.TVShow.OriginalTitleSpecified Then
-            ShowFile.OriginalTitle = _DBElement.TVShow.OriginalTitle
+        If _DBElement.MainDetails.OriginalTitleSpecified Then
+            ShowFile.OriginalTitle = _DBElement.MainDetails.OriginalTitle
         End If
 
         'Rating
-        If _DBElement.TVShow.RatingSpecified Then
-            ShowFile.Rating = _DBElement.TVShow.Rating
+        If _DBElement.MainDetails.RatingSpecified Then
+            ShowFile.Rating = _DBElement.MainDetails.Rating
         End If
 
         'Title / ShowTitle
-        If _DBElement.TVShow.TitleSpecified Then
-            ShowFile.Title = _DBElement.TVShow.Title
-            ShowFile.ShowTitle = _DBElement.TVShow.Title
+        If _DBElement.MainDetails.TitleSpecified Then
+            ShowFile.Title = _DBElement.MainDetails.Title
+            ShowFile.ShowTitle = _DBElement.MainDetails.Title
         Else
             ShowFile.Title = _DBElement.ListTitle
             ShowFile.ShowTitle = _DBElement.ListTitle
         End If
 
         'TVDB
-        If _DBElement.TVShow.TVDBSpecified Then
-            ShowFile.TVDBID = _DBElement.TVShow.TVDB
+        If _DBElement.MainDetails.TVDBSpecified Then
+            ShowFile.TVDBID = _DBElement.MainDetails.TVDB
         End If
 
         'Year
-        If _DBElement.TVShow.PremieredSpecified Then
+        If _DBElement.MainDetails.PremieredSpecified Then
             Dim tmpDate As Date
-            If Date.TryParse(_DBElement.TVShow.Premiered, tmpDate) Then
+            If Date.TryParse(_DBElement.MainDetails.Premiered, tmpDate) Then
                 ShowFile.Year = tmpDate.Year.ToString
             End If
         End If

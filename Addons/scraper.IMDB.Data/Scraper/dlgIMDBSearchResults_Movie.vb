@@ -38,17 +38,17 @@ Public Class dlgIMDBSearchResults_Movie
     Private _prevnode As Integer = -2
     Private _SpecialSettings As IMDB_Data.SpecialSettings
 
-    Private _InfoCache As New Dictionary(Of String, MediaContainers.Movie)
+    Private _InfoCache As New Dictionary(Of String, MediaContainers.MainDetails)
     Private _PosterCache As New Dictionary(Of String, Image)
     Private _filterOptions As Structures.ScrapeOptions
 
-    Private _tmpMovie As New MediaContainers.Movie
+    Private _tmpMovie As New MediaContainers.MainDetails
 
 #End Region 'Fields
 
 #Region "Properties"
 
-    Public ReadOnly Property Result As MediaContainers.Movie
+    Public ReadOnly Property Result As MediaContainers.MainDetails
         Get
             Return _tmpMovie
         End Get
@@ -279,7 +279,7 @@ Public Class dlgIMDBSearchResults_Movie
         Close()
     End Sub
 
-    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)
+    Private Sub SearchMovieInfoDownloaded(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
         '//
         ' Info downloaded... fill form with data
         '\\
@@ -349,7 +349,7 @@ Public Class dlgIMDBSearchResults_Movie
 
                     If M.PartialMatches.Count > 0 Then
                         M.PartialMatches.Sort()
-                        For Each Movie As MediaContainers.Movie In M.PartialMatches
+                        For Each Movie As MediaContainers.MainDetails In M.PartialMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -363,7 +363,7 @@ Public Class dlgIMDBSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1006, "TV Movie Titles ({0})"), M.TvTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.TvTitles
+                        For Each Movie As MediaContainers.MainDetails In M.TvTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -377,7 +377,7 @@ Public Class dlgIMDBSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1083, "Video Titles ({0})"), M.VideoTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.VideoTitles
+                        For Each Movie As MediaContainers.MainDetails In M.VideoTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -391,7 +391,7 @@ Public Class dlgIMDBSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(1389, "Short Titles ({0})"), M.ShortTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.ShortTitles
+                        For Each Movie As MediaContainers.MainDetails In M.ShortTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -405,7 +405,7 @@ Public Class dlgIMDBSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(829, "Popular Titles ({0})"), M.PopularTitles.Count))
-                        For Each Movie As MediaContainers.Movie In M.PopularTitles
+                        For Each Movie As MediaContainers.MainDetails In M.PopularTitles
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -419,7 +419,7 @@ Public Class dlgIMDBSearchResults_Movie
                             tvResults.Nodes(TnP.Index).Collapse()
                         End If
                         TnP = New TreeNode(String.Format(Master.eLang.GetString(831, "Exact Matches ({0})"), M.ExactMatches.Count))
-                        For Each Movie As MediaContainers.Movie In M.ExactMatches
+                        For Each Movie As MediaContainers.MainDetails In M.ExactMatches
                             TnP.Nodes.Add(New TreeNode() With {.Text = String.Concat(Movie.Title, If(Not String.IsNullOrEmpty(Movie.Year), String.Format(" ({0})", Movie.Year), String.Empty)), .Tag = Movie.IMDB})
                         Next
                         TnP.Expand()
@@ -555,13 +555,13 @@ Public Class dlgIMDBSearchResults_Movie
         AcceptButton = btnSearch
     End Sub
 
-    Private Function GetMovieClone(ByVal original As MediaContainers.Movie) As MediaContainers.Movie
+    Private Function GetMovieClone(ByVal original As MediaContainers.MainDetails) As MediaContainers.MainDetails
         Try
             Using mem As New MemoryStream()
                 Dim bin As New Runtime.Serialization.Formatters.Binary.BinaryFormatter(Nothing, New Runtime.Serialization.StreamingContext(Runtime.Serialization.StreamingContextStates.Clone))
                 bin.Serialize(mem, original)
                 mem.Seek(0, SeekOrigin.Begin)
-                Return DirectCast(bin.Deserialize(mem), MediaContainers.Movie)
+                Return DirectCast(bin.Deserialize(mem), MediaContainers.MainDetails)
             End Using
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

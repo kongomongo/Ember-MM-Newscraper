@@ -266,7 +266,7 @@ Public Class Trakttv_Data
     Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("[Tracktv_Data] [Scraper_Movie] [Start]")
 
-        Dim nMovie As MediaContainers.Movie = Nothing
+        Dim nMovie As MediaContainers.MainDetails = Nothing
 
         If ScrapeModifiers.MainNFO Then
             LoadSettings_Movie()
@@ -305,7 +305,7 @@ Public Class Trakttv_Data
     Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("[Tracktv_Data] [Scraper_TV] [Start]")
 
-        Dim nTVShow As MediaContainers.TVShow = Nothing
+        Dim nTVShow As MediaContainers.MainDetails = Nothing
 
         If ScrapeModifiers.MainNFO Then
             LoadSettings_TV()
@@ -344,7 +344,7 @@ Public Class Trakttv_Data
     Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
         logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Start]")
 
-        Dim nTVEpisode As MediaContainers.EpisodeDetails = Nothing
+        Dim nTVEpisode As MediaContainers.MainDetails = Nothing
 
         LoadSettings_TV()
 
@@ -356,7 +356,7 @@ Public Class Trakttv_Data
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
         Dim mDBElement As Database.DBElement = oDBElement
-        Dim Result = _scraper.GetInfo_TVEpisode(_scraper.GetTraktID(mDBElement, True), mDBElement.TVEpisode.Season, mDBElement.TVEpisode.Episode, FilteredOptions)
+        Dim Result = _scraper.GetInfo_TVEpisode(_scraper.GetTraktID(mDBElement, True), mDBElement.MainDetails.Season, mDBElement.MainDetails.Episode, FilteredOptions)
         While Not Result.IsCompleted
             Threading.Thread.Sleep(50)
         End While
@@ -382,7 +382,7 @@ Public Class Trakttv_Data
     End Function
 
     Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
-        If (DBMovie.Movie Is Nothing OrElse String.IsNullOrEmpty(DBMovie.Movie.IMDB)) Then
+        If (DBMovie.MainDetails Is Nothing OrElse String.IsNullOrEmpty(DBMovie.MainDetails.IMDB)) Then
             logger.Error("Attempting to get studio for undefined movie")
             Return New Interfaces.ModuleResult
         End If

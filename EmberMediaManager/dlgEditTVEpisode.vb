@@ -131,7 +131,7 @@ Public Class dlgEditTVEpisode
 
     Private Sub btnManual_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.TVEpisode = NFO.LoadFromNFO_TVEpisode(tmpDBElement.NfoPath, tmpDBElement.TVEpisode.Season, tmpDBElement.TVEpisode.Episode)
+            tmpDBElement.MainDetails = NFO.LoadFromNFO_TVEpisode(tmpDBElement.NfoPath, tmpDBElement.MainDetails.Season, tmpDBElement.MainDetails.Episode)
             FillInfo()
         End If
     End Sub
@@ -472,26 +472,26 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub FillInfo()
-        txtAired.Text = tmpDBElement.TVEpisode.Aired
-        txtCredits.Text = String.Join(" / ", tmpDBElement.TVEpisode.Credits.ToArray)
-        txtDirectors.Text = String.Join(" / ", tmpDBElement.TVEpisode.Directors.ToArray)
-        txtEpisode.Text = tmpDBElement.TVEpisode.Episode.ToString
-        txtPlot.Text = tmpDBElement.TVEpisode.Plot
-        txtRuntime.Text = tmpDBElement.TVEpisode.Runtime
-        txtSeason.Text = tmpDBElement.TVEpisode.Season.ToString
-        txtTitle.Text = tmpDBElement.TVEpisode.Title
-        txtVotes.Text = tmpDBElement.TVEpisode.Votes
+        txtAired.Text = tmpDBElement.MainDetails.Aired
+        txtCredits.Text = String.Join(" / ", tmpDBElement.MainDetails.Credits.ToArray)
+        txtDirectors.Text = String.Join(" / ", tmpDBElement.MainDetails.Directors.ToArray)
+        txtEpisode.Text = tmpDBElement.MainDetails.Episode.ToString
+        txtPlot.Text = tmpDBElement.MainDetails.Plot
+        txtRuntime.Text = tmpDBElement.MainDetails.Runtime
+        txtSeason.Text = tmpDBElement.MainDetails.Season.ToString
+        txtTitle.Text = tmpDBElement.MainDetails.Title
+        txtVotes.Text = tmpDBElement.MainDetails.Votes
 
         If Not String.IsNullOrEmpty(tmpDBElement.VideoSource) Then
             txtVideoSource.Text = tmpDBElement.VideoSource
-        ElseIf Not String.IsNullOrEmpty(tmpDBElement.TVEpisode.VideoSource) Then
-            txtVideoSource.Text = tmpDBElement.TVEpisode.VideoSource
+        ElseIf Not String.IsNullOrEmpty(tmpDBElement.MainDetails.VideoSource) Then
+            txtVideoSource.Text = tmpDBElement.MainDetails.VideoSource
         End If
 
         'Actors
         Dim lvItem As ListViewItem
         lvActors.Items.Clear()
-        For Each tActor As MediaContainers.Person In tmpDBElement.TVEpisode.Actors
+        For Each tActor As MediaContainers.Person In tmpDBElement.MainDetails.Actors
             lvItem = lvActors.Items.Add(tActor.ID.ToString)
             lvItem.Tag = tActor
             lvItem.SubItems.Add(tActor.Name)
@@ -499,7 +499,7 @@ Public Class dlgEditTVEpisode
             lvItem.SubItems.Add(tActor.URLOriginal)
         Next
 
-        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.TVEpisode.Rating)
+        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.MainDetails.Rating)
         tmpRating = tRating.ToString
         pbStar1.Tag = tRating
         pbStar2.Tag = tRating
@@ -513,18 +513,18 @@ Public Class dlgEditTVEpisode
         pbStar10.Tag = tRating
         If tRating > 0 Then BuildStars(tRating)
 
-        If tmpDBElement.TVEpisode.PlaycountSpecified Then
+        If tmpDBElement.MainDetails.PlayCountSpecified Then
             chkWatched.Checked = True
         Else
             chkWatched.Checked = False
         End If
-        If Not String.IsNullOrEmpty(tmpDBElement.TVEpisode.LastPlayed) Then
+        If Not String.IsNullOrEmpty(tmpDBElement.MainDetails.LastPlayed) Then
             Dim timecode As Double = 0
-            Double.TryParse(tmpDBElement.TVEpisode.LastPlayed, timecode)
+            Double.TryParse(tmpDBElement.MainDetails.LastPlayed, timecode)
             If timecode > 0 Then
                 txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
             Else
-                txtLastPlayed.Text = tmpDBElement.TVEpisode.LastPlayed
+                txtLastPlayed.Text = tmpDBElement.MainDetails.LastPlayed
             End If
         End If
 
@@ -923,42 +923,42 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub SetInfo()
-        tmpDBElement.TVEpisode.Aired = txtAired.Text.Trim
-        tmpDBElement.TVEpisode.AddCreditsFromString(txtCredits.Text.Trim)
-        tmpDBElement.TVEpisode.AddDirectorsFromString(txtDirectors.Text.Trim)
-        tmpDBElement.TVEpisode.Episode = Convert.ToInt32(txtEpisode.Text.Trim)
-        tmpDBElement.TVEpisode.Plot = txtPlot.Text.Trim
-        tmpDBElement.TVEpisode.Rating = tmpRating
-        tmpDBElement.TVEpisode.Runtime = txtRuntime.Text.Trim
-        tmpDBElement.TVEpisode.Season = Convert.ToInt32(txtSeason.Text.Trim)
-        tmpDBElement.TVEpisode.Title = txtTitle.Text.Trim
-        tmpDBElement.TVEpisode.Votes = txtVotes.Text.Trim
-        tmpDBElement.TVEpisode.VideoSource = txtVideoSource.Text.Trim
+        tmpDBElement.MainDetails.Aired = txtAired.Text.Trim
+        tmpDBElement.MainDetails.AddCreditsFromString(txtCredits.Text.Trim)
+        tmpDBElement.MainDetails.AddDirectorsFromString(txtDirectors.Text.Trim)
+        tmpDBElement.MainDetails.Episode = Convert.ToInt32(txtEpisode.Text.Trim)
+        tmpDBElement.MainDetails.Plot = txtPlot.Text.Trim
+        tmpDBElement.MainDetails.Rating = tmpRating
+        tmpDBElement.MainDetails.Runtime = txtRuntime.Text.Trim
+        tmpDBElement.MainDetails.Season = Convert.ToInt32(txtSeason.Text.Trim)
+        tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
+        tmpDBElement.MainDetails.Votes = txtVotes.Text.Trim
+        tmpDBElement.MainDetails.VideoSource = txtVideoSource.Text.Trim
         tmpDBElement.VideoSource = txtVideoSource.Text.Trim
 
         'Actors
-        tmpDBElement.TVEpisode.Actors.Clear()
+        tmpDBElement.MainDetails.Actors.Clear()
         If lvActors.Items.Count > 0 Then
             Dim iOrder As Integer = 0
             For Each lviActor As ListViewItem In lvActors.Items
                 Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
                 addActor.Order = iOrder
                 iOrder += 1
-                tmpDBElement.TVEpisode.Actors.Add(addActor)
+                tmpDBElement.MainDetails.Actors.Add(addActor)
             Next
         End If
 
         If chkWatched.Checked Then
             'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-            If Not tmpDBElement.TVEpisode.PlaycountSpecified Then
-                tmpDBElement.TVEpisode.Playcount = 1
-                tmpDBElement.TVEpisode.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            If Not tmpDBElement.MainDetails.PlayCountSpecified Then
+                tmpDBElement.MainDetails.PlayCount = 1
+                tmpDBElement.MainDetails.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
             End If
         Else
             'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-            If tmpDBElement.TVEpisode.PlaycountSpecified Then
-                tmpDBElement.TVEpisode.Playcount = 0
-                tmpDBElement.TVEpisode.LastPlayed = String.Empty
+            If tmpDBElement.MainDetails.PlayCountSpecified Then
+                tmpDBElement.MainDetails.PlayCount = 0
+                tmpDBElement.MainDetails.LastPlayed = String.Empty
             End If
         End If
 
@@ -1002,7 +1002,7 @@ Public Class dlgEditTVEpisode
         btnSetSubtitleScrape.Text = strScrape
 
         Dim mTitle As String = String.Empty
-        mTitle = tmpDBElement.TVEpisode.Title
+        mTitle = tmpDBElement.MainDetails.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
         tsFilename.Text = tmpDBElement.Filename

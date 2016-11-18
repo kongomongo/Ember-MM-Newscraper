@@ -155,11 +155,11 @@ Public Class MoviepilotDE_Data
 
         LoadSettings()
 
-        Dim nMovie As New MediaContainers.Movie
+        Dim nMovie As New MediaContainers.MainDetails
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
         If ScrapeModifiers.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.Movie.OriginalTitle, oDBMovie.Movie.Title, oDBMovie.Movie.Year, FilteredOptions)
+            nMovie = _scraper.GetMovieInfo(oDBMovie.MainDetails.OriginalTitle, oDBMovie.MainDetails.Title, oDBMovie.MainDetails.Year, FilteredOptions)
         End If
 
         logger.Trace("[MoviepilotDE_Data] [Scraper_Movie] [Done]")

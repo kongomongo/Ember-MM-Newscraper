@@ -218,7 +218,7 @@ Public Class dlgEditTVShow
 
     Private Sub btnManual_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnManual.Click
         If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.TVShow = NFO.LoadFromNFO_TVShow(tmpDBElement.NfoPath)
+            tmpDBElement.MainDetails = NFO.LoadFromNFO_TVShow(tmpDBElement.NfoPath)
             FillInfo()
         End If
     End Sub
@@ -1141,22 +1141,22 @@ Public Class dlgEditTVShow
             End If
         End If
 
-        txtTitle.Text = tmpDBElement.TVShow.Title
-        txtOriginalTitle.Text = tmpDBElement.TVShow.OriginalTitle
-        txtPlot.Text = tmpDBElement.TVShow.Plot
-        txtPremiered.Text = tmpDBElement.TVShow.Premiered
-        txtRuntime.Text = tmpDBElement.TVShow.Runtime
-        txtSortTitle.Text = tmpDBElement.TVShow.SortTitle
-        txtStatus.Text = tmpDBElement.TVShow.Status
-        txtStudio.Text = String.Join(" / ", tmpDBElement.TVShow.Studios.ToArray)
-        txtVotes.Text = tmpDBElement.TVShow.Votes
+        txtTitle.Text = tmpDBElement.MainDetails.Title
+        txtOriginalTitle.Text = tmpDBElement.MainDetails.OriginalTitle
+        txtPlot.Text = tmpDBElement.MainDetails.Plot
+        txtPremiered.Text = tmpDBElement.MainDetails.Premiered
+        txtRuntime.Text = tmpDBElement.MainDetails.Runtime
+        txtSortTitle.Text = tmpDBElement.MainDetails.SortTitle
+        txtStatus.Text = tmpDBElement.MainDetails.Status
+        txtStudio.Text = String.Join(" / ", tmpDBElement.MainDetails.Studios.ToArray)
+        txtVotes.Text = tmpDBElement.MainDetails.Votes
 
         For i As Integer = 0 To clbGenre.Items.Count - 1
             clbGenre.SetItemChecked(i, False)
         Next
-        If tmpDBElement.TVShow.GenresSpecified Then
+        If tmpDBElement.MainDetails.GenresSpecified Then
             Dim genreArray() As String
-            genreArray = tmpDBElement.TVShow.Genres.ToArray
+            genreArray = tmpDBElement.MainDetails.Genres.ToArray
             For g As Integer = 0 To genreArray.Count - 1
                 If clbGenre.FindString(genreArray(g).Trim) > 0 Then
                     clbGenre.SetItemChecked(clbGenre.FindString(genreArray(g).Trim), True)
@@ -1173,7 +1173,7 @@ Public Class dlgEditTVShow
         'Actors
         Dim lvItem As ListViewItem
         lvActors.Items.Clear()
-        For Each tActor As MediaContainers.Person In tmpDBElement.TVShow.Actors
+        For Each tActor As MediaContainers.Person In tmpDBElement.MainDetails.Actors
             lvItem = lvActors.Items.Add(tActor.ID.ToString)
             lvItem.Tag = tActor
             lvItem.SubItems.Add(tActor.Name)
@@ -1181,7 +1181,7 @@ Public Class dlgEditTVShow
             lvItem.SubItems.Add(tActor.URLOriginal)
         Next
 
-        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.TVShow.Rating)
+        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.MainDetails.Rating)
         tmpRating = tRating.ToString
         pbStar1.Tag = tRating
         pbStar2.Tag = tRating
@@ -1849,17 +1849,17 @@ Public Class dlgEditTVShow
 
     Private Sub SelectMPAA()
         Try
-            If Not String.IsNullOrEmpty(tmpDBElement.TVShow.MPAA) Then
+            If Not String.IsNullOrEmpty(tmpDBElement.MainDetails.MPAA) Then
                 Dim i As Integer = 0
                 For ctr As Integer = 0 To lbMPAA.Items.Count - 1
-                    If tmpDBElement.TVShow.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
+                    If tmpDBElement.MainDetails.MPAA.ToLower.StartsWith(lbMPAA.Items.Item(ctr).ToString.ToLower) Then
                         i = ctr
                         Exit For
                     End If
                 Next
                 lbMPAA.SelectedIndex = i
                 lbMPAA.TopIndex = i
-                txtMPAA.Text = tmpDBElement.TVShow.MPAA
+                txtMPAA.Text = tmpDBElement.MainDetails.MPAA
             End If
 
             If lbMPAA.SelectedItems.Count = 0 Then
@@ -1883,21 +1883,21 @@ Public Class dlgEditTVShow
 
         If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
             tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
-            tmpDBElement.TVShow.Language = tmpDBElement.Language
+            tmpDBElement.MainDetails.Language = tmpDBElement.Language
         Else
             tmpDBElement.Language = "en-US"
-            tmpDBElement.TVShow.Language = tmpDBElement.Language
+            tmpDBElement.MainDetails.Language = tmpDBElement.Language
         End If
 
-        tmpDBElement.TVShow.Title = txtTitle.Text.Trim
-        tmpDBElement.TVShow.OriginalTitle = txtOriginalTitle.Text.Trim
-        tmpDBElement.TVShow.Plot = txtPlot.Text.Trim
-        tmpDBElement.TVShow.Premiered = txtPremiered.Text.Trim
-        tmpDBElement.TVShow.Runtime = txtRuntime.Text.Trim
-        tmpDBElement.TVShow.SortTitle = txtSortTitle.Text.Trim
-        tmpDBElement.TVShow.Status = txtStatus.Text.Trim
-        tmpDBElement.TVShow.AddStudiosFromString(txtStudio.Text.Trim)
-        tmpDBElement.TVShow.Votes = txtVotes.Text.Trim
+        tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
+        tmpDBElement.MainDetails.OriginalTitle = txtOriginalTitle.Text.Trim
+        tmpDBElement.MainDetails.Plot = txtPlot.Text.Trim
+        tmpDBElement.MainDetails.Premiered = txtPremiered.Text.Trim
+        tmpDBElement.MainDetails.Runtime = txtRuntime.Text.Trim
+        tmpDBElement.MainDetails.SortTitle = txtSortTitle.Text.Trim
+        tmpDBElement.MainDetails.Status = txtStatus.Text.Trim
+        tmpDBElement.MainDetails.AddStudiosFromString(txtStudio.Text.Trim)
+        tmpDBElement.MainDetails.Votes = txtVotes.Text.Trim
 
         If Not String.IsNullOrEmpty(txtTitle.Text) Then
             If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(txtStatus.Text.Trim) Then
@@ -1907,32 +1907,32 @@ Public Class dlgEditTVShow
             End If
         End If
 
-        tmpDBElement.TVShow.MPAA = txtMPAA.Text.Trim
+        tmpDBElement.MainDetails.MPAA = txtMPAA.Text.Trim
 
-        tmpDBElement.TVShow.Rating = tmpRating
+        tmpDBElement.MainDetails.Rating = tmpRating
 
         If clbGenre.CheckedItems.Count > 0 Then
 
             If clbGenre.CheckedIndices.Contains(0) Then
-                tmpDBElement.TVShow.Genres.Clear()
+                tmpDBElement.MainDetails.Genres.Clear()
             Else
                 Dim strGenre As String = String.Empty
                 Dim isFirst As Boolean = True
                 Dim iChecked = From iCheck In clbGenre.CheckedItems
                 strGenre = String.Join(" / ", iChecked.ToArray)
-                tmpDBElement.TVShow.AddGenresFromString(strGenre.Trim)
+                tmpDBElement.MainDetails.AddGenresFromString(strGenre.Trim)
             End If
         End If
 
         'Actors
-        tmpDBElement.TVShow.Actors.Clear()
+        tmpDBElement.MainDetails.Actors.Clear()
         If lvActors.Items.Count > 0 Then
             Dim iOrder As Integer = 0
             For Each lviActor As ListViewItem In lvActors.Items
                 Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
                 addActor.Order = iOrder
                 iOrder += 1
-                tmpDBElement.TVShow.Actors.Add(addActor)
+                tmpDBElement.MainDetails.Actors.Add(addActor)
             Next
         End If
     End Sub
@@ -1982,7 +1982,7 @@ Public Class dlgEditTVShow
         btnSetPosterScrape.Text = strScrape
         btnSetThemeScrape.Text = strScrape
 
-        Dim mTitle As String = tmpDBElement.TVShow.Title
+        Dim mTitle As String = tmpDBElement.MainDetails.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         OK_Button.Text = Master.eLang.GetString(179, "OK")

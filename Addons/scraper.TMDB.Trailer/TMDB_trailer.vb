@@ -142,14 +142,14 @@ Public Class TMDB_Trailer
         LoadSettings()
         _SpecialSettings.PrefLanguage = DBMovie.Language
 
-        If String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
-            DBMovie.Movie.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.Movie.IMDB)
+        If String.IsNullOrEmpty(DBMovie.MainDetails.TMDB) Then
+            DBMovie.MainDetails.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.MainDetails.IMDB)
         End If
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.TMDB) Then
+        If Not String.IsNullOrEmpty(DBMovie.MainDetails.TMDB) Then
             Dim _scraper As New TMDB.Scraper(_SpecialSettings)
 
-            TrailerList = _scraper.GetTrailers(DBMovie.Movie.TMDB)
+            TrailerList = _scraper.GetTrailers(DBMovie.MainDetails.TMDB)
         End If
 
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Done]")

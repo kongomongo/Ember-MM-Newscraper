@@ -121,9 +121,9 @@ Namespace OFDB
             Return FullPlot
         End Function
 
-        Public Function GetMovieInfo(ByVal strIMDBID As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetMovieInfo(ByVal strIMDBID As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             Try
-                Dim nMovie As New MediaContainers.Movie
+                Dim nMovie As New MediaContainers.MainDetails
 
                 nMovie.Scrapersource = "OFDB"
 

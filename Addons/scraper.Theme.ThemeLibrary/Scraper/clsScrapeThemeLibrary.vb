@@ -71,14 +71,14 @@ Namespace ThemeLibrary
 
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If tDBElement.Movie.IMDBSpecified Then
-                        strSearchURL = String.Concat("http://kodi.ziggy73701.seedr.io/TvTunes/movies/", tDBElement.Movie.IMDB)
-                        strTitle = tDBElement.Movie.Title
+                    If tDBElement.MainDetails.IMDBSpecified Then
+                        strSearchURL = String.Concat("http://kodi.ziggy73701.seedr.io/TvTunes/movies/", tDBElement.MainDetails.IMDB)
+                        strTitle = tDBElement.MainDetails.Title
                     End If
                 Case Enums.ContentType.TVShow
-                    If tDBElement.TVShow.TVDBSpecified Then
-                        strSearchURL = String.Concat("http://kodi.ziggy73701.seedr.io/TvTunes/tvshows/", tDBElement.TVShow.TVDB)
-                        strTitle = tDBElement.TVShow.Title
+                    If tDBElement.MainDetails.TVDBSpecified Then
+                        strSearchURL = String.Concat("http://kodi.ziggy73701.seedr.io/TvTunes/tvshows/", tDBElement.MainDetails.TVDB)
+                        strTitle = tDBElement.MainDetails.Title
                     End If
             End Select
 

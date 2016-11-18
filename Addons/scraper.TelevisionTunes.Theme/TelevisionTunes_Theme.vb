@@ -211,7 +211,7 @@ Public Class TelevisionTunes_Theme
     Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
         logger.Trace("[TelevisionTunes_Theme] [Scraper_Movie] [Start]")
 
-        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBMovie.Movie.OriginalTitle)
+        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBMovie.MainDetails.OriginalTitle)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
             ThemeList = tTelevisionTunes.ThemeList
@@ -224,7 +224,7 @@ Public Class TelevisionTunes_Theme
     Function Scraper_TV(ByRef DBTV As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
         logger.Trace("[TelevisionTunes_Theme] [Scraper_TV] [Start]")
 
-        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.TVShow.Title)
+        Dim tTelevisionTunes As New TelevisionTunes.Scraper(DBTV.MainDetails.Title)
 
         If tTelevisionTunes.ThemeList.Count > 0 Then
             ThemeList = tTelevisionTunes.ThemeList

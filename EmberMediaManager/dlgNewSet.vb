@@ -79,7 +79,7 @@ Public Class dlgNewSet
     End Sub
 
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        tmpDBElement.MovieSet.Title = txtTitle.Text.Trim
+        tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
         tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
         tmpDBElement.ListTitle = StringUtils.SortTokens_MovieSet(txtTitle.Text.Trim)
 

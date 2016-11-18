@@ -29,67 +29,67 @@ Namespace IMDB
 
 #Region "Fields"
 
-        Private _ExactMatches As New List(Of MediaContainers.Movie)
-        Private _PartialMatches As New List(Of MediaContainers.Movie)
-        Private _PopularTitles As New List(Of MediaContainers.Movie)
-        Private _TvTitles As New List(Of MediaContainers.Movie)
-        Private _VideoTitles As New List(Of MediaContainers.Movie)
-        Private _ShortTitles As New List(Of MediaContainers.Movie)
+        Private _ExactMatches As New List(Of MediaContainers.MainDetails)
+        Private _PartialMatches As New List(Of MediaContainers.MainDetails)
+        Private _PopularTitles As New List(Of MediaContainers.MainDetails)
+        Private _TvTitles As New List(Of MediaContainers.MainDetails)
+        Private _VideoTitles As New List(Of MediaContainers.MainDetails)
+        Private _ShortTitles As New List(Of MediaContainers.MainDetails)
 
 #End Region 'Fields
 
 #Region "Properties"
 
-        Public Property ExactMatches() As List(Of MediaContainers.Movie)
+        Public Property ExactMatches() As List(Of MediaContainers.MainDetails)
             Get
                 Return _ExactMatches
             End Get
-            Set(ByVal value As List(Of MediaContainers.Movie))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _ExactMatches = value
             End Set
         End Property
 
-        Public Property PartialMatches() As List(Of MediaContainers.Movie)
+        Public Property PartialMatches() As List(Of MediaContainers.MainDetails)
             Get
                 Return _PartialMatches
             End Get
-            Set(ByVal value As List(Of MediaContainers.Movie))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _PartialMatches = value
             End Set
         End Property
 
-        Public Property PopularTitles() As List(Of MediaContainers.Movie)
+        Public Property PopularTitles() As List(Of MediaContainers.MainDetails)
             Get
                 Return _PopularTitles
             End Get
-            Set(ByVal value As List(Of MediaContainers.Movie))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _PopularTitles = value
             End Set
         End Property
 
-        Public Property TvTitles() As List(Of MediaContainers.Movie)
+        Public Property TvTitles() As List(Of MediaContainers.MainDetails)
             Get
                 Return _TvTitles
             End Get
-            Set(ByVal value As List(Of MediaContainers.Movie))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _TvTitles = value
             End Set
         End Property
 
-        Public Property VideoTitles() As List(Of MediaContainers.Movie)
+        Public Property VideoTitles() As List(Of MediaContainers.MainDetails)
             Get
                 Return _VideoTitles
             End Get
-            Set(ByVal value As List(Of MediaContainers.Movie))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _VideoTitles = value
             End Set
         End Property
 
-        Public Property ShortTitles() As List(Of MediaContainers.Movie)
+        Public Property ShortTitles() As List(Of MediaContainers.MainDetails)
             Get
                 Return _ShortTitles
             End Get
-            Set(ByVal value As List(Of MediaContainers.Movie))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _ShortTitles = value
             End Set
         End Property
@@ -102,17 +102,17 @@ Namespace IMDB
 
 #Region "Fields"
 
-        Private _Matches As New List(Of MediaContainers.TVShow)
+        Private _Matches As New List(Of MediaContainers.MainDetails)
 
 #End Region 'Fields
 
 #Region "Properties"
 
-        Public Property Matches() As List(Of MediaContainers.TVShow)
+        Public Property Matches() As List(Of MediaContainers.MainDetails)
             Get
                 Return _Matches
             End Get
-            Set(ByVal value As List(Of MediaContainers.TVShow))
+            Set(ByVal value As List(Of MediaContainers.MainDetails))
                 _Matches = value
             End Set
         End Property
@@ -176,8 +176,8 @@ Namespace IMDB
 
         Public Event Exception(ByVal ex As Exception)
 
-        Public Event SearchInfoDownloaded_Movie(ByVal sPoster As String, ByVal sInfo As MediaContainers.Movie)
-        Public Event SearchInfoDownloaded_TV(ByVal sPoster As String, ByVal sInfo As MediaContainers.TVShow)
+        Public Event SearchInfoDownloaded_Movie(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
+        Public Event SearchInfoDownloaded_TV(ByVal sPoster As String, ByVal sInfo As MediaContainers.MainDetails)
 
         Public Event SearchResultsDownloaded_Movie(ByVal mResults As SearchResults_Movie)
         Public Event SearchResultsDownloaded_TV(ByVal mResults As SearchResults_TVShow)
@@ -214,11 +214,11 @@ Namespace IMDB
         ''' <param name="IsSearch">Not used at moment</param>
         ''' <returns>True: success, false: no success</returns>
         ''' <remarks></remarks>
-        Public Function GetMovieInfo(ByVal strID As String, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetMovieInfo(ByVal strID As String, ByVal GetPoster As Boolean, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             Try
                 If bwIMDB.CancellationPending Then Return Nothing
 
-                Dim nMovie As New MediaContainers.Movie
+                Dim nMovie As New MediaContainers.MainDetails
 
                 Dim HTML As String
                 intHTTP = New HTTP
@@ -620,12 +620,12 @@ mPlot:          'Plot
             End Try
         End Function
 
-        Public Function GetTVEpisodeInfo(ByVal strIMDBID As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByVal strIMDBID As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             If String.IsNullOrEmpty(strIMDBID) OrElse strIMDBID.Length < 2 Then Return Nothing
 
             If bwIMDB.CancellationPending Then Return Nothing
 
-            Dim nTVEpisode As New MediaContainers.EpisodeDetails
+            Dim nTVEpisode As New MediaContainers.MainDetails
 
             nTVEpisode.Scrapersource = "IMDB"
 
@@ -781,7 +781,7 @@ mPlot:          'Plot
             Return nTVEpisode
         End Function
 
-        Public Function GetTVEpisodeInfo(ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByVal iEpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.EpisodeDetails
+        Public Function GetTVEpisodeInfo(ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByVal iEpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             If String.IsNullOrEmpty(strTVShowIMDBID) OrElse iSeasonNumber = -1 OrElse iEpisodeNumber = -1 Then Return Nothing
 
             Dim strTVEpisodeIMDBID As String = String.Empty
@@ -803,7 +803,7 @@ mPlot:          'Plot
                     If rEpisodes.Count > 0 Then
                         For Each tEpisode As Match In rEpisodes
                             If CInt(tEpisode.Groups("EPISODE").Value) = iEpisodeNumber Then
-                                Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
+                                Dim nEpisode As MediaContainers.MainDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
                                 If nEpisode IsNot Nothing Then
                                     Return nEpisode
                                 End If
@@ -816,7 +816,7 @@ mPlot:          'Plot
             Return Nothing
         End Function
 
-        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.TVShow, ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
+        Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.MainDetails, ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
 
             If ScrapeModifiers.withEpisodes Then
                 Dim HTML As String
@@ -835,7 +835,7 @@ mPlot:          'Plot
                         Dim rEpisodes As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TVEPISODE_PATTERN, RegexOptions.Singleline Or RegexOptions.IgnoreCase)
                         If rEpisodes.Count > 0 Then
                             For Each tEpisode As Match In rEpisodes
-                                Dim nEpisode As MediaContainers.EpisodeDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
+                                Dim nEpisode As MediaContainers.MainDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
                                 If nEpisode IsNot Nothing Then
                                     nTVShow.KnownEpisodes.Add(nEpisode)
                                 End If
@@ -852,11 +852,11 @@ mPlot:          'Plot
         ''' <param name="GetPoster">Scrape posters for the tv show?</param>
         ''' <param name="Options">Module settings<param>
         ''' <returns>True: success, false: no success</returns>
-        Public Function GetTVShowInfo(ByVal strID As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.TVShow
+        Public Function GetTVShowInfo(ByVal strID As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
             If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
             Try
-                Dim nTVShow As New MediaContainers.TVShow
+                Dim nTVShow As New MediaContainers.MainDetails
 
                 nTVShow.IMDB = strID
                 nTVShow.Scrapersource = "IMDB"
@@ -1128,7 +1128,7 @@ mPlot:          'Plot
                                     If Integer.TryParse(tSeason.Groups("name").Value, iSeason) Then
                                         GetTVSeasonInfo(nTVShow, nTVShow.IMDB, iSeason, ScrapeModifiers, FilteredOptions)
                                         If ScrapeModifiers.withSeasons Then
-                                            nTVShow.KnownSeasons.Add(New MediaContainers.SeasonDetails With {.Season = iSeason})
+                                            nTVShow.KnownSeasons.Add(New MediaContainers.MainDetails With {.Season = iSeason})
                                         End If
                                     End If
                                 Next
@@ -1176,7 +1176,7 @@ mPlot:          'Plot
             Return alStudio
         End Function
 
-        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal sMovieYear As String, ByRef oDBElement As Database.DBElement, ByVal ScrapeType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetSearchMovieInfo(ByVal sMovieName As String, ByVal sMovieYear As String, ByRef oDBElement As Database.DBElement, ByVal ScrapeType As Enums.ScrapeType, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             Dim r As SearchResults_Movie = SearchMovie(sMovieName, sMovieYear)
 
             Try
@@ -1245,7 +1245,7 @@ mPlot:          'Plot
             End Try
         End Function
 
-        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBElement As Database.DBElement, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.TVShow
+        Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBElement As Database.DBElement, ByVal ScrapeType As Enums.ScrapeType, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             Dim r As SearchResults_TVShow = SearchTVShow(sShowName)
 
             Select Case ScrapeType
@@ -1309,7 +1309,7 @@ mPlot:          'Plot
             Return Nothing
         End Function
 
-        Private Function FindYear(ByVal tmpname As String, ByVal lst As List(Of MediaContainers.Movie)) As Integer
+        Private Function FindYear(ByVal tmpname As String, ByVal lst As List(Of MediaContainers.MainDetails)) As Integer
             Dim tmpyear As String = ""
             Dim i As Integer
             Dim ret As Integer = -1
@@ -1330,7 +1330,7 @@ mPlot:          'Plot
             Return ret
         End Function
 
-        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal nMovie As MediaContainers.Movie, ByVal FilteredOptions As Structures.ScrapeOptions)
+        Public Sub GetSearchMovieInfoAsync(ByVal imdbID As String, ByVal nMovie As MediaContainers.MainDetails, ByVal FilteredOptions As Structures.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
@@ -1343,7 +1343,7 @@ mPlot:          'Plot
             End Try
         End Sub
 
-        Public Sub GetSearchTVShowInfoAsync(ByVal imdbID As String, ByVal nShow As MediaContainers.TVShow, ByVal Options As Structures.ScrapeOptions)
+        Public Sub GetSearchTVShowInfoAsync(ByVal imdbID As String, ByVal nShow As MediaContainers.MainDetails, ByVal Options As Structures.ScrapeOptions)
             Try
                 If Not bwIMDB.IsBusy Then
                     bwIMDB.WorkerReportsProgress = False
@@ -1391,11 +1391,11 @@ mPlot:          'Plot
                     e.Result = New Results With {.ResultType = SearchType.TVShows, .Result = r}
 
                 Case SearchType.SearchDetails_Movie
-                    Dim r As MediaContainers.Movie = GetMovieInfo(Args.Parameter, True, Args.Options_Movie)
+                    Dim r As MediaContainers.MainDetails = GetMovieInfo(Args.Parameter, True, Args.Options_Movie)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_Movie, .Result = r}
 
                 Case SearchType.SearchDetails_TVShow
-                    Dim r As MediaContainers.TVShow = GetTVShowInfo(Args.Parameter, Args.ScrapeModifiers, Args.Options_TV, True)
+                    Dim r As MediaContainers.MainDetails = GetTVShowInfo(Args.Parameter, Args.ScrapeModifiers, Args.Options_TV, True)
                     e.Result = New Results With {.ResultType = SearchType.SearchDetails_TVShow, .Result = r}
             End Select
         End Sub
@@ -1411,11 +1411,11 @@ mPlot:          'Plot
                     RaiseEvent SearchResultsDownloaded_TV(DirectCast(Res.Result, SearchResults_TVShow))
 
                 Case SearchType.SearchDetails_Movie
-                    Dim movieInfo As MediaContainers.Movie = DirectCast(Res.Result, MediaContainers.Movie)
+                    Dim movieInfo As MediaContainers.MainDetails = DirectCast(Res.Result, MediaContainers.MainDetails)
                     RaiseEvent SearchInfoDownloaded_Movie(sPoster, movieInfo)
 
                 Case SearchType.SearchDetails_TVShow
-                    Dim showInfo As MediaContainers.TVShow = DirectCast(Res.Result, MediaContainers.TVShow)
+                    Dim showInfo As MediaContainers.MainDetails = DirectCast(Res.Result, MediaContainers.MainDetails)
                     RaiseEvent SearchInfoDownloaded_TV(sPoster, showInfo)
             End Select
         End Sub
@@ -1532,9 +1532,11 @@ mPlot:          'Plot
 
             'Check if we've been redirected straight to the movie page
             If Regex.IsMatch(rUri, IMDB_ID_REGEX) Then
-                Dim lNewMovie As MediaContainers.Movie = New MediaContainers.Movie(Regex.Match(rUri, IMDB_ID_REGEX).ToString,
-                    StringUtils.ConvertToProperCase(sMovie), Regex.Match(Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString, 0)
-                R.ExactMatches.Add(lNewMovie)
+                R.ExactMatches.Add(New MediaContainers.MainDetails With {
+                                   .IMDB = Regex.Match(rUri, IMDB_ID_REGEX).ToString,
+                                   .Lev = 0,
+                                   .Title = StringUtils.ConvertToProperCase(sMovie),
+                                   .Year = Regex.Match(Regex.Match(HTML, MOVIE_TITLE_PATTERN).ToString, "(?<=\()\d+(?=.*\))").ToString})
                 Return R
             End If
 
@@ -1546,9 +1548,11 @@ mPlot:          'Plot
                 Dim Table As String = Regex.Match(HTML.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qPopular = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
                                Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                               Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                                HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
-
+                               Select New MediaContainers.MainDetails With {
+                                   .IMDB = GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+                                   .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower),
+                                   .Title = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString),
+                                   .Year = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString)}
                 R.PopularTitles = qPopular.ToList
             End If
 
@@ -1560,8 +1564,11 @@ mPlot:          'Plot
                 Dim Table As String = Regex.Match(HTMLm.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qpartial = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
                                Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                               Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                                HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+                               Select New MediaContainers.MainDetails With {
+                                   .IMDB = GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+                                   .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower),
+                                   .Title = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString),
+                                   .Year = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString)}
 
                 R.PartialMatches = qpartial.ToList
             End If
@@ -1574,8 +1581,11 @@ mPlot:          'Plot
                 Dim Table As String = HTMLt.Substring(D, W - D).ToString
                 Dim qtvmovie = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
                                Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                               Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                                HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+                               Select New MediaContainers.MainDetails With {
+                                   .IMDB = GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+                                   .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower),
+                                   .Title = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString),
+                                   .Year = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString)}
 
                 R.TvTitles = qtvmovie.ToList
             End If
@@ -1588,8 +1598,11 @@ mPlot:          'Plot
                 Dim Table As String = HTMLv.Substring(D, W - D).ToString
                 Dim qvideo = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
                              Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                             Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                              HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+                             Select New MediaContainers.MainDetails With {
+                                 .IMDB = GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+                                 .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower),
+                                 .Title = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString),
+                                 .Year = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString)}
 
                 R.VideoTitles = qvideo.ToList
             End If
@@ -1602,8 +1615,11 @@ mPlot:          'Plot
                 Dim Table As String = HTMLs.Substring(D, W - D).ToString
                 Dim qshort = From Mtr In Regex.Matches(Table, TvTITLE_PATTERN)
                              Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                             Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                                              HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+                             Select New MediaContainers.MainDetails With {
+                                 .IMDB = GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+                                 .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower),
+                                 .Title = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString),
+                                 .Year = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString)}
 
                 R.ShortTitles = qshort.ToList
             End If
@@ -1616,8 +1632,11 @@ mPlot:          'Plot
                 Dim Table As String = Regex.Match(HTMLe.Substring(D, W - D), TABLE_PATTERN).ToString
                 Dim qExact = From Mtr In Regex.Matches(Table, TITLE_PATTERN)
                              Where Not DirectCast(Mtr, Match).Groups("name").ToString.Contains("<img") AndAlso Not DirectCast(Mtr, Match).Groups("type").ToString.Contains("VG")
-                             Select New MediaContainers.Movie(GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
-                          HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString), HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString), StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower))
+                             Select New MediaContainers.MainDetails With {
+                                 .IMDB = GetMovieID(DirectCast(Mtr, Match).Groups("url").ToString),
+                                 .Lev = StringUtils.ComputeLevenshtein(StringUtils.FilterYear(sMovie).ToLower, StringUtils.FilterYear(HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString)).ToLower),
+                                 .Title = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("name").ToString.ToString),
+                                 .Year = HttpUtility.HtmlDecode(DirectCast(Mtr, Match).Groups("year").ToString)}
 
                 R.ExactMatches = qExact.ToList
             End If
@@ -1643,7 +1662,7 @@ mPlot:          'Plot
             'search results
             Dim Table As String = Regex.Match(HTML, TABLE_PATTERN_TV, RegexOptions.Singleline).ToString
             For Each sResult As Match In Regex.Matches(Table, TVSHOWTITLE_PATTERN, RegexOptions.Singleline)
-                R.Matches.Add(New MediaContainers.TVShow With {.IMDB = sResult.Groups("IMDB").ToString, .Title = HttpUtility.HtmlDecode(sResult.Groups("TITLE").ToString)})
+                R.Matches.Add(New MediaContainers.MainDetails With {.IMDB = sResult.Groups("IMDB").ToString, .Title = HttpUtility.HtmlDecode(sResult.Groups("TITLE").ToString)})
             Next
 
             Return R
@@ -1659,13 +1678,13 @@ mPlot:          'Plot
 
             Dim FullCast As Boolean
             Dim FullCrew As Boolean
-            Dim Movie As MediaContainers.Movie
+            Dim Movie As MediaContainers.MainDetails
             Dim Options_Movie As Structures.ScrapeOptions
             Dim Options_TV As Structures.ScrapeOptions
             Dim Parameter As String
             Dim ScrapeModifiers As Structures.ScrapeModifiers
             Dim Search As SearchType
-            Dim TVShow As MediaContainers.TVShow
+            Dim TVShow As MediaContainers.MainDetails
             Dim Year As String
 
 #End Region 'Fields

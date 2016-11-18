@@ -66,9 +66,9 @@ Namespace MoviepilotDE
             Return FSK
         End Function
 
-        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.Movie
+        Public Function GetMovieInfo(ByVal strOriginalTitle As String, ByVal strTitle As String, ByVal strYear As String, ByVal FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             Try
-                Dim nMovie As New MediaContainers.Movie
+                Dim nMovie As New MediaContainers.MainDetails
                 nMovie.Scrapersource = "MOVIEPILOT"
 
                 Dim sURL As String = SearchMovie(strOriginalTitle, strYear)

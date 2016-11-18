@@ -125,10 +125,10 @@ Public Class YouTube_Trailer
 
         LoadSettings()
 
-        If Not String.IsNullOrEmpty(DBMovie.Movie.Title) Then
+        If Not String.IsNullOrEmpty(DBMovie.MainDetails.Title) Then
             Dim _scraper As New YouTubes.Scraper()
 
-            TrailerList = _scraper.GetTrailers(DBMovie.Movie.Title)
+            TrailerList = _scraper.GetTrailers(DBMovie.MainDetails.Title)
         End If
 
         logger.Trace("[YouTube_Trailer] [Scraper_Movie] [Done]")
