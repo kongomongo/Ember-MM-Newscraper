@@ -427,8 +427,8 @@ Public Class dlgEditTVEpisode
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(tmpDBElement, True) Then
-            If Not Master.eSettings.TVEpisodeFanartAnyEnabled Then tcEdit.TabPages.Remove(tpFanart)
-            If Not Master.eSettings.TVEpisodePosterAnyEnabled Then
+            If Not Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then tcEdit.TabPages.Remove(tpFanart)
+            If Not Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then
                 tcEdit.TabPages.Remove(tpPoster)
                 tcEdit.TabPages.Remove(tpFrameExtraction)
             End If
@@ -535,7 +535,7 @@ Public Class dlgEditTVEpisode
             tmpDBElement.LoadAllImages(True, True)
 
             'Fanart
-            If Master.eSettings.TVEpisodeFanartAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
@@ -551,7 +551,7 @@ Public Class dlgEditTVEpisode
             End If
 
             'Poster
-            If Master.eSettings.TVEpisodePosterAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If

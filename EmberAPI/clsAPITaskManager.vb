@@ -443,7 +443,7 @@ Public Class TaskManager
                     If bHasChanged Then
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
                                                      .EventType = Enums.TaskManagerEventType.SimpleMessage,
-                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.ShowDetails.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.MainDetails.Season.ToString)})
+                                                     .Message = String.Format("{0}: {1} {2}", tmpDBElement.TVShowDetails.Title, Master.eLang.GetString(650, "Season"), tmpDBElement.MainDetails.Season.ToString)})
 
                         Master.DB.Save_TVSeason(tmpDBElement, True, True, False)
 

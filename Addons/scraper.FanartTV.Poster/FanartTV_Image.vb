@@ -578,16 +578,16 @@ Public Class FanartTV_Image
 
         Select Case tDBElement.ContentType
             Case Enums.ContentType.TVEpisode
-                If tDBElement.ShowDetails.TVDBSpecified Then
+                If tDBElement.TVShowDetails.TVDBSpecified Then
                     If FilteredModifiers.MainFanart Then
-                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(tDBElement.ShowDetails.TVDB, FilteredModifiers).MainFanarts
+                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(tDBElement.TVShowDetails.TVDB, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", tDBElement.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
-                If tDBElement.ShowDetails.TVDBSpecified Then
-                    ImagesContainer = _scraper.GetImages_TV(tDBElement.ShowDetails.TVDB, FilteredModifiers)
+                If tDBElement.TVShowDetails.TVDBSpecified Then
+                    ImagesContainer = _scraper.GetImages_TV(tDBElement.TVShowDetails.TVDB, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[FanartTV_Image] [Scraper_TV] [Abort] No TVDB ID exist to search: ", tDBElement.ListTitle))
                 End If

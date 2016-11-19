@@ -900,7 +900,7 @@ Public Class NFO
                             If mEpisode.MainDetails.TitleSpecified Then
                                 DBTV.Episodes.Add(mEpisode)
                             Else
-                                logger.Warn(String.Format("Missing Episode Ignored | {0} - S{1}E{2} | No Episode Title found", mEpisode.ShowDetails.Title, mEpisode.MainDetails.Season, mEpisode.MainDetails.Episode))
+                                logger.Warn(String.Format("Missing Episode Ignored | {0} - S{1}E{2} | No Episode Title found", mEpisode.TVShowDetails.Title, mEpisode.MainDetails.Season, mEpisode.MainDetails.Episode))
                             End If
                         End If
                     End If
@@ -1196,8 +1196,8 @@ Public Class NFO
         End If
 
         'TV Show Runtime for Episode Runtime
-        If Not DBTVEpisode.MainDetails.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.ShowDetails.RuntimeSpecified Then
-            DBTVEpisode.MainDetails.Runtime = DBTVEpisode.ShowDetails.Runtime
+        If Not DBTVEpisode.MainDetails.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.TVShowDetails.RuntimeSpecified Then
+            DBTVEpisode.MainDetails.Runtime = DBTVEpisode.TVShowDetails.Runtime
         End If
 
         Return DBTVEpisode

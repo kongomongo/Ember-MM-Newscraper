@@ -2547,14 +2547,14 @@ Public Class frmMain
             DBScrapeSeason = Master.DB.Load_TVSeason(Convert.ToInt64(tScrapeItem.DataRow.Item("idSeason")), True, False)
             'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, DBScrapeMovie)
 
-            logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.ShowDetails.Title, DBScrapeSeason.MainDetails.Season))
+            logger.Trace(String.Format("Start scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
 
             If tScrapeItem.ScrapeModifiers.SeasonNFO Then
                 bwTVSeasonScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(253, "Scraping Data"), ":"))
                 If ModulesManager.Instance.ScrapeData_TVSeason(DBScrapeSeason, Args.ScrapeOptions, Args.ScrapeList.Count = 1) Then
                     Cancelled = True
                     If Args.ScrapeType = Enums.ScrapeType.SingleAuto OrElse Args.ScrapeType = Enums.ScrapeType.SingleField OrElse Args.ScrapeType = Enums.ScrapeType.SingleScrape Then
-                        logger.Trace(String.Format("Canceled scraping: {0}: Season {1}", DBScrapeSeason.ShowDetails.Title, DBScrapeSeason.MainDetails.Season))
+                        logger.Trace(String.Format("Canceled scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
                         bwTVSeasonScraper.CancelAsync()
                     End If
                 End If
@@ -2608,7 +2608,7 @@ Public Class frmMain
                 End If
             End If
 
-            logger.Trace(String.Format("Ended scraping: {0}: Season {1}", DBScrapeSeason.ShowDetails.Title, DBScrapeSeason.MainDetails.Season))
+            logger.Trace(String.Format("Ended scraping: {0}: Season {1}", DBScrapeSeason.TVShowDetails.Title, DBScrapeSeason.MainDetails.Season))
         Next
 
         e.Result = New Results With {.DBElement = DBScrapeSeason, .ScrapeType = Args.ScrapeType, .Cancelled = bwTVSeasonScraper.CancellationPending}
@@ -3229,218 +3229,218 @@ Public Class frmMain
 
     Private Sub chkMovieMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingBanner.CheckedChanged
         Master.eSettings.MovieMissingBanner = chkMovieMissingBanner.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearArt.CheckedChanged
         Master.eSettings.MovieMissingClearArt = chkMovieMissingClearArt.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearLogo.CheckedChanged
         Master.eSettings.MovieMissingClearLogo = chkMovieMissingClearLogo.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingDiscArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingDiscArt.CheckedChanged
         Master.eSettings.MovieMissingDiscArt = chkMovieMissingDiscArt.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingExtrafanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingExtrafanarts.CheckedChanged
         Master.eSettings.MovieMissingExtrafanarts = chkMovieMissingExtrafanarts.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingExtrathumbs_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingExtrathumbs.CheckedChanged
         Master.eSettings.MovieMissingExtrathumbs = chkMovieMissingExtrathumbs.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingFanart.CheckedChanged
         Master.eSettings.MovieMissingFanart = chkMovieMissingFanart.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingLandscape.CheckedChanged
         Master.eSettings.MovieMissingLandscape = chkMovieMissingLandscape.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingNFO.CheckedChanged
         Master.eSettings.MovieMissingNFO = chkMovieMissingNFO.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingPoster.CheckedChanged
         Master.eSettings.MovieMissingPoster = chkMovieMissingPoster.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingSubtitles_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingSubtitles.CheckedChanged
         Master.eSettings.MovieMissingSubtitles = chkMovieMissingSubtitles.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingTheme_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingTheme.CheckedChanged
         Master.eSettings.MovieMissingTheme = chkMovieMissingTheme.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieMissingTrailer_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingTrailer.CheckedChanged
         Master.eSettings.MovieMissingTrailer = chkMovieMissingTrailer.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MovieMissingItemsAnyEnabled
-        chkFilterMissing_Movies.Checked = Master.eSettings.MovieMissingItemsAnyEnabled
+        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
+        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
         SetFilterMissing_Movies()
     End Sub
 
     Private Sub chkMovieSetMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingBanner.CheckedChanged
         Master.eSettings.MovieSetMissingBanner = chkMovieSetMissingBanner.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearArt.CheckedChanged
         Master.eSettings.MovieSetMissingClearArt = chkMovieSetMissingClearArt.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearLogo.CheckedChanged
         Master.eSettings.MovieSetMissingClearLogo = chkMovieSetMissingClearLogo.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingDiscArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingDiscArt.CheckedChanged
         Master.eSettings.MovieSetMissingDiscArt = chkMovieSetMissingDiscArt.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingFanart.CheckedChanged
         Master.eSettings.MovieSetMissingFanart = chkMovieSetMissingFanart.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingLandscape.CheckedChanged
         Master.eSettings.MovieSetMissingLandscape = chkMovieSetMissingLandscape.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingNFO.CheckedChanged
         Master.eSettings.MovieSetMissingNFO = chkMovieSetMissingNFO.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkMovieSetMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingPoster.CheckedChanged
         Master.eSettings.MovieSetMissingPoster = chkMovieSetMissingPoster.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MovieSetMissingItemsAnyEnabled
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MovieSetMissingItemsAnyEnabled
+        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
+        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
         SetFilterMissing_MovieSets()
     End Sub
 
     Private Sub chkShowMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingBanner.CheckedChanged
         Master.eSettings.TVShowMissingBanner = chkShowMissingBanner.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingCharacterArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingCharacterArt.CheckedChanged
         Master.eSettings.TVShowMissingCharacterArt = chkShowMissingCharacterArt.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingClearArt.CheckedChanged
         Master.eSettings.TVShowMissingClearArt = chkShowMissingClearArt.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingClearLogo.CheckedChanged
         Master.eSettings.TVShowMissingClearLogo = chkShowMissingClearLogo.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingExtrafanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingExtrafanarts.CheckedChanged
         Master.eSettings.TVShowMissingExtrafanarts = chkShowMissingExtrafanarts.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingFanart.CheckedChanged
         Master.eSettings.TVShowMissingFanart = chkShowMissingFanart.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingLandscape.CheckedChanged
         Master.eSettings.TVShowMissingLandscape = chkShowMissingLandscape.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingNFO.CheckedChanged
         Master.eSettings.TVShowMissingNFO = chkShowMissingNFO.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingPoster.CheckedChanged
         Master.eSettings.TVShowMissingPoster = chkShowMissingPoster.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
     Private Sub chkShowMissingTheme_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingTheme.CheckedChanged
         Master.eSettings.TVShowMissingTheme = chkShowMissingTheme.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.TVShowMissingItemsAnyEnabled
-        chkFilterMissing_Shows.Checked = Master.eSettings.TVShowMissingItemsAnyEnabled
+        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
+        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
         SetFilterMissing_Shows()
     End Sub
 
@@ -8032,7 +8032,7 @@ Public Class frmMain
     Private Sub Edit_MovieSet(ByRef DBMovieSet As Database.DBElement)
         SetControlsEnabled(False)
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
-        Using dEditMovieSet As New dlgEditMovieSet
+        Using dEditMovieSet As New dlgEdit
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
@@ -8063,7 +8063,7 @@ Public Class frmMain
     Private Sub Edit_TVEpisode(ByRef DBTVEpisode As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVEpisode)
         SetControlsEnabled(False)
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBTVEpisode, True) Then
-            Using dEditTVEpisode As New dlgEditTVEpisode
+            Using dEditTVEpisode As New dlgEdit
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVEpisode, Nothing, Nothing, False, DBTVEpisode)
                 AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVEpisode.GenericRunCallBack
                 Select Case dEditTVEpisode.ShowDialog(DBTVEpisode)
@@ -8085,7 +8085,7 @@ Public Class frmMain
     Private Sub Edit_TVSeason(ByRef DBTVSeason As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVSeason)
         SetControlsEnabled(False)
         If DBTVSeason.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVSeason, True) Then
-            Using dEditTVSeason As New dlgEditTVSeason
+            Using dEditTVSeason As New dlgEdit
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVSeason, Nothing, Nothing, False, DBTVSeason)
                 'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditTVSeason.GenericRunCallBack
                 Select Case dEditTVSeason.ShowDialog(DBTVSeason)
@@ -8107,7 +8107,7 @@ Public Class frmMain
     Private Sub Edit_TVShow(ByRef DBTVShow As Database.DBElement, Optional ByVal EventType As Enums.ModuleEventType = Enums.ModuleEventType.AfterEdit_TVShow)
         SetControlsEnabled(False)
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, True) Then
-            Using dEditTVShow As New dlgEditTVShow
+            Using dEditTVShow As New dlgEdit
                 ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_TVShow, Nothing, Nothing, False, DBTVShow)
                 Select Case dEditTVShow.ShowDialog(DBTVShow)
                     Case DialogResult.OK
@@ -8156,7 +8156,7 @@ Public Class frmMain
         chkFilterMarkCustom2_Movies.Enabled = isEnabled
         chkFilterMarkCustom3_Movies.Enabled = isEnabled
         chkFilterMarkCustom4_Movies.Enabled = isEnabled
-        chkFilterMissing_Movies.Enabled = If(Master.eSettings.MovieMissingItemsAnyEnabled, isEnabled, False)
+        chkFilterMissing_Movies.Enabled = If(Master.eSettings.MissingItemsAnyEnabled_Movie, isEnabled, False)
         chkFilterNew_Movies.Enabled = isEnabled
         chkFilterTolerance_Movies.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         pnlFilterMissingItems_Movies.Visible = If(Not isEnabled, False, pnlFilterMissingItems_Movies.Visible)
@@ -8186,7 +8186,7 @@ Public Class frmMain
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        chkFilterMissing_MovieSets.Enabled = If(Master.eSettings.MovieSetMissingItemsAnyEnabled, isEnabled, False)
+        chkFilterMissing_MovieSets.Enabled = If(Master.eSettings.MissingItemsAnyEnabled_MovieSet, isEnabled, False)
         chkFilterMultiple_MovieSets.Enabled = isEnabled
         chkFilterNew_MovieSets.Enabled = isEnabled
         chkFilterOne_MovieSets.Enabled = isEnabled
@@ -8216,7 +8216,7 @@ Public Class frmMain
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        chkFilterMissing_Shows.Enabled = If(Master.eSettings.TVShowMissingItemsAnyEnabled, isEnabled, False)
+        chkFilterMissing_Shows.Enabled = If(Master.eSettings.MissingItemsAnyEnabled_TVShow, isEnabled, False)
         chkFilterNewEpisodes_Shows.Enabled = isEnabled
         chkFilterNewShows_Shows.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
@@ -9371,8 +9371,8 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
-        If currTV.ShowDetails.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.ShowDetails.MPAA)
+        If currTV.TVShowDetails.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShowDetails.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 MoveMPAA()
@@ -9384,13 +9384,13 @@ Public Class frmMain
             BuildStars(tmpRating)
         End If
 
-        If currTV.ShowDetails.GenresSpecified Then
-            createGenreThumbs(currTV.ShowDetails.Genres)
+        If currTV.TVShowDetails.GenresSpecified Then
+            createGenreThumbs(currTV.TVShowDetails.Genres)
         End If
 
-        If currTV.ShowDetails.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.ShowDetails.Studios.Item(0).ToLower) 'ByDef all images file a lower case
-            pbStudio.Tag = currTV.ShowDetails.Studios.Item(0)
+        If currTV.TVShowDetails.StudiosSpecified Then
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShowDetails.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Tag = currTV.TVShowDetails.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -9421,40 +9421,40 @@ Public Class frmMain
 
     Private Sub FillScreenInfoWith_TVSeason()
         SuspendLayout()
-        If currTV.ShowDetails.TitleSpecified Then
-            lblTitle.Text = currTV.ShowDetails.Title
+        If currTV.TVShowDetails.TitleSpecified Then
+            lblTitle.Text = currTV.TVShowDetails.Title
         End If
 
-        If currTV.ShowDetails.OriginalTitleSpecified AndAlso Not currTV.ShowDetails.OriginalTitle = currTV.ShowDetails.Title Then
-            lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), currTV.ShowDetails.OriginalTitle)
+        If currTV.TVShowDetails.OriginalTitleSpecified AndAlso Not currTV.TVShowDetails.OriginalTitle = currTV.TVShowDetails.Title Then
+            lblOriginalTitle.Text = String.Format(String.Concat(Master.eLang.GetString(302, "Original Title"), ": {0}"), currTV.TVShowDetails.OriginalTitle)
         Else
             lblOriginalTitle.Text = String.Empty
         End If
 
         txtPlot.Text = currTV.MainDetails.Plot
-        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.ShowDetails.PremieredSpecified, Date.Parse(currTV.ShowDetails.Premiered).ToShortDateString, "?"))
+        lblRuntime.Text = String.Format(Master.eLang.GetString(645, "Premiered: {0}"), If(currTV.TVShowDetails.PremieredSpecified, Date.Parse(currTV.TVShowDetails.Premiered).ToShortDateString, "?"))
 
         Try
-            If currTV.ShowDetails.RatingSpecified Then
-                If currTV.ShowDetails.VotesSpecified Then
-                    Dim strRating As String = Double.Parse(currTV.ShowDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
-                    Dim strVotes As String = Double.Parse(currTV.ShowDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
+            If currTV.TVShowDetails.RatingSpecified Then
+                If currTV.TVShowDetails.VotesSpecified Then
+                    Dim strRating As String = Double.Parse(currTV.TVShowDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strVotes As String = Double.Parse(currTV.TVShowDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10 (", String.Format(Master.eLang.GetString(118, "{0} Votes"), strVotes), ")")
                 Else
-                    Dim strRating As String = Double.Parse(currTV.ShowDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
+                    Dim strRating As String = Double.Parse(currTV.TVShowDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture)
                     lblRating.Text = String.Concat(strRating, "/10")
                 End If
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.ShowDetails.Rating, " / ", currTV.ShowDetails.Votes, ")"))
+            logger.Error(String.Concat("Error: Not valid Rating or Votes (", currTV.TVShowDetails.Rating, " / ", currTV.TVShowDetails.Votes, ")"))
             lblRating.Text = "Error: Please rescrape Rating"
         End Try
 
         alActors = New List(Of String)
 
-        If currTV.ShowDetails.ActorsSpecified Then
+        If currTV.TVShowDetails.ActorsSpecified Then
             pbActors.Image = My.Resources.actor_silhouette
-            For Each imdbAct As MediaContainers.Person In currTV.ShowDetails.Actors
+            For Each imdbAct As MediaContainers.Person In currTV.TVShowDetails.Actors
                 If Not String.IsNullOrEmpty(imdbAct.LocalFilePath) AndAlso File.Exists(imdbAct.LocalFilePath) Then
                     If Not imdbAct.URLOriginal.ToLower.IndexOf("addtiny.gif") > 0 AndAlso Not imdbAct.URLOriginal.ToLower.IndexOf("no_photo") > 0 Then
                         alActors.Add(imdbAct.LocalFilePath)
@@ -9480,26 +9480,26 @@ Public Class frmMain
             lstActors.SelectedIndex = 0
         End If
 
-        If currTV.ShowDetails.MPAASpecified Then
-            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.ShowDetails.MPAA)
+        If currTV.TVShowDetails.MPAASpecified Then
+            Dim tmpRatingImg As Image = APIXML.GetTVRatingImage(currTV.TVShowDetails.MPAA)
             If tmpRatingImg IsNot Nothing Then
                 pbMPAA.Image = tmpRatingImg
                 MoveMPAA()
             End If
         End If
 
-        Dim tmpRating As Single = NumUtils.ConvertToSingle(currTV.ShowDetails.Rating)
+        Dim tmpRating As Single = NumUtils.ConvertToSingle(currTV.TVShowDetails.Rating)
         If tmpRating > 0 Then
             BuildStars(tmpRating)
         End If
 
-        If currTV.ShowDetails.Genres.Count > 0 Then
-            createGenreThumbs(currTV.ShowDetails.Genres)
+        If currTV.TVShowDetails.Genres.Count > 0 Then
+            createGenreThumbs(currTV.TVShowDetails.Genres)
         End If
 
-        If currTV.ShowDetails.StudiosSpecified Then
-            pbStudio.Image = APIXML.GetStudioImage(currTV.ShowDetails.Studios.Item(0).ToLower) 'ByDef all images file a lower case
-            pbStudio.Tag = currTV.ShowDetails.Studios.Item(0)
+        If currTV.TVShowDetails.StudiosSpecified Then
+            pbStudio.Image = APIXML.GetStudioImage(currTV.TVShowDetails.Studios.Item(0).ToLower) 'ByDef all images file a lower case
+            pbStudio.Tag = currTV.TVShowDetails.Studios.Item(0)
         Else
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
@@ -11276,69 +11276,69 @@ Public Class frmMain
         With Master.eSettings
             Select Case _SelectedContentType
                 Case "movie"
-                    mnuScrapeModifierActorthumbs.Enabled = .MovieActorThumbsAnyEnabled
+                    mnuScrapeModifierActorthumbs.Enabled = .FilenameAnyEnabled_Movie_Actorthumbs
                     mnuScrapeModifierActorthumbs.Visible = True
-                    mnuScrapeModifierBanner.Enabled = .MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+                    mnuScrapeModifierBanner.Enabled = .FilenameAnyEnabled_Movie_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
                     mnuScrapeModifierBanner.Visible = True
                     mnuScrapeModifierCharacterArt.Enabled = False
                     mnuScrapeModifierCharacterArt.Visible = False
-                    mnuScrapeModifierClearArt.Enabled = .MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+                    mnuScrapeModifierClearArt.Enabled = .FilenameAnyEnabled_Movie_ClearArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
                     mnuScrapeModifierClearArt.Visible = True
-                    mnuScrapeModifierClearLogo.Enabled = .MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+                    mnuScrapeModifierClearLogo.Enabled = .FilenameAnyEnabled_Movie_ClearLogo AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
                     mnuScrapeModifierClearLogo.Visible = True
-                    mnuScrapeModifierDiscArt.Enabled = .MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+                    mnuScrapeModifierDiscArt.Enabled = .FilenameAnyEnabled_Movie_DiscArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
                     mnuScrapeModifierDiscArt.Visible = True
-                    mnuScrapeModifierExtrafanarts.Enabled = .MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
+                    mnuScrapeModifierExtrafanarts.Enabled = .FilenameAnyEnabled_Movie_Extrafanarts AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrafanarts)
                     mnuScrapeModifierExtrafanarts.Visible = True
-                    mnuScrapeModifierExtrathumbs.Enabled = .MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
+                    mnuScrapeModifierExtrathumbs.Enabled = .FilenameAnyEnabled_Movie_Extrathumbs AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainExtrathumbs)
                     mnuScrapeModifierExtrathumbs.Visible = True
-                    mnuScrapeModifierFanart.Enabled = .MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+                    mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_Movie_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
-                    mnuScrapeModifierLandscape.Enabled = .MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+                    mnuScrapeModifierLandscape.Enabled = .FilenameAnyEnabled_Movie_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = .MovieScraperMetaDataScan
                     mnuScrapeModifierMetaData.Visible = True
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
-                    mnuScrapeModifierPoster.Enabled = .MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+                    mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_Movie_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
                     mnuScrapeModifierPoster.Visible = True
-                    mnuScrapeModifierTheme.Enabled = .MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+                    mnuScrapeModifierTheme.Enabled = .FilenameAnyEnabled_Movie_Theme AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
                     mnuScrapeModifierTheme.Visible = True
-                    mnuScrapeModifierTrailer.Enabled = .MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+                    mnuScrapeModifierTrailer.Enabled = .FilenameAnyEnabled_Movie_Trailer AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
                     mnuScrapeModifierTrailer.Visible = True
                 Case "movieset"
                     mnuScrapeModifierActorthumbs.Enabled = False
                     mnuScrapeModifierActorthumbs.Visible = False
-                    mnuScrapeModifierBanner.Enabled = .MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+                    mnuScrapeModifierBanner.Enabled = .FilenameAnyEnabled_MovieSet_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
                     mnuScrapeModifierBanner.Visible = True
                     mnuScrapeModifierCharacterArt.Enabled = False
                     mnuScrapeModifierCharacterArt.Visible = False
-                    mnuScrapeModifierClearArt.Enabled = .MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+                    mnuScrapeModifierClearArt.Enabled = .FilenameAnyEnabled_MovieSet_ClearArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
                     mnuScrapeModifierClearArt.Visible = True
-                    mnuScrapeModifierClearLogo.Enabled = .MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+                    mnuScrapeModifierClearLogo.Enabled = .FilenameAnyEnabled_MovieSet_ClearLogo AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
                     mnuScrapeModifierClearLogo.Visible = True
-                    mnuScrapeModifierDiscArt.Enabled = .MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+                    mnuScrapeModifierDiscArt.Enabled = .FilenameAnyEnabled_MovieSet_DiscArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
                     mnuScrapeModifierDiscArt.Visible = True
                     mnuScrapeModifierExtrafanarts.Enabled = False
                     mnuScrapeModifierExtrafanarts.Visible = False
                     mnuScrapeModifierExtrathumbs.Enabled = False
                     mnuScrapeModifierExtrathumbs.Visible = False
-                    mnuScrapeModifierFanart.Enabled = .MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+                    mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_MovieSet_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
-                    mnuScrapeModifierLandscape.Enabled = .MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+                    mnuScrapeModifierLandscape.Enabled = .FilenameAnyEnabled_MovieSet_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = False
                     mnuScrapeModifierMetaData.Visible = False
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
-                    mnuScrapeModifierPoster.Enabled = .MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+                    mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_MovieSet_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
                     mnuScrapeModifierPoster.Visible = True
                     mnuScrapeModifierTheme.Enabled = False
                     mnuScrapeModifierTheme.Visible = False
                     mnuScrapeModifierTrailer.Enabled = False
                     mnuScrapeModifierTrailer.Visible = False
                 Case "tvepisode"
-                    mnuScrapeModifierActorthumbs.Enabled = .TVEpisodeActorThumbsAnyEnabled
+                    mnuScrapeModifierActorthumbs.Enabled = .FilenameAnyEnabled_TVEpisode_ActorThumbs
                     mnuScrapeModifierActorthumbs.Visible = True
                     mnuScrapeModifierBanner.Enabled = False
                     mnuScrapeModifierBanner.Visible = False
@@ -11354,7 +11354,7 @@ Public Class frmMain
                     mnuScrapeModifierExtrafanarts.Visible = False
                     mnuScrapeModifierExtrathumbs.Enabled = False
                     mnuScrapeModifierExtrathumbs.Visible = False
-                    mnuScrapeModifierFanart.Enabled = .TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+                    mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_TVEpisode_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
                     mnuScrapeModifierFanart.Visible = True
                     mnuScrapeModifierLandscape.Enabled = False
                     mnuScrapeModifierLandscape.Visible = False
@@ -11362,7 +11362,7 @@ Public Class frmMain
                     mnuScrapeModifierMetaData.Visible = True
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
-                    mnuScrapeModifierPoster.Enabled = .TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+                    mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_TVEpisode_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
                     mnuScrapeModifierPoster.Visible = True
                     mnuScrapeModifierTheme.Enabled = False
                     mnuScrapeModifierTheme.Visible = False
@@ -11371,7 +11371,7 @@ Public Class frmMain
                 Case "tvseason"
                     mnuScrapeModifierActorthumbs.Enabled = False
                     mnuScrapeModifierActorthumbs.Visible = False
-                    mnuScrapeModifierBanner.Enabled = .TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+                    mnuScrapeModifierBanner.Enabled = .FilenameAnyEnabled_TVSeason_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
                     mnuScrapeModifierBanner.Visible = True
                     mnuScrapeModifierCharacterArt.Enabled = False
                     mnuScrapeModifierCharacterArt.Visible = False
@@ -11385,48 +11385,48 @@ Public Class frmMain
                     mnuScrapeModifierExtrafanarts.Visible = False
                     mnuScrapeModifierExtrathumbs.Enabled = False
                     mnuScrapeModifierExtrathumbs.Visible = False
-                    mnuScrapeModifierFanart.Enabled = .TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+                    mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_TVSeason_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
                     mnuScrapeModifierFanart.Visible = True
-                    mnuScrapeModifierLandscape.Enabled = .TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+                    mnuScrapeModifierLandscape.Enabled = .FilenameAnyEnabled_TVSeason_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = False
                     mnuScrapeModifierMetaData.Visible = False
                     mnuScrapeModifierNFO.Enabled = False
                     mnuScrapeModifierNFO.Visible = False
-                    mnuScrapeModifierPoster.Enabled = .TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+                    mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_TVSeason_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
                     mnuScrapeModifierPoster.Visible = True
                     mnuScrapeModifierTheme.Enabled = False
                     mnuScrapeModifierTheme.Visible = False
                     mnuScrapeModifierTrailer.Enabled = False
                     mnuScrapeModifierTrailer.Visible = False
                 Case "tvshow"
-                    mnuScrapeModifierActorthumbs.Enabled = .TVShowActorThumbsAnyEnabled
+                    mnuScrapeModifierActorthumbs.Enabled = .FilenameAnyEnabled_TVShow_ActorTumbs
                     mnuScrapeModifierActorthumbs.Visible = True
-                    mnuScrapeModifierBanner.Enabled = .TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+                    mnuScrapeModifierBanner.Enabled = .FilenameAnyEnabled_TVShow_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
                     mnuScrapeModifierBanner.Visible = True
-                    mnuScrapeModifierCharacterArt.Enabled = .TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+                    mnuScrapeModifierCharacterArt.Enabled = .FilenameAnyEnabled_TVShow_CharacterArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
                     mnuScrapeModifierCharacterArt.Visible = True
-                    mnuScrapeModifierClearArt.Enabled = .TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+                    mnuScrapeModifierClearArt.Enabled = .FilenameAnyEnabled_TVShow_ClearArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
                     mnuScrapeModifierClearArt.Visible = True
-                    mnuScrapeModifierClearLogo.Enabled = .TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+                    mnuScrapeModifierClearLogo.Enabled = .FilenameAnyEnabled_TVShow_ClearLogo AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
                     mnuScrapeModifierClearLogo.Visible = True
                     mnuScrapeModifierDiscArt.Enabled = False
                     mnuScrapeModifierDiscArt.Visible = False
-                    mnuScrapeModifierExtrafanarts.Enabled = .TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainExtrafanarts)
+                    mnuScrapeModifierExtrafanarts.Enabled = .FilenameAnyEnabled_TVShow_Extrafanarts AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainExtrafanarts)
                     mnuScrapeModifierExtrafanarts.Visible = True
                     mnuScrapeModifierExtrathumbs.Enabled = False
                     mnuScrapeModifierExtrathumbs.Visible = False
-                    mnuScrapeModifierFanart.Enabled = .TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+                    mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_TVShow_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
                     mnuScrapeModifierFanart.Visible = True
-                    mnuScrapeModifierLandscape.Enabled = .TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+                    mnuScrapeModifierLandscape.Enabled = .FilenameAnyEnabled_TVShow_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
                     mnuScrapeModifierLandscape.Visible = True
                     mnuScrapeModifierMetaData.Enabled = False
                     mnuScrapeModifierMetaData.Visible = False
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
-                    mnuScrapeModifierPoster.Enabled = .TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+                    mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_TVShow_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
                     mnuScrapeModifierPoster.Visible = True
-                    mnuScrapeModifierTheme.Enabled = .TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+                    mnuScrapeModifierTheme.Enabled = .FilenameAnyEnabled_TVShow_Theme AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
                     mnuScrapeModifierTheme.Visible = True
                     mnuScrapeModifierTrailer.Enabled = False
                     mnuScrapeModifierTrailer.Visible = False
@@ -11814,18 +11814,18 @@ Public Class frmMain
                 Next
         End Select
 
-        Dim ActorThumbsAllowed As Boolean = Master.eSettings.MovieActorThumbsAnyEnabled
-        Dim BannerAllowed As Boolean = Master.eSettings.MovieBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
-        Dim ExtrafanartsAllowed As Boolean = Master.eSettings.MovieExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.MovieExtrathumbsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim FanartAllowed As Boolean = Master.eSettings.MovieFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.MoviePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
-        Dim ThemeAllowed As Boolean = Master.eSettings.MovieThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
-        Dim TrailerAllowed As Boolean = Master.eSettings.MovieTrailerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
+        Dim ActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Actorthumbs
+        Dim BannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner)
+        Dim ClearArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_ClearArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt)
+        Dim ClearLogoAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_ClearLogo AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo)
+        Dim DiscArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_DiscArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt)
+        Dim ExtrafanartsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Extrafanarts AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Extrathumbs AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim FanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart)
+        Dim LandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape)
+        Dim PosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster)
+        Dim ThemeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Theme AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ModifierType.MainTheme)
+        Dim TrailerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Trailer AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ModifierType.MainTrailer)
 
         'create ScrapeList of movies acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -11991,13 +11991,13 @@ Public Class frmMain
                 Next
         End Select
 
-        Dim BannerAllowed As Boolean = Master.eSettings.MovieSetBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.MovieSetClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.MovieSetClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.MovieSetDiscArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
-        Dim FanartAllowed As Boolean = Master.eSettings.MovieSetFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.MovieSetLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.MovieSetPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
+        Dim BannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner)
+        Dim ClearArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_ClearArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt)
+        Dim ClearLogoAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_ClearLogo AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo)
+        Dim DiscArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_DiscArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt)
+        Dim FanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart)
+        Dim LandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape)
+        Dim PosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_MovieSet_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster)
 
         'create ScrapeList of moviesets acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12153,28 +12153,28 @@ Public Class frmMain
                 Next
         End Select
 
-        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
-        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
-        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
-        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
-        Dim EpisodeActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
-        Dim EpisodeFanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
+        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
+        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
+        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
+        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
+        Dim EpisodeActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_ActorThumbs
+        Dim EpisodeFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart)
         Dim EpisodeMetaAllowed As Boolean = Master.eSettings.TVScraperMetaDataScan
-        Dim EpisodePosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
-        Dim MainActorThumbsAllowed As Boolean = Master.eSettings.TVShowActorThumbsAnyEnabled
-        Dim MainBannerAllowed As Boolean = Master.eSettings.TVShowBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
-        Dim MainCharacterArtAllowed As Boolean = Master.eSettings.TVShowCharacterArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
-        Dim MainClearArtAllowed As Boolean = Master.eSettings.TVShowClearArtAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
-        Dim MainClearLogoAllowed As Boolean = Master.eSettings.TVShowClearLogoAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
-        Dim MainExtrafanartsAllowed As Boolean = Master.eSettings.TVShowExtrafanartsAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-        Dim MainFanartAllowed As Boolean = Master.eSettings.TVShowFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
-        Dim MainLandscapeAllowed As Boolean = Master.eSettings.TVShowLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
-        Dim MainPosterAllowed As Boolean = Master.eSettings.TVShowPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
-        Dim MainThemeAllowed As Boolean = Master.eSettings.TvShowThemeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
-        Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
-        Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
-        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
-        Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+        Dim EpisodePosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+        Dim MainActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_ActorTumbs
+        Dim MainBannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner)
+        Dim MainCharacterArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt)
+        Dim MainClearArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt)
+        Dim MainClearLogoAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo)
+        Dim MainExtrafanartsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Extrafanarts AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim MainFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart)
+        Dim MainLandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape)
+        Dim MainPosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster)
+        Dim MainThemeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Theme AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ModifierType.MainTheme)
+        Dim SeasonBannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+        Dim SeasonFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+        Dim SeasonPosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
         'create ScrapeList of tv shows acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12349,10 +12349,10 @@ Public Class frmMain
                 Next
         End Select
 
-        Dim ActorThumbsAllowed As Boolean = Master.eSettings.TVEpisodeActorThumbsAnyEnabled
-        Dim FanartAllowed As Boolean = Master.eSettings.TVEpisodeFanartAnyEnabled AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse
+        Dim ActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_ActorThumbs
+        Dim FanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart AndAlso (ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) OrElse
                                                                                            ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart))
-        Dim PosterAllowed As Boolean = Master.eSettings.TVEpisodePosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
+        Dim PosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster)
 
         'create ScrapeList of episodes acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12456,7 +12456,7 @@ Public Class frmMain
     End Sub
 
     Private Sub InfoDownloaded_TVSeason(ByRef DBTVSeason As Database.DBElement)
-        If Not String.IsNullOrEmpty(DBTVSeason.ShowDetails.Title) Then
+        If Not String.IsNullOrEmpty(DBTVSeason.TVShowDetails.Title) Then
             tslLoading.Text = Master.eLang.GetString(80, "Verifying TV Season Details:")
             Application.DoEvents()
 
@@ -12499,14 +12499,14 @@ Public Class frmMain
                 Next
         End Select
 
-        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.TVAllSeasonsBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
-        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.TVAllSeasonsFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
-        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.TVAllSeasonsLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
-        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.TVAllSeasonsPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
-        Dim SeasonBannerAllowed As Boolean = Master.eSettings.TVSeasonBannerAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
-        Dim SeasonFanartAllowed As Boolean = Master.eSettings.TVSeasonFanartAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
-        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.TVSeasonLandscapeAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
-        Dim SeasonPosterAllowed As Boolean = Master.eSettings.TVSeasonPosterAnyEnabled AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
+        Dim AllSeasonsBannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsBanner)
+        Dim AllSeasonsFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsFanart)
+        Dim AllSeasonsLandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsLandscape)
+        Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.AllSeasonsPoster)
+        Dim SeasonBannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Banner AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonBanner)
+        Dim SeasonFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonFanart)
+        Dim SeasonLandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonLandscape)
+        Dim SeasonPosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVSeason_Poster AndAlso ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.SeasonPoster)
 
         'create ScrapeList of tv seasons acording to scrapetype
         For Each drvRow As DataRow In DataRowList

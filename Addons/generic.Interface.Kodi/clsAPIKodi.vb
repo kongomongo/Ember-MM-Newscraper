@@ -1365,7 +1365,7 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & mDBElement.ShowDetails.Title & ": " & mDBElement.MainDetails.Title).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & mDBElement.TVShowDetails.Title & ": " & mDBElement.MainDetails.Title).ConfigureAwait(False)
                         End If
 
                         logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_TVEpisode: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.MainDetails.Title, If(bIsNew, "Added", "Updated")))
@@ -1449,13 +1449,13 @@ Namespace Kodi
 
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & mDBElement.ShowDetails.Title & ": Season " & mDBElement.MainDetails.Season).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", If(bIsNew, Master.eLang.GetString(881, "Added"), Master.eLang.GetString(1408, "Updated")) & ": " & mDBElement.TVShowDetails.Title & ": Season " & mDBElement.MainDetails.Season).ConfigureAwait(False)
                         End If
 
                         'Sync Episodes
                         If mDBElement.EpisodesSpecified Then
                             For Each tEpisode As Database.DBElement In mDBElement.Episodes
-                                If tEpisode.ShowDetails Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
+                                If tEpisode.TVShowDetails Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVEpisode(tEpisode, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next
                         End If
@@ -1617,7 +1617,7 @@ Namespace Kodi
                         'Sync Episodes
                         If mDBElement.EpisodesSpecified Then
                             For Each tEpisode As Database.DBElement In mDBElement.Episodes.Where(Function(f) f.FilenameSpecified)
-                                If tEpisode.ShowDetails Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
+                                If tEpisode.TVShowDetails Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tEpisode, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVEpisode(tEpisode, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next
                         End If
@@ -1625,7 +1625,7 @@ Namespace Kodi
                         'Sync Seasons
                         If mDBElement.SeasonsSpecified Then
                             For Each tSeason As Database.DBElement In mDBElement.Seasons
-                                If tSeason.ShowDetails Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tSeason, mDBElement)
+                                If tSeason.TVShowDetails Is Nothing Then Master.DB.AddTVShowInfoToDBElement(tSeason, mDBElement)
                                 Await Task.Run(Function() UpdateInfo_TVSeason(tSeason, blnSendHostNotification, GenericSubEvent, GenericMainEvent))
                             Next
                         End If
@@ -1852,7 +1852,7 @@ Namespace Kodi
                     Else
                         'Send message to Kodi?
                         If blnSendHostNotification = True Then
-                            Await SendMessage("Ember Media Manager", String.Format("{0}: {1}: {2}", Master.eLang.GetString(1024, "Removed"), mDBElement.ShowDetails.Title, mDBElement.MainDetails.Title)).ConfigureAwait(False)
+                            Await SendMessage("Ember Media Manager", String.Format("{0}: {1}: {2}", Master.eLang.GetString(1024, "Removed"), mDBElement.TVShowDetails.Title, mDBElement.MainDetails.Title)).ConfigureAwait(False)
                         End If
                         logger.Trace(String.Format("[APIKodi] [{0}] [Remove_TVEpisode]: ""{1}"" | {2} on host", _currenthost.Label, mDBElement.MainDetails.Title, "Removed"))
                         Return True

@@ -823,8 +823,8 @@ Public Class FileFolderRenamer
         End If
 
         'Show Title
-        If _DBElement.ShowDetails.TitleSpecified Then
-            EpisodeFile.ShowTitle = _DBElement.ShowDetails.Title
+        If _DBElement.TVShowDetails.TitleSpecified Then
+            EpisodeFile.ShowTitle = _DBElement.TVShowDetails.Title
         End If
 
         'VideoSource

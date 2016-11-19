@@ -788,7 +788,7 @@ Public Class Scanner
                     MediaInfo.UpdateTVMediaInfo(cEpisode)
                 End If
             Else
-                If isNew AndAlso cEpisode.ShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
+                If isNew AndAlso cEpisode.TVShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
                     If sEpisode.byDate Then
                         If Not cEpisode.MainDetails.AiredSpecified Then cEpisode.MainDetails.Aired = sEpisode.Aired
                     Else
@@ -813,11 +813,11 @@ Public Class Scanner
             End If
 
             'Scrape episode images
-            If isNew AndAlso cEpisode.ShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
+            If isNew AndAlso cEpisode.TVShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled Then ScrapeModifiers.EpisodeFanart = True
-                If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.TVEpisodePosterAnyEnabled Then ScrapeModifiers.EpisodePoster = True
+                If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then ScrapeModifiers.EpisodeFanart = True
+                If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then ScrapeModifiers.EpisodePoster = True
                 If ScrapeModifiers.EpisodeFanart OrElse ScrapeModifiers.EpisodePoster Then
                     If Not ModulesManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
                         Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifiers)
@@ -829,7 +829,7 @@ Public Class Scanner
                 'no title so assume it's an invalid nfo, clear nfo path if exists
                 cEpisode.NfoPath = String.Empty
                 'set title based on episode file
-                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.MainDetails.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.Filename, cEpisode.ShowDetails.Title)
+                If Not Master.eSettings.TVEpisodeNoFilter Then cEpisode.MainDetails.Title = StringUtils.FilterTitleFromPath_TVEpisode(cEpisode.Filename, cEpisode.TVShowDetails.Title)
             End If
 
             'search local actor thumb for each actor in NFO
@@ -851,7 +851,7 @@ Public Class Scanner
 
                 If Not cEpisode.MainDetails.TitleSpecified Then
                     'nothing usable in the title after filters have runs
-                    cEpisode.MainDetails.Title = String.Format("{0} {1}", cEpisode.ShowDetails.Title, cEpisode.MainDetails.Aired)
+                    cEpisode.MainDetails.Title = String.Format("{0} {1}", cEpisode.TVShowDetails.Title, cEpisode.MainDetails.Aired)
                 End If
             Else
                 If cEpisode.MainDetails.Season = -1 Then cEpisode.MainDetails.Season = sEpisode.Season
@@ -860,7 +860,7 @@ Public Class Scanner
 
                 If Not cEpisode.MainDetails.TitleSpecified Then
                     'nothing usable in the title after filters have runs
-                    cEpisode.MainDetails.Title = String.Format("{0} S{1}E{2}{3}", cEpisode.ShowDetails.Title, cEpisode.MainDetails.Season.ToString.PadLeft(2, Convert.ToChar("0")),
+                    cEpisode.MainDetails.Title = String.Format("{0} S{1}E{2}{3}", cEpisode.TVShowDetails.Title, cEpisode.MainDetails.Season.ToString.PadLeft(2, Convert.ToChar("0")),
                                                        cEpisode.MainDetails.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
                                                        If(cEpisode.MainDetails.SubEpisodeSpecified, String.Concat(".", cEpisode.MainDetails.SubEpisode), String.Empty))
                 End If
@@ -917,7 +917,7 @@ Public Class Scanner
                 SeasonAndEpisodeList.Seasons.Add(cEpisode.MainDetails.Season)
             End If
 
-            If ReportProgress Then bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_TVEpisode, .ID = cEpisode.ID, .Message = String.Format("{0}: {1}", cEpisode.ShowDetails.Title, cEpisode.MainDetails.Title)})
+            If ReportProgress Then bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_TVEpisode, .ID = cEpisode.ID, .Message = String.Format("{0}: {1}", cEpisode.TVShowDetails.Title, cEpisode.MainDetails.Title)})
         Next
 
         If Not isNew Then
@@ -1028,7 +1028,7 @@ Public Class Scanner
                                     tmpSeason.MainDetails.TVDB = nfoSeason.TVDB
                                 Else
                                     'Scrape season info
-                                    If isNew AndAlso tmpSeason.ShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
+                                    If isNew AndAlso tmpSeason.TVShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
                                         ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.DefaultOptions_TV, False)
                                     End If
                                 End If
@@ -1036,13 +1036,13 @@ Public Class Scanner
                                 GetFolderContents_TVSeason(tmpSeason)
 
                                 'Scrape season images
-                                If isNew AndAlso tmpSeason.ShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
+                                If isNew AndAlso tmpSeason.TVShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
                                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                                     Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                                    If Not tmpSeason.ImagesContainer.Banner.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonBannerAnyEnabled Then ScrapeModifiers.SeasonBanner = True
-                                    If Not tmpSeason.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonFanartAnyEnabled Then ScrapeModifiers.SeasonFanart = True
-                                    If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonLandscapeAnyEnabled Then ScrapeModifiers.SeasonLandscape = True
-                                    If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.TVSeasonPosterAnyEnabled Then ScrapeModifiers.SeasonPoster = True
+                                    If Not tmpSeason.ImagesContainer.Banner.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner Then ScrapeModifiers.SeasonBanner = True
+                                    If Not tmpSeason.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart Then ScrapeModifiers.SeasonFanart = True
+                                    If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape Then ScrapeModifiers.SeasonLandscape = True
+                                    If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster Then ScrapeModifiers.SeasonPoster = True
                                     If ScrapeModifiers.SeasonBanner OrElse ScrapeModifiers.SeasonFanart OrElse ScrapeModifiers.SeasonLandscape OrElse ScrapeModifiers.SeasonPoster Then
                                         If Not ModulesManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
                                             Images.SetPreferredImages(tmpSeason, SearchResultsContainer, ScrapeModifiers)

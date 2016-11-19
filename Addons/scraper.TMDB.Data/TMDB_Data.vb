@@ -790,15 +790,15 @@ Public Class TMDB_Data
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
-        If Not oDBElement.ShowDetails.TMDBSpecified AndAlso oDBElement.ShowDetails.TVDBSpecified Then
-            oDBElement.ShowDetails.TMDB = _scraper.GetTMDBbyTVDB(oDBElement.ShowDetails.TVDB)
+        If Not oDBElement.TVShowDetails.TMDBSpecified AndAlso oDBElement.TVShowDetails.TVDBSpecified Then
+            oDBElement.TVShowDetails.TMDB = _scraper.GetTMDBbyTVDB(oDBElement.TVShowDetails.TVDB)
         End If
 
-        If oDBElement.ShowDetails.TMDBSpecified Then
+        If oDBElement.TVShowDetails.TMDBSpecified Then
             If Not oDBElement.MainDetails.Episode = -1 AndAlso Not oDBElement.MainDetails.Season = -1 Then
-                nTVEpisode = _scraper.GetInfo_TVEpisode(CInt(oDBElement.ShowDetails.TMDB), oDBElement.MainDetails.Season, oDBElement.MainDetails.Episode, FilteredOptions)
+                nTVEpisode = _scraper.GetInfo_TVEpisode(CInt(oDBElement.TVShowDetails.TMDB), oDBElement.MainDetails.Season, oDBElement.MainDetails.Episode, FilteredOptions)
             ElseIf oDBElement.MainDetails.AiredSpecified Then
-                nTVEpisode = _scraper.GetInfo_TVEpisode(CInt(oDBElement.ShowDetails.TMDB), oDBElement.MainDetails.Aired, FilteredOptions)
+                nTVEpisode = _scraper.GetInfo_TVEpisode(CInt(oDBElement.TVShowDetails.TMDB), oDBElement.MainDetails.Aired, FilteredOptions)
             Else
                 logger.Trace(String.Format("[TMDB_Data] [Scraper_TVEpisode] [Abort] No search result found"))
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}
@@ -828,13 +828,13 @@ Public Class TMDB_Data
 
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
 
-        If Not oDBElement.ShowDetails.TMDBSpecified AndAlso oDBElement.ShowDetails.TVDBSpecified Then
-            oDBElement.ShowDetails.TMDB = _scraper.GetTMDBbyTVDB(oDBElement.ShowDetails.TVDB)
+        If Not oDBElement.TVShowDetails.TMDBSpecified AndAlso oDBElement.TVShowDetails.TVDBSpecified Then
+            oDBElement.TVShowDetails.TMDB = _scraper.GetTMDBbyTVDB(oDBElement.TVShowDetails.TVDB)
         End If
 
-        If oDBElement.ShowDetails.TMDBSpecified Then
+        If oDBElement.TVShowDetails.TMDBSpecified Then
             If oDBElement.MainDetails.SeasonSpecified Then
-                nTVSeason = _scraper.GetInfo_TVSeason(CInt(oDBElement.ShowDetails.TMDB), oDBElement.MainDetails.Season, FilteredOptions)
+                nTVSeason = _scraper.GetInfo_TVSeason(CInt(oDBElement.TVShowDetails.TMDB), oDBElement.MainDetails.Season, FilteredOptions)
             Else
                 logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] Season is not specified"))
                 Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}

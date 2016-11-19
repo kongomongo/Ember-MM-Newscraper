@@ -2490,14 +2490,14 @@ Namespace MediaContainers
         Public Sub SaveAllActorThumbs(ByRef DBElement As Database.DBElement)
             Select Case DBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If ActorsSpecified AndAlso Master.eSettings.MovieActorThumbsAnyEnabled Then
+                    If ActorsSpecified AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Actorthumbs Then
                         Images.SaveMovieActorThumbs(DBElement)
                     Else
                         Images.Delete_Movie(DBElement, Enums.ModifierType.MainActorThumbs, False)
                         DBElement.ActorThumbs.Clear()
                     End If
                 Case Enums.ContentType.TVShow
-                    If ActorsSpecified AndAlso Master.eSettings.TVShowActorThumbsAnyEnabled Then
+                    If ActorsSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ActorTumbs Then
                         Images.SaveTVShowActorThumbs(DBElement)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ModifierType.MainActorThumbs)

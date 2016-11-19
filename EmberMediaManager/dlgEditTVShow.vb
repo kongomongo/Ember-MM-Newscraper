@@ -1087,14 +1087,14 @@ Public Class dlgEditTVShow
 
     Private Sub dlgEditShow_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpDBElement, True) Then
-            If Not Master.eSettings.TVShowBannerAnyEnabled Then tcEdit.TabPages.Remove(tpBanner)
-            If Not Master.eSettings.TVShowCharacterArtAnyEnabled Then tcEdit.TabPages.Remove(tpCharacterArt)
-            If Not Master.eSettings.TVShowClearArtAnyEnabled Then tcEdit.TabPages.Remove(tpClearArt)
-            If Not Master.eSettings.TVShowClearLogoAnyEnabled Then tcEdit.TabPages.Remove(tpClearLogo)
-            If Not Master.eSettings.TVShowExtrafanartsAnyEnabled Then tcEdit.TabPages.Remove(tpExtrafanarts)
-            If Not Master.eSettings.TVShowFanartAnyEnabled Then tcEdit.TabPages.Remove(tpFanart)
-            If Not Master.eSettings.TVShowLandscapeAnyEnabled Then tcEdit.TabPages.Remove(tpLandscape)
-            If Not Master.eSettings.TVShowPosterAnyEnabled Then tcEdit.TabPages.Remove(tpPoster)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_Banner Then tcEdit.TabPages.Remove(tpBanner)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt Then tcEdit.TabPages.Remove(tpCharacterArt)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt Then tcEdit.TabPages.Remove(tpClearArt)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo Then tcEdit.TabPages.Remove(tpClearLogo)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_Extrafanarts Then tcEdit.TabPages.Remove(tpExtrafanarts)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_Fanart Then tcEdit.TabPages.Remove(tpFanart)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_Landscape Then tcEdit.TabPages.Remove(tpLandscape)
+            If Not Master.eSettings.FilenameAnyEnabled_TVShow_Poster Then tcEdit.TabPages.Remove(tpPoster)
 
             pbBanner.AllowDrop = True
             pbCharacterArt.AllowDrop = True
@@ -1204,7 +1204,7 @@ Public Class dlgEditTVShow
             tmpDBElement.LoadAllImages(True, True)
 
             'Banner
-            If Master.eSettings.TVShowBannerAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_Banner Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainBanner) Then
                     btnSetBannerScrape.Enabled = False
                 End If
@@ -1220,7 +1220,7 @@ Public Class dlgEditTVShow
             End If
 
             'CharacterArt
-            If Master.eSettings.TVShowCharacterArtAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainCharacterArt) Then
                     btnSetCharacterArtScrape.Enabled = False
                 End If
@@ -1236,7 +1236,7 @@ Public Class dlgEditTVShow
             End If
 
             'ClearArt
-            If Master.eSettings.TVShowClearArtAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearArt) Then
                     btnSetClearArtScrape.Enabled = False
                 End If
@@ -1252,7 +1252,7 @@ Public Class dlgEditTVShow
             End If
 
             'ClearLogo
-            If Master.eSettings.TVShowClearLogoAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainClearLogo) Then
                     btnSetClearLogoScrape.Enabled = False
                 End If
@@ -1268,7 +1268,7 @@ Public Class dlgEditTVShow
             End If
 
             'Extrafanarts
-            If Master.eSettings.TVShowExtrafanartsAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_Extrafanarts Then
                 'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
                 '.btnSetFanartScrape.Enabled = False
                 'End If
@@ -1284,7 +1284,7 @@ Public Class dlgEditTVShow
             End If
 
             'Fanart
-            If Master.eSettings.TVShowFanartAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_Fanart Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
@@ -1300,7 +1300,7 @@ Public Class dlgEditTVShow
             End If
 
             'Landscape
-            If Master.eSettings.TVShowLandscapeAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_Landscape Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainLandscape) Then
                     btnSetLandscapeScrape.Enabled = False
                 End If
@@ -1316,7 +1316,7 @@ Public Class dlgEditTVShow
             End If
 
             'Poster
-            If Master.eSettings.TVShowPosterAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_TVShow_Poster Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainPoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
@@ -1333,7 +1333,7 @@ Public Class dlgEditTVShow
         End With
 
         'Theme
-        If Master.eSettings.TvShowThemeAnyEnabled Then
+        If Master.eSettings.FilenameAnyEnabled_TVShow_Theme Then
             If Not String.IsNullOrEmpty(tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(tmpDBElement.Theme.URLAudioStream) Then
                 LoadTheme(tmpDBElement.Theme)
             End If

@@ -306,11 +306,11 @@ Public Class TVDB_Data
         Dim _scraper As New TVDBs.Scraper(Settings)
         Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
 
-        If oDBTVEpisode.ShowDetails.TVDBSpecified Then
+        If oDBTVEpisode.TVShowDetails.TVDBSpecified Then
             If Not oDBTVEpisode.MainDetails.Episode = -1 AndAlso Not oDBTVEpisode.MainDetails.Season = -1 Then
-                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.ShowDetails.TVDB), oDBTVEpisode.MainDetails.Season, oDBTVEpisode.MainDetails.Episode, oDBTVEpisode.Ordering, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShowDetails.TVDB), oDBTVEpisode.MainDetails.Season, oDBTVEpisode.MainDetails.Episode, oDBTVEpisode.Ordering, FilteredOptions)
             ElseIf oDBTVEpisode.MainDetails.AiredSpecified Then
-                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.ShowDetails.TVDB), oDBTVEpisode.MainDetails.Aired, FilteredOptions)
+                nTVEpisode = _scraper.GetTVEpisodeInfo(CInt(oDBTVEpisode.TVShowDetails.TVDB), oDBTVEpisode.MainDetails.Aired, FilteredOptions)
             Else
                 logger.Trace("[TVDB_Data] [Scraper_TVEpisode] [Abort] No TV Show TVDB ID and also no AiredDate available")
                 Return New Interfaces.ModuleResult_Data_TVEpisode With {.Result = Nothing}

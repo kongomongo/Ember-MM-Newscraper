@@ -201,17 +201,17 @@ Public Class TVDB_Image
 
         Select Case DBTV.ContentType
             Case Enums.ContentType.TVEpisode
-                If Not String.IsNullOrEmpty(DBTV.ShowDetails.TVDB) Then
-                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.ShowDetails.TVDB, DBTV.MainDetails.Season, DBTV.MainDetails.Episode, DBTV.Ordering, FilteredModifiers)
+                If Not String.IsNullOrEmpty(DBTV.TVShowDetails.TVDB) Then
+                    ImagesContainer = _scraper.GetImages_TVEpisode(DBTV.TVShowDetails.TVDB, DBTV.MainDetails.Season, DBTV.MainDetails.Episode, DBTV.Ordering, FilteredModifiers)
                     If FilteredModifiers.MainFanart Then
-                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.ShowDetails.TVDB, FilteredModifiers).MainFanarts
+                        ImagesContainer.MainFanarts = _scraper.GetImages_TV(DBTV.TVShowDetails.TVDB, FilteredModifiers).MainFanarts
                     End If
                 Else
                     logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If
             Case Enums.ContentType.TVSeason
-                If Not String.IsNullOrEmpty(DBTV.ShowDetails.TVDB) Then
-                    ImagesContainer = _scraper.GetImages_TV(DBTV.ShowDetails.TVDB, FilteredModifiers)
+                If Not String.IsNullOrEmpty(DBTV.TVShowDetails.TVDB) Then
+                    ImagesContainer = _scraper.GetImages_TV(DBTV.TVShowDetails.TVDB, FilteredModifiers)
                 Else
                     logger.Trace(String.Concat("[TVDB_Image] [Scraper] [Abort] No TVDB ID exist to search: ", DBTV.ListTitle))
                 End If

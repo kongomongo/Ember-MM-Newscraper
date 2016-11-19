@@ -1128,7 +1128,7 @@ Public Class ModulesManager
     End Function
 
     Public Function ScrapeData_TVSeason(ByRef DBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions, ByVal showMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
+        logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", DBElement.TVShowDetails.Title, DBElement.MainDetails.Season))
         If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, showMessage) Then
             Dim modules As IEnumerable(Of _externalScraperModuleClass_Data_TV) = externalScrapersModules_Data_TV.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.ModuleResult_Data_TVSeason
@@ -1172,14 +1172,14 @@ Public Class ModulesManager
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] {0}: Season {1}", DBElement.TVShowDetails.Title, DBElement.MainDetails.Season))
             Else
-                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
+                logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Done] [No Scraper Results] {0}: Season {1}", DBElement.TVShowDetails.Title, DBElement.MainDetails.Season))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.Cancelled
         Else
-            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Abort] [Offline] {0}: Season {1}", DBElement.ShowDetails.Title, DBElement.MainDetails.Season))
+            logger.Trace(String.Format("[ModulesManager] [ScrapeData_TVSeason] [Abort] [Offline] {0}: Season {1}", DBElement.TVShowDetails.Title, DBElement.MainDetails.Season))
             Return True 'Cancelled
         End If
     End Function
@@ -1587,6 +1587,19 @@ Public Class ModulesManager
         End If
         logger.Trace(String.Format("[ModulesManager] [ScrapeTrailer_Movie] [Done] {0}", DBElement.Filename))
         Return ret.Cancelled
+    End Function
+
+    Function ScraperWithCapabilityAnyEnabled(ByVal tContentType As Enums.ContentType, ByVal tImageType As Enums.ModifierType) As Boolean
+        Dim bResult As Boolean
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                Return ScraperWithCapabilityAnyEnabled_Image_Movie(tImageType)
+            Case Enums.ContentType.MovieSet
+                Return ScraperWithCapabilityAnyEnabled_Image_MovieSet(tImageType)
+            Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                Return ScraperWithCapabilityAnyEnabled_Image_TV(tImageType)
+        End Select
+        Return bResult
     End Function
 
     Function ScraperWithCapabilityAnyEnabled_Image_Movie(ByVal ImageType As Enums.ModifierType) As Boolean

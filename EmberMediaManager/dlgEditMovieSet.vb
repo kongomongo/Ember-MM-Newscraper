@@ -888,7 +888,7 @@ Public Class dlgEditMovieSet
             tmpDBElement.LoadAllImages(True, True)
 
             'Banner
-            If Master.eSettings.MovieSetBannerAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_Banner Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainBanner) Then
                     btnSetBannerScrape.Enabled = False
                 End If
@@ -904,7 +904,7 @@ Public Class dlgEditMovieSet
             End If
 
             'ClearArt
-            If Master.eSettings.MovieSetClearArtAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_ClearArt Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearArt) Then
                     btnSetClearArtScrape.Enabled = False
                 End If
@@ -920,7 +920,7 @@ Public Class dlgEditMovieSet
             End If
 
             'ClearLogo
-            If Master.eSettings.MovieSetClearLogoAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_ClearLogo Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainClearLogo) Then
                     btnSetClearLogoScrape.Enabled = False
                 End If
@@ -936,7 +936,7 @@ Public Class dlgEditMovieSet
             End If
 
             'DiscArt
-            If Master.eSettings.MovieSetDiscArtAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_DiscArt Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainDiscArt) Then
                     btnSetDiscArtScrape.Enabled = False
                 End If
@@ -952,7 +952,7 @@ Public Class dlgEditMovieSet
             End If
 
             'Fanart
-            If Master.eSettings.MovieSetFanartAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_Fanart Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
@@ -968,7 +968,7 @@ Public Class dlgEditMovieSet
             End If
 
             'Landscape
-            If Master.eSettings.MovieSetLandscapeAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_Landscape Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainLandscape) Then
                     btnSetLandscapeScrape.Enabled = False
                 End If
@@ -984,7 +984,7 @@ Public Class dlgEditMovieSet
             End If
 
             'Poster
-            If Master.eSettings.MovieSetPosterAnyEnabled Then
+            If Master.eSettings.FilenameAnyEnabled_MovieSet_Poster Then
                 If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ModifierType.MainPoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If

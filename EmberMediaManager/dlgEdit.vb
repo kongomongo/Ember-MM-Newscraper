@@ -273,7 +273,7 @@ Public Class dlgEdit
         'End If
     End Sub
 
-    Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDLTrailer.Click
+    Private Sub btnDLTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd_Trailer.Click
         Dim tResults As New MediaContainers.Trailer
         Dim dlgTrlS As dlgTrailerSelect
         Dim tList As New List(Of MediaContainers.Trailer)
@@ -286,7 +286,7 @@ Public Class dlgEdit
             End If
 
             If Not String.IsNullOrEmpty(tURL) Then
-                btnPlayTrailer.Enabled = True
+                btnPlay_Trailer.Enabled = True
                 txtTrailer.Text = tURL
             End If
         Catch ex As Exception
@@ -314,7 +314,7 @@ Public Class dlgEdit
         End If
     End Sub
 
-    Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayTrailer.Click
+    Private Sub btnPlayTrailer_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlay_Trailer.Click
         'TODO 2013/12/18 Dekker500 - This should be re-factored to use Functions.Launch. Why is the URL different for non-windows??? Need to test first before editing
         Try
 
@@ -1223,19 +1223,23 @@ Public Class dlgEdit
             pnlTrailerPreviewNoPlayer.Visible = False
         End If
 
-        FillInfo()
+        LoadDetails()
+        LoadImages()
+        LoadSubtitles()
     End Sub
 
     Private Sub dlgEditMovie_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown
         Activate()
     End Sub
 
-    Private Sub FillInfo()
-
+    Private Sub LoadDetails()
         Select Case _tmpDBElement.ContentType
             Case Enums.ContentType.Movie
                 'hide not used controls
+                cbEpisodeSorting.Visible = False
+                cbOrdering.Visible = False
                 lblEpisode.Visible = False
+                lblEpisodeSorting.Visible = False
                 lblSeason.Visible = False
                 lblStatus.Visible = False
                 lblTVDB.Visible = False
@@ -1245,55 +1249,91 @@ Public Class dlgEdit
                 txtStatus.Visible = False
                 txtTVDB.Visible = False
 
-                'Fill info
+                txtReleaseDate.Text = _tmpDBElement.MainDetails.ReleaseDate
 
+            Case Enums.ContentType.TVShow
+                'hide not used controls
+                btnAdd_Collection.Visible = False
+                btnAdd_Trailer.Visible = False
+                btnPlay_Trailer.Visible = False
+                cbCollection.Visible = False
+                clbTVShowLinks.Visible = False
+                lblCollection.Visible = False
+                lblEpisode.Visible = False
+                lblOutline.Visible = False
+                lblSeason.Visible = False
+                lblTMDBCollection.Visible = False
+                lblTVShowLinks.Visible = False
+                lblTagline.Visible = False
+                lblTop250.Visible = False
+                lblTrailerURL.Visible = False
+                lblVideoSource.Visible = False
+                tcCrew.TabPages.Remove(tpSpecialGuests)
+                tcEdit.TabPages.Remove(tpMetaData)
+                tcEdit.TabPages.Remove(tpSubtitles)
+                tcEdit.TabPages.Remove(tpTrailer)
+                txtEpisode.Visible = False
+                txtOutline.Visible = False
+                txtSeason.Visible = False
+                txtTMDBCollection.Visible = False
+                txtTagline.Visible = False
+                txtTop250.Visible = False
+                txtTrailer.Visible = False
+                txtVideoSource.Visible = False
+
+                txtReleaseDate.Text = _tmpDBElement.MainDetails.Premiered
         End Select
 
-        If cbSourceLanguage.Items.Count > 0 Then
+        If cbLanguage.Items.Count > 0 Then
             Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = _tmpDBElement.Language)
             If tLanguage IsNot Nothing Then
-                cbSourceLanguage.Text = tLanguage.Description
+                cbLanguage.Text = tLanguage.Description
             Else
                 tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(_tmpDBElement.Language_Main))
                 If tLanguage IsNot Nothing Then
-                    cbSourceLanguage.Text = tLanguage.Description
+                    cbLanguage.Text = tLanguage.Description
                 Else
-                    cbSourceLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
+                    cbLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = "en-US").Description
                 End If
             End If
         End If
 
+        chkLocked.Checked = _tmpDBElement.IsLock
         chkMarked.Checked = _tmpDBElement.IsMark
+
         If _tmpDBElement.MainDetails.PlayCountSpecified Then
             chkWatched.Checked = True
         Else
             chkWatched.Checked = False
         End If
 
+        cbEpisodeSorting.SelectedIndex = _tmpDBElement.EpisodeSorting
+        cbOrdering.SelectedIndex = _tmpDBElement.Ordering
+        cbUserRating.Text = _tmpDBElement.MainDetails.UserRating.ToString
         lbCertifications.Items.AddRange(_tmpDBElement.MainDetails.Certifications.ToArray)
         lbCountries.Items.AddRange(_tmpDBElement.MainDetails.Countries.ToArray)
         lbCreditsCreators.Items.AddRange(_tmpDBElement.MainDetails.Credits.ToArray)
         lbDirectors.Items.AddRange(_tmpDBElement.MainDetails.Directors.ToArray)
         lbStudios.Items.AddRange(_tmpDBElement.MainDetails.Studios.ToArray)
         txtIMDB.Text = _tmpDBElement.MainDetails.IMDB
-        txtTMDB.Text = _tmpDBElement.MainDetails.TMDB
-        txtTMDBCollection.Text = _tmpDBElement.MainDetails.TMDBColID
         txtOriginalTitle.Text = _tmpDBElement.MainDetails.OriginalTitle
         txtOutline.Text = _tmpDBElement.MainDetails.Outline
         txtPlot.Text = _tmpDBElement.MainDetails.Plot
         txtRating.Text = _tmpDBElement.MainDetails.Rating
-        txtReleaseDate.Text = _tmpDBElement.MainDetails.ReleaseDate
         txtRuntime.Text = _tmpDBElement.MainDetails.Runtime
         txtSortTitle.Text = _tmpDBElement.MainDetails.SortTitle
+        txtStatus.Text = _tmpDBElement.MainDetails.Status
+        txtTMDB.Text = _tmpDBElement.MainDetails.TMDB
+        txtTMDBCollection.Text = _tmpDBElement.MainDetails.TMDBColID
+        txtTVDB.Text = _tmpDBElement.MainDetails.TVDB
         txtTagline.Text = _tmpDBElement.MainDetails.Tagline
         txtTitle.Text = _tmpDBElement.MainDetails.Title
         txtTop250.Text = _tmpDBElement.MainDetails.Top250.ToString
-        cbUserRating.Text = _tmpDBElement.MainDetails.UserRating.ToString
         txtVideoSource.Text = _tmpDBElement.MainDetails.VideoSource
         txtVotes.Text = _tmpDBElement.MainDetails.Votes
         txtYear.Text = _tmpDBElement.MainDetails.Year
 
-        If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.LastPlayed) Then
+        If _tmpDBElement.MainDetails.LastPlayedSpecified Then
             Dim timecode As Double = 0
             Double.TryParse(_tmpDBElement.MainDetails.LastPlayed, timecode)
             If timecode > 0 Then
@@ -1305,14 +1345,14 @@ Public Class dlgEdit
 
         SelectMPAA()
 
-        If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.Trailer) Then
+        If _tmpDBElement.MainDetails.TrailerSpecified Then
             txtTrailer.Text = _tmpDBElement.MainDetails.Trailer
-            btnPlayTrailer.Enabled = True
+            btnPlay_Trailer.Enabled = True
         Else
-            btnPlayTrailer.Enabled = False
+            btnPlay_Trailer.Enabled = False
         End If
 
-        btnDLTrailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
+        btnAdd_Trailer.Enabled = Master.DefaultOptions_Movie.bMainTrailer
 
         'Presect Genres
         For i As Integer = 0 To clbGenres.Items.Count - 1
@@ -1344,21 +1384,21 @@ Public Class dlgEdit
         End If
 
         'Presect ShowLinks
-        For i As Integer = 0 To clbShowLinks.Items.Count - 1
-            clbShowLinks.SetItemChecked(i, False)
+        For i As Integer = 0 To clbTVShowLinks.Items.Count - 1
+            clbTVShowLinks.SetItemChecked(i, False)
         Next
         If _tmpDBElement.MainDetails.ShowLinksSpecified Then
             For g As Integer = 0 To _tmpDBElement.MainDetails.ShowLinks.Count - 1
-                If clbShowLinks.FindString(_tmpDBElement.MainDetails.ShowLinks(g).Trim) > 0 Then
-                    clbShowLinks.SetItemChecked(clbShowLinks.FindString(_tmpDBElement.MainDetails.ShowLinks(g).Trim), True)
+                If clbTVShowLinks.FindString(_tmpDBElement.MainDetails.ShowLinks(g).Trim) > 0 Then
+                    clbTVShowLinks.SetItemChecked(clbTVShowLinks.FindString(_tmpDBElement.MainDetails.ShowLinks(g).Trim), True)
                 End If
             Next
 
-            If clbShowLinks.CheckedItems.Count = 0 Then
-                clbShowLinks.SetItemChecked(0, True)
+            If clbTVShowLinks.CheckedItems.Count = 0 Then
+                clbTVShowLinks.SetItemChecked(0, True)
             End If
         Else
-            clbShowLinks.SetItemChecked(0, True)
+            clbTVShowLinks.SetItemChecked(0, True)
         End If
 
         'Presect Tags
@@ -1414,159 +1454,10 @@ Public Class dlgEdit
             End If
         End If
 
-        'Images and TabPages
-        With _tmpDBElement.ImagesContainer
 
-            'Load all images to MemoryStream and Bitmap
-            _tmpDBElement.LoadAllImages(True, True)
-
-            'Banner
-            If Master.eSettings.MovieBannerAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainBanner) Then
-                    btnSetBannerScrape.Enabled = False
-                End If
-                If .Banner.ImageOriginal.Image IsNot Nothing Then
-                    pbBanner.Image = .Banner.ImageOriginal.Image
-                    pbBanner.Tag = .Banner
-
-                    lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
-                    lblBannerSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpBanner)
-            End If
-
-            'ClearArt
-            If Master.eSettings.MovieClearArtAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearArt) Then
-                    btnSetClearArtScrape.Enabled = False
-                End If
-                If .ClearArt.ImageOriginal.Image IsNot Nothing Then
-                    pbClearArt.Image = .ClearArt.ImageOriginal.Image
-                    pbClearArt.Tag = .ClearArt
-
-                    lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
-                    lblClearArtSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpClearArt)
-            End If
-
-            'ClearLogo
-            If Master.eSettings.MovieClearLogoAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainClearLogo) Then
-                    btnSetClearLogoScrape.Enabled = False
-                End If
-                If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
-                    pbClearLogo.Image = .ClearLogo.ImageOriginal.Image
-                    pbClearLogo.Tag = .ClearLogo
-
-                    lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
-                    lblClearLogoSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpClearLogo)
-            End If
-
-            'DiscArt
-            If Master.eSettings.MovieDiscArtAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainDiscArt) Then
-                    btnSetDiscArtScrape.Enabled = False
-                End If
-                If .DiscArt.ImageOriginal.Image IsNot Nothing Then
-                    pbDiscArt.Image = .DiscArt.ImageOriginal.Image
-                    pbDiscArt.Tag = .DiscArt
-
-                    lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
-                    lblDiscArtSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpDiscArt)
-            End If
-
-            'Extrafanarts
-            If Master.eSettings.MovieExtrafanartsAnyEnabled Then
-                'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                '.btnSetFanartScrape.Enabled = False
-                'End If
-                If .Extrafanarts.Count > 0 Then
-                    Dim iIndex As Integer = 0
-                    For Each tImg As MediaContainers.Image In .Extrafanarts
-                        AddExtrafanartImage(String.Concat(tImg.Width, " x ", tImg.Height), iIndex, tImg)
-                        iIndex += 1
-                    Next
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpExtrafanarts)
-            End If
-
-            'Extrathumbs
-            If Master.eSettings.MovieExtrathumbsAnyEnabled Then
-                'If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                '.btnSetFanartScrape.Enabled = False
-                'End If
-                If .Extrathumbs.Count > 0 Then
-                    Dim iIndex As Integer = 0
-                    For Each tImg As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)
-                        AddExtrathumbImage(String.Concat(tImg.Width, " x ", tImg.Height), iIndex, tImg)
-                        iIndex += 1
-                    Next
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpExtrathumbs)
-            End If
-
-            'Fanart
-            If Master.eSettings.MovieFanartAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainFanart) Then
-                    btnSetFanartScrape.Enabled = False
-                End If
-                If .Fanart.ImageOriginal.Image IsNot Nothing Then
-                    pbFanart.Image = .Fanart.ImageOriginal.Image
-                    pbFanart.Tag = .Fanart
-
-                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                    lblFanartSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpFanart)
-            End If
-
-            'Landscape
-            If Master.eSettings.MovieLandscapeAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainLandscape) Then
-                    btnSetLandscapeScrape.Enabled = False
-                End If
-                If .Landscape.ImageOriginal.Image IsNot Nothing Then
-                    pbLandscape.Image = .Landscape.ImageOriginal.Image
-                    pbLandscape.Tag = .Landscape
-
-                    lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
-                    lblLandscapeSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpLandscape)
-            End If
-
-            'Poster
-            If Master.eSettings.MoviePosterAnyEnabled Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ModifierType.MainPoster) Then
-                    btnSetPosterScrape.Enabled = False
-                End If
-                If .Poster.ImageOriginal.Image IsNot Nothing Then
-                    pbPoster.Image = .Poster.ImageOriginal.Image
-                    pbPoster.Tag = .Poster
-
-                    lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                    lblPosterSize.Visible = True
-                End If
-            Else
-                tcEdit.TabPages.Remove(tpPoster)
-            End If
-        End With
 
         'Theme
-        If Master.eSettings.MovieThemeAnyEnabled Then
+        If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainTheme) Then
             If Not String.IsNullOrEmpty(_tmpDBElement.Theme.LocalFilePath) OrElse Not String.IsNullOrEmpty(_tmpDBElement.Theme.URLAudioStream) Then
                 LoadTheme(_tmpDBElement.Theme)
             End If
@@ -1575,7 +1466,7 @@ Public Class dlgEdit
         End If
 
         'Trailer
-        If Master.eSettings.MovieTrailerAnyEnabled Then
+        If Master.eSettings.FilenameAnyEnabled_Movie_Trailer Then
             If Not String.IsNullOrEmpty(_tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(_tmpDBElement.Trailer.URLVideoStream) Then
                 LoadTrailer(_tmpDBElement.Trailer)
             End If
@@ -1590,8 +1481,174 @@ Public Class dlgEdit
             txtMediaStubTitle.Text = DiscStub.Title
             txtMediaStubMessage.Text = DiscStub.Message
         End If
+    End Sub
 
-        LoadSubtitles()
+    Private Sub LoadImages()
+        With _tmpDBElement.ImagesContainer
+
+            'Load all images to MemoryStream and Bitmap
+            _tmpDBElement.LoadAllImages(True, True)
+
+            'Banner
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainBanner) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainBanner) Then
+                    btnSetBannerScrape.Enabled = False
+                End If
+                If .Banner.ImageOriginal.Image IsNot Nothing Then
+                    pbBanner.Image = .Banner.ImageOriginal.Image
+                    pbBanner.Tag = .Banner
+
+                    lblBannerSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbBanner.Image.Width, pbBanner.Image.Height)
+                    lblBannerSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpBanner)
+            End If
+
+            ''CharacterArt
+            'If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainCharacterArt) Then
+            '    If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainCharacterArt) Then
+            '        btnSetCharacterArtScrape.Enabled = False
+            '    End If
+            '    If .CharacterArt.ImageOriginal.Image IsNot Nothing Then
+            '        pbCharacterArt.Image = .CharacterArt.ImageOriginal.Image
+            '        pbCharacterArt.Tag = .CharacterArt
+
+            '        lblCharacterArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbCharacterArt.Image.Width, pbCharacterArt.Image.Height)
+            '        lblCharacterArtSize.Visible = True
+            '    End If
+            'Else
+            '    tcEdit.TabPages.Remove(tpCharacterArt)
+            'End If
+
+            'ClearArt
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainClearArt) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainClearArt) Then
+                    btnSetClearArtScrape.Enabled = False
+                End If
+                If .ClearArt.ImageOriginal.Image IsNot Nothing Then
+                    pbClearArt.Image = .ClearArt.ImageOriginal.Image
+                    pbClearArt.Tag = .ClearArt
+
+                    lblClearArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearArt.Image.Width, pbClearArt.Image.Height)
+                    lblClearArtSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpClearArt)
+            End If
+
+            'ClearLogo
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainClearLogo) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainClearLogo) Then
+                    btnSetClearLogoScrape.Enabled = False
+                End If
+                If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
+                    pbClearLogo.Image = .ClearLogo.ImageOriginal.Image
+                    pbClearLogo.Tag = .ClearLogo
+
+                    lblClearLogoSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbClearLogo.Image.Width, pbClearLogo.Image.Height)
+                    lblClearLogoSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpClearLogo)
+            End If
+
+            'DiscArt
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainDiscArt) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainDiscArt) Then
+                    btnSetDiscArtScrape.Enabled = False
+                End If
+                If .DiscArt.ImageOriginal.Image IsNot Nothing Then
+                    pbDiscArt.Image = .DiscArt.ImageOriginal.Image
+                    pbDiscArt.Tag = .DiscArt
+
+                    lblDiscArtSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbDiscArt.Image.Width, pbDiscArt.Image.Height)
+                    lblDiscArtSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpDiscArt)
+            End If
+
+            'Extrafanarts
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainExtrafanarts) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainFanart) Then
+                    btnSetFanartScrape.Enabled = False
+                End If
+                If .Extrafanarts.Count > 0 Then
+                    Dim iIndex As Integer = 0
+                    For Each tImg As MediaContainers.Image In .Extrafanarts
+                        AddExtrafanartImage(String.Concat(tImg.Width, " x ", tImg.Height), iIndex, tImg)
+                        iIndex += 1
+                    Next
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpExtrafanarts)
+            End If
+
+            'Extrathumbs
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainExtrathumbs) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainFanart) Then
+                    btnSetFanartScrape.Enabled = False
+                End If
+                If .Extrathumbs.Count > 0 Then
+                    Dim iIndex As Integer = 0
+                    For Each tImg As MediaContainers.Image In .Extrathumbs.OrderBy(Function(f) f.Index)
+                        AddExtrathumbImage(String.Concat(tImg.Width, " x ", tImg.Height), iIndex, tImg)
+                        iIndex += 1
+                    Next
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpExtrathumbs)
+            End If
+
+            'Fanart
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainFanart) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainFanart) Then
+                    btnSetFanartScrape.Enabled = False
+                End If
+                If .Fanart.ImageOriginal.Image IsNot Nothing Then
+                    pbFanart.Image = .Fanart.ImageOriginal.Image
+                    pbFanart.Tag = .Fanart
+
+                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+                    lblFanartSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpFanart)
+            End If
+
+            'Landscape
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainLandscape) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainLandscape) Then
+                    btnSetLandscapeScrape.Enabled = False
+                End If
+                If .Landscape.ImageOriginal.Image IsNot Nothing Then
+                    pbLandscape.Image = .Landscape.ImageOriginal.Image
+                    pbLandscape.Tag = .Landscape
+
+                    lblLandscapeSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbLandscape.Image.Width, pbLandscape.Image.Height)
+                    lblLandscapeSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpLandscape)
+            End If
+
+            'Poster
+            If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainPoster) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ModifierType.MainPoster) Then
+                    btnSetPosterScrape.Enabled = False
+                End If
+                If .Poster.ImageOriginal.Image IsNot Nothing Then
+                    pbPoster.Image = .Poster.ImageOriginal.Image
+                    pbPoster.Tag = .Poster
+
+                    lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
+                    lblPosterSize.Visible = True
+                End If
+            Else
+                tcEdit.TabPages.Remove(tpPoster)
+            End If
+        End With
     End Sub
 
     Private Sub clbGenre_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbGenres.ItemCheck
@@ -1614,13 +1671,13 @@ Public Class dlgEdit
         End If
     End Sub
 
-    Private Sub clbShowLinks_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbShowLinks.ItemCheck
+    Private Sub clbShowLinks_ItemCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemCheckEventArgs) Handles clbTVShowLinks.ItemCheck
         If e.Index = 0 Then
-            For i As Integer = 1 To clbShowLinks.Items.Count - 1
-                clbShowLinks.SetItemChecked(i, False)
+            For i As Integer = 1 To clbTVShowLinks.Items.Count - 1
+                clbTVShowLinks.SetItemChecked(i, False)
             Next
         Else
-            clbShowLinks.SetItemChecked(0, False)
+            clbTVShowLinks.SetItemChecked(0, False)
         End If
     End Sub
 
@@ -1681,8 +1738,8 @@ Public Class dlgEdit
     End Sub
 
     Private Sub LoadShowLinks()
-        clbShowLinks.Items.Add(Master.eLang.None)
-        clbShowLinks.Items.AddRange(Master.DB.GetAll_TVShowTitles)
+        clbTVShowLinks.Items.Add(Master.eLang.None)
+        clbTVShowLinks.Items.AddRange(Master.DB.GetAll_TVShowTitles)
     End Sub
 
     Private Sub LoadTags()
@@ -1960,8 +2017,8 @@ Public Class dlgEdit
         btnRescrape.Enabled = False
         btnChange.Enabled = False
 
-        If Not String.IsNullOrEmpty(cbSourceLanguage.Text) Then
-            _tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbSourceLanguage.Text).Abbreviation
+        If Not String.IsNullOrEmpty(cbLanguage.Text) Then
+            _tmpDBElement.Language = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbLanguage.Text).Abbreviation
             _tmpDBElement.MainDetails.Language = _tmpDBElement.Language
         Else
             _tmpDBElement.Language = "en-US"
@@ -2039,10 +2096,10 @@ Public Class dlgEdit
         End If
 
         'ShowLinks
-        If clbShowLinks.CheckedItems.Count = 0 OrElse clbShowLinks.CheckedIndices.Contains(0) Then
+        If clbTVShowLinks.CheckedItems.Count = 0 OrElse clbTVShowLinks.CheckedIndices.Contains(0) Then
             _tmpDBElement.MainDetails.ShowLinks.Clear()
         Else
-            _tmpDBElement.MainDetails.ShowLinks = clbShowLinks.CheckedItems.Cast(Of Object).Select(Function(f) clbShowLinks.GetItemText(f)).ToList
+            _tmpDBElement.MainDetails.ShowLinks = clbTVShowLinks.CheckedItems.Cast(Of Object).Select(Function(f) clbTVShowLinks.GetItemText(f)).ToList
         End If
 
         'Tags
@@ -2078,6 +2135,7 @@ Public Class dlgEdit
 
     Private Sub SetUp()
         lblMPAAPreview.Text = String.Empty
+
         'Download
         Dim strDownload As String = Master.eLang.GetString(373, "Download")
         btnSetBannerDL.Text = strDownload
@@ -2184,8 +2242,14 @@ Public Class dlgEdit
         tpMetaData.Text = Master.eLang.GetString(866, "Metadata")
         tpPoster.Text = Master.eLang.GetString(148, "Poster")
 
-        cbSourceLanguage.Items.Clear()
-        cbSourceLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+        cbEpisodeSorting.Items.Clear()
+        cbEpisodeSorting.Items.AddRange(New String() {Master.eLang.GetString(755, "Episode #"), Master.eLang.GetString(728, "Aired")})
+
+        cbLanguage.Items.Clear()
+        cbLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
+
+        cbOrdering.Items.Clear()
+        cbOrdering.Items.AddRange(New String() {Master.eLang.GetString(438, "Standard"), Master.eLang.GetString(1067, "DVD"), Master.eLang.GetString(839, "Absolute"), Master.eLang.GetString(1332, "Day Of Year")})
     End Sub
 
     Private Sub tcEditMovie_SelectedIndexChanged(sender As Object, e As EventArgs) Handles tcEdit.SelectedIndexChanged
@@ -2200,9 +2264,9 @@ Public Class dlgEdit
 
     Private Sub txtTrailer_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtTrailer.TextChanged
         If StringUtils.isValidURL(txtTrailer.Text) Then
-            btnPlayTrailer.Enabled = True
+            btnPlay_Trailer.Enabled = True
         Else
-            btnPlayTrailer.Enabled = False
+            btnPlay_Trailer.Enabled = False
         End If
     End Sub
 

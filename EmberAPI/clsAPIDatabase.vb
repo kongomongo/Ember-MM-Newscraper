@@ -1311,26 +1311,26 @@ Public Class Database
     ''' <summary>
     ''' Adds TVShow informations to a Database.DBElement
     ''' </summary>
-    ''' <param name="_TVDB">Database.DBElement container to fill with TVShow informations</param>
-    ''' <param name="_TVDBShow">Optional the TVShow informations to add to _TVDB</param>
+    ''' <param name="tDBElement">Database.DBElement container to fill with TVShow informations</param>
+    ''' <param name="tDBElement_TVShow">Optional the TVShow informations to add to _TVDB</param>
     ''' <remarks></remarks>
-    Public Function AddTVShowInfoToDBElement(ByVal _TVDB As DBElement, Optional ByVal _TVDBShow As DBElement = Nothing) As DBElement
+    Public Function AddTVShowInfoToDBElement(ByVal tDBElement As DBElement, Optional ByVal tDBElement_TVShow As DBElement = Nothing) As DBElement
         Dim _tmpTVDBShow As DBElement
 
-        If _TVDBShow Is Nothing OrElse _TVDBShow.MainDetails Is Nothing Then
-            _tmpTVDBShow = Load_TVShow(_TVDB.ShowID, False, False)
+        If tDBElement_TVShow Is Nothing OrElse tDBElement_TVShow.MainDetails Is Nothing Then
+            _tmpTVDBShow = Load_TVShow(tDBElement.ShowID, False, False)
         Else
-            _tmpTVDBShow = _TVDBShow
+            _tmpTVDBShow = tDBElement_TVShow
         End If
 
-        _TVDB.EpisodeSorting = _tmpTVDBShow.EpisodeSorting
-        _TVDB.Ordering = _tmpTVDBShow.Ordering
-        _TVDB.Language = _tmpTVDBShow.Language
-        _TVDB.ShowID = _tmpTVDBShow.ShowID
-        _TVDB.ShowPath = _tmpTVDBShow.ShowPath
-        _TVDB.Source = _tmpTVDBShow.Source
-        _TVDB.MainDetails = _tmpTVDBShow.MainDetails
-        Return _TVDB
+        tDBElement.EpisodeSorting = _tmpTVDBShow.EpisodeSorting
+        tDBElement.Ordering = _tmpTVDBShow.Ordering
+        tDBElement.Language = _tmpTVDBShow.Language
+        tDBElement.ShowID = _tmpTVDBShow.ShowID
+        tDBElement.ShowPath = _tmpTVDBShow.ShowPath
+        tDBElement.Source = _tmpTVDBShow.Source
+        tDBElement.TVShowDetails = _tmpTVDBShow.MainDetails
+        Return tDBElement
     End Function
 
     Public Function GetAll_MovieSetDetails() As List(Of MediaContainers.SetDetails)
@@ -5515,7 +5515,7 @@ Public Class Database
         Private _subtitles As New List(Of MediaContainers.Subtitle)
         Private _theme As New MediaContainers.Theme
         Private _trailer As New MediaContainers.Trailer
-        Private _showDetails As MediaContainers.MainDetails
+        Private _tvshowdetails As MediaContainers.MainDetails
         Private _videosource As String
 
 #End Region 'Fields
@@ -5964,18 +5964,18 @@ Public Class Database
             End Get
         End Property
 
-        Public Property ShowDetails() As MediaContainers.MainDetails
+        Public Property TVShowDetails() As MediaContainers.MainDetails
             Get
-                Return _showDetails
+                Return _tvshowdetails
             End Get
             Set(ByVal value As MediaContainers.MainDetails)
-                _showDetails = value
+                _tvshowdetails = value
             End Set
         End Property
 
         Public ReadOnly Property TVShowSpecified() As Boolean
             Get
-                Return _showDetails IsNot Nothing
+                Return _tvshowdetails IsNot Nothing
             End Get
         End Property
 
@@ -6029,7 +6029,7 @@ Public Class Database
             _subtitles = New List(Of MediaContainers.Subtitle)
             _theme = New MediaContainers.Theme
             _trailer = New MediaContainers.Trailer
-            _showDetails = Nothing
+            _tvshowdetails = Nothing
             _videosource = String.Empty
         End Sub
 

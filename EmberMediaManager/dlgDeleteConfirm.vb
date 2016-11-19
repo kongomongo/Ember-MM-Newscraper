@@ -214,7 +214,7 @@ Public Class dlgDeleteConfirm
 
                             Dim tSeason As Database.DBElement = Master.DB.Load_TVSeason(Season.Value, Convert.ToInt32(Season.Key), True, True)
 
-                            ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.ShowDetails.Title, tSeason.MainDetails.Season))
+                            ItemParentNode = .Nodes.Add(Season.Key.ToString, String.Format("{0} - {1}", tSeason.TVShowDetails.Title, tSeason.MainDetails.Season))
                             ItemParentNode.ImageKey = "MOVIE"
                             ItemParentNode.SelectedImageKey = "MOVIE"
                             ItemParentNode.Tag = Season

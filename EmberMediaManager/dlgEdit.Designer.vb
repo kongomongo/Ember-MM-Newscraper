@@ -24,8 +24,8 @@ Partial Class dlgEdit
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit))
-        Dim ListViewGroup11 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
-        Dim ListViewItem11 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
+        Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -38,7 +38,7 @@ Partial Class dlgEdit
         Me.pnlDetailsColumn1 = New System.Windows.Forms.Panel()
         Me.tblDetailsColumn1 = New System.Windows.Forms.TableLayoutPanel()
         Me.tblDetailsMain = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnPlayTrailer = New System.Windows.Forms.Button()
+        Me.btnPlay_Trailer = New System.Windows.Forms.Button()
         Me.txtTrailer = New System.Windows.Forms.TextBox()
         Me.lblTrailerURL = New System.Windows.Forms.Label()
         Me.txtVideoSource = New System.Windows.Forms.TextBox()
@@ -59,7 +59,7 @@ Partial Class dlgEdit
         Me.txtEpisode = New System.Windows.Forms.TextBox()
         Me.lblYear = New System.Windows.Forms.Label()
         Me.lblReleaseDate = New System.Windows.Forms.Label()
-        Me.btnDLTrailer = New System.Windows.Forms.Button()
+        Me.btnAdd_Trailer = New System.Windows.Forms.Button()
         Me.lblTVDB = New System.Windows.Forms.Label()
         Me.txtTVDB = New System.Windows.Forms.TextBox()
         Me.txtTMDBCollection = New System.Windows.Forms.TextBox()
@@ -75,6 +75,9 @@ Partial Class dlgEdit
         Me.lblTop250 = New System.Windows.Forms.Label()
         Me.lblRuntime = New System.Windows.Forms.Label()
         Me.txtRuntime = New System.Windows.Forms.TextBox()
+        Me.txtReleaseDate = New System.Windows.Forms.MaskedTextBox()
+        Me.txtYear = New System.Windows.Forms.MaskedTextBox()
+        Me.txtTop250 = New System.Windows.Forms.MaskedTextBox()
         Me.tblDetailsMPAA = New System.Windows.Forms.TableLayoutPanel()
         Me.lbMPAA = New System.Windows.Forms.ListBox()
         Me.lblMPAARating = New System.Windows.Forms.Label()
@@ -96,7 +99,7 @@ Partial Class dlgEdit
         Me.txtOutline = New System.Windows.Forms.TextBox()
         Me.tblDetailsGenresTagsShowlink = New System.Windows.Forms.TableLayoutPanel()
         Me.lblGenres = New System.Windows.Forms.Label()
-        Me.clbShowLinks = New System.Windows.Forms.CheckedListBox()
+        Me.clbTVShowLinks = New System.Windows.Forms.CheckedListBox()
         Me.clbGenres = New System.Windows.Forms.CheckedListBox()
         Me.lblTags = New System.Windows.Forms.Label()
         Me.lblTVShowLinks = New System.Windows.Forms.Label()
@@ -265,7 +268,7 @@ Partial Class dlgEdit
         Me.StatusStrip = New System.Windows.Forms.StatusStrip()
         Me.tsFilename = New System.Windows.Forms.ToolStripStatusLabel()
         Me.txtLastPlayed = New System.Windows.Forms.TextBox()
-        Me.cbSourceLanguage = New System.Windows.Forms.ComboBox()
+        Me.cbLanguage = New System.Windows.Forms.ComboBox()
         Me.lblLanguage = New System.Windows.Forms.Label()
         Me.pnlEdit = New System.Windows.Forms.Panel()
         Me.pnlEditMain = New System.Windows.Forms.Panel()
@@ -273,10 +276,11 @@ Partial Class dlgEdit
         Me.tblEditTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlEditBottom = New System.Windows.Forms.Panel()
         Me.tblEditBottom = New System.Windows.Forms.TableLayoutPanel()
+        Me.cbEpisodeSorting = New System.Windows.Forms.ComboBox()
+        Me.lblEpisodeSorting = New System.Windows.Forms.Label()
+        Me.cbOrdering = New System.Windows.Forms.ComboBox()
+        Me.lblOrdering = New System.Windows.Forms.Label()
         Me.chkLocked = New System.Windows.Forms.CheckBox()
-        Me.txtReleaseDate = New System.Windows.Forms.MaskedTextBox()
-        Me.txtYear = New System.Windows.Forms.MaskedTextBox()
-        Me.txtTop250 = New System.Windows.Forms.MaskedTextBox()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
         Me.tpDetails.SuspendLayout()
@@ -345,7 +349,7 @@ Partial Class dlgEdit
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOK.AutoSize = True
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnOK.Location = New System.Drawing.Point(975, 30)
+        Me.btnOK.Location = New System.Drawing.Point(974, 30)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(100, 23)
         Me.btnOK.TabIndex = 0
@@ -501,7 +505,7 @@ Partial Class dlgEdit
         Me.tblDetailsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblDetailsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblDetailsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblDetailsMain.Controls.Add(Me.btnPlayTrailer, 4, 12)
+        Me.tblDetailsMain.Controls.Add(Me.btnPlay_Trailer, 4, 12)
         Me.tblDetailsMain.Controls.Add(Me.txtTrailer, 1, 12)
         Me.tblDetailsMain.Controls.Add(Me.lblTrailerURL, 0, 12)
         Me.tblDetailsMain.Controls.Add(Me.txtVideoSource, 1, 11)
@@ -522,7 +526,7 @@ Partial Class dlgEdit
         Me.tblDetailsMain.Controls.Add(Me.txtEpisode, 3, 3)
         Me.tblDetailsMain.Controls.Add(Me.lblYear, 2, 4)
         Me.tblDetailsMain.Controls.Add(Me.lblReleaseDate, 0, 4)
-        Me.tblDetailsMain.Controls.Add(Me.btnDLTrailer, 3, 12)
+        Me.tblDetailsMain.Controls.Add(Me.btnAdd_Trailer, 3, 12)
         Me.tblDetailsMain.Controls.Add(Me.lblTVDB, 2, 10)
         Me.tblDetailsMain.Controls.Add(Me.txtTVDB, 3, 10)
         Me.tblDetailsMain.Controls.Add(Me.txtTMDBCollection, 3, 9)
@@ -562,15 +566,15 @@ Partial Class dlgEdit
         Me.tblDetailsMain.Size = New System.Drawing.Size(387, 365)
         Me.tblDetailsMain.TabIndex = 75
         '
-        'btnPlayTrailer
+        'btnPlay_Trailer
         '
-        Me.btnPlayTrailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnPlayTrailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
-        Me.btnPlayTrailer.Location = New System.Drawing.Point(361, 339)
-        Me.btnPlayTrailer.Name = "btnPlayTrailer"
-        Me.btnPlayTrailer.Size = New System.Drawing.Size(23, 23)
-        Me.btnPlayTrailer.TabIndex = 21
-        Me.btnPlayTrailer.UseVisualStyleBackColor = True
+        Me.btnPlay_Trailer.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnPlay_Trailer.Image = Global.Ember_Media_Manager.My.Resources.Resources.Play_Icon
+        Me.btnPlay_Trailer.Location = New System.Drawing.Point(361, 339)
+        Me.btnPlay_Trailer.Name = "btnPlay_Trailer"
+        Me.btnPlay_Trailer.Size = New System.Drawing.Size(23, 23)
+        Me.btnPlay_Trailer.TabIndex = 21
+        Me.btnPlay_Trailer.UseVisualStyleBackColor = True
         '
         'txtTrailer
         '
@@ -789,14 +793,14 @@ Partial Class dlgEdit
         Me.lblReleaseDate.TabIndex = 13
         Me.lblReleaseDate.Text = "Release Date:"
         '
-        'btnDLTrailer
+        'btnAdd_Trailer
         '
-        Me.btnDLTrailer.Image = CType(resources.GetObject("btnDLTrailer.Image"), System.Drawing.Image)
-        Me.btnDLTrailer.Location = New System.Drawing.Point(314, 339)
-        Me.btnDLTrailer.Name = "btnDLTrailer"
-        Me.btnDLTrailer.Size = New System.Drawing.Size(23, 23)
-        Me.btnDLTrailer.TabIndex = 20
-        Me.btnDLTrailer.UseVisualStyleBackColor = True
+        Me.btnAdd_Trailer.Image = CType(resources.GetObject("btnAdd_Trailer.Image"), System.Drawing.Image)
+        Me.btnAdd_Trailer.Location = New System.Drawing.Point(314, 339)
+        Me.btnAdd_Trailer.Name = "btnAdd_Trailer"
+        Me.btnAdd_Trailer.Size = New System.Drawing.Size(23, 23)
+        Me.btnAdd_Trailer.TabIndex = 20
+        Me.btnAdd_Trailer.UseVisualStyleBackColor = True
         '
         'lblTVDB
         '
@@ -966,6 +970,37 @@ Partial Class dlgEdit
         Me.txtRuntime.Size = New System.Drawing.Size(70, 22)
         Me.txtRuntime.TabIndex = 15
         '
+        'txtReleaseDate
+        '
+        Me.txtReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtReleaseDate.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
+        Me.txtReleaseDate.Location = New System.Drawing.Point(87, 115)
+        Me.txtReleaseDate.Mask = "0000-00-00"
+        Me.txtReleaseDate.Name = "txtReleaseDate"
+        Me.txtReleaseDate.Size = New System.Drawing.Size(70, 22)
+        Me.txtReleaseDate.TabIndex = 6
+        '
+        'txtYear
+        '
+        Me.tblDetailsMain.SetColumnSpan(Me.txtYear, 2)
+        Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtYear.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
+        Me.txtYear.Location = New System.Drawing.Point(314, 115)
+        Me.txtYear.Mask = "0000"
+        Me.txtYear.Name = "txtYear"
+        Me.txtYear.Size = New System.Drawing.Size(70, 22)
+        Me.txtYear.TabIndex = 7
+        '
+        'txtTop250
+        '
+        Me.txtTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtTop250.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
+        Me.txtTop250.Location = New System.Drawing.Point(87, 227)
+        Me.txtTop250.Mask = "990"
+        Me.txtTop250.Name = "txtTop250"
+        Me.txtTop250.Size = New System.Drawing.Size(70, 22)
+        Me.txtTop250.TabIndex = 13
+        '
         'tblDetailsMPAA
         '
         Me.tblDetailsMPAA.AutoSize = True
@@ -988,11 +1023,11 @@ Partial Class dlgEdit
         Me.tblDetailsMPAA.Location = New System.Drawing.Point(3, 374)
         Me.tblDetailsMPAA.Name = "tblDetailsMPAA"
         Me.tblDetailsMPAA.RowCount = 4
-        Me.tblDetailsMPAA.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblDetailsMPAA.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetailsMPAA.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetailsMPAA.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblDetailsMPAA.Size = New System.Drawing.Size(387, 128)
+        Me.tblDetailsMPAA.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetailsMPAA.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetailsMPAA.Size = New System.Drawing.Size(387, 121)
         Me.tblDetailsMPAA.TabIndex = 82
         '
         'lbMPAA
@@ -1002,7 +1037,7 @@ Partial Class dlgEdit
         Me.tblDetailsMPAA.SetColumnSpan(Me.lbMPAA, 2)
         Me.lbMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbMPAA.FormattingEnabled = True
-        Me.lbMPAA.Location = New System.Drawing.Point(3, 23)
+        Me.lbMPAA.Location = New System.Drawing.Point(3, 16)
         Me.lbMPAA.Name = "lbMPAA"
         Me.lbMPAA.ScrollAlwaysVisible = True
         Me.lbMPAA.Size = New System.Drawing.Size(119, 54)
@@ -1014,7 +1049,7 @@ Partial Class dlgEdit
         Me.lblMPAARating.AutoSize = True
         Me.tblDetailsMPAA.SetColumnSpan(Me.lblMPAARating, 2)
         Me.lblMPAARating.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMPAARating.Location = New System.Drawing.Point(3, 3)
+        Me.lblMPAARating.Location = New System.Drawing.Point(3, 0)
         Me.lblMPAARating.Name = "lblMPAARating"
         Me.lblMPAARating.Size = New System.Drawing.Size(80, 13)
         Me.lblMPAARating.TabIndex = 36
@@ -1025,7 +1060,7 @@ Partial Class dlgEdit
         Me.lblMPAADescription.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMPAADescription.AutoSize = True
         Me.lblMPAADescription.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMPAADescription.Location = New System.Drawing.Point(128, 3)
+        Me.lblMPAADescription.Location = New System.Drawing.Point(128, 0)
         Me.lblMPAADescription.Name = "lblMPAADescription"
         Me.lblMPAADescription.Size = New System.Drawing.Size(69, 13)
         Me.lblMPAADescription.TabIndex = 38
@@ -1035,7 +1070,7 @@ Partial Class dlgEdit
         '
         Me.txtMPAADesc.BackColor = System.Drawing.SystemColors.Window
         Me.txtMPAADesc.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMPAADesc.Location = New System.Drawing.Point(128, 23)
+        Me.txtMPAADesc.Location = New System.Drawing.Point(128, 16)
         Me.txtMPAADesc.Multiline = True
         Me.txtMPAADesc.Name = "txtMPAADesc"
         Me.txtMPAADesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -1048,7 +1083,7 @@ Partial Class dlgEdit
         Me.tblDetailsMPAA.SetColumnSpan(Me.txtMPAA, 3)
         Me.txtMPAA.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtMPAA.Location = New System.Drawing.Point(52, 83)
+        Me.txtMPAA.Location = New System.Drawing.Point(52, 76)
         Me.txtMPAA.Name = "txtMPAA"
         Me.txtMPAA.Size = New System.Drawing.Size(332, 22)
         Me.txtMPAA.TabIndex = 25
@@ -1058,7 +1093,7 @@ Partial Class dlgEdit
         Me.lblCertifications.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblCertifications.AutoSize = True
         Me.lblCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCertifications.Location = New System.Drawing.Point(254, 3)
+        Me.lblCertifications.Location = New System.Drawing.Point(254, 0)
         Me.lblCertifications.Name = "lblCertifications"
         Me.lblCertifications.Size = New System.Drawing.Size(78, 13)
         Me.lblCertifications.TabIndex = 45
@@ -1071,7 +1106,7 @@ Partial Class dlgEdit
         Me.lbCertifications.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lbCertifications.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbCertifications.FormattingEnabled = True
-        Me.lbCertifications.Location = New System.Drawing.Point(254, 23)
+        Me.lbCertifications.Location = New System.Drawing.Point(254, 16)
         Me.lbCertifications.Name = "lbCertifications"
         Me.lbCertifications.ScrollAlwaysVisible = True
         Me.lbCertifications.Size = New System.Drawing.Size(130, 54)
@@ -1082,7 +1117,7 @@ Partial Class dlgEdit
         Me.lblMPAA.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMPAA.AutoSize = True
         Me.lblMPAA.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMPAA.Location = New System.Drawing.Point(3, 87)
+        Me.lblMPAA.Location = New System.Drawing.Point(3, 80)
         Me.lblMPAA.Name = "lblMPAA"
         Me.lblMPAA.Size = New System.Drawing.Size(43, 13)
         Me.lblMPAA.TabIndex = 36
@@ -1094,7 +1129,7 @@ Partial Class dlgEdit
         Me.lblMPAAPreview.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lblMPAAPreview.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lblMPAAPreview.ForeColor = System.Drawing.SystemColors.ControlDarkDark
-        Me.lblMPAAPreview.Location = New System.Drawing.Point(3, 108)
+        Me.lblMPAAPreview.Location = New System.Drawing.Point(3, 101)
         Me.lblMPAAPreview.Name = "lblMPAAPreview"
         Me.lblMPAAPreview.Size = New System.Drawing.Size(381, 20)
         Me.lblMPAAPreview.TabIndex = 74
@@ -1144,14 +1179,13 @@ Partial Class dlgEdit
         Me.tblDetailsInfo.Location = New System.Drawing.Point(3, 3)
         Me.tblDetailsInfo.Name = "tblDetailsInfo"
         Me.tblDetailsInfo.RowCount = 6
-        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblDetailsInfo.Size = New System.Drawing.Size(378, 260)
+        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetailsInfo.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetailsInfo.Size = New System.Drawing.Size(378, 239)
         Me.tblDetailsInfo.TabIndex = 76
         '
         'lblTagline
@@ -1159,7 +1193,7 @@ Partial Class dlgEdit
         Me.lblTagline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTagline.AutoSize = True
         Me.lblTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTagline.Location = New System.Drawing.Point(3, 3)
+        Me.lblTagline.Location = New System.Drawing.Point(3, 0)
         Me.lblTagline.Name = "lblTagline"
         Me.lblTagline.Size = New System.Drawing.Size(47, 13)
         Me.lblTagline.TabIndex = 6
@@ -1170,7 +1204,7 @@ Partial Class dlgEdit
         Me.txtTagline.BackColor = System.Drawing.SystemColors.Window
         Me.txtTagline.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtTagline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtTagline.Location = New System.Drawing.Point(3, 23)
+        Me.txtTagline.Location = New System.Drawing.Point(3, 16)
         Me.txtTagline.Name = "txtTagline"
         Me.txtTagline.Size = New System.Drawing.Size(372, 22)
         Me.txtTagline.TabIndex = 7
@@ -1180,7 +1214,7 @@ Partial Class dlgEdit
         Me.lblPlot.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblPlot.AutoSize = True
         Me.lblPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblPlot.Location = New System.Drawing.Point(3, 51)
+        Me.lblPlot.Location = New System.Drawing.Point(3, 41)
         Me.lblPlot.Name = "lblPlot"
         Me.lblPlot.Size = New System.Drawing.Size(31, 13)
         Me.lblPlot.TabIndex = 27
@@ -1192,7 +1226,7 @@ Partial Class dlgEdit
         Me.txtPlot.BackColor = System.Drawing.SystemColors.Window
         Me.txtPlot.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtPlot.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtPlot.Location = New System.Drawing.Point(3, 71)
+        Me.txtPlot.Location = New System.Drawing.Point(3, 57)
         Me.txtPlot.Multiline = True
         Me.txtPlot.Name = "txtPlot"
         Me.txtPlot.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -1204,7 +1238,7 @@ Partial Class dlgEdit
         Me.lblOutline.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblOutline.AutoSize = True
         Me.lblOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblOutline.Location = New System.Drawing.Point(3, 157)
+        Me.lblOutline.Location = New System.Drawing.Point(3, 140)
         Me.lblOutline.Name = "lblOutline"
         Me.lblOutline.Size = New System.Drawing.Size(48, 13)
         Me.lblOutline.TabIndex = 25
@@ -1216,7 +1250,7 @@ Partial Class dlgEdit
         Me.txtOutline.BackColor = System.Drawing.SystemColors.Window
         Me.txtOutline.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtOutline.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtOutline.Location = New System.Drawing.Point(3, 177)
+        Me.txtOutline.Location = New System.Drawing.Point(3, 156)
         Me.txtOutline.Multiline = True
         Me.txtOutline.Name = "txtOutline"
         Me.txtOutline.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
@@ -1231,7 +1265,7 @@ Partial Class dlgEdit
         Me.tblDetailsGenresTagsShowlink.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.tblDetailsGenresTagsShowlink.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
         Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.lblGenres, 0, 0)
-        Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.clbShowLinks, 2, 1)
+        Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.clbTVShowLinks, 2, 1)
         Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.clbGenres, 0, 1)
         Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.lblTags, 1, 0)
         Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.lblTVShowLinks, 2, 0)
@@ -1239,13 +1273,13 @@ Partial Class dlgEdit
         Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.btnAdd_Genre, 0, 2)
         Me.tblDetailsGenresTagsShowlink.Controls.Add(Me.btnAdd_Tag, 1, 2)
         Me.tblDetailsGenresTagsShowlink.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblDetailsGenresTagsShowlink.Location = New System.Drawing.Point(3, 304)
+        Me.tblDetailsGenresTagsShowlink.Location = New System.Drawing.Point(3, 283)
         Me.tblDetailsGenresTagsShowlink.Name = "tblDetailsGenresTagsShowlink"
         Me.tblDetailsGenresTagsShowlink.RowCount = 3
-        Me.tblDetailsGenresTagsShowlink.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblDetailsGenresTagsShowlink.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetailsGenresTagsShowlink.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblDetailsGenresTagsShowlink.Size = New System.Drawing.Size(378, 155)
+        Me.tblDetailsGenresTagsShowlink.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblDetailsGenresTagsShowlink.Size = New System.Drawing.Size(378, 148)
         Me.tblDetailsGenresTagsShowlink.TabIndex = 81
         '
         'lblGenres
@@ -1253,25 +1287,25 @@ Partial Class dlgEdit
         Me.lblGenres.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblGenres.AutoSize = True
         Me.lblGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGenres.Location = New System.Drawing.Point(3, 3)
+        Me.lblGenres.Location = New System.Drawing.Point(3, 0)
         Me.lblGenres.Name = "lblGenres"
         Me.lblGenres.Size = New System.Drawing.Size(46, 13)
         Me.lblGenres.TabIndex = 23
         Me.lblGenres.Text = "Genres:"
         '
-        'clbShowLinks
+        'clbTVShowLinks
         '
-        Me.clbShowLinks.BackColor = System.Drawing.SystemColors.Window
-        Me.clbShowLinks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.clbShowLinks.CheckOnClick = True
-        Me.clbShowLinks.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.clbShowLinks.FormattingEnabled = True
-        Me.clbShowLinks.IntegralHeight = False
-        Me.clbShowLinks.Location = New System.Drawing.Point(255, 23)
-        Me.clbShowLinks.Name = "clbShowLinks"
-        Me.clbShowLinks.ScrollAlwaysVisible = True
-        Me.clbShowLinks.Size = New System.Drawing.Size(120, 100)
-        Me.clbShowLinks.TabIndex = 24
+        Me.clbTVShowLinks.BackColor = System.Drawing.SystemColors.Window
+        Me.clbTVShowLinks.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.clbTVShowLinks.CheckOnClick = True
+        Me.clbTVShowLinks.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.clbTVShowLinks.FormattingEnabled = True
+        Me.clbTVShowLinks.IntegralHeight = False
+        Me.clbTVShowLinks.Location = New System.Drawing.Point(255, 16)
+        Me.clbTVShowLinks.Name = "clbTVShowLinks"
+        Me.clbTVShowLinks.ScrollAlwaysVisible = True
+        Me.clbTVShowLinks.Size = New System.Drawing.Size(120, 100)
+        Me.clbTVShowLinks.TabIndex = 24
         '
         'clbGenres
         '
@@ -1281,10 +1315,10 @@ Partial Class dlgEdit
         Me.clbGenres.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.clbGenres.FormattingEnabled = True
         Me.clbGenres.IntegralHeight = False
-        Me.clbGenres.Location = New System.Drawing.Point(3, 23)
+        Me.clbGenres.Location = New System.Drawing.Point(3, 16)
         Me.clbGenres.Name = "clbGenres"
         Me.clbGenres.ScrollAlwaysVisible = True
-        Me.clbGenres.Size = New System.Drawing.Size(120, 100)
+        Me.clbGenres.Size = New System.Drawing.Size(119, 100)
         Me.clbGenres.TabIndex = 24
         '
         'lblTags
@@ -1292,7 +1326,7 @@ Partial Class dlgEdit
         Me.lblTags.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTags.AutoSize = True
         Me.lblTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTags.Location = New System.Drawing.Point(129, 3)
+        Me.lblTags.Location = New System.Drawing.Point(129, 0)
         Me.lblTags.Name = "lblTags"
         Me.lblTags.Size = New System.Drawing.Size(33, 13)
         Me.lblTags.TabIndex = 23
@@ -1303,7 +1337,7 @@ Partial Class dlgEdit
         Me.lblTVShowLinks.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVShowLinks.AutoSize = True
         Me.lblTVShowLinks.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblTVShowLinks.Location = New System.Drawing.Point(255, 3)
+        Me.lblTVShowLinks.Location = New System.Drawing.Point(255, 0)
         Me.lblTVShowLinks.Name = "lblTVShowLinks"
         Me.lblTVShowLinks.Size = New System.Drawing.Size(85, 13)
         Me.lblTVShowLinks.TabIndex = 36
@@ -1317,16 +1351,16 @@ Partial Class dlgEdit
         Me.clbTags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.clbTags.FormattingEnabled = True
         Me.clbTags.IntegralHeight = False
-        Me.clbTags.Location = New System.Drawing.Point(129, 23)
+        Me.clbTags.Location = New System.Drawing.Point(129, 16)
         Me.clbTags.Name = "clbTags"
         Me.clbTags.ScrollAlwaysVisible = True
-        Me.clbTags.Size = New System.Drawing.Size(120, 100)
+        Me.clbTags.Size = New System.Drawing.Size(119, 100)
         Me.clbTags.TabIndex = 24
         '
         'btnAdd_Genre
         '
         Me.btnAdd_Genre.Image = CType(resources.GetObject("btnAdd_Genre.Image"), System.Drawing.Image)
-        Me.btnAdd_Genre.Location = New System.Drawing.Point(3, 129)
+        Me.btnAdd_Genre.Location = New System.Drawing.Point(3, 122)
         Me.btnAdd_Genre.Name = "btnAdd_Genre"
         Me.btnAdd_Genre.Size = New System.Drawing.Size(23, 23)
         Me.btnAdd_Genre.TabIndex = 53
@@ -1335,7 +1369,7 @@ Partial Class dlgEdit
         'btnAdd_Tag
         '
         Me.btnAdd_Tag.Image = CType(resources.GetObject("btnAdd_Tag.Image"), System.Drawing.Image)
-        Me.btnAdd_Tag.Location = New System.Drawing.Point(129, 129)
+        Me.btnAdd_Tag.Location = New System.Drawing.Point(129, 122)
         Me.btnAdd_Tag.Name = "btnAdd_Tag"
         Me.btnAdd_Tag.Size = New System.Drawing.Size(23, 23)
         Me.btnAdd_Tag.TabIndex = 53
@@ -1352,7 +1386,7 @@ Partial Class dlgEdit
         Me.tblDetailsCollection.Controls.Add(Me.cbCollection, 1, 0)
         Me.tblDetailsCollection.Controls.Add(Me.btnAdd_Collection, 2, 0)
         Me.tblDetailsCollection.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblDetailsCollection.Location = New System.Drawing.Point(3, 269)
+        Me.tblDetailsCollection.Location = New System.Drawing.Point(3, 248)
         Me.tblDetailsCollection.Name = "tblDetailsCollection"
         Me.tblDetailsCollection.RowCount = 2
         Me.tblDetailsCollection.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -1684,11 +1718,11 @@ Partial Class dlgEdit
         Me.tblDetailsCrew.Location = New System.Drawing.Point(3, 243)
         Me.tblDetailsCrew.Name = "tblDetailsCrew"
         Me.tblDetailsCrew.RowCount = 4
-        Me.tblDetailsCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblDetailsCrew.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetailsCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblDetailsCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblDetailsCrew.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblDetailsCrew.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblDetailsCrew.Size = New System.Drawing.Size(378, 186)
+        Me.tblDetailsCrew.Size = New System.Drawing.Size(378, 172)
         Me.tblDetailsCrew.TabIndex = 84
         '
         'lbDirectors
@@ -1698,7 +1732,7 @@ Partial Class dlgEdit
         Me.lbDirectors.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lbDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbDirectors.FormattingEnabled = True
-        Me.lbDirectors.Location = New System.Drawing.Point(3, 23)
+        Me.lbDirectors.Location = New System.Drawing.Point(3, 16)
         Me.lbDirectors.Name = "lbDirectors"
         Me.lbDirectors.ScrollAlwaysVisible = True
         Me.lbDirectors.Size = New System.Drawing.Size(183, 67)
@@ -1711,7 +1745,7 @@ Partial Class dlgEdit
         Me.lbCreditsCreators.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lbCreditsCreators.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbCreditsCreators.FormattingEnabled = True
-        Me.lbCreditsCreators.Location = New System.Drawing.Point(3, 116)
+        Me.lbCreditsCreators.Location = New System.Drawing.Point(3, 102)
         Me.lbCreditsCreators.Name = "lbCreditsCreators"
         Me.lbCreditsCreators.ScrollAlwaysVisible = True
         Me.lbCreditsCreators.Size = New System.Drawing.Size(183, 67)
@@ -1722,7 +1756,7 @@ Partial Class dlgEdit
         Me.lblDirectors.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblDirectors.AutoSize = True
         Me.lblDirectors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblDirectors.Location = New System.Drawing.Point(3, 3)
+        Me.lblDirectors.Location = New System.Drawing.Point(3, 0)
         Me.lblDirectors.Name = "lblDirectors"
         Me.lblDirectors.Size = New System.Drawing.Size(56, 13)
         Me.lblDirectors.TabIndex = 21
@@ -1733,7 +1767,7 @@ Partial Class dlgEdit
         Me.lblCreditsCreators.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblCreditsCreators.AutoSize = True
         Me.lblCreditsCreators.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCreditsCreators.Location = New System.Drawing.Point(3, 96)
+        Me.lblCreditsCreators.Location = New System.Drawing.Point(3, 86)
         Me.lblCreditsCreators.Name = "lblCreditsCreators"
         Me.lblCreditsCreators.Size = New System.Drawing.Size(100, 13)
         Me.lblCreditsCreators.TabIndex = 40
@@ -1744,7 +1778,7 @@ Partial Class dlgEdit
         Me.lblCountries.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblCountries.AutoSize = True
         Me.lblCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblCountries.Location = New System.Drawing.Point(192, 3)
+        Me.lblCountries.Location = New System.Drawing.Point(192, 0)
         Me.lblCountries.Name = "lblCountries"
         Me.lblCountries.Size = New System.Drawing.Size(60, 13)
         Me.lblCountries.TabIndex = 11
@@ -1757,7 +1791,7 @@ Partial Class dlgEdit
         Me.lbCountries.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lbCountries.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbCountries.FormattingEnabled = True
-        Me.lbCountries.Location = New System.Drawing.Point(192, 23)
+        Me.lbCountries.Location = New System.Drawing.Point(192, 16)
         Me.lbCountries.Name = "lbCountries"
         Me.lbCountries.ScrollAlwaysVisible = True
         Me.lbCountries.Size = New System.Drawing.Size(183, 67)
@@ -1768,7 +1802,7 @@ Partial Class dlgEdit
         Me.lblStudio.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblStudio.AutoSize = True
         Me.lblStudio.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblStudio.Location = New System.Drawing.Point(192, 96)
+        Me.lblStudio.Location = New System.Drawing.Point(192, 86)
         Me.lblStudio.Name = "lblStudio"
         Me.lblStudio.Size = New System.Drawing.Size(44, 13)
         Me.lblStudio.TabIndex = 42
@@ -1781,7 +1815,7 @@ Partial Class dlgEdit
         Me.lbStudios.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lbStudios.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lbStudios.FormattingEnabled = True
-        Me.lbStudios.Location = New System.Drawing.Point(192, 116)
+        Me.lbStudios.Location = New System.Drawing.Point(192, 102)
         Me.lbStudios.Name = "lbStudios"
         Me.lbStudios.ScrollAlwaysVisible = True
         Me.lbStudios.Size = New System.Drawing.Size(183, 67)
@@ -2703,12 +2737,12 @@ Partial Class dlgEdit
         Me.lvSubtitles.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
         Me.lvSubtitles.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvSubtitles.FullRowSelect = True
-        ListViewGroup11.Header = "Local Subtitles"
-        ListViewGroup11.Name = "LocalSubtitles"
-        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup11})
+        ListViewGroup1.Header = "Local Subtitles"
+        ListViewGroup1.Name = "LocalSubtitles"
+        Me.lvSubtitles.Groups.AddRange(New System.Windows.Forms.ListViewGroup() {ListViewGroup1})
         Me.lvSubtitles.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None
-        ListViewItem11.Group = ListViewGroup11
-        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem11})
+        ListViewItem1.Group = ListViewGroup1
+        Me.lvSubtitles.Items.AddRange(New System.Windows.Forms.ListViewItem() {ListViewItem1})
         Me.lvSubtitles.Location = New System.Drawing.Point(6, 6)
         Me.lvSubtitles.MultiSelect = False
         Me.lvSubtitles.Name = "lvSubtitles"
@@ -3115,10 +3149,10 @@ Partial Class dlgEdit
         '
         'chkMarked
         '
-        Me.chkMarked.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkMarked.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMarked.AutoSize = True
         Me.chkMarked.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMarked.Location = New System.Drawing.Point(3, 7)
+        Me.chkMarked.Location = New System.Drawing.Point(3, 5)
         Me.chkMarked.Name = "chkMarked"
         Me.chkMarked.Size = New System.Drawing.Size(65, 17)
         Me.chkMarked.TabIndex = 5
@@ -3131,7 +3165,7 @@ Partial Class dlgEdit
         Me.btnRescrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRescrape.Image = CType(resources.GetObject("btnRescrape.Image"), System.Drawing.Image)
         Me.btnRescrape.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRescrape.Location = New System.Drawing.Point(544, 30)
+        Me.btnRescrape.Location = New System.Drawing.Point(684, 30)
         Me.btnRescrape.Name = "btnRescrape"
         Me.btnRescrape.Size = New System.Drawing.Size(98, 23)
         Me.btnRescrape.TabIndex = 7
@@ -3145,7 +3179,7 @@ Partial Class dlgEdit
         Me.btnChange.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnChange.Image = CType(resources.GetObject("btnChange.Image"), System.Drawing.Image)
         Me.btnChange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnChange.Location = New System.Drawing.Point(648, 30)
+        Me.btnChange.Location = New System.Drawing.Point(788, 30)
         Me.btnChange.Name = "btnChange"
         Me.btnChange.Size = New System.Drawing.Size(107, 23)
         Me.btnChange.TabIndex = 8
@@ -3159,10 +3193,10 @@ Partial Class dlgEdit
         '
         'chkWatched
         '
-        Me.chkWatched.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkWatched.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkWatched.AutoSize = True
         Me.chkWatched.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkWatched.Location = New System.Drawing.Point(74, 36)
+        Me.chkWatched.Location = New System.Drawing.Point(355, 33)
         Me.chkWatched.Name = "chkWatched"
         Me.chkWatched.Size = New System.Drawing.Size(72, 17)
         Me.chkWatched.TabIndex = 6
@@ -3190,25 +3224,25 @@ Partial Class dlgEdit
         Me.txtLastPlayed.BackColor = System.Drawing.SystemColors.Window
         Me.txtLastPlayed.Enabled = False
         Me.txtLastPlayed.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtLastPlayed.Location = New System.Drawing.Point(152, 30)
+        Me.txtLastPlayed.Location = New System.Drawing.Point(433, 30)
         Me.txtLastPlayed.Name = "txtLastPlayed"
         Me.txtLastPlayed.Size = New System.Drawing.Size(118, 22)
         Me.txtLastPlayed.TabIndex = 74
         '
-        'cbSourceLanguage
+        'cbLanguage
         '
-        Me.cbSourceLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbSourceLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbSourceLanguage.Location = New System.Drawing.Point(152, 3)
-        Me.cbSourceLanguage.Name = "cbSourceLanguage"
-        Me.cbSourceLanguage.Size = New System.Drawing.Size(172, 21)
-        Me.cbSourceLanguage.TabIndex = 76
+        Me.cbLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbLanguage.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbLanguage.Location = New System.Drawing.Point(433, 3)
+        Me.cbLanguage.Name = "cbLanguage"
+        Me.cbLanguage.Size = New System.Drawing.Size(172, 21)
+        Me.cbLanguage.TabIndex = 76
         '
         'lblLanguage
         '
         Me.lblLanguage.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblLanguage.AutoSize = True
-        Me.lblLanguage.Location = New System.Drawing.Point(74, 7)
+        Me.lblLanguage.Location = New System.Drawing.Point(355, 7)
         Me.lblLanguage.Name = "lblLanguage"
         Me.lblLanguage.Size = New System.Drawing.Size(61, 13)
         Me.lblLanguage.TabIndex = 75
@@ -3280,7 +3314,9 @@ Partial Class dlgEdit
         'tblEditBottom
         '
         Me.tblEditBottom.AutoSize = True
-        Me.tblEditBottom.ColumnCount = 9
+        Me.tblEditBottom.ColumnCount = 11
+        Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
@@ -3290,70 +3326,83 @@ Partial Class dlgEdit
         Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
         Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblEditBottom.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblEditBottom.Controls.Add(Me.lblLanguage, 1, 0)
-        Me.tblEditBottom.Controls.Add(Me.txtLastPlayed, 2, 1)
-        Me.tblEditBottom.Controls.Add(Me.cbSourceLanguage, 2, 0)
-        Me.tblEditBottom.Controls.Add(Me.chkWatched, 1, 1)
+        Me.tblEditBottom.Controls.Add(Me.lblLanguage, 3, 0)
+        Me.tblEditBottom.Controls.Add(Me.cbEpisodeSorting, 2, 1)
+        Me.tblEditBottom.Controls.Add(Me.lblEpisodeSorting, 1, 1)
+        Me.tblEditBottom.Controls.Add(Me.txtLastPlayed, 4, 1)
+        Me.tblEditBottom.Controls.Add(Me.cbOrdering, 2, 0)
+        Me.tblEditBottom.Controls.Add(Me.cbLanguage, 4, 0)
+        Me.tblEditBottom.Controls.Add(Me.chkWatched, 3, 1)
+        Me.tblEditBottom.Controls.Add(Me.lblOrdering, 1, 0)
         Me.tblEditBottom.Controls.Add(Me.chkMarked, 0, 0)
         Me.tblEditBottom.Controls.Add(Me.chkLocked, 0, 1)
-        Me.tblEditBottom.Controls.Add(Me.btnRescrape, 4, 1)
-        Me.tblEditBottom.Controls.Add(Me.btnChange, 5, 1)
-        Me.tblEditBottom.Controls.Add(Me.btnOK, 7, 1)
-        Me.tblEditBottom.Controls.Add(Me.btnCancel, 8, 1)
+        Me.tblEditBottom.Controls.Add(Me.btnRescrape, 6, 1)
+        Me.tblEditBottom.Controls.Add(Me.btnChange, 7, 1)
+        Me.tblEditBottom.Controls.Add(Me.btnOK, 9, 1)
+        Me.tblEditBottom.Controls.Add(Me.btnCancel, 10, 1)
         Me.tblEditBottom.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblEditBottom.Location = New System.Drawing.Point(0, 0)
         Me.tblEditBottom.Name = "tblEditBottom"
         Me.tblEditBottom.RowCount = 2
         Me.tblEditBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblEditBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblEditBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblEditBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblEditBottom.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblEditBottom.Size = New System.Drawing.Size(1184, 56)
         Me.tblEditBottom.TabIndex = 0
         '
+        'cbEpisodeSorting
+        '
+        Me.cbEpisodeSorting.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.cbEpisodeSorting.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbEpisodeSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbEpisodeSorting.FormattingEnabled = True
+        Me.cbEpisodeSorting.Location = New System.Drawing.Point(183, 32)
+        Me.cbEpisodeSorting.Name = "cbEpisodeSorting"
+        Me.cbEpisodeSorting.Size = New System.Drawing.Size(166, 21)
+        Me.cbEpisodeSorting.TabIndex = 5
+        '
+        'lblEpisodeSorting
+        '
+        Me.lblEpisodeSorting.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblEpisodeSorting.AutoSize = True
+        Me.lblEpisodeSorting.Location = New System.Drawing.Point(74, 35)
+        Me.lblEpisodeSorting.Name = "lblEpisodeSorting"
+        Me.lblEpisodeSorting.Size = New System.Drawing.Size(103, 13)
+        Me.lblEpisodeSorting.TabIndex = 4
+        Me.lblEpisodeSorting.Text = "Episode Sorted by:"
+        Me.lblEpisodeSorting.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'cbOrdering
+        '
+        Me.cbOrdering.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.cbOrdering.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbOrdering.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbOrdering.FormattingEnabled = True
+        Me.cbOrdering.Location = New System.Drawing.Point(183, 3)
+        Me.cbOrdering.Name = "cbOrdering"
+        Me.cbOrdering.Size = New System.Drawing.Size(166, 21)
+        Me.cbOrdering.TabIndex = 5
+        '
+        'lblOrdering
+        '
+        Me.lblOrdering.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblOrdering.AutoSize = True
+        Me.lblOrdering.Location = New System.Drawing.Point(74, 7)
+        Me.lblOrdering.Name = "lblOrdering"
+        Me.lblOrdering.Size = New System.Drawing.Size(101, 13)
+        Me.lblOrdering.TabIndex = 4
+        Me.lblOrdering.Text = "Episode Ordering:"
+        '
         'chkLocked
         '
-        Me.chkLocked.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkLocked.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkLocked.AutoSize = True
         Me.chkLocked.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkLocked.Location = New System.Drawing.Point(3, 36)
+        Me.chkLocked.Location = New System.Drawing.Point(3, 33)
         Me.chkLocked.Name = "chkLocked"
         Me.chkLocked.Size = New System.Drawing.Size(62, 17)
         Me.chkLocked.TabIndex = 5
         Me.chkLocked.Text = "Locked"
         Me.chkLocked.UseVisualStyleBackColor = True
-        '
-        'txtReleaseDate
-        '
-        Me.txtReleaseDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtReleaseDate.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-        Me.txtReleaseDate.Location = New System.Drawing.Point(87, 115)
-        Me.txtReleaseDate.Mask = "0000-00-00"
-        Me.txtReleaseDate.Name = "txtReleaseDate"
-        Me.txtReleaseDate.Size = New System.Drawing.Size(70, 22)
-        Me.txtReleaseDate.TabIndex = 6
-        '
-        'txtYear
-        '
-        Me.tblDetailsMain.SetColumnSpan(Me.txtYear, 2)
-        Me.txtYear.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtYear.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-        Me.txtYear.Location = New System.Drawing.Point(314, 115)
-        Me.txtYear.Mask = "0000"
-        Me.txtYear.Name = "txtYear"
-        Me.txtYear.Size = New System.Drawing.Size(70, 22)
-        Me.txtYear.TabIndex = 7
-        '
-        'txtTop250
-        '
-        Me.txtTop250.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtTop250.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite
-        Me.txtTop250.Location = New System.Drawing.Point(87, 227)
-        Me.txtTop250.Mask = "990"
-        Me.txtTop250.Name = "txtTop250"
-        Me.txtTop250.Size = New System.Drawing.Size(70, 22)
-        Me.txtTop250.TabIndex = 13
         '
         'dlgEdit
         '
@@ -3532,8 +3581,8 @@ Partial Class dlgEdit
     Friend WithEvents clbGenres As System.Windows.Forms.CheckedListBox
     Friend WithEvents pnlExtrathumbsSetAsFanart As System.Windows.Forms.Panel
     Friend WithEvents btnExtrathumbsSetAsFanart As System.Windows.Forms.Button
-    Friend WithEvents btnDLTrailer As System.Windows.Forms.Button
-    Friend WithEvents btnPlayTrailer As System.Windows.Forms.Button
+    Friend WithEvents btnAdd_Trailer As System.Windows.Forms.Button
+    Friend WithEvents btnPlay_Trailer As System.Windows.Forms.Button
     Friend WithEvents btnSetPosterDL As System.Windows.Forms.Button
     Friend WithEvents btnSetFanartDL As System.Windows.Forms.Button
     Friend WithEvents tpMetaData As System.Windows.Forms.TabPage
@@ -3637,7 +3686,7 @@ Partial Class dlgEdit
     Friend WithEvents txtLastPlayed As System.Windows.Forms.TextBox
     Friend WithEvents btnSetExtrafanartsScrape As System.Windows.Forms.Button
     Friend WithEvents btnSetExtrathumbsScrape As System.Windows.Forms.Button
-    Friend WithEvents cbSourceLanguage As System.Windows.Forms.ComboBox
+    Friend WithEvents cbLanguage As System.Windows.Forms.ComboBox
     Friend WithEvents lblLanguage As System.Windows.Forms.Label
     Friend WithEvents btnLocalTrailerPlay As Button
     Friend WithEvents txtLocalTrailer As TextBox
@@ -3665,7 +3714,7 @@ Partial Class dlgEdit
     Friend WithEvents txtEpisode As TextBox
     Friend WithEvents lblTVShowLinks As Label
     Friend WithEvents tblDetailsMPAA As TableLayoutPanel
-    Friend WithEvents clbShowLinks As CheckedListBox
+    Friend WithEvents clbTVShowLinks As CheckedListBox
     Friend WithEvents pnlEdit As Panel
     Friend WithEvents pnlEditBottom As Panel
     Friend WithEvents tblEditTop As TableLayoutPanel
@@ -3717,4 +3766,8 @@ Partial Class dlgEdit
     Friend WithEvents txtReleaseDate As MaskedTextBox
     Friend WithEvents txtYear As MaskedTextBox
     Friend WithEvents txtTop250 As MaskedTextBox
+    Friend WithEvents lblOrdering As Label
+    Friend WithEvents lblEpisodeSorting As Label
+    Friend WithEvents cbOrdering As ComboBox
+    Friend WithEvents cbEpisodeSorting As ComboBox
 End Class
