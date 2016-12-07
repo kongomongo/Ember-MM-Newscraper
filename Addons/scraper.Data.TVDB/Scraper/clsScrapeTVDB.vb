@@ -112,30 +112,32 @@ Namespace TVDBs
         Public Function GetSearchTVShowInfo(ByVal sShowName As String, ByRef oDBTV As Database.DBElement, ByVal iType As Enums.ScrapeType, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
             Dim r As SearchResults = SearchTVShowByName(sShowName)
 
-            Select Case iType
-                Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
-                    If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
-                    Else
-                        Using dlgSearch As New dlgTVDBSearchResults(_SpecialSettings, Me)
-                            If dlgSearch.ShowDialog(r, sShowName, oDBTV.ShowPath) = DialogResult.OK Then
-                                If Not String.IsNullOrEmpty(dlgSearch.Result.TVDB) Then
-                                    Return GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifiers, FilteredOptions, False)
+            If r IsNot Nothing Then
+                Select Case iType
+                    Case Enums.ScrapeType.AllAsk, Enums.ScrapeType.FilterAsk, Enums.ScrapeType.MarkedAsk, Enums.ScrapeType.MissingAsk, Enums.ScrapeType.NewAsk, Enums.ScrapeType.SelectedAsk, Enums.ScrapeType.SingleField
+                        If r.Matches.Count = 1 Then
+                            Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
+                        Else
+                            Using dlgSearch As New dlgTVDBSearchResults(_SpecialSettings, Me)
+                                If dlgSearch.ShowDialog(r, sShowName, oDBTV.ShowPath) = DialogResult.OK Then
+                                    If Not String.IsNullOrEmpty(dlgSearch.Result.TVDB) Then
+                                        Return GetTVShowInfo(dlgSearch.Result.TVDB, ScrapeModifiers, FilteredOptions, False)
+                                    End If
                                 End If
-                            End If
-                        End Using
-                    End If
+                            End Using
+                        End If
 
-                Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
-                    If r.Matches.Count = 1 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
-                    End If
+                    Case Enums.ScrapeType.AllSkip, Enums.ScrapeType.FilterSkip, Enums.ScrapeType.MarkedSkip, Enums.ScrapeType.MissingSkip, Enums.ScrapeType.NewSkip, Enums.ScrapeType.SelectedSkip
+                        If r.Matches.Count = 1 Then
+                            Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
+                        End If
 
-                Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
-                    If r.Matches.Count > 0 Then
-                        Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
-                    End If
-            End Select
+                    Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto, Enums.ScrapeType.SingleScrape
+                        If r.Matches.Count > 0 Then
+                            Return GetTVShowInfo(r.Matches.Item(0).TVDB, ScrapeModifiers, FilteredOptions, False)
+                        End If
+                End Select
+            End If
 
             Return Nothing
         End Function

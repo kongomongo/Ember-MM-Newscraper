@@ -47,6 +47,240 @@ Public Class Settings
 
 #Region "Properties"
 
+    Public Property MovieClearArtPrefSize() As Enums.MovieClearArtSize
+        Get
+            Return _XMLSettings.MovieClearArtPrefSize
+        End Get
+        Set(ByVal value As Enums.MovieClearArtSize)
+            _XMLSettings.MovieClearArtPrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieClearArtPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieClearArtPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieClearArtPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieClearLogoPrefSize() As Enums.MovieClearLogoSize
+        Get
+            Return _XMLSettings.MovieClearLogoPrefSize
+        End Get
+        Set(ByVal value As Enums.MovieClearLogoSize)
+            _XMLSettings.MovieClearLogoPrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieClearLogoPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieClearLogoPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieClearLogoPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieDiscArtPrefSize() As Enums.MovieDiscArtSize
+        Get
+            Return _XMLSettings.MovieDiscArtPrefSize
+        End Get
+        Set(ByVal value As Enums.MovieDiscArtSize)
+            _XMLSettings.MovieDiscArtPrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieDiscArtPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieDiscArtPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieDiscArtPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieLandscapePrefSize() As Enums.MovieLandscapeSize
+        Get
+            Return _XMLSettings.MovieLandscapePrefSize
+        End Get
+        Set(ByVal value As Enums.MovieLandscapeSize)
+            _XMLSettings.MovieLandscapePrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieLandscapePrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieLandscapePrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieLandscapePrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowCharacterArtPrefSize() As Enums.TVCharacterArtSize
+        Get
+            Return _XMLSettings.TVShowCharacterArtPrefSize
+        End Get
+        Set(ByVal value As Enums.TVCharacterArtSize)
+            _XMLSettings.TVShowCharacterArtPrefSize = value
+        End Set
+    End Property
+
+    Public Property TVShowCharacterArtPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.TVShowCharacterArtPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.TVShowCharacterArtPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowClearArtPrefSize() As Enums.TVClearArtSize
+        Get
+            Return _XMLSettings.TVShowClearArtPrefSize
+        End Get
+        Set(ByVal value As Enums.TVClearArtSize)
+            _XMLSettings.TVShowClearArtPrefSize = value
+        End Set
+    End Property
+
+    Public Property TVShowClearArtPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.TVShowClearArtPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.TVShowClearArtPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowClearLogoPrefSize() As Enums.TVClearLogoSize
+        Get
+            Return _XMLSettings.TVShowClearLogoPrefSize
+        End Get
+        Set(ByVal value As Enums.TVClearLogoSize)
+            _XMLSettings.TVShowClearLogoPrefSize = value
+        End Set
+    End Property
+
+    Public Property TVShowClearLogoPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.TVShowClearLogoPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.TVShowClearLogoPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVShowLandscapePrefSize() As Enums.TVLandscapeSize
+        Get
+            Return _XMLSettings.TVShowLandscapePrefSize
+        End Get
+        Set(ByVal value As Enums.TVLandscapeSize)
+            _XMLSettings.TVShowLandscapePrefSize = value
+        End Set
+    End Property
+
+    Public Property TVShowLandscapePrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.TVShowLandscapePrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.TVShowLandscapePrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapePrefSize() As Enums.TVLandscapeSize
+        Get
+            Return _XMLSettings.TVSeasonLandscapePrefSize
+        End Get
+        Set(ByVal value As Enums.TVLandscapeSize)
+            _XMLSettings.TVSeasonLandscapePrefSize = value
+        End Set
+    End Property
+
+    Public Property TVSeasonLandscapePrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.TVSeasonLandscapePrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.TVSeasonLandscapePrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtPrefSize() As Enums.MovieClearArtSize
+        Get
+            Return _XMLSettings.MovieSetClearArtPrefSize
+        End Get
+        Set(ByVal value As Enums.MovieClearArtSize)
+            _XMLSettings.MovieSetClearArtPrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearArtPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieSetClearArtPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieSetClearArtPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearlogoPrefSize() As Enums.MovieClearLogoSize
+        Get
+            Return _XMLSettings.MovieSetClearlogoPrefSize
+        End Get
+        Set(ByVal value As Enums.MovieClearLogoSize)
+            _XMLSettings.MovieSetClearlogoPrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieSetClearLogoPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieSetClearLogoPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieSetClearLogoPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtPrefSize() As Enums.MovieDiscArtSize
+        Get
+            Return _XMLSettings.MovieSetDiscArtPrefSize
+        End Get
+        Set(ByVal value As Enums.MovieDiscArtSize)
+            _XMLSettings.MovieSetDiscArtPrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieSetDiscArtPrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieSetDiscArtPrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieSetDiscArtPrefSizeOnly = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapePrefSize() As Enums.MovieLandscapeSize
+        Get
+            Return _XMLSettings.MovieSetLandscapePrefSize
+        End Get
+        Set(ByVal value As Enums.MovieLandscapeSize)
+            _XMLSettings.MovieSetLandscapePrefSize = value
+        End Set
+    End Property
+
+    Public Property MovieSetLandscapePrefSizeOnly() As Boolean
+        Get
+            Return _XMLSettings.MovieSetLandscapePrefSizeOnly
+        End Get
+        Set(ByVal value As Boolean)
+            _XMLSettings.MovieSetLandscapePrefSizeOnly = value
+        End Set
+    End Property
+
     Public Property MovieScraperCastLimit() As Integer
         Get
             Return _XMLSettings.MovieScraperCastLimit
@@ -6969,10 +7203,16 @@ Public Class Settings
         MovieBannerWidth = 0
         MovieCleanDB = False
         MovieClearArtKeepExisting = False
+        MovieClearArtPrefSize = Enums.MovieClearArtSize.Any
+        MovieClearArtPrefSizeOnly = False
         MovieClearLogoKeepExisting = False
+        MovieClearLogoPrefSize = Enums.MovieClearLogoSize.Any
+        MovieClearLogoPrefSizeOnly = False
         MovieClickScrape = False
         MovieClickScrapeAsk = False
         MovieDiscArtKeepExisting = False
+        MovieDiscArtPrefSize = Enums.MovieDiscArtSize.Any
+        MovieDiscArtPrefSizeOnly = False
         MovieDisplayYear = False
         MovieExtrafanartsHeight = 0
         MovieExtrafanartsLimit = 4
@@ -7028,6 +7268,8 @@ Public Class Settings
         MovieImagesNotSaveURLToNfo = False
         MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
+        MovieLandscapePrefSize = Enums.MovieLandscapeSize.Any
+        MovieLandscapePrefSizeOnly = False
         MovieLevTolerance = 0
         MovieLockActors = False
         MovieLockCert = False
@@ -7131,10 +7373,16 @@ Public Class Settings
         MovieSetCleanDB = False
         MovieSetCleanFiles = False
         MovieSetClearArtKeepExisting = False
+        MovieSetClearArtPrefSize = Enums.MovieClearArtSize.Any
+        MovieSetClearArtPrefSizeOnly = False
         MovieSetClearLogoKeepExisting = False
+        MovieSetClearlogoPrefSize = Enums.MovieClearLogoSize.Any
+        MovieSetClearLogoPrefSizeOnly = False
         MovieSetClickScrape = False
         MovieSetClickScrapeAsk = False
         MovieSetDiscArtKeepExisting = False
+        MovieSetDiscArtPrefSize = Enums.MovieDiscArtSize.Any
+        MovieSetDiscArtPrefSizeOnly = False
         MovieSetFanartHeight = 0
         MovieSetFanartKeepExisting = False
         MovieSetFanartPrefSizeOnly = False
@@ -7154,6 +7402,8 @@ Public Class Settings
         MovieSetImagesGetEnglishImages = False
         MovieSetImagesMediaLanguageOnly = False
         MovieSetLandscapeKeepExisting = False
+        MovieSetLandscapePrefSize = Enums.MovieLandscapeSize.Any
+        MovieSetLandscapePrefSizeOnly = False
         MovieSetLockPlot = False
         MovieSetLockTitle = False
         MovieSetMissingBanner = False
@@ -7211,6 +7461,8 @@ Public Class Settings
         TVAllSeasonsFanartResize = False
         TVAllSeasonsFanartWidth = 0
         TVAllSeasonsLandscapeKeepExisting = False
+        'TVAllSeasonsLandscapeKeepPrefSize = Enums.TVLandscapeSize.Any
+        'TVAllSeasonsLandscapeKeepPrefSizeOnly = False
         TVAllSeasonsPosterHeight = 0
         TVAllSeasonsPosterKeepExisting = False
         TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any
@@ -7351,6 +7603,8 @@ Public Class Settings
         TVSeasonFanartResize = False
         TVSeasonFanartWidth = 0
         TVSeasonLandscapeKeepExisting = False
+        TVSeasonLandscapePrefSize = Enums.TVLandscapeSize.Any
+        TVSeasonLandscapePrefSizeOnly = False
         TVSeasonMissingBanner = False
         TVSeasonMissingFanart = False
         TVSeasonMissingLandscape = False
@@ -7372,6 +7626,8 @@ Public Class Settings
         TVShowBannerResize = False
         TVShowBannerWidth = 0
         TVShowCharacterArtKeepExisting = False
+        TVShowCharacterArtPrefSize = Enums.TVCharacterArtSize.Any
+        TVShowCharacterArtPrefSizeOnly = False
         TVShowClearArtKeepExisting = False
         TVShowClearLogoKeepExisting = False
         TVShowExtrafanartsLimit = 4

@@ -169,22 +169,22 @@ Public Class OFDB_Data
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef Modifier As Structures.ScrapeModifiers, ByRef Type As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
+    Function Scraper_Movie(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("[OFDB_Data] [Scraper_Movie] [Start]")
 
         LoadSettings()
 
         Dim nMovie As New MediaContainers.MainDetails
-        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions)
 
         'datascraper needs imdb of movie!
-        If String.IsNullOrEmpty(oDBMovie.MainDetails.IMDB) Then
+        If String.IsNullOrEmpty(tDBElement.MainDetails.IMDB) Then
             logger.Trace("[OFDB_Data] [Scraper_Movie] [Abort] IMDB-ID of movie is needed, but not availaible")
             Return New Interfaces.ModuleResult_Data_Movie With {.Result = Nothing}
         End If
 
-        If Modifier.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.MainDetails.IMDB, FilteredOptions)
+        If tDBElement.ScrapeModifiers.MainNFO Then
+            nMovie = _scraper.GetMovieInfo(tDBElement.MainDetails.IMDB, FilteredOptions)
         End If
 
         logger.Trace("[OFDB_Data] [Scraper_Movie] [Done]")

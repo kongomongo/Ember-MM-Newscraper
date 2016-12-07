@@ -5507,6 +5507,9 @@ Public Class Database
         Private _nfopath As String
         Private _ordering As Enums.EpisodeOrdering
         Private _outoftolerance As Boolean
+        Private _scrapemodifiers As Structures.ScrapeModifiers
+        Private _scrapeoptions As Structures.ScrapeOptions
+        Private _scrapetype As Enums.ScrapeType
         Private _seasons As New List(Of DBElement)
         Private _showid As Long
         Private _showpath As String
@@ -5850,6 +5853,33 @@ Public Class Database
             End Set
         End Property
 
+        Public Property ScrapeModifiers() As Structures.ScrapeModifiers
+            Get
+                Return _scrapemodifiers
+            End Get
+            Set(ByVal value As Structures.ScrapeModifiers)
+                _scrapemodifiers = value
+            End Set
+        End Property
+
+        Public Property ScrapeOptions() As Structures.ScrapeOptions
+            Get
+                Return _scrapeoptions
+            End Get
+            Set(ByVal value As Structures.ScrapeOptions)
+                _scrapeoptions = value
+            End Set
+        End Property
+
+        Public Property ScrapeType() As Enums.ScrapeType
+            Get
+                Return _scrapetype
+            End Get
+            Set(ByVal value As Enums.ScrapeType)
+                _scrapetype = value
+            End Set
+        End Property
+
         Public Property Seasons() As List(Of DBElement)
             Get
                 Return _seasons
@@ -5963,7 +5993,10 @@ Public Class Database
                 Return _trailer.TrailerOriginal IsNot Nothing AndAlso _trailer.TrailerOriginal.hasMemoryStream
             End Get
         End Property
-
+        ''' <summary>
+        ''' Only to set the TVShow informations for TVEpisodes and TVSeasons elements
+        ''' </summary>
+        ''' <returns></returns>
         Public Property TVShowDetails() As MediaContainers.MainDetails
             Get
                 Return _tvshowdetails
@@ -6016,7 +6049,7 @@ Public Class Database
             _issingle = False
             _language = String.Empty
             _listtitle = String.Empty
-            _maindetails = Nothing
+            _maindetails = New MediaContainers.MainDetails 'Nothing
             _moviesinset = New List(Of MediaContainers.MovieInSet)
             _nfopath = String.Empty
             _ordering = Enums.EpisodeOrdering.Standard

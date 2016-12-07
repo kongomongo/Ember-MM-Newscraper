@@ -258,17 +258,17 @@ Public Class Trakttv_Data
     ''' <summary>
     '''  Scrape MovieDetails from Trakttv
     ''' </summary>
-    ''' <param name="oDBMovie">Movie to be scraped. oDBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
+    ''' <param name="tDBElement">Movie to be scraped. oDBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
     ''' <param name="nMovie">New scraped movie data</param>
     ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
+    Function Scraper_Movie(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("[Tracktv_Data] [Scraper_Movie] [Start]")
 
         Dim nMovie As MediaContainers.MainDetails = Nothing
 
-        If ScrapeModifiers.MainNFO Then
+        If tDBElement.ScrapeModifiers.MainNFO Then
             LoadSettings_Movie()
 
             Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_Movie)
@@ -276,9 +276,9 @@ Public Class Trakttv_Data
                 SaveSettings_Movie()
             End If
 
-            Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_Movie)
+            Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions_Movie)
 
-            Dim mDBElement As Database.DBElement = oDBElement
+            Dim mDBElement As Database.DBElement = tDBElement
             Dim Result = _scraper.GetInfo_Movie(_scraper.GetTraktID(mDBElement), FilteredOptions)
             While Not Result.IsCompleted
                 Threading.Thread.Sleep(50)
@@ -297,17 +297,15 @@ Public Class Trakttv_Data
     ''' <summary>
     '''  Scrape tv show details from Trakttv
     ''' </summary>
-    ''' <param name="oDBElement">TV Show to be scraped. DBTV as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param>
-    ''' <param name="ScrapeModifiers">what additional data to scrape (images, episode details, season details...)</param>
-    ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <param name="tDBElement">TV Show to be scraped. DBTV as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param> 
     ''' <returns>modifies Database.DBElement Object which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_TV(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
+    Function Scraper_TV(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
         logger.Trace("[Tracktv_Data] [Scraper_TV] [Start]")
 
         Dim nTVShow As MediaContainers.MainDetails = Nothing
 
-        If ScrapeModifiers.MainNFO Then
+        If tDBElement.ScrapeModifiers.MainNFO Then
             LoadSettings_TV()
 
             Dim _scraper As New TrakttvScraper.Scraper(_SpecialSettings_TV)
@@ -315,10 +313,10 @@ Public Class Trakttv_Data
                 SaveSettings_TV()
             End If
 
-            Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+            Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions_TV)
 
-            Dim mDBElement As Database.DBElement = oDBElement
-            Dim mScrapeModifiers As Structures.ScrapeModifiers = ScrapeModifiers
+            Dim mDBElement As Database.DBElement = tDBElement
+            Dim mScrapeModifiers As Structures.ScrapeModifiers = tDBElement.ScrapeModifiers
             Dim Result = _scraper.GetInfo_TVShow(_scraper.GetTraktID(mDBElement), mScrapeModifiers, FilteredOptions, mDBElement.Episodes)
             While Not Result.IsCompleted
                 Threading.Thread.Sleep(50)
@@ -337,11 +335,11 @@ Public Class Trakttv_Data
     ''' <summary>
     '''  Scrape episode details from Trakttv
     ''' </summary>
-    ''' <param name="oDBElement">TV Season to be scraped as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param>
+    ''' <param name="tDBElement">TV Season to be scraped as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param>
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>modifies Database.DBElement Object which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Public Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
+    Public Function Scraper_TVEpisode(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_TVEpisode Implements Interfaces.ScraperModule_Data_TV.Scraper_TVEpisode
         logger.Trace("[Tracktv_Data] [Scraper_TVEpisode] [Start]")
 
         Dim nTVEpisode As MediaContainers.MainDetails = Nothing
@@ -353,9 +351,9 @@ Public Class Trakttv_Data
             SaveSettings_TV()
         End If
 
-        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions_TV)
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions_TV)
 
-        Dim mDBElement As Database.DBElement = oDBElement
+        Dim mDBElement As Database.DBElement = tDBElement
         Dim Result = _scraper.GetInfo_TVEpisode(_scraper.GetTraktID(mDBElement, True), mDBElement.MainDetails.Season, mDBElement.MainDetails.Episode, FilteredOptions)
         While Not Result.IsCompleted
             Threading.Thread.Sleep(50)
@@ -373,11 +371,11 @@ Public Class Trakttv_Data
     ''' <summary>
     '''  Scrape season details from Trakttv
     ''' </summary>
-    ''' <param name="oDBElement">TV Season to be scraped as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param>
+    ''' <param name="tDBElement">TV Season to be scraped as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param>
     ''' <param name="ScrapeOptions">What kind of data is being requested from the scrape(global scraper settings)</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Public Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
+    Public Function Scraper_TVSeason(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
         Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
     End Function
 

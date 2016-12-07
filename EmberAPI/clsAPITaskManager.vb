@@ -224,12 +224,15 @@ Public Class TaskManager
                                                  .EventType = Enums.TaskManagerEventType.SimpleMessage,
                                                  .Message = tmpDBElement.MainDetails.Title})
 
-                    Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.MainNFO, True)
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withEpisodes, True)
-                    Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.withSeasons, True)
+                    Dim nScrapeModifiers As New Structures.ScrapeModifiers
+                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ModifierType.MainNFO, True)
+                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ModifierType.withEpisodes, True)
+                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ModifierType.withSeasons, True)
+                    tmpDBElement.ScrapeModifiers = nScrapeModifiers
+                    tmpDBElement.ScrapeOptions = Master.DefaultOptions_TV
+                    tmpDBElement.ScrapeType = Enums.ScrapeType.SingleScrape
 
-                    If Not ModulesManager.Instance.ScrapeData_TVShow(tmpDBElement, ScrapeModifiers, Enums.ScrapeType.SingleScrape, Master.DefaultOptions_TV, True) Then
+                    If Not ModulesManager.Instance.ScrapeData_TVShow(tmpDBElement, True) Then
                         For Each nMissingSeason In tmpDBElement.Seasons.Where(Function(f) Not f.IDSpecified)
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True

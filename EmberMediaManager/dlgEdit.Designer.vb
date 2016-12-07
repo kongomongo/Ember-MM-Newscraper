@@ -26,6 +26,7 @@ Partial Class dlgEdit
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEdit))
         Dim ListViewGroup1 As System.Windows.Forms.ListViewGroup = New System.Windows.Forms.ListViewGroup("Local Subtitles", System.Windows.Forms.HorizontalAlignment.Left)
         Dim ListViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("1")
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.btnOK = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.lblTopDetails = New System.Windows.Forms.Label()
@@ -281,6 +282,22 @@ Partial Class dlgEdit
         Me.cbOrdering = New System.Windows.Forms.ComboBox()
         Me.lblOrdering = New System.Windows.Forms.Label()
         Me.chkLocked = New System.Windows.Forms.CheckBox()
+        Me.tpMovies = New System.Windows.Forms.TabPage()
+        Me.pnlMovies = New System.Windows.Forms.Panel()
+        Me.tblMovies = New System.Windows.Forms.TableLayoutPanel()
+        Me.lblMoviesInMovieset = New System.Windows.Forms.Label()
+        Me.lblMoviesInDB = New System.Windows.Forms.Label()
+        Me.lvMoviesInSet = New System.Windows.Forms.ListView()
+        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colOrdering = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovie = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnMovieAdd = New System.Windows.Forms.Button()
+        Me.dgvMovies = New System.Windows.Forms.DataGridView()
+        Me.btnMovieUp = New System.Windows.Forms.Button()
+        Me.btnMovieDown = New System.Windows.Forms.Button()
+        Me.btnMovieRemove = New System.Windows.Forms.Button()
+        Me.txtSearchMovies = New System.Windows.Forms.TextBox()
+        Me.btnSearchMovie = New System.Windows.Forms.Button()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tcEdit.SuspendLayout()
         Me.tpDetails.SuspendLayout()
@@ -342,6 +359,10 @@ Partial Class dlgEdit
         Me.tblEditTop.SuspendLayout()
         Me.pnlEditBottom.SuspendLayout()
         Me.tblEditBottom.SuspendLayout()
+        Me.tpMovies.SuspendLayout()
+        Me.pnlMovies.SuspendLayout()
+        Me.tblMovies.SuspendLayout()
+        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'btnOK
@@ -406,6 +427,7 @@ Partial Class dlgEdit
         'tcEdit
         '
         Me.tcEdit.Controls.Add(Me.tpDetails)
+        Me.tcEdit.Controls.Add(Me.tpMovies)
         Me.tcEdit.Controls.Add(Me.tpPoster)
         Me.tcEdit.Controls.Add(Me.tpBanner)
         Me.tcEdit.Controls.Add(Me.tpLandscape)
@@ -3404,6 +3426,210 @@ Partial Class dlgEdit
         Me.chkLocked.Text = "Locked"
         Me.chkLocked.UseVisualStyleBackColor = True
         '
+        'tpMovies
+        '
+        Me.tpMovies.Controls.Add(Me.pnlMovies)
+        Me.tpMovies.Location = New System.Drawing.Point(4, 22)
+        Me.tpMovies.Name = "tpMovies"
+        Me.tpMovies.Size = New System.Drawing.Size(1176, 526)
+        Me.tpMovies.TabIndex = 16
+        Me.tpMovies.Text = "Movies"
+        Me.tpMovies.UseVisualStyleBackColor = True
+        '
+        'pnlMovies
+        '
+        Me.pnlMovies.AutoSize = True
+        Me.pnlMovies.Controls.Add(Me.tblMovies)
+        Me.pnlMovies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlMovies.Location = New System.Drawing.Point(0, 0)
+        Me.pnlMovies.Name = "pnlMovies"
+        Me.pnlMovies.Size = New System.Drawing.Size(1176, 526)
+        Me.pnlMovies.TabIndex = 0
+        '
+        'tblMovies
+        '
+        Me.tblMovies.AutoSize = True
+        Me.tblMovies.ColumnCount = 9
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333!))
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovies.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovies.Controls.Add(Me.btnSearchMovie, 8, 2)
+        Me.tblMovies.Controls.Add(Me.txtSearchMovies, 7, 2)
+        Me.tblMovies.Controls.Add(Me.btnMovieRemove, 5, 2)
+        Me.tblMovies.Controls.Add(Me.btnMovieDown, 3, 2)
+        Me.tblMovies.Controls.Add(Me.btnMovieUp, 1, 2)
+        Me.tblMovies.Controls.Add(Me.dgvMovies, 7, 1)
+        Me.tblMovies.Controls.Add(Me.btnMovieAdd, 6, 1)
+        Me.tblMovies.Controls.Add(Me.lvMoviesInSet, 0, 1)
+        Me.tblMovies.Controls.Add(Me.lblMoviesInDB, 7, 0)
+        Me.tblMovies.Controls.Add(Me.lblMoviesInMovieset, 0, 0)
+        Me.tblMovies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMovies.Location = New System.Drawing.Point(0, 0)
+        Me.tblMovies.Name = "tblMovies"
+        Me.tblMovies.RowCount = 4
+        Me.tblMovies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblMovies.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
+        Me.tblMovies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovies.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovies.Size = New System.Drawing.Size(1176, 526)
+        Me.tblMovies.TabIndex = 0
+        '
+        'lblMoviesInMovieset
+        '
+        Me.lblMoviesInMovieset.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMoviesInMovieset.AutoSize = True
+        Me.tblMovies.SetColumnSpan(Me.lblMoviesInMovieset, 6)
+        Me.lblMoviesInMovieset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMoviesInMovieset.Location = New System.Drawing.Point(3, 3)
+        Me.lblMoviesInMovieset.Name = "lblMoviesInMovieset"
+        Me.lblMoviesInMovieset.Size = New System.Drawing.Size(112, 13)
+        Me.lblMoviesInMovieset.TabIndex = 29
+        Me.lblMoviesInMovieset.Text = "Movies in Movieset:"
+        '
+        'lblMoviesInDB
+        '
+        Me.lblMoviesInDB.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMoviesInDB.AutoSize = True
+        Me.tblMovies.SetColumnSpan(Me.lblMoviesInDB, 2)
+        Me.lblMoviesInDB.Enabled = False
+        Me.lblMoviesInDB.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMoviesInDB.Location = New System.Drawing.Point(686, 3)
+        Me.lblMoviesInDB.Name = "lblMoviesInDB"
+        Me.lblMoviesInDB.Size = New System.Drawing.Size(112, 13)
+        Me.lblMoviesInDB.TabIndex = 40
+        Me.lblMoviesInDB.Text = "Movies in Database:"
+        Me.lblMoviesInDB.Visible = False
+        '
+        'lvMoviesInSet
+        '
+        Me.lvMoviesInSet.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.colOrdering, Me.colMovie})
+        Me.tblMovies.SetColumnSpan(Me.lvMoviesInSet, 6)
+        Me.lvMoviesInSet.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lvMoviesInSet.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvMoviesInSet.FullRowSelect = True
+        Me.lvMoviesInSet.Location = New System.Drawing.Point(3, 23)
+        Me.lvMoviesInSet.Name = "lvMoviesInSet"
+        Me.lvMoviesInSet.Size = New System.Drawing.Size(648, 471)
+        Me.lvMoviesInSet.TabIndex = 49
+        Me.lvMoviesInSet.UseCompatibleStateImageBehavior = False
+        Me.lvMoviesInSet.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "ID"
+        Me.ColumnHeader10.Width = 0
+        '
+        'colOrdering
+        '
+        Me.colOrdering.Text = "Ordering"
+        Me.colOrdering.Width = 0
+        '
+        'colMovie
+        '
+        Me.colMovie.Text = "Movie"
+        Me.colMovie.Width = 198
+        '
+        'btnMovieAdd
+        '
+        Me.btnMovieAdd.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnMovieAdd.Enabled = False
+        Me.btnMovieAdd.Image = CType(resources.GetObject("btnMovieAdd.Image"), System.Drawing.Image)
+        Me.btnMovieAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieAdd.Location = New System.Drawing.Point(657, 247)
+        Me.btnMovieAdd.Name = "btnMovieAdd"
+        Me.btnMovieAdd.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieAdd.TabIndex = 50
+        Me.btnMovieAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieAdd.UseVisualStyleBackColor = True
+        '
+        'dgvMovies
+        '
+        Me.dgvMovies.AllowUserToAddRows = False
+        Me.dgvMovies.AllowUserToDeleteRows = False
+        Me.dgvMovies.AllowUserToResizeColumns = False
+        Me.dgvMovies.AllowUserToResizeRows = False
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
+        Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.dgvMovies.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal
+        Me.dgvMovies.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable
+        Me.dgvMovies.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.tblMovies.SetColumnSpan(Me.dgvMovies, 2)
+        Me.dgvMovies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvMovies.GridColor = System.Drawing.Color.FromArgb(CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(240, Byte), Integer))
+        Me.dgvMovies.Location = New System.Drawing.Point(686, 23)
+        Me.dgvMovies.Name = "dgvMovies"
+        Me.dgvMovies.ReadOnly = True
+        Me.dgvMovies.RowHeadersVisible = False
+        Me.dgvMovies.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvMovies.ShowCellErrors = False
+        Me.dgvMovies.ShowRowErrors = False
+        Me.dgvMovies.Size = New System.Drawing.Size(487, 471)
+        Me.dgvMovies.StandardTab = True
+        Me.dgvMovies.TabIndex = 51
+        '
+        'btnMovieUp
+        '
+        Me.btnMovieUp.Enabled = False
+        Me.btnMovieUp.Image = CType(resources.GetObject("btnMovieUp.Image"), System.Drawing.Image)
+        Me.btnMovieUp.Location = New System.Drawing.Point(192, 500)
+        Me.btnMovieUp.Name = "btnMovieUp"
+        Me.btnMovieUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieUp.TabIndex = 52
+        Me.btnMovieUp.UseVisualStyleBackColor = True
+        Me.btnMovieUp.Visible = False
+        '
+        'btnMovieDown
+        '
+        Me.btnMovieDown.Enabled = False
+        Me.btnMovieDown.Image = CType(resources.GetObject("btnMovieDown.Image"), System.Drawing.Image)
+        Me.btnMovieDown.Location = New System.Drawing.Point(410, 500)
+        Me.btnMovieDown.Name = "btnMovieDown"
+        Me.btnMovieDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieDown.TabIndex = 53
+        Me.btnMovieDown.UseVisualStyleBackColor = True
+        Me.btnMovieDown.Visible = False
+        '
+        'btnMovieRemove
+        '
+        Me.btnMovieRemove.Enabled = False
+        Me.btnMovieRemove.Image = CType(resources.GetObject("btnMovieRemove.Image"), System.Drawing.Image)
+        Me.btnMovieRemove.Location = New System.Drawing.Point(628, 500)
+        Me.btnMovieRemove.Name = "btnMovieRemove"
+        Me.btnMovieRemove.Size = New System.Drawing.Size(23, 23)
+        Me.btnMovieRemove.TabIndex = 54
+        Me.btnMovieRemove.UseVisualStyleBackColor = True
+        '
+        'txtSearchMovies
+        '
+        Me.txtSearchMovies.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtSearchMovies.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtSearchMovies.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtSearchMovies.Location = New System.Drawing.Point(686, 500)
+        Me.txtSearchMovies.Name = "txtSearchMovies"
+        Me.txtSearchMovies.Size = New System.Drawing.Size(348, 22)
+        Me.txtSearchMovies.TabIndex = 55
+        '
+        'btnSearchMovie
+        '
+        Me.btnSearchMovie.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnSearchMovie.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.btnSearchMovie.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnSearchMovie.Location = New System.Drawing.Point(1040, 500)
+        Me.btnSearchMovie.Name = "btnSearchMovie"
+        Me.btnSearchMovie.Size = New System.Drawing.Size(124, 23)
+        Me.btnSearchMovie.TabIndex = 56
+        Me.btnSearchMovie.Text = "Search Movie"
+        Me.btnSearchMovie.UseVisualStyleBackColor = True
+        '
         'dlgEdit
         '
         Me.AcceptButton = Me.btnOK
@@ -3511,6 +3737,13 @@ Partial Class dlgEdit
         Me.pnlEditBottom.PerformLayout()
         Me.tblEditBottom.ResumeLayout(False)
         Me.tblEditBottom.PerformLayout()
+        Me.tpMovies.ResumeLayout(False)
+        Me.tpMovies.PerformLayout()
+        Me.pnlMovies.ResumeLayout(False)
+        Me.pnlMovies.PerformLayout()
+        Me.tblMovies.ResumeLayout(False)
+        Me.tblMovies.PerformLayout()
+        CType(Me.dgvMovies, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -3770,4 +4003,20 @@ Partial Class dlgEdit
     Friend WithEvents lblEpisodeSorting As Label
     Friend WithEvents cbOrdering As ComboBox
     Friend WithEvents cbEpisodeSorting As ComboBox
+    Friend WithEvents tpMovies As TabPage
+    Friend WithEvents pnlMovies As Panel
+    Friend WithEvents tblMovies As TableLayoutPanel
+    Friend WithEvents lblMoviesInMovieset As Label
+    Friend WithEvents lblMoviesInDB As Label
+    Friend WithEvents lvMoviesInSet As ListView
+    Friend WithEvents ColumnHeader10 As ColumnHeader
+    Friend WithEvents colOrdering As ColumnHeader
+    Friend WithEvents colMovie As ColumnHeader
+    Friend WithEvents btnMovieAdd As Button
+    Friend WithEvents dgvMovies As DataGridView
+    Friend WithEvents btnMovieUp As Button
+    Friend WithEvents btnMovieDown As Button
+    Friend WithEvents btnMovieRemove As Button
+    Friend WithEvents txtSearchMovies As TextBox
+    Friend WithEvents btnSearchMovie As Button
 End Class

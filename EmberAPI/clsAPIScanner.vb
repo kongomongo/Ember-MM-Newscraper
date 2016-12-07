@@ -621,13 +621,9 @@ Public Class Scanner
 
         GetFolderContents_Movie(DBMovie)
 
+        'NFO
         If DBMovie.NfoPathSpecified Then
             DBMovie.MainDetails = NFO.LoadFromNFO_Movie(DBMovie.NfoPath, DBMovie.IsSingle)
-            If Not DBMovie.MainDetails.FileInfoSpecified AndAlso DBMovie.MainDetails.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                MediaInfo.UpdateMediaInfo(DBMovie)
-            End If
-        Else
-            DBMovie.MainDetails = NFO.LoadFromNFO_Movie(DBMovie.Filename, DBMovie.IsSingle)
             If Not DBMovie.MainDetails.FileInfoSpecified AndAlso DBMovie.MainDetails.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
                 MediaInfo.UpdateMediaInfo(DBMovie)
             End If
@@ -726,6 +722,7 @@ Public Class Scanner
 
         GetFolderContents_MovieSet(DBMovieSet)
 
+        'NFO
         If Not DBMovieSet.NfoPathSpecified Then
             Dim sNFO As String = NFO.GetNfoPath_MovieSet(DBMovieSet)
             If Not String.IsNullOrEmpty(sNFO) Then
@@ -777,6 +774,7 @@ Public Class Scanner
             'It's a clone needed to prevent overwriting information of MultiEpisodes
             Dim cEpisode As Database.DBElement = CType(DBTVEpisode.CloneDeep, Database.DBElement)
 
+            'NFO
             If cEpisode.NfoPathSpecified Then
                 If sEpisode.byDate Then
                     cEpisode.MainDetails = NFO.LoadFromNFO_TVEpisode(cEpisode.NfoPath, sEpisode.Season, sEpisode.Aired)
@@ -797,7 +795,8 @@ Public Class Scanner
                     End If
 
                     'Scrape episode data
-                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, Master.DefaultOptions_TV, False) Then
+                    cEpisode.ScrapeOptions = Master.DefaultOptions_TV
+                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, False) Then
                         If cEpisode.MainDetails.TitleSpecified Then
                             ToNfo = True
 
@@ -941,6 +940,7 @@ Public Class Scanner
 
                 GetFolderContents_TVShow(DBTVShow)
 
+                'NFO
                 If DBTVShow.NfoPathSpecified Then
                     DBTVShow.MainDetails = NFO.LoadFromNFO_TVShow(DBTVShow.NfoPath)
                 Else
@@ -1029,7 +1029,8 @@ Public Class Scanner
                                 Else
                                     'Scrape season info
                                     If isNew AndAlso tmpSeason.TVShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
-                                        ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, Master.DefaultOptions_TV, False)
+                                        tmpSeason.ScrapeOptions = Master.DefaultOptions_TV
+                                        ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, False)
                                     End If
                                 End If
 

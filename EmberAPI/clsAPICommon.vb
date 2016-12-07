@@ -601,6 +601,12 @@ Public Class Enums
         mtime = 2
         Newer = 3
     End Enum
+    Public Enum DiscType As Integer
+        BluRay = 0
+        DVD = 1
+        CD = 2
+        Any = 99
+    End Enum
     ''' <summary>
     ''' Enum representing valid TV series ordering.
     ''' </summary>
@@ -817,12 +823,34 @@ Public Class Enums
         Any = 99
     End Enum
 
+    Public Enum MovieClearArtSize As Integer
+        HD562 = 0
+        HD281 = 1
+        Any = 99
+    End Enum
+
+    Public Enum MovieClearLogoSize As Integer
+        HD310 = 0
+        HD155 = 1
+        Any = 99
+    End Enum
+
+    Public Enum MovieDiscArtSize As Integer
+        HD1000 = 0
+        Any = 99
+    End Enum
+
     Public Enum MovieFanartSize As Integer
         UHD2160 = 0
         QHD1440 = 1
         HD1080 = 2
         HD720 = 3
         Thumb = 4
+        Any = 99
+    End Enum
+
+    Public Enum MovieLandscapeSize As Integer
+        HD562 = 0
         Any = 99
     End Enum
 
@@ -866,6 +894,7 @@ Public Class Enums
     ''' and whether results should be automatically chosen or asked of the user.
     ''' </summary>
     ''' <remarks></remarks>
+    <Serializable>
     Public Enum ScrapeType As Integer
         AllAuto = 0
         AllAsk = 1
@@ -932,6 +961,23 @@ Public Class Enums
         Any = 99
     End Enum
 
+    Public Enum TVCharacterArtSize As Integer
+        HD512 = 0
+        Any = 99
+    End Enum
+
+    Public Enum TVClearArtSize As Integer
+        HD562 = 0
+        HD281 = 1
+        Any = 99
+    End Enum
+
+    Public Enum TVClearLogoSize As Integer
+        HD310 = 0
+        HD155 = 1
+        Any = 99
+    End Enum
+
     Public Enum TVEpisodePosterSize As Integer
         UHD2160 = 0
         HD1080 = 1
@@ -945,6 +991,12 @@ Public Class Enums
         QHD1440 = 1
         HD1080 = 2      'Fanart.tv has only 1920x1080
         HD720 = 3      'TVDB has 1280x720 and 1920x1080
+        Any = 99
+    End Enum
+
+    Public Enum TVLandscapeSize As Integer
+        HD562 = 0
+        HD281 = 1
         Any = 99
     End Enum
 
@@ -1893,6 +1945,7 @@ Public Class Structures
         Dim TV As Boolean
     End Structure
 
+    <Serializable>
     Public Structure ScrapeModifiers
         Dim AllSeasonsBanner As Boolean
         Dim AllSeasonsFanart As Boolean

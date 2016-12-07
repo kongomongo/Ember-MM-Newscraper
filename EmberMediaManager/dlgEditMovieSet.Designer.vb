@@ -24,7 +24,7 @@ Partial Class dlgEditMovieSet
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgEditMovieSet))
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.OK_Button = New System.Windows.Forms.Button()
         Me.Cancel_Button = New System.Windows.Forms.Button()
         Me.pnlTop = New System.Windows.Forms.Panel()
@@ -92,7 +92,6 @@ Partial Class dlgEditMovieSet
         Me.btnMovieDown = New System.Windows.Forms.Button()
         Me.btnMovieUp = New System.Windows.Forms.Button()
         Me.btnMovieRemove = New System.Windows.Forms.Button()
-        Me.lblMoviesInMovieset = New System.Windows.Forms.Label()
         Me.lvMoviesInSet = New System.Windows.Forms.ListView()
         Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colOrdering = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -112,6 +111,7 @@ Partial Class dlgEditMovieSet
         Me.tmrSearchWait_Movies = New System.Windows.Forms.Timer(Me.components)
         Me.lblMovieSorting = New System.Windows.Forms.Label()
         Me.cbMovieSorting = New System.Windows.Forms.ComboBox()
+        Me.lblMoviesInMovieset = New System.Windows.Forms.Label()
         Me.pnlTop.SuspendLayout()
         CType(Me.pbTopLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.tpFanart.SuspendLayout()
@@ -880,8 +880,8 @@ Partial Class dlgEditMovieSet
         Me.dgvMovies.AllowUserToDeleteRows = False
         Me.dgvMovies.AllowUserToResizeColumns = False
         Me.dgvMovies.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
-        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer))
+        Me.dgvMovies.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle2
         Me.dgvMovies.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvMovies.BackgroundColor = System.Drawing.Color.White
         Me.dgvMovies.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
@@ -916,7 +916,7 @@ Partial Class dlgEditMovieSet
         Me.btnMovieAdd.Enabled = False
         Me.btnMovieAdd.Image = CType(resources.GetObject("btnMovieAdd.Image"), System.Drawing.Image)
         Me.btnMovieAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieAdd.Location = New System.Drawing.Point(292, 135)
+        Me.btnMovieAdd.Location = New System.Drawing.Point(289, 138)
         Me.btnMovieAdd.Name = "btnMovieAdd"
         Me.btnMovieAdd.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieAdd.TabIndex = 40
@@ -966,16 +966,6 @@ Partial Class dlgEditMovieSet
         Me.btnMovieRemove.Size = New System.Drawing.Size(23, 23)
         Me.btnMovieRemove.TabIndex = 35
         Me.btnMovieRemove.UseVisualStyleBackColor = True
-        '
-        'lblMoviesInMovieset
-        '
-        Me.lblMoviesInMovieset.AutoSize = True
-        Me.lblMoviesInMovieset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblMoviesInMovieset.Location = New System.Drawing.Point(6, 47)
-        Me.lblMoviesInMovieset.Name = "lblMoviesInMovieset"
-        Me.lblMoviesInMovieset.Size = New System.Drawing.Size(112, 13)
-        Me.lblMoviesInMovieset.TabIndex = 29
-        Me.lblMoviesInMovieset.Text = "Movies in Movieset:"
         '
         'lvMoviesInSet
         '
@@ -1150,6 +1140,16 @@ Partial Class dlgEditMovieSet
         Me.cbMovieSorting.Size = New System.Drawing.Size(92, 21)
         Me.cbMovieSorting.TabIndex = 10
         '
+        'lblMoviesInMovieset
+        '
+        Me.lblMoviesInMovieset.AutoSize = True
+        Me.lblMoviesInMovieset.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblMoviesInMovieset.Location = New System.Drawing.Point(6, 47)
+        Me.lblMoviesInMovieset.Name = "lblMoviesInMovieset"
+        Me.lblMoviesInMovieset.Size = New System.Drawing.Size(112, 13)
+        Me.lblMoviesInMovieset.TabIndex = 29
+        Me.lblMoviesInMovieset.Text = "Movies in Movieset:"
+        '
         'dlgEditMovieSet
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -1260,7 +1260,6 @@ Partial Class dlgEditMovieSet
     Friend WithEvents btnMovieDown As System.Windows.Forms.Button
     Friend WithEvents btnMovieUp As System.Windows.Forms.Button
     Friend WithEvents btnMovieRemove As System.Windows.Forms.Button
-    Friend WithEvents lblMoviesInMovieset As System.Windows.Forms.Label
     Friend WithEvents tcEdit As System.Windows.Forms.TabControl
     Friend WithEvents lblMoviesInDB As System.Windows.Forms.Label
     Friend WithEvents btnMovieAdd As System.Windows.Forms.Button
@@ -1285,5 +1284,5 @@ Partial Class dlgEditMovieSet
     Friend WithEvents tmrSearchWait_Movies As System.Windows.Forms.Timer
     Friend WithEvents lblMovieSorting As System.Windows.Forms.Label
     Friend WithEvents cbMovieSorting As System.Windows.Forms.ComboBox
-
+    Friend WithEvents lblMoviesInMovieset As Label
 End Class

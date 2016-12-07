@@ -100,7 +100,7 @@ Public Class MoviepilotDE_Data
 
         _setup.orderChanged()
 
-        SPanel.Name = String.Concat(Me._Name, "Scraper")
+        SPanel.Name = String.Concat(_Name, "Scraper")
         SPanel.Text = "Moviepilot"
         SPanel.Prefix = "MoviepilotDEMovieInfo_"
         SPanel.Order = 110
@@ -146,20 +146,19 @@ Public Class MoviepilotDE_Data
     ''' <summary>
     '''  Scrape MovieDetails from Moviepilot.de (German site)
     ''' </summary>
-    ''' <param name="DBMovie">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
-    ''' <param name="Options">What kind of data is being requested from the scrape(global scraper settings)</param>
+    ''' <param name="tDBElement">Movie to be scraped. DBMovie as ByRef to use existing data for identifing movie and to fill with IMDB/TMDB ID for next scraper</param>
     ''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
     ''' <remarks></remarks>
-    Function Scraper_Movie(ByRef oDBMovie As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
+    Function Scraper_Movie(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_Movie Implements Interfaces.ScraperModule_Data_Movie.Scraper_Movie
         logger.Trace("[MoviepilotDE_Data] [Scraper_Movie] [Start]")
 
         LoadSettings()
 
         Dim nMovie As New MediaContainers.MainDetails
-        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(ScrapeOptions, ConfigScrapeOptions)
+        Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions)
 
-        If ScrapeModifiers.MainNFO Then
-            nMovie = _scraper.GetMovieInfo(oDBMovie.MainDetails.OriginalTitle, oDBMovie.MainDetails.Title, oDBMovie.MainDetails.Year, FilteredOptions)
+        If tDBElement.ScrapeModifiers.MainNFO Then
+            nMovie = _scraper.GetMovieInfo(tDBElement.MainDetails.OriginalTitle, tDBElement.MainDetails.Title, tDBElement.MainDetails.Year, FilteredOptions)
         End If
 
         logger.Trace("[MoviepilotDE_Data] [Scraper_Movie] [Done]")

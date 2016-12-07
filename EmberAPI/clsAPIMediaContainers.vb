@@ -998,7 +998,7 @@ Namespace MediaContainers
         Private _plot As String
         Private _premiered As String
         Private _rating As String
-        Private _releaseDate As String
+        Private _releasedate As String
         Private _runtime As String
         Private _scrapersource As String
         Private _season As Integer
@@ -1230,17 +1230,17 @@ Namespace MediaContainers
         <XmlElement("releasedate")>
         Public Property ReleaseDate() As String
             Get
-                Return _releaseDate
+                Return _releasedate
             End Get
             Set(ByVal value As String)
-                _releaseDate = value
+                _releasedate = value
             End Set
         End Property
 
         <XmlIgnore()>
         Public ReadOnly Property ReleaseDateSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_releaseDate)
+                Return Not String.IsNullOrEmpty(_releasedate)
             End Get
         End Property
 
@@ -2325,32 +2325,54 @@ Namespace MediaContainers
 
         Public Sub Clear()
             _actors.Clear()
+            _aired = String.Empty
+            _boxeeTvDb = String.Empty
             _certifications.Clear()
             _countries.Clear()
+            _creators.Clear()
             _credits.Clear()
             _dateadded = String.Empty
             _datemodified = String.Empty
             _directors.Clear()
+            _displayepisode = -1
+            _displayseason = -1
+            _episode = -1
+            _episodeabsolute = -1
+            _episodecombined = -1
+            _episodedvd = -1
+            _episodeguide.Clear()
             _fanart = New Fanart
             _fileInfo = New Fileinfo
             _genres.Clear()
+            _gueststars.Clear()
             _imdb = String.Empty
+            _knownepisodes.Clear()
+            _knownseasons.Clear()
             _language = String.Empty
+            _lastplayed = String.Empty
             _lev = 0
             _locked = False
             _mpaa = String.Empty
+            _oldtitle = String.Empty
             _originaltitle = String.Empty
             _outline = String.Empty
             _playcount = 0
             _plot = String.Empty
+            _premiered = String.Empty
             _rating = String.Empty
-            _releaseDate = String.Empty
+            _releasedate = String.Empty
             _runtime = String.Empty
             _scrapersource = String.Empty
+            _season = -1
+            _seasoncombined = -1
+            _seasondvd = -1
+            _seasons.Clear()
             _sets.Clear()
             _showlinks.Clear()
             _sorttitle = String.Empty
+            _status = String.Empty
             _studios.Clear()
+            _subepisode = -1
             _tagline = String.Empty
             _tags.Clear()
             _thumb.Clear()
@@ -2360,6 +2382,7 @@ Namespace MediaContainers
             _tmdbcolid = String.Empty
             _top250 = 0
             _trailer = String.Empty
+            _tvdb = String.Empty
             _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty

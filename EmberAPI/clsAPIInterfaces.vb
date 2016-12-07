@@ -86,11 +86,9 @@ Public Class Interfaces
         ''' 
         ''' </summary>
         ''' <param name="oDBElement">Clone of original DBMovie. To fill with new IMDB or TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="ScrapeType">What kind of data is being requested from the scrape(global scraper settings)</param>
-        ''' <param name="ScrapeOptions"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_Movie(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_Movie
+        Function Scraper_Movie(ByRef oDBElement As Database.DBElement) As ModuleResult_Data_Movie
 
 #End Region 'Methods
 
@@ -125,13 +123,10 @@ Public Class Interfaces
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="oDBElement">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="ScrapeModifiers"></param>
-        ''' <param name="ScrapeType"></param>
-        ''' <param name="ScrapeOptions"></param>
+        ''' <param name="tDBElement">Clone of original DBMovieSet. To fill with new TMDB ID's for subsequent scrapers.</param> 
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper(ByRef oDBElement As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_MovieSet
+        Function Scraper(ByRef tDBElement As Database.DBElement) As ModuleResult_Data_MovieSet
 
 #End Region 'Methods
 
@@ -165,28 +160,24 @@ Public Class Interfaces
         ''' <summary>
         ''' 
         ''' </summary>
-        ''' <param name="oDBTV">Clone of original DBTV. To fill with new TVDB, IMDB or TMDB ID's for subsequent scrapers.</param>
-        ''' <param name="ScrapeType">What kind of data is being requested from the scrape(global scraper settings)</param>
-        ''' <param name="ScrapeOptions"></param>
+        ''' <param name="tDBElement">Clone of original DBTV. To fill with new TVDB, IMDB or TMDB ID's for subsequent scrapers.</param> 
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVShow(ByRef oDBTV As Database.DBElement, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef ScrapeType As Enums.ScrapeType, ByRef ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVShow
+        Function Scraper_TVShow(ByRef tDBElement As Database.DBElement) As ModuleResult_Data_TVShow
         ''' <summary>
         ''' Get single episode information
         ''' </summary>
-        ''' <param name="oDBElement"></param>
-        ''' <param name="ScrapeOptions"></param>
+        ''' <param name="tDBElement"></param> 
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVEpisode(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVEpisode
+        Function Scraper_TVEpisode(ByRef tDBElement As Database.DBElement) As ModuleResult_Data_TVEpisode
         ''' <summary>
         ''' Get single season information
         ''' </summary>
-        ''' <param name="oDBElement"></param>
-        ''' <param name="ScrapeOptions"></param>
+        ''' <param name="tDBElement"></param> 
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Function Scraper_TVSeason(ByRef oDBElement As Database.DBElement, ByVal ScrapeOptions As Structures.ScrapeOptions) As ModuleResult_Data_TVSeason
+        Function Scraper_TVSeason(ByRef tDBElement As Database.DBElement) As ModuleResult_Data_TVSeason
 
 #End Region 'Methods
 

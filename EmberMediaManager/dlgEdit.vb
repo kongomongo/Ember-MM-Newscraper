@@ -1251,6 +1251,21 @@ Public Class dlgEdit
 
                 txtReleaseDate.Text = _tmpDBElement.MainDetails.ReleaseDate
 
+            Case Enums.ContentType.MovieSet
+                'hide not used controls
+                cbEpisodeSorting.Visible = False
+                cbOrdering.Visible = False
+                lblEpisode.Visible = False
+                lblEpisodeSorting.Visible = False
+                lblSeason.Visible = False
+                lblStatus.Visible = False
+                lblTVDB.Visible = False
+                tcCrew.TabPages.Remove(tpSpecialGuests)
+                txtEpisode.Visible = False
+                txtSeason.Visible = False
+                txtStatus.Visible = False
+                txtTVDB.Visible = False
+
             Case Enums.ContentType.TVShow
                 'hide not used controls
                 btnAdd_Collection.Visible = False
