@@ -91,9 +91,9 @@ Public Class KodiInterface
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
 #End Region 'Events
 
@@ -175,7 +175,7 @@ Public Class KodiInterface
     ''' For now we use concept of storing pool of API tasks in list (="TaskList") and use a timer object and its tick-event to get the work done
     ''' Timer tick event is async so we can queue with await all API tasks
     ''' </remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         If Not Master.isCL AndAlso (
                 mType = Enums.ModuleEventType.Remove_Movie OrElse
                 mType = Enums.ModuleEventType.Remove_TVEpisode OrElse
@@ -187,32 +187,32 @@ Public Class KodiInterface
                 mType = Enums.ModuleEventType.Sync_TVShow) Then
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mType = mType, .mDBElement = _dbelement})
-            Return New Interfaces.ModuleResult With {.breakChain = False}
+            Return New Interfaces.ModuleResult_old With {.breakChain = False}
         Else
             Select Case mType
                 Case Enums.ModuleEventType.BeforeEdit_Movie
                     If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateBeforeEdit_Movie Then
-                        Return New Interfaces.ModuleResult
+                        Return New Interfaces.ModuleResult_old
                     End If
                 Case Enums.ModuleEventType.BeforeEdit_TVEpisode
                     If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateBeforeEdit_TVEpisode Then
-                        Return New Interfaces.ModuleResult
+                        Return New Interfaces.ModuleResult_old
                     End If
                 Case Enums.ModuleEventType.ScraperMulti_Movie
                     If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperMulti_Movie Then
-                        Return New Interfaces.ModuleResult
+                        Return New Interfaces.ModuleResult_old
                     End If
                 Case Enums.ModuleEventType.ScraperMulti_TVEpisode, Enums.ModuleEventType.ScraperMulti_TVSeason, Enums.ModuleEventType.ScraperMulti_TVShow
                     If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperMulti_TVEpisode Then
-                        Return New Interfaces.ModuleResult
+                        Return New Interfaces.ModuleResult_old
                     End If
                 Case Enums.ModuleEventType.ScraperSingle_Movie
                     If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperSingle_Movie Then
-                        Return New Interfaces.ModuleResult
+                        Return New Interfaces.ModuleResult_old
                     End If
                 Case Enums.ModuleEventType.ScraperSingle_TVEpisode, Enums.ModuleEventType.ScraperSingle_TVSeason, Enums.ModuleEventType.ScraperSingle_TVShow
                     If Not _SpecialSettings.GetWatchedState OrElse Not _SpecialSettings.GetWatchedStateScraperSingle_TVEpisode Then
-                        Return New Interfaces.ModuleResult
+                        Return New Interfaces.ModuleResult_old
                     End If
             End Select
 
@@ -1302,7 +1302,7 @@ Public Class KodiInterface
         SPanel.Name = _Name
         SPanel.Text = "Kodi Interface"
         SPanel.Prefix = "Kodi_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules")
+        SPanel.Type = Enums.PanelType.External
         SPanel.ImageIndex = If(_Enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings()

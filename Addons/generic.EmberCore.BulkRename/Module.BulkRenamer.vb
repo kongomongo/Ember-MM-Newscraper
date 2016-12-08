@@ -58,12 +58,9 @@ Public Class BulkRenamerModule
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
 
 #End Region 'Events
 
@@ -115,7 +112,7 @@ Public Class BulkRenamerModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.AfterEdit_Movie
                 If MySettings.RenameEdit_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
@@ -154,7 +151,7 @@ Public Class BulkRenamerModule
                     FileFolderRenamer.RenameSingle_TVShow(_dbelement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
                 End If
         End Select
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Private Sub cmnuRenamerAuto_Movie_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuRenamerAuto_Movie.Click
@@ -406,7 +403,7 @@ Public Class BulkRenamerModule
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(295, "Renamer")
         SPanel.Prefix = "Renamer_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules")
+        SPanel.Type = Enums.PanelType.External
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings()

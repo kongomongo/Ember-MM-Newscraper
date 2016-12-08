@@ -279,7 +279,7 @@ Public Class Containers
         Dim _parent As String
         Dim _prefix As String
         Dim _text As String
-        Dim _type As String
+        Dim _type As Enums.PanelType
 
 #End Region 'Fields
 
@@ -370,11 +370,11 @@ Public Class Containers
             End Set
         End Property
 
-        Public Property Type() As String
+        Public Property Type() As Enums.PanelType
             Get
                 Return _type
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Enums.PanelType)
                 _type = value
             End Set
         End Property
@@ -392,7 +392,7 @@ Public Class Containers
             _parent = String.Empty
             _prefix = String.Empty
             _text = String.Empty
-            _type = String.Empty
+            _type = Enums.PanelType.External
         End Sub
 
 #End Region 'Methods
@@ -626,7 +626,7 @@ Public Class Enums
         Aired = 1
     End Enum
 
-    Public Enum ModifierType As Integer
+    Public Enum ScrapeModifierType As Integer
         All = 0
         AllSeasonsBanner = 1
         AllSeasonsFanart = 2
@@ -664,6 +664,15 @@ Public Class Enums
         SeasonPoster = 34
         withEpisodes = 35
         withSeasons = 36
+    End Enum
+
+    Public Enum PanelType As Integer
+        Core = 0
+        External = 1
+        Movie = 2
+        MovieSet = 3
+        Options = 4
+        TV = 5
     End Enum
 
     Public Enum ModuleEventType As Integer
@@ -1220,7 +1229,6 @@ Public Class Functions
     ''' </summary>
     ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
-        'TODO need proper unit test
         With Master.DefaultOptions_Movie
             .bMainActors = Master.eSettings.MovieScraperCast
             .bMainCertifications = Master.eSettings.MovieScraperCert
@@ -1662,10 +1670,10 @@ Public Class Functions
         Return FilteredModifiers
     End Function
 
-    Public Shared Sub SetScrapeModifiers(ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal MType As Enums.ModifierType, ByVal MValue As Boolean)
+    Public Shared Sub SetScrapeModifiers(ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal MType As Enums.ScrapeModifierType, ByVal MValue As Boolean)
         With ScrapeModifiers
             Select Case MType
-                Case Enums.ModifierType.All
+                Case Enums.ScrapeModifierType.All
                     .AllSeasonsBanner = MValue
                     .AllSeasonsFanart = MValue
                     .AllSeasonsLandscape = MValue
@@ -1702,77 +1710,77 @@ Public Class Functions
                     .SeasonPoster = MValue
                 '.withEpisodes should not be set here
                 '.withSeasons should not be set here
-                Case Enums.ModifierType.AllSeasonsBanner
+                Case Enums.ScrapeModifierType.AllSeasonsBanner
                     .AllSeasonsBanner = MValue
-                Case Enums.ModifierType.AllSeasonsFanart
+                Case Enums.ScrapeModifierType.AllSeasonsFanart
                     .AllSeasonsFanart = MValue
-                Case Enums.ModifierType.AllSeasonsLandscape
+                Case Enums.ScrapeModifierType.AllSeasonsLandscape
                     .AllSeasonsLandscape = MValue
-                Case Enums.ModifierType.AllSeasonsPoster
+                Case Enums.ScrapeModifierType.AllSeasonsPoster
                     .AllSeasonsPoster = MValue
-                Case Enums.ModifierType.DoSearch
+                Case Enums.ScrapeModifierType.DoSearch
                     .DoSearch = MValue
-                Case Enums.ModifierType.EpisodeActorThumbs
+                Case Enums.ScrapeModifierType.EpisodeActorThumbs
                     .EpisodeActorThumbs = MValue
-                Case Enums.ModifierType.EpisodeFanart
+                Case Enums.ScrapeModifierType.EpisodeFanart
                     .EpisodeFanart = MValue
-                Case Enums.ModifierType.EpisodeMeta
+                Case Enums.ScrapeModifierType.EpisodeMeta
                     .EpisodeMeta = MValue
-                Case Enums.ModifierType.EpisodeNFO
+                Case Enums.ScrapeModifierType.EpisodeNFO
                     .EpisodeNFO = MValue
-                Case Enums.ModifierType.EpisodePoster
+                Case Enums.ScrapeModifierType.EpisodePoster
                     .EpisodePoster = MValue
-                Case Enums.ModifierType.EpisodeSubtitle
+                Case Enums.ScrapeModifierType.EpisodeSubtitle
                     .EpisodeSubtitles = MValue
-                Case Enums.ModifierType.EpisodeWatchedFile
+                Case Enums.ScrapeModifierType.EpisodeWatchedFile
                     .EpisodeWatchedFile = MValue
-                Case Enums.ModifierType.MainActorThumbs
+                Case Enums.ScrapeModifierType.MainActorThumbs
                     .MainActorthumbs = MValue
-                Case Enums.ModifierType.MainBanner
+                Case Enums.ScrapeModifierType.MainBanner
                     .MainBanner = MValue
-                Case Enums.ModifierType.MainCharacterArt
+                Case Enums.ScrapeModifierType.MainCharacterArt
                     .MainCharacterArt = MValue
-                Case Enums.ModifierType.MainClearArt
+                Case Enums.ScrapeModifierType.MainClearArt
                     .MainClearArt = MValue
-                Case Enums.ModifierType.MainClearLogo
+                Case Enums.ScrapeModifierType.MainClearLogo
                     .MainClearLogo = MValue
-                Case Enums.ModifierType.MainDiscArt
+                Case Enums.ScrapeModifierType.MainDiscArt
                     .MainDiscArt = MValue
-                Case Enums.ModifierType.MainExtrafanarts
+                Case Enums.ScrapeModifierType.MainExtrafanarts
                     .MainExtrafanarts = MValue
-                Case Enums.ModifierType.MainExtrathumbs
+                Case Enums.ScrapeModifierType.MainExtrathumbs
                     .MainExtrathumbs = MValue
-                Case Enums.ModifierType.MainFanart
+                Case Enums.ScrapeModifierType.MainFanart
                     .MainFanart = MValue
-                Case Enums.ModifierType.MainLandscape
+                Case Enums.ScrapeModifierType.MainLandscape
                     .MainLandscape = MValue
-                Case Enums.ModifierType.MainMeta
+                Case Enums.ScrapeModifierType.MainMeta
                     .MainMeta = MValue
-                Case Enums.ModifierType.MainNFO
+                Case Enums.ScrapeModifierType.MainNFO
                     .MainNFO = MValue
-                Case Enums.ModifierType.MainPoster
+                Case Enums.ScrapeModifierType.MainPoster
                     .MainPoster = MValue
-                Case Enums.ModifierType.MainSubtitle
+                Case Enums.ScrapeModifierType.MainSubtitle
                     .MainSubtitles = MValue
-                Case Enums.ModifierType.MainTheme
+                Case Enums.ScrapeModifierType.MainTheme
                     .MainTheme = MValue
-                Case Enums.ModifierType.MainTrailer
+                Case Enums.ScrapeModifierType.MainTrailer
                     .MainTrailer = MValue
-                Case Enums.ModifierType.MainWatchedFile
+                Case Enums.ScrapeModifierType.MainWatchedFile
                     .MainWatchedFile = MValue
-                Case Enums.ModifierType.SeasonBanner
+                Case Enums.ScrapeModifierType.SeasonBanner
                     .SeasonBanner = MValue
-                Case Enums.ModifierType.SeasonFanart
+                Case Enums.ScrapeModifierType.SeasonFanart
                     .SeasonFanart = MValue
-                Case Enums.ModifierType.SeasonLandscape
+                Case Enums.ScrapeModifierType.SeasonLandscape
                     .SeasonLandscape = MValue
-                Case Enums.ModifierType.SeasonNFO
+                Case Enums.ScrapeModifierType.SeasonNFO
                     .SeasonNFO = MValue
-                Case Enums.ModifierType.SeasonPoster
+                Case Enums.ScrapeModifierType.SeasonPoster
                     .SeasonPoster = MValue
-                Case Enums.ModifierType.withEpisodes
+                Case Enums.ScrapeModifierType.withEpisodes
                     .withEpisodes = MValue
-                Case Enums.ModifierType.withSeasons
+                Case Enums.ScrapeModifierType.withSeasons
                     .withSeasons = MValue
             End Select
         End With

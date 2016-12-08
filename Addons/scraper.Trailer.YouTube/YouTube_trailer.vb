@@ -120,7 +120,7 @@ Public Class YouTube_Trailer
 
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[YouTube_Trailer] [Scraper_Movie] [Start]")
 
         LoadSettings()
@@ -132,7 +132,7 @@ Public Class YouTube_Trailer
         End If
 
         logger.Trace("[YouTube_Trailer] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Sub SaveSettings()

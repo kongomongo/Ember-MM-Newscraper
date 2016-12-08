@@ -78,19 +78,19 @@ Public Class TVDB_Image
 
 #Region "Methods"
 
-    Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
+    Function QueryScraperCapabilities(ByVal cap As Enums.ScrapeModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ModifierType.EpisodePoster
+            Case Enums.ScrapeModifierType.EpisodePoster
                 Return ConfigModifier.EpisodePoster
-            Case Enums.ModifierType.SeasonBanner
+            Case Enums.ScrapeModifierType.SeasonBanner
                 Return ConfigModifier.SeasonBanner
-            Case Enums.ModifierType.SeasonPoster
+            Case Enums.ScrapeModifierType.SeasonPoster
                 Return ConfigModifier.SeasonPoster
-            Case Enums.ModifierType.MainBanner
+            Case Enums.ScrapeModifierType.MainBanner
                 Return ConfigModifier.MainBanner
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 Return ConfigModifier.MainFanart
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 Return ConfigModifier.MainPoster
         End Select
         Return False
@@ -191,7 +191,7 @@ Public Class TVDB_Image
         End If
     End Sub
 
-    Function Scraper(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("[TVDB_Image] [Scraper] [Start]")
 
         LoadSettings()
@@ -225,7 +225,7 @@ Public Class TVDB_Image
         End Select
 
         logger.Trace("[TVDB_Image] [Scraper] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Image_TV.ScraperOrderChanged

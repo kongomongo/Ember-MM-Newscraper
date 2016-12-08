@@ -61,12 +61,9 @@ Public Class FileManagerExternalModule
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-
-    Public Event SetupNeedsRestart() Implements EmberAPI.Interfaces.GenericModule.SetupNeedsRestart
+    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
 #End Region 'Events
 
@@ -153,8 +150,8 @@ Public Class FileManagerExternalModule
         _MySettings.TeraCopyPath = AdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Public Sub SaveSettings()
@@ -445,7 +442,7 @@ Public Class FileManagerExternalModule
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(311, "Media File Manager")
         SPanel.Prefix = "FileManager_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules")
+        SPanel.Type = Enums.PanelType.External
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings

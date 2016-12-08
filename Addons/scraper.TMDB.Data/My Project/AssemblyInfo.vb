@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("scraper.TMDB.Data")> 
+<Assembly: AssemblyTitle("module.TMDB")>
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
 <Assembly: AssemblyCompany("Ember Media Manager")>
-<Assembly: AssemblyProduct("scraper.TMDB.Data")> 
+<Assembly: AssemblyProduct("module.TMDB")>
 <Assembly: AssemblyCopyright("Copyright © 2013")> 
 <Assembly: AssemblyTrademark("")> 
 

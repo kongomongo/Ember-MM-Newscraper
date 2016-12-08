@@ -143,7 +143,7 @@ Partial Public Class clsXMLSettings
     Private _moviegeneralcustommarker4color As Integer
     Private _moviegeneralcustommarker4name As String
     Private _moviegeneralcustomscrapebuttonenabled As Boolean
-    Private _moviegeneralcustomscrapebuttonmodifiertype As Enums.ModifierType
+    Private _moviegeneralcustomscrapebuttonmodifiertype As Enums.ScrapeModifierType
     Private _moviegeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _moviegeneralflaglang As String
     Private _moviegeneralignorelastscan As Boolean
@@ -282,7 +282,7 @@ Partial Public Class clsXMLSettings
     Private _moviesetfanartresize As Boolean
     Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralcustomscrapebuttonenabled As Boolean
-    Private _moviesetgeneralcustomscrapebuttonmodifiertype As Enums.ModifierType
+    Private _moviesetgeneralcustomscrapebuttonmodifiertype As Enums.ScrapeModifierType
     Private _moviesetgeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _moviesetgeneralmarknew As Boolean
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
@@ -384,7 +384,7 @@ Partial Public Class clsXMLSettings
     Private _tvgeneralclickscrape As Boolean
     Private _tvgeneralclickscrapeask As Boolean
     Private _tvgeneralcustomscrapebuttonenabled As Boolean
-    Private _tvgeneralcustomscrapebuttonmodifiertype As Enums.ModifierType
+    Private _tvgeneralcustomscrapebuttonmodifiertype As Enums.ScrapeModifierType
     Private _tvgeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _tvgeneralepisodelistsorting As List(Of ListSorting)
     Private _tvgeneralflaglang As String
@@ -2541,11 +2541,11 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+    Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ScrapeModifierType
         Get
             Return _moviegeneralcustomscrapebuttonmodifiertype
         End Get
-        Set(ByVal value As Enums.ModifierType)
+        Set(ByVal value As Enums.ScrapeModifierType)
             _moviegeneralcustomscrapebuttonmodifiertype = value
         End Set
     End Property
@@ -2568,11 +2568,11 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property MovieSetGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+    Public Property MovieSetGeneralCustomScrapeButtonModifierType() As Enums.ScrapeModifierType
         Get
             Return _moviesetgeneralcustomscrapebuttonmodifiertype
         End Get
-        Set(ByVal value As Enums.ModifierType)
+        Set(ByVal value As Enums.ScrapeModifierType)
             _moviesetgeneralcustomscrapebuttonmodifiertype = value
         End Set
     End Property
@@ -2595,11 +2595,11 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    Public Property TVGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+    Public Property TVGeneralCustomScrapeButtonModifierType() As Enums.ScrapeModifierType
         Get
             Return _tvgeneralcustomscrapebuttonmodifiertype
         End Get
-        Set(ByVal value As Enums.ModifierType)
+        Set(ByVal value As Enums.ScrapeModifierType)
             _tvgeneralcustomscrapebuttonmodifiertype = value
         End Set
     End Property

@@ -77,12 +77,12 @@ Public Class OFDB_Data
 #End Region 'Properties
 
 #Region "Methods"
-    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
-    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Private Sub Handle_ModuleSettingsChanged()

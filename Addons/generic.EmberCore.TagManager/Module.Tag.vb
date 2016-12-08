@@ -48,9 +48,9 @@ Public Class Tag_Generic
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
 #End Region 'Events
 
@@ -105,8 +105,8 @@ Public Class Tag_Generic
     ''' <remarks>
     ''' TODO
     ''' </remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Sub Disable()
@@ -173,7 +173,7 @@ Public Class Tag_Generic
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(868, "Tag Manager")
         SPanel.Prefix = "TagManager_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules")
+        SPanel.Type = Enums.PanelType.External
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings

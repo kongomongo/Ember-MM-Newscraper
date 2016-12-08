@@ -379,18 +379,18 @@ Public Class Trakttv_Data
         Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
     End Function
 
-    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
+    Function GetMovieStudio(ByRef DBMovie As Database.DBElement, ByRef studio As List(Of String)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Data_Movie.GetMovieStudio
         If (DBMovie.MainDetails Is Nothing OrElse String.IsNullOrEmpty(DBMovie.MainDetails.IMDB)) Then
             logger.Error("Attempting to get studio for undefined movie")
-            Return New Interfaces.ModuleResult
+            Return New Interfaces.ModuleResult_old
         End If
 
         LoadSettings_Movie()
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
-    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Function GetTMDBID(ByVal sIMDBID As String, ByRef sTMDBID As String) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Data_Movie.GetTMDBID
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements Interfaces.ScraperModule_Data_Movie.ScraperOrderChanged

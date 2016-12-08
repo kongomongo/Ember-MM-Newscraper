@@ -240,12 +240,12 @@ Public Class MediaExporter
         End If
     End Function
 
-    Private Function ExportImage(ByVal tImage As MediaContainers.Image, ByVal tImageType As Enums.ModifierType) As String
+    Private Function ExportImage(ByVal tImage As MediaContainers.Image, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strPath As String = String.Empty
 
         If File.Exists(tImage.LocalFilePath) Then
             Select Case tImageType
-                Case Enums.ModifierType.EpisodeFanart
+                Case Enums.ScrapeModifierType.EpisodeFanart
                     If _tExportSettings.EpisodeFanarts Then
                         If Not _tExportSettings.EpisodeFanarts_MaxHeight = -1 OrElse Not _tExportSettings.EpisodeFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -261,7 +261,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.EpisodePoster
+                Case Enums.ScrapeModifierType.EpisodePoster
                     If _tExportSettings.EpisodePosters Then
                         If Not _tExportSettings.EpisodePosters_MaxHeight = -1 OrElse Not _tExportSettings.EpisodePosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -277,7 +277,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.MainBanner
+                Case Enums.ScrapeModifierType.MainBanner
                     If _tExportSettings.MainBanners Then
                         If Not _tExportSettings.MainBanners_MaxHeight = -1 OrElse Not _tExportSettings.MainBanners_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
@@ -293,27 +293,27 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.MainCharacterArt
+                Case Enums.ScrapeModifierType.MainCharacterArt
                     If _tExportSettings.MainCharacterarts Then
                         strPath = String.Format("exportdata/{0}-characterart.png", _iCounter_Global)
                         File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
-                Case Enums.ModifierType.MainClearArt
+                Case Enums.ScrapeModifierType.MainClearArt
                     If _tExportSettings.MainClearArts Then
                         strPath = String.Format("exportdata/{0}-clearart.png", _iCounter_Global)
                         File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
-                Case Enums.ModifierType.MainClearLogo
+                Case Enums.ScrapeModifierType.MainClearLogo
                     If _tExportSettings.MainClearLogos Then
                         strPath = String.Format("exportdata/{0}-clearlogo.png", _iCounter_Global)
                         File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
-                Case Enums.ModifierType.MainDiscArt
+                Case Enums.ScrapeModifierType.MainDiscArt
                     If _tExportSettings.MainClearArts Then
                         strPath = String.Format("exportdata/{0}-discart.png", _iCounter_Global)
                         File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                     End If
-                Case Enums.ModifierType.MainFanart
+                Case Enums.ScrapeModifierType.MainFanart
                     If _tExportSettings.MainFanarts Then
                         If Not _tExportSettings.MainFanarts_MaxHeight = -1 OrElse Not _tExportSettings.MainFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
@@ -329,7 +329,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.MainLandscape
+                Case Enums.ScrapeModifierType.MainLandscape
                     If _tExportSettings.MainLandscapes Then
                         If Not _tExportSettings.MainLandscapes_MaxHeight = -1 OrElse Not _tExportSettings.MainLandscapes_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.Movie, True, True) Then
@@ -345,7 +345,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.MainPoster
+                Case Enums.ScrapeModifierType.MainPoster
                     If _tExportSettings.MainPosters Then
                         If Not _tExportSettings.MainPosters_MaxHeight = -1 OrElse Not _tExportSettings.MainPosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -361,7 +361,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.SeasonBanner
+                Case Enums.ScrapeModifierType.SeasonBanner
                     If _tExportSettings.SeasonBanners Then
                         If Not _tExportSettings.SeasonBanners_MaxHeight = -1 OrElse Not _tExportSettings.SeasonBanners_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -377,7 +377,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.SeasonFanart
+                Case Enums.ScrapeModifierType.SeasonFanart
                     If _tExportSettings.SeasonFanarts Then
                         If Not _tExportSettings.SeasonFanarts_MaxHeight = -1 OrElse Not _tExportSettings.SeasonFanarts_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -393,7 +393,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.SeasonLandscape
+                Case Enums.ScrapeModifierType.SeasonLandscape
                     If _tExportSettings.SeasonLandscapes Then
                         If Not _tExportSettings.SeasonLandscapes_MaxHeight = -1 OrElse Not _tExportSettings.SeasonLandscapes_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -409,7 +409,7 @@ Public Class MediaExporter
                             File.Copy(tImage.LocalFilePath, Path.Combine(_strBuildPath, strPath), True)
                         End If
                     End If
-                Case Enums.ModifierType.SeasonPoster
+                Case Enums.ScrapeModifierType.SeasonPoster
                     If _tExportSettings.SeasonPosters Then
                         If Not _tExportSettings.SeasonPosters_MaxHeight = -1 OrElse Not _tExportSettings.SeasonPosters_MaxWidth = -1 Then
                             If tImage.LoadAndCache(Enums.ContentType.TV, True, True) Then
@@ -713,13 +713,13 @@ Public Class MediaExporter
 
         'Images
         With tMovie.ImagesContainer
-            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
-            strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
-            strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
-            strRow = strRow.Replace("<$DISCART>", ExportImage(.DiscArt, Enums.ModifierType.MainDiscArt))
-            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
-            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
-            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
+            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ScrapeModifierType.MainBanner))
+            strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ScrapeModifierType.MainClearArt))
+            strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ScrapeModifierType.MainClearLogo))
+            strRow = strRow.Replace("<$DISCART>", ExportImage(.DiscArt, Enums.ScrapeModifierType.MainDiscArt))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ScrapeModifierType.MainFanart))
+            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ScrapeModifierType.MainLandscape))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ScrapeModifierType.MainPoster))
         End With
 
         'Title
@@ -842,8 +842,8 @@ Public Class MediaExporter
 
         'Images
         With tEpisode.ImagesContainer
-            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.EpisodeFanart))
-            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.EpisodePoster))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ScrapeModifierType.EpisodeFanart))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ScrapeModifierType.EpisodePoster))
         End With
 
         'Actors
@@ -935,10 +935,10 @@ Public Class MediaExporter
 
         'Images
         With tSeason.ImagesContainer
-            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ModifierType.SeasonBanner))
-            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.SeasonFanart))
-            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.SeasonLandscape))
-            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.SeasonPoster))
+            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ScrapeModifierType.SeasonBanner))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ScrapeModifierType.SeasonFanart))
+            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ScrapeModifierType.SeasonLandscape))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ScrapeModifierType.SeasonPoster))
         End With
 
         'NFO Fields
@@ -967,13 +967,13 @@ Public Class MediaExporter
 
         'Images
         With tShow.ImagesContainer
-            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ModifierType.MainBanner))
-            strRow = strRow.Replace("<$CHARACTERART>", ExportImage(.CharacterArt, Enums.ModifierType.MainCharacterArt))
-            strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ModifierType.MainClearArt))
-            strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ModifierType.MainClearLogo))
-            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ModifierType.MainFanart))
-            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ModifierType.MainLandscape))
-            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ModifierType.MainPoster))
+            strRow = strRow.Replace("<$BANNER>", ExportImage(.Banner, Enums.ScrapeModifierType.MainBanner))
+            strRow = strRow.Replace("<$CHARACTERART>", ExportImage(.CharacterArt, Enums.ScrapeModifierType.MainCharacterArt))
+            strRow = strRow.Replace("<$CLEARART>", ExportImage(.ClearArt, Enums.ScrapeModifierType.MainClearArt))
+            strRow = strRow.Replace("<$CLEARLOGO>", ExportImage(.ClearLogo, Enums.ScrapeModifierType.MainClearLogo))
+            strRow = strRow.Replace("<$FANART>", ExportImage(.Fanart, Enums.ScrapeModifierType.MainFanart))
+            strRow = strRow.Replace("<$LANDSCAPE>", ExportImage(.Landscape, Enums.ScrapeModifierType.MainLandscape))
+            strRow = strRow.Replace("<$POSTER>", ExportImage(.Poster, Enums.ScrapeModifierType.MainPoster))
         End With
 
         'Title

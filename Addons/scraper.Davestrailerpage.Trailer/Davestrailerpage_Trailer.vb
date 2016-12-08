@@ -145,7 +145,7 @@ Public Class Davestrailerpage_Trailer
         End If
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
         logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Start]")
 
         Dim tTitle As String = String.Empty
@@ -163,7 +163,7 @@ Public Class Davestrailerpage_Trailer
         End If
 
         logger.Trace("[Davestrailerpage_Trailer] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Trailer_Movie.ScraperOrderChanged

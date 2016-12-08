@@ -180,7 +180,7 @@ Namespace TMDB
 #Region "Fields"
 
             Dim Parameter As String
-            Dim Type As Enums.ModifierType
+            Dim Type As Enums.ScrapeModifierType
 
 #End Region 'Fields
 

@@ -1020,13 +1020,13 @@ Public Class Database
             'delete all movieset images and if this setting is enabled
             If Master.eSettings.MovieSetCleanFiles Then
                 Dim MovieSet As DBElement = Master.DB.Load_MovieSet(ID)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainBanner)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainClearArt)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainClearLogo)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainDiscArt)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainFanart)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainLandscape)
-                Images.Delete_MovieSet(MovieSet, Enums.ModifierType.MainPoster)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainBanner)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainClearArt)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainClearLogo)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainDiscArt)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainFanart)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainLandscape)
+                Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainPoster)
             End If
 
             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -4227,14 +4227,14 @@ Public Class Database
 
         'YAMJ watched file
         If _movieDB.MainDetails.PlayCountSpecified AndAlso Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-            For Each a In FileUtils.GetFilenameList.Movie(_movieDB, Enums.ModifierType.MainWatchedFile)
+            For Each a In FileUtils.GetFilenameList.Movie(_movieDB, Enums.ScrapeModifierType.MainWatchedFile)
                 If Not File.Exists(a) Then
                     Dim fs As FileStream = File.Create(a)
                     fs.Close()
                 End If
             Next
         ElseIf Not _movieDB.MainDetails.PlayCountSpecified AndAlso Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-            For Each a In FileUtils.GetFilenameList.Movie(_movieDB, Enums.ModifierType.MainWatchedFile)
+            For Each a In FileUtils.GetFilenameList.Movie(_movieDB, Enums.ScrapeModifierType.MainWatchedFile)
                 If File.Exists(a) Then
                     File.Delete(a)
                 End If

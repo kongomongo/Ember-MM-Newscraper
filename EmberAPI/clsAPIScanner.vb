@@ -134,30 +134,30 @@ Public Class Scanner
 
         'secondly add files from special folders to filelists
         If DBMovie.IsSingle Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainActorThumbs, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainActorThumbs, bForced)
                 Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
                 If Directory.Exists(parDir) Then
                     atList.AddRange(Directory.GetFiles(parDir))
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainExtrafanarts, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainExtrafanarts, bForced)
                 If Directory.Exists(a) Then
                     efList.AddRange(Directory.GetFiles(a, "*.jpg"))
                     If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainExtrathumbs, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainExtrathumbs, bForced)
                 If Directory.Exists(a) Then
                     etList.AddRange(Directory.GetFiles(a, "*.jpg"))
                     If etList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainSubtitle, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainSubtitle, bForced)
                 If Directory.Exists(a) Then
                     sList.AddRange(Directory.GetFiles(a))
                 End If
             Next
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTheme, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainTheme, bForced)
                 If Directory.Exists(Directory.GetParent(a).FullName) Then
                     tList.AddRange(Directory.GetFiles(Directory.GetParent(a).FullName))
                 End If
@@ -170,25 +170,25 @@ Public Class Scanner
         End If
 
         'banner
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainBanner, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainBanner, bForced)
             DBMovie.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Banner.LocalFilePath) Then Exit For
         Next
 
         'clearart
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainClearArt, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainClearArt, bForced)
             DBMovie.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
         Next
 
         'clearlogo
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainClearLogo, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainClearLogo, bForced)
             DBMovie.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
         Next
 
         'discart
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainDiscArt, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainDiscArt, bForced)
             DBMovie.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
         Next
@@ -210,25 +210,25 @@ Public Class Scanner
         End If
 
         'fanart
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainFanart, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainFanart, bForced)
             DBMovie.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Fanart.LocalFilePath) Then Exit For
         Next
 
         'landscape
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainLandscape, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainLandscape, bForced)
             DBMovie.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Landscape.LocalFilePath) Then Exit For
         Next
 
         'nfo
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainNFO, bForced)
             DBMovie.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.NfoPath) Then Exit For
         Next
 
         'poster
-        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainPoster, bForced)
+        For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainPoster, bForced)
             DBMovie.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBMovie.ImagesContainer.Poster.LocalFilePath) Then Exit For
         Next
@@ -245,7 +245,7 @@ Public Class Scanner
 
         'theme
         If String.IsNullOrEmpty(DBMovie.Theme.LocalFilePath) Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTheme, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainTheme, bForced)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     DBMovie.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                     If Not String.IsNullOrEmpty(DBMovie.Theme.LocalFilePath) Then Exit For
@@ -255,7 +255,7 @@ Public Class Scanner
 
         'trailer
         If String.IsNullOrEmpty(DBMovie.Trailer.LocalFilePath) Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainTrailer, bForced)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainTrailer, bForced)
                 For Each t As String In Master.eSettings.FileSystemValidExts
                     DBMovie.Trailer.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                     If Not String.IsNullOrEmpty(DBMovie.Trailer.LocalFilePath) Then Exit For
@@ -274,7 +274,7 @@ Public Class Scanner
         DBMovieSet.NfoPath = String.Empty
 
         'banner
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainBanner)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainBanner)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.Banner.LocalFilePath = a
                 Exit For
@@ -282,7 +282,7 @@ Public Class Scanner
         Next
 
         'clearart
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainClearArt)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainClearArt)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.ClearArt.LocalFilePath = a
                 Exit For
@@ -290,7 +290,7 @@ Public Class Scanner
         Next
 
         'clearlogo
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainClearLogo)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainClearLogo)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.ClearLogo.LocalFilePath = a
                 Exit For
@@ -298,7 +298,7 @@ Public Class Scanner
         Next
 
         'discart
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainDiscArt)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainDiscArt)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.DiscArt.LocalFilePath = a
                 Exit For
@@ -306,7 +306,7 @@ Public Class Scanner
         Next
 
         'fanart
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainFanart)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainFanart)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.Fanart.LocalFilePath = a
                 Exit For
@@ -314,7 +314,7 @@ Public Class Scanner
         Next
 
         'landscape
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainLandscape)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainLandscape)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.Landscape.LocalFilePath = a
                 Exit For
@@ -322,7 +322,7 @@ Public Class Scanner
         Next
 
         'nfo
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainNFO)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainNFO)
             If File.Exists(a) Then
                 DBMovieSet.NfoPath = a
                 Exit For
@@ -330,7 +330,7 @@ Public Class Scanner
         Next
 
         'poster
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainPoster)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainPoster)
             If File.Exists(a) Then
                 DBMovieSet.ImagesContainer.Poster.LocalFilePath = a
                 Exit For
@@ -357,7 +357,7 @@ Public Class Scanner
         End Try
 
         'episode actor thumbs
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ScrapeModifierType.EpisodeActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
                 DBTVEpisode.ActorThumbs.AddRange(Directory.GetFiles(parDir))
@@ -365,19 +365,19 @@ Public Class Scanner
         Next
 
         'episode fanart
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeFanart)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ScrapeModifierType.EpisodeFanart)
             DBTVEpisode.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Fanart.LocalFilePath) Then Exit For
         Next
 
         'episode poster
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodePoster)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ScrapeModifierType.EpisodePoster)
             DBTVEpisode.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVEpisode.ImagesContainer.Poster.LocalFilePath) Then Exit For
         Next
 
         'episode NFO
-        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ModifierType.EpisodeNFO)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, Enums.ScrapeModifierType.EpisodeNFO)
             DBTVEpisode.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVEpisode.NfoPath) Then Exit For
         Next
@@ -423,12 +423,12 @@ Public Class Scanner
 
         'season banner
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsBanner)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ScrapeModifierType.AllSeasonsBanner)
                 DBTVSeason.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonBanner)
+            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ScrapeModifierType.SeasonBanner)
                 DBTVSeason.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Banner.LocalFilePath) Then Exit For
             Next
@@ -436,12 +436,12 @@ Public Class Scanner
 
         'season fanart 
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsFanart)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ScrapeModifierType.AllSeasonsFanart)
                 DBTVSeason.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonFanart)
+            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ScrapeModifierType.SeasonFanart)
                 DBTVSeason.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Fanart.LocalFilePath) Then Exit For
             Next
@@ -449,12 +449,12 @@ Public Class Scanner
 
         'season landscape
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsLandscape)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ScrapeModifierType.AllSeasonsLandscape)
                 DBTVSeason.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonLandscape)
+            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ScrapeModifierType.SeasonLandscape)
                 DBTVSeason.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Landscape.LocalFilePath) Then Exit For
             Next
@@ -462,12 +462,12 @@ Public Class Scanner
 
         'season poster
         If iSeason = 999 Then 'all-seasons
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ModifierType.AllSeasonsPoster)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVSeason, Enums.ScrapeModifierType.AllSeasonsPoster)
                 DBTVSeason.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
         Else
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ModifierType.SeasonPoster)
+            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, Enums.ScrapeModifierType.SeasonPoster)
                 DBTVSeason.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
                 If Not String.IsNullOrEmpty(DBTVSeason.ImagesContainer.Poster.LocalFilePath) Then Exit For
             Next
@@ -492,7 +492,7 @@ Public Class Scanner
         Try
             fList.AddRange(Directory.GetFiles(DBTVShow.ShowPath))
 
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainExtrafanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainExtrafanarts)
                 If Directory.Exists(a) Then
                     efList.AddRange(Directory.GetFiles(a, "*.jpg"))
                     If efList.Count > 0 Then Exit For 'scan only one path to prevent image dublicates
@@ -503,7 +503,7 @@ Public Class Scanner
         End Try
 
         'show actor thumbs
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainActorThumbs)
             Dim parDir As String = Directory.GetParent(a.Replace("<placeholder>", "placeholder")).FullName
             If Directory.Exists(parDir) Then
                 DBTVShow.ActorThumbs.AddRange(Directory.GetFiles(parDir))
@@ -511,25 +511,25 @@ Public Class Scanner
         Next
 
         'show banner
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainBanner)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainBanner)
             DBTVShow.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Banner.LocalFilePath) Then Exit For
         Next
 
         'show characterart
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainCharacterArt)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainCharacterArt)
             DBTVShow.ImagesContainer.CharacterArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.CharacterArt.LocalFilePath) Then Exit For
         Next
 
         'show clearart
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainClearArt)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainClearArt)
             DBTVShow.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
         Next
 
         'show clearlogo
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainClearLogo)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainClearLogo)
             DBTVShow.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
         Next
@@ -543,31 +543,31 @@ Public Class Scanner
         End If
 
         'show fanart
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainFanart)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainFanart)
             DBTVShow.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Fanart.LocalFilePath) Then Exit For
         Next
 
         'show landscape
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainLandscape)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainLandscape)
             DBTVShow.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Landscape.LocalFilePath) Then Exit For
         Next
 
         'show NFO
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainNFO)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainNFO)
             DBTVShow.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.NfoPath) Then Exit For
         Next
 
         'show poster
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainPoster)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainPoster)
             DBTVShow.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
             If Not String.IsNullOrEmpty(DBTVShow.ImagesContainer.Poster.LocalFilePath) Then Exit For
         Next
 
         'show theme
-        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ModifierType.MainTheme)
+        For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainTheme)
             For Each t As String In Master.eSettings.FileSystemValidThemeExts
                 DBTVShow.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                 If Not String.IsNullOrEmpty(DBTVShow.Theme.LocalFilePath) Then Exit For
@@ -655,7 +655,7 @@ Public Class Scanner
         End If
 
         If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainWatchedFile)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainWatchedFile)
                 If DBMovie.MainDetails.PlayCountSpecified Then
                     If Not File.Exists(a) Then
                         Dim fs As FileStream = File.Create(a)

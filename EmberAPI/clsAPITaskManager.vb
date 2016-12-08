@@ -225,9 +225,9 @@ Public Class TaskManager
                                                  .Message = tmpDBElement.MainDetails.Title})
 
                     Dim nScrapeModifiers As New Structures.ScrapeModifiers
-                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ModifierType.MainNFO, True)
-                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ModifierType.withEpisodes, True)
-                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ModifierType.withSeasons, True)
+                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ScrapeModifierType.MainNFO, True)
+                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ScrapeModifierType.withEpisodes, True)
+                    Functions.SetScrapeModifiers(nScrapeModifiers, Enums.ScrapeModifierType.withSeasons, True)
                     tmpDBElement.ScrapeModifiers = nScrapeModifiers
                     tmpDBElement.ScrapeOptions = Master.DefaultOptions_TV
                     tmpDBElement.ScrapeType = Enums.ScrapeType.SingleScrape

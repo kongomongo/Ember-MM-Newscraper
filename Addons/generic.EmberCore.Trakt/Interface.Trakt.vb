@@ -52,10 +52,10 @@ Public Class TraktInterface
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements EmberAPI.Interfaces.GenericModule.GenericEvent
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
 #End Region 'Events
 
@@ -122,7 +122,7 @@ Public Class TraktInterface
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
             Case Enums.ModuleEventType.BeforeEdit_Movie
                 If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateBeforeEdit_Movie AndAlso _dbelement IsNot Nothing Then
@@ -160,7 +160,7 @@ Public Class TraktInterface
                 End If
         End Select
 
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Sub Disable()
@@ -242,7 +242,7 @@ Public Class TraktInterface
         SPanel.Name = _Name
         SPanel.Text = "Trakt.tv Interface"
         SPanel.Prefix = "Trakt_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules")
+        SPanel.Type = Enums.PanelType.External
         SPanel.ImageIndex = If(_Enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings

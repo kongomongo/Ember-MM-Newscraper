@@ -207,7 +207,7 @@ Public Class ThemeLibrary_Theme
         End If
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Theme_Movie.Scraper
         logger.Trace("[ThemeLibrary_Theme] [Scraper_Movie] [Start]")
 
         Dim tScraper As New ThemeLibrary.Scraper(DBMovie)
@@ -217,10 +217,10 @@ Public Class ThemeLibrary_Theme
         End If
 
         logger.Trace("[ThemeLibrary_Theme] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
-    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_TV.Scraper
+    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Theme_TV.Scraper
         logger.Trace("[ThemeLibrary_Theme] [Scraper_TV] [Start]")
 
         Dim tScraper As New ThemeLibrary.Scraper(DBTV)
@@ -230,7 +230,7 @@ Public Class ThemeLibrary_Theme
         End If
 
         logger.Trace("[ThemeLibrary_Theme] [Scraper_TV] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Public Sub ScraperOrderChanged_Movie() Implements Interfaces.ScraperModule_Theme_Movie.ScraperOrderChanged

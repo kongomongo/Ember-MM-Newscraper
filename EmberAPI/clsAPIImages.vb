@@ -121,18 +121,18 @@ Public Class Images
     ''' <param name="DBMovie"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ModifierType, ByVal ForceFileCleanup As Boolean)
+    Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType, ByVal ForceFileCleanup As Boolean)
         If String.IsNullOrEmpty(DBMovie.Filename) Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType, ForceFileCleanup)
                 Select Case ImageType
-                    Case Enums.ModifierType.MainActorThumbs
+                    Case Enums.ScrapeModifierType.MainActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
                         End If
-                    Case Enums.ModifierType.MainExtrafanarts, Enums.ModifierType.MainExtrathumbs
+                    Case Enums.ScrapeModifierType.MainExtrafanarts, Enums.ScrapeModifierType.MainExtrathumbs
                         If Directory.Exists(a) Then
                             FileUtils.Delete.DeleteDirectory(a)
                         End If
@@ -152,7 +152,7 @@ Public Class Images
     ''' <param name="DBMovieSet"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ImageType As Enums.ModifierType, Optional ByVal bForceOldTitle As Boolean = False)
+    Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType, Optional ByVal bForceOldTitle As Boolean = False)
         If String.IsNullOrEmpty(DBMovieSet.MainDetails.Title) Then Return
 
         Try
@@ -171,7 +171,7 @@ Public Class Images
     ''' <param name="DBTVShow"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVAllSeasons(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+    Public Shared Sub Delete_TVAllSeasons(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
@@ -190,13 +190,13 @@ Public Class Images
     ''' <param name="DBTVEpisode"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+    Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
         If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, ImageType)
                 Select Case ImageType
-                    Case Enums.ModifierType.EpisodeActorThumbs
+                    Case Enums.ScrapeModifierType.EpisodeActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
@@ -217,7 +217,7 @@ Public Class Images
     ''' <param name="DBTVSeason"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVSeason(ByVal DBTVSeason As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+    Public Shared Sub Delete_TVSeason(ByVal DBTVSeason As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
         If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
 
         Try
@@ -235,18 +235,18 @@ Public Class Images
     ''' </summary>
     ''' <param name="DBTVShow"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ModifierType)
+    Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
         If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
                 Select Case ImageType
-                    Case Enums.ModifierType.MainActorThumbs
+                    Case Enums.ScrapeModifierType.MainActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
                         If Directory.Exists(tmpPath) Then
                             FileUtils.Delete.DeleteDirectory(tmpPath)
                         End If
-                    Case Enums.ModifierType.MainExtrafanarts
+                    Case Enums.ScrapeModifierType.MainExtrafanarts
                         If Directory.Exists(a) Then
                             FileUtils.Delete.DeleteDirectory(a)
                         End If
@@ -380,7 +380,7 @@ Public Class Images
     ''' <param name="tImageType"></param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function Save_Movie(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+    Public Function Save_Movie(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = False
@@ -390,27 +390,27 @@ Public Class Images
         Dim intWidth As Integer = -1
 
         Select Case tImageType
-            Case Enums.ModifierType.MainBanner
+            Case Enums.ScrapeModifierType.MainBanner
                 bResizeEnabled = Master.eSettings.MovieBannerResize
                 intHeight = Master.eSettings.MovieBannerHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieBannerWidth
-            Case Enums.ModifierType.MainExtrafanarts
+            Case Enums.ScrapeModifierType.MainExtrafanarts
                 bResizeEnabled = Master.eSettings.MovieExtrafanartsResize
                 intHeight = Master.eSettings.MovieExtrafanartsHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieExtrafanartsWidth
-            Case Enums.ModifierType.MainExtrathumbs
+            Case Enums.ScrapeModifierType.MainExtrathumbs
                 bResizeEnabled = Master.eSettings.MovieExtrathumbsResize
                 intHeight = Master.eSettings.MovieExtrathumbsHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("ExtrathumbsQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieExtrathumbsWidth
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 bResizeEnabled = Master.eSettings.MovieFanartResize
                 intHeight = Master.eSettings.MovieFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.Movie))
                 intWidth = Master.eSettings.MovieFanartWidth
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.MoviePosterResize
                 intHeight = Master.eSettings.MoviePosterHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.Movie))
@@ -436,7 +436,7 @@ Public Class Images
                 strReturn = a
             Next
 
-            If tImageType = Enums.ModifierType.MainFanart AndAlso Not String.IsNullOrEmpty(strReturn) AndAlso
+            If tImageType = Enums.ScrapeModifierType.MainFanart AndAlso Not String.IsNullOrEmpty(strReturn) AndAlso
                 Not String.IsNullOrEmpty(Master.eSettings.MovieBackdropsPath) AndAlso Master.eSettings.MovieBackdropsAuto Then
                 FileUtils.Common.CopyFanartToBackdropsPath(strReturn, tDBElement.ContentType)
             End If
@@ -454,7 +454,7 @@ Public Class Images
     ''' <param name="tImageType"></param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function Save_MovieSet(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+    Public Function Save_MovieSet(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = False
@@ -464,17 +464,17 @@ Public Class Images
         Dim intWidth As Integer = -1
 
         Select Case tImageType
-            Case Enums.ModifierType.MainBanner
+            Case Enums.ScrapeModifierType.MainBanner
                 bResizeEnabled = Master.eSettings.MovieSetBannerResize
                 intHeight = Master.eSettings.MovieSetBannerHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.MovieSet))
                 intWidth = Master.eSettings.MovieSetBannerWidth
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 bResizeEnabled = Master.eSettings.MovieSetFanartResize
                 intHeight = Master.eSettings.MovieSetFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.MovieSet))
                 intWidth = Master.eSettings.MovieSetFanartWidth
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.MovieSetPosterResize
                 intHeight = Master.eSettings.MovieSetPosterHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.MovieSet))
@@ -513,7 +513,7 @@ Public Class Images
     ''' <param name="tImageType"></param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function Save_TVAllSeasons(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+    Public Function Save_TVAllSeasons(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = False
@@ -523,17 +523,17 @@ Public Class Images
         Dim intWidth As Integer = -1
 
         Select Case tImageType
-            Case Enums.ModifierType.AllSeasonsBanner
+            Case Enums.ScrapeModifierType.AllSeasonsBanner
                 bResizeEnabled = Master.eSettings.TVAllSeasonsBannerResize
                 intHeight = Master.eSettings.TVAllSeasonsBannerHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVAllSeasonsBannerWidth
-            Case Enums.ModifierType.SeasonFanart
+            Case Enums.ScrapeModifierType.SeasonFanart
                 bResizeEnabled = Master.eSettings.TVAllSeasonsFanartResize
                 intHeight = Master.eSettings.TVAllSeasonsFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVAllSeasonsFanartWidth
-            Case Enums.ModifierType.SeasonPoster
+            Case Enums.ScrapeModifierType.SeasonPoster
                 bResizeEnabled = Master.eSettings.TVAllSeasonsPosterResize
                 intHeight = Master.eSettings.TVAllSeasonsPosterHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
@@ -572,7 +572,7 @@ Public Class Images
     ''' <param name="tImageType"></param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function Save_TVEpisode(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+    Public Function Save_TVEpisode(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = False
@@ -582,12 +582,12 @@ Public Class Images
         Dim intWidth As Integer = -1
 
         Select Case tImageType
-            Case Enums.ModifierType.EpisodeFanart
+            Case Enums.ScrapeModifierType.EpisodeFanart
                 bResizeEnabled = Master.eSettings.TVEpisodeFanartResize
                 intHeight = Master.eSettings.TVEpisodeFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVEpisode))
                 intWidth = Master.eSettings.TVEpisodeFanartWidth
-            Case Enums.ModifierType.EpisodePoster
+            Case Enums.ScrapeModifierType.EpisodePoster
                 bResizeEnabled = Master.eSettings.TVEpisodePosterResize
                 intHeight = Master.eSettings.TVEpisodePosterHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVEpisode))
@@ -626,7 +626,7 @@ Public Class Images
     ''' <param name="tImageType"></param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function Save_TVSeason(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+    Public Function Save_TVSeason(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = False
@@ -636,17 +636,17 @@ Public Class Images
         Dim intWidth As Integer = -1
 
         Select Case tImageType
-            Case Enums.ModifierType.SeasonBanner
+            Case Enums.ScrapeModifierType.SeasonBanner
                 bResizeEnabled = Master.eSettings.TVSeasonBannerResize
                 intHeight = Master.eSettings.TVSeasonBannerHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVSeasonBannerWidth
-            Case Enums.ModifierType.SeasonFanart
+            Case Enums.ScrapeModifierType.SeasonFanart
                 bResizeEnabled = Master.eSettings.TVSeasonFanartResize
                 intHeight = Master.eSettings.TVSeasonFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
                 intWidth = Master.eSettings.TVSeasonFanartWidth
-            Case Enums.ModifierType.SeasonPoster
+            Case Enums.ScrapeModifierType.SeasonPoster
                 bResizeEnabled = Master.eSettings.TVSeasonPosterResize
                 intHeight = Master.eSettings.TVSeasonPosterHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
@@ -685,7 +685,7 @@ Public Class Images
     ''' <param name="tImageType"></param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function Save_TVShow(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ModifierType) As String
+    Public Function Save_TVShow(ByVal tDBElement As Database.DBElement, ByVal tImageType As Enums.ScrapeModifierType) As String
         Dim strReturn As String = String.Empty
 
         Dim doResize As Boolean = False
@@ -695,22 +695,22 @@ Public Class Images
         Dim intWidth As Integer = -1
 
         Select Case tImageType
-            Case Enums.ModifierType.MainBanner
+            Case Enums.ScrapeModifierType.MainBanner
                 bResizeEnabled = Master.eSettings.TVShowBannerResize
                 intHeight = Master.eSettings.TVShowBannerHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowBannerWidth
-            Case Enums.ModifierType.MainExtrafanarts
+            Case Enums.ScrapeModifierType.MainExtrafanarts
                 bResizeEnabled = Master.eSettings.TVShowExtrafanartsResize
                 intHeight = Master.eSettings.TVShowExtrafanartsHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowExtrafanartsWidth
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 bResizeEnabled = Master.eSettings.TVShowFanartResize
                 intHeight = Master.eSettings.TVShowFanartHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVShow))
                 intWidth = Master.eSettings.TVShowFanartWidth
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 bResizeEnabled = Master.eSettings.TVShowPosterResize
                 intHeight = Master.eSettings.TVShowPosterHeight
                 intQuality = CInt(AdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVShow))
@@ -750,7 +750,7 @@ Public Class Images
         Next
 
         'Second, remove the old ones
-        Delete_Movie(mMovie, Enums.ModifierType.MainActorThumbs, False)
+        Delete_Movie(mMovie, Enums.ScrapeModifierType.MainActorThumbs, False)
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mMovie.MainDetails.Actors
@@ -769,7 +769,7 @@ Public Class Images
     Public Function SaveAsMovieActorThumb(ByVal aMovie As Database.DBElement, ByVal actor As MediaContainers.Person) As String
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.Movie(aMovie, Enums.ModifierType.MainActorThumbs)
+        For Each a In FileUtils.GetFilenameList.Movie(aMovie, Enums.ScrapeModifierType.MainActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             SaveToFile(tPath)
         Next
@@ -792,7 +792,7 @@ Public Class Images
         Next
 
         'Second, remove the old ones
-        Delete_Movie(mMovie, Enums.ModifierType.MainExtrafanarts, False)
+        Delete_Movie(mMovie, Enums.ScrapeModifierType.MainExtrafanarts, False)
 
         'Thirdly, save all Extrafanarts
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrafanarts
@@ -834,7 +834,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainExtrafanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ScrapeModifierType.MainExtrafanarts)
                 If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -870,7 +870,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Delete_Movie(mMovie, Enums.ModifierType.MainExtrathumbs, False)
+        Delete_Movie(mMovie, Enums.ScrapeModifierType.MainExtrathumbs, False)
 
         'Thirdly, save all Extrathumbs
         For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
@@ -912,7 +912,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ModifierType.MainExtrathumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ScrapeModifierType.MainExtrathumbs)
                 If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -957,7 +957,7 @@ Public Class Images
     Public Function SaveAsTVEpisodeActorThumb(ByVal mEpisode As Database.DBElement, ByVal actor As MediaContainers.Person) As String
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.TVEpisode(mEpisode, Enums.ModifierType.EpisodeActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVEpisode(mEpisode, Enums.ScrapeModifierType.EpisodeActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             SaveToFile(tPath)
         Next
@@ -973,7 +973,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.Delete_TVShow(mShow, Enums.ModifierType.MainActorThumbs)
+        Images.Delete_TVShow(mShow, Enums.ScrapeModifierType.MainActorThumbs)
 
         'Thirdly, save all actor thumbs
         For Each tActor As MediaContainers.Person In mShow.MainDetails.Actors
@@ -992,7 +992,7 @@ Public Class Images
     Public Function SaveAsTVShowActorThumb(ByVal mShow As Database.DBElement, ByVal actor As MediaContainers.Person) As String
         Dim tPath As String = String.Empty
 
-        For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainActorThumbs)
+        For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ScrapeModifierType.MainActorThumbs)
             tPath = a.Replace("<placeholder>", actor.Name.Replace(" ", "_"))
             SaveToFile(tPath)
         Next
@@ -1012,7 +1012,7 @@ Public Class Images
         Next
 
         'Secound, remove the old ones
-        Images.Delete_TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
+        Images.Delete_TVShow(mShow, Enums.ScrapeModifierType.MainExtrafanarts)
 
         'Thirdly, save all Extrafanarts
         For Each eImg As MediaContainers.Image In mShow.ImagesContainer.Extrafanarts
@@ -1054,7 +1054,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ModifierType.MainExtrafanarts)
+            For Each a In FileUtils.GetFilenameList.TVShow(mShow, Enums.ScrapeModifierType.MainExtrafanarts)
                 If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)

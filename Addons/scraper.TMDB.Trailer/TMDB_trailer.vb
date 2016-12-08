@@ -22,10 +22,11 @@ Imports EmberAPI
 Imports NLog
 
 Public Class TMDB_Trailer
-    Implements Interfaces.ScraperModule_Trailer_Movie
+    Implements Interfaces.ExternalModule
 
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public Shared ConfigScrapeModifiers As New Structures.ScrapeModifiers
@@ -45,28 +46,26 @@ Public Class TMDB_Trailer
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged() Implements Interfaces.ScraperModule_Trailer_Movie.ModuleSettingsChanged
-    Public Event MovieScraperEvent(ByVal eType As Enums.ScraperEventType, ByVal Parameter As Object) Implements Interfaces.ScraperModule_Trailer_Movie.ScraperEvent
-    Public Event SetupScraperChanged(ByVal name As String, ByVal State As Boolean, ByVal difforder As Integer) Implements Interfaces.ScraperModule_Trailer_Movie.ScraperSetupChanged
-    Public Event SetupNeedsRestart() Implements Interfaces.ScraperModule_Trailer_Movie.SetupNeedsRestart
+    Public Event SettingsChanged() Implements Interfaces.ExternalModule.SettingsChanged
+    Public Event NeedsRestart() Implements Interfaces.ExternalModule.NeedsRestart
 
 #End Region 'Events
 
 #Region "Properties"
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.ScraperModule_Trailer_Movie.ModuleName
+    ReadOnly Property ModuleName() As String Implements Interfaces.ExternalModule.ModuleName
         Get
             Return _Name
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.ScraperModule_Trailer_Movie.ModuleVersion
+    ReadOnly Property ModuleVersion() As String Implements Interfaces.ExternalModule.ModuleVersion
         Get
             Return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
-    Property ScraperEnabled() As Boolean Implements Interfaces.ScraperModule_Trailer_Movie.ScraperEnabled
+    Property Enabled() As Boolean Implements Interfaces.ExternalModule.Enabled
         Get
             Return _ScraperEnabled
         End Get
@@ -78,25 +77,21 @@ Public Class TMDB_Trailer
 #End Region 'Properties
 
 #Region "Methods"
+
     Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub Handle_SetupNeedsRestart()
-        RaiseEvent SetupNeedsRestart()
+        RaiseEvent NeedsRestart()
     End Sub
 
-    Private Sub Handle_SetupScraperChanged(ByVal state As Boolean, ByVal difforder As Integer)
-        ScraperEnabled = state
-        RaiseEvent SetupScraperChanged(String.Concat(Me._Name, "Scraper"), state, difforder)
-    End Sub
-
-    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ScraperModule_Trailer_Movie.Init
+    Sub Init(ByVal sAssemblyName As String) Implements Interfaces.ExternalModule.Init
         _AssemblyName = sAssemblyName
         LoadSettings()
     End Sub
 
-    Function InjectSetupScraper() As Containers.SettingsPanel Implements Interfaces.ScraperModule_Trailer_Movie.InjectSetupScraper
+    Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.ExternalModule.InjectSettingsPanel
         Dim Spanel As New Containers.SettingsPanel
         _setup = New frmSettingsHolder
         LoadSettings()
@@ -112,16 +107,15 @@ Public Class TMDB_Trailer
 
         _setup.orderChanged()
 
-        Spanel.Name = String.Concat(Me._Name, "Scraper")
+        Spanel.Name = String.Concat(_Name, "Scraper")
         Spanel.Text = "TMDB"
         Spanel.Prefix = "TMDBTrailer_"
         Spanel.Order = 110
         Spanel.Parent = "pnlMovieTrailer"
         Spanel.Type = Master.eLang.GetString(36, "Movies")
-        Spanel.ImageIndex = If(Me._ScraperEnabled, 9, 10)
-        Spanel.Panel = Me._setup.pnlSettings
+        Spanel.ImageIndex = If(_ScraperEnabled, 9, 10)
+        Spanel.Panel = _setup.pnlSettings
 
-        AddHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
         AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
         AddHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
         Return Spanel
@@ -136,24 +130,25 @@ Public Class TMDB_Trailer
 
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Trailer_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.ExternalModule.Run
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Start]")
+
+        Dim nModuleResult As New Interfaces.ModuleResult
 
         LoadSettings()
         _SpecialSettings.PrefLanguage = DBMovie.Language
 
         If String.IsNullOrEmpty(DBMovie.MainDetails.TMDB) Then
-            DBMovie.MainDetails.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.MainDetails.IMDB)
+            'DBMovie.MainDetails.TMDB = ModulesManager.Instance.GetMovieTMDBID(DBMovie.MainDetails.IMDB)
         End If
 
         If Not String.IsNullOrEmpty(DBMovie.MainDetails.TMDB) Then
             Dim _scraper As New TMDB.Scraper(_SpecialSettings)
-
-            TrailerList = _scraper.GetTrailers(DBMovie.MainDetails.TMDB)
+            nModuleResult.ScraperResult_Trailer = _scraper.GetTrailers(DBMovie.MainDetails.TMDB)
         End If
 
         logger.Trace("[TMDB_Trailer] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return nModuleResult
     End Function
 
     Sub SaveSettings()
@@ -164,20 +159,15 @@ Public Class TMDB_Trailer
         End Using
     End Sub
 
-    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ScraperModule_Trailer_Movie.SaveSetupScraper
+    Sub SaveSetupScraper(ByVal DoDispose As Boolean) Implements Interfaces.ExternalModule.SaveSetupScraper
         _SpecialSettings.FallBackEng = _setup.chkFallBackEng.Checked
         SaveSettings()
         'ModulesManager.Instance.SaveSettings()
         If DoDispose Then
-            RemoveHandler _setup.SetupScraperChanged, AddressOf Handle_SetupScraperChanged
             RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
             RemoveHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
             _setup.Dispose()
         End If
-    End Sub
-
-    Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Trailer_Movie.ScraperOrderChanged
-        _setup.orderChanged()
     End Sub
 
 #End Region 'Methods
@@ -187,9 +177,11 @@ Public Class TMDB_Trailer
     Structure SpecialSettings
 
 #Region "Fields"
+
         Dim APIKey As String
         Dim PrefLanguage As String
         Dim FallBackEng As Boolean
+
 #End Region 'Fields
 
     End Structure

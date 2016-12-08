@@ -127,35 +127,35 @@ Public Class TMDB_Image
 
 #Region "Methods"
 
-    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+    Function QueryScraperCapabilities_Movie(ByVal cap As Enums.ScrapeModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 Return ConfigModifier_Movie.MainFanart
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 Return ConfigModifier_Movie.MainPoster
         End Select
         Return False
     End Function
 
-    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
+    Function QueryScraperCapabilities_MovieSet(ByVal cap As Enums.ScrapeModifierType) As Boolean Implements Interfaces.ScraperModule_Image_MovieSet.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 Return ConfigModifier_MovieSet.MainFanart
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 Return ConfigModifier_MovieSet.MainPoster
         End Select
         Return False
     End Function
 
-    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
+    Function QueryScraperCapabilities_TV(ByVal cap As Enums.ScrapeModifierType) As Boolean Implements Interfaces.ScraperModule_Image_TV.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ModifierType.EpisodePoster
+            Case Enums.ScrapeModifierType.EpisodePoster
                 Return ConfigModifier_TV.EpisodePoster
-            Case Enums.ModifierType.MainFanart
+            Case Enums.ScrapeModifierType.MainFanart
                 Return ConfigModifier_TV.MainFanart
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 Return ConfigModifier_TV.MainPoster
-            Case Enums.ModifierType.SeasonPoster
+            Case Enums.ScrapeModifierType.SeasonPoster
                 Return ConfigModifier_TV.SeasonPoster
         End Select
         Return False
@@ -344,7 +344,7 @@ Public Class TMDB_Image
         ConfigModifier_TV.MainExtrafanarts = ConfigModifier_TV.MainFanart
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Image_Movie.Scraper
         logger.Trace("[TMDB_Image] [Scraper_Movie] [Start]")
 
         LoadSettings_Movie()
@@ -364,10 +364,10 @@ Public Class TMDB_Image
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
-    Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
+    Function Scraper_MovieSet(ByRef DBMovieSet As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Image_MovieSet.Scraper
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Start]")
 
         LoadSettings_MovieSet()
@@ -387,10 +387,10 @@ Public Class TMDB_Image
         End If
 
         logger.Trace("[TMDB_Image] [Scraper_MovieSet] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
-    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_TV.Scraper
+    Function Scraper_TV(ByRef DBTV As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Image_TV.Scraper
         logger.Trace("[TMDB_Image] [Scraper_TV] [Start]")
 
         LoadSettings_TV()
@@ -436,7 +436,7 @@ Public Class TMDB_Image
         End Select
 
         logger.Trace("[TMDB_Image] [Scraper_TV] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Sub SaveSettings_Movie()

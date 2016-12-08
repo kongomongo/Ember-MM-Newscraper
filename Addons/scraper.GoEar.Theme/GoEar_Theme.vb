@@ -139,7 +139,7 @@ Public Class GoEar_Theme
         End If
     End Sub
 
-    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Theme_Movie.Scraper
+    Function Scraper_Movie(ByRef DBMovie As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Theme_Movie.Scraper
         logger.Trace("[GoEar_Theme] [Scraper_Movie] [Start]")
 
         Dim tGoEar As New GoEar.Scraper(DBMovie.MainDetails.OriginalTitle, DBMovie.ListTitle)
@@ -149,7 +149,7 @@ Public Class GoEar_Theme
         End If
 
         logger.Trace("[GoEar_Theme] [Scraper_Movie] [Done]")
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Public Sub ScraperOrderChanged() Implements EmberAPI.Interfaces.ScraperModule_Theme_Movie.ScraperOrderChanged

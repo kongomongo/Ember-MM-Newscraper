@@ -536,7 +536,7 @@ Public Class dlgEditTVEpisode
 
             'Fanart
             If Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodeFanart) AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.MainFanart) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodeFanart) AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
                 If .Fanart.ImageOriginal.Image IsNot Nothing Then
@@ -552,7 +552,7 @@ Public Class dlgEditTVEpisode
 
             'Poster
             If Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ModifierType.EpisodePoster) Then
+                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodePoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
                 If .Poster.ImageOriginal.Image IsNot Nothing Then
@@ -1085,7 +1085,7 @@ Public Class dlgEditTVEpisode
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodeFanart, True)
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodeFanart, True)
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
@@ -1159,7 +1159,7 @@ Public Class dlgEditTVEpisode
         Dim ScrapeModifiers As New Structures.ScrapeModifiers
 
         Cursor = Cursors.WaitCursor
-        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.EpisodePoster, True)
+        Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodePoster, True)
         If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()

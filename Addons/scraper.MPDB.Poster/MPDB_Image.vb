@@ -78,9 +78,9 @@ Public Class MPDB_Image
 #End Region 'Properties
 
 #Region "Methods"
-    Function QueryScraperCapabilities(ByVal cap As Enums.ModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
+    Function QueryScraperCapabilities(ByVal cap As Enums.ScrapeModifierType) As Boolean Implements Interfaces.ScraperModule_Image_Movie.QueryScraperCapabilities
         Select Case cap
-            Case Enums.ModifierType.MainPoster
+            Case Enums.ScrapeModifierType.MainPoster
                 Return ConfigScrapeModifiers.MainPoster
         End Select
         Return False
@@ -135,13 +135,13 @@ Public Class MPDB_Image
         ConfigScrapeModifiers.MainPoster = AdvancedSettings.GetBooleanSetting("DoPoster", True)
     End Sub
 
-    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifiers) As Interfaces.ModuleResult Implements Interfaces.ScraperModule_Image_Movie.Scraper
+    Function Scraper(ByRef DBMovie As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifier As Structures.ScrapeModifiers) As Interfaces.ModuleResult_old Implements Interfaces.ScraperModule_Image_Movie.Scraper
 
         LoadSettings()
 
         ImagesContainer = MPDB.GetMPDBPosters(DBMovie.MainDetails.IMDB)
 
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Sub SaveSettings()

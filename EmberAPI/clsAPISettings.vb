@@ -1713,11 +1713,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+    Public Property MovieGeneralCustomScrapeButtonModifierType() As Enums.ScrapeModifierType
         Get
             Return _XMLSettings.MovieGeneralCustomScrapeButtonModifierType
         End Get
-        Set(ByVal value As Enums.ModifierType)
+        Set(ByVal value As Enums.ScrapeModifierType)
             _XMLSettings.MovieGeneralCustomScrapeButtonModifierType = value
         End Set
     End Property
@@ -1740,11 +1740,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+    Public Property MovieSetGeneralCustomScrapeButtonModifierType() As Enums.ScrapeModifierType
         Get
             Return _XMLSettings.MovieSetGeneralCustomScrapeButtonModifierType
         End Get
-        Set(ByVal value As Enums.ModifierType)
+        Set(ByVal value As Enums.ScrapeModifierType)
             _XMLSettings.MovieSetGeneralCustomScrapeButtonModifierType = value
         End Set
     End Property
@@ -1767,11 +1767,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVGeneralCustomScrapeButtonModifierType() As Enums.ModifierType
+    Public Property TVGeneralCustomScrapeButtonModifierType() As Enums.ScrapeModifierType
         Get
             Return _XMLSettings.TVGeneralCustomScrapeButtonModifierType
         End Get
-        Set(ByVal value As Enums.ModifierType)
+        Set(ByVal value As Enums.ScrapeModifierType)
             _XMLSettings.TVGeneralCustomScrapeButtonModifierType = value
         End Set
     End Property
@@ -7251,7 +7251,7 @@ Public Class Settings
         MovieGeneralCustomMarker3Name = String.Empty
         MovieGeneralCustomMarker4Name = String.Empty
         MovieGeneralCustomScrapeButtonEnabled = False
-        MovieGeneralCustomScrapeButtonModifierType = Enums.ModifierType.All
+        MovieGeneralCustomScrapeButtonModifierType = Enums.ScrapeModifierType.All
         MovieGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieGeneralFlagLang = String.Empty
         MovieGeneralIgnoreLastScan = True
@@ -7390,7 +7390,7 @@ Public Class Settings
         MovieSetFanartResize = False
         MovieSetFanartWidth = 0
         MovieSetGeneralCustomScrapeButtonEnabled = False
-        MovieSetGeneralCustomScrapeButtonModifierType = Enums.ModifierType.All
+        MovieSetGeneralCustomScrapeButtonModifierType = Enums.ScrapeModifierType.All
         MovieSetGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieSetGeneralMarkNew = False
         MovieSetGeneralMediaListSorting = New List(Of ListSorting)
@@ -7496,7 +7496,7 @@ Public Class Settings
         TVGeneralClickScrape = False
         TVGeneralClickScrapeAsk = False
         TVGeneralCustomScrapeButtonEnabled = False
-        TVGeneralCustomScrapeButtonModifierType = Enums.ModifierType.All
+        TVGeneralCustomScrapeButtonModifierType = Enums.ScrapeModifierType.All
         TVGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         TVGeneralEpisodeListSorting = New List(Of ListSorting)
         TVGeneralFlagLang = String.Empty
@@ -7921,110 +7921,110 @@ Public Class Settings
         Return Paths
     End Function
 
-    Public Function FilenameAnyEnabled(ByVal tContentType As Enums.ContentType, ByVal tImageType As Enums.ModifierType) As Boolean
+    Public Function FilenameAnyEnabled(ByVal tContentType As Enums.ContentType, ByVal tImageType As Enums.ScrapeModifierType) As Boolean
         Dim bResult As Boolean
         Select Case tContentType
             Case Enums.ContentType.Movie
                 Select Case tImageType
-                    Case Enums.ModifierType.MainActorThumbs
+                    Case Enums.ScrapeModifierType.MainActorThumbs
                         Return FilenameAnyEnabled_Movie_Actorthumbs()
-                    Case Enums.ModifierType.MainBanner
+                    Case Enums.ScrapeModifierType.MainBanner
                         Return FilenameAnyEnabled_Movie_Banner()
-                    Case Enums.ModifierType.MainClearArt
+                    Case Enums.ScrapeModifierType.MainClearArt
                         Return FilenameAnyEnabled_Movie_ClearArt()
-                    Case Enums.ModifierType.MainClearLogo
+                    Case Enums.ScrapeModifierType.MainClearLogo
                         Return FilenameAnyEnabled_Movie_ClearLogo()
-                    Case Enums.ModifierType.MainDiscArt
+                    Case Enums.ScrapeModifierType.MainDiscArt
                         Return FilenameAnyEnabled_Movie_DiscArt()
-                    Case Enums.ModifierType.MainExtrafanarts
+                    Case Enums.ScrapeModifierType.MainExtrafanarts
                         Return FilenameAnyEnabled_Movie_Extrafanarts()
-                    Case Enums.ModifierType.MainExtrathumbs
+                    Case Enums.ScrapeModifierType.MainExtrathumbs
                         Return FilenameAnyEnabled_Movie_Extrathumbs()
-                    Case Enums.ModifierType.MainFanart
+                    Case Enums.ScrapeModifierType.MainFanart
                         Return FilenameAnyEnabled_Movie_Fanart()
-                    Case Enums.ModifierType.MainLandscape
+                    Case Enums.ScrapeModifierType.MainLandscape
                         Return FilenameAnyEnabled_Movie_Landscape()
-                    Case Enums.ModifierType.MainNFO
+                    Case Enums.ScrapeModifierType.MainNFO
                         Return FilenameAnyEnabled_Movie_NFO()
-                    Case Enums.ModifierType.MainPoster
+                    Case Enums.ScrapeModifierType.MainPoster
                         Return FilenameAnyEnabled_Movie_Poster()
-                    Case Enums.ModifierType.MainTheme
+                    Case Enums.ScrapeModifierType.MainTheme
                         Return FilenameAnyEnabled_Movie_Theme()
-                    Case Enums.ModifierType.MainTrailer
+                    Case Enums.ScrapeModifierType.MainTrailer
                         Return FilenameAnyEnabled_Movie_Trailer()
                 End Select
             Case Enums.ContentType.MovieSet
                 Select Case tImageType
-                    Case Enums.ModifierType.MainBanner
+                    Case Enums.ScrapeModifierType.MainBanner
                         Return FilenameAnyEnabled_MovieSet_Banner()
-                    Case Enums.ModifierType.MainClearArt
+                    Case Enums.ScrapeModifierType.MainClearArt
                         Return FilenameAnyEnabled_MovieSet_ClearArt()
-                    Case Enums.ModifierType.MainClearLogo
+                    Case Enums.ScrapeModifierType.MainClearLogo
                         Return FilenameAnyEnabled_MovieSet_ClearLogo()
-                    Case Enums.ModifierType.MainDiscArt
+                    Case Enums.ScrapeModifierType.MainDiscArt
                         Return FilenameAnyEnabled_MovieSet_DiscArt()
-                    Case Enums.ModifierType.MainFanart
+                    Case Enums.ScrapeModifierType.MainFanart
                         Return FilenameAnyEnabled_MovieSet_Fanart()
-                    Case Enums.ModifierType.MainLandscape
+                    Case Enums.ScrapeModifierType.MainLandscape
                         Return FilenameAnyEnabled_MovieSet_Landscape()
-                    Case Enums.ModifierType.MainNFO
+                    Case Enums.ScrapeModifierType.MainNFO
                         Return FilenameAnyEnabled_MovieSet_NFO()
-                    Case Enums.ModifierType.MainPoster
+                    Case Enums.ScrapeModifierType.MainPoster
                         Return FilenameAnyEnabled_MovieSet_Poster()
                 End Select
             Case Enums.ContentType.TVEpisode
                 Select Case tImageType
-                    Case Enums.ModifierType.EpisodeActorThumbs
+                    Case Enums.ScrapeModifierType.EpisodeActorThumbs
                         Return FilenameAnyEnabled_TVEpisode_ActorThumbs()
-                    Case Enums.ModifierType.EpisodeFanart
+                    Case Enums.ScrapeModifierType.EpisodeFanart
                         Return FilenameAnyEnabled_TVEpisode_Fanart()
-                    Case Enums.ModifierType.EpisodeNFO
+                    Case Enums.ScrapeModifierType.EpisodeNFO
                         Return FilenameAnyEnabled_TVEpisode_NFO()
-                    Case Enums.ModifierType.EpisodePoster
+                    Case Enums.ScrapeModifierType.EpisodePoster
                         Return FilenameAnyEnabled_TVEpisode_Poster()
                 End Select
             Case Enums.ContentType.TVSeason
                 Select Case tImageType
-                    Case Enums.ModifierType.AllSeasonsBanner
+                    Case Enums.ScrapeModifierType.AllSeasonsBanner
                         Return FilenameAnyEnabled_TVAllSeasons_Banner()
-                    Case Enums.ModifierType.AllSeasonsFanart
+                    Case Enums.ScrapeModifierType.AllSeasonsFanart
                         Return FilenameAnyEnabled_TVAllSeasons_Fanart()
-                    Case Enums.ModifierType.AllSeasonsLandscape
+                    Case Enums.ScrapeModifierType.AllSeasonsLandscape
                         Return FilenameAnyEnabled_TVAllSeasons_Landscape()
-                    Case Enums.ModifierType.AllSeasonsPoster
+                    Case Enums.ScrapeModifierType.AllSeasonsPoster
                         Return FilenameAnyEnabled_TVAllSeasons_Poster()
-                    Case Enums.ModifierType.SeasonBanner
+                    Case Enums.ScrapeModifierType.SeasonBanner
                         Return FilenameAnyEnabled_TVSeason_Banner()
-                    Case Enums.ModifierType.SeasonFanart
+                    Case Enums.ScrapeModifierType.SeasonFanart
                         Return FilenameAnyEnabled_TVSeason_Fanart()
-                    Case Enums.ModifierType.SeasonLandscape
+                    Case Enums.ScrapeModifierType.SeasonLandscape
                         Return FilenameAnyEnabled_TVSeason_Landscape()
-                    Case Enums.ModifierType.SeasonPoster
+                    Case Enums.ScrapeModifierType.SeasonPoster
                         Return FilenameAnyEnabled_TVSeason_Poster()
                 End Select
             Case Enums.ContentType.TVShow
                 Select Case tImageType
-                    Case Enums.ModifierType.MainActorThumbs
+                    Case Enums.ScrapeModifierType.MainActorThumbs
                         Return FilenameAnyEnabled_TVShow_ActorTumbs()
-                    Case Enums.ModifierType.MainBanner
+                    Case Enums.ScrapeModifierType.MainBanner
                         Return FilenameAnyEnabled_TVShow_Banner()
-                    Case Enums.ModifierType.MainCharacterArt
+                    Case Enums.ScrapeModifierType.MainCharacterArt
                         Return FilenameAnyEnabled_TVShow_CharacterArt()
-                    Case Enums.ModifierType.MainClearArt
+                    Case Enums.ScrapeModifierType.MainClearArt
                         Return FilenameAnyEnabled_TVShow_ClearArt()
-                    Case Enums.ModifierType.MainClearLogo
+                    Case Enums.ScrapeModifierType.MainClearLogo
                         Return FilenameAnyEnabled_TVShow_ClearLogo()
-                    Case Enums.ModifierType.MainExtrafanarts
+                    Case Enums.ScrapeModifierType.MainExtrafanarts
                         Return FilenameAnyEnabled_TVShow_Extrafanarts()
-                    Case Enums.ModifierType.MainFanart
+                    Case Enums.ScrapeModifierType.MainFanart
                         Return FilenameAnyEnabled_TVShow_Fanart()
-                    Case Enums.ModifierType.MainLandscape
+                    Case Enums.ScrapeModifierType.MainLandscape
                         Return FilenameAnyEnabled_TVShow_Landscape()
-                    Case Enums.ModifierType.MainNFO
+                    Case Enums.ScrapeModifierType.MainNFO
                         Return FilenameAnyEnabled_TVShow_NFO()
-                    Case Enums.ModifierType.MainPoster
+                    Case Enums.ScrapeModifierType.MainPoster
                         Return FilenameAnyEnabled_TVShow_Poster()
-                    Case Enums.ModifierType.MainTheme
+                    Case Enums.ScrapeModifierType.MainTheme
                         Return FilenameAnyEnabled_TVShow_Theme()
                 End Select
         End Select

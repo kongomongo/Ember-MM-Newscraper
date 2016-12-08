@@ -1394,7 +1394,7 @@ Public Class NFO
         If Not DBMovie.FilenameSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ModifierType.MainNFO, ForceFileCleanup)
+            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, Enums.ScrapeModifierType.MainNFO, ForceFileCleanup)
                 If File.Exists(a) Then
                     File.Delete(a)
                 End If
@@ -1412,7 +1412,7 @@ Public Class NFO
         If Not DBMovieSet.MainDetails.TitleSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ModifierType.MainNFO, bForceOldTitle)
+            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, Enums.ScrapeModifierType.MainNFO, bForceOldTitle)
                 If File.Exists(a) Then
                     File.Delete(a)
                 End If
@@ -1732,7 +1732,7 @@ Public Class NFO
     End Function
 
     Public Shared Function GetNfoPath_MovieSet(ByVal DBElement As Database.DBElement) As String
-        For Each a In FileUtils.GetFilenameList.MovieSet(DBElement, Enums.ModifierType.MainNFO)
+        For Each a In FileUtils.GetFilenameList.MovieSet(DBElement, Enums.ScrapeModifierType.MainNFO)
             If File.Exists(a) Then
                 Return a
             End If
@@ -2307,7 +2307,7 @@ Public Class NFO
                     End If
                 End If
 
-                For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNFO_Movie(a, False)
                     End If
@@ -2356,7 +2356,7 @@ Public Class NFO
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
 
-                For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainNFO)
                     'If Not Master.eSettings.GeneralOverwriteNfo Then
                     '    RenameNonConfNfo(a, False)
                     'End If
@@ -2400,7 +2400,7 @@ Public Class NFO
                 Dim EpList As New List(Of MediaContainers.MainDetails)
                 Dim sBuilder As New StringBuilder
 
-                For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ModifierType.EpisodeNFO)
+                For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNFO_TVEpisode(a, False)
                     End If
@@ -2517,7 +2517,7 @@ Public Class NFO
                     End If
                 End If
 
-                For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ModifierType.MainNFO)
+                For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainNFO)
                     If Not Master.eSettings.GeneralOverwriteNfo Then
                         RenameNonConfNFO_TVShow(a)
                     End If

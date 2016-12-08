@@ -32,13 +32,10 @@ Public Class genericMediaSources
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-
+    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-
-    Public Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
-
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
 #End Region 'Events
 
@@ -91,7 +88,7 @@ Public Class genericMediaSources
         SPanel.Name = Master.eLang.GetString(784, "Media Sources Editor")
         SPanel.Text = Master.eLang.GetString(784, "Media Sources Editor")
         SPanel.Prefix = "MediaSourcesEditor_"
-        SPanel.Type = Master.eLang.GetString(429, "Miscellaneous")
+        SPanel.Type = Enums.PanelType.Core
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MediaSourcesEditor
         SPanel.Order = 100
@@ -104,7 +101,7 @@ Public Class genericMediaSources
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
 
     End Function
 

@@ -51,9 +51,9 @@ Public Class genericGenreManager
 #Region "Events"
 
     Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
+    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
 
 #End Region 'Events
 
@@ -113,7 +113,7 @@ Public Class genericGenreManager
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(782, "Genre Manager")
         SPanel.Prefix = "GenreManager_"
-        SPanel.Type = Master.eLang.GetString(802, "Modules")
+        SPanel.Type = Enums.PanelType.External
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Image = My.Resources.icon
         SPanel.Order = 100
@@ -126,8 +126,8 @@ Public Class genericGenreManager
         RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult With {.breakChain = False}
+    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+        Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
     Sub Disable()
