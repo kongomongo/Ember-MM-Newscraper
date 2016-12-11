@@ -29,14 +29,14 @@ Public Class NotificationsModule
     Private eSettings As New NotifySettings
     Private _enabled As Boolean = False
     Private _name As String = "Notifications"
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -66,9 +66,9 @@ Public Class NotificationsModule
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Notification}) 'Enums.ModuleType.Notification
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Notification}) 'Enums.ModuleType.Notification
         End Get
     End Property
 
@@ -90,7 +90,7 @@ Public Class NotificationsModule
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         _setup.chkEnabled.Checked = _enabled
         _setup.chkOnError.Checked = eSettings.OnError
         _setup.chkOnNewMovie.Checked = eSettings.OnNewMovie
@@ -99,7 +99,7 @@ Public Class NotificationsModule
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(487, "Notifications")
         SPanel.Prefix = "Notify_"
-        SPanel.Type = Enums.PanelType.External
+        SPanel.Type = Enums.SettingsPanelType.Addon
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
@@ -108,9 +108,9 @@ Public Class NotificationsModule
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Try
-            If mType = Enums.ModuleEventType.Notification Then
+            If mType = Enums.AddonEventType.Notification Then
                 Dim ShowIt As Boolean = False
 
                 Select Case True
@@ -153,7 +153,7 @@ Public Class NotificationsModule
     End Sub
 
     Private Sub Handle_NotifierClicked(ByVal _type As String)
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {_type}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {_type}))
     End Sub
 
     Private Sub Handle_NotifierClosed()

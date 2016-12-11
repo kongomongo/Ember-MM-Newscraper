@@ -31,7 +31,7 @@ Public Class FrameExtrator
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _name As String = "Frame Extractor"
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
     Private frmTV As frmTVExtrator
     Private frmMovie As frmMovieExtractor
 
@@ -39,7 +39,7 @@ Public Class FrameExtrator
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -75,9 +75,9 @@ Public Class FrameExtrator
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.FrameExtrator_Movie, Enums.ModuleEventType.FrameExtrator_TVEpisode, Enums.ModuleEventType.RandomFrameExtrator})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.FrameExtrator_Movie, Enums.AddonEventType.FrameExtrator_TVEpisode, Enums.AddonEventType.RandomFrameExtrator})
         End Get
     End Property
 
@@ -98,12 +98,12 @@ Public Class FrameExtrator
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         _setup.cbEnabled.Checked = _enabled
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(310, "Frame Extractor")
         SPanel.Prefix = "Extrator_"
-        SPanel.Type = Enums.PanelType.Core
+        SPanel.Type = Enums.SettingsPanelType.Core
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings()
@@ -112,17 +112,17 @@ Public Class FrameExtrator
         Return SPanel
     End Function
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
-            Case Enums.ModuleEventType.FrameExtrator_Movie
+            Case Enums.AddonEventType.FrameExtrator_Movie
                 frmMovie = New frmMovieExtractor(_dbelement.Filename)
                 _params(0) = frmMovie.pnlExtrator
                 AddHandler frmMovie.GenericEvent, AddressOf Handle_GenericEvent
-            Case Enums.ModuleEventType.FrameExtrator_TVEpisode
+            Case Enums.AddonEventType.FrameExtrator_TVEpisode
                 frmTV = New frmTVExtrator(_dbelement.Filename)
                 AddHandler frmTV.GenericEvent, AddressOf Handle_GenericEvent
                 _params(0) = frmTV.pnlExtrator
-            Case Enums.ModuleEventType.RandomFrameExtrator
+            Case Enums.AddonEventType.RandomFrameExtrator
                 'TODO: check if it does not end with memory leak
                 Dim dbm As Database.DBElement = DirectCast(_params(0), Database.DBElement)
                 Dim auto As Integer = DirectCast(_params(1), Integer)
@@ -131,7 +131,7 @@ Public Class FrameExtrator
         End Select
     End Function
 
-    Sub Handle_GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Sub Handle_GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
         RaiseEvent GenericEvent(mType, _params)
     End Sub
 

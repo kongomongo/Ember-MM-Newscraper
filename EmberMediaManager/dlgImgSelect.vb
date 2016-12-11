@@ -707,7 +707,7 @@ Public Class dlgImgSelect
         currListImage.Image.LoadAndCache(tContentType, True, True)
 
         If currListImage.Image.ImageOriginal.Image IsNot Nothing Then
-            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(currListImage.Image.ImageOriginal.Image)
+            AddonsManager.Instance.RuntimeObjects.InvokeOpenImageViewer(currListImage.Image.ImageOriginal.Image)
         End If
         Cursor.Current = Cursors.Default
     End Sub
@@ -1970,7 +1970,7 @@ Public Class dlgImgSelect
         tImage.LoadAndCache(tContentType, True, True)
 
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
+            AddonsManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
         End If
         Cursor.Current = Cursors.Default
     End Sub
@@ -2009,7 +2009,7 @@ Public Class dlgImgSelect
         tImage.LoadAndCache(tContentType, True, True)
 
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
+            AddonsManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
         End If
         Cursor.Current = Cursors.Default
     End Sub
@@ -2044,7 +2044,7 @@ Public Class dlgImgSelect
         tImage.LoadAndCache(tContentType, True, True)
 
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            ModulesManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
+            AddonsManager.Instance.RuntimeObjects.InvokeOpenImageViewer(tImage.ImageOriginal.Image)
         End If
         Cursor.Current = Cursors.Default
     End Sub

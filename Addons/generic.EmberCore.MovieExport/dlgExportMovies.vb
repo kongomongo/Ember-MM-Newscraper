@@ -206,7 +206,7 @@ Public Class dlgExportMovies
     Private Sub cbList_Movies_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_Movies.SelectedIndexChanged
         If Not strCurrList_Movies = CType(cbList_Movies.SelectedItem, KeyValuePair(Of String, String)).Value Then
             strCurrList_Movies = CType(cbList_Movies.SelectedItem, KeyValuePair(Of String, String)).Value
-            ModulesManager.Instance.RuntimeObjects.ListMovies = strCurrList_Movies
+            AddonsManager.Instance.RuntimeObjects.ListMovies = strCurrList_Movies
             bHasChangedList_Movies = True
             btnBuild.Enabled = True
         End If
@@ -215,7 +215,7 @@ Public Class dlgExportMovies
     Private Sub cbList_TVShows_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbList_TVShows.SelectedIndexChanged
         If Not strCurrList_TVShows = CType(cbList_TVShows.SelectedItem, KeyValuePair(Of String, String)).Value Then
             strCurrList_TVShows = CType(cbList_TVShows.SelectedItem, KeyValuePair(Of String, String)).Value
-            ModulesManager.Instance.RuntimeObjects.ListMovies = strCurrList_Movies
+            AddonsManager.Instance.RuntimeObjects.ListMovies = strCurrList_Movies
             bHasChangedList_TVShows = True
             btnBuild.Enabled = True
         End If

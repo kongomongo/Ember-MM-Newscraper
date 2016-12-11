@@ -95,7 +95,7 @@ Public Class dlgTagManager
         gbMoviesFilter.Text = Master.eLang.GetString(330, "Filter")
 
         'load current movielist-view/selection
-        For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
+        For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.Rows
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
             If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                 lstFilteredMovies.Add(DBElement)
@@ -543,7 +543,7 @@ Public Class dlgTagManager
         If rdMoviesFiltered.Checked Then
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
-            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.Rows
+            For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
@@ -559,7 +559,7 @@ Public Class dlgTagManager
         If rdMoviesSelected.Checked Then
             lstFilteredMovies.Clear()
             'load current movielist-view/selection
-            For Each sRow As DataGridViewRow In ModulesManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
+            For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)

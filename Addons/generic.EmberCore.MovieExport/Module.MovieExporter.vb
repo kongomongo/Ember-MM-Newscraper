@@ -37,14 +37,14 @@ Public Class MovieExporterModule
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private _Name As String = "MovieListExporter"
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
     Private MySettings As New _MySettings
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -53,9 +53,9 @@ Public Class MovieExporterModule
 
 #Region "Properties"
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.CommandLine})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic, Enums.AddonEventType.CommandLine})
         End Get
     End Property
 
@@ -96,9 +96,9 @@ Public Class MovieExporterModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Select Case mType
-            Case Enums.ModuleEventType.CommandLine
+            Case Enums.AddonEventType.CommandLine
                 Dim strTemplatePath As String = String.Empty
                 Dim BuildPath As String = String.Empty
 
@@ -174,11 +174,11 @@ Public Class MovieExporterModule
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, mnuMainToolsExporter)
 
         'cmnuTrayTools
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, cmnuTrayToolsExporter)
     End Sub
 
@@ -196,13 +196,13 @@ Public Class MovieExporterModule
         'mnuMainTools
         mnuMainToolsExporter.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsExporter)
 
         'cmnuTrayTools
         cmnuTrayToolsExporter.Image = New Bitmap(My.Resources.icon)
         cmnuTrayToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayToolsExporter)
     End Sub
 
@@ -228,7 +228,7 @@ Public Class MovieExporterModule
     End Sub
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         _setup.cbEnabled.Checked = _enabled
         Dim SPanel As New Containers.SettingsPanel
 
@@ -238,7 +238,7 @@ Public Class MovieExporterModule
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(335, "Movie List Exporter")
         SPanel.Prefix = "Exporter_"
-        SPanel.Type = Enums.PanelType.External
+        SPanel.Type = Enums.SettingsPanelType.Addon
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
@@ -248,13 +248,13 @@ Public Class MovieExporterModule
     End Function
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsExporter.Click, cmnuTrayToolsExporter.Click
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
         Using dExportMovies As New dlgExportMovies
             dExportMovies.ShowDialog()
         End Using
 
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
 
     Sub LoadSettings()

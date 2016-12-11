@@ -2197,7 +2197,7 @@ Public Class NFO
             Try
                 Dim params As New List(Of Object)(New Object() {nShow})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFORead_TVShow, params, doContinue, False)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.OnNFORead_TVShow, params, doContinue, False)
 
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -2275,7 +2275,7 @@ Public Class NFO
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
                 Dim doContinue As Boolean = True
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_Movie, params, doContinue, False)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.OnNFOSave_Movie, params, doContinue, False)
                 If Not doContinue Then Return
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -2487,7 +2487,7 @@ Public Class NFO
         Try
             Dim params As New List(Of Object)(New Object() {tDBElement})
             Dim doContinue As Boolean = True
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.OnNFOSave_TVShow, params, doContinue, False)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.OnNFOSave_TVShow, params, doContinue, False)
             If Not doContinue Then Return
         Catch ex As Exception
         End Try

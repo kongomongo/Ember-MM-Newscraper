@@ -39,18 +39,17 @@ Public Class genericGenreManager
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _Name As String = "GenresEditor"
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
     Private _AssemblyName As String = String.Empty
     Private _enabled As Boolean = False
     Private WithEvents cmnuTrayToolsRenamer As New ToolStripMenuItem
     Private WithEvents mnuMainToolsRenamer As New ToolStripMenuItem
 
-
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -86,9 +85,9 @@ Public Class genericGenreManager
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic})
         End Get
     End Property
 
@@ -108,12 +107,12 @@ Public Class genericGenreManager
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         _setup.chkEnabled.Checked = _enabled
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(782, "Genre Manager")
         SPanel.Prefix = "GenreManager_"
-        SPanel.Type = Enums.PanelType.External
+        SPanel.Type = Enums.SettingsPanelType.Addon
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Image = My.Resources.icon
         SPanel.Order = 100
@@ -126,7 +125,7 @@ Public Class genericGenreManager
         RaiseEvent ModuleEnabledChanged(_Name, State, 0)
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
@@ -134,11 +133,11 @@ Public Class genericGenreManager
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(mnuMainToolsRenamer)
 
         'cmnuTrayTools
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         tsi.DropDownItems.Remove(cmnuTrayToolsRenamer)
     End Sub
 
@@ -149,13 +148,13 @@ Public Class genericGenreManager
         mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
         mnuMainToolsRenamer.Text = Master.eLang.GetString(782, "Genre Manager")
         mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsRenamer)
 
         'cmnuTrayTools
         cmnuTrayToolsRenamer.Image = New Bitmap(My.Resources.icon)
         cmnuTrayToolsRenamer.Text = Master.eLang.GetString(782, "Genre Manager")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayToolsRenamer)
     End Sub
 
@@ -168,12 +167,12 @@ Public Class genericGenreManager
     End Sub
 
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
         Using dGenreManager As New dlgGenreManager
             dGenreManager.ShowDialog()
         End Using
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
     End Sub
 
     Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup

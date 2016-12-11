@@ -38,7 +38,7 @@ Public Class frmMovieExtractor
 
 #Region "Events"
 
-    Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+    Event GenericEvent(ByVal mType As EmberAPI.Enums.AddonEventType, ByRef _params As System.Collections.Generic.List(Of Object))
 
 #End Region 'Events
 
@@ -213,7 +213,7 @@ Public Class frmMovieExtractor
             exImage.ResizeExtraFanart(Path.Combine(Master.TempPath, "frame.jpg"), sPath)
             exImage.Clear()
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrafanartToSave", sPath}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrafanartToSave", sPath}))
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -237,7 +237,7 @@ Public Class frmMovieExtractor
             exImage.ResizeExtraThumb(Path.Combine(Master.TempPath, "frame.jpg"), sPath)
             exImage.Clear()
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrathumbToSave", sPath}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"ExtrathumbToSave", sPath}))
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -249,7 +249,7 @@ Public Class frmMovieExtractor
     Private Sub btnFrameSaveAsFanart_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSaveAsFanart.Click
         Try
             If pbFrame.Image IsNot Nothing Then
-                RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"FanartToSave"}))
+                RaiseEvent GenericEvent(Enums.AddonEventType.FrameExtrator_Movie, New List(Of Object)(New Object() {"FanartToSave"}))
             End If
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

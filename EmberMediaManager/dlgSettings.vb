@@ -29,10 +29,11 @@ Imports NLog
 Public Class dlgSettings
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private currPanel As New Panel
-    Private currText As String = String.Empty
+    Private _currpanel As New Panel
+    Private _currbutton As New ButtonTag
     Private dHelp As New Dictionary(Of String, String)
     Private didApply As Boolean = False
     Private MovieMeta As New List(Of Settings.MetadataPerType)
@@ -132,7 +133,7 @@ Public Class dlgSettings
               .Image = My.Resources.General,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.PanelType.Options, .iOrdering = 100}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Options, .iIndex = 100, .strTitle = Master.eLang.GetString(390, "Options")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
@@ -140,7 +141,7 @@ Public Class dlgSettings
               .Image = My.Resources.Movie,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.PanelType.Movie, .iOrdering = 200}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Movie, .iIndex = 200, .strTitle = Master.eLang.GetString(36, "Movies")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
@@ -148,7 +149,7 @@ Public Class dlgSettings
               .Image = My.Resources.MovieSet,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.PanelType.MovieSet, .iOrdering = 300}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.MovieSet, .iIndex = 300, .strTitle = Master.eLang.GetString(1203, "MovieSets")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
@@ -156,7 +157,7 @@ Public Class dlgSettings
               .Image = My.Resources.TVShows,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.PanelType.TV, .iOrdering = 400}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.TV, .iIndex = 400, .strTitle = Master.eLang.GetString(653, "TV Shows")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
@@ -164,16 +165,15 @@ Public Class dlgSettings
               .Image = My.Resources.modules,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.PanelType.External, .iOrdering = 500}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Addon, .iIndex = 500, .strTitle = Master.eLang.GetString(802, "Modules")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
-
         TSB = New ToolStripButton With {
             .Text = Master.eLang.GetString(429, "Miscellaneous"),
             .Image = My.Resources.Miscellaneous,
             .TextImageRelation = TextImageRelation.ImageAboveText,
             .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-            .Tag = New ButtonTag With {.ePanelType = Enums.PanelType.Core, .iOrdering = 600}}
+            .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Core, .iIndex = 600, .strTitle = Master.eLang.GetString(429, "Miscellaneous")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
 
@@ -185,7 +185,7 @@ Public Class dlgSettings
             Dim sSpacer As String = String.Empty
 
             'add it all
-            For Each tButton As ToolStripButton In TSBs.OrderBy(Function(b) Convert.ToInt32(DirectCast(b.Tag, ButtonTag).iOrdering))
+            For Each tButton As ToolStripButton In TSBs.OrderBy(Function(b) Convert.ToInt32(DirectCast(b.Tag, ButtonTag).iIndex))
                 tsSettingsTopMenu.Items.Add(New ToolStripLabel With {.Text = String.Empty, .Tag = "spacer"})
                 tsSettingsTopMenu.Items.Add(tButton)
             Next
@@ -219,7 +219,7 @@ Public Class dlgSettings
             Next
 
             'set default page
-            currText = TSBs.Item(0).Text
+            _currbutton = DirectCast(TSBs.Item(0).Tag, ButtonTag)
             FillList(DirectCast(TSBs.Item(0).Tag, ButtonTag).ePanelType)
         End If
     End Sub
@@ -254,177 +254,155 @@ Public Class dlgSettings
              .Name = "pnlMovies",
              .Text = Master.eLang.GetString(38, "General"),
              .ImageIndex = 2,
-             .Type = Enums.PanelType.Movie,
+             .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieGeneral,
              .Order = 100})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlSources",
              .Text = Master.eLang.GetString(555, "Files and Sources"),
              .ImageIndex = 5,
-             .Type = Enums.PanelType.Movie,
+             .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieSources,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieData",
              .Text = Master.eLang.GetString(556, "Scrapers - Data"),
              .ImageIndex = 3,
-             .Type = Enums.PanelType.Movie,
+             .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieScraper,
              .Order = 300})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieMedia",
              .Text = Master.eLang.GetString(557, "Scrapers - Images"),
              .ImageIndex = 6,
-             .Type = Enums.PanelType.Movie,
+             .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieImages,
              .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieTrailer",
              .Text = Master.eLang.GetString(559, "Scrapers - Trailers"),
              .ImageIndex = 6,
-             .Type = Enums.PanelType.Movie,
+             .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieTrailers,
              .Order = 500})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieTheme",
              .Text = Master.eLang.GetString(1068, "Scrapers - Themes"),
              .ImageIndex = 11,
-             .Type = Enums.PanelType.Movie,
+             .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieThemes,
              .Order = 600})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSets",
              .Text = Master.eLang.GetString(38, "General"),
              .ImageIndex = 2,
-             .Type = Enums.PanelType.MovieSet,
+             .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetGeneral,
              .Order = 100})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetSources",
              .Text = Master.eLang.GetString(555, "Files and Sources"),
              .ImageIndex = 5,
-             .Type = Enums.PanelType.MovieSet,
+             .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetSources,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetData",
              .Text = Master.eLang.GetString(556, "Scrapers - Data"),
              .ImageIndex = 3,
-             .Type = Enums.PanelType.MovieSet,
+             .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetScraper,
              .Order = 300})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetMedia",
              .Text = Master.eLang.GetString(557, "Scrapers - Images"),
              .ImageIndex = 6,
-             .Type = Enums.PanelType.MovieSet,
+             .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetImages,
              .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlShows",
              .Text = Master.eLang.GetString(38, "General"),
              .ImageIndex = 7,
-             .Type = Enums.PanelType.TV,
+             .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVGeneral,
              .Order = 100})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVSources",
              .Text = Master.eLang.GetString(555, "Files and Sources"),
              .ImageIndex = 5,
-             .Type = Enums.PanelType.TV,
+             .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVSources,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVData",
              .Text = Master.eLang.GetString(556, "Scrapers - Data"),
              .ImageIndex = 3,
-             .Type = Enums.PanelType.TV,
+             .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVScraper,
              .Order = 300})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVMedia",
              .Text = Master.eLang.GetString(557, "Scrapers - Images"),
              .ImageIndex = 6,
-             .Type = Enums.PanelType.TV,
+             .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVImages,
              .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVTheme",
              .Text = Master.eLang.GetString(1068, "Scrapers - Themes"),
              .ImageIndex = 11,
-             .Type = Enums.PanelType.TV,
+             .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVThemes,
              .Order = 500})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlGeneral",
              .Text = Master.eLang.GetString(38, "General"),
              .ImageIndex = 0,
-             .Type = Enums.PanelType.Options,
+             .Type = Enums.SettingsPanelType.Options,
              .Panel = pnlGeneral,
              .Order = 100})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlExtensions",
              .Text = Master.eLang.GetString(553, "File System"),
              .ImageIndex = 4,
-             .Type = Enums.PanelType.Options,
+             .Type = Enums.SettingsPanelType.Options,
              .Panel = pnlFileSystem,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlProxy",
              .Text = Master.eLang.GetString(421, "Connection"),
              .ImageIndex = 1,
-             .Type = Enums.PanelType.Options,
+             .Type = Enums.SettingsPanelType.Options,
              .Panel = pnlProxy,
              .Order = 300})
-        AddScraperPanels()
+        AddAddonSettingsPanels()
     End Sub
 
-    Sub AddScraperPanels()
-        Dim ModuleCounter As Integer = 1
-        Dim tPanel As New Containers.SettingsPanel
-        For Each s As ModulesManager.ExternalModuleClass In ModulesManager.Instance._externalmodules.OrderBy(Function(f) f.AssemblyName)
-            tPanel = s.ProcessorModule.InjectSettingsPanel
-            If Not tPanel Is Nothing Then
-                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
+    Sub AddAddonSettingsPanels()
+        Dim nPanel As New Containers.SettingsPanel
+        For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
+            nPanel = s.ProcessorModule.InjectSettingsPanel
+            If Not nPanel Is Nothing Then
+                If nPanel.ImageIndex = -1 AndAlso Not nPanel.Image Is Nothing Then
+                    ilSettings.Images.Add(String.Concat(s.AssemblyName, nPanel.Name), nPanel.Image)
+                    nPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, nPanel.Name))
                 End If
-                SettingsPanels.Add(tPanel)
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_ModuleSettingsChanged
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_SetupNeedsRestart
-                AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
-            End If
-        Next
-        ModuleCounter = 1
-        For Each s As ModulesManager.ExternalGenericModuleClass In ModulesManager.Instance._externalgenericmodules.OrderBy(Function(f) f.AssemblyName)
-            tPanel = s.ProcessorModule.InjectSetup
-            If Not tPanel Is Nothing Then
-                If tPanel.ImageIndex = -1 AndAlso Not tPanel.Image Is Nothing Then
-                    ilSettings.Images.Add(String.Concat(s.AssemblyName, tPanel.Name), tPanel.Image)
-                    tPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, tPanel.Name))
-                End If
-                SettingsPanels.Add(tPanel)
-                ModuleCounter += 1
-                AddHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-                AddHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-                AddHelpHandlers(tPanel.Panel, tPanel.Prefix)
+                SettingsPanels.Add(nPanel)
+                AddHandler s.ProcessorModule.EnabledChanged, AddressOf Handle_EnableChanged
+                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
+                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
+                AddHelpHandlers(nPanel.Panel, nPanel.Prefix)
             End If
         Next
     End Sub
 
     Sub RemoveScraperPanels()
-        For Each s As ModulesManager.ExternalModuleClass In ModulesManager.Instance._externalmodules.OrderBy(Function(f) f.AssemblyName)
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_SetupNeedsRestart
+        For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
+            RemoveHandler s.ProcessorModule.EnabledChanged, AddressOf Handle_EnableChanged
+            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
+            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
         Next
-        For Each s As ModulesManager.ExternalGenericModuleClass In ModulesManager.Instance._externalgenericmodules
-            RemoveHandler s.ProcessorModule.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            RemoveHandler s.ProcessorModule.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-        Next
-    End Sub
-
-    Private Sub Handle_SetupNeedsRestart()
-        sResult.NeedsRestart = True
     End Sub
 
     Private Sub btnTVEpisodeFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterAdd.Click
@@ -1398,7 +1376,7 @@ Public Class dlgSettings
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ShowFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ShowFilters, True)
             RefreshTVShowFilters()
             SetApplyButton(True)
         End If
@@ -1406,7 +1384,7 @@ Public Class dlgSettings
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.EpFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.EpFilters, True)
             RefreshTVEpisodeFilters()
             SetApplyButton(True)
         End If
@@ -1414,7 +1392,7 @@ Public Class dlgSettings
 
     Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieFilters, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieFilters, True)
             RefreshMovieFilters()
             SetApplyButton(True)
         End If
@@ -1422,7 +1400,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidExts, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidExts, True)
             RefreshFileSystemValidExts()
             SetApplyButton(True)
         End If
@@ -1430,7 +1408,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidSubtitleExts, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidSubtitleExts, True)
             RefreshFileSystemValidSubtitlesExts()
             SetApplyButton(True)
         End If
@@ -1438,7 +1416,7 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.ValidThemeExts, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidThemeExts, True)
             RefreshFileSystemValidThemeExts()
             SetApplyButton(True)
         End If
@@ -1457,7 +1435,7 @@ Public Class dlgSettings
 
     Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
         If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowMatching, True)
+            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowMatching, True)
             TVShowMatching.Clear()
             TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
             LoadTVShowMatching()
@@ -1471,7 +1449,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieListSorting, True)
         MovieGeneralMediaListSorting.Clear()
         MovieGeneralMediaListSorting.AddRange(Master.eSettings.MovieGeneralMediaListSorting)
         LoadMovieGeneralMediaListSorting()
@@ -1479,7 +1457,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetListSorting, True)
         MovieSetGeneralMediaListSorting.Clear()
         MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
         LoadMovieSetGeneralMediaListSorting()
@@ -1487,7 +1465,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVEpisodeGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVEpisodeListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVEpisodeListSorting, True)
         TVGeneralEpisodeListSorting.Clear()
         TVGeneralEpisodeListSorting.AddRange(Master.eSettings.TVGeneralEpisodeListSorting)
         LoadTVGeneralEpisodeListSorting()
@@ -1495,7 +1473,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSeasonGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSeasonListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSeasonListSorting, True)
         TVGeneralSeasonListSorting.Clear()
         TVGeneralSeasonListSorting.AddRange(Master.eSettings.TVGeneralSeasonListSorting)
         LoadTVGeneralSeasonListSorting()
@@ -1503,7 +1481,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVGeneralShowListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVShowListSorting, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowListSorting, True)
         TVGeneralShowListSorting.Clear()
         TVGeneralShowListSorting.AddRange(Master.eSettings.TVGeneralShowListSorting)
         LoadTVGeneralShowListSorting()
@@ -1551,7 +1529,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSortTokens, True)
         RefreshMovieSortTokens()
         sResult.NeedsReload_Movie = True
         SetApplyButton(True)
@@ -1562,7 +1540,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.MovieSetSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetSortTokens, True)
         RefreshMovieSetSortTokens()
         sResult.NeedsReload_MovieSet = True
         SetApplyButton(True)
@@ -1573,7 +1551,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub btnTVSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultType.TVSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSortTokens, True)
         RefreshTVSortTokens()
         sResult.NeedsReload_TVShow = True
         SetApplyButton(True)
@@ -1648,7 +1626,7 @@ Public Class dlgSettings
 
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
         If Not cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
-            Handle_SetupNeedsRestart()
+            Handle_NeedsRestart()
         End If
         SetApplyButton(True)
     End Sub
@@ -2640,7 +2618,7 @@ Public Class dlgSettings
         End Using
     End Sub
 
-    Private Sub FillList(ByVal ePanelType As Enums.PanelType)
+    Private Sub FillList(ByVal ePanelType As Enums.SettingsPanelType)
         Dim pNode As New TreeNode
         Dim cNode As New TreeNode
 
@@ -3731,7 +3709,34 @@ Public Class dlgSettings
         RaiseEvent LoadEnd()
     End Sub
 
-    Private Sub Handle_ModuleSettingsChanged()
+    Private Sub Handle_EnableChanged(ByVal strAssemblyName As String, ByVal bEnabled As Boolean)
+        If Name = "!#RELOAD" Then
+            FillSettings()
+            Return
+        End If
+        Dim nSettingsPanel As Containers.SettingsPanel
+        SuspendLayout()
+        nSettingsPanel = SettingsPanels.FirstOrDefault(Function(s) s.Name = strAssemblyName)
+
+        If nSettingsPanel IsNot Nothing Then
+            nSettingsPanel.ImageIndex = If(bEnabled, 9, 10)
+            Dim t() As TreeNode = tvSettingsList.Nodes.Find(strAssemblyName, True)
+
+            If t.Count > 0 Then
+                t(0).ImageIndex = If(bEnabled, 9, 10)
+                t(0).SelectedImageIndex = If(bEnabled, 9, 10)
+                pbSettingsCurrent.Image = ilSettings.Images(If(bEnabled, 9, 10))
+            End If
+        End If
+        ResumeLayout()
+        SetApplyButton(True)
+    End Sub
+
+    Private Sub Handle_NeedsRestart()
+        sResult.NeedsRestart = True
+    End Sub
+
+    Private Sub Handle_SettingsChanged()
         SetApplyButton(True)
     End Sub
 
@@ -4426,7 +4431,7 @@ Public Class dlgSettings
 
     Private Sub RemoveCurrPanel()
         If pnlSettingsMain.Controls.Count > 0 Then
-            pnlSettingsMain.Controls.Remove(currPanel)
+            pnlSettingsMain.Controls.Remove(_currpanel)
         End If
     End Sub
 
@@ -5562,21 +5567,14 @@ Public Class dlgSettings
 
         End With
 
-        For Each s As ModulesManager.ExternalModuleClass In ModulesManager.Instance._externalmodules
+        For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons
             Try
                 s.ProcessorModule.SaveSetup(Not isApply)
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
         Next
-        For Each s As ModulesManager.ExternalGenericModuleClass In ModulesManager.Instance._externalgenericmodules
-            Try
-                s.ProcessorModule.SaveSetup(Not isApply)
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
-        Next
-        ModulesManager.Instance.SaveSettings()
+        AddonsManager.Instance.SaveSettings()
         Functions.CreateDefaultOptions()
     End Sub
 
@@ -6745,21 +6743,21 @@ Public Class dlgSettings
     End Sub
 
     Private Sub ToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs)
-        currText = DirectCast(sender, ToolStripButton).Text
-        FillList(DirectCast(DirectCast(sender, ToolStripButton).Tag, ButtonTag).ePanelType)
+        _currbutton = DirectCast(DirectCast(sender, ToolStripButton).Tag, ButtonTag)
+        FillList(_currbutton.ePanelType)
     End Sub
 
     Private Sub tvSettingsList_AfterSelect(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvSettingsList.AfterSelect
         pbSettingsCurrent.Image = ilSettings.Images(tvSettingsList.SelectedNode.ImageIndex)
-        lblSettingsCurrent.Text = String.Format("{0} - {1}", currText, tvSettingsList.SelectedNode.Text)
+        lblSettingsCurrent.Text = String.Format("{0} - {1}", _currbutton.strTitle, tvSettingsList.SelectedNode.Text)
 
         RemoveCurrPanel()
 
-        currPanel = SettingsPanels.FirstOrDefault(Function(p) p.Name = tvSettingsList.SelectedNode.Name).Panel
-        currPanel.Location = New Point(0, 0)
-        currPanel.Dock = DockStyle.Fill
-        pnlSettingsMain.Controls.Add(currPanel)
-        currPanel.Visible = True
+        _currpanel = SettingsPanels.FirstOrDefault(Function(p) p.Name = tvSettingsList.SelectedNode.Name).Panel
+        _currpanel.Location = New Point(0, 0)
+        _currpanel.Dock = DockStyle.Fill
+        pnlSettingsMain.Controls.Add(_currpanel)
+        _currpanel.Visible = True
         pnlSettingsMain.Refresh()
     End Sub
 
@@ -8247,8 +8245,9 @@ Public Class dlgSettings
 
     Private Structure ButtonTag
 
-        Dim ePanelType As Enums.PanelType
-        Dim iOrdering As Integer
+        Dim iIndex As Integer
+        Dim strTitle As String
+        Dim ePanelType As Enums.SettingsPanelType
 
     End Structure
 

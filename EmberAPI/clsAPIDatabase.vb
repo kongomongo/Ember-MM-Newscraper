@@ -45,7 +45,7 @@ Public Class Database
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
 
 #End Region 'Events
 
@@ -966,7 +966,7 @@ Public Class Database
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idMovie", "Value must be >= 0, was given: " & ID)
 
         Dim _movieDB As DBElement = Load_Movie(ID)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_Movie, Nothing, Nothing, False, _movieDB)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Remove_Movie, Nothing, Nothing, False, _movieDB)
 
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -977,7 +977,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.Remove_Movie, New List(Of Object)(New Object() {_movieDB.ID}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.Remove_Movie, New List(Of Object)(New Object() {_movieDB.ID}))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
@@ -1131,7 +1131,7 @@ Public Class Database
         Dim bHasRemoved As Boolean = False
 
         Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(lTVEpisodeID, True)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1279,7 +1279,7 @@ Public Class Database
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idShow", "Value must be >= 0, was given: " & ID)
 
         Dim _tvshowDB As Database.DBElement = Load_TVShow_Full(ID)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVShow, Nothing, Nothing, False, _tvshowDB)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Remove_TVShow, Nothing, Nothing, False, _tvshowDB)
 
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -1290,7 +1290,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.Remove_TVShow, New List(Of Object)(New Object() {_tvshowDB.ID}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.Remove_TVShow, New List(Of Object)(New Object() {_tvshowDB.ID}))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
@@ -4244,7 +4244,7 @@ Public Class Database
         If Not bBatchMode Then SQLtransaction.Commit()
 
         If bDoSync Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Nothing, False, _movieDB)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Sync_Movie, Nothing, Nothing, False, _movieDB)
         End If
 
         Return _movieDB
@@ -4344,10 +4344,10 @@ Public Class Database
                                                 .Plot = _moviesetDB.MainDetails.Plot,
                                                 .Title = _moviesetDB.MainDetails.Title,
                                                 .TMDB = _moviesetDB.MainDetails.TMDB})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
             Save_Movie(tMovie.DBMovie, True, True, False, True, False)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
+            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
         Next
 
         'remove set-information from movies which are no longer assigned to this set
@@ -4361,10 +4361,10 @@ Public Class Database
                         'movie is no longer a part of this set
                         Dim tMovie As Database.DBElement = Load_Movie(Convert.ToInt64(SQLreader("idMovie")))
                         tMovie.MainDetails.RemoveSet(_moviesetDB.ID)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie)
-                        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie)
+                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie)
+                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie)
                         Save_Movie(tMovie, True, True, False, True, False)
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.ID}))
+                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.ID}))
                     End If
                 End While
             End Using
@@ -4372,7 +4372,7 @@ Public Class Database
 
         If Not bBatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_MovieSet, Nothing, Nothing, False, _moviesetDB)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Sync_MovieSet, Nothing, Nothing, False, _moviesetDB)
 
         Return _moviesetDB
     End Function
@@ -4506,7 +4506,7 @@ Public Class Database
             Next
 
             For Each tEpisode As DBElement In newEpisodesList
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, tEpisode)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.DuringUpdateDB_TV, Nothing, Nothing, False, tEpisode)
             Next
 
             For Each tEpisode As DBElement In newEpisodesList
@@ -4918,7 +4918,7 @@ Public Class Database
         If Not bBatchMode Then SQLtransaction.Commit()
 
         If _episode.FilenameIDSpecified AndAlso bDoSync Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
         End If
 
         Return _episode
@@ -5016,7 +5016,7 @@ Public Class Database
         If Not bBatchMode Then SQLtransaction.Commit()
 
         If bDoSync Then
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVSeason, Nothing, Nothing, False, _season)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Sync_TVSeason, Nothing, Nothing, False, _season)
         End If
 
         Return _season
@@ -5234,7 +5234,7 @@ Public Class Database
 
         If Not bBatchMode Then SQLtransaction.Commit()
 
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_TVShow, Nothing, Nothing, False, _show)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Sync_TVShow, Nothing, Nothing, False, _show)
 
         Return _show
     End Function

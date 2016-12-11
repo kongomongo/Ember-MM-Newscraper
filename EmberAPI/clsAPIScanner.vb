@@ -796,7 +796,7 @@ Public Class Scanner
 
                     'Scrape episode data
                     cEpisode.ScrapeOptions = Master.DefaultOptions_TV
-                    If Not ModulesManager.Instance.ScrapeData_TVEpisode(cEpisode, False) Then
+                    If Not AddonsManager.Instance.ScrapeData_TVEpisode(cEpisode, False) Then
                         If cEpisode.MainDetails.TitleSpecified Then
                             ToNfo = True
 
@@ -818,7 +818,7 @@ Public Class Scanner
                 If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then ScrapeModifiers.EpisodeFanart = True
                 If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then ScrapeModifiers.EpisodePoster = True
                 If ScrapeModifiers.EpisodeFanart OrElse ScrapeModifiers.EpisodePoster Then
-                    If Not ModulesManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
+                    If Not AddonsManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
                         Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifiers)
                     End If
                 End If
@@ -1030,7 +1030,7 @@ Public Class Scanner
                                     'Scrape season info
                                     If isNew AndAlso tmpSeason.TVShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
                                         tmpSeason.ScrapeOptions = Master.DefaultOptions_TV
-                                        ModulesManager.Instance.ScrapeData_TVSeason(tmpSeason, False)
+                                        AddonsManager.Instance.ScrapeData_TVSeason(tmpSeason, False)
                                     End If
                                 End If
 
@@ -1045,7 +1045,7 @@ Public Class Scanner
                                     If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape Then ScrapeModifiers.SeasonLandscape = True
                                     If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster Then ScrapeModifiers.SeasonPoster = True
                                     If ScrapeModifiers.SeasonBanner OrElse ScrapeModifiers.SeasonFanart OrElse ScrapeModifiers.SeasonLandscape OrElse ScrapeModifiers.SeasonPoster Then
-                                        If Not ModulesManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
+                                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
                                             Images.SetPreferredImages(tmpSeason, SearchResultsContainer, ScrapeModifiers)
                                         End If
                                     End If
@@ -1083,7 +1083,7 @@ Public Class Scanner
 
             'process new episodes
             For Each nEpisode In newEpisodesList
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.DuringUpdateDB_TV, Nothing, Nothing, False, nEpisode)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.DuringUpdateDB_TV, Nothing, Nothing, False, nEpisode)
             Next
 
             'sync new episodes
@@ -1798,9 +1798,9 @@ Public Class Scanner
 
         Select Case tProgressValue.EventType
             Case Enums.ScannerEventType.Added_Movie
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
             Case Enums.ScannerEventType.Added_TVEpisode
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
         End Select
     End Sub
 
@@ -1809,11 +1809,11 @@ Public Class Scanner
             Dim Args As Arguments = DirectCast(e.Result, Arguments)
             If Args.Scan.Movies Then
                 Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_Movie, params, Nothing)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterUpdateDB_Movie, params, Nothing)
             End If
             If Args.Scan.TV Then
                 Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
-                ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterUpdateDB_TV, params, Nothing)
+                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterUpdateDB_TV, params, Nothing)
             End If
             RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.ScannerEventType.ScannerEnded})
         End If

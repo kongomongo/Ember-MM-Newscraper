@@ -22,10 +22,12 @@ Public Class Interfaces
 
 #Region "Nested Interfaces"
 
-    Public Interface ExternalModule
+    Public Interface Addon
 
 #Region "Events"
 
+        Event EnabledChanged(ByVal strName As String, ByVal bEnabled As Boolean)
+        Event GenericEvent(ByVal eType As Enums.AddonEventType, ByRef _params As List(Of Object))
         Event NeedsRestart()
         Event SettingsChanged()
 
@@ -33,13 +35,12 @@ Public Class Interfaces
 
 #Region "Properties"
 
-        ReadOnly Property Capabilities_Modifier() As List(Of Enums.ScrapeModifierType)
-        ReadOnly Property Capabilities_ScrapeOptions() As Structures.ScrapeOptions
+        ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType)
+        ReadOnly Property Capabilities_ScraperCapatibility() As List(Of Enums.ScraperCapatibility)
         Property Enabled() As Boolean
         ReadOnly Property IsBusy() As Boolean
-        ReadOnly Property ModuleName() As String
-        ReadOnly Property ModuleEventType() As List(Of Enums.ModuleEventType)
-        ReadOnly Property ModuleVersion() As String
+        ReadOnly Property Name() As String
+        ReadOnly Property Version() As String
 
 #End Region 'Properties
 
@@ -47,52 +48,50 @@ Public Class Interfaces
 
         Sub Init(ByVal strAssemblyName As String)
         Function InjectSettingsPanel() As Containers.SettingsPanel
-        Function QueryScraperCapabilities(ByVal tScrapeModifierType As Enums.ScrapeModifierType, ByVal tContentType As Enums.ContentType) As Boolean
-        Function Run(ByRef tDBElement As Database.DBElement) As ModuleResult
+        Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstCommandLineParams As List(Of Object)) As AddonResult
         Sub SaveSetup(ByVal bDoDispose As Boolean)
 
 #End Region 'Methods
 
     End Interface
 
-    ' Interfaces for external Modules
-    Public Interface GenericModule
+    '    ' Interfaces for external Modules
+    '    Public Interface GenericModule
 
-#Region "Events"
+    '#Region "Events"
 
-        Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        Event ModuleSettingsChanged()
-        Event SetupNeedsRestart()
-        Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
+    '        Event ModuleSettingsChanged()
+    '        Event SetupNeedsRestart()
+    '        Event ModuleSetupChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer)
 
-#End Region 'Events
+    '#End Region 'Events
 
-#Region "Properties"
+    '#Region "Properties"
 
-        Property Enabled() As Boolean
-        ReadOnly Property IsBusy() As Boolean
-        ReadOnly Property ModuleName() As String
-        ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType)
-        ReadOnly Property ModuleVersion() As String
+    '        Property Enabled() As Boolean
+    '        ReadOnly Property IsBusy() As Boolean
+    '        ReadOnly Property ModuleName() As String
+    '        ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType)
+    '        ReadOnly Property ModuleVersion() As String
 
-#End Region 'Properties
+    '#End Region 'Properties
 
-#Region "Methods"
+    '#Region "Methods"
 
-        Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String)
-        Function InjectSetup() As Containers.SettingsPanel
-        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As ModuleResult_old
-        Sub SaveSetup(ByVal DoDispose As Boolean)
+    '        Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String)
+    '        Function InjectSetup() As Containers.SettingsPanel
+    '        Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As ModuleResult_old
+    '        Sub SaveSetup(ByVal DoDispose As Boolean)
 
-#End Region 'Methods
+    '#End Region 'Methods
 
-    End Interface
+    '    End Interface
 
 #End Region 'Nested Interfaces
 
 #Region "Nested Types"
 
-    Public Structure ModuleResult
+    Public Structure AddonResult
 
 #Region "Fields"
 
@@ -103,28 +102,6 @@ Public Class Interfaces
         Public ScraperResult_Theme As List(Of MediaContainers.Theme)
         Public ScraperResult_Trailer As List(Of MediaContainers.Trailer)
         Public SearchResults As List(Of MediaContainers.MainDetails)
-
-#End Region 'Fields
-
-    End Structure
-    ''' <summary>
-    ''' This structure is returned by most scraper interfaces to represent the
-    ''' status of the operation that was requested
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Structure ModuleResult_old
-
-#Region "Fields"
-        ''' <summary>
-        ''' 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public breakChain As Boolean
-        ''' <summary>
-        ''' An error has occurred in the module, and its operation has been cancelled. 
-        ''' </summary>
-        ''' <remarks></remarks>
-        Public Cancelled As Boolean
 
 #End Region 'Fields
 

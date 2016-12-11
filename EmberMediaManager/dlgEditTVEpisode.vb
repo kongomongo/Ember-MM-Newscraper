@@ -459,7 +459,7 @@ Public Class dlgEditTVEpisode
             dFileInfoEdit.Show()
 
             Dim params As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_TVEpisode, params, Nothing, True, tmpDBElement)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.FrameExtrator_TVEpisode, params, Nothing, True, tmpDBElement)
             pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
             If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
                 tcEdit.TabPages.Remove(tpFrameExtraction)
@@ -536,7 +536,7 @@ Public Class dlgEditTVEpisode
 
             'Fanart
             If Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodeFanart) AndAlso Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodeFanart) AndAlso Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
                 If .Fanart.ImageOriginal.Image IsNot Nothing Then
@@ -552,7 +552,7 @@ Public Class dlgEditTVEpisode
 
             'Poster
             If Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodePoster) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodePoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
                 If .Poster.ImageOriginal.Image IsNot Nothing Then
@@ -1042,21 +1042,6 @@ Public Class dlgEditTVEpisode
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.FrameExtrator_TVEpisode Then
-            tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
-            If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
-
-                lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
-                lblPosterSize.Visible = True
-            End If
-            'Poster.Image = DirectCast(_params(0), Bitmap)   'New Bitmap(pbFrame.Image)
-            ' pbPoster.Image = DirectCast(_params(1), Image)   'pbFrame.Image
-        End If
-    End Sub
-
     Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdImage
@@ -1086,7 +1071,7 @@ Public Class dlgEditTVEpisode
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodeFanart, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -1160,7 +1145,7 @@ Public Class dlgEditTVEpisode
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodePoster, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then

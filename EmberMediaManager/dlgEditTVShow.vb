@@ -291,7 +291,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainBanner, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -365,7 +365,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainCharacterArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainCharacterArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -459,7 +459,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -533,7 +533,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearLogo, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -607,7 +607,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainFanart, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -661,7 +661,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainLandscape, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -755,7 +755,7 @@ Public Class dlgEditTVShow
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainPoster, True)
-        If Not ModulesManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -808,7 +808,7 @@ Public Class dlgEditTVShow
         Dim tList As New List(Of MediaContainers.Theme)
 
         'ThemeStop()
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(tmpDBElement, Enums.ScrapeModifierType.MainTheme, tList) Then
+        If Not AddonsManager.Instance.ScrapeTheme_Movie(tmpDBElement, Enums.ScrapeModifierType.MainTheme, tList) Then
             If tList.Count > 0 Then
                 dThemeSelect = New dlgThemeSelect()
                 If dThemeSelect.ShowDialog(tmpDBElement, tList, True) = DialogResult.OK Then
@@ -1205,7 +1205,7 @@ Public Class dlgEditTVShow
 
             'Banner
             If Master.eSettings.FilenameAnyEnabled_TVShow_Banner Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainBanner) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainBanner) Then
                     btnSetBannerScrape.Enabled = False
                 End If
                 If .Banner.ImageOriginal.Image IsNot Nothing Then
@@ -1221,7 +1221,7 @@ Public Class dlgEditTVShow
 
             'CharacterArt
             If Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainCharacterArt) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainCharacterArt) Then
                     btnSetCharacterArtScrape.Enabled = False
                 End If
                 If .CharacterArt.ImageOriginal.Image IsNot Nothing Then
@@ -1237,7 +1237,7 @@ Public Class dlgEditTVShow
 
             'ClearArt
             If Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearArt) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearArt) Then
                     btnSetClearArtScrape.Enabled = False
                 End If
                 If .ClearArt.ImageOriginal.Image IsNot Nothing Then
@@ -1253,7 +1253,7 @@ Public Class dlgEditTVShow
 
             'ClearLogo
             If Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearLogo) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearLogo) Then
                     btnSetClearLogoScrape.Enabled = False
                 End If
                 If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
@@ -1285,7 +1285,7 @@ Public Class dlgEditTVShow
 
             'Fanart
             If Master.eSettings.FilenameAnyEnabled_TVShow_Fanart Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
                 If .Fanart.ImageOriginal.Image IsNot Nothing Then
@@ -1301,7 +1301,7 @@ Public Class dlgEditTVShow
 
             'Landscape
             If Master.eSettings.FilenameAnyEnabled_TVShow_Landscape Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainLandscape) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainLandscape) Then
                     btnSetLandscapeScrape.Enabled = False
                 End If
                 If .Landscape.ImageOriginal.Image IsNot Nothing Then
@@ -1317,7 +1317,7 @@ Public Class dlgEditTVShow
 
             'Poster
             If Master.eSettings.FilenameAnyEnabled_TVShow_Poster Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainPoster) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainPoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
                 If .Poster.ImageOriginal.Image IsNot Nothing Then

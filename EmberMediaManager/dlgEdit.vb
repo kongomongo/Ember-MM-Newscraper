@@ -501,7 +501,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainBanner, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -564,7 +564,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -627,7 +627,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearLogo, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -690,7 +690,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainDiscArt, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainDiscArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -759,7 +759,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainExtrafanarts, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -779,7 +779,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainExtrathumbs, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -816,7 +816,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainFanart, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -879,7 +879,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainLandscape, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -942,7 +942,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainPoster, True)
-        If Not ModulesManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -1005,7 +1005,7 @@ Public Class dlgEdit
         Dim tList As New List(Of MediaContainers.Theme)
 
         ThemeStop()
-        If Not ModulesManager.Instance.ScrapeTheme_Movie(_tmpDBElement, Enums.ScrapeModifierType.MainTheme, tList) Then
+        If Not AddonsManager.Instance.ScrapeTheme_Movie(_tmpDBElement, Enums.ScrapeModifierType.MainTheme, tList) Then
             If tList.Count > 0 Then
                 dThemeSelect = New dlgThemeSelect()
                 If dThemeSelect.ShowDialog(_tmpDBElement, tList, True) = DialogResult.OK Then
@@ -1112,21 +1112,21 @@ Public Class dlgEdit
             If(Trailer.URLWebsiteSpecified, Trailer.URLWebsite, String.Empty)))
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URLVideoStream})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
         End If
     End Sub
 
     Private Sub TrailerPlaylistClear()
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerPlaylistClear_Video, Nothing, Nothing, True)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerPlaylistClear_Video, Nothing, Nothing, True)
         End If
     End Sub
 
     Private Sub TrailerStop()
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayerStop_Video, Nothing, Nothing, True)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerStop_Video, Nothing, Nothing, True)
         End If
     End Sub
 
@@ -1201,14 +1201,14 @@ Public Class dlgEdit
         LoadTags()
 
         Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, _tmpDBElement)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, _tmpDBElement)
         pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
         If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
             tcEdit.TabPages.Remove(tpFrameExtraction)
         End If
 
         Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
         pnlThemePreview.Controls.Add(DirectCast(paramsThemePreview(0), Panel))
         If Not String.IsNullOrEmpty(pnlThemePreview.Controls.Item(1).Name) Then
             AnyThemePlayerEnabled = True
@@ -1216,7 +1216,7 @@ Public Class dlgEdit
         End If
 
         Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
+        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
         pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
         If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
             AnyTrailerPlayerEnabled = True
@@ -1506,7 +1506,7 @@ Public Class dlgEdit
 
             'Banner
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainBanner) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainBanner) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainBanner) Then
                     btnSetBannerScrape.Enabled = False
                 End If
                 If .Banner.ImageOriginal.Image IsNot Nothing Then
@@ -1538,7 +1538,7 @@ Public Class dlgEdit
 
             'ClearArt
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainClearArt) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainClearArt) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainClearArt) Then
                     btnSetClearArtScrape.Enabled = False
                 End If
                 If .ClearArt.ImageOriginal.Image IsNot Nothing Then
@@ -1554,7 +1554,7 @@ Public Class dlgEdit
 
             'ClearLogo
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainClearLogo) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainClearLogo) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainClearLogo) Then
                     btnSetClearLogoScrape.Enabled = False
                 End If
                 If .ClearLogo.ImageOriginal.Image IsNot Nothing Then
@@ -1570,7 +1570,7 @@ Public Class dlgEdit
 
             'DiscArt
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainDiscArt) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainDiscArt) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainDiscArt) Then
                     btnSetDiscArtScrape.Enabled = False
                 End If
                 If .DiscArt.ImageOriginal.Image IsNot Nothing Then
@@ -1586,7 +1586,7 @@ Public Class dlgEdit
 
             'Extrafanarts
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainExtrafanarts) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
                 If .Extrafanarts.Count > 0 Then
@@ -1602,7 +1602,7 @@ Public Class dlgEdit
 
             'Extrathumbs
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainExtrathumbs) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
                 If .Extrathumbs.Count > 0 Then
@@ -1618,7 +1618,7 @@ Public Class dlgEdit
 
             'Fanart
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainFanart) Then
                     btnSetFanartScrape.Enabled = False
                 End If
                 If .Fanart.ImageOriginal.Image IsNot Nothing Then
@@ -1634,7 +1634,7 @@ Public Class dlgEdit
 
             'Landscape
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainLandscape) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainLandscape) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainLandscape) Then
                     btnSetLandscapeScrape.Enabled = False
                 End If
                 If .Landscape.ImageOriginal.Image IsNot Nothing Then
@@ -1650,7 +1650,7 @@ Public Class dlgEdit
 
             'Poster
             If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainPoster) Then
-                If Not ModulesManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainPoster) Then
+                If Not AddonsManager.Instance.ScraperWithCapabilityAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainPoster) Then
                     btnSetPosterScrape.Enabled = False
                 End If
                 If .Poster.ImageOriginal.Image IsNot Nothing Then
@@ -2285,8 +2285,8 @@ Public Class dlgEdit
         End If
     End Sub
 
-    Sub GenericRunCallBack(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
-        If mType = Enums.ModuleEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
+    Sub GenericRunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
+        If mType = Enums.AddonEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
             If _params(0).ToString = "FanartToSave" Then
                 _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
                 If _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then

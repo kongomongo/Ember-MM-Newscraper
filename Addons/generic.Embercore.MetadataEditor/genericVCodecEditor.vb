@@ -25,14 +25,14 @@ Public Class genericMetadataEditor
 
 #Region "Fields"
 
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
     Private _AssemblyName As String = String.Empty
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -61,9 +61,9 @@ Public Class genericMetadataEditor
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic})
         End Get
     End Property
 
@@ -83,11 +83,11 @@ Public Class genericMetadataEditor
 
     Public Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         SPanel.Name = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Text = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
         SPanel.Prefix = "AVCodecEditor_"
-        SPanel.Type = Enums.PanelType.Core
+        SPanel.Type = Enums.SettingsPanelType.Core
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.MetadataEditor
         SPanel.Order = 100
@@ -100,7 +100,7 @@ Public Class genericMetadataEditor
         RaiseEvent ModuleSettingsChanged()
     End Sub
 
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
 
     End Function
 

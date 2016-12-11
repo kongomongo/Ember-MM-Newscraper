@@ -36,13 +36,13 @@ Public Class genericMediaListEditor
 
     Private _AssemblyName As String = String.Empty
     Private _name As String = "Media List Editor"
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -72,9 +72,9 @@ Public Class genericMediaListEditor
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic})
         End Get
     End Property
 
@@ -94,11 +94,11 @@ Public Class genericMediaListEditor
 
     Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         SPanel.Name = _name
         SPanel.Text = Master.eLang.GetString(1385, "Media List Editor")
         SPanel.Prefix = "MediaListEditor_"
-        SPanel.Type = Enums.PanelType.Core
+        SPanel.Type = Enums.SettingsPanelType.Core
         SPanel.ImageIndex = -1
         SPanel.Image = My.Resources.FilterEditor
         SPanel.Order = 100
@@ -116,7 +116,7 @@ Public Class genericMediaListEditor
         RaiseEvent SetupNeedsRestart()
     End Sub
 
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.AddonEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
@@ -134,7 +134,7 @@ Public Class genericMediaListEditor
         If CustomTabs IsNot Nothing Then
             Dim tabc As New TabControl
             Dim NewCustomTabs As New List(Of TabPage)
-            tabc = DirectCast(ModulesManager.Instance.RuntimeObjects.MainTabControl, TabControl)
+            tabc = DirectCast(AddonsManager.Instance.RuntimeObjects.MainTabControl, TabControl)
             For Each cTab In CustomTabs
                 If Master.DB.ViewExists(cTab.Value) Then
                     Dim cTabType As Enums.ContentType = Enums.ContentType.None

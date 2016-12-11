@@ -36,7 +36,7 @@ Public Class Tag_Generic
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
-    Private _setup As frmSettingsHolder
+    Private _setup As frmSettingsPanel
     Private _AssemblyName As String = String.Empty
     Private WithEvents mnuMainToolsTag As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsTag As New ToolStripMenuItem
@@ -47,7 +47,7 @@ Public Class Tag_Generic
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
+    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
     Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
     Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
     Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
@@ -56,9 +56,9 @@ Public Class Tag_Generic
 
 #Region "Properties"
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.ModuleEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
         Get
-            Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {Enums.ModuleEventType.Generic, Enums.ModuleEventType.CommandLine})
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic, Enums.AddonEventType.CommandLine})
         End Get
     End Property
 
@@ -105,7 +105,7 @@ Public Class Tag_Generic
     ''' <remarks>
     ''' TODO
     ''' </remarks>
-    Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
+    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
         Return New Interfaces.ModuleResult_old With {.breakChain = False}
     End Function
 
@@ -113,11 +113,11 @@ Public Class Tag_Generic
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, mnuMainToolsTag)
 
         'cmnuTrayTools
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         RemoveToolsStripItem(tsi, cmnuTrayToolsTag)
     End Sub
 
@@ -135,13 +135,13 @@ Public Class Tag_Generic
         'mnuMainTools menu
         mnuMainToolsTag.Image = New Bitmap(My.Resources._set)
         mnuMainToolsTag.Text = Master.eLang.GetString(868, "Tag Manager")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainToolsTag)
 
         'cmnuTrayTools
         cmnuTrayToolsTag.Image = New Bitmap(My.Resources._set)
         cmnuTrayToolsTag.Text = Master.eLang.GetString(868, "Tag Manager")
-        tsi = DirectCast(ModulesManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayToolsTag)
     End Sub
 
@@ -168,12 +168,12 @@ Public Class Tag_Generic
 
     Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
         Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsHolder
+        _setup = New frmSettingsPanel
         _setup.chkEnabled.Checked = _enabled
         SPanel.Name = _Name
         SPanel.Text = Master.eLang.GetString(868, "Tag Manager")
         SPanel.Prefix = "TagManager_"
-        SPanel.Type = Enums.PanelType.External
+        SPanel.Type = Enums.SettingsPanelType.Addon
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Order = 100
         SPanel.Panel = _setup.pnlSettings
@@ -183,13 +183,13 @@ Public Class Tag_Generic
     End Function
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsTag.Click, cmnuTrayToolsTag.Click
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
 
         Using dTagManager As New dlgTagManager
             dTagManager.ShowDialog()
         End Using
 
-        RaiseEvent GenericEvent(Enums.ModuleEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
     Sub LoadSettings()
     End Sub

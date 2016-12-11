@@ -36,7 +36,7 @@ Public Class frmTVExtrator
 
 #Region "Events"
 
-    Event GenericEvent(ByVal mType As EmberAPI.Enums.ModuleEventType, ByRef _params As System.Collections.Generic.List(Of Object))
+    Event GenericEvent(ByVal mType As EmberAPI.Enums.AddonEventType, ByRef _params As System.Collections.Generic.List(Of Object))
 
 #End Region 'Events
 
@@ -79,7 +79,7 @@ Public Class frmTVExtrator
 
     Private Sub btnFrameSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFrameSave.Click
         If pbFrame.Image IsNot Nothing Then
-            RaiseEvent GenericEvent(Enums.ModuleEventType.FrameExtrator_TVEpisode, Nothing)
+            RaiseEvent GenericEvent(Enums.AddonEventType.FrameExtrator_TVEpisode, Nothing)
         End If
     End Sub
 

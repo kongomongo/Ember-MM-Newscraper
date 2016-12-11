@@ -641,13 +641,13 @@ Public Class Settings
         End Set
     End Property
 
-    <XmlArray("EmberModules")>
-    <XmlArrayItem("Module")>
-    Public Property EmberModules() As List(Of ModulesManager._XMLEmberModuleClass)
+    <XmlArray("Addons")>
+    <XmlArrayItem("Addon")>
+    Public Property EmberModules() As List(Of AddonsManager._XMLAddonClass)
         Get
             Return _XMLSettings.EmberModules
         End Get
-        Set(ByVal value As List(Of ModulesManager._XMLEmberModuleClass))
+        Set(ByVal value As List(Of AddonsManager._XMLAddonClass))
             _XMLSettings.EmberModules = value
         End Set
     End Property
@@ -7064,7 +7064,7 @@ Public Class Settings
             End Try
         End Try
 
-        SetDefaultsForLists(Enums.DefaultType.All, False)
+        SetDefaultsForLists(Enums.DefaultSettingType.All, False)
 
         ' Fix added to avoid to have no movie NFO saved
         If Not (Master.eSettings.MovieUseBoxee Or Master.eSettings.MovieUseEden Or Master.eSettings.MovieUseExpert Or Master.eSettings.MovieUseFrodo Or Master.eSettings.MovieUseNMJ Or Master.eSettings.MovieUseYAMJ) Then
@@ -7127,7 +7127,7 @@ Public Class Settings
         CleanMovieNameJPG = False
         CleanPosterJPG = False
         CleanPosterTBN = False
-        EmberModules = New List(Of ModulesManager._XMLEmberModuleClass)
+        EmberModules = New List(Of AddonsManager._XMLAddonClass)
         FileSystemCleanerWhitelist = False
         FileSystemCleanerWhitelistExts = New List(Of String)
         FileSystemExpertCleaner = False
@@ -7674,8 +7674,8 @@ Public Class Settings
         Version = String.Empty
     End Sub
 
-    Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultType, ByVal Force As Boolean)
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
+    Public Sub SetDefaultsForLists(ByVal Type As Enums.DefaultSettingType, ByVal Force As Boolean)
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.MovieFilters) AndAlso (Force OrElse (Master.eSettings.MovieFilterCustom.Count <= 0 AndAlso Not Master.eSettings.MovieFilterCustomIsEmpty)) Then
             Master.eSettings.MovieFilterCustom.Clear()
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]\(?\d{4}\)?.*")    'year in brakets
             Master.eSettings.MovieFilterCustom.Add("(?i)[\W_]tt\d*")            'IMDB ID
@@ -7707,7 +7707,7 @@ Public Class Settings
             Master.eSettings.MovieFilterCustom.Add("_[->] ")                    'convert underscore to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.ShowFilters) AndAlso (Force OrElse (Master.eSettings.TVShowFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVShowFilterCustomIsEmpty)) Then
             Master.eSettings.TVShowFilterCustom.Clear()
             Master.eSettings.TVShowFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             'would there ever be season or episode info in the show folder name??
@@ -7741,7 +7741,7 @@ Public Class Settings
             Master.eSettings.TVShowFilterCustom.Add("_[->] ")                   'convert underscore to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.EpFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.EpFilters) AndAlso (Force OrElse (Master.eSettings.TVEpisodeFilterCustom.Count <= 0 AndAlso Not Master.eSettings.TVEpisodeFilterCustomIsEmpty)) Then
             Master.eSettings.TVEpisodeFilterCustom.Clear()
             Master.eSettings.TVEpisodeFilterCustom.Add("[\W_]\(?\d{4}\)?.*")
             Master.eSettings.TVEpisodeFilterCustom.Add("(?i)([\W_]+\s?)?s[0-9]+[\W_]*([-e][0-9]+)+(\])*")
@@ -7775,7 +7775,7 @@ Public Class Settings
             Master.eSettings.TVEpisodeFilterCustom.Add(" - [->] ")                'convert space-minus-space to space
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.MovieSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSortTokensIsEmpty)) Then
             Master.eSettings.MovieSortTokens.Clear()
             Master.eSettings.MovieSortTokens.Add("the[\W_]")
             Master.eSettings.MovieSortTokens.Add("a[\W_]")
@@ -7785,7 +7785,7 @@ Public Class Settings
             Master.eSettings.MovieSortTokens.Add("das[\W_]")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.MovieSetSortTokens) AndAlso (Force OrElse (Master.eSettings.MovieSetSortTokens.Count <= 0 AndAlso Not Master.eSettings.MovieSetSortTokensIsEmpty)) Then
             Master.eSettings.MovieSetSortTokens.Clear()
             Master.eSettings.MovieSetSortTokens.Add("the[\W_]")
             Master.eSettings.MovieSetSortTokens.Add("a[\W_]")
@@ -7795,7 +7795,7 @@ Public Class Settings
             Master.eSettings.MovieSetSortTokens.Add("das[\W_]")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSortTokens) AndAlso (Force OrElse (Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty)) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.TVSortTokens) AndAlso (Force OrElse (Master.eSettings.TVSortTokens.Count <= 0 AndAlso Not Master.eSettings.TVSortTokensIsEmpty)) Then
             Master.eSettings.TVSortTokens.Clear()
             Master.eSettings.TVSortTokens.Add("the[\W_]")
             Master.eSettings.TVSortTokens.Add("a[\W_]")
@@ -7805,22 +7805,22 @@ Public Class Settings
             Master.eSettings.TVSortTokens.Add("das[\W_]")
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.ValidExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidExts.Count <= 0) Then
             Master.eSettings.FileSystemValidExts.Clear()
             Master.eSettings.FileSystemValidExts.AddRange(".avi,.divx,.mkv,.iso,.mpg,.mp4,.mpeg,.wmv,.wma,.mov,.mts,.m2t,.img,.dat,.bin,.cue,.ifo,.vob,.dvb,.evo,.asf,.asx,.avs,.nsv,.ram,.ogg,.ogm,.ogv,.flv,.swf,.nut,.viv,.rar,.m2ts,.dvr-ms,.ts,.m4v,.rmvb,.webm,.disc,.3gpp".Split(","c))
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidSubtitleExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidSubtitlesExts.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.ValidSubtitleExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidSubtitlesExts.Count <= 0) Then
             Master.eSettings.FileSystemValidSubtitlesExts.Clear()
             Master.eSettings.FileSystemValidSubtitlesExts.AddRange(".sst,.srt,.sub,.ssa,.aqt,.smi,.sami,.jss,.mpl,.rt,.idx,.ass".Split(","c))
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.ValidThemeExts) AndAlso (Force OrElse Master.eSettings.FileSystemValidThemeExts.Count <= 0) Then
             Master.eSettings.FileSystemValidThemeExts.Clear()
             Master.eSettings.FileSystemValidThemeExts.AddRange(".flac,.m4a,.mp3,.wav,.wma".Split(","c))
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowMatching) AndAlso (Force OrElse Master.eSettings.TVShowMatching.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.TVShowMatching) AndAlso (Force OrElse Master.eSettings.TVShowMatching.Count <= 0) Then
             Master.eSettings.TVShowMatching.Clear()
             Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 0, .byDate = False, .defaultSeason = -1, .Regexp = "s([0-9]+)[ ._-]*e([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
             Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 1, .byDate = False, .defaultSeason = 1, .Regexp = "[\\._ -]()e(?:p[ ._-]?)?([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)([^\\\/]*)$"})
@@ -7831,7 +7831,7 @@ Public Class Settings
             Master.eSettings.TVShowMatching.Add(New regexp With {.ID = 6, .byDate = False, .defaultSeason = 1, .Regexp = "[\\\/._ -]p(?:ar)?t[_. -]()([ivx]+|[0-9]+)([._ -][^\\\/]*)$"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.MovieListSorting) AndAlso (Force OrElse Master.eSettings.MovieGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieGeneralMediaListSorting.Clear()
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "OriginalTitle", .LabelID = 302, .LabelText = "Original Title"})
@@ -7858,7 +7858,7 @@ Public Class Settings
             Master.eSettings.MovieGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 22, .Hide = False, .Column = "iLastPlayed", .LabelID = 981, .LabelText = "Watched"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.MovieSetListSorting) AndAlso (Force OrElse Master.eSettings.MovieSetGeneralMediaListSorting.Count <= 0) Then
             Master.eSettings.MovieSetGeneralMediaListSorting.Clear()
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Column = "NfoPath", .LabelID = 150, .LabelText = "NFO"})
@@ -7871,7 +7871,7 @@ Public Class Settings
             Master.eSettings.MovieSetGeneralMediaListSorting.Add(New ListSorting With {.DisplayIndex = 8, .Hide = False, .Column = "PosterPath", .LabelID = 148, .LabelText = "Poster"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVEpisodeListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralEpisodeListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.TVEpisodeListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralEpisodeListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralEpisodeListSorting.Clear()
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "Title", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = False, .Column = "NfoPath", .LabelID = 150, .LabelText = "NFO"})
@@ -7881,7 +7881,7 @@ Public Class Settings
             Master.eSettings.TVGeneralEpisodeListSorting.Add(New ListSorting With {.DisplayIndex = 5, .Hide = False, .Column = "Playcount", .LabelID = 981, .LabelText = "Watched"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVSeasonListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralSeasonListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.TVSeasonListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralSeasonListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralSeasonListSorting.Clear()
             Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "SeasonText", .LabelID = 650, .LabelText = "Season"})
             Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "Episodes", .LabelID = 682, .LabelText = "Episodes"})
@@ -7892,7 +7892,7 @@ Public Class Settings
             Master.eSettings.TVGeneralSeasonListSorting.Add(New ListSorting With {.DisplayIndex = 6, .Hide = False, .Column = "HasWatched", .LabelID = 981, .LabelText = "Watched"})
         End If
 
-        If (Type = Enums.DefaultType.All OrElse Type = Enums.DefaultType.TVShowListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralShowListSorting.Count <= 0) Then
+        If (Type = Enums.DefaultSettingType.All OrElse Type = Enums.DefaultSettingType.TVShowListSorting) AndAlso (Force OrElse Master.eSettings.TVGeneralShowListSorting.Count <= 0) Then
             Master.eSettings.TVGeneralShowListSorting.Clear()
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 0, .Hide = False, .Column = "ListTitle", .LabelID = 21, .LabelText = "Title"})
             Master.eSettings.TVGeneralShowListSorting.Add(New ListSorting With {.DisplayIndex = 1, .Hide = True, .Column = "strOriginalTitle", .LabelID = 302, .LabelText = "Original Title"})

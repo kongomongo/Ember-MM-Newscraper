@@ -73,7 +73,7 @@ Public Class dlgTrailerSelect
     Private Sub dlgTrailer_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         If _withPlayer Then
             Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
             pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
                 pnlTrailerPreviewNoPlayer.Visible = False
@@ -355,7 +355,7 @@ Public Class dlgTrailerSelect
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If Not ModulesManager.Instance.ScrapeTrailer_Movie(tmpDBElement, Enums.ScrapeModifierType.MainTrailer, nList) Then
+            If Not AddonsManager.Instance.ScrapeTrailer_Movie(tmpDBElement, Enums.ScrapeModifierType.MainTrailer, nList) Then
                 Args.bType = True
             Else
                 Args.bType = False
@@ -604,7 +604,7 @@ Public Class dlgTrailerSelect
                 pnlTrailerPreview.Controls.RemoveAt(1)
             End If
             Dim paramsTrailerPreview As New List(Of Object)(New Object() {New Panel, Trailer})
-            ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayer_Video, paramsTrailerPreview, Nothing, True)
             pnlTrailerPreview.Controls.Add(DirectCast(paramsTrailerPreview(0), Panel))
             If Not String.IsNullOrEmpty(pnlTrailerPreview.Controls.Item(1).Name) Then
                 pnlTrailerPreviewNoPlayer.Visible = False

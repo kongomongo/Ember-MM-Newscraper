@@ -279,7 +279,7 @@ Public Class Containers
         Dim _parent As String
         Dim _prefix As String
         Dim _text As String
-        Dim _type As Enums.PanelType
+        Dim _type As Enums.SettingsPanelType
 
 #End Region 'Fields
 
@@ -370,11 +370,11 @@ Public Class Containers
             End Set
         End Property
 
-        Public Property Type() As Enums.PanelType
+        Public Property Type() As Enums.SettingsPanelType
             Get
                 Return _type
             End Get
-            Set(ByVal value As Enums.PanelType)
+            Set(ByVal value As Enums.SettingsPanelType)
                 _type = value
             End Set
         End Property
@@ -392,7 +392,7 @@ Public Class Containers
             _parent = String.Empty
             _prefix = String.Empty
             _text = String.Empty
-            _type = Enums.PanelType.External
+            _type = Enums.SettingsPanelType.Addon
         End Sub
 
 #End Region 'Methods
@@ -558,124 +558,7 @@ Public Class Enums
 
 #Region "Enumerations"
 
-    Public Enum ContentType As Integer
-        None = 0
-        Generic = 1
-        Movie = 2
-        MovieSet = 3
-        Music = 4
-        TV = 5
-        TVEpisode = 6
-        TVSeason = 7
-        TVShow = 8
-    End Enum
-
-    Public Enum DefaultType As Integer
-        All = 0
-        MovieFilters = 1
-        ShowFilters = 2
-        EpFilters = 3
-        ValidExts = 4
-        TVShowMatching = 5
-        TrailerCodec = 6
-        ValidThemeExts = 7
-        ValidSubtitleExts = 8
-        MovieListSorting = 9
-        MovieSetListSorting = 10
-        TVEpisodeListSorting = 11
-        TVSeasonListSorting = 12
-        TVShowListSorting = 13
-        MovieSortTokens = 14
-        MovieSetSortTokens = 15
-        TVSortTokens = 16
-    End Enum
-    ''' <summary>
-    ''' 0 results in using the current datetime when adding a video
-    ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
-    ''' 2 results in using the newer datetime of the file's mtime and ctime
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum DateTime As Integer
-        Now = 0
-        ctime = 1
-        mtime = 2
-        Newer = 3
-    End Enum
-    Public Enum DiscType As Integer
-        BluRay = 0
-        DVD = 1
-        CD = 2
-        Any = 99
-    End Enum
-    ''' <summary>
-    ''' Enum representing valid TV series ordering.
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum EpisodeOrdering As Integer
-        Standard = 0
-        DVD = 1
-        Absolute = 2
-        DayOfYear = 3
-    End Enum
-    ''' <summary>
-    ''' Enum representing Order of displaying Episodes
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Enum EpisodeSorting As Integer
-        Episode = 0
-        Aired = 1
-    End Enum
-
-    Public Enum ScrapeModifierType As Integer
-        All = 0
-        AllSeasonsBanner = 1
-        AllSeasonsFanart = 2
-        AllSeasonsLandscape = 3
-        AllSeasonsPoster = 4
-        DoSearch = 5
-        EpisodeActorThumbs = 6
-        EpisodeFanart = 7
-        EpisodePoster = 8
-        EpisodeMeta = 9
-        EpisodeNFO = 10
-        EpisodeSubtitle = 11
-        EpisodeWatchedFile = 12
-        MainActorThumbs = 13
-        MainBanner = 14
-        MainCharacterArt = 15
-        MainClearArt = 16
-        MainClearLogo = 17
-        MainDiscArt = 18
-        MainExtrafanarts = 19
-        MainExtrathumbs = 20
-        MainFanart = 21
-        MainLandscape = 22
-        MainMeta = 23
-        MainNFO = 24
-        MainPoster = 25
-        MainSubtitle = 26
-        MainTheme = 27
-        MainTrailer = 28
-        MainWatchedFile = 29
-        SeasonBanner = 30
-        SeasonFanart = 31
-        SeasonLandscape = 32
-        SeasonNFO = 33
-        SeasonPoster = 34
-        withEpisodes = 35
-        withSeasons = 36
-    End Enum
-
-    Public Enum PanelType As Integer
-        Core = 0
-        External = 1
-        Movie = 2
-        MovieSet = 3
-        Options = 4
-        TV = 5
-    End Enum
-
-    Public Enum ModuleEventType As Integer
+    Public Enum AddonEventType As Integer
         ''' <summary>
         ''' Called after edit movie
         ''' </summary>
@@ -779,22 +662,22 @@ Public Class Enums
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_Movie = 47
+        DuringScrapingMulti_Movie = 47
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVEpisode = 48
+        DuringScrapingMulti_TVEpisode = 48
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_Movie = 49
+        DuringScrapingSingle_Movie = 49
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVEpisode = 50
+        DuringScrapingSingle_TVEpisode = 50
         ShowMovie = 51
         ShowTVShow = 52
         SyncModuleSettings = 53
@@ -808,23 +691,101 @@ Public Class Enums
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVShow = 60
+        DuringScrapingMulti_TVShow = 60
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVShow = 61
+        DuringScrapingSingle_TVShow = 61
         ''' <summary>
         ''' Called during auto scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperMulti_TVSeason = 62
+        DuringScrapingMulti_TVSeason = 62
         ''' <summary>
         ''' Called during manual scraping
         ''' </summary>
         ''' <remarks></remarks>
-        ScraperSingle_TVSeason = 63
+        DuringScrapingSingle_TVSeason = 63
         DuringUpdateDB_TV = 64
+        Scrape_Movie = 65
+        Scrape_MovieSet = 66
+        Scrape_TVEpisode = 67
+        Scrape_TVSeason = 68
+        Scrape_TVShow = 69
+        Search_Movie = 70
+        Search_MovieSet = 71
+        Search_TVEpisode = 72
+        Search_TVSeason = 73
+        Search_TVShow = 74
+    End Enum
+
+    Public Enum ContentType As Integer
+        None = 0
+        Generic = 1
+        Movie = 2
+        MovieSet = 3
+        Music = 4
+        TV = 5
+        TVEpisode = 6
+        TVSeason = 7
+        TVShow = 8
+    End Enum
+    ''' <summary>
+    ''' 0 results in using the current datetime when adding a video
+    ''' 1 results in prefering to use the files mtime (if it's valid) and only using the file's ctime if the mtime isn't valid
+    ''' 2 results in using the newer datetime of the file's mtime and ctime
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum DateTime As Integer
+        Now = 0
+        ctime = 1
+        mtime = 2
+        Newer = 3
+    End Enum
+
+    Public Enum DefaultSettingType As Integer
+        All = 0
+        MovieFilters = 1
+        ShowFilters = 2
+        EpFilters = 3
+        ValidExts = 4
+        TVShowMatching = 5
+        TrailerCodec = 6
+        ValidThemeExts = 7
+        ValidSubtitleExts = 8
+        MovieListSorting = 9
+        MovieSetListSorting = 10
+        TVEpisodeListSorting = 11
+        TVSeasonListSorting = 12
+        TVShowListSorting = 13
+        MovieSortTokens = 14
+        MovieSetSortTokens = 15
+        TVSortTokens = 16
+    End Enum
+    Public Enum DiscType As Integer
+        BluRay = 0
+        DVD = 1
+        CD = 2
+        Any = 99
+    End Enum
+    ''' <summary>
+    ''' Enum representing valid TV series ordering.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum EpisodeOrdering As Integer
+        Standard = 0
+        DVD = 1
+        Absolute = 2
+        DayOfYear = 3
+    End Enum
+    ''' <summary>
+    ''' Enum representing Order of displaying Episodes
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Enum EpisodeSorting As Integer
+        Episode = 0
+        Aired = 1
     End Enum
 
     Public Enum MovieBannerSize As Integer
@@ -883,20 +844,141 @@ Public Class Enums
         ScannerStarted = 8
     End Enum
 
-    Public Enum ScraperEventType As Integer
-        BannerItem = 0
-        CharacterArtItem = 1
-        ClearArtItem = 2
-        ClearLogoItem = 3
-        DiscArtItem = 4
-        ExtrafanartsItem = 5
-        ExtrathumbsItem = 6
-        FanartItem = 7
-        LandscapeItem = 8
-        NFOItem = 9
-        PosterItem = 10
-        ThemeItem = 11
-        TrailerItem = 12
+    Public Enum ScrapeModifierType As Integer
+        All = 0
+        AllSeasonsBanner = 1
+        AllSeasonsFanart = 2
+        AllSeasonsLandscape = 3
+        AllSeasonsPoster = 4
+        DoSearch = 5
+        EpisodeActorThumbs = 6
+        EpisodeFanart = 7
+        EpisodePoster = 8
+        EpisodeMeta = 9
+        EpisodeNFO = 10
+        EpisodeSubtitle = 11
+        EpisodeWatchedFile = 12
+        MainActorThumbs = 13
+        MainBanner = 14
+        MainCharacterArt = 15
+        MainClearArt = 16
+        MainClearLogo = 17
+        MainDiscArt = 18
+        MainExtrafanarts = 19
+        MainExtrathumbs = 20
+        MainFanart = 21
+        MainLandscape = 22
+        MainMeta = 23
+        MainNFO = 24
+        MainPoster = 25
+        MainSubtitle = 26
+        MainTheme = 27
+        MainTrailer = 28
+        MainWatchedFile = 29
+        SeasonBanner = 30
+        SeasonFanart = 31
+        SeasonLandscape = 32
+        SeasonNFO = 33
+        SeasonPoster = 34
+        withEpisodes = 35
+        withSeasons = 36
+    End Enum
+
+    Public Enum ScraperCapatibility As Integer
+
+        'Movie
+        Movie_Data_Actors = 0
+        Movie_Data_Certifications = 1
+        Movie_Data_CollectionID = 2
+        Movie_Data_Countries = 3
+        Movie_Data_Directors = 4
+        Movie_Data_Genres = 5
+        Movie_Data_MPAA = 6
+        Movie_Data_OriginalTitle = 7
+        Movie_Data_Outline = 8
+        Movie_Data_Plot = 9
+        Movie_Data_Rating = 10
+        Movie_Data_ReleaseDate = 11
+        Movie_Data_Runtime = 12
+        Movie_Data_Studios = 13
+        Movie_Data_Tagline = 14
+        Movie_Data_Tags = 15
+        Movie_Data_Title = 16
+        Movie_Data_Top250 = 17
+        Movie_Data_Trailer = 18
+        Movie_Data_UserRating = 19
+        Movie_Data_Writers = 20
+        Movie_Data_Year = 21
+        Movie_Image_Banner = 22
+        Movie_Image_ClearArt = 23
+        Movie_Image_ClearLogo = 24
+        Movie_Image_DiscArt = 25
+        Movie_Image_Fanart = 26
+        Movie_Image_Landscape = 27
+        Movie_Image_Poster = 28
+        Movie_Trailer = 29
+        Movie_Theme = 30
+
+        'MovieSet
+        MovieSet_Data_Plot = 31
+        MovieSet_Data_Title = 32
+        MovieSet_Image_Banner = 33
+        MovieSet_Image_ClearArt = 34
+        MovieSet_Image_ClearLogo = 35
+        MovieSet_Image_DiscArt = 36
+        MovieSet_Image_Fanart = 37
+        MovieSet_Image_Landscape = 38
+        MovieSet_Image_Poster = 39
+
+        'TVEpisode
+        TVEpisode_Data_Actors = 40
+        TVEpisode_Data_Aired = 41
+        TVEpisode_Data_Directors = 42
+        TVEpisode_Data_GuestStars = 43
+        TVEpisode_Data_Plot = 44
+        TVEpisode_Data_Rating = 45
+        TVEpisode_Data_Runtime = 46
+        TVEpisode_Data_Title = 47
+        TVEpisode_Data_UserRating = 48
+        TVEpisode_Data_Writers = 49
+        TVEpisode_Image_Fanart = 50
+        TVEpisode_Image_Poster = 51
+
+        'TVSeason
+        TVSeason_Data_Aired = 52
+        TVSeason_Data_Plot = 53
+        TVSeason_Data_Title = 54
+        TVSeason_Image_Banner = 55
+        TVSeason_Image_Fanart = 56
+        TVSeason_Image_Landscape = 57
+        TVSeason_Image_Poster = 58
+
+        'TVShow
+        TVShow_Data_Actors = 59
+        TVShow_Data_Certification = 60
+        TVShow_Data_Countries = 61
+        TVShow_Data_Creators = 62
+        TVShow_Data_EpisodeGuide = 63
+        TVShow_Data_Genres = 64
+        TVShow_Data_MPAA = 65
+        TVShow_Data_OriginalTitle = 66
+        TVShow_Data_Plot = 67
+        TVShow_Data_Premiered = 68
+        TVShow_Data_Rating = 69
+        TVShow_Data_Runtime = 70
+        TVShow_Data_Status = 71
+        TVShow_Data_Studios = 72
+        TVShow_Data_Tags = 73
+        TVShow_Data_Title = 74
+        TVShow_Data_UserRating = 75
+        TVShow_Image_Banner = 76
+        TVShow_Image_CharacterArt = 77
+        TVShow_Image_ClearArt = 78
+        TVShow_Image_ClearLogo = 79
+        TVShow_Image_Fanart = 80
+        TVShow_Image_Landscape = 81
+        TVShow_Image_Poster = 82
+        TVShow_Theme = 83
     End Enum
     ''' <summary>
     ''' Enum representing which Movies/TVShows should be scraped,
@@ -932,6 +1014,36 @@ Public Class Enums
     Public Enum SelectionType As Integer
         All = 0
         Selected = 1
+    End Enum
+
+    Public Enum SettingsPanelType As Integer
+        Core = 0
+        Addon = 1
+        Movie = 2
+        MovieData = 3
+        MovieFile = 4
+        MovieGeneral = 5
+        MovieImage = 6
+        MovieSearch = 7
+        MovieSet = 8
+        MovieSetData = 9
+        MovieSetFile = 10
+        MovieSetGeneral = 11
+        MovieSetImage = 12
+        MovieSetSearch = 13
+        MovieTheme = 14
+        MovieTrailer = 15
+        Options = 16
+        OptionsConnection = 17
+        OptionsFileSystem = 18
+        OptionsGeneral = 19
+        TV = 20
+        TVData = 21
+        TVFile = 22
+        TVGeneral = 23
+        TVImage = 24
+        TVSearch = 25
+        TVTheme = 26
     End Enum
 
     Public Enum SortMethod_MovieSet As Integer

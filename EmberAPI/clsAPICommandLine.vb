@@ -32,7 +32,7 @@ Public Class CommandLine
 
 #Region "Events"
 
-    Public Event TaskEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Public Event TaskEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
 
     'Singleton Instace for CommandLine manager .. allways use this one
     Private Shared Singleton As CommandLine = Nothing
@@ -74,7 +74,7 @@ Public Class CommandLine
                 Case "-addmoviesource"
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addmoviesource", Args(i + 1).Replace("""", String.Empty)}))
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"addmoviesource", Args(i + 1).Replace("""", String.Empty)}))
                             i += 1
                         End If
                     Else
@@ -83,28 +83,28 @@ Public Class CommandLine
                 Case "-addtvshowsource"
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"addtvshowsource", Args(i + 1).Replace("""", String.Empty)}))
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"addtvshowsource", Args(i + 1).Replace("""", String.Empty)}))
                             i += 1
                         End If
                     Else
                         logger.Warn("[CommandLine] No path or invalid path specified for -addtvshowsource command")
                     End If
                 Case "-cleanvideodb"
-                    RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
+                    RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"cleanvideodb"}))
                 Case "-run"
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         Dim strModuleName As String = Args(i + 1)
                         i += 1
                         Dim sParams As List(Of Object) = Nothing
                         i = SetModuleParameters(Args, i, sParams)
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"run", strModuleName, sParams}))
+                        RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"run", strModuleName, sParams}))
                     Else
                         logger.Warn("[CommandLine] Missing module name for command ""-run""")
                     End If
                 Case "-scanfolder"
                     If Args.Count - 1 > i Then
                         If Directory.Exists(Args(i + 1).Replace("""", String.Empty)) Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.SpecificFolder = True}, -1, Args(i + 1).Replace("""", String.Empty)}))
                             i += 1
                         End If
@@ -119,51 +119,51 @@ Public Class CommandLine
                             Case "allask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
                             Case "allauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
                             Case "allskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
                             Case "markedask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
                             Case "markedauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
                             Case "markedskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
                             Case "missingask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
                             Case "missingauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
                             Case "missingskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
                             Case "newask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
@@ -178,51 +178,51 @@ Public Class CommandLine
                             Case "allask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
                             Case "allauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
                             Case "allskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
                             Case "markedask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
                             Case "markedauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
                             Case "markedskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
                             Case "missingask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
                             Case "missingauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
                             Case "missingskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
                             Case "newask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemoviesets""")
                         End Select
@@ -237,51 +237,51 @@ Public Class CommandLine
                             Case "allask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
                             Case "allauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
                             Case "allskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
                             Case "markedask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
                             Case "markedauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
                             Case "markedskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
                             Case "missingask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
                             Case "missingauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
                             Case "missingskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
                             Case "newask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
                                 i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
@@ -296,22 +296,22 @@ Public Class CommandLine
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
                         Dim sSource As Database.DBSource = Master.MovieSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
                             sSource = Master.MovieSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                         New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, -1, String.Empty}))
                             End If
                         End If
                     Else
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                        RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.Movies = True}, -1, String.Empty}))
                     End If
                 Case "-updatetvshows"
@@ -319,22 +319,22 @@ Public Class CommandLine
                         Dim clArg As String = Args(i + 1).Replace("""", String.Empty)
                         Dim sSource As Database.DBSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Name.ToLower = clArg.ToLower)
                         If sSource IsNot Nothing Then
-                            RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                            RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, sSource.ID, String.Empty}))
                             i += 1
                         Else
                             sSource = Master.TVShowSources.FirstOrDefault(Function(f) f.Path.ToLower = clArg.ToLower)
                             If sSource IsNot Nothing Then
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                         New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, sSource.ID, String.Empty}))
                                 i += 1
                             Else
-                                RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, -1, String.Empty}))
                             End If
                         End If
                     Else
-                        RaiseEvent TaskEvent(Enums.ModuleEventType.CommandLine,
+                        RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine,
                                                     New List(Of Object)(New Object() {"loadmedia", New Structures.ScanOrClean With {.TV = True}, -1, String.Empty}))
                     End If
                 Case "-profile"

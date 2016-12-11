@@ -193,7 +193,7 @@
     <Compile Include="clsAPIMediaContainers.vb" />
     <Compile Include="clsAPIMediaInfo.vb" />
     <Compile Include="clsAPIMediaStub.vb" />
-    <Compile Include="clsAPIModules.vb" />
+    <Compile Include="clsAPIAddons.vb" />
     <Compile Include="clsAPINFO.vb" />
     <Compile Include="clsAPINumUtils.vb" />
     <Compile Include="clsAPIScanner.vb" />
