@@ -1612,6 +1612,13 @@ Public Class FileFolderRenamer
                     pattern = pattern.Replace("$;", String.Empty)
                 End If
 
+                'Uppercase all letters
+                nextC = pattern.IndexOf("$:")
+                If Not nextC = -1 Then
+                    pattern = pattern.ToUpper
+                    pattern = pattern.Replace("$:", String.Empty)
+                End If
+
                 'Uppercase first letter in each word
                 nextC = pattern.IndexOf("$!")
                 If Not nextC = -1 Then
