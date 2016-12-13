@@ -2038,6 +2038,7 @@ Public Class Functions
 
 End Class 'Functions
 
+
 Public Class Structures
 
 #Region "Nested Types"

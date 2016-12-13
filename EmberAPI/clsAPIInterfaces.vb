@@ -26,17 +26,17 @@ Public Class Interfaces
 
 #Region "Events"
 
-        Event EnabledChanged(ByVal strName As String, ByVal bEnabled As Boolean)
         Event GenericEvent(ByVal eType As Enums.AddonEventType, ByRef _params As List(Of Object))
         Event NeedsRestart()
         Event SettingsChanged()
+        Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean)
 
 #End Region 'Events
 
 #Region "Properties"
 
         ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType)
-        ReadOnly Property Capabilities_ScraperCapatibility() As List(Of Enums.ScraperCapatibility)
+        ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility)
         Property Enabled() As Boolean
         ReadOnly Property IsBusy() As Boolean
         ReadOnly Property Name() As String

@@ -170,7 +170,7 @@
   <string id="169">Lock All</string>
   <string id="170">Unlock All</string>
   <string id="171">Unable to rename file</string>
-  <string id="172"></string>
+  <string id="172">Global</string>
   <string id="173">Renaming...</string>
   <string id="174">Bulk Renamer</string>
   <string id="175">Rename movies and files</string>
@@ -800,7 +800,7 @@
   <string id="799">The ID you entered is not a valid IMDB ID.</string>
   <string id="800">Preferred Quality:</string>
   <string id="801">TVDB Mirror</string>
-  <string id="802">Modules</string>
+  <string id="802">Addons</string>
   <string id="803">Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.</string>
   <string id="804">And finally, let's tell Ember Media Manager what TV Show files to look for.  Simply select any combination of files type you wish Ember Media Manager to load from and save to.  You can select more than one from each section if you wish.</string>
   <string id="805">Send to PasteBin.com</string>

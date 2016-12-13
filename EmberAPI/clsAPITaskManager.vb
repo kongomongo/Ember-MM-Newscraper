@@ -232,7 +232,7 @@ Public Class TaskManager
                     tmpDBElement.ScrapeOptions = Master.DefaultOptions_TV
                     tmpDBElement.ScrapeType = Enums.ScrapeType.SingleScrape
 
-                    If Not AddonsManager.Instance.ScrapeData_TVShow(tmpDBElement, True) Then
+                    If AddonsManager.Instance.ScrapeData_TVShow(tmpDBElement, True) Then
                         For Each nMissingSeason In tmpDBElement.Seasons.Where(Function(f) Not f.IDSpecified)
                             Master.DB.Save_TVSeason(nMissingSeason, True, False, False)
                             bNewSeasons = True

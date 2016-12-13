@@ -586,7 +586,7 @@ Public Class Scanner
     ''' <returns>True if directory is valid, false if not.</returns>
     Public Function IsValidDir(ByVal dInfo As DirectoryInfo, ByVal bIsTV As Boolean) As Boolean
         Try
-            For Each s As String In Master.ExcludeDirs
+            For Each s As String In Master.ExcludedDirs
                 If dInfo.FullName.ToLower = s.ToLower Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [ExcludeDirs] Path ""{0}"" has been skipped (path is in ""exclude directory"" list)", dInfo.FullName, s))
                     Return False
@@ -796,7 +796,7 @@ Public Class Scanner
 
                     'Scrape episode data
                     cEpisode.ScrapeOptions = Master.DefaultOptions_TV
-                    If Not AddonsManager.Instance.ScrapeData_TVEpisode(cEpisode, False) Then
+                    If AddonsManager.Instance.ScrapeData_TVEpisode(cEpisode, False) Then
                         If cEpisode.MainDetails.TitleSpecified Then
                             ToNfo = True
 
@@ -818,7 +818,7 @@ Public Class Scanner
                 If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then ScrapeModifiers.EpisodeFanart = True
                 If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then ScrapeModifiers.EpisodePoster = True
                 If ScrapeModifiers.EpisodeFanart OrElse ScrapeModifiers.EpisodePoster Then
-                    If Not AddonsManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
+                    If AddonsManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
                         Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifiers)
                     End If
                 End If
@@ -1045,7 +1045,7 @@ Public Class Scanner
                                     If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape Then ScrapeModifiers.SeasonLandscape = True
                                     If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster Then ScrapeModifiers.SeasonPoster = True
                                     If ScrapeModifiers.SeasonBanner OrElse ScrapeModifiers.SeasonFanart OrElse ScrapeModifiers.SeasonLandscape OrElse ScrapeModifiers.SeasonPoster Then
-                                        If Not AddonsManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
+                                        If AddonsManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
                                             Images.SetPreferredImages(tmpSeason, SearchResultsContainer, ScrapeModifiers)
                                         End If
                                     End If

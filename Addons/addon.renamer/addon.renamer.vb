@@ -33,11 +33,13 @@ Public Class Addon
 
 #Region "Fields"
 
-    Private MySettings As New _MySettings
-    Private _AssemblyName As String = String.Empty
+    Private _assemblyname As String = String.Empty
     Private _enabled As Boolean = False
     Private _name As String = "Renamer"
     Private _settingspanel As frmSettingsPanel
+
+
+    Private _AddonSettings As New AddonSettings
     Private cmnuRenamer_Movies As New ToolStripMenuItem
     Private cmnuRenamer_Episodes As New ToolStripMenuItem
     Private cmnuRenamer_Shows As New ToolStripMenuItem
@@ -57,16 +59,16 @@ Public Class Addon
 
 #Region "Events"
 
-    Public Event EnabledChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.EnabledChanged
     Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.Addon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.Addon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.Addon.SettingsChanged
+    Public Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.StateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Property Enabled() As Boolean Implements Interfaces.Addon.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.Addon.Enabled
         Get
             Return _enabled
         End Get
@@ -97,7 +99,7 @@ Public Class Addon
         End Get
     End Property
 
-    ReadOnly Property Capabilities_ScraperCapatibility() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibility
+    ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibilities
         Get
             Return New List(Of Enums.ScraperCapatibility)
         End Get
@@ -129,8 +131,8 @@ Public Class Addon
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
-                FileFolderRenamer.RenameSingle_Movie(DBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, True, True)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
+                FileFolderRenamer.RenameSingle_Movie(DBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, True, True)
                 RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idMovie").Value)}))
             End If
         Next
@@ -141,8 +143,8 @@ Public Class Addon
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
-                FileFolderRenamer.RenameSingle_TVEpisode(DBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
+                FileFolderRenamer.RenameSingle_TVEpisode(DBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, True, True)
                 RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idEpisode").Value)})) 'TODO: should be idFile (MultiEpisode handling)
             End If
         Next
@@ -153,8 +155,8 @@ Public Class Addon
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, True)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
-                FileFolderRenamer.RenameSingle_TVShow(DBElement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, True, True)
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
+                FileFolderRenamer.RenameSingle_TVShow(DBElement, _AddonSettings.FoldersPattern_Shows, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, True, True)
                 RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVShow, New List(Of Object)(New Object() {Convert.ToInt64(sRow.Cells("idShow").Value)}))
             End If
         Next
@@ -165,7 +167,7 @@ Public Class Addon
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 Using dRenameManual As New dlgRenameManual_Movie(DBElement)
                     Select Case dRenameManual.ShowDialog()
                         Case DialogResult.OK
@@ -181,7 +183,7 @@ Public Class Addon
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVEpisodes.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(Convert.ToInt64(sRow.Cells("idEpisode").Value), True)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVEpisode(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 Using dRenameManual As New dlgRenameManual_TVEpisode(DBElement)
                     Select Case dRenameManual.ShowDialog()
                         Case DialogResult.OK
@@ -197,7 +199,7 @@ Public Class Addon
         Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
             Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, True, True)
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 Using dRenameManual As New dlgRenameManual_TVShow(DBElement)
                     Select Case dRenameManual.ShowDialog()
                         Case DialogResult.OK
@@ -286,16 +288,16 @@ Public Class Addon
         ToolStripItem_TVShows_Set(cmnuRenamer_Shows)
     End Sub
 
-    Private Sub Handle_EnabledChanged(ByVal bEnabled As Boolean)
-        RaiseEvent EnabledChanged(_name, bEnabled)
-    End Sub
-
     Private Sub Handle_SettingsChanged()
         RaiseEvent SettingsChanged()
     End Sub
 
+    Private Sub Handle_StateChanged(ByVal bEnabled As Boolean)
+        RaiseEvent StateChanged(_name, bEnabled)
+    End Sub
+
     Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
-        _AssemblyName = strAssemblyName
+        _assemblyname = strAssemblyName
         LoadSettings()
     End Sub
 
@@ -304,18 +306,18 @@ Public Class Addon
         Dim SPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
-        _settingspanel.txtFolderPatternMovies.Text = MySettings.FoldersPattern_Movies
-        _settingspanel.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
-        _settingspanel.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
-        _settingspanel.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
-        _settingspanel.txtFilePatternMovies.Text = MySettings.FilesPattern_Movies
-        _settingspanel.chkRenameEditMovies.Checked = MySettings.RenameEdit_Movies
-        _settingspanel.chkRenameEditEpisodes.Checked = MySettings.RenameEdit_Episodes
-        _settingspanel.chkRenameMultiMovies.Checked = MySettings.RenameMulti_Movies
-        _settingspanel.chkRenameMultiShows.Checked = MySettings.RenameMulti_Shows
-        _settingspanel.chkRenameSingleMovies.Checked = MySettings.RenameSingle_Movies
-        _settingspanel.chkRenameSingleShows.Checked = MySettings.RenameSingle_Shows
-        _settingspanel.chkRenameUpdateEpisodes.Checked = MySettings.RenameUpdate_Episodes
+        _settingspanel.txtFolderPatternMovies.Text = _AddonSettings.FoldersPattern_Movies
+        _settingspanel.txtFolderPatternSeasons.Text = _AddonSettings.FoldersPattern_Seasons
+        _settingspanel.txtFolderPatternShows.Text = _AddonSettings.FoldersPattern_Shows
+        _settingspanel.txtFilePatternEpisodes.Text = _AddonSettings.FilesPattern_Episodes
+        _settingspanel.txtFilePatternMovies.Text = _AddonSettings.FilesPattern_Movies
+        _settingspanel.chkRenameEditMovies.Checked = _AddonSettings.RenameEdit_Movies
+        _settingspanel.chkRenameEditEpisodes.Checked = _AddonSettings.RenameEdit_Episodes
+        _settingspanel.chkRenameMultiMovies.Checked = _AddonSettings.RenameMulti_Movies
+        _settingspanel.chkRenameMultiShows.Checked = _AddonSettings.RenameMulti_Shows
+        _settingspanel.chkRenameSingleMovies.Checked = _AddonSettings.RenameSingle_Movies
+        _settingspanel.chkRenameSingleShows.Checked = _AddonSettings.RenameSingle_Shows
+        _settingspanel.chkRenameUpdateEpisodes.Checked = _AddonSettings.RenameUpdate_Episodes
 
         SPanel.ImageIndex = If(_enabled, 9, 10)
         SPanel.Name = _name
@@ -324,24 +326,24 @@ Public Class Addon
         SPanel.Text = Master.eLang.GetString(295, "Renamer")
         SPanel.Type = Enums.SettingsPanelType.Addon
 
-        AddHandler _settingspanel.EnabledChanged, AddressOf Handle_EnabledChanged
         AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        AddHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
         Return SPanel
     End Function
 
     Public Sub LoadSettings()
-        MySettings.FoldersPattern_Movies = AdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.ContentType.Movie)
-        MySettings.FoldersPattern_Seasons = AdvancedSettings.GetSetting("FoldersPattern", "Season $K2_?", , Enums.ContentType.TVSeason)
-        MySettings.FoldersPattern_Shows = AdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.ContentType.TVShow)
-        MySettings.FilesPattern_Episodes = AdvancedSettings.GetSetting("FilesPattern", "$Z - $W2_S?2E?{ - $T}", , Enums.ContentType.TVEpisode)
-        MySettings.FilesPattern_Movies = AdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.ContentType.Movie)
-        MySettings.RenameEdit_Movies = AdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.Movie)
-        MySettings.RenameEdit_Episodes = AdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.TVShow)
-        MySettings.RenameMulti_Movies = AdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.Movie)
-        MySettings.RenameMulti_Shows = AdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.TVShow)
-        MySettings.RenameSingle_Movies = AdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.Movie)
-        MySettings.RenameSingle_Shows = AdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.TVShow)
-        MySettings.RenameUpdate_Episodes = AdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.ContentType.TVEpisode)
+        _AddonSettings.FoldersPattern_Movies = AdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.ContentType.Movie)
+        _AddonSettings.FoldersPattern_Seasons = AdvancedSettings.GetSetting("FoldersPattern", "Season $K2_?", , Enums.ContentType.TVSeason)
+        _AddonSettings.FoldersPattern_Shows = AdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.ContentType.TVShow)
+        _AddonSettings.FilesPattern_Episodes = AdvancedSettings.GetSetting("FilesPattern", "$Z - $W2_S?2E?{ - $T}", , Enums.ContentType.TVEpisode)
+        _AddonSettings.FilesPattern_Movies = AdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.ContentType.Movie)
+        _AddonSettings.RenameEdit_Movies = AdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.Movie)
+        _AddonSettings.RenameEdit_Episodes = AdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.TVShow)
+        _AddonSettings.RenameMulti_Movies = AdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.Movie)
+        _AddonSettings.RenameMulti_Shows = AdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.TVShow)
+        _AddonSettings.RenameSingle_Movies = AdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.Movie)
+        _AddonSettings.RenameSingle_Shows = AdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.TVShow)
+        _AddonSettings.RenameUpdate_Episodes = AdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.ContentType.TVEpisode)
     End Sub
 
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
@@ -353,8 +355,8 @@ Public Class Addon
                     dBulkRename.FilterMoviesSearch = AddonsManager.Instance.RuntimeObjects.FilterMoviesSearch
                     dBulkRename.FilterMoviesType = AddonsManager.Instance.RuntimeObjects.FilterMoviesType
                     dBulkRename.ListMovies = AddonsManager.Instance.RuntimeObjects.ListMovies
-                    dBulkRename.txtFilePattern.Text = MySettings.FilesPattern_Movies
-                    dBulkRename.txtFolderPattern.Text = MySettings.FoldersPattern_Movies
+                    dBulkRename.txtFilePattern.Text = _AddonSettings.FilesPattern_Movies
+                    dBulkRename.txtFolderPattern.Text = _AddonSettings.FoldersPattern_Movies
                     dBulkRename.ShowDialog()
                 End Using
             Case Enums.ContentType.TV
@@ -363,9 +365,9 @@ Public Class Addon
                     dBulkRename.FilterShowsSearch = AddonsManager.Instance.RuntimeObjects.FilterTVShowsSearch
                     dBulkRename.FilterShowsType = AddonsManager.Instance.RuntimeObjects.FilterTVShowsType
                     dBulkRename.ListShows = AddonsManager.Instance.RuntimeObjects.ListTVShows
-                    dBulkRename.txtFilePatternEpisodes.Text = MySettings.FilesPattern_Episodes
-                    dBulkRename.txtFolderPatternSeasons.Text = MySettings.FoldersPattern_Seasons
-                    dBulkRename.txtFolderPatternShows.Text = MySettings.FoldersPattern_Shows
+                    dBulkRename.txtFilePatternEpisodes.Text = _AddonSettings.FilesPattern_Episodes
+                    dBulkRename.txtFolderPatternSeasons.Text = _AddonSettings.FoldersPattern_Seasons
+                    dBulkRename.txtFolderPatternShows.Text = _AddonSettings.FoldersPattern_Shows
                     dBulkRename.ShowDialog()
                 End Using
         End Select
@@ -376,40 +378,40 @@ Public Class Addon
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
         Select Case eAddonEventType
             Case Enums.AddonEventType.AfterEdit_Movie
-                If MySettings.RenameEdit_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                    FileFolderRenamer.RenameSingle_Movie(tDBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False)
+                If _AddonSettings.RenameEdit_Movies AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Movies) Then
+                    FileFolderRenamer.RenameSingle_Movie(tDBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, False, False)
                 End If
             Case Enums.AddonEventType.AfterEdit_TVEpisode
-                If MySettings.RenameEdit_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                If _AddonSettings.RenameEdit_Episodes AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.AddonEventType.DuringUpdateDB_TV
-                If tDBElement.NfoPathSpecified AndAlso MySettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, True, False, False)
+                If tDBElement.NfoPathSpecified AndAlso _AddonSettings.RenameUpdate_Episodes AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, True, False, False)
                 End If
             Case Enums.AddonEventType.DuringScrapingMulti_Movie
-                If MySettings.RenameMulti_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                    FileFolderRenamer.RenameSingle_Movie(tDBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False)
+                If _AddonSettings.RenameMulti_Movies AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Movies) Then
+                    FileFolderRenamer.RenameSingle_Movie(tDBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, False, False)
                 End If
             Case Enums.AddonEventType.DuringScrapingMulti_TVEpisode
-                If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                If _AddonSettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.AddonEventType.DuringScrapingMulti_TVShow
-                If MySettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_TVShow(tDBElement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                If _AddonSettings.RenameMulti_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVShow(tDBElement, _AddonSettings.FoldersPattern_Shows, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.AddonEventType.DuringScrapingSingle_Movie
-                If MySettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Movies) Then
-                    FileFolderRenamer.RenameSingle_Movie(tDBElement, MySettings.FoldersPattern_Movies, MySettings.FilesPattern_Movies, False, False, False)
+                If _AddonSettings.RenameSingle_Movies AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Movies) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Movies) Then
+                    FileFolderRenamer.RenameSingle_Movie(tDBElement, _AddonSettings.FoldersPattern_Movies, _AddonSettings.FilesPattern_Movies, False, False, False)
                 End If
             Case Enums.AddonEventType.DuringScrapingSingle_TVEpisode
-                If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                If _AddonSettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVEpisode(tDBElement, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
             Case Enums.AddonEventType.DuringScrapingSingle_TVShow
-                If MySettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(MySettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(MySettings.FilesPattern_Episodes) Then
-                    FileFolderRenamer.RenameSingle_TVShow(tDBElement, MySettings.FoldersPattern_Shows, MySettings.FoldersPattern_Seasons, MySettings.FilesPattern_Episodes, False, False, False)
+                If _AddonSettings.RenameSingle_Shows AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Shows) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FoldersPattern_Seasons) AndAlso Not String.IsNullOrEmpty(_AddonSettings.FilesPattern_Episodes) Then
+                    FileFolderRenamer.RenameSingle_TVShow(tDBElement, _AddonSettings.FoldersPattern_Shows, _AddonSettings.FoldersPattern_Seasons, _AddonSettings.FilesPattern_Episodes, False, False, False)
                 End If
         End Select
         Return New Interfaces.AddonResult
@@ -417,40 +419,40 @@ Public Class Addon
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
-        MySettings.FoldersPattern_Movies = _settingspanel.txtFolderPatternMovies.Text
-        MySettings.FoldersPattern_Seasons = _settingspanel.txtFolderPatternSeasons.Text
-        MySettings.FoldersPattern_Shows = _settingspanel.txtFolderPatternShows.Text
-        MySettings.FilesPattern_Episodes = _settingspanel.txtFilePatternEpisodes.Text
-        MySettings.FilesPattern_Movies = _settingspanel.txtFilePatternMovies.Text
-        MySettings.RenameEdit_Movies = _settingspanel.chkRenameEditMovies.Checked
-        MySettings.RenameEdit_Episodes = _settingspanel.chkRenameEditEpisodes.Checked
-        MySettings.RenameMulti_Movies = _settingspanel.chkRenameMultiMovies.Checked
-        MySettings.RenameMulti_Shows = _settingspanel.chkRenameMultiShows.Checked
-        MySettings.RenameSingle_Movies = _settingspanel.chkRenameSingleMovies.Checked
-        MySettings.RenameSingle_Shows = _settingspanel.chkRenameSingleShows.Checked
-        MySettings.RenameUpdate_Episodes = _settingspanel.chkRenameUpdateEpisodes.Checked
+        _AddonSettings.FoldersPattern_Movies = _settingspanel.txtFolderPatternMovies.Text
+        _AddonSettings.FoldersPattern_Seasons = _settingspanel.txtFolderPatternSeasons.Text
+        _AddonSettings.FoldersPattern_Shows = _settingspanel.txtFolderPatternShows.Text
+        _AddonSettings.FilesPattern_Episodes = _settingspanel.txtFilePatternEpisodes.Text
+        _AddonSettings.FilesPattern_Movies = _settingspanel.txtFilePatternMovies.Text
+        _AddonSettings.RenameEdit_Movies = _settingspanel.chkRenameEditMovies.Checked
+        _AddonSettings.RenameEdit_Episodes = _settingspanel.chkRenameEditEpisodes.Checked
+        _AddonSettings.RenameMulti_Movies = _settingspanel.chkRenameMultiMovies.Checked
+        _AddonSettings.RenameMulti_Shows = _settingspanel.chkRenameMultiShows.Checked
+        _AddonSettings.RenameSingle_Movies = _settingspanel.chkRenameSingleMovies.Checked
+        _AddonSettings.RenameSingle_Shows = _settingspanel.chkRenameSingleShows.Checked
+        _AddonSettings.RenameUpdate_Episodes = _settingspanel.chkRenameUpdateEpisodes.Checked
         SaveSettings()
         If bDoDispose Then
-            RemoveHandler _settingspanel.EnabledChanged, AddressOf Handle_EnabledChanged
             RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
             _settingspanel.Dispose()
         End If
     End Sub
 
     Public Sub SaveSettings()
         Using settings = New AdvancedSettings()
-            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Movies, , , Enums.ContentType.Movie)
-            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Seasons, , , Enums.ContentType.TVSeason)
-            settings.SetSetting("FoldersPattern", MySettings.FoldersPattern_Shows, , , Enums.ContentType.TVShow)
-            settings.SetSetting("FilesPattern", MySettings.FilesPattern_Episodes, , , Enums.ContentType.TVEpisode)
-            settings.SetSetting("FilesPattern", MySettings.FilesPattern_Movies, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("RenameEdit", MySettings.RenameEdit_Movies, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("RenameEdit", MySettings.RenameEdit_Episodes, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("RenameMulti", MySettings.RenameMulti_Movies, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("RenameMulti", MySettings.RenameMulti_Shows, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Movies, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("RenameSingle", MySettings.RenameSingle_Shows, , , Enums.ContentType.TVShow)
-            settings.SetBooleanSetting("RenameUpdate", MySettings.RenameUpdate_Episodes, , , Enums.ContentType.TVEpisode)
+            settings.SetSetting("FoldersPattern", _AddonSettings.FoldersPattern_Movies, , , Enums.ContentType.Movie)
+            settings.SetSetting("FoldersPattern", _AddonSettings.FoldersPattern_Seasons, , , Enums.ContentType.TVSeason)
+            settings.SetSetting("FoldersPattern", _AddonSettings.FoldersPattern_Shows, , , Enums.ContentType.TVShow)
+            settings.SetSetting("FilesPattern", _AddonSettings.FilesPattern_Episodes, , , Enums.ContentType.TVEpisode)
+            settings.SetSetting("FilesPattern", _AddonSettings.FilesPattern_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameEdit", _AddonSettings.RenameEdit_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameEdit", _AddonSettings.RenameEdit_Episodes, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("RenameMulti", _AddonSettings.RenameMulti_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameMulti", _AddonSettings.RenameMulti_Shows, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("RenameSingle", _AddonSettings.RenameSingle_Movies, , , Enums.ContentType.Movie)
+            settings.SetBooleanSetting("RenameSingle", _AddonSettings.RenameSingle_Shows, , , Enums.ContentType.TVShow)
+            settings.SetBooleanSetting("RenameUpdate", _AddonSettings.RenameUpdate_Episodes, , , Enums.ContentType.TVEpisode)
         End Using
     End Sub
 
@@ -514,7 +516,7 @@ Public Class Addon
 
 #Region "Nested Types"
 
-    Structure _MySettings
+    Structure AddonSettings
 
 #Region "Fields"
 

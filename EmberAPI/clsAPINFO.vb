@@ -21,7 +21,6 @@
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
-Imports System.Xml
 Imports System.Xml.Serialization
 Imports NLog
 Imports System.Windows.Forms
@@ -71,11 +70,6 @@ Public Class NFO
         Dim new_Trailer As Boolean = False
         Dim new_UserRating As Boolean = False
         Dim new_Year As Boolean = False
-
-        'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-        If (tDBMovie.ScrapeType = Enums.ScrapeType.SingleScrape OrElse tDBMovie.ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso ScrapedList.Count > 0 Then
-            PreviewDataScraperResults_Movie(ScrapedList)
-        End If
 
         For Each scrapedmovie In ScrapedList
 
@@ -159,7 +153,7 @@ Public Class NFO
                 tDBMovie.MainDetails.TMDBColID = scrapedmovie.TMDBColID
                 new_CollectionID = True
             ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
-                tDBMovie.MainDetails.TMDBColID = String.Empty
+                tDBMovie.MainDetails.TMDBColID = -1
             End If
 
             'Collections
@@ -1262,27 +1256,6 @@ Public Class NFO
 
         Return DBTVEpisode
     End Function
-    ''' <summary>
-    ''' Open MovieDataScraperPreview Window
-    ''' </summary>
-    ''' <param name="ScrapedList"><c>List(Of MediaContainers.Movie)</c> which contains unfiltered results of each data scraper</param>
-    ''' <remarks>
-    ''' 2014/09/13 Cocotus - First implementation: Display all scrapedresults in preview window, so that user can select the information which should be used
-    ''' </remarks>
-    Public Shared Sub PreviewDataScraperResults_Movie(ByRef ScrapedList As List(Of MediaContainers.MainDetails))
-        Try
-            Application.DoEvents()
-            'Open/Show preview window
-            Using dlgMovieDataScraperPreview As New dlgMovieDataScraperPreview(ScrapedList)
-                Select Case dlgMovieDataScraperPreview.ShowDialog()
-                    Case Windows.Forms.DialogResult.OK
-                        'For now nothing here
-                End Select
-            End Using
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
 
     Public Shared Function CleanNFO_Movies(ByVal mNFO As MediaContainers.MainDetails) As MediaContainers.MainDetails
         If mNFO IsNot Nothing Then
@@ -1375,7 +1348,7 @@ Public Class NFO
             'Boxee support
             If Master.eSettings.TVUseBoxee Then
                 If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.TVDBSpecified Then
-                    mNFO.TVDB = mNFO.BoxeeTvDb
+                    mNFO.TVDB = CInt(mNFO.BoxeeTvDb)
                     mNFO.BlankBoxeeId()
                 End If
             End If
@@ -2295,7 +2268,7 @@ Public Class NFO
                 'YAMJ support
                 If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
                     If tMovie.TMDBSpecified Then
-                        tMovie.TMDB = String.Empty
+                        tMovie.TMDB = -1
                     End If
                 End If
 
@@ -2504,7 +2477,7 @@ Public Class NFO
                 'Boxee support
                 If Master.eSettings.TVUseBoxee Then
                     If tTVShow.TVDBSpecified() Then
-                        tTVShow.BoxeeTvDb = tTVShow.TVDB
+                        tTVShow.BoxeeTvDb = CStr(tTVShow.TVDB)
                         tTVShow.BlankId()
                     End If
                 End If

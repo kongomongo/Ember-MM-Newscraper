@@ -161,11 +161,11 @@ Public Class dlgSettings
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
-              .Text = Master.eLang.GetString(802, "Modules"),
+              .Text = Master.eLang.GetString(802, "Addons"),
               .Image = My.Resources.modules,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Addon, .iIndex = 500, .strTitle = Master.eLang.GetString(802, "Modules")}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Addon, .iIndex = 500, .strTitle = Master.eLang.GetString(802, "Addons")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
@@ -382,16 +382,16 @@ Public Class dlgSettings
     Sub AddAddonSettingsPanels()
         Dim nPanel As New Containers.SettingsPanel
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
-            nPanel = s.ProcessorModule.InjectSettingsPanel
+            nPanel = s.Addon.InjectSettingsPanel
             If Not nPanel Is Nothing Then
                 If nPanel.ImageIndex = -1 AndAlso Not nPanel.Image Is Nothing Then
                     ilSettings.Images.Add(String.Concat(s.AssemblyName, nPanel.Name), nPanel.Image)
                     nPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, nPanel.Name))
                 End If
                 SettingsPanels.Add(nPanel)
-                AddHandler s.ProcessorModule.EnabledChanged, AddressOf Handle_EnableChanged
-                AddHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-                AddHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
+                AddHandler s.Addon.NeedsRestart, AddressOf Handle_NeedsRestart
+                AddHandler s.Addon.SettingsChanged, AddressOf Handle_SettingsChanged
+                AddHandler s.Addon.StateChanged, AddressOf Handle_StateChanged
                 AddHelpHandlers(nPanel.Panel, nPanel.Prefix)
             End If
         Next
@@ -399,9 +399,9 @@ Public Class dlgSettings
 
     Sub RemoveScraperPanels()
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
-            RemoveHandler s.ProcessorModule.EnabledChanged, AddressOf Handle_EnableChanged
-            RemoveHandler s.ProcessorModule.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler s.ProcessorModule.SettingsChanged, AddressOf Handle_SettingsChanged
+            RemoveHandler s.Addon.NeedsRestart, AddressOf Handle_NeedsRestart
+            RemoveHandler s.Addon.SettingsChanged, AddressOf Handle_SettingsChanged
+            RemoveHandler s.Addon.StateChanged, AddressOf Handle_StateChanged
         Next
     End Sub
 
@@ -3709,7 +3709,7 @@ Public Class dlgSettings
         RaiseEvent LoadEnd()
     End Sub
 
-    Private Sub Handle_EnableChanged(ByVal strAssemblyName As String, ByVal bEnabled As Boolean)
+    Private Sub Handle_StateChanged(ByVal strAssemblyName As String, ByVal bEnabled As Boolean)
         If Name = "!#RELOAD" Then
             FillSettings()
             Return
@@ -4411,7 +4411,7 @@ Public Class dlgSettings
 
     Private Sub RefreshFileSystemExcludeDirs()
         lstFileSystemExcludedDirs.Items.Clear()
-        lstFileSystemExcludedDirs.Items.AddRange(Master.ExcludeDirs.ToArray)
+        lstFileSystemExcludedDirs.Items.AddRange(Master.ExcludedDirs.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemValidExts()
@@ -4670,7 +4670,7 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub SaveSettings(ByVal isApply As Boolean)
+    Private Sub SaveSettings(ByVal bIsApply As Boolean)
         With Master.eSettings
             .FileSystemNoStackExts.Clear()
             .FileSystemNoStackExts.AddRange(lstFileSystemNoStackExts.Items.OfType(Of String).ToList)
@@ -5569,7 +5569,7 @@ Public Class dlgSettings
 
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons
             Try
-                s.ProcessorModule.SaveSetup(Not isApply)
+                s.Addon.SaveSetup(Not bIsApply)
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try

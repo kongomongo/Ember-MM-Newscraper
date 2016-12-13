@@ -39,9 +39,7 @@ Public Class AddonsManager
     'Singleton Instace for module manager .. allways use this one
     Private Shared Singleton As AddonsManager = Nothing
 
-    Private strAddonsPath As String = Path.Combine(Functions.AppPath, "Addons")
-
-    Friend WithEvents bwLoadModules As New System.ComponentModel.BackgroundWorker
+    Friend WithEvents bwLoadAddons As New System.ComponentModel.BackgroundWorker
 
 #End Region 'Fields
 
@@ -64,7 +62,7 @@ Public Class AddonsManager
 
     Public ReadOnly Property ModulesLoaded() As Boolean
         Get
-            Return Not bwLoadModules.IsBusy
+            Return Not bwLoadAddons.IsBusy
         End Get
     End Property
 #End Region 'Properties
@@ -76,17 +74,17 @@ Public Class AddonsManager
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPP", .Name = "Ember Application", .Version = My.Application.Info.Version.ToString()})
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPI", .Name = "Ember API", .Version = Functions.EmberAPIVersion()})
         For Each nExternalModule As AddonClass In Addons
-            VersionList.Add(New VersionItem With {.Name = nExternalModule.ProcessorModule.Name,
+            VersionList.Add(New VersionItem With {.Name = nExternalModule.Addon.Name,
               .AssemblyFileName = nExternalModule.AssemblyFileName,
-              .Version = nExternalModule.ProcessorModule.Version})
+              .Version = nExternalModule.Addon.Version})
         Next
     End Sub
 
-    Private Sub bwLoadModules_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadModules.DoWork
+    Private Sub bwLoadAddons_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwLoadAddons.DoWork
         LoadAddons()
     End Sub
 
-    Private Sub bwLoadModules_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadModules.RunWorkerCompleted
+    Private Sub bwLoadAddons_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bwLoadAddons.RunWorkerCompleted
         BuildVersionList()
     End Sub
 
@@ -104,15 +102,15 @@ Public Class AddonsManager
     End Sub
 
     Public Sub LoadAllAddons()
-        bwLoadModules.RunWorkerAsync()
+        bwLoadAddons.RunWorkerAsync()
     End Sub
 
     Public Sub LoadAddons()
         logger.Trace("[AddonsManager] [LoadAddons] [Start]")
 
-        If Directory.Exists(strAddonsPath) Then
+        If Directory.Exists(Master.AddonsPath) Then
             'add each .dll file to AssemblyList
-            For Each file As String In Directory.GetFiles(strAddonsPath, "*.dll")
+            For Each file As String In Directory.GetFiles(Master.AddonsPath, "*.dll")
                 Dim nAssembly As Reflection.Assembly = Reflection.Assembly.LoadFile(file)
                 AssemblyList.Add(New AddonsManager.AssemblyListItem With {.Assembly = nAssembly, .AssemblyName = nAssembly.GetName.Name})
             Next
@@ -122,28 +120,28 @@ Public Class AddonsManager
                 For Each fileType As Type In tAssemblyItem.Assembly.GetTypes
                     Dim fType As Type = fileType.GetInterface("Addon")
                     If Not fType Is Nothing Then
-                        Dim ProcessorModule As Interfaces.Addon
-                        ProcessorModule = CType(Activator.CreateInstance(fileType), Interfaces.Addon)
+                        Dim nAddonInterface As Interfaces.Addon
+                        nAddonInterface = CType(Activator.CreateInstance(fileType), Interfaces.Addon)
 
-                        Dim nExternalModule As New AddonClass
-                        nExternalModule.ProcessorModule = ProcessorModule
-                        nExternalModule.AssemblyName = tAssemblyItem.AssemblyName
-                        nExternalModule.AssemblyFileName = tAssemblyItem.Assembly.ManifestModule.Name
-                        Addons.Add(nExternalModule)
+                        Dim nAddon As New AddonClass
+                        nAddon.Addon = nAddonInterface
+                        nAddon.AssemblyName = tAssemblyItem.AssemblyName
+                        nAddon.AssemblyFileName = tAssemblyItem.Assembly.ManifestModule.Name
+                        Addons.Add(nAddon)
 
-                        logger.Info(String.Concat("[AddonsManager] [LoadAddons] Addon loaded: ", nExternalModule.AssemblyName))
+                        logger.Info(String.Concat("[AddonsManager] [LoadAddons] Addon loaded: ", nAddon.AssemblyName))
 
-                        nExternalModule.ProcessorModule.Init(nExternalModule.AssemblyName)
+                        nAddon.Addon.Init(nAddon.AssemblyName)
 
-                        For Each i As _XMLAddonClass In Master.eSettings.EmberModules.Where(Function(f) f.strAssemblyName = nExternalModule.AssemblyName)
-                            nExternalModule.ProcessorModule.Enabled = i.bEnabled
+                        For Each i As _XMLAddonClass In Master.eSettings.Addons.Where(Function(f) f.strAssemblyName = nAddon.AssemblyName)
+                            nAddon.Addon.Enabled = i.bEnabled
                         Next
-                        AddHandler ProcessorModule.GenericEvent, AddressOf GenericRunCallBack
+                        AddHandler nAddonInterface.GenericEvent, AddressOf GenericRunCallBack
                     End If
                 Next
             Next
         Else
-            logger.Warn("[AddonsManager] [LoadAddons] No directory ""Addons"" found!")
+            logger.Warn(String.Format("[AddonsManager] [LoadAddons] No directory ""{0}"" found!", Master.AddonsPath))
         End If
 
         logger.Trace("[AddonsManager] [LoadAddons] [Done]")
@@ -154,7 +152,7 @@ Public Class AddonsManager
             Application.DoEvents()
         End While
 
-        Dim modules As IEnumerable(Of AddonClass) = Addons.Where(Function(e) e.ProcessorModule.IsBusy)
+        Dim modules As IEnumerable(Of AddonClass) = Addons.Where(Function(e) e.Addon.IsBusy)
         If modules.Count() > 0 Then
             Return True
         Else
@@ -167,15 +165,15 @@ Public Class AddonsManager
             Application.DoEvents()
         End While
 
-        If ScrapeModifiers.MainBanner AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_Banner) Then Return True
-        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_ClearArt) Then Return True
-        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_ClearLogo) Then Return True
-        If ScrapeModifiers.MainDiscArt AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_DiscArt) Then Return True
-        If ScrapeModifiers.MainExtrafanarts AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart) Then Return True
-        If ScrapeModifiers.MainExtrathumbs AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart) Then Return True
-        If ScrapeModifiers.MainFanart AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart) Then Return True
-        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_Landscape) Then Return True
-        If ScrapeModifiers.MainPoster AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.Movie_Image_Poster) Then Return True
+        If ScrapeModifiers.MainBanner AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Banner) Then Return True
+        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_ClearArt) Then Return True
+        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_ClearLogo) Then Return True
+        If ScrapeModifiers.MainDiscArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_DiscArt) Then Return True
+        If ScrapeModifiers.MainExtrafanarts AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart) Then Return True
+        If ScrapeModifiers.MainExtrathumbs AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart) Then Return True
+        If ScrapeModifiers.MainFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart) Then Return True
+        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Landscape) Then Return True
+        If ScrapeModifiers.MainPoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Poster) Then Return True
 
         Return False
     End Function
@@ -185,13 +183,13 @@ Public Class AddonsManager
             Application.DoEvents()
         End While
 
-        If ScrapeModifiers.MainBanner AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_Banner) Then Return True
-        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_ClearArt) Then Return True
-        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_ClearLogo) Then Return True
-        If ScrapeModifiers.MainDiscArt AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_DiscArt) Then Return True
-        If ScrapeModifiers.MainFanart AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_Fanart) Then Return True
-        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_Landscape) Then Return True
-        If ScrapeModifiers.MainPoster AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.MovieSet_Image_Poster) Then Return True
+        If ScrapeModifiers.MainBanner AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Banner) Then Return True
+        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_ClearArt) Then Return True
+        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_ClearLogo) Then Return True
+        If ScrapeModifiers.MainDiscArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_DiscArt) Then Return True
+        If ScrapeModifiers.MainFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Fanart) Then Return True
+        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Landscape) Then Return True
+        If ScrapeModifiers.MainPoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Poster) Then Return True
 
         Return False
     End Function
@@ -201,19 +199,19 @@ Public Class AddonsManager
             Application.DoEvents()
         End While
 
-        If ScrapeModifiers.EpisodeFanart AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVEpisode_Image_Fanart) Then Return True
-        If ScrapeModifiers.EpisodePoster AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVEpisode_Image_Poster) Then Return True
-        If ScrapeModifiers.MainBanner AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_Banner) Then Return True
-        If ScrapeModifiers.MainCharacterArt AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_CharacterArt) Then Return True
-        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_ClearArt) Then Return True
-        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_ClearLogo) Then Return True
-        If ScrapeModifiers.MainFanart AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_Fanart) Then Return True
-        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_Landscape) Then Return True
-        If ScrapeModifiers.MainPoster AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVShow_Image_Poster) Then Return True
-        If ScrapeModifiers.SeasonBanner AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVSeason_Image_Banner) Then Return True
-        If ScrapeModifiers.SeasonFanart AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVSeason_Image_Fanart) Then Return True
-        If ScrapeModifiers.SeasonLandscape AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVSeason_Image_Landscape) Then Return True
-        If ScrapeModifiers.SeasonPoster AndAlso tExternalModule.ProcessorModule.Capabilities_ScraperCapatibility.Contains(Enums.ScraperCapatibility.TVSeason_Image_Poster) Then Return True
+        If ScrapeModifiers.EpisodeFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVEpisode_Image_Fanart) Then Return True
+        If ScrapeModifiers.EpisodePoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVEpisode_Image_Poster) Then Return True
+        If ScrapeModifiers.MainBanner AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_Banner) Then Return True
+        If ScrapeModifiers.MainCharacterArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_CharacterArt) Then Return True
+        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_ClearArt) Then Return True
+        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_ClearLogo) Then Return True
+        If ScrapeModifiers.MainFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_Fanart) Then Return True
+        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_Landscape) Then Return True
+        If ScrapeModifiers.MainPoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Image_Poster) Then Return True
+        If ScrapeModifiers.SeasonBanner AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVSeason_Image_Banner) Then Return True
+        If ScrapeModifiers.SeasonFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVSeason_Image_Fanart) Then Return True
+        If ScrapeModifiers.SeasonLandscape AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVSeason_Image_Landscape) Then Return True
+        If ScrapeModifiers.SeasonPoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVSeason_Image_Poster) Then Return True
 
         Return False
     End Function
@@ -236,16 +234,16 @@ Public Class AddonsManager
         End While
 
         Try
-            Dim nAddons = Addons.Where(Function(e) e.ProcessorModule.Capabilities_AddonEventTypes.Contains(eModuleEventType) AndAlso e.ProcessorModule.Enabled)
+            Dim nAddons = Addons.Where(Function(e) e.Addon.Capabilities_AddonEventTypes.Contains(eModuleEventType) AndAlso e.Addon.Enabled)
             If (nAddons.Count() <= 0) Then
                 logger.Warn("[AddonsManager] [RunGeneric] No generic modules defined <{0}>", eModuleEventType.ToString)
             Else
                 For Each nAddon In nAddons
                     Try
-                        logger.Trace("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.ProcessorModule.Name)
-                        ret = nAddon.ProcessorModule.Run(DBElement, eModuleEventType, _params)
+                        logger.Trace("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.Addon.Name)
+                        ret = nAddon.Addon.Run(DBElement, eModuleEventType, _params)
                     Catch ex As Exception
-                        logger.Error("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.ProcessorModule.Name)
+                        logger.Error("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.Addon.Name)
                         logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                     If ret.bBreakChain OrElse RunOnlyOne Then Exit For
@@ -269,13 +267,86 @@ Public Class AddonsManager
             Dim t As New _XMLAddonClass
             t.strAssemblyName = nExternalModule.AssemblyName
             t.strAssemblyFileName = nExternalModule.AssemblyFileName
-            t.bEnabled = nExternalModule.ProcessorModule.Enabled
+            t.bEnabled = nExternalModule.Addon.Enabled
             tmpForXML.Add(t)
         Next
 
-        Master.eSettings.EmberModules = tmpForXML
+        Master.eSettings.Addons = tmpForXML
         Master.eSettings.Save()
     End Sub
+
+    Public Function Scrape(ByRef tDBElement As Database.DBElement) As ScrapeResults
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Start] {0}", tDBElement.Filename))
+
+        Dim nScrapeResults As New ScrapeResults
+
+        While Not ModulesLoaded
+            Application.DoEvents()
+        End While
+
+        If Not Addons.Count > 0 Then
+            logger.Warn("[AddonsManager] [Scrape] [Abort] No addons found")
+        Else
+            For Each nAddon In Addons
+                logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Name))
+
+                Dim nAddonResult = nAddon.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
+
+                If nAddonResult.bCancelled Then Return nScrapeResults
+
+                If nAddonResult.ScraperResult_Data IsNot Nothing Then
+                    nScrapeResults.lstData.Add(nAddonResult.ScraperResult_Data)
+
+                    'set new informations for following scrapers
+                    If nAddonResult.ScraperResult_Data.IMDBSpecified Then
+                        tDBElement.MainDetails.IMDB = nAddonResult.ScraperResult_Data.IMDB
+                    End If
+                    If nAddonResult.ScraperResult_Data.OriginalTitleSpecified Then
+                        tDBElement.MainDetails.OriginalTitle = nAddonResult.ScraperResult_Data.OriginalTitle
+                    End If
+                    If nAddonResult.ScraperResult_Data.TitleSpecified Then
+                        tDBElement.MainDetails.Title = nAddonResult.ScraperResult_Data.Title
+                    End If
+                    If nAddonResult.ScraperResult_Data.TMDBSpecified Then
+                        tDBElement.MainDetails.TMDB = nAddonResult.ScraperResult_Data.TMDB
+                    End If
+                    If nAddonResult.ScraperResult_Data.YearSpecified Then
+                        tDBElement.MainDetails.Year = nAddonResult.ScraperResult_Data.Year
+                    End If
+                End If
+
+                If nAddonResult.ScraperResult_Image IsNot Nothing Then
+                    nScrapeResults.lstImages.EpisodeFanarts.AddRange(nAddonResult.ScraperResult_Image.EpisodeFanarts)
+                    nScrapeResults.lstImages.EpisodePosters.AddRange(nAddonResult.ScraperResult_Image.EpisodePosters)
+                    nScrapeResults.lstImages.MainBanners.AddRange(nAddonResult.ScraperResult_Image.MainBanners)
+                    nScrapeResults.lstImages.MainCharacterArts.AddRange(nAddonResult.ScraperResult_Image.MainCharacterArts)
+                    nScrapeResults.lstImages.MainClearArts.AddRange(nAddonResult.ScraperResult_Image.MainClearArts)
+                    nScrapeResults.lstImages.MainClearLogos.AddRange(nAddonResult.ScraperResult_Image.MainClearLogos)
+                    nScrapeResults.lstImages.MainDiscArts.AddRange(nAddonResult.ScraperResult_Image.MainDiscArts)
+                    nScrapeResults.lstImages.MainFanarts.AddRange(nAddonResult.ScraperResult_Image.MainFanarts)
+                    nScrapeResults.lstImages.MainLandscapes.AddRange(nAddonResult.ScraperResult_Image.MainLandscapes)
+                    nScrapeResults.lstImages.MainPosters.AddRange(nAddonResult.ScraperResult_Image.SeasonPosters)
+                    nScrapeResults.lstImages.SeasonBanners.AddRange(nAddonResult.ScraperResult_Image.SeasonBanners)
+                    nScrapeResults.lstImages.SeasonFanarts.AddRange(nAddonResult.ScraperResult_Image.SeasonFanarts)
+                    nScrapeResults.lstImages.SeasonLandscapes.AddRange(nAddonResult.ScraperResult_Image.SeasonLandscapes)
+                    nScrapeResults.lstImages.SeasonPosters.AddRange(nAddonResult.ScraperResult_Image.SeasonPosters)
+                End If
+
+                If nAddonResult.ScraperResult_Theme IsNot Nothing Then
+                    nScrapeResults.lstThemes.AddRange(nAddonResult.ScraperResult_Theme)
+                End If
+
+                If nAddonResult.ScraperResult_Trailer IsNot Nothing Then
+                    nScrapeResults.lstTrailers.AddRange(nAddonResult.ScraperResult_Trailer)
+                End If
+
+                If nAddonResult.bBreakChain Then Exit For
+            Next
+        End If
+
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Done] {0}", tDBElement.Filename))
+        Return nScrapeResults
+    End Function
 
     ''' <summary>
     ''' Request that enabled movie scrapers perform their functions on the supplied movie
@@ -285,7 +356,7 @@ Public Class AddonsManager
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_Movie(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Start] {0}", tDBElement.Filename))
-        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, bShowMessage) Then
+        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
@@ -310,9 +381,9 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
 
-                    ret = _externalScraperModule.ProcessorModule.Run(oDBMovie, Enums.AddonEventType.Scrape_Movie, Nothing)
+                    ret = _externalScraperModule.Addon.Run(oDBMovie, Enums.AddonEventType.Scrape_Movie, Nothing)
 
                     If ret.bCancelled Then Return ret.bCancelled
 
@@ -392,9 +463,9 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeData_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.Addon.Name))
 
-                ret = _externalScraperModule.ProcessorModule.Run(oDBMovieSet, Enums.AddonEventType.Scrape_MovieSet, Nothing)
+                ret = _externalScraperModule.Addon.Run(oDBMovieSet, Enums.AddonEventType.Scrape_MovieSet, Nothing)
 
                 If ret.bCancelled Then
                     logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", tDBElement.MainDetails.Title))
@@ -433,7 +504,7 @@ Public Class AddonsManager
 
     Public Function ScrapeData_TVEpisode(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.Filename))
-        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBElement, bShowMessage) Then
+        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
@@ -449,9 +520,9 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_TVEpisode] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Using] {0}", _externalScraperModule.Addon.Name))
 
-                    ret = _externalScraperModule.ProcessorModule.Run(oEpisode, Enums.AddonEventType.Scrape_TVEpisode, Nothing)
+                    ret = _externalScraperModule.Addon.Run(oEpisode, Enums.AddonEventType.Scrape_TVEpisode, Nothing)
 
                     If ret.bCancelled Then Return ret.bCancelled
 
@@ -506,7 +577,7 @@ Public Class AddonsManager
 
     Public Function ScrapeData_TVSeason(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", tDBElement.TVShowDetails.Title, tDBElement.MainDetails.Season))
-        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBElement, bShowMessage) Then
+        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
@@ -522,9 +593,9 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_TVSeason] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Using] {0}", _externalScraperModule.Addon.Name))
 
-                    ret = _externalScraperModule.ProcessorModule.Run(oSeason, Enums.AddonEventType.Scrape_TVSeason, Nothing)
+                    ret = _externalScraperModule.Addon.Run(oSeason, Enums.AddonEventType.Scrape_TVSeason, Nothing)
 
                     If ret.bCancelled Then Return ret.bCancelled
 
@@ -566,7 +637,7 @@ Public Class AddonsManager
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_TVShow(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Start] {0}", tDBElement.MainDetails.Title))
-        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBElement, bShowMessage) Then
+        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
@@ -603,9 +674,9 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_TVShow] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Using] {0}", _externalScraperModule.Addon.Name))
 
-                    ret = _externalScraperModule.ProcessorModule.Run(oShow, Enums.AddonEventType.Scrape_TVShow, Nothing)
+                    ret = _externalScraperModule.Addon.Run(oShow, Enums.AddonEventType.Scrape_TVShow, Nothing)
 
                     If ret.bCancelled Then Return ret.bCancelled
 
@@ -665,7 +736,7 @@ Public Class AddonsManager
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_Movie(ByRef tDBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Start] {0}", tDBElement.Filename))
-        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(tDBElement, bShowMessage) Then
+        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.AddonResult
 
@@ -677,9 +748,9 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeImage_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
                     If QueryScraperCapabilities_Image_Movie(_externalScraperModule, ScrapeModifiers) Then
-                        ret = _externalScraperModule.ProcessorModule.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
+                        ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
                         If ret.ScraperResult_Image IsNot Nothing Then
                             ImagesContainer.MainBanners.AddRange(ret.ScraperResult_Image.MainBanners)
                             ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_Image.MainCharacterArts)
@@ -728,9 +799,9 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeImage_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.Addon.Name))
                 If QueryScraperCapabilities_Image_MovieSet(_externalScraperModule, ScrapeModifiers) Then
-                    ret = _externalScraperModule.ProcessorModule.Run(tDBElement, Enums.AddonEventType.Scrape_MovieSet, Nothing)
+                    ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_MovieSet, Nothing)
                     If ret.ScraperResult_Image IsNot Nothing Then
                         ImagesContainer.MainBanners.AddRange(ret.ScraperResult_Image.MainBanners)
                         ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_Image.MainCharacterArts)
@@ -765,7 +836,7 @@ Public Class AddonsManager
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_TV(ByRef tDBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Start] {0}", tDBElement.MainDetails.Title))
-        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tDBElement, bShowMessage) Then
+        If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As Interfaces.AddonResult
 
@@ -808,9 +879,9 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeImage_TV] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.Addon.Name))
                     If QueryScraperCapabilities_Image_TV(_externalScraperModule, ScrapeModifiers) Then
-                        ret = _externalScraperModule.ProcessorModule.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
+                        ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
                         If ret.ScraperResult_Image IsNot Nothing Then
                             ImagesContainer.EpisodeFanarts.AddRange(ret.ScraperResult_Image.EpisodeFanarts)
                             ImagesContainer.EpisodePosters.AddRange(ret.ScraperResult_Image.EpisodePosters)
@@ -865,8 +936,8 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeTheme_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
-                ret = _externalScraperModule.ProcessorModule.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
+                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
+                ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
                 If ret.ScraperResult_Theme IsNot Nothing Then
                     ThemeList.AddRange(ret.ScraperResult_Theme)
                 End If
@@ -897,8 +968,8 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeTheme_TVShow] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
-                ret = _externalScraperModule.ProcessorModule.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
+                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.Addon.Name))
+                ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
                 If ret.ScraperResult_Theme IsNot Nothing Then
                     ThemeList.AddRange(ret.ScraperResult_Theme)
                 End If
@@ -930,8 +1001,8 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeTrailer_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.ProcessorModule.Name))
-                ret = _externalScraperModule.ProcessorModule.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
+                logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
+                ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
                 If ret.ScraperResult_Trailer IsNot Nothing Then
                     TrailerList.AddRange(ret.ScraperResult_Trailer)
                 End If
@@ -1057,7 +1128,7 @@ Public Class AddonsManager
 
 #Region "Fields"
 
-        Public Assembly As System.Reflection.Assembly
+        Public Assembly As Reflection.Assembly
         Public AssemblyName As String
 
 #End Region 'Fields
@@ -1367,140 +1438,13 @@ Public Class AddonsManager
 
 #Region "Fields"
 
+        Public Addon As Interfaces.Addon
         Public AssemblyFileName As String
         Public AssemblyName As String
-        Public ProcessorModule As Interfaces.Addon
-        'Public Type As List(Of Enums.ModuleEventType)
 
 #End Region 'Fields
 
     End Class
-
-    '    Class _externalScraperModuleClass_Data_Movie
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Data_Movie 'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Data_MovieSet
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Data_MovieSet 'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.MovieSet
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Data_TV
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Data_TV 'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.TV
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Image_Movie
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Image_Movie  'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Image_MovieSet
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Image_MovieSet  'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.MovieSet
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Image_TV
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Image_TV  'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.TV
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Theme_Movie
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Theme_Movie     'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Theme_TV
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Theme_TV  'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.TV
-
-    '#End Region 'Fields
-
-    '    End Class
-
-    '    Class _externalScraperModuleClass_Trailer_Movie
-
-    '#Region "Fields"
-
-    '        Public AssemblyFileName As String
-    '        Public AssemblyName As String
-    '        Public ProcessorModule As Interfaces.ScraperModule_Trailer_Movie     'Object
-    '        Public ModuleOrder As Integer
-    '        Public ContentType As Enums.ContentType = Enums.ContentType.Movie
-
-    '#End Region 'Fields
-
-    '    End Class
 
     <XmlRoot("Addon")>
     Class _XMLAddonClass
@@ -1514,6 +1458,21 @@ Public Class AddonsManager
 #End Region 'Fields
 
     End Class
+
+    Public Structure ScrapeResults
+
+#Region "Fields"
+
+        Dim bCancelled As Boolean
+        Dim bError As Boolean
+        Dim lstData As List(Of MediaContainers.MainDetails)
+        Dim lstImages As MediaContainers.SearchResultsContainer
+        Dim lstThemes As List(Of MediaContainers.Theme)
+        Dim lstTrailers As List(Of MediaContainers.Trailer)
+
+#End Region 'Fields
+
+    End Structure
 
 #End Region 'Nested Types
 

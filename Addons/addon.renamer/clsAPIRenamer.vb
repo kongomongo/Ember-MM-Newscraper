@@ -26,7 +26,7 @@ Imports NLog
 Public Class FileFolderRenamer
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public MovieFolders As New List(Of String)
     Public TVShowFolders As New List(Of String)
@@ -985,7 +985,7 @@ Public Class FileFolderRenamer
 
         'TVDB
         If _DBElement.MainDetails.TVDBSpecified Then
-            ShowFile.TVDBID = _DBElement.MainDetails.TVDB
+            ShowFile.TVDBID = CStr(_DBElement.MainDetails.TVDB)
         End If
 
         'Year

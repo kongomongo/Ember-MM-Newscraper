@@ -23,7 +23,7 @@ Partial Public Class clsXMLSettings
     Private _cleanmovietbnb As Boolean
     Private _cleanposterjpg As Boolean
     Private _cleanpostertbn As Boolean
-    Private _embermodules As List(Of AddonsManager._XMLAddonClass)
+    Private _addond As List(Of AddonsManager._XMLAddonClass)
     Private _filesystemcleanerwhitelist As Boolean
     Private _filesystemcleanerwhitelistexts As List(Of String)
     Private _filesystemexpertcleaner As Boolean
@@ -1411,14 +1411,14 @@ Partial Public Class clsXMLSettings
         End Set
     End Property
 
-    <XmlArray("EmberModules")>
-    <XmlArrayItem("Module")>
-    Public Property EmberModules() As List(Of AddonsManager._XMLAddonClass)
+    <XmlArray("Addons")>
+    <XmlArrayItem("Addon")>
+    Public Property Addons() As List(Of AddonsManager._XMLAddonClass)
         Get
-            Return _embermodules
+            Return _addond
         End Get
         Set(ByVal value As List(Of AddonsManager._XMLAddonClass))
-            _embermodules = value
+            _addond = value
         End Set
     End Property
 

@@ -1,7 +1,4 @@
-﻿Imports EmberAPI
-Imports System.IO
-
-' ################################################################################
+﻿' ################################################################################
 ' #                             EMBER MEDIA MANAGER                              #
 ' ################################################################################
 ' ################################################################################
@@ -21,6 +18,9 @@ Imports System.IO
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports EmberAPI
+Imports System.IO
+
 Public Class frmSettingsPanel
 
 #Region "Fields"
@@ -34,10 +34,20 @@ Public Class frmSettingsPanel
 
 #Region "Events"
 
-    Public Event EnabledChanged(ByVal bEnabled As Boolean)
     Public Event SettingsChanged()
+    Public Event StateChanged(ByVal bEnabled As Boolean)
 
 #End Region 'Events
+
+#Region "Constructors"
+
+    Public Sub New()
+        InitializeComponent()
+        SetUp()
+        CreateDummies()
+    End Sub
+
+#End Region
 
 #Region "Methods"
 
@@ -297,7 +307,7 @@ Public Class frmSettingsPanel
     End Sub
 
     Private Sub chkEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent EnabledChanged(chkEnabled.Checked)
+        RaiseEvent StateChanged(chkEnabled.Checked)
     End Sub
 
     Private Sub chkRenameEditMovies_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkRenameEditMovies.CheckedChanged
@@ -372,12 +382,6 @@ Public Class frmSettingsPanel
         CreatePreview_MultiEpisode()
         CreatePreview_MultiSeason()
         CreatePreview_SingleEpisode()
-    End Sub
-
-    Public Sub New()
-        InitializeComponent()
-        SetUp()
-        CreateDummies()
     End Sub
 
 #End Region 'Methods

@@ -114,7 +114,7 @@ Public Class dlgEditTVSeason
         Else
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.SeasonBanner, True)
         End If
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.SeasonBanners.Count > 0 OrElse (tmpDBElement.MainDetails.Season = 999 AndAlso aContainer.MainBanners.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -184,7 +184,7 @@ Public Class dlgEditTVSeason
         Else
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.SeasonFanart, True)
         End If
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.SeasonFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -254,7 +254,7 @@ Public Class dlgEditTVSeason
         Else
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.SeasonLandscape, True)
         End If
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.SeasonLandscapes.Count > 0 OrElse (tmpDBElement.MainDetails.Season = 999 AndAlso aContainer.MainLandscapes.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -324,7 +324,7 @@ Public Class dlgEditTVSeason
         Else
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.SeasonPoster, True)
         End If
-        If Not AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.SeasonPosters.Count > 0 OrElse (tmpDBElement.MainDetails.Season = 999 AndAlso aContainer.MainPosters.Count > 0) Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -373,9 +373,9 @@ Public Class dlgEditTVSeason
     End Sub
 
     Private Sub dlgEditSeason_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(tmpDBElement, True) Then
+        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
             If Not Master.eSettings.FilenameAnyEnabled_TVSeason_Banner Then tcEdit.TabPages.Remove(tpBanner)
-            If Not Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart Then tcEdit.TabPages.Remove(tpFanart)
+            If Not Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart Then tcEdit.TabPages.Remove(tpFanart)
             If Not Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape Then tcEdit.TabPages.Remove(tpLandscape)
             If Not Master.eSettings.FilenameAnyEnabled_TVSeason_Poster Then tcEdit.TabPages.Remove(tpPoster)
 

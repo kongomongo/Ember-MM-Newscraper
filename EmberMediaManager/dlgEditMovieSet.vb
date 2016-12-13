@@ -72,17 +72,17 @@ Public Class dlgEditMovieSet
     End Function
 
     Private Sub btnGetTMDBColID_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGetTMDBColID.Click
-        Dim newColID As String = String.Empty
+        Dim newColID As Integer = -1
 
         If tmpDBElement.MoviesInSetSpecified Then
-            If Not String.IsNullOrEmpty(tmpDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.TMDBColID) Then
+            If tmpDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.TMDBColIDSpecified Then
                 newColID = tmpDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.TMDBColID
             Else
                 'newColID = ModulesManager.Instance.GetMovieCollectionID(tmpDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.IMDB)
             End If
 
-            If Not String.IsNullOrEmpty(newColID) Then
-                txtCollectionID.Text = newColID
+            If Not newColID = -1 Then
+                txtCollectionID.Text = CStr(newColID)
                 tmpDBElement.MainDetails.TMDB = newColID
             End If
         End If
@@ -168,7 +168,7 @@ Public Class dlgEditMovieSet
                 Dim tmpMovie As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells(0).Value))
                 If String.IsNullOrEmpty(txtCollectionID.Text) AndAlso tmpMovie.MainDetails.TMDBColIDSpecified Then
                     If MessageBox.Show(String.Format(Master.eLang.GetString(1264, "Should the Collection ID of the movie ""{0}"" be used as ID for this Collection?"), tmpMovie.MainDetails.Title), Master.eLang.GetString(1263, "TMDB Collection ID found"), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) = DialogResult.Yes Then
-                        txtCollectionID.Text = tmpMovie.MainDetails.TMDBColID
+                        txtCollectionID.Text = CStr(tmpMovie.MainDetails.TMDBColID)
                         tmpDBElement.MainDetails.TMDB = tmpMovie.MainDetails.TMDBColID
                     End If
                 End If
@@ -277,7 +277,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainBanner, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -348,7 +348,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearArt, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -419,7 +419,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearLogo, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -490,7 +490,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainDiscArt, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainDiscArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -561,7 +561,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainFanart, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -632,7 +632,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainLandscape, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -703,7 +703,7 @@ Public Class dlgEditMovieSet
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainPoster, True)
-        If Not AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
+        If AddonsManager.Instance.ScrapeImage_MovieSet(tmpDBElement, aContainer, ScrapeModifiers) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -877,7 +877,7 @@ Public Class dlgEditMovieSet
     Private Sub FillInfo()
         cbMovieSorting.SelectedIndex = tmpDBElement.SortMethod
         chkMark.Checked = tmpDBElement.IsMark
-        txtCollectionID.Text = tmpDBElement.MainDetails.TMDB
+        txtCollectionID.Text = If(tmpDBElement.MainDetails.TMDBSpecified, CStr(tmpDBElement.MainDetails.TMDB), String.Empty)
         txtPlot.Text = tmpDBElement.MainDetails.Plot
         txtTitle.Text = tmpDBElement.MainDetails.Title
 
@@ -1167,7 +1167,7 @@ Public Class dlgEditMovieSet
             tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
         End If
 
-        tmpDBElement.MainDetails.TMDB = txtCollectionID.Text.Trim
+        tmpDBElement.MainDetails.TMDB = If(Integer.TryParse(txtCollectionID.Text.Trim, 0), CInt(txtCollectionID.Text), -1)
         tmpDBElement.MainDetails.Plot = txtPlot.Text.Trim
     End Sub
 

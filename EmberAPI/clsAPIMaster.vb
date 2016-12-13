@@ -30,13 +30,14 @@ Public Class Master
     Public Shared isCL As Boolean
     Public Shared appArgs As ApplicationServices.StartupEventArgs
 
+    Public Shared AddonsPath As String = Path.Combine(Functions.AppPath, "Addons")
     Public Shared AppPos As New Drawing.Rectangle
     Public Shared CanScanDiscImage As Boolean
     Public Shared DB As New Database
     Public Shared DefaultOptions_Movie As New Structures.ScrapeOptions
     Public Shared DefaultOptions_MovieSet As New Structures.ScrapeOptions
     Public Shared DefaultOptions_TV As New Structures.ScrapeOptions
-    Public Shared ExcludeDirs As New List(Of String)
+    Public Shared ExcludedDirs As New List(Of String)
     Public Shared MovieSources As New List(Of Database.DBSource)
     Public Shared SettingsPath As String = Path.Combine(Functions.AppPath, "Profiles\Default")
     Public Shared SourcesList As New List(Of String)

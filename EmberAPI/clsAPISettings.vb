@@ -643,12 +643,12 @@ Public Class Settings
 
     <XmlArray("Addons")>
     <XmlArrayItem("Addon")>
-    Public Property EmberModules() As List(Of AddonsManager._XMLAddonClass)
+    Public Property Addons() As List(Of AddonsManager._XMLAddonClass)
         Get
-            Return _XMLSettings.EmberModules
+            Return _XMLSettings.Addons
         End Get
         Set(ByVal value As List(Of AddonsManager._XMLAddonClass))
-            _XMLSettings.EmberModules = value
+            _XMLSettings.Addons = value
         End Set
     End Property
 
@@ -7127,7 +7127,7 @@ Public Class Settings
         CleanMovieNameJPG = False
         CleanPosterJPG = False
         CleanPosterTBN = False
-        EmberModules = New List(Of AddonsManager._XMLAddonClass)
+        Addons = New List(Of AddonsManager._XMLAddonClass)
         FileSystemCleanerWhitelist = False
         FileSystemCleanerWhitelistExts = New List(Of String)
         FileSystemExpertCleaner = False

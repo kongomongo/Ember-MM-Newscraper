@@ -1016,11 +1016,11 @@ Namespace MediaContainers
         Private _thumb As New List(Of String)
         Private _thumbposter As New Image
         Private _title As String
-        Private _tmdb As String
-        Private _tmdbcolid As String
+        Private _tmdb As Integer
+        Private _tmdbcolid As Integer
         Private _top250 As Integer
         Private _trailer As String
-        Private _tvdb As String
+        Private _tvdb As Integer
         Private _userrating As Integer
         Private _videosource As String
         Private _votes As String
@@ -1055,11 +1055,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("tmdb")>
-        Public Property TMDB() As String
+        Public Property TMDB() As Integer
             Get
                 Return _tmdb
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _tmdb = value
             End Set
         End Property
@@ -1067,16 +1067,16 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tmdb)
+                Return Not _tmdb = -1
             End Get
         End Property
 
         <XmlElement("tvdb")>
-        Public Property TVDB() As String
+        Public Property TVDB() As Integer
             Get
                 Return _tvdb
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _tvdb = value
             End Set
         End Property
@@ -1084,7 +1084,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TVDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tvdb)
+                Return Not _tvdb = -1
             End Get
         End Property
 
@@ -1101,7 +1101,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property BoxeeTvDbSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_boxeeTvDb)
+                Return Not String.IsNullOrEmpty(_boxeeTvDb) AndAlso Integer.TryParse(_boxeeTvDb, 0)
             End Get
         End Property
 
@@ -2019,11 +2019,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("tmdbcolid")>
-        Public Property TMDBColID() As String
+        Public Property TMDBColID() As Integer
             Get
                 Return _tmdbcolid
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _tmdbcolid = value
             End Set
         End Property
@@ -2031,7 +2031,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDBColIDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tmdbcolid)
+                Return Not _tmdbcolid = -1
             End Get
         End Property
 
@@ -2109,7 +2109,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property AnyUniqueIDSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_imdb) OrElse Not String.IsNullOrEmpty(_tmdb) OrElse Not String.IsNullOrEmpty(_tvdb)
+                Return Not String.IsNullOrEmpty(_imdb) OrElse Not _tmdb = -1 OrElse Not _tvdb = -1
             End Get
         End Property
 
@@ -2170,7 +2170,10 @@ Namespace MediaContainers
                                     Case "overview"
                                         nSetInfo.Plot = xNode.InnerText
                                     Case "tmdb"
-                                        nSetInfo.TMDB = xNode.InnerText
+                                        Dim iTMDB As Integer
+                                        If Integer.TryParse(xNode.InnerText, iTMDB) Then
+                                            nSetInfo.TMDB = iTMDB
+                                        End If
                                 End Select
                             Case XmlNodeType.Text
                                 nSetInfo.Title = xNode.InnerText
@@ -2316,7 +2319,7 @@ Namespace MediaContainers
         End Sub
 
         Public Sub BlankId()
-            _tvdb = String.Empty
+            _tvdb = -1
         End Sub
 
         Public Sub BlankBoxeeId()
@@ -2378,11 +2381,11 @@ Namespace MediaContainers
             _thumb.Clear()
             _thumbposter = New Image
             _title = String.Empty
-            _tmdb = String.Empty
-            _tmdbcolid = String.Empty
+            _tmdb = -1
+            _tmdbcolid = -1
             _top250 = 0
             _trailer = String.Empty
-            _tvdb = String.Empty
+            _tvdb = -1
             _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty
@@ -2452,7 +2455,7 @@ Namespace MediaContainers
                         'Create a new <tmdb> element and add it to the root node
                         Dim NodeTMDB As XmlElement = XmlDoc.CreateElement("tmdb")
                         RootNode.AppendChild(NodeTMDB)
-                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(firstSet.TMDB)
+                        Dim NodeTMDB_Text As XmlText = XmlDoc.CreateTextNode(CStr(firstSet.TMDB))
                         NodeTMDB.AppendChild(NodeTMDB_Text)
                     End If
 
@@ -5249,20 +5252,20 @@ Namespace MediaContainers
                 Case Enums.ContentType.Movie
                     sID = tDBElement.MainDetails.IMDB
                     If String.IsNullOrEmpty(sID) Then
-                        sID = tDBElement.MainDetails.TMDB
+                        sID = CStr(tDBElement.MainDetails.TMDB)
                     End If
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("Movies", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.MovieSet
-                    sID = tDBElement.MainDetails.TMDB
+                    sID = CStr(tDBElement.MainDetails.TMDB)
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If
                     sPath = Path.Combine(Master.TempPath, String.Concat("MovieSets", Path.DirectorySeparatorChar, sID))
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    sID = tDBElement.MainDetails.TVDB
+                    sID = CStr(tDBElement.MainDetails.TVDB)
                     If String.IsNullOrEmpty(sID) Then
                         sID = "Unknown"
                     End If
@@ -5691,7 +5694,7 @@ Namespace MediaContainers
         Private _order As Integer
         Private _plot As String
         Private _title As String
-        Private _tmdb As String
+        Private _tmdb As Integer
 
 #End Region 'Fields
 
@@ -5774,11 +5777,11 @@ Namespace MediaContainers
         End Property
 
         <XmlIgnore()>
-        Public Property TMDB() As String
+        Public Property TMDB() As Integer
             Get
                 Return _tmdb
             End Get
-            Set(ByVal value As String)
+            Set(ByVal value As Integer)
                 _tmdb = value
             End Set
         End Property
@@ -5786,7 +5789,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tmdb)
+                Return Not _tmdb = -1
             End Get
         End Property
 
@@ -5799,7 +5802,7 @@ Namespace MediaContainers
             _order = -1
             _plot = String.Empty
             _title = String.Empty
-            _tmdb = String.Empty
+            _tmdb = -1
         End Sub
 
 #End Region 'Methods

@@ -28,7 +28,7 @@ Namespace My
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
         Private frmEmber As frmMain
 
 #End Region 'Fields

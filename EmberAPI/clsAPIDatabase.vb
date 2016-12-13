@@ -492,7 +492,7 @@ Public Class Database
                     Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
                             If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) OrElse
-                                Master.ExcludeDirs.Exists(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.ToLower)) Then
+                                Master.ExcludedDirs.Exists(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.ToLower)) Then
                                 MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                 Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
                             ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
@@ -556,7 +556,7 @@ Public Class Database
                     Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
                             If Not File.Exists(SQLReader("strFilename").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("strFilename").ToString).ToLower) OrElse
-                                Master.ExcludeDirs.Exists(Function(s) SQLReader("strFilename").ToString.ToLower.StartsWith(s.ToLower)) Then
+                                Master.ExcludedDirs.Exists(Function(s) SQLReader("strFilename").ToString.ToLower.StartsWith(s.ToLower)) Then
                                 Master.DB.Delete_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), False, False, True)
                             End If
                         End While
@@ -1691,7 +1691,7 @@ Public Class Database
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub Load_ExcludeDirs()
-        Master.ExcludeDirs.Clear()
+        Master.ExcludedDirs.Clear()
         Try
             Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand.CommandText = "SELECT Dirname FROM ExcludeDir;"
@@ -1700,7 +1700,7 @@ Public Class Database
                         Try ' Parsing database entry may fail. If it does, log the error and ignore the entry but continue processing
                             Dim eDir As String = String.Empty
                             eDir = SQLreader("Dirname").ToString
-                            Master.ExcludeDirs.Add(eDir)
+                            Master.ExcludedDirs.Add(eDir)
                         Catch ex As Exception
                             logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
@@ -1771,8 +1771,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = Convert.ToInt32(SQLreader("PlayCount"))
                         If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieImagesNotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
-                        If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = SQLreader("TMDB").ToString
-                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = SQLreader("TMDBColID").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = Convert.ToInt32(SQLreader("TMDB"))
+                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = Convert.ToInt32(SQLreader("TMDBColID"))
                         If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
@@ -1933,7 +1933,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("iOrder")) Then tSet.Order = CInt(SQLreader("iOrder"))
                     If Not DBNull.Value.Equals(SQLreader("Plot")) Then tSet.Plot = SQLreader("Plot").ToString
                     If Not DBNull.Value.Equals(SQLreader("SetName")) Then tSet.Title = SQLreader("SetName").ToString
-                    If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then tSet.TMDB = SQLreader("TMDBColID").ToString
+                    If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then tSet.TMDB = Convert.ToInt32(SQLreader("TMDBColID"))
                     _movieDB.MainDetails.Sets.Add(tSet)
                 End While
             End Using
@@ -2042,7 +2042,7 @@ Public Class Database
                     _moviesetDB.SortMethod = DirectCast(Convert.ToInt32(SQLreader("SortMethod")), Enums.SortMethod_MovieSet)
 
                     With _moviesetDB.MainDetails
-                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDB = SQLreader("TMDBColID").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDB = Convert.ToInt32(SQLreader("TMDBColID"))
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("SetName")) Then .Title = SQLreader("SetName").ToString
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
@@ -2276,8 +2276,8 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLReader("strPlot")) Then nSeason.Plot = CStr(SQLReader("strPlot"))
                     If Not DBNull.Value.Equals(SQLReader("Season")) Then nSeason.Season = CInt(SQLReader("Season"))
                     If Not DBNull.Value.Equals(SQLReader("SeasonText")) Then nSeason.Title = CStr(SQLReader("SeasonText"))
-                    If Not DBNull.Value.Equals(SQLReader("strTMDB")) Then nSeason.TMDB = CStr(SQLReader("strTMDB"))
-                    If Not DBNull.Value.Equals(SQLReader("strTVDB")) Then nSeason.TVDB = CStr(SQLReader("strTVDB"))
+                    If Not DBNull.Value.Equals(SQLReader("strTMDB")) Then nSeason.TMDB = CInt(SQLReader("strTMDB"))
+                    If Not DBNull.Value.Equals(SQLReader("strTVDB")) Then nSeason.TVDB = CInt(SQLReader("strTVDB"))
                     _SeasonList.Seasons.Add(nSeason)
                 End While
             End Using
@@ -2333,8 +2333,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("SubEpisode")) Then .SubEpisode = Convert.ToInt32(SQLreader("SubEpisode"))
                         If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("strIMDB")) Then .IMDB = SQLreader("strIMDB").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = SQLreader("strTMDB").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strTVDB")) Then .TVDB = SQLreader("strTVDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = Convert.ToInt32(SQLreader("strTMDB"))
+                        If Not DBNull.Value.Equals(SQLreader("strTVDB")) Then .TVDB = Convert.ToInt32(SQLreader("strTVDB"))
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
                     End With
                 End If
@@ -2541,8 +2541,8 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLReader("strAired")) Then .Aired = CStr(SQLReader("strAired"))
                         If Not DBNull.Value.Equals(SQLReader("strPlot")) Then .Plot = CStr(SQLReader("strPlot"))
                         If Not DBNull.Value.Equals(SQLReader("Season")) Then .Season = CInt(SQLReader("Season"))
-                        If Not DBNull.Value.Equals(SQLReader("strTMDB")) Then .TMDB = CStr(SQLReader("strTMDB"))
-                        If Not DBNull.Value.Equals(SQLReader("strTVDB")) Then .TVDB = CStr(SQLReader("strTVDB"))
+                        If Not DBNull.Value.Equals(SQLReader("strTMDB")) Then .TMDB = CInt(SQLReader("strTMDB"))
+                        If Not DBNull.Value.Equals(SQLReader("strTVDB")) Then .TVDB = CInt(SQLReader("strTVDB"))
                         If Not DBNull.Value.Equals(SQLReader("SeasonText")) Then .Title = CStr(SQLReader("SeasonText"))
                     End With
                 End If
@@ -2632,7 +2632,7 @@ Public Class Database
 
                     With _TVDB.MainDetails
                         If Not DBNull.Value.Equals(SQLreader("Title")) Then .Title = SQLreader("Title").ToString
-                        If Not DBNull.Value.Equals(SQLreader("TVDB")) Then .TVDB = SQLreader("TVDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TVDB")) Then .TVDB = Convert.ToInt32(SQLreader("TVDB"))
                         If Not DBNull.Value.Equals(SQLreader("EpisodeGuide")) Then .EpisodeGuide.URL = SQLreader("EpisodeGuide").ToString
                         If Not DBNull.Value.Equals(SQLreader("Plot")) Then .Plot = SQLreader("Plot").ToString
                         If Not DBNull.Value.Equals(SQLreader("Premiered")) Then .Premiered = SQLreader("Premiered").ToString
@@ -2643,7 +2643,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                         If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then .SortTitle = SQLreader("SortTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("strIMDB")) Then .IMDB = SQLreader("strIMDB").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = SQLreader("strTMDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = Convert.ToInt32(SQLreader("strTMDB"))
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
                         If Not DBNull.Value.Equals(SQLreader("strOriginalTitle")) Then .OriginalTitle = SQLreader("strOriginalTitle").ToString
                         If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))

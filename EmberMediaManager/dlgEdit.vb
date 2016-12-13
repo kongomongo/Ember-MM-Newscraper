@@ -501,7 +501,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainBanner, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainBanners.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -564,7 +564,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearArt, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -627,7 +627,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainClearLogo, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainClearLogos.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -690,7 +690,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainDiscArt, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainDiscArts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -759,7 +759,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainExtrafanarts, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -779,7 +779,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainExtrathumbs, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -816,7 +816,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainFanart, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -879,7 +879,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainLandscape, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainLandscapes.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -942,7 +942,7 @@ Public Class dlgEdit
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainPoster, True)
-        If Not AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_Movie(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.MainPosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
                 If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
@@ -1005,7 +1005,7 @@ Public Class dlgEdit
         Dim tList As New List(Of MediaContainers.Theme)
 
         ThemeStop()
-        If Not AddonsManager.Instance.ScrapeTheme_Movie(_tmpDBElement, Enums.ScrapeModifierType.MainTheme, tList) Then
+        If AddonsManager.Instance.ScrapeTheme_Movie(_tmpDBElement, Enums.ScrapeModifierType.MainTheme, tList) Then
             If tList.Count > 0 Then
                 dThemeSelect = New dlgThemeSelect()
                 If dThemeSelect.ShowDialog(_tmpDBElement, tList, True) = DialogResult.OK Then
@@ -1338,9 +1338,9 @@ Public Class dlgEdit
         txtRuntime.Text = _tmpDBElement.MainDetails.Runtime
         txtSortTitle.Text = _tmpDBElement.MainDetails.SortTitle
         txtStatus.Text = _tmpDBElement.MainDetails.Status
-        txtTMDB.Text = _tmpDBElement.MainDetails.TMDB
-        txtTMDBCollection.Text = _tmpDBElement.MainDetails.TMDBColID
-        txtTVDB.Text = _tmpDBElement.MainDetails.TVDB
+        txtTMDB.Text = If(_tmpDBElement.MainDetails.TMDBSpecified, CStr(_tmpDBElement.MainDetails.TMDBSpecified), String.Empty)
+        txtTMDBCollection.Text = If(_tmpDBElement.MainDetails.TMDBColIDSpecified, CStr(_tmpDBElement.MainDetails.TMDBColID), String.Empty)
+        txtTVDB.Text = If(_tmpDBElement.MainDetails.TVDBSpecified, CStr(_tmpDBElement.MainDetails.TVDB), String.Empty)
         txtTagline.Text = _tmpDBElement.MainDetails.Tagline
         txtTitle.Text = _tmpDBElement.MainDetails.Title
         txtTop250.Text = _tmpDBElement.MainDetails.Top250.ToString
