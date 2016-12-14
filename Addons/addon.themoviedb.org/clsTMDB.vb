@@ -1168,42 +1168,42 @@ Namespace TMDB
         Public Function ScrapeMovie(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_Movie(strID, tScrapeOptions, False)
-            nAddonResult.ScraperResult_Image = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.Movie)
+            nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.Movie)
             Return nAddonResult
         End Function
 
         Public Function ScrapeMovieset(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_MovieSet(strID, tScrapeOptions, False)
-            nAddonResult.ScraperResult_Image = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.MovieSet)
+            nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.MovieSet)
             Return nAddonResult
         End Function
 
         Public Function ScrapeTVEpisode(ByVal iShowID As Integer, ByVal strAired As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_TVEpisode(iShowID, strAired, tScrapeOptions)
-            nAddonResult.ScraperResult_Image = GetImages_TVEpisode(iShowID, nAddonResult.ScraperResult_Data.Season, nAddonResult.ScraperResult_Data.Episode, tScrapeModifiers)
+            nAddonResult.ScraperResult_ImageContainer = GetImages_TVEpisode(iShowID, nAddonResult.ScraperResult_Data.Season, nAddonResult.ScraperResult_Data.Episode, tScrapeModifiers)
             Return nAddonResult
         End Function
 
         Public Function ScrapeTVEpisode(ByVal iShowID As Integer, ByVal iSeason As Integer, iEpisode As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_TVEpisode(iShowID, iSeason, iEpisode, tScrapeOptions)
-            nAddonResult.ScraperResult_Image = GetImages_TVEpisode(iShowID, iSeason, iEpisode, tScrapeModifiers)
+            nAddonResult.ScraperResult_ImageContainer = GetImages_TVEpisode(iShowID, iSeason, iEpisode, tScrapeModifiers)
             Return nAddonResult
         End Function
 
         Public Function ScrapeTVSeason(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_TVSeason(iShowID, iSeason, tScrapeOptions)
-            nAddonResult.ScraperResult_Image = GetImages_TVShow(iShowID, tScrapeModifiers)
+            nAddonResult.ScraperResult_ImageContainer = GetImages_TVShow(iShowID, tScrapeModifiers)
             Return nAddonResult
         End Function
 
         Public Function ScrapeTVShow(ByVal iShowID As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_TVShow(iShowID, tScrapeModifiers, tScrapeOptions, False)
-            nAddonResult.ScraperResult_Image = GetImages_TVShow(iShowID, tScrapeModifiers)
+            nAddonResult.ScraperResult_ImageContainer = GetImages_TVShow(iShowID, tScrapeModifiers)
             Return nAddonResult
         End Function
 

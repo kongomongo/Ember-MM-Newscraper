@@ -23,11 +23,13 @@ Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
-Public Class AdvancedSettings
+Public Class clsXMLAdvancedSettings
     Implements IDisposable
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Private Shared _AdvancedSettings As New clsXMLAdvancedSettings
 
     Private Shared _DoNotSave As Boolean = False
@@ -245,19 +247,19 @@ Public Class AdvancedSettings
         'Add complex settings to general advancedsettings.xml if those settings don't exist
         Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = GetComplexSetting("VideoFormatConverts", "*EmberAPP")
         If formatconversions Is Nothing Then
-            Using settings = New AdvancedSettings()
+            Using settings = New clsXMLAdvancedSettings()
                 settings.SetDefaults("VideoFormatConverts")
             End Using
         End If
         formatconversions = GetComplexSetting("AudioFormatConverts", "*EmberAPP")
         If formatconversions Is Nothing Then
-            Using settings = New AdvancedSettings()
+            Using settings = New clsXMLAdvancedSettings()
                 settings.SetDefaults("AudioFormatConverts")
             End Using
         End If
         formatconversions = GetComplexSetting("MovieSources", "*EmberAPP")
         If formatconversions Is Nothing Then
-            Using settings = New AdvancedSettings()
+            Using settings = New clsXMLAdvancedSettings()
                 settings.SetDefaults("MovieSources")
             End Using
         End If
@@ -274,20 +276,19 @@ Public Class AdvancedSettings
                 Return
             End If
             'Cocotus All XML-config files in new Setting-folder!
-            Dim configpath As String = Path.Combine(Master.SettingsPath, "AdvancedSettings.xml")
-            If File.Exists(configpath) Then
-                File.Delete(configpath)
+            Dim strAdvancedSettingsPath As String = Path.Combine(Master.SettingsPath, "AdvancedSettings.xml")
+            If File.Exists(strAdvancedSettingsPath) Then
+                File.Delete(strAdvancedSettingsPath)
             End If
             If File.Exists(Path.Combine(Functions.AppPath, "AdvancedSettings.xml")) Then
                 File.Delete(Path.Combine(Functions.AppPath, "AdvancedSettings.xml"))
             End If
 
-            Dim writer As New FileStream(configpath, FileMode.Create)
+            Dim writer As New FileStream(strAdvancedSettingsPath, FileMode.Create)
             Dim xAdvancedSettings As New XmlSerializer(_AdvancedSettings.GetType)
             ' Serialize the object, and close the TextWriter
             xAdvancedSettings.Serialize(writer, _AdvancedSettings)
             writer.Close()
-
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -346,7 +347,6 @@ Public Class AdvancedSettings
             End If
 
             If cContent = Enums.ContentType.None Then
-
                 Dim v = _AdvancedSettings.Setting.FirstOrDefault(Function(f) f.Name = key AndAlso f.Section = Assembly)
                 If v Is Nothing Then
                     _AdvancedSettings.Setting.Add(New AdvancedSettingsSetting With {.Section = Assembly, .Name = key, .Value = value,

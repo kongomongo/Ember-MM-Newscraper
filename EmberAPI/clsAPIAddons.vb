@@ -315,29 +315,29 @@ Public Class AddonsManager
                     End If
                 End If
 
-                If nAddonResult.ScraperResult_Image IsNot Nothing Then
-                    nScrapeResults.lstImages.EpisodeFanarts.AddRange(nAddonResult.ScraperResult_Image.EpisodeFanarts)
-                    nScrapeResults.lstImages.EpisodePosters.AddRange(nAddonResult.ScraperResult_Image.EpisodePosters)
-                    nScrapeResults.lstImages.MainBanners.AddRange(nAddonResult.ScraperResult_Image.MainBanners)
-                    nScrapeResults.lstImages.MainCharacterArts.AddRange(nAddonResult.ScraperResult_Image.MainCharacterArts)
-                    nScrapeResults.lstImages.MainClearArts.AddRange(nAddonResult.ScraperResult_Image.MainClearArts)
-                    nScrapeResults.lstImages.MainClearLogos.AddRange(nAddonResult.ScraperResult_Image.MainClearLogos)
-                    nScrapeResults.lstImages.MainDiscArts.AddRange(nAddonResult.ScraperResult_Image.MainDiscArts)
-                    nScrapeResults.lstImages.MainFanarts.AddRange(nAddonResult.ScraperResult_Image.MainFanarts)
-                    nScrapeResults.lstImages.MainLandscapes.AddRange(nAddonResult.ScraperResult_Image.MainLandscapes)
-                    nScrapeResults.lstImages.MainPosters.AddRange(nAddonResult.ScraperResult_Image.SeasonPosters)
-                    nScrapeResults.lstImages.SeasonBanners.AddRange(nAddonResult.ScraperResult_Image.SeasonBanners)
-                    nScrapeResults.lstImages.SeasonFanarts.AddRange(nAddonResult.ScraperResult_Image.SeasonFanarts)
-                    nScrapeResults.lstImages.SeasonLandscapes.AddRange(nAddonResult.ScraperResult_Image.SeasonLandscapes)
-                    nScrapeResults.lstImages.SeasonPosters.AddRange(nAddonResult.ScraperResult_Image.SeasonPosters)
+                If nAddonResult.ScraperResult_ImageContainer IsNot Nothing Then
+                    nScrapeResults.lstImages.EpisodeFanarts.AddRange(nAddonResult.ScraperResult_ImageContainer.EpisodeFanarts)
+                    nScrapeResults.lstImages.EpisodePosters.AddRange(nAddonResult.ScraperResult_ImageContainer.EpisodePosters)
+                    nScrapeResults.lstImages.MainBanners.AddRange(nAddonResult.ScraperResult_ImageContainer.MainBanners)
+                    nScrapeResults.lstImages.MainCharacterArts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainCharacterArts)
+                    nScrapeResults.lstImages.MainClearArts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainClearArts)
+                    nScrapeResults.lstImages.MainClearLogos.AddRange(nAddonResult.ScraperResult_ImageContainer.MainClearLogos)
+                    nScrapeResults.lstImages.MainDiscArts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainDiscArts)
+                    nScrapeResults.lstImages.MainFanarts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainFanarts)
+                    nScrapeResults.lstImages.MainLandscapes.AddRange(nAddonResult.ScraperResult_ImageContainer.MainLandscapes)
+                    nScrapeResults.lstImages.MainPosters.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonPosters)
+                    nScrapeResults.lstImages.SeasonBanners.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonBanners)
+                    nScrapeResults.lstImages.SeasonFanarts.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonFanarts)
+                    nScrapeResults.lstImages.SeasonLandscapes.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonLandscapes)
+                    nScrapeResults.lstImages.SeasonPosters.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonPosters)
                 End If
 
-                If nAddonResult.ScraperResult_Theme IsNot Nothing Then
-                    nScrapeResults.lstThemes.AddRange(nAddonResult.ScraperResult_Theme)
+                If nAddonResult.ScraperResult_Themes IsNot Nothing Then
+                    nScrapeResults.lstThemes.AddRange(nAddonResult.ScraperResult_Themes)
                 End If
 
-                If nAddonResult.ScraperResult_Trailer IsNot Nothing Then
-                    nScrapeResults.lstTrailers.AddRange(nAddonResult.ScraperResult_Trailer)
+                If nAddonResult.ScraperResult_Trailers IsNot Nothing Then
+                    nScrapeResults.lstTrailers.AddRange(nAddonResult.ScraperResult_Trailers)
                 End If
 
                 If nAddonResult.bBreakChain Then Exit For
@@ -751,15 +751,15 @@ Public Class AddonsManager
                     logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
                     If QueryScraperCapabilities_Image_Movie(_externalScraperModule, ScrapeModifiers) Then
                         ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
-                        If ret.ScraperResult_Image IsNot Nothing Then
-                            ImagesContainer.MainBanners.AddRange(ret.ScraperResult_Image.MainBanners)
-                            ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_Image.MainCharacterArts)
-                            ImagesContainer.MainClearArts.AddRange(ret.ScraperResult_Image.MainClearArts)
-                            ImagesContainer.MainClearLogos.AddRange(ret.ScraperResult_Image.MainClearLogos)
-                            ImagesContainer.MainDiscArts.AddRange(ret.ScraperResult_Image.MainDiscArts)
-                            ImagesContainer.MainFanarts.AddRange(ret.ScraperResult_Image.MainFanarts)
-                            ImagesContainer.MainLandscapes.AddRange(ret.ScraperResult_Image.MainLandscapes)
-                            ImagesContainer.MainPosters.AddRange(ret.ScraperResult_Image.MainPosters)
+                        If ret.ScraperResult_ImageContainer IsNot Nothing Then
+                            ImagesContainer.MainBanners.AddRange(ret.ScraperResult_ImageContainer.MainBanners)
+                            ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_ImageContainer.MainCharacterArts)
+                            ImagesContainer.MainClearArts.AddRange(ret.ScraperResult_ImageContainer.MainClearArts)
+                            ImagesContainer.MainClearLogos.AddRange(ret.ScraperResult_ImageContainer.MainClearLogos)
+                            ImagesContainer.MainDiscArts.AddRange(ret.ScraperResult_ImageContainer.MainDiscArts)
+                            ImagesContainer.MainFanarts.AddRange(ret.ScraperResult_ImageContainer.MainFanarts)
+                            ImagesContainer.MainLandscapes.AddRange(ret.ScraperResult_ImageContainer.MainLandscapes)
+                            ImagesContainer.MainPosters.AddRange(ret.ScraperResult_ImageContainer.MainPosters)
                         End If
                         If ret.bBreakChain Then Exit For
                     End If
@@ -802,15 +802,15 @@ Public Class AddonsManager
                 logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.Addon.Name))
                 If QueryScraperCapabilities_Image_MovieSet(_externalScraperModule, ScrapeModifiers) Then
                     ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_MovieSet, Nothing)
-                    If ret.ScraperResult_Image IsNot Nothing Then
-                        ImagesContainer.MainBanners.AddRange(ret.ScraperResult_Image.MainBanners)
-                        ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_Image.MainCharacterArts)
-                        ImagesContainer.MainClearArts.AddRange(ret.ScraperResult_Image.MainClearArts)
-                        ImagesContainer.MainClearLogos.AddRange(ret.ScraperResult_Image.MainClearLogos)
-                        ImagesContainer.MainDiscArts.AddRange(ret.ScraperResult_Image.MainDiscArts)
-                        ImagesContainer.MainFanarts.AddRange(ret.ScraperResult_Image.MainFanarts)
-                        ImagesContainer.MainLandscapes.AddRange(ret.ScraperResult_Image.MainLandscapes)
-                        ImagesContainer.MainPosters.AddRange(ret.ScraperResult_Image.MainPosters)
+                    If ret.ScraperResult_ImageContainer IsNot Nothing Then
+                        ImagesContainer.MainBanners.AddRange(ret.ScraperResult_ImageContainer.MainBanners)
+                        ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_ImageContainer.MainCharacterArts)
+                        ImagesContainer.MainClearArts.AddRange(ret.ScraperResult_ImageContainer.MainClearArts)
+                        ImagesContainer.MainClearLogos.AddRange(ret.ScraperResult_ImageContainer.MainClearLogos)
+                        ImagesContainer.MainDiscArts.AddRange(ret.ScraperResult_ImageContainer.MainDiscArts)
+                        ImagesContainer.MainFanarts.AddRange(ret.ScraperResult_ImageContainer.MainFanarts)
+                        ImagesContainer.MainLandscapes.AddRange(ret.ScraperResult_ImageContainer.MainLandscapes)
+                        ImagesContainer.MainPosters.AddRange(ret.ScraperResult_ImageContainer.MainPosters)
                     End If
                     If ret.bBreakChain Then Exit For
                 End If
@@ -882,20 +882,20 @@ Public Class AddonsManager
                     logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.Addon.Name))
                     If QueryScraperCapabilities_Image_TV(_externalScraperModule, ScrapeModifiers) Then
                         ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
-                        If ret.ScraperResult_Image IsNot Nothing Then
-                            ImagesContainer.EpisodeFanarts.AddRange(ret.ScraperResult_Image.EpisodeFanarts)
-                            ImagesContainer.EpisodePosters.AddRange(ret.ScraperResult_Image.EpisodePosters)
-                            ImagesContainer.SeasonBanners.AddRange(ret.ScraperResult_Image.SeasonBanners)
-                            ImagesContainer.SeasonFanarts.AddRange(ret.ScraperResult_Image.SeasonFanarts)
-                            ImagesContainer.SeasonLandscapes.AddRange(ret.ScraperResult_Image.SeasonLandscapes)
-                            ImagesContainer.SeasonPosters.AddRange(ret.ScraperResult_Image.SeasonPosters)
-                            ImagesContainer.MainBanners.AddRange(ret.ScraperResult_Image.MainBanners)
-                            ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_Image.MainCharacterArts)
-                            ImagesContainer.MainClearArts.AddRange(ret.ScraperResult_Image.MainClearArts)
-                            ImagesContainer.MainClearLogos.AddRange(ret.ScraperResult_Image.MainClearLogos)
-                            ImagesContainer.MainFanarts.AddRange(ret.ScraperResult_Image.MainFanarts)
-                            ImagesContainer.MainLandscapes.AddRange(ret.ScraperResult_Image.MainLandscapes)
-                            ImagesContainer.MainPosters.AddRange(ret.ScraperResult_Image.MainPosters)
+                        If ret.ScraperResult_ImageContainer IsNot Nothing Then
+                            ImagesContainer.EpisodeFanarts.AddRange(ret.ScraperResult_ImageContainer.EpisodeFanarts)
+                            ImagesContainer.EpisodePosters.AddRange(ret.ScraperResult_ImageContainer.EpisodePosters)
+                            ImagesContainer.SeasonBanners.AddRange(ret.ScraperResult_ImageContainer.SeasonBanners)
+                            ImagesContainer.SeasonFanarts.AddRange(ret.ScraperResult_ImageContainer.SeasonFanarts)
+                            ImagesContainer.SeasonLandscapes.AddRange(ret.ScraperResult_ImageContainer.SeasonLandscapes)
+                            ImagesContainer.SeasonPosters.AddRange(ret.ScraperResult_ImageContainer.SeasonPosters)
+                            ImagesContainer.MainBanners.AddRange(ret.ScraperResult_ImageContainer.MainBanners)
+                            ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_ImageContainer.MainCharacterArts)
+                            ImagesContainer.MainClearArts.AddRange(ret.ScraperResult_ImageContainer.MainClearArts)
+                            ImagesContainer.MainClearLogos.AddRange(ret.ScraperResult_ImageContainer.MainClearLogos)
+                            ImagesContainer.MainFanarts.AddRange(ret.ScraperResult_ImageContainer.MainFanarts)
+                            ImagesContainer.MainLandscapes.AddRange(ret.ScraperResult_ImageContainer.MainLandscapes)
+                            ImagesContainer.MainPosters.AddRange(ret.ScraperResult_ImageContainer.MainPosters)
                         End If
                         If ret.bBreakChain Then Exit For
                     End If
@@ -938,8 +938,8 @@ Public Class AddonsManager
             For Each _externalScraperModule In modules
                 logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
                 ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
-                If ret.ScraperResult_Theme IsNot Nothing Then
-                    ThemeList.AddRange(ret.ScraperResult_Theme)
+                If ret.ScraperResult_Themes IsNot Nothing Then
+                    ThemeList.AddRange(ret.ScraperResult_Themes)
                 End If
                 If ret.bBreakChain Then Exit For
             Next
@@ -970,8 +970,8 @@ Public Class AddonsManager
             For Each _externalScraperModule In modules
                 logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.Addon.Name))
                 ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
-                If ret.ScraperResult_Theme IsNot Nothing Then
-                    ThemeList.AddRange(ret.ScraperResult_Theme)
+                If ret.ScraperResult_Themes IsNot Nothing Then
+                    ThemeList.AddRange(ret.ScraperResult_Themes)
                 End If
                 If ret.bBreakChain Then Exit For
             Next
@@ -1003,8 +1003,8 @@ Public Class AddonsManager
             For Each _externalScraperModule In modules
                 logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
                 ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
-                If ret.ScraperResult_Trailer IsNot Nothing Then
-                    TrailerList.AddRange(ret.ScraperResult_Trailer)
+                If ret.ScraperResult_Trailers IsNot Nothing Then
+                    TrailerList.AddRange(ret.ScraperResult_Trailers)
                 End If
                 If ret.bBreakChain Then Exit For
             Next
@@ -1479,4 +1479,137 @@ Public Class AddonsManager
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
+End Class
+
+Public Class XMLAddonSettings
+
+#Region "Fields"
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
+    Private _strAddonSettingsPath As String = String.Empty
+    Private _XMLAddonSettings As New clsXMLAdvancedSettings
+
+#End Region 'Fields
+
+#Region "Properties"
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        _strAddonSettingsPath = Path.Combine(Master.SettingsPath, Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location), "settings.xml")
+        Load()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Public Function GetBooleanSetting(ByVal strKey As String, ByVal strDefValue As Boolean, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None) As Boolean
+        If tContentType = Enums.ContentType.None Then
+            Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey)
+            Return If(v(0) Is Nothing, strDefValue, Convert.ToBoolean(v(0).Value))
+        Else
+            Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey AndAlso f.Content = tContentType)
+            Return If(v(0) Is Nothing, strDefValue, Convert.ToBoolean(v(0).Value))
+        End If
+        Return True
+    End Function
+
+    Public Function GetStringSetting(ByVal strKey As String, ByVal strDefValue As String, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None) As String
+        If tContentType = Enums.ContentType.None Then
+            Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey)
+            Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, strDefValue, v(0).Value)
+        Else
+            Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey AndAlso f.Content = tContentType)
+            Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing, strDefValue, v(0).Value)
+        End If
+    End Function
+
+    Private Sub Load()
+        Try
+            If File.Exists(_strAddonSettingsPath) Then
+                Dim objStreamReader As New StreamReader(_strAddonSettingsPath)
+                Dim xAddonSettings As New XmlSerializer(_XMLAddonSettings.GetType)
+                _XMLAddonSettings = CType(xAddonSettings.Deserialize(objStreamReader), clsXMLAdvancedSettings)
+                objStreamReader.Close()
+            End If
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+    End Sub
+
+    Public Sub Save()
+        _XMLAddonSettings.Setting.Sort()
+        Try
+            If Not Directory.Exists(Directory.GetParent(_strAddonSettingsPath).FullName) Then
+                Directory.CreateDirectory(Directory.GetParent(_strAddonSettingsPath).FullName)
+            End If
+            Dim objWriter As New FileStream(_strAddonSettingsPath, FileMode.Create)
+            Dim xAddonSettings As New XmlSerializer(_XMLAddonSettings.GetType)
+            xAddonSettings.Serialize(objWriter, _XMLAddonSettings)
+            objWriter.Close()
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+    End Sub
+
+    Public Sub SetBooleanSetting(ByVal strKey As String, ByVal bValue As Boolean, Optional ByVal isDefault As Boolean = False, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None)
+        If tContentType = Enums.ContentType.None Then
+            Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey)
+            If v Is Nothing Then
+                _XMLAddonSettings.Setting.Add(New AdvancedSettingsSetting With {
+                                           .DefaultValue = If(isDefault, Convert.ToString(bValue), String.Empty),
+                                           .Name = strKey,
+                                           .Value = Convert.ToString(bValue)
+                                           })
+            Else
+                _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey).Value = Convert.ToString(bValue)
+            End If
+        Else
+            Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType)
+            If v Is Nothing Then
+                _XMLAddonSettings.Setting.Add(New AdvancedSettingsSetting With {
+                                           .Content = tContentType,
+                                           .DefaultValue = If(isDefault, Convert.ToString(bValue), String.Empty),
+                                           .Name = strKey,
+                                           .Value = Convert.ToString(bValue)
+                                           })
+            Else
+                _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType).Value = Convert.ToString(bValue)
+            End If
+        End If
+    End Sub
+
+    Public Sub SetStringSetting(ByVal strKey As String, ByVal strValue As String, Optional ByVal isDefault As Boolean = False, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None)
+        If tContentType = Enums.ContentType.None Then
+            Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey)
+            If v Is Nothing Then
+                _XMLAddonSettings.Setting.Add(New AdvancedSettingsSetting With {
+                                           .DefaultValue = If(isDefault, strValue, String.Empty),
+                                           .Name = strKey,
+                                           .Value = strValue
+                                           })
+            Else
+                _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey).Value = strValue
+            End If
+        Else
+            Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType)
+            If v Is Nothing Then
+                _XMLAddonSettings.Setting.Add(New AdvancedSettingsSetting With {
+                                           .Content = tContentType,
+                                           .DefaultValue = If(isDefault, strValue, String.Empty),
+                                           .Name = strKey,
+                                           .Value = strValue
+                                           })
+            Else
+                _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType).Value = strValue
+            End If
+        End If
+    End Sub
+
+#End Region 'Methods
+
 End Class

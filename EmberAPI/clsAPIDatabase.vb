@@ -32,7 +32,7 @@ Imports System.Text.RegularExpressions
 Public Class Database
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwPatchDB As New System.ComponentModel.BackgroundWorker
 
@@ -830,7 +830,7 @@ Public Class Database
     Public Function Connect_MyVideos() As Boolean
 
         'set database version
-        Dim MyVideosDBVersion As Integer = 45
+        Dim MyVideosDBVersion As Integer = 46
 
         'set database filename
         Dim MyVideosDB As String = String.Format("MyVideos{0}.emm", MyVideosDBVersion)
@@ -1773,9 +1773,9 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = Convert.ToInt32(SQLreader("TMDB"))
                         If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = Convert.ToInt32(SQLreader("TMDBColID"))
-                        If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
+                        If Not DBNull.Value.Equals(SQLreader("LastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("LastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
-                        If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
+                        If Not DBNull.Value.Equals(SQLreader("UserRating")) Then .UserRating = Convert.ToInt32(SQLreader("UserRating"))
                     End With
                 End If
             End Using
@@ -2272,12 +2272,12 @@ Public Class Database
             Using SQLReader As SQLiteDataReader = SQLcommandTVSeason.ExecuteReader
                 While SQLReader.Read
                     Dim nSeason As New MediaContainers.MainDetails
-                    If Not DBNull.Value.Equals(SQLReader("strAired")) Then nSeason.Aired = CStr(SQLReader("strAired"))
-                    If Not DBNull.Value.Equals(SQLReader("strPlot")) Then nSeason.Plot = CStr(SQLReader("strPlot"))
+                    If Not DBNull.Value.Equals(SQLReader("Aired")) Then nSeason.Aired = CStr(SQLReader("Aired"))
+                    If Not DBNull.Value.Equals(SQLReader("Plot")) Then nSeason.Plot = CStr(SQLReader("Plot"))
                     If Not DBNull.Value.Equals(SQLReader("Season")) Then nSeason.Season = CInt(SQLReader("Season"))
                     If Not DBNull.Value.Equals(SQLReader("SeasonText")) Then nSeason.Title = CStr(SQLReader("SeasonText"))
-                    If Not DBNull.Value.Equals(SQLReader("strTMDB")) Then nSeason.TMDB = CInt(SQLReader("strTMDB"))
-                    If Not DBNull.Value.Equals(SQLReader("strTVDB")) Then nSeason.TVDB = CInt(SQLReader("strTVDB"))
+                    If Not DBNull.Value.Equals(SQLReader("TMDB")) Then nSeason.TMDB = CInt(SQLReader("TMDB"))
+                    If Not DBNull.Value.Equals(SQLReader("TVDB")) Then nSeason.TVDB = CInt(SQLReader("TVDB"))
                     _SeasonList.Seasons.Add(nSeason)
                 End While
             End Using
@@ -2331,11 +2331,11 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("SubEpisode")) Then .SubEpisode = Convert.ToInt32(SQLreader("SubEpisode"))
-                        If Not DBNull.Value.Equals(SQLreader("iLastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("iLastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
-                        If Not DBNull.Value.Equals(SQLreader("strIMDB")) Then .IMDB = SQLreader("strIMDB").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = Convert.ToInt32(SQLreader("strTMDB"))
-                        If Not DBNull.Value.Equals(SQLreader("strTVDB")) Then .TVDB = Convert.ToInt32(SQLreader("strTVDB"))
-                        If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
+                        If Not DBNull.Value.Equals(SQLreader("LastPlayed")) Then .LastPlayed = Functions.ConvertFromUnixTimestamp(Convert.ToInt64(SQLreader("LastPlayed"))).ToString("yyyy-MM-dd HH:mm:ss")
+                        If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .IMDB = SQLreader("IMDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = Convert.ToInt32(SQLreader("TMDB"))
+                        If Not DBNull.Value.Equals(SQLreader("TVDB")) Then .TVDB = Convert.ToInt32(SQLreader("TVDB"))
+                        If Not DBNull.Value.Equals(SQLreader("UserRating")) Then .UserRating = Convert.ToInt32(SQLreader("UserRating"))
                     End With
                 End If
             End Using
@@ -2538,11 +2538,11 @@ Public Class Database
                     _TVDB.ShowPath = Load_Path_TVShow(Convert.ToInt64(SQLReader("idShow")))
 
                     With _TVDB.MainDetails
-                        If Not DBNull.Value.Equals(SQLReader("strAired")) Then .Aired = CStr(SQLReader("strAired"))
-                        If Not DBNull.Value.Equals(SQLReader("strPlot")) Then .Plot = CStr(SQLReader("strPlot"))
+                        If Not DBNull.Value.Equals(SQLReader("Aired")) Then .Aired = CStr(SQLReader("Aired"))
+                        If Not DBNull.Value.Equals(SQLReader("Plot")) Then .Plot = CStr(SQLReader("Plot"))
                         If Not DBNull.Value.Equals(SQLReader("Season")) Then .Season = CInt(SQLReader("Season"))
-                        If Not DBNull.Value.Equals(SQLReader("strTMDB")) Then .TMDB = CInt(SQLReader("strTMDB"))
-                        If Not DBNull.Value.Equals(SQLReader("strTVDB")) Then .TVDB = CInt(SQLReader("strTVDB"))
+                        If Not DBNull.Value.Equals(SQLReader("TMDB")) Then .TMDB = CInt(SQLReader("TMDB"))
+                        If Not DBNull.Value.Equals(SQLReader("TVDB")) Then .TVDB = CInt(SQLReader("TVDB"))
                         If Not DBNull.Value.Equals(SQLReader("SeasonText")) Then .Title = CStr(SQLReader("SeasonText"))
                     End With
                 End If
@@ -2642,11 +2642,11 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                         If Not DBNull.Value.Equals(SQLreader("Votes")) Then .Votes = SQLreader("Votes").ToString
                         If Not DBNull.Value.Equals(SQLreader("SortTitle")) Then .SortTitle = SQLreader("SortTitle").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strIMDB")) Then .IMDB = SQLreader("strIMDB").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strTMDB")) Then .TMDB = Convert.ToInt32(SQLreader("strTMDB"))
+                        If Not DBNull.Value.Equals(SQLreader("IMDB")) Then .IMDB = SQLreader("IMDB").ToString
+                        If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = Convert.ToInt32(SQLreader("TMDB"))
                         If Not DBNull.Value.Equals(SQLreader("Language")) Then .Language = SQLreader("Language").ToString
-                        If Not DBNull.Value.Equals(SQLreader("strOriginalTitle")) Then .OriginalTitle = SQLreader("strOriginalTitle").ToString
-                        If Not DBNull.Value.Equals(SQLreader("iUserRating")) Then .UserRating = Convert.ToInt32(SQLreader("iUserRating"))
+                        If Not DBNull.Value.Equals(SQLreader("OriginalTitle")) Then .OriginalTitle = SQLreader("OriginalTitle").ToString
+                        If Not DBNull.Value.Equals(SQLreader("UserRating")) Then .UserRating = Convert.ToInt32(SQLreader("UserRating"))
                     End With
                 End If
             End Using
@@ -3039,6 +3039,15 @@ Public Class Database
                         If MessageBox.Show("Locked state will now be saved in NFO. Do you want to rewrite all NFOs of locked items?", "Rewrite NFOs of locked items", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
                             Prepare_LockedStateToNFO(True)
                         End If
+                End Select
+
+                SQLtransaction.Commit()
+            End Using
+
+            Using SQLtransaction As SQLiteTransaction = _myvideosDBConn.BeginTransaction()
+                Select Case Args.currVersion
+                    Case Is < 46
+                        Prepare_TMDB_TMDBColID_TVDB(True)
                 End Select
 
                 SQLtransaction.Commit()
@@ -3547,6 +3556,36 @@ Public Class Database
         If Not BatchMode Then SQLtransaction.Commit()
     End Sub
 
+    Private Sub Prepare_TMDB_TMDBColID_TVDB(ByVal BatchMode As Boolean)
+        bwPatchDB.ReportProgress(-1, "Fixing TMDB ID, TMDBColID and TVDB ID...")
+
+        Dim SQLtransaction As SQLiteTransaction = Nothing
+        If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
+
+        Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
+            SQLcommand.CommandText = "UPDATE episode SET TMDB = NULL WHERE TMDB = 0 OR TMDB = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE episode SET TVDB = NULL WHERE TVDB = 0 OR TVDB = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE movie SET TMDB = NULL WHERE TMDB = 0 OR TMDB = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE movie SET TMDBColID = NULL WHERE TMDBColID = 0 OR TMDBColID = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE seasons SET TMDB = NULL WHERE TMDB = 0 OR TMDB = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE seasons SET TVDB = NULL WHERE TVDB = 0 OR TVDB = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE sets SET TMDBColID = NULL WHERE TMDBColID = 0 OR TMDBColID = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE tvshow SET TMDB = NULL WHERE TMDB = 0 OR TMDB = """";"
+            SQLcommand.ExecuteNonQuery()
+            SQLcommand.CommandText = "UPDATE tvshow SET TVDB = NULL WHERE TVDB = 0 OR TVDB = """";"
+            SQLcommand.ExecuteNonQuery()
+        End Using
+
+        If Not BatchMode Then SQLtransaction.Commit()
+    End Sub
+
     Private Sub Prepare_Top250(ByVal BatchMode As Boolean)
         bwPatchDB.ReportProgress(-1, "Fixing Top250...")
 
@@ -3622,21 +3661,21 @@ Public Class Database
         Using SQLcommand_movie As SQLiteCommand = _myvideosDBConn.CreateCommand()
             If Not _movieDB.IDSpecified Then
                 SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (",
-                 "idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ",
+                 "idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, IMDB, Lock, ",
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, ",
                  "Runtime, ReleaseDate, Playcount, Trailer, ",
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ",
                  "DateAdded, EFanartsPath, ThemePath, ",
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language, iUserRating",
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, LastPlayed, Language, UserRating",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
             Else
                 SQLcommand_movie.CommandText = String.Concat("INSERT OR REPLACE INTO movie (",
-                 "idMovie, idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, Imdb, Lock, ",
+                 "idMovie, idSource, MoviePath, Type, ListTitle, HasSub, New, Mark, IMDB, Lock, ",
                  "Title, OriginalTitle, SortTitle, Year, Rating, Votes, MPAA, Top250, Outline, Plot, Tagline, Certification, ",
                  "Runtime, ReleaseDate, Playcount, Trailer, ",
                  "NfoPath, TrailerPath, SubPath, EThumbsPath, FanartURL, OutOfTolerance, VideoSource, ",
                  "DateAdded, EFanartsPath, ThemePath, ",
-                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, iLastPlayed, Language, iUserRating",
+                 "TMDB, TMDBColID, DateModified, MarkCustom1, MarkCustom2, MarkCustom3, MarkCustom4, HasSet, LastPlayed, Language, UserRating",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM movie;")
                 Dim parMovieID As SQLiteParameter = SQLcommand_movie.Parameters.Add("paridMovie", DbType.Int64, 0, "idMovie")
                 parMovieID.Value = _movieDB.ID
@@ -3648,7 +3687,7 @@ Public Class Database
             Dim par_movie_HasSub As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasSub", DbType.Boolean, 0, "HasSub")
             Dim par_movie_New As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_New", DbType.Boolean, 0, "New")
             Dim par_movie_Mark As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Mark", DbType.Boolean, 0, "Mark")
-            Dim par_movie_Imdb As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Imdb", DbType.String, 0, "Imdb")
+            Dim par_movie_IMDB As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_IMDB", DbType.String, 0, "IMDB")
             Dim par_movie_Lock As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Lock", DbType.Boolean, 0, "Lock")
             Dim par_movie_Title As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Title", DbType.String, 0, "Title")
             Dim par_movie_OriginalTitle As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_OriginalTitle", DbType.String, 0, "OriginalTitle")
@@ -3676,17 +3715,17 @@ Public Class Database
             Dim par_movie_DateAdded As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateAdded", DbType.Int64, 0, "DateAdded")
             Dim par_movie_ExtrafanartsPath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_EFanartsPath", DbType.String, 0, "EFanartsPath")
             Dim par_movie_ThemePath As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_ThemePath", DbType.String, 0, "ThemePath")
-            Dim par_movie_TMDB As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDB", DbType.String, 0, "TMDB")
-            Dim par_movie_TMDBColID As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDBColID", DbType.String, 0, "TMDBColID")
+            Dim par_movie_TMDB As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDB", DbType.Int32, 0, "TMDB")
+            Dim par_movie_TMDBColID As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_TMDBColID", DbType.Int32, 0, "TMDBColID")
             Dim par_movie_DateModified As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_DateModified", DbType.Int64, 0, "DateModified")
             Dim par_movie_MarkCustom1 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom1", DbType.Boolean, 0, "MarkCustom1")
             Dim par_movie_MarkCustom2 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom2", DbType.Boolean, 0, "MarkCustom2")
             Dim par_movie_MarkCustom3 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom3", DbType.Boolean, 0, "MarkCustom3")
             Dim par_movie_MarkCustom4 As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_MarkCustom4", DbType.Boolean, 0, "MarkCustom4")
             Dim par_movie_HasSet As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_HasSet", DbType.Boolean, 0, "HasSet")
-            Dim par_movie_iLastPlayed As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iLastPlayed", DbType.Int64, 0, "iLastPlayed")
+            Dim par_movie_LastPlayed As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_LastPlayed", DbType.Int64, 0, "LastPlayed")
             Dim par_movie_Language As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_Language", DbType.String, 0, "Language")
-            Dim par_movie_iUserRating As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_iUserRating", DbType.Int64, 0, "iUserRating")
+            Dim par_movie_UserRating As SQLiteParameter = SQLcommand_movie.Parameters.Add("par_movie_UserRating", DbType.Int64, 0, "UserRating")
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_movieDB.MainDetails.DateAdded) Then
@@ -3761,9 +3800,9 @@ Public Class Database
                 End Try
             End If
             If DateTimeLastPlayedUnix >= 0 Then
-                par_movie_iLastPlayed.Value = DateTimeLastPlayedUnix
+                par_movie_LastPlayed.Value = DateTimeLastPlayedUnix
             Else
-                par_movie_iLastPlayed.Value = Nothing 'need to be NOTHING instead of 0
+                par_movie_LastPlayed.Value = Nothing 'need to be NOTHING instead of 0
                 _movieDB.MainDetails.LastPlayed = String.Empty
             End If
 
@@ -3817,8 +3856,8 @@ Public Class Database
 
             With _movieDB.MainDetails
                 par_movie_Certification.Value = String.Join(" / ", .Certifications.ToArray)
-                par_movie_Imdb.Value = .IMDB
-                par_movie_iUserRating.Value = .UserRating
+                par_movie_IMDB.Value = .IMDB
+                par_movie_UserRating.Value = .UserRating
                 par_movie_MPAA.Value = .MPAA
                 par_movie_OriginalTitle.Value = .OriginalTitle
                 par_movie_Outline.Value = .Outline
@@ -3830,8 +3869,12 @@ Public Class Database
                 par_movie_ReleaseDate.Value = NumUtils.DateToISO8601Date(.ReleaseDate)
                 par_movie_Runtime.Value = .Runtime
                 par_movie_SortTitle.Value = .SortTitle
-                par_movie_TMDB.Value = .TMDB
-                par_movie_TMDBColID.Value = .TMDBColID
+                If .TMDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_movie_TMDB.Value = .TMDB
+                End If
+                If .TMDBColIDSpecified Then 'need to be NOTHING instead of "0"
+                    par_movie_TMDBColID.Value = .TMDBColID
+                End If
                 par_movie_Tagline.Value = .Tagline
                 par_movie_Title.Value = .Title
                 If .Top250Specified Then 'need to be NOTHING instead of "0"
@@ -4275,7 +4318,7 @@ Public Class Database
             End If
             Dim parListTitle As SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
             Dim parNfoPath As SQLiteParameter = SQLcommand.Parameters.Add("parNfoPath", DbType.String, 0, "NfoPath")
-            Dim parTMDBColID As SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.String, 0, "TMDBColID")
+            Dim parTMDBColID As SQLiteParameter = SQLcommand.Parameters.Add("parTMDBColID", DbType.Int32, 0, "TMDBColID")
             Dim parPlot As SQLiteParameter = SQLcommand.Parameters.Add("parPlot", DbType.String, 0, "Plot")
             Dim parSetName As SQLiteParameter = SQLcommand.Parameters.Add("parSetName", DbType.String, 0, "SetName")
             Dim parNew As SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "New")
@@ -4301,7 +4344,9 @@ Public Class Database
 
             parListTitle.Value = _moviesetDB.ListTitle
             parSetName.Value = _moviesetDB.MainDetails.Title
-            parTMDBColID.Value = _moviesetDB.MainDetails.TMDB
+            If _moviesetDB.MainDetails.TMDBColIDSpecified Then 'need to be NOTHING instead of "0"
+                parTMDBColID.Value = _moviesetDB.MainDetails.TMDB
+            End If
             parPlot.Value = _moviesetDB.MainDetails.Plot
 
             If Not _moviesetDB.IDSpecified Then
@@ -4577,7 +4622,7 @@ Public Class Database
                  "idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ",
                  "Rating, Plot, Aired, NfoPath, Playcount, ",
                  "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ",
-                 "iLastPlayed, strIMDB, strTMDB, strTVDB, iUserRating",
+                 "LastPlayed, IMDB, TMDB, TVDB, UserRating",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
             Else
@@ -4585,7 +4630,7 @@ Public Class Database
                  "idEpisode, idShow, idFile, idSource, New, Mark, Lock, Title, Season, Episode, ",
                  "Rating, Plot, Aired, NfoPath, Playcount, ",
                  "DisplaySeason, DisplayEpisode, DateAdded, Runtime, Votes, VideoSource, HasSub, SubEpisode, ",
-                 "iLastPlayed, strIMDB, strTMDB, strTVDB, iUserRating",
+                 "LastPlayed, IMDB, TMDB, TVDB, UserRating",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM episode;")
 
                 Dim parTVEpisodeID As SQLiteParameter = SQLcommand.Parameters.Add("parTVEpisodeID", DbType.Int64, 0, "idEpisode")
@@ -4614,11 +4659,11 @@ Public Class Database
             Dim parVideoSource As SQLiteParameter = SQLcommand.Parameters.Add("parVideoSource", DbType.String, 0, "VideoSource")
             Dim parHasSub As SQLiteParameter = SQLcommand.Parameters.Add("parHasSub", DbType.Boolean, 0, "HasSub")
             Dim parSubEpisode As SQLiteParameter = SQLcommand.Parameters.Add("parSubEpisode", DbType.String, 0, "SubEpisode")
-            Dim par_iLastPlayed As SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.Int64, 0, "iLastPlayed")
-            Dim par_strIMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "strIMDB")
-            Dim par_strTMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
-            Dim par_strTVDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strTVDB", DbType.String, 0, "strTVDB")
-            Dim par_iUserRating As SQLiteParameter = SQLcommand.Parameters.Add("par_iUserRating", DbType.Int64, 0, "iUserRating")
+            Dim par_LastPlayed As SQLiteParameter = SQLcommand.Parameters.Add("par_iLastPlayed", DbType.Int64, 0, "LastPlayed")
+            Dim par_IMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_IMDB", DbType.String, 0, "IMDB")
+            Dim par_TMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_TMDB", DbType.Int32, 0, "TMDB")
+            Dim par_TVDB As SQLiteParameter = SQLcommand.Parameters.Add("par_TVDB", DbType.Int32, 0, "TVDB")
+            Dim par_UserRating As SQLiteParameter = SQLcommand.Parameters.Add("par_UserRating", DbType.Int64, 0, "UserRating")
 
             Try
                 If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(_episode.MainDetails.DateAdded) Then
@@ -4676,9 +4721,9 @@ Public Class Database
                 End Try
             End If
             If DateTimeLastPlayedUnix >= 0 Then
-                par_iLastPlayed.Value = DateTimeLastPlayedUnix
+                par_LastPlayed.Value = DateTimeLastPlayedUnix
             Else
-                par_iLastPlayed.Value = Nothing 'need to be NOTHING instead of 0
+                par_LastPlayed.Value = Nothing 'need to be NOTHING instead of 0
                 _episode.MainDetails.LastPlayed = String.Empty
             End If
 
@@ -4708,7 +4753,7 @@ Public Class Database
                 parEpisode.Value = .Episode
                 parDisplaySeason.Value = .DisplaySeason
                 parDisplayEpisode.Value = .DisplayEpisode
-                par_iUserRating.Value = .UserRating
+                par_UserRating.Value = .UserRating
                 parRating.Value = .Rating
                 parPlot.Value = .Plot
                 parAired.Value = NumUtils.DateToISO8601Date(.Aired)
@@ -4720,9 +4765,13 @@ Public Class Database
                 If .SubEpisodeSpecified Then
                     parSubEpisode.Value = .SubEpisode
                 End If
-                par_strIMDB.Value = .IMDB
-                par_strTMDB.Value = .TMDB
-                par_strTVDB.Value = .TVDB
+                par_IMDB.Value = .IMDB
+                If .TMDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_TMDB.Value = .TMDB
+                End If
+                If .TVDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_TVDB.Value = .TVDB
+                End If
             End With
 
             If Not _episode.IDSpecified Then
@@ -4952,7 +5001,7 @@ Public Class Database
         If Not doesExist Then
             Using SQLcommand_insert_seasons As SQLiteCommand = _myvideosDBConn.CreateCommand()
                 SQLcommand_insert_seasons.CommandText = String.Concat("INSERT INTO seasons (",
-                                                                      "idSeason, idShow, Season, SeasonText, Lock, Mark, New, strTVDB, strTMDB, strAired, strPlot",
+                                                                      "idSeason, idShow, Season, SeasonText, Lock, Mark, New, TVDB, TMDB, Aired, Plot",
                                                                       ") VALUES (NULL,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM seasons;")
                 Dim par_seasons_idShow As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_idShow", DbType.Int64, 0, "idShow")
                 Dim par_seasons_Season As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Season", DbType.Int64, 0, "Season")
@@ -4960,20 +5009,24 @@ Public Class Database
                 Dim par_seasons_Lock As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
                 Dim par_seasons_Mark As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
                 Dim par_seasons_New As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
-                Dim par_seasons_strTVDB As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_strTVDB", DbType.String, 0, "strTVDB")
-                Dim par_seasons_strTMDB As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_strTMDB", DbType.String, 0, "strTMDB")
-                Dim par_seasons_strAired As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_strAired", DbType.String, 0, "strAired")
-                Dim par_seasons_strPlot As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
+                Dim par_seasons_TVDB As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_TVDB", DbType.Int32, 0, "TVDB")
+                Dim par_seasons_TMDB As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_TMDB", DbType.Int32, 0, "TMDB")
+                Dim par_seasons_Aired As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Aired", DbType.String, 0, "Aired")
+                Dim par_seasons_Plot As SQLiteParameter = SQLcommand_insert_seasons.Parameters.Add("par_seasons_Plot", DbType.String, 0, "Plot")
                 par_seasons_idShow.Value = _season.ShowID
                 par_seasons_Season.Value = _season.MainDetails.Season
                 par_seasons_SeasonText.Value = If(_season.MainDetails.TitleSpecified, _season.MainDetails.Title, StringUtils.FormatSeasonText(_season.MainDetails.Season))
                 par_seasons_Lock.Value = _season.IsLock
                 par_seasons_Mark.Value = _season.IsMark
                 par_seasons_New.Value = True
-                par_seasons_strTVDB.Value = _season.MainDetails.TVDB
-                par_seasons_strTMDB.Value = _season.MainDetails.TMDB
-                par_seasons_strAired.Value = _season.MainDetails.Aired
-                par_seasons_strPlot.Value = _season.MainDetails.Plot
+                If _season.MainDetails.TVDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_seasons_TVDB.Value = _season.MainDetails.TVDB
+                End If
+                If _season.MainDetails.TMDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_seasons_TMDB.Value = _season.MainDetails.TMDB
+                End If
+                par_seasons_Aired.Value = _season.MainDetails.Aired
+                par_seasons_Plot.Value = _season.MainDetails.Plot
                 ID = CInt(SQLcommand_insert_seasons.ExecuteScalar())
             End Using
         Else
@@ -4983,18 +5036,22 @@ Public Class Database
                 Dim par_seasons_Lock As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Lock", DbType.Boolean, 0, "Lock")
                 Dim par_seasons_Mark As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Mark", DbType.Boolean, 0, "Mark")
                 Dim par_seasons_New As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_New", DbType.Boolean, 0, "New")
-                Dim par_seasons_strTVDB As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strTVDB", DbType.String, 0, "strTVDB")
-                Dim par_seasons_strTMDB As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strTMDB", DbType.String, 0, "strTMDB")
-                Dim par_seasons_strAired As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strAired", DbType.String, 0, "strAired")
-                Dim par_seasons_strPlot As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_strPlot", DbType.String, 0, "strPlot")
+                Dim par_seasons_TVDB As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_TVDB", DbType.Int32, 0, "TVDB")
+                Dim par_seasons_TMDB As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_TMDB", DbType.Int32, 0, "TMDB")
+                Dim par_seasons_Aired As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Aired", DbType.String, 0, "Aired")
+                Dim par_seasons_Plot As SQLiteParameter = SQLcommand_update_seasons.Parameters.Add("par_seasons_Plot", DbType.String, 0, "Plot")
                 par_seasons_SeasonText.Value = If(_season.MainDetails.TitleSpecified, _season.MainDetails.Title, StringUtils.FormatSeasonText(_season.MainDetails.Season))
                 par_seasons_Lock.Value = _season.IsLock
                 par_seasons_Mark.Value = _season.IsMark
                 par_seasons_New.Value = False
-                par_seasons_strTVDB.Value = _season.MainDetails.TVDB
-                par_seasons_strTMDB.Value = _season.MainDetails.TMDB
-                par_seasons_strAired.Value = _season.MainDetails.Aired
-                par_seasons_strPlot.Value = _season.MainDetails.Plot
+                If _season.MainDetails.TVDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_seasons_TVDB.Value = _season.MainDetails.TVDB
+                End If
+                If _season.MainDetails.TMDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_seasons_TMDB.Value = _season.MainDetails.TMDB
+                End If
+                par_seasons_Aired.Value = _season.MainDetails.Aired
+                par_seasons_Plot.Value = _season.MainDetails.Plot
                 SQLcommand_update_seasons.ExecuteNonQuery()
             End Using
         End If
@@ -5039,14 +5096,14 @@ Public Class Database
                  "idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ",
                  "Plot, Premiered, MPAA, Rating, NfoPath, Language, Ordering, ",
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
-                 "strIMDB, strTMDB, strOriginalTitle, iUserRating",
+                 "IMDB, TMDB, OriginalTitle, UserRating",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
             Else
                 SQLcommand.CommandText = String.Concat("INSERT OR REPLACE INTO tvshow (",
                  "idShow, idSource, TVShowPath, New, Mark, TVDB, Lock, ListTitle, EpisodeGuide, ",
                  "Plot, Premiered, MPAA, Rating, NfoPath, Language, Ordering, ",
                  "Status, ThemePath, EFanartsPath, Runtime, Title, Votes, EpisodeSorting, SortTitle, ",
-                 "strIMDB, strTMDB, strOriginalTitle, iUserRating",
+                 "IMDB, TMDB, OriginalTitle, UserRating",
                  ") VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?); SELECT LAST_INSERT_ROWID() FROM tvshow;")
                 Dim par_lngTVShowID As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowID", DbType.Int64, 0, "idShow")
                 par_lngTVShowID.Value = _show.ID
@@ -5056,7 +5113,7 @@ Public Class Database
             Dim par_strTVShowPath As SQLiteParameter = SQLcommand.Parameters.Add("parTVShowPath", DbType.String, 0, "TVShowPath")
             Dim par_bNew As SQLiteParameter = SQLcommand.Parameters.Add("parNew", DbType.Boolean, 0, "new")
             Dim par_bMark As SQLiteParameter = SQLcommand.Parameters.Add("parMark", DbType.Boolean, 0, "mark")
-            Dim par_strTVDB As SQLiteParameter = SQLcommand.Parameters.Add("parTVDB", DbType.String, 0, "TVDB")
+            Dim par_TVDB As SQLiteParameter = SQLcommand.Parameters.Add("parTVDB", DbType.Int32, 0, "TVDB")
             Dim par_bLock As SQLiteParameter = SQLcommand.Parameters.Add("parLock", DbType.Boolean, 0, "lock")
             Dim par_strListTitle As SQLiteParameter = SQLcommand.Parameters.Add("parListTitle", DbType.String, 0, "ListTitle")
             Dim par_strEpisodeGuide As SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeGuide", DbType.String, 0, "EpisodeGuide")
@@ -5075,25 +5132,29 @@ Public Class Database
             Dim par_strVotes As SQLiteParameter = SQLcommand.Parameters.Add("parVotes", DbType.String, 0, "Votes")
             Dim par_iEpisodeSorting As SQLiteParameter = SQLcommand.Parameters.Add("parEpisodeSorting", DbType.Int16, 0, "EpisodeSorting")
             Dim par_strSortTitle As SQLiteParameter = SQLcommand.Parameters.Add("parSortTitle", DbType.String, 0, "SortTitle")
-            Dim par_strIMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "strIMDB")
-            Dim par_strTMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.String, 0, "strTMDB")
-            Dim par_strOriginalTitle As SQLiteParameter = SQLcommand.Parameters.Add("par_strOriginalTitle", DbType.String, 0, "strOriginalTitle")
-            Dim par_iUserRating As SQLiteParameter = SQLcommand.Parameters.Add("par_iUserRating", DbType.Int64, 0, "iUserRating")
+            Dim par_IMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strIMDB", DbType.String, 0, "IMDB")
+            Dim par_TMDB As SQLiteParameter = SQLcommand.Parameters.Add("par_strTMDB", DbType.Int32, 0, "TMDB")
+            Dim par_OriginalTitle As SQLiteParameter = SQLcommand.Parameters.Add("par_OriginalTitle", DbType.String, 0, "OriginalTitle")
+            Dim par_UserRating As SQLiteParameter = SQLcommand.Parameters.Add("par_UserRating", DbType.Int64, 0, "UserRating")
 
             With _show.MainDetails
-                par_iUserRating.Value = .UserRating
+                par_UserRating.Value = .UserRating
                 par_strEpisodeGuide.Value = .EpisodeGuide.URL
-                par_strIMDB.Value = .IMDB
+                par_IMDB.Value = .IMDB
                 par_strMPAA.Value = .MPAA
-                par_strOriginalTitle.Value = .OriginalTitle
+                par_OriginalTitle.Value = .OriginalTitle
                 par_strPlot.Value = .Plot
                 par_strPremiered.Value = NumUtils.DateToISO8601Date(.Premiered)
                 par_strRating.Value = .Rating
                 par_strRuntime.Value = .Runtime
                 par_strSortTitle.Value = .SortTitle
                 par_strStatus.Value = .Status
-                par_strTMDB.Value = .TMDB
-                par_strTVDB.Value = .TVDB
+                If .TMDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_TMDB.Value = .TMDB
+                End If
+                If .TVDBSpecified Then 'need to be NOTHING instead of "0"
+                    par_TVDB.Value = .TVDB
+                End If
                 par_strTitle.Value = .Title
                 par_strVotes.Value = .Votes
             End With

@@ -380,13 +380,14 @@ Public Class dlgSettings
     End Sub
 
     Sub AddAddonSettingsPanels()
-        Dim nPanel As New Containers.SettingsPanel
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
-            nPanel = s.Addon.InjectSettingsPanel
-            If Not nPanel Is Nothing Then
-                If nPanel.ImageIndex = -1 AndAlso Not nPanel.Image Is Nothing Then
+            Dim nPanel As Containers.SettingsPanel = s.Addon.InjectSettingsPanel
+            If nPanel IsNot Nothing Then
+                If nPanel.ImageIndex = -1 AndAlso nPanel.Image IsNot Nothing Then
                     ilSettings.Images.Add(String.Concat(s.AssemblyName, nPanel.Name), nPanel.Image)
                     nPanel.ImageIndex = ilSettings.Images.IndexOfKey(String.Concat(s.AssemblyName, nPanel.Name))
+                ElseIf nPanel.ImageIndex = -1 Then
+                    nPanel.ImageIndex = 9
                 End If
                 SettingsPanels.Add(nPanel)
                 AddHandler s.Addon.NeedsRestart, AddressOf Handle_NeedsRestart
@@ -2587,7 +2588,7 @@ Public Class dlgSettings
     End Sub
 
     Private Sub FillMovieSetScraperTitleRenamer()
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+        For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             Dim i As Integer = dgvMovieSetScraperTitleRenamer.Rows.Add(New Object() {sett.Name.Substring(21), sett.Value})
             If Not sett.DefaultValue = String.Empty Then
                 dgvMovieSetScraperTitleRenamer.Rows(i).Tag = True
@@ -2602,11 +2603,11 @@ Public Class dlgSettings
 
     Private Sub SaveMovieSetScraperTitleRenamer()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+        For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
             deleteitem.Add(sett.Name)
         Next
 
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next

@@ -448,7 +448,7 @@ Public Class MediaInfo
 
         If Not String.IsNullOrEmpty(tCodec) Then
             Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            myconversions = AdvancedSettings.GetComplexSetting("AudioFormatConverts")
+            myconversions = clsXMLAdvancedSettings.GetComplexSetting("AudioFormatConverts")
             If Not myconversions Is Nothing Then
                 For Each k In myconversions
                     If tCodec.ToLower = k.Name.ToLower Then
@@ -477,7 +477,7 @@ Public Class MediaInfo
 
         If Not String.IsNullOrEmpty(tCodec) Then
             Dim myconversions As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            myconversions = AdvancedSettings.GetComplexSetting("VideoFormatConverts")
+            myconversions = clsXMLAdvancedSettings.GetComplexSetting("VideoFormatConverts")
             If Not myconversions Is Nothing Then
                 For Each k In myconversions
                     If tCodec.ToLower = k.Name.ToLower Then

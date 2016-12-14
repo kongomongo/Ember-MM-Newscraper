@@ -23,28 +23,26 @@ Imports NLog
 Imports System.Web
 Imports System.Text.RegularExpressions
 
-Namespace VideobusterDE
-
-    Public Class Scraper
+Public Class Scraper
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
 #End Region 'Fields
 
 #Region "Methods"
 
-        Public Function GetTrailers(ByVal strTitle As String) As List(Of MediaContainers.Trailer)
-            Dim alTrailers As New List(Of MediaContainers.Trailer)
+        Public Function GetTrailers(ByVal strTitle As String) As Interfaces.AddonResult
+            Dim nAddonResult As New Interfaces.AddonResult
 
             Dim pSearchResultsArea As String = "<div class=""main left"">(?<RESULTS>.*?)sidebar"
             Dim pSearchResults As String = "<div class=""infos""><a href=""(?<URL>.*?)"" class=""title"">(?<TITLE>.*?)<"
             Dim pPlaylistArea As String = "<div class=""playlist"">(?<PLAYLIST>.*?)<\/div><div id="""
             Dim pTrailers As String = "<div class=""item"">.*?<small>(?<DURATION>.*?) min.*?<a href=""(?<VIDEOURL>.*?)"".*?title=""(?<TITLE>.*?)"".*?<meta itemprop=""height"" content=""(?<RESOLUTION>.*?)"".*?inLanguage"" content=""(?<LANGUAGE>.*?)"""
 
-            Dim SearchURL = String.Concat("https://www.videobuster.de/titlesearch.php?oldvalue_tab_search_content=movies&search_title=", _
-                                          HttpUtility.UrlEncode(strTitle), _
+            Dim SearchURL = String.Concat("https://www.videobuster.de/titlesearch.php?oldvalue_tab_search_content=movies&search_title=",
+                                          HttpUtility.UrlEncode(strTitle),
                                           "&tab_search_content=movies")
 
             Dim sHTTP As New HTTP
@@ -83,7 +81,7 @@ Namespace VideobusterDE
                                 nTrailer.Type = GetTrailerType(tTrailer.Groups("TITLE").Value.ToString)
                                 nTrailer.URLVideoStream = tTrailer.Groups("VIDEOURL").Value.ToString
                                 nTrailer.URLWebsite = tTrailer.Groups("VIDEOURL").Value.ToString
-                                alTrailers.Add(nTrailer)
+                                nAddonResult.ScraperResult_Trailers.Add(nTrailer)
                             Next
                         End If
                     End If
@@ -92,7 +90,11 @@ Namespace VideobusterDE
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            Return alTrailers
+            If nAddonResult.ScraperResult_Trailers.Count > 1 Then
+                nAddonResult.ScraperResult_Data.Trailer = nAddonResult.ScraperResult_Trailers(0).URLVideoStream
+            End If
+
+            Return nAddonResult
         End Function
 
         Public Function GetVideoQuality(ByVal strHeight As String) As Enums.TrailerVideoQuality
@@ -122,21 +124,4 @@ Namespace VideobusterDE
 
 #End Region 'Methods
 
-#Region "Nested Types"
-
-        Private Structure Arguments
-
-#Region "Fields"
-
-            Dim Parameter As String
-            Dim Type As Enums.ScrapeModifierType
-
-#End Region 'Fields
-
-        End Structure
-
-#End Region 'Nested Types
-
-    End Class
-
-End Namespace
+End Class

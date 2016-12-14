@@ -21,7 +21,6 @@
 Imports EmberAPI
 Imports NLog
 Imports System.Drawing
-Imports System.IO
 Imports System.Xml.Serialization
 
 Public Class Addon
@@ -41,9 +40,9 @@ Public Class Addon
     Private _assemblyname As String = String.Empty
     Private _enabled As Boolean = False
     Private _name As String = "Trakt.tv"
+    Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
-    Private _xmlSettingsPath As String = Path.Combine(Master.SettingsPath, "Interface.Trakt.xml")
     Private WithEvents cmnuTrayToolsTrakt As New ToolStripMenuItem
     Private WithEvents mnuMainToolsTrakt As New ToolStripMenuItem
     Private _AddonSettings As New AddonSettings
@@ -187,7 +186,7 @@ Public Class Addon
         Dim SPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
-        _settingspanel.chkGetShowProgress.Checked = _AddonSettings.GetShowProgress
+        _settingspanel.chkGetShowProgress.Checked = _AddonSettings.GetProgress_TVShow
         _settingspanel.chkGetWatchedState.Checked = _AddonSettings.GetWatchedState
         _settingspanel.chkGetWatchedStateBeforeEdit_Movie.Checked = _AddonSettings.GetWatchedStateBeforeEdit_Movie
         _settingspanel.chkGetWatchedStateBeforeEdit_TVEpisode.Checked = _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode
@@ -209,14 +208,20 @@ Public Class Addon
     End Function
 
     Public Sub LoadSettings()
-        _AddonSettings.Clear()
-        If File.Exists(_xmlSettingsPath) Then
-            Dim xmlSer As XmlSerializer = Nothing
-            Using xmlSR As StreamReader = New StreamReader(_xmlSettingsPath)
-                xmlSer = New XmlSerializer(GetType(AddonSettings))
-                _AddonSettings = DirectCast(xmlSer.Deserialize(xmlSR), AddonSettings)
-            End Using
-        End If
+        _AddonSettings.APIAccessToken = _settings.GetStringSetting("APIAccessToken", String.Empty)
+        _AddonSettings.APICreatedAt = _settings.GetStringSetting("APICreatedAt", "0")
+        _AddonSettings.APIExpiresInSeconds = _settings.GetStringSetting("APIExpiresInSeconds", "0")
+        _AddonSettings.APIRefreshToken = _settings.GetStringSetting("APIRefreshToken", String.Empty)
+        _AddonSettings.CollectionRemove_Movie = _settings.GetBooleanSetting("CollectionRemove", False, Enums.ContentType.Movie)
+        _AddonSettings.GetProgress_TVShow = _settings.GetBooleanSetting("GetProgress", False, Enums.ContentType.TVShow)
+        _AddonSettings.GetWatchedState = _settings.GetBooleanSetting("WatchedState", False)
+        _AddonSettings.GetWatchedStateBeforeEdit_Movie = _settings.GetBooleanSetting("WatchedStateBeforeEdit", False, Enums.ContentType.Movie)
+        _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode = _settings.GetBooleanSetting("WatchedStateBeforeEdit", False, Enums.ContentType.TVEpisode)
+        _AddonSettings.GetWatchedStateScraperMulti_Movie = _settings.GetBooleanSetting("WatchedStateScraperMulti", False, Enums.ContentType.Movie)
+        _AddonSettings.GetWatchedStateScraperMulti_TVEpisode = _settings.GetBooleanSetting("WatchedStateScraperMulti", False, Enums.ContentType.TVEpisode)
+        _AddonSettings.GetWatchedStateScraperSingle_Movie = _settings.GetBooleanSetting("WatchedStateScraperSingle", False, Enums.ContentType.Movie)
+        _AddonSettings.GetWatchedStateScraperSingle_TVEpisode = _settings.GetBooleanSetting("WatchedStateScraperSingle", False, Enums.ContentType.TVEpisode)
+        _AddonSettings.SyncToTrakt_Movie = _settings.GetBooleanSetting("SyncToTrakt", False, Enums.ContentType.Movie)
     End Sub
 
     Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsTrakt.Click, cmnuTrayToolsTrakt.Click
@@ -273,7 +278,7 @@ Public Class Addon
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
-        _AddonSettings.GetShowProgress = _settingspanel.chkGetShowProgress.Checked
+        _AddonSettings.GetProgress_TVShow = _settingspanel.chkGetShowProgress.Checked
         _AddonSettings.GetWatchedState = _settingspanel.chkGetWatchedState.Checked
         _AddonSettings.GetWatchedStateBeforeEdit_Movie = _settingspanel.chkGetWatchedStateBeforeEdit_Movie.Checked
         _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode = _settingspanel.chkGetWatchedStateBeforeEdit_TVEpisode.Checked
@@ -292,20 +297,21 @@ Public Class Addon
     End Sub
 
     Public Sub SaveSettings()
-        If Not File.Exists(_xmlSettingsPath) OrElse (Not CBool(File.GetAttributes(_xmlSettingsPath) And FileAttributes.ReadOnly)) Then
-            If File.Exists(_xmlSettingsPath) Then
-                Dim fAtt As FileAttributes = File.GetAttributes(_xmlSettingsPath)
-                Try
-                    File.SetAttributes(_xmlSettingsPath, FileAttributes.Normal)
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
-            End If
-            Using xmlSW As New StreamWriter(_xmlSettingsPath)
-                Dim xmlSer As New XmlSerializer(GetType(AddonSettings))
-                xmlSer.Serialize(xmlSW, _AddonSettings)
-            End Using
-        End If
+        _settings.SetBooleanSetting("CollectionRemove", _AddonSettings.CollectionRemove_Movie,, Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("GetProgress", _AddonSettings.GetProgress_TVShow,, Enums.ContentType.TVShow)
+        _settings.SetBooleanSetting("GetWatchedState", _AddonSettings.GetWatchedState)
+        _settings.SetBooleanSetting("GetWatchedStateBeforeEdit", _AddonSettings.GetWatchedStateBeforeEdit_Movie,, Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("GetWatchedStateBeforeEdit", _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode,, Enums.ContentType.TVEpisode)
+        _settings.SetBooleanSetting("GetWatchedStateScraperMulti", _AddonSettings.GetWatchedStateScraperMulti_Movie,, Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("GetWatchedStateScraperMulti", _AddonSettings.GetWatchedStateScraperMulti_TVEpisode,, Enums.ContentType.TVEpisode)
+        _settings.SetBooleanSetting("GetWatchedStateScraperSingle", _AddonSettings.GetWatchedStateScraperSingle_Movie,, Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("GetWatchedStateScraperSingle", _AddonSettings.GetWatchedStateScraperSingle_TVEpisode,, Enums.ContentType.TVEpisode)
+        _settings.SetBooleanSetting("SyncToTrakt", _AddonSettings.SyncToTrakt_Movie,, Enums.ContentType.Movie)
+        _settings.SetStringSetting("APIAccessToken", _AddonSettings.APIAccessToken)
+        _settings.SetStringSetting("APICreatedAt", _AddonSettings.APICreatedAt)
+        _settings.SetStringSetting("APIExpiresInSeconds", _AddonSettings.APIExpiresInSeconds)
+        _settings.SetStringSetting("APIRefreshToken", _AddonSettings.APIRefreshToken)
+        _settings.Save()
     End Sub
 
     Public Sub ToolStripItem_Add(control As ToolStripMenuItem, value As ToolStripItem)
@@ -328,203 +334,28 @@ Public Class Addon
 
 #Region "Nested Types"
 
-    <Serializable()>
-    <XmlRoot("interface.trakt")>
-    Class AddonSettings
+    Structure AddonSettings
 
 #Region "Fields"
 
-        Private _collectionremove_movie As Boolean
-        Private _getshowprogress As Boolean
-        Private _getwatchedstate As Boolean
-        Private _getwatchedstatebeforeedit_movie As Boolean
-        Private _getwatchedstatebeforeedit_tvepisode As Boolean
-        Private _getwatchedstatescrapermulti_movie As Boolean
-        Private _getwatchedstatescrapermulti_tvepisode As Boolean
-        Private _getwatchedstatescrapersingle_movie As Boolean
-        Private _getwatchedstatescrapersingle_tvepisode As Boolean
-        Private _synctotrakt_movie As Boolean
+        Dim APIAccessToken As String
+        Dim APICreatedAt As String
+        Dim APIExpiresInSeconds As String
+        Dim APIRefreshToken As String
+        Dim CollectionRemove_Movie As Boolean
+        Dim GetProgress_TVShow As Boolean
+        Dim GetWatchedState As Boolean
+        Dim GetWatchedStateBeforeEdit_Movie As Boolean
+        Dim GetWatchedStateBeforeEdit_TVEpisode As Boolean
+        Dim GetWatchedStateScraperMulti_Movie As Boolean
+        Dim GetWatchedStateScraperMulti_TVEpisode As Boolean
+        Dim GetWatchedStateScraperSingle_Movie As Boolean
+        Dim GetWatchedStateScraperSingle_TVEpisode As Boolean
+        Dim SyncToTrakt_Movie As Boolean
 
 #End Region 'Fields
 
-#Region "Properties"
-
-        <XmlIgnore>
-        Public Property AccessToken() As String
-            Get
-                Return AdvancedSettings.GetSetting("AccessToken", String.Empty, "scraper.Data.Trakttv")
-            End Get
-            Set(ByVal value As String)
-                Using settings = New AdvancedSettings()
-                    settings.SetSetting("AccessToken", value, "scraper.Data.Trakttv")
-                End Using
-            End Set
-        End Property
-
-        <XmlElement("collectionremove_movie")>
-        Public Property CollectionRemove_Movie() As Boolean
-            Get
-                Return _collectionremove_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _collectionremove_movie = value
-            End Set
-        End Property
-
-        <XmlIgnore>
-        Public Property CreatedAt() As String
-            Get
-                Return AdvancedSettings.GetSetting("CreatedAt", "0", "scraper.Data.Trakttv")
-            End Get
-            Set(ByVal value As String)
-                Using settings = New AdvancedSettings()
-                    settings.SetSetting("CreatedAt", value, "scraper.Data.Trakttv")
-                End Using
-            End Set
-        End Property
-
-        <XmlIgnore>
-        Public Property ExpiresInSeconds() As String
-            Get
-                Return AdvancedSettings.GetSetting("ExpiresInSeconds", "0", "scraper.Data.Trakttv")
-            End Get
-            Set(ByVal value As String)
-                Using settings = New AdvancedSettings()
-                    settings.SetSetting("ExpiresInSeconds", value, "scraper.Data.Trakttv")
-                End Using
-            End Set
-        End Property
-
-        <XmlElement("getshowprogress")>
-        Public Property GetShowProgress() As Boolean
-            Get
-                Return _getshowprogress
-            End Get
-            Set(ByVal value As Boolean)
-                _getshowprogress = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstate")>
-        Public Property GetWatchedState() As Boolean
-            Get
-                Return _getwatchedstate
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstate = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstatebeforeedit_movie")>
-        Public Property GetWatchedStateBeforeEdit_Movie() As Boolean
-            Get
-                Return _getwatchedstatebeforeedit_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatebeforeedit_movie = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstatebeforeedit_tvepisode")>
-        Public Property GetWatchedStateBeforeEdit_TVEpisode() As Boolean
-            Get
-                Return _getwatchedstatebeforeedit_tvepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatebeforeedit_tvepisode = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstatescrapermulti_movie")>
-        Public Property GetWatchedStateScraperMulti_Movie() As Boolean
-            Get
-                Return _getwatchedstatescrapermulti_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapermulti_movie = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstatescrapermulti_tvepisode")>
-        Public Property GetWatchedStateScraperMulti_TVEpisode() As Boolean
-            Get
-                Return _getwatchedstatescrapermulti_tvepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapermulti_tvepisode = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstatescrapersingle_movie")>
-        Public Property GetWatchedStateScraperSingle_Movie() As Boolean
-            Get
-                Return _getwatchedstatescrapersingle_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapersingle_movie = value
-            End Set
-        End Property
-
-        <XmlElement("getwatchedstatescrapersingle_tvepisode")>
-        Public Property GetWatchedStateScraperSingle_TVEpisode() As Boolean
-            Get
-                Return _getwatchedstatescrapersingle_tvepisode
-            End Get
-            Set(ByVal value As Boolean)
-                _getwatchedstatescrapersingle_tvepisode = value
-            End Set
-        End Property
-
-        <XmlIgnore>
-        Public Property RefreshToken() As String
-            Get
-                Return AdvancedSettings.GetSetting("RefreshToken", String.Empty, "scraper.Data.Trakttv")
-            End Get
-            Set(ByVal value As String)
-                Using settings = New AdvancedSettings()
-                    settings.SetSetting("RefreshToken", value, "scraper.Data.Trakttv")
-                End Using
-            End Set
-        End Property
-
-        <XmlElement("synctotrakt_movie")>
-        Public Property SyncToTrakt_Movie() As Boolean
-            Get
-                Return _synctotrakt_movie
-            End Get
-            Set(ByVal value As Boolean)
-                _synctotrakt_movie = value
-            End Set
-        End Property
-
-#End Region 'Properties
-
-#Region "Constructors"
-
-        Public Sub New()
-            Clear()
-        End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-
-        Public Sub Clear()
-            _collectionremove_movie = False
-            _getshowprogress = False
-            _getwatchedstate = False
-            _getwatchedstatebeforeedit_movie = False
-            _getwatchedstatebeforeedit_tvepisode = False
-            _getwatchedstatescrapermulti_movie = False
-            _getwatchedstatescrapermulti_tvepisode = False
-            _getwatchedstatescrapersingle_movie = False
-            _getwatchedstatescrapersingle_tvepisode = False
-            _synctotrakt_movie = False
-        End Sub
-
-#End Region 'Methods
-
-    End Class
+    End Structure
     ''' <summary>
     ''' structure used to read setting file of Kodi Interface
     ''' </summary>

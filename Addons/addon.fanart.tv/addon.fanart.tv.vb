@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports ScraperModule.FanartTVs
 Imports NLog
 
 Public Class FanartTV
@@ -27,11 +26,13 @@ Public Class FanartTV
 
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
     Private _name As String = "FanartTV"
+    Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
     Private _AddonSettings As New AddonSettings
@@ -139,7 +140,7 @@ Public Class FanartTV
         LoadSettings()
         Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
-        _settingspanel.txtApiKey.Text = _AddonSettings.ApiKey
+        _settingspanel.txtApiKey.Text = _AddonSettings.APIKey
 
         'nSettingsPanel.Image = If(Me._ScraperEnabled_Movie, 9, 10)
         nSettingsPanel.ImageIndex = -1
@@ -156,7 +157,7 @@ Public Class FanartTV
 
     Public Sub LoadSettings()
         'Global
-        _AddonSettings.ApiKey = AdvancedSettings.GetSetting("ApiKey", String.Empty)
+        _AddonSettings.APIKey = _settings.GetStringSetting("APIKey", String.Empty)
     End Sub
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
@@ -170,9 +171,9 @@ Public Class FanartTV
         Select Case eAddonEventType
             Case Enums.AddonEventType.Scrape_Movie
                 If tDBElement.MainDetails.TMDBSpecified Then
-                    nModuleResult.ScraperResult_Image = _scraper.GetImages_Movie_MovieSet(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers)
+                    nModuleResult.ScraperResult_ImageContainer = _scraper.GetImages_Movie_MovieSet(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers)
                 ElseIf tDBElement.MainDetails.IMDBSpecified Then
-                    nModuleResult.ScraperResult_Image = _scraper.GetImages_Movie_MovieSet(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers)
+                    nModuleResult.ScraperResult_ImageContainer = _scraper.GetImages_Movie_MovieSet(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers)
                 Else
                     logger.Trace(String.Concat("[FanartTV] [Run] [Abort] No TMDB and IMDB ID exist to search: ", tDBElement.ListTitle))
                 End If
@@ -182,11 +183,11 @@ Public Class FanartTV
                 'End If
 
                 If tDBElement.MainDetails.TMDBSpecified Then
-                    nModuleResult.ScraperResult_Image = _scraper.GetImages_Movie_MovieSet(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers)
+                    nModuleResult.ScraperResult_ImageContainer = _scraper.GetImages_Movie_MovieSet(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers)
                 End If
             Case Enums.AddonEventType.Scrape_TVSeason, Enums.AddonEventType.Scrape_TVShow
                 If tDBElement.TVShowDetails.TVDBSpecified Then
-                    nModuleResult.ScraperResult_Image = _scraper.GetImages_TV(CStr(tDBElement.TVShowDetails.TVDB), tDBElement.ScrapeModifiers)
+                    nModuleResult.ScraperResult_ImageContainer = _scraper.GetImages_TV(CStr(tDBElement.TVShowDetails.TVDB), tDBElement.ScrapeModifiers)
                 Else
                     logger.Trace(String.Concat("[FanartTV] [Run] [Abort] No TVDB ID exist to search: ", tDBElement.ListTitle))
                 End If
@@ -197,14 +198,13 @@ Public Class FanartTV
     End Function
 
     Public Sub SaveSettings()
-        Using settings = New AdvancedSettings()
-            settings.SetSetting("ApiKey", _AddonSettings.ApiKey)
-        End Using
+        _settings.SetStringSetting("APIKey", _AddonSettings.APIKey)
+        _settings.Save()
     End Sub
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         'Global
-        _AddonSettings.ApiKey = _settingspanel.txtApiKey.Text
+        _AddonSettings.APIKey = _settingspanel.txtApiKey.Text
 
         SaveSettings()
         If bDoDispose Then
@@ -222,7 +222,7 @@ Public Class FanartTV
 
 #Region "Fields"
 
-        Dim ApiKey As String
+        Dim APIKey As String
 
 #End Region 'Fields
 

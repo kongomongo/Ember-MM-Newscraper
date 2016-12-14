@@ -264,7 +264,7 @@ Public Class dlgTrakttvManager
             cbotraktListsFavorites.Items.Clear()
             'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
             Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            mylists = AdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+            mylists = clsXMLAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
             If mylists IsNot Nothing Then
                 cbotraktListsFavorites.Enabled = True
                 For Each k In mylists
@@ -308,7 +308,7 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktListRemoveFavorite_Click(sender As Object, e As EventArgs) Handles btntraktListRemoveFavorite.Click
         Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
-        mylists = AdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+        mylists = clsXMLAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
         If mylists IsNot Nothing Then
             For i = mylists.Count - 1 To 0 Step -1
                 If mylists(i).Value = txttraktListURL.Text Then
@@ -323,7 +323,7 @@ Public Class dlgTrakttvManager
                 setting_value.Add(sett.Value)
             Next
 
-            Using settings = New AdvancedSettings()
+            Using settings = New clsXMLAdvancedSettings()
                 settings.ClearComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
                 Dim updatedsettings As New List(Of AdvancedSettingsComplexSettingsTableItem)
                 For i = 0 To setting_name.Count - 1
@@ -355,8 +355,8 @@ Public Class dlgTrakttvManager
     ''' </remarks>
     Private Sub btntraktListSaveFavorite_Click(sender As Object, e As EventArgs) Handles btntraktListSaveFavorite.Click
         Dim mylists As New List(Of AdvancedSettingsComplexSettingsTableItem)
-        mylists = AdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
-        Using settings = New AdvancedSettings()
+        mylists = clsXMLAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+        Using settings = New clsXMLAdvancedSettings()
             If mylists IsNot Nothing Then
                 If mylists.FindIndex(Function(f) f.Value = txttraktListURL.Text) = -1 Then
                     mylists.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = cbotraktListsScraped.SelectedItem.ToString, .Value = txttraktListURL.Text})
@@ -2812,9 +2812,9 @@ Public Class dlgTrakttvManager
             If Not String.IsNullOrEmpty(cbotraktListsScraped.Text) Then
                 btntraktListSaveFavorite.Enabled = True
             End If
-            Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+            Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
             If mylists IsNot Nothing Then
-                Using settings = New AdvancedSettings()
+                Using settings = New clsXMLAdvancedSettings()
                     For Each sett In mylists
                         If sett.Value = txttraktListURL.Text Then
                             btntraktListRemoveFavorite.Enabled = True
@@ -2850,9 +2850,9 @@ Public Class dlgTrakttvManager
     ''' 2015/01/01 Cocotus
     ''' </remarks>
     Private Sub cbotraktListsFavorites_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbotraktListsFavorites.SelectedIndexChanged
-        Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
+        Dim mylists As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("TraktFavoriteLists", "generic.EmberCore.Trakt")
         If mylists IsNot Nothing Then
-            Using settings = New AdvancedSettings()
+            Using settings = New clsXMLAdvancedSettings()
                 For Each sett In mylists
                     If sett.Name = cbotraktListsFavorites.SelectedItem.ToString Then
                         txttraktListURL.Text = sett.Value

@@ -1954,7 +1954,7 @@ Public Class frmMain
                     If AddonsManager.Instance.ScrapeTheme_Movie(DBScrapeMovie, Enums.ScrapeModifierType.MainTheme, SearchResults) Then
                         If tScrapeItem.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Using dThemeSelect As New dlgThemeSelect
-                                If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                If dThemeSelect.ShowDialog(DBScrapeMovie, SearchResults, clsXMLAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
                                     DBScrapeMovie.Theme = dThemeSelect.Result
                                 End If
                             End Using
@@ -1980,7 +1980,7 @@ Public Class frmMain
                             Using dTrailerSelect As New dlgTrailerSelect
                                 'note msavazzi why is always False with Player? If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, False) = DialogResult.OK Then
                                 'DanCooper: the VLC COM interface is/was not able to call in multithread
-                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                If dTrailerSelect.ShowDialog(DBScrapeMovie, SearchResults, False, True, clsXMLAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
                                     DBScrapeMovie.Trailer = dTrailerSelect.Result
                                 End If
                             End Using
@@ -2304,7 +2304,7 @@ Public Class frmMain
                     If AddonsManager.Instance.ScrapeTheme_TVShow(DBScrapeShow, Enums.ScrapeModifierType.MainTheme, SearchResults) Then
                         If tScrapeItem.ScrapeType = Enums.ScrapeType.SingleScrape Then
                             Using dThemeSelect As New dlgThemeSelect
-                                If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults, AdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
+                                If dThemeSelect.ShowDialog(DBScrapeShow, SearchResults, clsXMLAdvancedSettings.GetBooleanSetting("UseAsVideoPlayer", False, "generic.EmberCore.VLCPlayer")) = DialogResult.OK Then
                                     DBScrapeShow.Theme = dThemeSelect.Result
                                 End If
                             End Using
@@ -3735,7 +3735,11 @@ Public Class frmMain
             End If
 
             For i As Integer = 0 To lstDataFields.Count - 1
-                Dim bInteger As Boolean = lstDataFields.Item(i) = "Top250" OrElse lstDataFields.Item(i) = "iUserRating"
+                Dim bInteger As Boolean =
+                    lstDataFields.Item(i) = "TMDB" OrElse
+                    lstDataFields.Item(i) = "TMDBColID" OrElse
+                    lstDataFields.Item(i) = "Top250" OrElse
+                    lstDataFields.Item(i) = "UserRating"
                 If cbFilterDataField_Movies.SelectedIndex = 0 Then
                     If bInteger Then
                         lstDataFields.Item(i) = String.Format("{0} IS NULL OR {0} = 0", lstDataFields.Item(i))
@@ -5505,11 +5509,11 @@ Public Class frmMain
             Return
         End If
 
-        If colName = "iLastPlayed" Then
+        If colName = "LastPlayed" Then
             CreateTask(Enums.ContentType.Movie,
                        Enums.SelectionType.Selected,
                        Enums.TaskManagerType.SetWatchedState,
-                       If(String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("iLastPlayed").Value.ToString), True, False),
+                       If(String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("LastPlayed").Value.ToString), True, False),
                        String.Empty)
 
         ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
@@ -5616,7 +5620,7 @@ Public Class frmMain
 
         dgvMovies.ShowCellToolTips = True
 
-        If colName = "iLastPlayed" AndAlso e.RowIndex >= 0 Then
+        If colName = "LastPlayed" AndAlso e.RowIndex >= 0 Then
             oldStatus = GetStatus()
             SetStatus(Master.eLang.GetString(885, "Change Watched Status"))
         ElseIf (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
@@ -5699,7 +5703,7 @@ Public Class frmMain
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
             colName = "PosterPath" OrElse colName = "ThemePath" OrElse colName = "TrailerPath" OrElse
-            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "iLastPlayed") AndAlso e.RowIndex = -1 Then
+            colName = "HasSet" OrElse colName = "HasSub" OrElse colName = "LastPlayed") AndAlso e.RowIndex = -1 Then
             e.PaintBackground(e.ClipBounds, False)
 
             Dim pt As Point = e.CellBounds.Location
@@ -5736,7 +5740,7 @@ Public Class frmMain
                 ilColumnIcons.Draw(e.Graphics, pt, 13)
             ElseIf colName = "HasSub" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 14)
-            ElseIf colName = "iLastPlayed" Then
+            ElseIf colName = "LastPlayed" Then
                 ilColumnIcons.Draw(e.Graphics, pt, 17)
             End If
 
@@ -5745,7 +5749,7 @@ Public Class frmMain
         End If
 
         'text fields
-        If (colName = "Imdb" OrElse colName = "ListTitle" OrElse colName = "MPAA" OrElse colName = "OriginalTitle" OrElse
+        If (colName = "IMDB" OrElse colName = "ListTitle" OrElse colName = "MPAA" OrElse colName = "OriginalTitle" OrElse
             colName = "Rating" OrElse colName = "TMDB" OrElse colName = "Year") AndAlso e.RowIndex >= 0 Then
             If Convert.ToBoolean(dgvMovies.Item("Mark", e.RowIndex).Value) Then
                 e.CellStyle.ForeColor = Color.Crimson
@@ -5809,7 +5813,7 @@ Public Class frmMain
             End If
 
             'LastPlayed field
-            If colName = "iLastPlayed" Then
+            If colName = "LastPlayed" Then
                 e.PaintBackground(e.ClipBounds, True)
 
                 Dim pt As Point = e.CellBounds.Location
@@ -6039,7 +6043,7 @@ Public Class frmMain
                     mnuTagsSet.Enabled = False
 
                     'Watched / Unwatched menu
-                    Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvMovies.Item("iLastPlayed", dgvHTI.RowIndex).Value.ToString)
+                    Dim bIsWatched As Boolean = Not String.IsNullOrEmpty(dgvMovies.Item("LastPlayed", dgvHTI.RowIndex).Value.ToString)
                     cmnuMovieWatched.Visible = Not bIsWatched
                     cmnuMovieUnwatched.Visible = bIsWatched
                 End If
@@ -8408,7 +8412,7 @@ Public Class frmMain
             Else
                 If chkFilterDuplicates_Movies.Checked Then
                     Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
-                                                                       "WHERE imdb IN (SELECT imdb FROM '", currList_Movies, "' WHERE imdb IS NOT NULL AND LENGTH(imdb) > 0 GROUP BY imdb HAVING ( COUNT(imdb) > 1 )) ",
+                                                                       "WHERE IMDB IN (SELECT IMDB FROM '", currList_Movies, "' WHERE IMDB IS NOT NULL AND LENGTH(IMDB) > 0 GROUP BY IMDB HAVING ( COUNT(IMDB) > 1 )) ",
                                                                        "ORDER BY ListTitle COLLATE NOCASE;"))
                 Else
                     Master.DB.FillDataTable(dtMovies, String.Concat("SELECT * FROM '", currList_Movies, "' ",
@@ -8519,19 +8523,19 @@ Public Class frmMain
                     dgvMovies.Columns("HasSub").SortMode = DataGridViewColumnSortMode.Automatic
                     dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
                     dgvMovies.Columns("HasSub").ToolTipText = Master.eLang.GetString(152, "Subtitles")
-                    dgvMovies.Columns("iLastPlayed").Width = 20
-                    dgvMovies.Columns("iLastPlayed").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("iLastPlayed").ReadOnly = True
-                    dgvMovies.Columns("iLastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
-                    dgvMovies.Columns("iLastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
-                    dgvMovies.Columns("Imdb").Resizable = DataGridViewTriState.False
-                    dgvMovies.Columns("Imdb").ReadOnly = True
-                    dgvMovies.Columns("Imdb").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
-                    dgvMovies.Columns("Imdb").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
-                    dgvMovies.Columns("Imdb").HeaderText = Master.eLang.GetString(61, "IMDB ID")
-                    dgvMovies.Columns("Imdb").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                    dgvMovies.Columns("LastPlayed").Width = 20
+                    dgvMovies.Columns("LastPlayed").Resizable = DataGridViewTriState.False
+                    dgvMovies.Columns("LastPlayed").ReadOnly = True
+                    dgvMovies.Columns("LastPlayed").SortMode = DataGridViewColumnSortMode.Automatic
+                    dgvMovies.Columns("LastPlayed").Visible = Not CheckColumnHide_Movies("LastPlayed")
+                    dgvMovies.Columns("LastPlayed").ToolTipText = Master.eLang.GetString(981, "Watched")
+                    dgvMovies.Columns("IMDB").Resizable = DataGridViewTriState.False
+                    dgvMovies.Columns("IMDB").ReadOnly = True
+                    dgvMovies.Columns("IMDB").SortMode = DataGridViewColumnSortMode.Automatic
+                    dgvMovies.Columns("IMDB").Visible = Not CheckColumnHide_Movies("IMDB")
+                    dgvMovies.Columns("IMDB").ToolTipText = Master.eLang.GetString(61, "IMDB ID")
+                    dgvMovies.Columns("IMDB").HeaderText = Master.eLang.GetString(61, "IMDB ID")
+                    dgvMovies.Columns("IMDB").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                     dgvMovies.Columns("LandscapePath").Width = 20
                     dgvMovies.Columns("LandscapePath").Resizable = DataGridViewTriState.False
                     dgvMovies.Columns("LandscapePath").ReadOnly = True
@@ -8825,13 +8829,13 @@ Public Class frmMain
                     dgvTVShows.Columns("Status").ToolTipText = Master.eLang.GetString(215, "Status")
                     dgvTVShows.Columns("Status").HeaderText = Master.eLang.GetString(215, "Status")
                     dgvTVShows.Columns("Status").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-                    dgvTVShows.Columns("strOriginalTitle").Resizable = DataGridViewTriState.False
-                    dgvTVShows.Columns("strOriginalTitle").ReadOnly = True
-                    dgvTVShows.Columns("strOriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
-                    dgvTVShows.Columns("strOriginalTitle").Visible = Not CheckColumnHide_TVShows("strOriginalTitle")
-                    dgvTVShows.Columns("strOriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
-                    dgvTVShows.Columns("strOriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
-                    dgvTVShows.Columns("strOriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+                    dgvTVShows.Columns("OriginalTitle").Resizable = DataGridViewTriState.False
+                    dgvTVShows.Columns("OriginalTitle").ReadOnly = True
+                    dgvTVShows.Columns("OriginalTitle").SortMode = DataGridViewColumnSortMode.Automatic
+                    dgvTVShows.Columns("OriginalTitle").Visible = Not CheckColumnHide_TVShows("OriginalTitle")
+                    dgvTVShows.Columns("OriginalTitle").ToolTipText = Master.eLang.GetString(302, "Original Title")
+                    dgvTVShows.Columns("OriginalTitle").HeaderText = Master.eLang.GetString(302, "Original Title")
+                    dgvTVShows.Columns("OriginalTitle").AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
                     dgvTVShows.Columns("ThemePath").Width = 20
                     dgvTVShows.Columns("ThemePath").Resizable = DataGridViewTriState.False
                     dgvTVShows.Columns("ThemePath").ReadOnly = True
@@ -9236,7 +9240,7 @@ Public Class frmMain
             pbStudio.Tag = String.Empty
         End If
 
-        If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+        If clsXMLAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
 
@@ -9403,7 +9407,7 @@ Public Class frmMain
             pbStudio.Image = APIXML.GetStudioImage("####")
             pbStudio.Tag = String.Empty
         End If
-        If AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
+        If clsXMLAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
         If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
@@ -9857,7 +9861,7 @@ Public Class frmMain
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
-        AdvancedSettings.Start()
+        clsXMLAdvancedSettings.Start()
 
         'Create Modules Folders
         If Not Directory.Exists(Master.AddonsPath) Then
@@ -12685,13 +12689,13 @@ Public Class frmMain
             Dim enableTMDB As Boolean = False
             Dim enableTVDB As Boolean = False
             For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Cells("IMDB").Value.ToString) Then
                     enableIMDB = True
                 End If
-                If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
                     enableTMDB = True
                 End If
-                If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
                     enableTVDB = True
                 End If
             Next
@@ -12710,7 +12714,7 @@ Public Class frmMain
             Dim enableIMDB As Boolean = False
             Dim enableTMDB As Boolean = False
             For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Cells("IMDB").Value.ToString) Then
                     enableIMDB = True
                 End If
                 If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
@@ -12749,13 +12753,13 @@ Public Class frmMain
             Dim enableTVDB As Boolean = False
             If Not CInt(dgvTVSeasons.SelectedRows(0).Cells("season").Value) = 999 Then
                 For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                    If Not String.IsNullOrEmpty(dgvTVShows.SelectedRows(0).Cells("strIMDB").Value.ToString) Then
+                    If Not String.IsNullOrEmpty(dgvTVShows.SelectedRows(0).Cells("IMDB").Value.ToString) Then
                         enableIMDB = True
                     End If
-                    If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                    If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
                         enableTMDB = True
                     End If
-                    If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                    If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
                         enableTVDB = True
                     End If
                 Next
@@ -12776,10 +12780,10 @@ Public Class frmMain
             Dim enableTMDB As Boolean = False
             Dim enableTVDB As Boolean = False
             For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Cells("IMDB").Value.ToString) Then
                     enableIMDB = True
                 End If
-                If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
                     enableTMDB = True
                 End If
                 If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
@@ -12807,11 +12811,11 @@ Public Class frmMain
                 If doOpen Then
                     Dim tmpstring As String = String.Empty
                     For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                        If Not String.IsNullOrEmpty(sRow.Cells("IMDB").Value.ToString) Then
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
-                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("strIMDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("IMDB").Value.ToString))
                             Else
-                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("strIMDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("IMDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -12834,7 +12838,7 @@ Public Class frmMain
                     If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVEpisodes.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
-                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strTMDB").Value.ToString
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TMDB").Value.ToString
                     For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
                         If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
                             Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", ShowID, "/season/", sRow.Cells("Season").Value.ToString, "/episode/", sRow.Cells("Episode").Value.ToString))
@@ -12863,11 +12867,11 @@ Public Class frmMain
                 If doOpen Then
                     Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
                     For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                        If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
                             If Not My.Resources.urlTVDB.EndsWith("/") Then
-                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "/?tab=episode&seriesid=", ShowID & "&id=", sRow.Cells("strTVDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "/?tab=episode&seriesid=", ShowID & "&id=", sRow.Cells("TVDB").Value.ToString))
                             Else
-                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "?tab=episode&seriesid=", ShowID & "&id=", sRow.Cells("strTVDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "?tab=episode&seriesid=", ShowID & "&id=", sRow.Cells("TVDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -12893,11 +12897,11 @@ Public Class frmMain
                 If doOpen Then
                     Dim tmpstring As String = String.Empty
                     For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("Imdb").Value.ToString) Then
+                        If Not String.IsNullOrEmpty(sRow.Cells("IMDB").Value.ToString) Then
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
-                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("Imdb").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("IMDB").Value.ToString))
                             Else
-                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("Imdb").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("IMDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -12977,7 +12981,7 @@ Public Class frmMain
                 End If
 
                 If doOpen Then
-                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strIMDB").Value.ToString
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("IMDB").Value.ToString
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                         If Not String.IsNullOrEmpty(ShowID) Then
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
@@ -13006,7 +13010,7 @@ Public Class frmMain
                     If Not MessageBox.Show(String.Format(Master.eLang.GetString(635, "You have selected {0} folders to open. Are you sure you want to do this?"), dgvTVSeasons.SelectedRows.Count), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then doOpen = False
                 End If
                 If doOpen Then
-                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("strTMDB").Value.ToString
+                    Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TMDB").Value.ToString
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
                         If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
                             Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", ShowID, "/season/", sRow.Cells("Season").Value.ToString))
@@ -13035,11 +13039,11 @@ Public Class frmMain
                 If doOpen Then
                     Dim ShowID As String = dgvTVShows.SelectedRows(0).Cells("TVDB").Value.ToString
                     For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("strTVDB").Value.ToString) Then
+                        If Not String.IsNullOrEmpty(sRow.Cells("TVDB").Value.ToString) Then
                             If Not My.Resources.urlTVDB.EndsWith("/") Then
-                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "/?tab=season&seriesid=", ShowID & "&seasonid=", sRow.Cells("strTVDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "/?tab=season&seriesid=", ShowID & "&seasonid=", sRow.Cells("TVDB").Value.ToString))
                             Else
-                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "?tab=season&seriesid=", ShowID, "&seasonid=", sRow.Cells("strTVDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlTVDB, "?tab=season&seriesid=", ShowID, "&seasonid=", sRow.Cells("TVDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -13065,11 +13069,11 @@ Public Class frmMain
                 If doOpen Then
                     Dim tmpstring As String = String.Empty
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("strIMDB").Value.ToString) Then
+                        If Not String.IsNullOrEmpty(sRow.Cells("IMDB").Value.ToString) Then
                             If Not My.Resources.urlIMDB.EndsWith("/") Then
-                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("strIMDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "/title/", sRow.Cells("IMDB").Value.ToString))
                             Else
-                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("strIMDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlIMDB, "title/", sRow.Cells("IMDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -13093,11 +13097,11 @@ Public Class frmMain
                 End If
                 If doOpen Then
                     For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                        If Not String.IsNullOrEmpty(sRow.Cells("strTMDB").Value.ToString) Then
+                        If Not String.IsNullOrEmpty(sRow.Cells("TMDB").Value.ToString) Then
                             If Not My.Resources.urlTheMovieDb.EndsWith("/") Then
-                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", sRow.Cells("strTMDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "/tv/", sRow.Cells("TMDB").Value.ToString))
                             Else
-                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "tv/", sRow.Cells("strTMDB").Value.ToString))
+                                Functions.Launch(String.Concat(My.Resources.urlTheMovieDb, "tv/", sRow.Cells("TMDB").Value.ToString))
                             End If
                         End If
                     Next
@@ -15129,7 +15133,7 @@ Public Class frmMain
                 If(CheckColumnHide_Movies("HasSub"), 20, 0) -
                 If(CheckColumnHide_Movies("ThemePath"), 20, 0) -
                 If(CheckColumnHide_Movies("TrailerPath"), 20, 0) -
-                If(CheckColumnHide_Movies("iLastPlayed"), 20, 0) -
+                If(CheckColumnHide_Movies("LastPlayed"), 20, 0) -
                 If(dgvMovies.DisplayRectangle.Height > dgvMovies.ClientRectangle.Height, 0, SystemInformation.VerticalScrollBarWidth)
             End If
         End If
@@ -15877,7 +15881,7 @@ Public Class frmMain
             End Using
 
             clbFilterDataFields_Movies.Items.Clear()
-            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "Imdb", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "iUserRating", "VideoSource", "Votes", "Year"})
+            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "IMDB", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "UserRating", "VideoSource", "Votes", "Year"})
 
             Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
             SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
@@ -15980,7 +15984,7 @@ Public Class frmMain
                 cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
                 'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
                 Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = AdvancedSettings.GetComplexSetting("MovieSources")
+                mySources = clsXMLAdvancedSettings.GetComplexSetting("MovieSources")
                 If Not mySources Is Nothing Then
                     For Each k In mySources
                         If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then
@@ -16062,8 +16066,8 @@ Public Class frmMain
                 dgvMovies.Columns("FanartPath").Visible = Not CheckColumnHide_Movies("FanartPath")
                 dgvMovies.Columns("HasSet").Visible = Not CheckColumnHide_Movies("HasSet")
                 dgvMovies.Columns("HasSub").Visible = Not CheckColumnHide_Movies("HasSub")
-                dgvMovies.Columns("iLastPlayed").Visible = Not CheckColumnHide_Movies("iLastPlayed")
-                dgvMovies.Columns("Imdb").Visible = Not CheckColumnHide_Movies("Imdb")
+                dgvMovies.Columns("LastPlayed").Visible = Not CheckColumnHide_Movies("LastPlayed")
+                dgvMovies.Columns("IMDB").Visible = Not CheckColumnHide_Movies("IMDB")
                 dgvMovies.Columns("LandscapePath").Visible = Not CheckColumnHide_Movies("LandscapePath")
                 dgvMovies.Columns("MPAA").Visible = Not CheckColumnHide_Movies("MPAA")
                 dgvMovies.Columns("NfoPath").Visible = Not CheckColumnHide_Movies("NfoPath")
@@ -17965,13 +17969,13 @@ Public Class frmMain
     End Sub
 
     Private Sub pbStudio_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseEnter
-        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso pbStudio.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
+        If Not clsXMLAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) AndAlso pbStudio.Tag IsNot Nothing AndAlso Not String.IsNullOrEmpty(pbStudio.Tag.ToString) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
     End Sub
 
     Private Sub pbStudio_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles pbStudio.MouseLeave
-        If Not AdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
+        If Not clsXMLAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then lblStudio.Text = String.Empty
     End Sub
 
     Private Sub tmrKeyBuffer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tmrKeyBuffer.Tick

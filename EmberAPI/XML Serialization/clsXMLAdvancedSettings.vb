@@ -1,6 +1,6 @@
 ﻿'''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True), _
- System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="AdvancedSettings")> _
+<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True),
+ System.Xml.Serialization.XmlRootAttribute([Namespace]:="", IsNullable:=False, ElementName:="AdvancedSettings")>
 Partial Public Class clsXMLAdvancedSettings
 
     Private _settingField As New List(Of AdvancedSettingsSetting)
@@ -8,7 +8,7 @@ Partial Public Class clsXMLAdvancedSettings
     Private _complexSettingsField As New List(Of AdvancedSettingsComplexSettings)
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("Setting")> _
+    <System.Xml.Serialization.XmlElementAttribute("Setting")>
     Public Property Setting As List(Of AdvancedSettingsSetting)
         Get
             Return Me._settingField
@@ -19,7 +19,7 @@ Partial Public Class clsXMLAdvancedSettings
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")> _
+    <System.Xml.Serialization.XmlElementAttribute("ComplexSettings")>
     Public Property ComplexSettings As List(Of AdvancedSettingsComplexSettings)
         Get
             Return Me._complexSettingsField
@@ -31,8 +31,9 @@ Partial Public Class clsXMLAdvancedSettings
 End Class
 
 '''<remarks/>
-<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)> _
+<System.Xml.Serialization.XmlTypeAttribute(AnonymousType:=True)>
 Partial Public Class AdvancedSettingsSetting
+    Implements IComparable(Of AdvancedSettingsSetting)
 
     Private _sectionField As String
 
@@ -45,18 +46,18 @@ Partial Public Class AdvancedSettingsSetting
     Private _defaultValueField As String
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    <System.Xml.Serialization.XmlAttributeAttribute()>
     Public Property Section() As String
         Get
             Return Me._sectionField
         End Get
         Set(value As String)
-            Me._sectionField = Value
+            Me._sectionField = value
         End Set
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    <System.Xml.Serialization.XmlAttributeAttribute()>
     Public Property Content() As Enums.ContentType
         Get
             Return Me._contentField
@@ -67,29 +68,29 @@ Partial Public Class AdvancedSettingsSetting
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    <System.Xml.Serialization.XmlAttributeAttribute()>
     Public Property Name() As String
         Get
             Return Me._nameField
         End Get
         Set(value As String)
-            Me._nameField = Value
+            Me._nameField = value
         End Set
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlTextAttribute()> _
+    <System.Xml.Serialization.XmlTextAttribute()>
     Public Property Value() As String
         Get
             Return Me._valueField
         End Get
         Set(value As String)
-            Me._valueField = Value
+            Me._valueField = value
         End Set
     End Property
 
     '''<remarks/>
-    <System.Xml.Serialization.XmlAttributeAttribute()> _
+    <System.Xml.Serialization.XmlAttributeAttribute()>
     Public Property DefaultValue() As String
         Get
             Return Me._defaultValueField
@@ -98,6 +99,15 @@ Partial Public Class AdvancedSettingsSetting
             Me._defaultValueField = value
         End Set
     End Property
+
+    Public Function CompareTo(ByVal other As AdvancedSettingsSetting) As Integer Implements IComparable(Of AdvancedSettingsSetting).CompareTo
+        Try
+            Dim retVal As Integer = Name.CompareTo(other.Name)
+            Return retVal
+        Catch ex As Exception
+            Return 0
+        End Try
+    End Function
 End Class
 
 '''<remarks/>

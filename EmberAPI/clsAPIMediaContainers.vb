@@ -4397,7 +4397,7 @@ Namespace MediaContainers
 
         Public Function CompareTo(ByVal other As [Image]) As Integer Implements IComparable(Of [Image]).CompareTo
             Try
-                Dim retVal As Integer = (ShortLang).CompareTo(other.ShortLang)
+                Dim retVal As Integer = ShortLang.CompareTo(other.ShortLang)
                 Return retVal
             Catch ex As Exception
                 Return 0

@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8ECB31A8-60E7-45C9-9D9B-5DDD0C3C6302}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>ScraperModule</RootNamespace>
-    <AssemblyName>scraper.Trailer.VideobusterDE</AssemblyName>
+    <RootNamespace>addon</RootNamespace>
+    <AssemblyName>addon.videobuster.de</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -31,7 +31,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Debug - x64\Addons\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <DocumentationFile>addon.videobuster.de.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <DebugType>full</DebugType>
@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Release - x64\Addons\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <DocumentationFile>addon.videobuster.de.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>
     </NoWarn>
@@ -56,7 +56,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Debug - x86\Addons\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <DocumentationFile>addon.videobuster.de.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <DebugType>full</DebugType>
@@ -67,7 +67,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Release - x86\Addons\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <DocumentationFile>addon.videobuster.de.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>
     </NoWarn>
@@ -81,7 +81,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Debug - AnyCPU\Addons\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <DocumentationFile>addon.videobuster.de.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</WarningsAsErrors>
@@ -90,7 +90,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Release - AnyCPU\Addons\</OutputPath>
-    <DocumentationFile>scraper.Trailer.VideobusterDE.xml</DocumentationFile>
+    <DocumentationFile>addon.videobuster.de.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -128,12 +128,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmSettingsHolder.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -149,14 +143,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scraper\clsScrapeVideobusterDE.vb" />
-    <Compile Include="VideobusterDE_Trailer.vb" />
+    <Compile Include="clsVideobuster.vb" />
+    <Compile Include="addon.videobuster.de.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>

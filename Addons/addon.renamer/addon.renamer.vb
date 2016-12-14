@@ -332,18 +332,18 @@ Public Class Addon
     End Function
 
     Public Sub LoadSettings()
-        _AddonSettings.FoldersPattern_Movies = AdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.ContentType.Movie)
-        _AddonSettings.FoldersPattern_Seasons = AdvancedSettings.GetSetting("FoldersPattern", "Season $K2_?", , Enums.ContentType.TVSeason)
-        _AddonSettings.FoldersPattern_Shows = AdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.ContentType.TVShow)
-        _AddonSettings.FilesPattern_Episodes = AdvancedSettings.GetSetting("FilesPattern", "$Z - $W2_S?2E?{ - $T}", , Enums.ContentType.TVEpisode)
-        _AddonSettings.FilesPattern_Movies = AdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.ContentType.Movie)
-        _AddonSettings.RenameEdit_Movies = AdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.Movie)
-        _AddonSettings.RenameEdit_Episodes = AdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.TVShow)
-        _AddonSettings.RenameMulti_Movies = AdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.Movie)
-        _AddonSettings.RenameMulti_Shows = AdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.TVShow)
-        _AddonSettings.RenameSingle_Movies = AdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.Movie)
-        _AddonSettings.RenameSingle_Shows = AdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.TVShow)
-        _AddonSettings.RenameUpdate_Episodes = AdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.ContentType.TVEpisode)
+        _AddonSettings.FoldersPattern_Movies = clsXMLAdvancedSettings.GetSetting("FoldersPattern", "$T {($Y)}", , Enums.ContentType.Movie)
+        _AddonSettings.FoldersPattern_Seasons = clsXMLAdvancedSettings.GetSetting("FoldersPattern", "Season $K2_?", , Enums.ContentType.TVSeason)
+        _AddonSettings.FoldersPattern_Shows = clsXMLAdvancedSettings.GetSetting("FoldersPattern", "$Z", , Enums.ContentType.TVShow)
+        _AddonSettings.FilesPattern_Episodes = clsXMLAdvancedSettings.GetSetting("FilesPattern", "$Z - $W2_S?2E?{ - $T}", , Enums.ContentType.TVEpisode)
+        _AddonSettings.FilesPattern_Movies = clsXMLAdvancedSettings.GetSetting("FilesPattern", "$T{.$S}", , Enums.ContentType.Movie)
+        _AddonSettings.RenameEdit_Movies = clsXMLAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.Movie)
+        _AddonSettings.RenameEdit_Episodes = clsXMLAdvancedSettings.GetBooleanSetting("RenameEdit", False, , Enums.ContentType.TVShow)
+        _AddonSettings.RenameMulti_Movies = clsXMLAdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.Movie)
+        _AddonSettings.RenameMulti_Shows = clsXMLAdvancedSettings.GetBooleanSetting("RenameMulti", False, , Enums.ContentType.TVShow)
+        _AddonSettings.RenameSingle_Movies = clsXMLAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.Movie)
+        _AddonSettings.RenameSingle_Shows = clsXMLAdvancedSettings.GetBooleanSetting("RenameSingle", False, , Enums.ContentType.TVShow)
+        _AddonSettings.RenameUpdate_Episodes = clsXMLAdvancedSettings.GetBooleanSetting("RenameUpdate", False, , Enums.ContentType.TVEpisode)
     End Sub
 
     Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
@@ -440,7 +440,7 @@ Public Class Addon
     End Sub
 
     Public Sub SaveSettings()
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             settings.SetSetting("FoldersPattern", _AddonSettings.FoldersPattern_Movies, , , Enums.ContentType.Movie)
             settings.SetSetting("FoldersPattern", _AddonSettings.FoldersPattern_Seasons, , , Enums.ContentType.TVSeason)
             settings.SetSetting("FoldersPattern", _AddonSettings.FoldersPattern_Shows, , , Enums.ContentType.TVShow)

@@ -53,7 +53,7 @@ Public Class Scraper
             _AddonSettings = SpecialSettings
 
             Global.FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
-            Global.FanartTv.API.cKey = SpecialSettings.ApiKey
+            Global.FanartTv.API.cKey = SpecialSettings.APIKey
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)

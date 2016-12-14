@@ -98,9 +98,9 @@ Public Class Interfaces
         Public bBreakChain As Boolean
         Public bCancelled As Boolean
         Public ScraperResult_Data As MediaContainers.MainDetails
-        Public ScraperResult_Image As MediaContainers.SearchResultsContainer
-        Public ScraperResult_Theme As List(Of MediaContainers.Theme)
-        Public ScraperResult_Trailer As List(Of MediaContainers.Trailer)
+        Public ScraperResult_ImageContainer As MediaContainers.SearchResultsContainer
+        Public ScraperResult_Themes As List(Of MediaContainers.Theme)
+        Public ScraperResult_Trailers As List(Of MediaContainers.Trailer)
         Public SearchResults As List(Of MediaContainers.MainDetails)
 
 #End Region 'Fields

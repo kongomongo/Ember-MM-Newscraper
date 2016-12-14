@@ -24,7 +24,6 @@ Imports NLog
 Public Class Addon
     Implements Interfaces.Addon
 
-
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
@@ -32,6 +31,7 @@ Public Class Addon
     Private _assemblyname As String
     Private _enabled As Boolean = True
     Private _name As String = "TMDB"
+    Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
     Private _strPrivateAPIKey As String = String.Empty
@@ -197,23 +197,23 @@ Public Class Addon
 
     Public Sub LoadSettings()
         'Global
-        _strPrivateAPIKey = AdvancedSettings.GetSetting("APIKey", String.Empty)
+        _strPrivateAPIKey = _settings.GetStringSetting("APIKey", String.Empty)
 
         'Movie
         _AddonSettings_Movie.APIKey = If(String.IsNullOrEmpty(_strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", _strPrivateAPIKey)
-        _AddonSettings_Movie.FallBackToEng = AdvancedSettings.GetBooleanSetting("FallBackToEn", False, , Enums.ContentType.Movie)
-        _AddonSettings_Movie.IncludeAdultItems = AdvancedSettings.GetBooleanSetting("IncludeAdultItems", False, , Enums.ContentType.Movie)
-        _AddonSettings_Movie.SearchDeviant = AdvancedSettings.GetBooleanSetting("SearchDeviant", False, , Enums.ContentType.Movie)
+        _AddonSettings_Movie.FallBackToEng = _settings.GetBooleanSetting("FallBackToEn", False, Enums.ContentType.Movie)
+        _AddonSettings_Movie.IncludeAdultItems = _settings.GetBooleanSetting("IncludeAdultItems", False, Enums.ContentType.Movie)
+        _AddonSettings_Movie.SearchDeviant = _settings.GetBooleanSetting("SearchDeviant", False, Enums.ContentType.Movie)
 
         'MovieSet
         _AddonSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(_strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", _strPrivateAPIKey)
-        _AddonSettings_MovieSet.FallBackToEng = AdvancedSettings.GetBooleanSetting("FallBackToEn", False, , Enums.ContentType.MovieSet)
-        _AddonSettings_MovieSet.IncludeAdultItems = AdvancedSettings.GetBooleanSetting("IncludeAdultItems", False, , Enums.ContentType.MovieSet)
+        _AddonSettings_MovieSet.FallBackToEng = _settings.GetBooleanSetting("FallBackToEn", False, Enums.ContentType.MovieSet)
+        _AddonSettings_MovieSet.IncludeAdultItems = _settings.GetBooleanSetting("IncludeAdultItems", False, Enums.ContentType.MovieSet)
 
         'TV
         _AddonSettings_TV.APIKey = If(String.IsNullOrEmpty(_strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", _strPrivateAPIKey)
-        _AddonSettings_TV.FallBackToEng = AdvancedSettings.GetBooleanSetting("FallBackToEn", False, , Enums.ContentType.TV)
-        _AddonSettings_TV.IncludeAdultItems = AdvancedSettings.GetBooleanSetting("IncludeAdultItems", False, , Enums.ContentType.TV)
+        _AddonSettings_TV.FallBackToEng = _settings.GetBooleanSetting("FallBackToEn", False, Enums.ContentType.TV)
+        _AddonSettings_TV.IncludeAdultItems = _settings.GetBooleanSetting("IncludeAdultItems", False, Enums.ContentType.TV)
     End Sub
     ''' <summary>
     '''  Scrape MovieDetails from TMDB
@@ -411,23 +411,22 @@ Public Class Addon
     'End Function
 
     Public Sub SaveSettings()
-        Using settings = New AdvancedSettings()
-            'Global
-            settings.SetSetting("APIKey", _settingspanel.txtApiKey.Text)
+        'Global
+        _settings.SetStringSetting("APIKey", _settingspanel.txtApiKey.Text)
 
-            'Movie
-            settings.SetBooleanSetting("FallBackToEn", _AddonSettings_Movie.FallBackToEng, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_Movie.IncludeAdultItems, , , Enums.ContentType.Movie)
-            settings.SetBooleanSetting("SearchDeviant", _AddonSettings_Movie.SearchDeviant, , , Enums.ContentType.Movie)
+        'Movie
+        _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_Movie.FallBackToEng, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_Movie.IncludeAdultItems, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("SearchDeviant", _AddonSettings_Movie.SearchDeviant, , Enums.ContentType.Movie)
 
-            'MovieSet
-            settings.SetBooleanSetting("FallBackToEn", _AddonSettings_MovieSet.FallBackToEng, , , Enums.ContentType.MovieSet)
-            settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_MovieSet.IncludeAdultItems, , , Enums.ContentType.MovieSet)
+        'MovieSet
+        _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_MovieSet.FallBackToEng, , Enums.ContentType.MovieSet)
+        _settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_MovieSet.IncludeAdultItems, , Enums.ContentType.MovieSet)
 
-            'TV
-            settings.SetBooleanSetting("FallBackToEn", _AddonSettings_TV.FallBackToEng, , , Enums.ContentType.TV)
-            settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_TV.IncludeAdultItems, , , Enums.ContentType.TV)
-        End Using
+        'TV
+        _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_TV.FallBackToEng, , Enums.ContentType.TV)
+        _settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_TV.IncludeAdultItems, , Enums.ContentType.TV)
+        _settings.Save()
     End Sub
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup

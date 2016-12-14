@@ -45,7 +45,7 @@ Public Class clsAPITrakt
 
     ReadOnly Property AccessToken() As String
         Get
-            Return _AddonSettings.AccessToken
+            Return _AddonSettings.APIAccessToken
         End Get
     End Property
 
@@ -57,7 +57,7 @@ Public Class clsAPITrakt
 
     ReadOnly Property RefreshToken() As String
         Get
-            Return _AddonSettings.RefreshToken
+            Return _AddonSettings.APIRefreshToken
         End Get
     End Property
 
@@ -69,10 +69,10 @@ Public Class clsAPITrakt
         _AddonSettings = tSpecialSettings
         Try
             CreateAPI()
-            tSpecialSettings.AccessToken = _AddonSettings.AccessToken
-            tSpecialSettings.CreatedAt = _AddonSettings.CreatedAt
-            tSpecialSettings.ExpiresInSeconds = _AddonSettings.ExpiresInSeconds
-            tSpecialSettings.RefreshToken = _AddonSettings.RefreshToken
+            tSpecialSettings.APIAccessToken = _AddonSettings.APIAccessToken
+            tSpecialSettings.APICreatedAt = _AddonSettings.APICreatedAt
+            tSpecialSettings.APIExpiresInSeconds = _AddonSettings.APIExpiresInSeconds
+            tSpecialSettings.APIRefreshToken = _AddonSettings.APIRefreshToken
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
@@ -96,16 +96,16 @@ Public Class clsAPITrakt
         Dim iCreatedAt As Long = 0
         Dim iExpiresIn As Integer = 0
 
-        Integer.TryParse(_AddonSettings.ExpiresInSeconds, iExpiresIn)
-        If Long.TryParse(_AddonSettings.CreatedAt, iCreatedAt) Then
+        Integer.TryParse(_AddonSettings.APIExpiresInSeconds, iExpiresIn)
+        If Long.TryParse(_AddonSettings.APICreatedAt, iCreatedAt) Then
             dCreatedAt = Functions.ConvertFromUnixTimestamp(iCreatedAt)
         End If
 
         'calculation actual ExiresIn value
         bIsExpired = dCreatedAt.AddSeconds(iExpiresIn) <= Date.Today
 
-        _apiTrakt.Authorization.AccessToken = _AddonSettings.AccessToken
-        _apiTrakt.Authorization.RefreshToken = _AddonSettings.RefreshToken
+        _apiTrakt.Authorization.AccessToken = _AddonSettings.APIAccessToken
+        _apiTrakt.Authorization.RefreshToken = _AddonSettings.APIRefreshToken
 
         If (bIsExpired OrElse String.IsNullOrEmpty(_apiTrakt.Authorization.AccessToken)) AndAlso Not String.IsNullOrEmpty(_apiTrakt.Authorization.RefreshToken) Then
             _apiTrakt.Authorization.AccessToken = String.Empty
@@ -114,10 +114,10 @@ Public Class clsAPITrakt
             While _apiTrakt.Authorization.AccessToken Is Nothing OrElse String.IsNullOrEmpty(_apiTrakt.Authorization.AccessToken)
                 Threading.Thread.Sleep(100)
             End While
-            _AddonSettings.AccessToken = _apiTrakt.Authorization.AccessToken
-            _AddonSettings.CreatedAt = Functions.ConvertToUnixTimestamp(_apiTrakt.Authorization.Created.Date).ToString
-            _AddonSettings.ExpiresInSeconds = _apiTrakt.Authorization.ExpiresInSeconds.ToString
-            _AddonSettings.RefreshToken = _apiTrakt.Authorization.RefreshToken
+            _AddonSettings.APIAccessToken = _apiTrakt.Authorization.AccessToken
+            _AddonSettings.APICreatedAt = Functions.ConvertToUnixTimestamp(_apiTrakt.Authorization.Created.Date).ToString
+            _AddonSettings.APIExpiresInSeconds = _apiTrakt.Authorization.ExpiresInSeconds.ToString
+            _AddonSettings.APIRefreshToken = _apiTrakt.Authorization.RefreshToken
         End If
 
         If String.IsNullOrEmpty(_apiTrakt.Authorization.AccessToken) Then
@@ -129,10 +129,10 @@ Public Class clsAPITrakt
                     While _apiTrakt.Authorization.AccessToken Is Nothing OrElse String.IsNullOrEmpty(_apiTrakt.Authorization.AccessToken)
                         Threading.Thread.Sleep(100)
                     End While
-                    _AddonSettings.AccessToken = _apiTrakt.Authorization.AccessToken
-                    _AddonSettings.CreatedAt = Functions.ConvertToUnixTimestamp(_apiTrakt.Authorization.Created.Date).ToString
-                    _AddonSettings.ExpiresInSeconds = _apiTrakt.Authorization.ExpiresInSeconds.ToString
-                    _AddonSettings.RefreshToken = _apiTrakt.Authorization.RefreshToken
+                    _AddonSettings.APIAccessToken = _apiTrakt.Authorization.AccessToken
+                    _AddonSettings.APICreatedAt = Functions.ConvertToUnixTimestamp(_apiTrakt.Authorization.Created.Date).ToString
+                    _AddonSettings.APIExpiresInSeconds = _apiTrakt.Authorization.ExpiresInSeconds.ToString
+                    _AddonSettings.APIRefreshToken = _apiTrakt.Authorization.RefreshToken
                 End If
             End Using
         End If
