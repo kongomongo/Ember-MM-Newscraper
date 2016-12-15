@@ -1165,21 +1165,21 @@ Namespace TMDB
             Return iTMDB
         End Function
 
-        Public Function ScrapeMovie(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
+        Public Function Scrape_Movie(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_Movie(strID, tScrapeOptions, False)
             nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.Movie)
             Return nAddonResult
         End Function
 
-        Public Function ScrapeMovieset(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
+        Public Function Scrape_Movieset(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_MovieSet(strID, tScrapeOptions, False)
             nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.MovieSet)
             Return nAddonResult
         End Function
 
-        Public Function ScrapeTVEpisode(ByVal iShowID As Integer, ByVal strAired As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
+        Public Function Scrape_TVEpisode(ByVal iShowID As Integer, ByVal strAired As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_TVEpisode(iShowID, strAired, tScrapeOptions)
             nAddonResult.ScraperResult_ImageContainer = GetImages_TVEpisode(iShowID, nAddonResult.ScraperResult_Data.Season, nAddonResult.ScraperResult_Data.Episode, tScrapeModifiers)
@@ -1193,7 +1193,7 @@ Namespace TMDB
             Return nAddonResult
         End Function
 
-        Public Function ScrapeTVSeason(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
+        Public Function Scrape_TVSeason(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
             Dim nAddonResult As New Interfaces.AddonResult
             nAddonResult.ScraperResult_Data = GetInfo_TVSeason(iShowID, iSeason, tScrapeOptions)
             nAddonResult.ScraperResult_ImageContainer = GetImages_TVShow(iShowID, tScrapeModifiers)
@@ -1207,7 +1207,7 @@ Namespace TMDB
             Return nAddonResult
         End Function
 
-        Public Function SearchMovie(ByVal strTitle As String, ByVal strYear As String) As List(Of MediaContainers.MainDetails)
+        Public Function Search_Movie(ByVal strTitle As String, ByVal strYear As String) As List(Of MediaContainers.MainDetails)
             If String.IsNullOrEmpty(strTitle) Then Return New List(Of MediaContainers.MainDetails)
 
             Dim nSearchResults As New List(Of MediaContainers.MainDetails)
@@ -1297,7 +1297,7 @@ Namespace TMDB
             Return nSearchResults
         End Function
 
-        Public Function SearchMovieSet(ByVal strTitle As String) As List(Of MediaContainers.MainDetails)
+        Public Function Search_MovieSet(ByVal strTitle As String) As List(Of MediaContainers.MainDetails)
             If String.IsNullOrEmpty(strTitle) Then Return New List(Of MediaContainers.MainDetails)
 
             Dim nSearchResults As New List(Of MediaContainers.MainDetails)
@@ -1345,33 +1345,33 @@ Namespace TMDB
             Return nSearchResults
         End Function
 
-        Public Function SearchTVShow(ByVal strTitle As String) As List(Of MediaContainers.MainDetails)
+        Public Function Search_TVShow(ByVal strTitle As String) As List(Of MediaContainers.MainDetails)
             If String.IsNullOrEmpty(strTitle) Then Return New List(Of MediaContainers.MainDetails)
 
             Dim nSearchResults As New List(Of MediaContainers.MainDetails)
             Dim Page As Integer = 1
-            Dim Shows As TMDbLib.Objects.General.SearchContainer(Of TMDbLib.Objects.Search.SearchTv)
+            Dim nResult As TMDbLib.Objects.General.SearchContainer(Of TMDbLib.Objects.Search.SearchTv)
             Dim TotP As Integer
             Dim aE As Boolean
 
             Dim APIResult As Task(Of TMDbLib.Objects.General.SearchContainer(Of TMDbLib.Objects.Search.SearchTv))
             APIResult = Task.Run(Function() _TMDBApi.SearchTvShowAsync(strTitle, Page))
 
-            Shows = APIResult.Result
+            nResult = APIResult.Result
 
-            If Shows.TotalResults = 0 AndAlso _SpecialSettings.FallBackToEng Then
+            If nResult.TotalResults = 0 AndAlso _SpecialSettings.FallBackToEng Then
                 APIResult = Task.Run(Function() _TMDBApiE.SearchTvShowAsync(strTitle, Page))
-                Shows = APIResult.Result
+                nResult = APIResult.Result
                 aE = True
             End If
 
-            If Shows.TotalResults > 0 Then
+            If nResult.TotalResults > 0 Then
                 Dim t1 As String = String.Empty
                 Dim t2 As String = String.Empty
-                TotP = Shows.TotalPages
+                TotP = nResult.TotalPages
                 While Page <= TotP AndAlso Page <= 3
-                    If Shows.Results IsNot Nothing Then
-                        For Each aShow In Shows.Results
+                    If nResult.Results IsNot Nothing Then
+                        For Each aShow In nResult.Results
                             If aShow.Name Is Nothing OrElse (aShow.Name IsNot Nothing AndAlso String.IsNullOrEmpty(aShow.Name)) Then
                                 If aShow.OriginalName IsNot Nothing AndAlso Not String.IsNullOrEmpty(aShow.OriginalName) Then
                                     t1 = aShow.OriginalName
@@ -1390,10 +1390,10 @@ Namespace TMDB
                     Page = Page + 1
                     If aE Then
                         APIResult = Task.Run(Function() _TMDBApiE.SearchTvShowAsync(strTitle, Page))
-                        Shows = APIResult.Result
+                        nResult = APIResult.Result
                     Else
                         APIResult = Task.Run(Function() _TMDBApi.SearchTvShowAsync(strTitle, Page))
-                        Shows = APIResult.Result
+                        nResult = APIResult.Result
                     End If
                 End While
             End If

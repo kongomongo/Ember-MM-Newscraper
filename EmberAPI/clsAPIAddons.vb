@@ -348,6 +348,79 @@ Public Class AddonsManager
         Return nScrapeResults
     End Function
 
+    Public Function Search(ByRef tDBElement As Database.DBElement) As ScrapeResults
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Start] {0}", tDBElement.Filename))
+
+        Dim nScrapeResults As New ScrapeResults
+
+        While Not ModulesLoaded
+            Application.DoEvents()
+        End While
+
+        If Not Addons.Count > 0 Then
+            logger.Warn("[AddonsManager] [Scrape] [Abort] No addons found")
+        Else
+            For Each nAddon In Addons
+                logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Name))
+
+                Dim nAddonResult = nAddon.Addon.Run(tDBElement, Enums.AddonEventType.Search_TVShow, Nothing)
+
+                If nAddonResult.bCancelled Then Return nScrapeResults
+
+                If nAddonResult.SearchResults IsNot Nothing Then
+                    nScrapeResults.lstData.Add(nAddonResult.ScraperResult_Data)
+
+                    'set new informations for following scrapers
+                    If nAddonResult.ScraperResult_Data.IMDBSpecified Then
+                        tDBElement.MainDetails.IMDB = nAddonResult.ScraperResult_Data.IMDB
+                    End If
+                    If nAddonResult.ScraperResult_Data.OriginalTitleSpecified Then
+                        tDBElement.MainDetails.OriginalTitle = nAddonResult.ScraperResult_Data.OriginalTitle
+                    End If
+                    If nAddonResult.ScraperResult_Data.TitleSpecified Then
+                        tDBElement.MainDetails.Title = nAddonResult.ScraperResult_Data.Title
+                    End If
+                    If nAddonResult.ScraperResult_Data.TMDBSpecified Then
+                        tDBElement.MainDetails.TMDB = nAddonResult.ScraperResult_Data.TMDB
+                    End If
+                    If nAddonResult.ScraperResult_Data.YearSpecified Then
+                        tDBElement.MainDetails.Year = nAddonResult.ScraperResult_Data.Year
+                    End If
+                End If
+
+                If nAddonResult.ScraperResult_ImageContainer IsNot Nothing Then
+                    nScrapeResults.lstImages.EpisodeFanarts.AddRange(nAddonResult.ScraperResult_ImageContainer.EpisodeFanarts)
+                    nScrapeResults.lstImages.EpisodePosters.AddRange(nAddonResult.ScraperResult_ImageContainer.EpisodePosters)
+                    nScrapeResults.lstImages.MainBanners.AddRange(nAddonResult.ScraperResult_ImageContainer.MainBanners)
+                    nScrapeResults.lstImages.MainCharacterArts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainCharacterArts)
+                    nScrapeResults.lstImages.MainClearArts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainClearArts)
+                    nScrapeResults.lstImages.MainClearLogos.AddRange(nAddonResult.ScraperResult_ImageContainer.MainClearLogos)
+                    nScrapeResults.lstImages.MainDiscArts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainDiscArts)
+                    nScrapeResults.lstImages.MainFanarts.AddRange(nAddonResult.ScraperResult_ImageContainer.MainFanarts)
+                    nScrapeResults.lstImages.MainLandscapes.AddRange(nAddonResult.ScraperResult_ImageContainer.MainLandscapes)
+                    nScrapeResults.lstImages.MainPosters.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonPosters)
+                    nScrapeResults.lstImages.SeasonBanners.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonBanners)
+                    nScrapeResults.lstImages.SeasonFanarts.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonFanarts)
+                    nScrapeResults.lstImages.SeasonLandscapes.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonLandscapes)
+                    nScrapeResults.lstImages.SeasonPosters.AddRange(nAddonResult.ScraperResult_ImageContainer.SeasonPosters)
+                End If
+
+                If nAddonResult.ScraperResult_Themes IsNot Nothing Then
+                    nScrapeResults.lstThemes.AddRange(nAddonResult.ScraperResult_Themes)
+                End If
+
+                If nAddonResult.ScraperResult_Trailers IsNot Nothing Then
+                    nScrapeResults.lstTrailers.AddRange(nAddonResult.ScraperResult_Trailers)
+                End If
+
+                If nAddonResult.bBreakChain Then Exit For
+            Next
+        End If
+
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Done] {0}", tDBElement.Filename))
+        Return nScrapeResults
+    End Function
+
     ''' <summary>
     ''' Request that enabled movie scrapers perform their functions on the supplied movie
     ''' </summary>

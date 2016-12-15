@@ -8,8 +8,8 @@
     <OutputType>Library</OutputType>
     <StartupObject>
     </StartupObject>
-    <RootNamespace>ScraperModule</RootNamespace>
-    <AssemblyName>scraper.Data.TVDB</AssemblyName>
+    <RootNamespace>addon</RootNamespace>
+    <AssemblyName>addon.thetvdb.com</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -33,7 +33,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Debug - x86\Addons\</OutputPath>
-    <DocumentationFile>scraper.Data.TVDB.xml</DocumentationFile>
+    <DocumentationFile>addon.thetvdb.com.xml</DocumentationFile>
     <NoWarn>
     </NoWarn>
     <DebugType>full</DebugType>
@@ -45,7 +45,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Release - x86\Addons\</OutputPath>
-    <DocumentationFile>scraper.Data.TVDB.xml</DocumentationFile>
+    <DocumentationFile>addon.thetvdb.com.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <NoWarn>
     </NoWarn>
@@ -60,7 +60,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Debug - x64\Addons\</OutputPath>
-    <DocumentationFile>scraper.Data.TVDB.xml</DocumentationFile>
+    <DocumentationFile>addon.thetvdb.com.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</WarningsAsErrors>
@@ -70,7 +70,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Release - x64\Addons\</OutputPath>
-    <DocumentationFile>scraper.Data.TVDB.xml</DocumentationFile>
+    <DocumentationFile>addon.thetvdb.com.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -83,7 +83,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Debug - AnyCPU\Addons\</OutputPath>
-    <DocumentationFile>scraper.Data.TVDB.xml</DocumentationFile>
+    <DocumentationFile>addon.thetvdb.com.xml</DocumentationFile>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <WarningsAsErrors>41998,41999,42004,42016,42017,42018,42019,42020,42021,42022,42024,42025,42026,42029,42030,42031,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</WarningsAsErrors>
@@ -93,7 +93,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DefineTrace>true</DefineTrace>
     <OutputPath>..\..\EmberMM - Release - AnyCPU\Addons\</OutputPath>
-    <DocumentationFile>scraper.Data.TVDB.xml</DocumentationFile>
+    <DocumentationFile>addon.thetvdb.com.xml</DocumentationFile>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -133,10 +133,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmSettingsHolder.Designer.vb">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <Compile Include="frmSettingsPanel.Designer.vb">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmSettingsHolder.vb">
+    <Compile Include="frmSettingsPanel.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -154,28 +154,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Scraper\clsScrapeTVDB.vb" />
-    <Compile Include="Scraper\dlgTVDBSearchResults.Designer.vb">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Scraper\dlgTVDBSearchResults.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TVDB_Data.vb" />
+    <Compile Include="clsTVDB.vb" />
+    <Compile Include="addon.thetvdb.com.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmSettingsHolder.resx">
-      <DependentUpon>frmSettingsHolder.vb</DependentUpon>
+    <EmbeddedResource Include="frmSettingsPanel.resx">
+      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Scraper\dlgTVDBSearchResults.resx">
-      <DependentUpon>dlgTVDBSearchResults.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

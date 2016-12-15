@@ -180,7 +180,7 @@ Public Class Addon
         _settingspanel.chkIncludeAdultItems_MovieSet.Checked = _AddonSettings_MovieSet.IncludeAdultItems
         _settingspanel.chkIncludeAdultItems_TV.Checked = _AddonSettings_TV.IncludeAdultItems
         _settingspanel.chkSearchDeviant_Movie.Checked = _AddonSettings_Movie.SearchDeviant
-        _settingspanel.txtApiKey.Text = _strPrivateAPIKey
+        _settingspanel.txtAPIKey.Text = _strPrivateAPIKey
 
         nSettingsPanel.Image = My.Resources.logo_stacked_blue
         nSettingsPanel.ImageIndex = -1
@@ -244,13 +244,13 @@ Public Class Addon
         Select Case eAddonEventType
             Case Enums.AddonEventType.Scrape_Movie
                 If tDBElement.MainDetails.TMDBSpecified Then
-                    nModuleResult = _scraper.ScrapeMovie(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
+                    nModuleResult = _scraper.Scrape_Movie(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 ElseIf tDBElement.MainDetails.IMDBSpecified Then
-                    nModuleResult = _scraper.ScrapeMovie(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
+                    nModuleResult = _scraper.Scrape_Movie(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 End If
             Case Enums.AddonEventType.Scrape_MovieSet
                 If tDBElement.MainDetails.TMDBSpecified Then
-                    nModuleResult = _scraper.ScrapeMovieset(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
+                    nModuleResult = _scraper.Scrape_Movieset(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 End If
             Case Enums.AddonEventType.Scrape_TVEpisode
                 Dim iShowID As Integer = -1
@@ -262,7 +262,7 @@ Public Class Addon
                 If Not iShowID = -1 AndAlso tDBElement.MainDetails.SeasonSpecified AndAlso tDBElement.MainDetails.EpisodeSpecified Then
                     nModuleResult = _scraper.ScrapeTVEpisode(iShowID, tDBElement.MainDetails.Season, tDBElement.MainDetails.Episode, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 ElseIf Not iShowID = -1 AndAlso tDBElement.MainDetails.AiredSpecified Then
-                    nModuleResult = _scraper.ScrapeTVEpisode(iShowID, tDBElement.MainDetails.Aired, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
+                    nModuleResult = _scraper.Scrape_TVEpisode(iShowID, tDBElement.MainDetails.Aired, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 End If
             Case Enums.AddonEventType.Scrape_TVSeason
                 Dim iShowID As Integer = -1
@@ -272,7 +272,7 @@ Public Class Addon
                     iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB)
                 End If
                 If Not iShowID = -1 AndAlso tDBElement.MainDetails.SeasonSpecified Then
-                    nModuleResult = _scraper.ScrapeTVSeason(iShowID, tDBElement.MainDetails.Season, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
+                    nModuleResult = _scraper.Scrape_TVSeason(iShowID, tDBElement.MainDetails.Season, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 End If
             Case Enums.AddonEventType.Scrape_TVShow
                 Dim iShowID As Integer = -1
@@ -286,15 +286,15 @@ Public Class Addon
                 End If
             Case Enums.AddonEventType.Search_Movie
                 If tDBElement.MainDetails.TitleSpecified Then
-                    nModuleResult.SearchResults = _scraper.SearchMovie(tDBElement.MainDetails.Title, tDBElement.MainDetails.Year)
+                    nModuleResult.SearchResults = _scraper.Search_Movie(tDBElement.MainDetails.Title, tDBElement.MainDetails.Year)
                 End If
             Case Enums.AddonEventType.Search_MovieSet
                 If tDBElement.MainDetails.TitleSpecified Then
-                    nModuleResult.SearchResults = _scraper.SearchMovieSet(tDBElement.MainDetails.Title)
+                    nModuleResult.SearchResults = _scraper.Search_MovieSet(tDBElement.MainDetails.Title)
                 End If
             Case Enums.AddonEventType.Search_TVShow
                 If tDBElement.MainDetails.TitleSpecified Then
-                    nModuleResult.SearchResults = _scraper.SearchTVShow(tDBElement.MainDetails.Title)
+                    nModuleResult.SearchResults = _scraper.Search_TVShow(tDBElement.MainDetails.Title)
                 End If
         End Select
 
@@ -412,7 +412,7 @@ Public Class Addon
 
     Public Sub SaveSettings()
         'Global
-        _settings.SetStringSetting("APIKey", _settingspanel.txtApiKey.Text)
+        _settings.SetStringSetting("APIKey", _settingspanel.txtAPIKey.Text)
 
         'Movie
         _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_Movie.FallBackToEng, , Enums.ContentType.Movie)

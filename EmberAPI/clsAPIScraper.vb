@@ -50,6 +50,7 @@ Public Class Scraper
         logger.Trace(String.Format("[Scraper] [Run] [Start] {0}", tDBElement.Filename))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             If tDBElement.MainDetails.AnyUniqueIDSpecified Then
+                Dim nSearchResults As AddonsManager.ScrapeResults = AddonsManager.Instance.Search(tDBElement)
                 Dim nScrapeResults As AddonsManager.ScrapeResults = AddonsManager.Instance.Scrape(tDBElement)
                 If Not nScrapeResults.bCancelled AndAlso Not nScrapeResults.bError Then
 

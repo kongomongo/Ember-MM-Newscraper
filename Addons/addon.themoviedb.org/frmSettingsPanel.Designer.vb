@@ -25,9 +25,9 @@ Partial Class frmSettingsPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsPanel))
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblApiKey = New System.Windows.Forms.Label()
-        Me.txtApiKey = New EmberAPI.FormUtils.TextBox_with_Watermark()
-        Me.pbApiKeyInfo = New System.Windows.Forms.PictureBox()
+        Me.lblAPIKey = New System.Windows.Forms.Label()
+        Me.txtAPIKey = New EmberAPI.FormUtils.TextBox_with_Watermark()
+        Me.pbAPIKeyInfo = New System.Windows.Forms.PictureBox()
         Me.chkIncludeAdultItems_Movie = New System.Windows.Forms.CheckBox()
         Me.chkFallBackToEng_Movie = New System.Windows.Forms.CheckBox()
         Me.chkSearchDeviant_Movie = New System.Windows.Forms.CheckBox()
@@ -51,7 +51,7 @@ Partial Class frmSettingsPanel
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGlobal.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
-        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbAPIKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsTop.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
@@ -87,9 +87,9 @@ Partial Class frmSettingsPanel
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperOpts.Controls.Add(Me.lblApiKey, 0, 0)
-        Me.tblScraperOpts.Controls.Add(Me.txtApiKey, 1, 0)
-        Me.tblScraperOpts.Controls.Add(Me.pbApiKeyInfo, 2, 0)
+        Me.tblScraperOpts.Controls.Add(Me.lblAPIKey, 0, 0)
+        Me.tblScraperOpts.Controls.Add(Me.txtAPIKey, 1, 0)
+        Me.tblScraperOpts.Controls.Add(Me.pbAPIKeyInfo, 2, 0)
         Me.tblScraperOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperOpts.Name = "tblScraperOpts"
@@ -103,36 +103,36 @@ Partial Class frmSettingsPanel
         Me.tblScraperOpts.Size = New System.Drawing.Size(344, 28)
         Me.tblScraperOpts.TabIndex = 98
         '
-        'lblApiKey
+        'lblAPIKey
         '
-        Me.lblApiKey.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblApiKey.AutoSize = True
-        Me.lblApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblApiKey.Location = New System.Drawing.Point(3, 7)
-        Me.lblApiKey.Name = "lblApiKey"
-        Me.lblApiKey.Size = New System.Drawing.Size(80, 13)
-        Me.lblApiKey.TabIndex = 0
-        Me.lblApiKey.Text = "TMDB Api Key:"
+        Me.lblAPIKey.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblAPIKey.AutoSize = True
+        Me.lblAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAPIKey.Location = New System.Drawing.Point(3, 7)
+        Me.lblAPIKey.Name = "lblAPIKey"
+        Me.lblAPIKey.Size = New System.Drawing.Size(80, 13)
+        Me.lblAPIKey.TabIndex = 0
+        Me.lblAPIKey.Text = "TMDB Api Key:"
         '
-        'txtApiKey
+        'txtAPIKey
         '
-        Me.txtApiKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtApiKey.Location = New System.Drawing.Point(89, 3)
-        Me.txtApiKey.Name = "txtApiKey"
-        Me.txtApiKey.Size = New System.Drawing.Size(230, 22)
-        Me.txtApiKey.TabIndex = 6
-        Me.txtApiKey.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtApiKey.WatermarkText = "Ember Media Manager Embedded API Key"
+        Me.txtAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtAPIKey.Location = New System.Drawing.Point(89, 3)
+        Me.txtAPIKey.Name = "txtAPIKey"
+        Me.txtAPIKey.Size = New System.Drawing.Size(230, 22)
+        Me.txtAPIKey.TabIndex = 6
+        Me.txtAPIKey.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtAPIKey.WatermarkText = "Ember Media Manager Embedded API Key"
         '
-        'pbApiKeyInfo
+        'pbAPIKeyInfo
         '
-        Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbApiKeyInfo.Image"), System.Drawing.Image)
-        Me.pbApiKeyInfo.Location = New System.Drawing.Point(325, 6)
-        Me.pbApiKeyInfo.Name = "pbApiKeyInfo"
-        Me.pbApiKeyInfo.Size = New System.Drawing.Size(16, 16)
-        Me.pbApiKeyInfo.TabIndex = 5
-        Me.pbApiKeyInfo.TabStop = False
+        Me.pbAPIKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbAPIKeyInfo.Image = CType(resources.GetObject("pbAPIKeyInfo.Image"), System.Drawing.Image)
+        Me.pbAPIKeyInfo.Location = New System.Drawing.Point(325, 6)
+        Me.pbAPIKeyInfo.Name = "pbAPIKeyInfo"
+        Me.pbAPIKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbAPIKeyInfo.TabIndex = 5
+        Me.pbAPIKeyInfo.TabStop = False
         '
         'chkIncludeAdultItems_Movie
         '
@@ -445,7 +445,7 @@ Partial Class frmSettingsPanel
         Me.gbGlobal.PerformLayout()
         Me.tblScraperOpts.ResumeLayout(False)
         Me.tblScraperOpts.PerformLayout()
-        CType(Me.pbApiKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbAPIKeyInfo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
@@ -474,11 +474,11 @@ Partial Class frmSettingsPanel
 
     End Sub
     Friend WithEvents gbGlobal As System.Windows.Forms.GroupBox
-    Friend WithEvents lblApiKey As System.Windows.Forms.Label
+    Friend WithEvents lblAPIKey As System.Windows.Forms.Label
     Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents chkFallBackToEng_Movie As System.Windows.Forms.CheckBox
-    Friend WithEvents pbApiKeyInfo As System.Windows.Forms.PictureBox
+    Friend WithEvents pbAPIKeyInfo As System.Windows.Forms.PictureBox
     Friend WithEvents chkIncludeAdultItems_Movie As System.Windows.Forms.CheckBox
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsBottom As System.Windows.Forms.Panel
@@ -497,6 +497,6 @@ Partial Class frmSettingsPanel
     Friend WithEvents chkFallBackToEng_TV As CheckBox
     Friend WithEvents chkIncludeAdultItems_TV As CheckBox
     Friend WithEvents chkIncludeAdultItems_MovieSet As CheckBox
-    Friend WithEvents txtApiKey As EmberAPI.FormUtils.TextBox_with_Watermark
+    Friend WithEvents txtAPIKey As EmberAPI.FormUtils.TextBox_with_Watermark
     Friend WithEvents pbLogo As PictureBox
 End Class
