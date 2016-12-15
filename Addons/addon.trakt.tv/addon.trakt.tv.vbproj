@@ -159,8 +159,8 @@
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TraktApiSharp, Version=0.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\TraktApiSharp.0.5.1\lib\portable-net45+netcore45+wpa81\TraktApiSharp.dll</HintPath>
+    <Reference Include="TraktApiSharp, Version=0.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TraktApiSharp.0.8.0\lib\portable-net45+netcore45+wpa81\TraktApiSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

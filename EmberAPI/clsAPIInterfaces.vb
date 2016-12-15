@@ -91,21 +91,21 @@ Public Class Interfaces
 
 #Region "Nested Types"
 
-    Public Structure AddonResult
+    Public Class AddonResult
 
 #Region "Fields"
 
         Public bBreakChain As Boolean
         Public bCancelled As Boolean
-        Public ScraperResult_Data As MediaContainers.MainDetails
-        Public ScraperResult_ImageContainer As MediaContainers.SearchResultsContainer
-        Public ScraperResult_Themes As List(Of MediaContainers.Theme)
-        Public ScraperResult_Trailers As List(Of MediaContainers.Trailer)
-        Public SearchResults As List(Of MediaContainers.MainDetails)
+        Public ScraperResult_Data As New MediaContainers.MainDetails
+        Public ScraperResult_ImageContainer As New MediaContainers.SearchResultsContainer
+        Public ScraperResult_Themes As New List(Of MediaContainers.Theme)
+        Public ScraperResult_Trailers As New List(Of MediaContainers.Trailer)
+        Public SearchResults As New List(Of MediaContainers.MainDetails)
 
 #End Region 'Fields
 
-    End Structure
+    End Class
 
 #End Region 'Nested Types
 

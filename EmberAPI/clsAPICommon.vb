@@ -38,13 +38,11 @@ Public Class Containers
 #Region "Fields"
 
         Private transactionField As New List(Of CommandsTransaction)
-
         Private noTransactionField As New List(Of CommandsNoTransactionCommand)
 
 #End Region 'Fields
 
 #Region "Properties"
-
         '''<remarks/>
         <XmlElement("transaction")>
         Public Property transaction() As List(Of CommandsTransaction)
@@ -55,7 +53,6 @@ Public Class Containers
                 transactionField = value
             End Set
         End Property
-
         '''<remarks/>
         <XmlElement("noTransaction")>
         Public Property noTransaction() As List(Of CommandsNoTransactionCommand)
@@ -94,7 +91,6 @@ Public Class Containers
     Partial Public Class CommandsTransaction
 
         Private commandField As New List(Of CommandsTransactionCommand)
-
         Private nameField As String
 
         '''<remarks/>
@@ -1021,13 +1017,13 @@ Public Class Enums
         Addon = 1
         Movie = 2
         MovieData = 3
-        MovieFile = 4
+        MovieFileSource = 4
         MovieGeneral = 5
         MovieImage = 6
         MovieSearch = 7
         MovieSet = 8
         MovieSetData = 9
-        MovieSetFile = 10
+        MovieSetFileSource = 10
         MovieSetGeneral = 11
         MovieSetImage = 12
         MovieSetSearch = 13
@@ -1039,7 +1035,7 @@ Public Class Enums
         OptionsGeneral = 19
         TV = 20
         TVData = 21
-        TVFile = 22
+        TVFileSource = 22
         TVGeneral = 23
         TVImage = 24
         TVSearch = 25

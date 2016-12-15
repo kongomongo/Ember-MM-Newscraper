@@ -96,6 +96,9 @@ Public Class Addon
                                                       Enums.AddonEventType.DuringScrapingSingle_TVEpisode,
                                                       Enums.AddonEventType.DuringScrapingSingle_TVSeason,
                                                       Enums.AddonEventType.DuringScrapingSingle_TVShow,
+                                                      Enums.AddonEventType.Scrape_Movie,
+                                                      Enums.AddonEventType.Scrape_TVEpisode,
+                                                      Enums.AddonEventType.Scrape_TVShow,
                                                       Enums.AddonEventType.Sync_Movie})
         End Get
     End Property
@@ -236,6 +239,9 @@ Public Class Addon
     End Sub
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
+
+        Dim nAddonsResult As New Interfaces.AddonResult
+
         Select Case eAddonEventType
             Case Enums.AddonEventType.BeforeEdit_Movie
                 If _AddonSettings.GetWatchedState AndAlso _AddonSettings.GetWatchedStateBeforeEdit_Movie AndAlso tDBElement IsNot Nothing Then
@@ -266,6 +272,36 @@ Public Class Addon
             Case Enums.AddonEventType.DuringScrapingSingle_TVShow, Enums.AddonEventType.DuringScrapingSingle_TVEpisode
                 If _AddonSettings.GetWatchedState AndAlso _AddonSettings.GetWatchedStateScraperSingle_TVEpisode AndAlso tDBElement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_TVEpisode(tDBElement)
+                End If
+            Case Enums.AddonEventType.Scrape_Movie
+                Dim nResult = _TraktAPI.GetInfo_Movie(_TraktAPI.GetID_Trakt(tDBElement), tDBElement.ScrapeOptions)
+                While Not nResult.IsCompleted
+                    Threading.Thread.Sleep(50)
+                End While
+                If nResult.Exception Is Nothing AndAlso nResult.Result IsNot Nothing Then
+                    nAddonsResult.ScraperResult_Data = nResult.Result
+                ElseIf nResult.Exception IsNot Nothing Then
+                    logger.Error(String.Concat("[Tracktv_Data] [Scraper_Movie]: ", nResult.Exception.InnerException.Message))
+                End If
+            Case Enums.AddonEventType.Scrape_TVEpisode
+                Dim Result = _TraktAPI.GetInfo_TVEpisode(_TraktAPI.GetID_Trakt(tDBElement, True), tDBElement.MainDetails.Season, tDBElement.MainDetails.Episode, tDBElement.ScrapeOptions)
+                While Not Result.IsCompleted
+                    Threading.Thread.Sleep(50)
+                End While
+                If Result.Exception Is Nothing AndAlso Result.Result IsNot Nothing Then
+                    nAddonsResult.ScraperResult_Data = Result.Result
+                ElseIf Result.Exception IsNot Nothing Then
+                    logger.Error(String.Concat("[Tracktv_Data] [Scraper_TVEpisode]: ", Result.Exception.InnerException.Message))
+                End If
+            Case Enums.AddonEventType.Scrape_TVShow
+                Dim nResult = _TraktAPI.GetInfo_TVShow(_TraktAPI.GetID_Trakt(tDBElement), tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions, tDBElement.Episodes)
+                While Not nResult.IsCompleted
+                    Threading.Thread.Sleep(50)
+                End While
+                If nResult.Exception Is Nothing AndAlso nResult.Result IsNot Nothing Then
+                    nAddonsResult.ScraperResult_Data = nResult.Result
+                ElseIf nResult.Exception IsNot Nothing Then
+                    logger.Error(String.Concat("[Tracktv_Data] [Scraper_TV]: ", nResult.Exception.InnerException.Message))
                 End If
             Case Enums.AddonEventType.Sync_Movie
                 If False AndAlso tDBElement IsNot Nothing Then
@@ -311,6 +347,7 @@ Public Class Addon
         _settings.SetStringSetting("APICreatedAt", _AddonSettings.APICreatedAt)
         _settings.SetStringSetting("APIExpiresInSeconds", _AddonSettings.APIExpiresInSeconds)
         _settings.SetStringSetting("APIRefreshToken", _AddonSettings.APIRefreshToken)
+
         _settings.Save()
     End Sub
 

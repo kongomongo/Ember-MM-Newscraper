@@ -239,7 +239,7 @@ Public Class Addon
         End Select
 
         ScraperSettings.PrefLanguage = tDBElement.Language
-        Dim _scraper As New TMDB.Scraper(ScraperSettings)
+        Dim _scraper As New Scraper(ScraperSettings)
 
         Select Case eAddonEventType
             Case Enums.AddonEventType.Scrape_Movie
@@ -301,114 +301,6 @@ Public Class Addon
         logger.Trace("[TMDB] [Run] [Done]")
         Return nModuleResult
     End Function
-    '''' <summary>
-    ''''  Scrape MovieDetails from TMDB
-    '''' </summary>
-    '''' <param name="tDBElement">TV Show to be scraped. DBTV as ByRef to use existing data for identifing tv show and to fill with IMDB/TMDB/TVDB ID for next scraper</param> 
-    '''' <returns>Database.DBElement Object (nMovie) which contains the scraped data</returns>
-    '''' <remarks></remarks>
-    'Function Scraper_TV(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_TVShow Implements Interfaces.ScraperModule_Data_TV.Scraper_TVShow
-    '    logger.Trace("[TMDB_Data] [Scraper_TV] [Start]")
-
-    '    LoadSettings_TV()
-    '    _SpecialSettings_TV.PrefLanguage = tDBElement.Language
-
-    '    Dim nTVShow As MediaContainers.MainDetails = Nothing
-    '    Dim _scraper As New TMDB.Scraper(_SpecialSettings_TV)
-
-    '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions_TV)
-
-    '    If tDBElement.ScrapeModifiers.MainNFO AndAlso Not tDBElement.ScrapeModifiers.DoSearch Then
-    '        If tDBElement.MainDetails.TMDBSpecified Then
-    '            'TMDB-ID already available -> scrape and save data into an empty tv show container (nShow)
-    '            nTVShow = _scraper.GetInfo_TVShow(tDBElement.MainDetails.TMDB, tDBElement.ScrapeModifiers, FilteredOptions, False)
-    '        ElseIf tDBElement.MainDetails.TVDBSpecified Then
-    '            tDBElement.MainDetails.TMDB = _scraper.GetTMDBbyTVDB(tDBElement.MainDetails.TVDB)
-    '            If Not tDBElement.MainDetails.TMDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-    '            nTVShow = _scraper.GetInfo_TVShow(tDBElement.MainDetails.TMDB, tDBElement.ScrapeModifiers, FilteredOptions, False)
-    '        ElseIf tDBElement.MainDetails.IMDBSpecified Then
-    '            tDBElement.MainDetails.TMDB = _scraper.GetTMDBbyIMDB(tDBElement.MainDetails.IMDB)
-    '            If Not tDBElement.MainDetails.TMDBSpecified Then Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-    '            nTVShow = _scraper.GetInfo_TVShow(tDBElement.MainDetails.TMDB, tDBElement.ScrapeModifiers, FilteredOptions, False)
-    '        ElseIf Not tDBElement.ScrapeType = Enums.ScrapeType.SingleScrape Then
-    '            'no TVDB-ID for tv show --> search first and try to get ID!
-    '            If tDBElement.MainDetails.TitleSpecified Then
-    '                nTVShow = _scraper.GetSearchTVShowInfo(tDBElement.MainDetails.Title, tDBElement, tDBElement.ScrapeType, tDBElement.ScrapeModifiers, FilteredOptions)
-    '            End If
-    '            'if still no search result -> exit
-    '            If nTVShow Is Nothing Then
-    '                logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Abort] No search result found"))
-    '                Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-    '            End If
-    '        End If
-    '    End If
-
-    '    If nTVShow Is Nothing Then
-    '        Select Case tDBElement.ScrapeType
-    '            Case Enums.ScrapeType.AllAuto, Enums.ScrapeType.FilterAuto, Enums.ScrapeType.MarkedAuto, Enums.ScrapeType.MissingAuto, Enums.ScrapeType.NewAuto, Enums.ScrapeType.SelectedAuto
-    '                logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Abort] No search result found"))
-    '                Return New Interfaces.ModuleResult_Data_TVShow With {.Result = Nothing}
-    '        End Select
-    '    Else
-    '        Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
-    '    End If
-
-    '    If tDBElement.ScrapeType = Enums.ScrapeType.SingleScrape OrElse tDBElement.ScrapeType = Enums.ScrapeType.SingleAuto Then
-    '        If Not tDBElement.MainDetails.TMDBSpecified Then
-    '            Using dlgSearch As New dlgTMDBSearchResults_TV(_SpecialSettings_TV, _scraper)
-    '                If dlgSearch.ShowDialog(tDBElement.MainDetails.Title, tDBElement.ShowPath, FilteredOptions) = DialogResult.OK Then
-    '                    nTVShow = _scraper.GetInfo_TVShow(dlgSearch.Result.TMDB, tDBElement.ScrapeModifiers, FilteredOptions, False)
-    '                    'if a tvshow is found, set DoSearch back to "false" for following scrapers
-    '                    Dim nScrapeModifiers = tDBElement.ScrapeModifiers
-    '                    nScrapeModifiers.DoSearch = False
-    '                    tDBElement.ScrapeModifiers = nScrapeModifiers
-    '                Else
-    '                    logger.Trace(String.Format("[TMDB_Data] [Scraper_TV] [Cancelled] Cancelled by user"))
-    '                    Return New Interfaces.ModuleResult_Data_TVShow With {.Cancelled = True, .Result = Nothing}
-    '                End If
-    '            End Using
-    '        End If
-    '    End If
-
-    '    logger.Trace("[TMDB_Data] [Scraper_TV] [Done]")
-    '    Return New Interfaces.ModuleResult_Data_TVShow With {.Result = nTVShow}
-    'End Function
-
-    'Public Function Scraper_TVSeason(ByRef tDBElement As Database.DBElement) As Interfaces.ModuleResult_Data_TVSeason Implements Interfaces.ScraperModule_Data_TV.Scraper_TVSeason
-    '    logger.Trace("[TMDB_Data] [Scraper_TVSeason] [Start]")
-
-    '    LoadSettings_TV()
-    '    _SpecialSettings_TV.PrefLanguage = tDBElement.Language
-
-    '    Dim nTVSeason As New MediaContainers.MainDetails
-    '    Dim _scraper As New TMDB.Scraper(_SpecialSettings_TV)
-
-    '    Dim FilteredOptions As Structures.ScrapeOptions = Functions.ScrapeOptionsAndAlso(tDBElement.ScrapeOptions, ConfigScrapeOptions_TV)
-
-    '    If Not tDBElement.TVShowDetails.TMDBSpecified AndAlso tDBElement.TVShowDetails.TVDBSpecified Then
-    '        tDBElement.TVShowDetails.TMDB = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB)
-    '    End If
-
-    '    If tDBElement.TVShowDetails.TMDBSpecified Then
-    '        If tDBElement.MainDetails.SeasonSpecified Then
-    '            nTVSeason = _scraper.GetInfo_TVSeason(CInt(tDBElement.TVShowDetails.TMDB), tDBElement.MainDetails.Season, FilteredOptions)
-    '        Else
-    '            logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] Season is not specified"))
-    '            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-    '        End If
-    '        'if still no search result -> exit
-    '        If nTVSeason Is Nothing Then
-    '            logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] No search result found"))
-    '            Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-    '        End If
-    '    Else
-    '        logger.Trace(String.Format("[TMDB_Data] [Scraper_TVSeason] [Abort] No TV Show TMDB ID available"))
-    '        Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = Nothing}
-    '    End If
-
-    '    logger.Trace("[TMDB_Data] [Scraper_TVSeason] [Done]")
-    '    Return New Interfaces.ModuleResult_Data_TVSeason With {.Result = nTVSeason}
-    'End Function
 
     Public Sub SaveSettings()
         'Global
@@ -426,6 +318,7 @@ Public Class Addon
         'TV
         _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_TV.FallBackToEng, , Enums.ContentType.TV)
         _settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_TV.IncludeAdultItems, , Enums.ContentType.TV)
+
         _settings.Save()
     End Sub
 

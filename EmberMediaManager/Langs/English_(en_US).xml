@@ -554,10 +554,10 @@
   <string id="553">File System</string>
   <string id="554">Replace ID field with Boxee Id Field</string>
   <string id="555">Files and Sources</string>
-  <string id="556">Scrapers - Data</string>
-  <string id="557">Scrapers - Images</string>
+  <string id="556">Data</string>
+  <string id="557"></string>
   <string id="558">Wide</string>
-  <string id="559">Scrapers - Trailers</string>
+  <string id="559"></string>
   <string id="560">TV Show Options</string>
   <string id="561">Save YAMJ Compatible Sets to NFO</string>
   <string id="562">Reloading Show</string>
@@ -1157,7 +1157,7 @@
   <string id="1065">Select Landscape</string>
   <string id="1066">Refresh Data</string>
   <string id="1067">DVD</string>
-  <string id="1068">Scrapers - Themes</string>
+  <string id="1068"></string>
   <string id="1069">Select Theme</string>
   <string id="1070">Get Watched State</string>
   <string id="1071">Watched State</string>

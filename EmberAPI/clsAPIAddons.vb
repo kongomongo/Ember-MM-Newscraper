@@ -227,7 +227,7 @@ Public Class AddonsManager
     ''' <remarks>Note that if any module returns a result of breakChain, no further modules are processed</remarks>
     Public Function RunGeneric(ByVal eModuleEventType As Enums.AddonEventType, ByRef _params As List(Of Object), Optional ByVal _singleobjekt As Object = Nothing, Optional ByVal RunOnlyOne As Boolean = False, Optional ByRef DBElement As Database.DBElement = Nothing) As Boolean
         logger.Trace(String.Format("[AddonsManager] [RunGeneric] [Start] <{0}>", eModuleEventType.ToString))
-        Dim ret As Interfaces.AddonResult
+        Dim ret As New Interfaces.AddonResult
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -363,11 +363,11 @@ Public Class AddonsManager
             For Each nAddon In Addons
                 logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Name))
 
-                Dim nAddonResult = nAddon.Addon.Run(tDBElement, Enums.AddonEventType.Search_TVShow, Nothing)
+                Dim nAddonResult = nAddon.Addon.Run(tDBElement, Enums.AddonEventType.Search_Movie, Nothing)
 
                 If nAddonResult.bCancelled Then Return nScrapeResults
 
-                If nAddonResult.SearchResults IsNot Nothing Then
+                If nAddonResult.SearchResults IsNot Nothing AndAlso nAddonResult.SearchResults.Count > 0 Then
                     nScrapeResults.lstData.Add(nAddonResult.ScraperResult_Data)
 
                     'set new informations for following scrapers
@@ -431,7 +431,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Start] {0}", tDBElement.Filename))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.AddonResult
+            Dim ret As New Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
@@ -512,7 +512,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Start] {0}", tDBElement.MainDetails.Title))
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_MovieSet(DBMovieSet, showMessage) Then
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.AddonResult
+        Dim ret As New Interfaces.AddonResult
         Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
         While Not ModulesLoaded
@@ -579,7 +579,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.Filename))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.AddonResult
+            Dim ret As New Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
@@ -652,7 +652,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Start] {0}: Season {1}", tDBElement.TVShowDetails.Title, tDBElement.MainDetails.Season))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.AddonResult
+            Dim ret As New Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
@@ -712,7 +712,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Start] {0}", tDBElement.MainDetails.Title))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.AddonResult
+            Dim ret As New Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
 
             While Not ModulesLoaded
@@ -811,7 +811,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Start] {0}", tDBElement.Filename))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.AddonResult
+            Dim ret As New Interfaces.AddonResult
 
             While Not ModulesLoaded
                 Application.DoEvents()
@@ -862,7 +862,7 @@ Public Class AddonsManager
     Public Function ScrapeImage_MovieSet(ByRef tDBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Start] {0}", tDBElement.MainDetails.Title))
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.AddonResult
+        Dim ret As New Interfaces.AddonResult
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -911,7 +911,7 @@ Public Class AddonsManager
         logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Start] {0}", tDBElement.MainDetails.Title))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-            Dim ret As Interfaces.AddonResult
+            Dim ret As New Interfaces.AddonResult
 
             While Not ModulesLoaded
                 Application.DoEvents()
@@ -999,7 +999,7 @@ Public Class AddonsManager
     Public Function ScrapeTheme_Movie(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Start] {0}", tDBElement.Filename))
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.AddonResult
+        Dim ret As New Interfaces.AddonResult
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -1031,7 +1031,7 @@ Public Class AddonsManager
     Public Function ScrapeTheme_TVShow(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Start] {0}", tDBElement.MainDetails.Title))
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.AddonResult
+        Dim ret As New Interfaces.AddonResult
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -1064,7 +1064,7 @@ Public Class AddonsManager
     Public Function ScrapeTrailer_Movie(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Start] {0}", tDBElement.Filename))
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
-        Dim ret As Interfaces.AddonResult
+        Dim ret As New Interfaces.AddonResult
 
         While Not ModulesLoaded
             Application.DoEvents()
@@ -1532,20 +1532,20 @@ Public Class AddonsManager
 
     End Class
 
-    Public Structure ScrapeResults
+    Public Class ScrapeResults
 
 #Region "Fields"
 
-        Dim bCancelled As Boolean
-        Dim bError As Boolean
-        Dim lstData As List(Of MediaContainers.MainDetails)
-        Dim lstImages As MediaContainers.SearchResultsContainer
-        Dim lstThemes As List(Of MediaContainers.Theme)
-        Dim lstTrailers As List(Of MediaContainers.Trailer)
+        Public bCancelled As Boolean
+        Public bError As Boolean
+        Public lstData As New List(Of MediaContainers.MainDetails)
+        Public lstImages As New MediaContainers.SearchResultsContainer
+        Public lstThemes As New List(Of MediaContainers.Theme)
+        Public lstTrailers As New List(Of MediaContainers.Trailer)
 
 #End Region 'Fields
 
-    End Structure
+    End Class
 
 #End Region 'Nested Types
 
