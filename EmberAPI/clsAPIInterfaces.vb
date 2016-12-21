@@ -39,7 +39,7 @@ Public Class Interfaces
         ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility)
         Property Enabled() As Boolean
         ReadOnly Property IsBusy() As Boolean
-        ReadOnly Property Name() As String
+        ReadOnly Property Shortname() As String
         ReadOnly Property Version() As String
 
 #End Region 'Properties

@@ -1672,7 +1672,7 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnCleanFinished(ByVal sender As String, ByVal data As Object)
             'Finished cleaning of video library
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", _currenthost.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library...") & " OK!", New Bitmap(My.Resources.logo)))
         End Sub
 
         ''' <summary>
@@ -1682,7 +1682,7 @@ Namespace Kodi
         ''' <remarks>just an example for eventhandler</remarks>
         Private Sub VideoLibrary_OnScanFinished(ByVal sender As String, ByVal data As Object)
             'Finished updating video library
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)))
         End Sub
         ''' <summary>
         ''' Scan video library of Kodi host

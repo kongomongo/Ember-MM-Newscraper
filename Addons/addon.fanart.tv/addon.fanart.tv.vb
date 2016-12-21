@@ -31,11 +31,11 @@ Public Class FanartTV
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _name As String = "FanartTV"
+    Private _shortname As String = "Fanart.tv"
+
     Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
-
-    Private _AddonSettings As New AddonSettings
+    Private _addonsettings As New AddonSettings
 
 #End Region 'Fields
 
@@ -107,9 +107,9 @@ Public Class FanartTV
         End Get
     End Property
 
-    Public ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -131,8 +131,8 @@ Public Class FanartTV
         RaiseEvent SettingsChanged()
     End Sub
 
-    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.Addon.Init
-        _assemblyname = sAssemblyName
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
         LoadSettings()
     End Sub
 
@@ -140,11 +140,11 @@ Public Class FanartTV
         LoadSettings()
         Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
-        _settingspanel.txtApiKey.Text = _AddonSettings.APIKey
+        _settingspanel.txtApiKey.Text = _addonsettings.APIKey
 
         'nSettingsPanel.Image = If(Me._ScraperEnabled_Movie, 9, 10)
         nSettingsPanel.ImageIndex = -1
-        nSettingsPanel.Name = _name
+        nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "FanartTV_"
         nSettingsPanel.Text = "FanartTV"
@@ -157,7 +157,7 @@ Public Class FanartTV
 
     Public Sub LoadSettings()
         'Global
-        _AddonSettings.APIKey = _settings.GetStringSetting("APIKey", String.Empty)
+        _addonsettings.APIKey = _settings.GetStringSetting("APIKey", String.Empty)
     End Sub
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
@@ -166,7 +166,7 @@ Public Class FanartTV
 
         LoadSettings()
 
-        Dim _scraper As New Scraper(_AddonSettings)
+        Dim _scraper As New Scraper(_addonsettings)
 
         Select Case eAddonEventType
             Case Enums.AddonEventType.Scrape_Movie
@@ -198,13 +198,13 @@ Public Class FanartTV
     End Function
 
     Public Sub SaveSettings()
-        _settings.SetStringSetting("APIKey", _AddonSettings.APIKey)
+        _settings.SetStringSetting("APIKey", _addonsettings.APIKey)
         _settings.Save()
     End Sub
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         'Global
-        _AddonSettings.APIKey = _settingspanel.txtApiKey.Text
+        _addonsettings.APIKey = _settingspanel.txtApiKey.Text
 
         SaveSettings()
         If bDoDispose Then

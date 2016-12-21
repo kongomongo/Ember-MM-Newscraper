@@ -18,8 +18,8 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Globalization
 Imports NLog
+Imports System.Globalization
 Imports System.Text.RegularExpressions
 
 Public Class NumUtils

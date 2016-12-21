@@ -30,7 +30,8 @@ Public Class Addon
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _name As String = "TMDB"
+    Private _shortname As String = "TMDB"
+
     Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
@@ -140,9 +141,9 @@ Public Class Addon
         End Get
     End Property
 
-    Public ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -164,8 +165,8 @@ Public Class Addon
         RaiseEvent SettingsChanged()
     End Sub
 
-    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.Addon.Init
-        _assemblyname = sAssemblyName
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
         LoadSettings()
     End Sub
 
@@ -184,7 +185,7 @@ Public Class Addon
 
         nSettingsPanel.Image = My.Resources.logo_stacked_blue
         nSettingsPanel.ImageIndex = -1
-        nSettingsPanel.Name = _name
+        nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "TMDB_"
         nSettingsPanel.Text = "TMDB"
@@ -257,7 +258,7 @@ Public Class Addon
                 If tDBElement.TVShowDetails.TMDBSpecified Then
                     iShowID = tDBElement.TVShowDetails.TMDB
                 ElseIf tDBElement.TVShowDetails.TVDBSpecified Then
-                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB)
+                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB, Enums.ContentType.TVShow)
                 End If
                 If Not iShowID = -1 AndAlso tDBElement.MainDetails.SeasonSpecified AndAlso tDBElement.MainDetails.EpisodeSpecified Then
                     nModuleResult = _scraper.ScrapeTVEpisode(iShowID, tDBElement.MainDetails.Season, tDBElement.MainDetails.Episode, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
@@ -269,7 +270,7 @@ Public Class Addon
                 If tDBElement.TVShowDetails.TMDBSpecified Then
                     iShowID = tDBElement.TVShowDetails.TMDB
                 ElseIf tDBElement.TVShowDetails.TVDBSpecified Then
-                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB)
+                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB, Enums.ContentType.TVShow)
                 End If
                 If Not iShowID = -1 AndAlso tDBElement.MainDetails.SeasonSpecified Then
                     nModuleResult = _scraper.Scrape_TVSeason(iShowID, tDBElement.MainDetails.Season, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
@@ -279,7 +280,7 @@ Public Class Addon
                 If tDBElement.TVShowDetails.TMDBSpecified Then
                     iShowID = tDBElement.TVShowDetails.TMDB
                 ElseIf tDBElement.TVShowDetails.TVDBSpecified Then
-                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB)
+                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB, Enums.ContentType.TVShow)
                 End If
                 If Not iShowID = -1 Then
                     nModuleResult = _scraper.ScrapeTVShow(iShowID, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)

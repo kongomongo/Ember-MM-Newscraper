@@ -47,6 +47,8 @@ Public Class Master
     Public Shared eSettings As New Settings
     Public Shared is32Bit As Boolean
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
+    Public Shared ScraperList As New List(Of ScraperProperties)
+    Public Shared SearchEngineList As New List(Of SearchEngineProperties)
 
     Public Shared strVersionOverwrite As String = "1.4.8.0 Alpha 23"
 

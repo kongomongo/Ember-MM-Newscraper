@@ -30,12 +30,12 @@ Public Class Addon
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _name As String = "IMDB"
+    Private _shortname As String = "IMDB"
+
     Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
-
-    Private _AddonSettings As New AddonSettings
-    Private _SpecialSettings_TV As New AddonSettings
+    Private _addonsettings As New AddonSettings
+    Private _addonsettings_TV As New AddonSettings
 
 #End Region 'Fields
 
@@ -121,9 +121,9 @@ Public Class Addon
         End Get
     End Property
 
-    Public ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -145,8 +145,8 @@ Public Class Addon
         RaiseEvent SettingsChanged()
     End Sub
 
-    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.Addon.Init
-        _assemblyname = sAssemblyName
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
         LoadSettings()
     End Sub
 
@@ -155,18 +155,18 @@ Public Class Addon
         Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
 
-        _settingspanel.cbForceTitleLanguage.Text = _AddonSettings.ForceTitleLanguage
-        _settingspanel.chkFallBackworldwide.Checked = _AddonSettings.FallBackWorldwide
-        _settingspanel.chkPartialTitles.Checked = _AddonSettings.SearchPartialTitles
-        _settingspanel.chkPopularTitles.Checked = _AddonSettings.SearchPopularTitles
-        _settingspanel.chkTvTitles.Checked = _AddonSettings.SearchTvTitles
-        _settingspanel.chkVideoTitles.Checked = _AddonSettings.SearchVideoTitles
-        _settingspanel.chkShortTitles.Checked = _AddonSettings.SearchShortTitles
-        _settingspanel.chkStudiowithDistributors.Checked = _AddonSettings.StudioWithDistributors
+        _settingspanel.cbForceTitleLanguage.Text = _addonsettings.ForceTitleLanguage
+        _settingspanel.chkFallBackworldwide.Checked = _addonsettings.FallBackWorldwide
+        _settingspanel.chkPartialTitles.Checked = _addonsettings.SearchPartialTitles
+        _settingspanel.chkPopularTitles.Checked = _addonsettings.SearchPopularTitles
+        _settingspanel.chkTvTitles.Checked = _addonsettings.SearchTvTitles
+        _settingspanel.chkVideoTitles.Checked = _addonsettings.SearchVideoTitles
+        _settingspanel.chkShortTitles.Checked = _addonsettings.SearchShortTitles
+        _settingspanel.chkStudiowithDistributors.Checked = _addonsettings.StudioWithDistributors
 
         nSettingsPanel.Image = My.Resources.logo
         nSettingsPanel.ImageIndex = -1
-        nSettingsPanel.Name = _name
+        nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "IMDB_"
         nSettingsPanel.Text = "IMDB"
@@ -179,14 +179,14 @@ Public Class Addon
 
     Sub LoadSettings()
         'Movie
-        _AddonSettings.FallBackWorldwide = _settings.GetBooleanSetting("FallBackWorldwide", False, Enums.ContentType.Movie)
-        _AddonSettings.ForceTitleLanguage = _settings.GetStringSetting("ForceTitleLanguage", String.Empty, Enums.ContentType.Movie)
-        _AddonSettings.SearchPartialTitles = _settings.GetBooleanSetting("SearchPartialTitles", True, Enums.ContentType.Movie)
-        _AddonSettings.SearchPopularTitles = _settings.GetBooleanSetting("SearchPopularTitles", True, Enums.ContentType.Movie)
-        _AddonSettings.SearchTvTitles = _settings.GetBooleanSetting("SearchTvTitles", False, Enums.ContentType.Movie)
-        _AddonSettings.SearchVideoTitles = _settings.GetBooleanSetting("SearchVideoTitles", False, Enums.ContentType.Movie)
-        _AddonSettings.SearchShortTitles = _settings.GetBooleanSetting("SearchShortTitles", False, Enums.ContentType.Movie)
-        _AddonSettings.StudioWithDistributors = _settings.GetBooleanSetting("StudioWithDistributors", False, Enums.ContentType.Movie)
+        _addonsettings.FallBackWorldwide = _settings.GetBooleanSetting("FallBackWorldwide", False, Enums.ContentType.Movie)
+        _addonsettings.ForceTitleLanguage = _settings.GetStringSetting("ForceTitleLanguage", String.Empty, Enums.ContentType.Movie)
+        _addonsettings.SearchPartialTitles = _settings.GetBooleanSetting("SearchPartialTitles", True, Enums.ContentType.Movie)
+        _addonsettings.SearchPopularTitles = _settings.GetBooleanSetting("SearchPopularTitles", True, Enums.ContentType.Movie)
+        _addonsettings.SearchTvTitles = _settings.GetBooleanSetting("SearchTvTitles", False, Enums.ContentType.Movie)
+        _addonsettings.SearchVideoTitles = _settings.GetBooleanSetting("SearchVideoTitles", False, Enums.ContentType.Movie)
+        _addonsettings.SearchShortTitles = _settings.GetBooleanSetting("SearchShortTitles", False, Enums.ContentType.Movie)
+        _addonsettings.StudioWithDistributors = _settings.GetBooleanSetting("StudioWithDistributors", False, Enums.ContentType.Movie)
     End Sub
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
@@ -195,7 +195,7 @@ Public Class Addon
 
         LoadSettings()
 
-        Dim _scraper As New Scraper(_AddonSettings)
+        Dim _scraper As New Scraper(_addonsettings)
 
         Select Case eAddonEventType
             Case Enums.AddonEventType.Scrape_Movie
@@ -204,15 +204,15 @@ Public Class Addon
                 End If
             Case Enums.AddonEventType.Scrape_TVEpisode
                 If tDBElement.MainDetails.IMDBSpecified Then
-                    nModuleResult.ScraperResult_Data = _scraper.GetTVEpisodeInfo(tDBElement.MainDetails.IMDB, tDBElement.ScrapeOptions)
+                    nModuleResult.ScraperResult_Data = _scraper.GetInfo_TVEpisode(tDBElement.MainDetails.IMDB, tDBElement.ScrapeOptions)
                 ElseIf tDBElement.TVShowDetails.IMDBSpecified AndAlso tDBElement.MainDetails.SeasonSpecified AndAlso tDBElement.MainDetails.EpisodeSpecified Then
-                    nModuleResult.ScraperResult_Data = _scraper.GetTVEpisodeInfo(tDBElement.TVShowDetails.IMDB, tDBElement.MainDetails.Season, tDBElement.MainDetails.Episode, tDBElement.ScrapeOptions)
+                    nModuleResult.ScraperResult_Data = _scraper.GetInfo_TVEpisode(tDBElement.TVShowDetails.IMDB, tDBElement.MainDetails.Season, tDBElement.MainDetails.Episode, tDBElement.ScrapeOptions)
                 Else
                     logger.Trace("[IMDB_Data] [Scraper_TVEpisode] [Abort] No Episode and TV Show IMDB ID available")
                 End If
             Case Enums.AddonEventType.Search_TVShow
                 If tDBElement.MainDetails.IMDBSpecified Then
-                    nModuleResult.ScraperResult_Data = _scraper.GetTVShowInfo(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions, False)
+                    nModuleResult.ScraperResult_Data = _scraper.GetInfo_TVShow(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions, False)
                 End If
             Case Enums.AddonEventType.Scrape_Movie
             Case Enums.AddonEventType.Scrape_TVShow
@@ -224,28 +224,28 @@ Public Class Addon
 
     Public Sub SaveSettings()
         'Movie
-        _settings.SetBooleanSetting("FallBackWorldwide", _AddonSettings.FallBackWorldwide, , Enums.ContentType.Movie)
-        _settings.SetBooleanSetting("SearchPartialTitles", _AddonSettings.SearchPartialTitles, , Enums.ContentType.Movie)
-        _settings.SetBooleanSetting("SearchPopularTitles", _AddonSettings.SearchPopularTitles, , Enums.ContentType.Movie)
-        _settings.SetBooleanSetting("SearchTvTitles", _AddonSettings.SearchTvTitles, , Enums.ContentType.Movie)
-        _settings.SetBooleanSetting("SearchVideoTitles", _AddonSettings.SearchVideoTitles, , Enums.ContentType.Movie)
-        _settings.SetBooleanSetting("SearchShortTitles", _AddonSettings.SearchShortTitles, , Enums.ContentType.Movie)
-        _settings.SetBooleanSetting("StudiowithDistributors", _AddonSettings.StudioWithDistributors, , Enums.ContentType.Movie)
-        _settings.SetStringSetting("ForceTitleLanguage", _AddonSettings.ForceTitleLanguage, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("FallBackWorldwide", _addonsettings.FallBackWorldwide, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("SearchPartialTitles", _addonsettings.SearchPartialTitles, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("SearchPopularTitles", _addonsettings.SearchPopularTitles, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("SearchTvTitles", _addonsettings.SearchTvTitles, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("SearchVideoTitles", _addonsettings.SearchVideoTitles, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("SearchShortTitles", _addonsettings.SearchShortTitles, , Enums.ContentType.Movie)
+        _settings.SetBooleanSetting("StudiowithDistributors", _addonsettings.StudioWithDistributors, , Enums.ContentType.Movie)
+        _settings.SetStringSetting("ForceTitleLanguage", _addonsettings.ForceTitleLanguage, , Enums.ContentType.Movie)
 
         _settings.Save()
     End Sub
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         'Movie
-        _AddonSettings.FallBackWorldwide = _settingspanel.chkFallBackworldwide.Checked
-        _AddonSettings.ForceTitleLanguage = _settingspanel.cbForceTitleLanguage.Text
-        _AddonSettings.SearchPartialTitles = _settingspanel.chkPartialTitles.Checked
-        _AddonSettings.SearchPopularTitles = _settingspanel.chkPopularTitles.Checked
-        _AddonSettings.SearchTvTitles = _settingspanel.chkTvTitles.Checked
-        _AddonSettings.SearchVideoTitles = _settingspanel.chkVideoTitles.Checked
-        _AddonSettings.SearchShortTitles = _settingspanel.chkShortTitles.Checked
-        _AddonSettings.StudioWithDistributors = _settingspanel.chkStudiowithDistributors.Checked
+        _addonsettings.FallBackWorldwide = _settingspanel.chkFallBackworldwide.Checked
+        _addonsettings.ForceTitleLanguage = _settingspanel.cbForceTitleLanguage.Text
+        _addonsettings.SearchPartialTitles = _settingspanel.chkPartialTitles.Checked
+        _addonsettings.SearchPopularTitles = _settingspanel.chkPopularTitles.Checked
+        _addonsettings.SearchTvTitles = _settingspanel.chkTvTitles.Checked
+        _addonsettings.SearchVideoTitles = _settingspanel.chkVideoTitles.Checked
+        _addonsettings.SearchShortTitles = _settingspanel.chkShortTitles.Checked
+        _addonsettings.StudioWithDistributors = _settingspanel.chkStudiowithDistributors.Checked
 
         SaveSettings()
         If bDoDispose Then

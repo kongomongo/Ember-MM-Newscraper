@@ -54,7 +54,7 @@ Public Class MediaInfo
 
 #Region "Methods"
 
-    Public Shared Function ApplyDefaults(ByVal ext As String) As MediaContainers.Fileinfo
+    Public Shared Function ApplyDefaults_Movie(ByVal ext As String) As MediaContainers.Fileinfo
         Dim fi As New MediaContainers.Fileinfo
         For Each m As Settings.MetadataPerType In Master.eSettings.MovieMetadataPerFileType
             If m.FileType = ext Then
@@ -65,7 +65,7 @@ Public Class MediaInfo
         Return Nothing
     End Function
 
-    Public Shared Function ApplyTVDefaults(ByVal ext As String) As MediaContainers.Fileinfo
+    Public Shared Function ApplyDefaults_TVEpisode(ByVal ext As String) As MediaContainers.Fileinfo
         Dim fi As New MediaContainers.Fileinfo
         For Each m As Settings.MetadataPerType In Master.eSettings.TVMetadataPerFileType
             If m.FileType = ext Then
@@ -76,7 +76,7 @@ Public Class MediaInfo
         Return Nothing
     End Function
 
-    Public Shared Sub UpdateMediaInfo(ByRef miMovie As Database.DBElement)
+    Public Shared Sub UpdateMediaInfo_Movie(ByRef miMovie As Database.DBElement)
         Try
             'DON'T clear it out
             'miMovie.Movie.FileInfo = New MediaInfo.Fileinfo
@@ -139,7 +139,7 @@ Public Class MediaInfo
             End If
             If miMovie.MainDetails.FileInfo.StreamDetails.Video.Count = 0 AndAlso miMovie.MainDetails.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miMovie.MainDetails.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaContainers.Fileinfo
-                _mi = MediaInfo.ApplyDefaults(pExt)
+                _mi = MediaInfo.ApplyDefaults_Movie(pExt)
                 If Not _mi Is Nothing Then miMovie.MainDetails.FileInfo = _mi
             End If
 
@@ -148,7 +148,7 @@ Public Class MediaInfo
         End Try
     End Sub
 
-    Public Shared Sub UpdateTVMediaInfo(ByRef miTV As Database.DBElement)
+    Public Shared Sub UpdateMediaInfo_TVEpisode(ByRef miTV As Database.DBElement)
         Try
             'DON't clear it out
             'miTV.TVEp.FileInfo = New MediaInfo.Fileinfo
@@ -210,7 +210,7 @@ Public Class MediaInfo
             End If
             If miTV.MainDetails.FileInfo.StreamDetails.Video.Count = 0 AndAlso miTV.MainDetails.FileInfo.StreamDetails.Audio.Count = 0 AndAlso miTV.MainDetails.FileInfo.StreamDetails.Subtitle.Count = 0 Then
                 Dim _mi As MediaContainers.Fileinfo
-                _mi = MediaInfo.ApplyTVDefaults(pExt)
+                _mi = MediaInfo.ApplyDefaults_TVEpisode(pExt)
                 If Not _mi Is Nothing Then miTV.MainDetails.FileInfo = _mi
             End If
         Catch ex As Exception
@@ -551,7 +551,7 @@ Public Class MediaInfo
         End If
     End Function
 
-    Private Function Count_Get(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
+    Private Function GetCount(ByVal StreamKind As StreamKind, Optional ByVal StreamNumber As UInteger = UInteger.MaxValue) As Integer
         If StreamNumber = UInteger.MaxValue Then
             Return MediaInfo_Count_Get(Handle, CType(StreamKind, UIntPtr), CType(-1, IntPtr))
         Else
@@ -617,7 +617,7 @@ Public Class MediaInfo
 
         'Audio Scan
         Dim AudioStreams As Integer
-        AudioStreams = Count_Get(StreamKind.Audio)
+        AudioStreams = GetCount(StreamKind.Audio)
         Dim miAudio As New MediaContainers.Audio
         Dim aLang As String = String.Empty
         Dim a_Profile As String = String.Empty
@@ -645,7 +645,7 @@ Public Class MediaInfo
 
         'Subtitle Scan
         Dim SubtitleStreams As Integer
-        SubtitleStreams = Count_Get(StreamKind.Text)
+        SubtitleStreams = GetCount(StreamKind.Text)
         Dim miSubtitle As New MediaContainers.Subtitle
 
         Dim sLang As String = String.Empty
@@ -668,7 +668,7 @@ Public Class MediaInfo
         'Video Scan
         Dim miVideo As New MediaContainers.Video
         Dim VideoStreams As Integer
-        VideoStreams = Count_Get(StreamKind.Visual)
+        VideoStreams = GetCount(StreamKind.Visual)
         For v As Integer = 0 To VideoStreams - 1
             miVideo = New MediaContainers.Video
             'cocotus, It's possible that duration returns empty when retrieved from videostream data - so instead use "General" section of MediaInfo.dll to read duration (is always filled!)
@@ -775,9 +775,9 @@ Public Class MediaInfo
 
                     Open(sPath)
 
-                    VideoStreams = Count_Get(StreamKind.Visual)
-                    AudioStreams = Count_Get(StreamKind.Audio)
-                    SubtitleStreams = Count_Get(StreamKind.Text)
+                    VideoStreams = GetCount(StreamKind.Visual)
+                    AudioStreams = GetCount(StreamKind.Audio)
+                    SubtitleStreams = GetCount(StreamKind.Text)
 
                     '2014/07/05 Fix for VIDEO_TS scanning: Use second largest (=alternativeIFOFile) IFO File if largest File doesn't contain needed information (=duration)! (rare case!)
                     If sPath.ToUpper.Contains("VIDEO_TS") Then

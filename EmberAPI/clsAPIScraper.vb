@@ -104,8 +104,162 @@ Public Class Scraper
 
 #End Region 'Methods
 
-#Region "Nested Types"
+End Class
 
-#End Region 'Nested Types
+Public Class ScraperProperties
+
+#Region "Fields"
+
+    Private _lstScraperCapatibilities As New List(Of Enums.ScraperCapatibility)
+    Private _strAssemblyName As String
+    Private _strName As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+    Public Property AssemblyName() As String
+        Get
+            Return _strAssemblyName
+        End Get
+        Set(ByVal value As String)
+            _strAssemblyName = value
+        End Set
+    End Property
+
+    Public Property Name() As String
+        Get
+            Return _strName
+        End Get
+        Set(ByVal value As String)
+            _strName = value
+        End Set
+    End Property
+
+    Public Property ScraperCapatibilities() As List(Of Enums.ScraperCapatibility)
+        Get
+            Return _lstScraperCapatibilities
+        End Get
+        Set(ByVal value As List(Of Enums.ScraperCapatibility))
+            _lstScraperCapatibilities = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New(ByVal strAssemblyName As String, ByVal strName As String, ByVal lstScraperCapatibilities As List(Of Enums.ScraperCapatibility))
+        _lstScraperCapatibilities = lstScraperCapatibilities
+        _strAssemblyName = strAssemblyName
+        _strName = strName
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+#End Region 'Methods
+
+End Class
+
+Public Class SearchEngineProperties
+
+#Region "Fields"
+
+    Private _bSearchMovie As Boolean
+    Private _bSearchMovieset As Boolean
+    Private _bSearchTVEpisode As Boolean
+    Private _bSearchTVSeason As Boolean
+    Private _bSearchTVShow As Boolean
+    Private _strAssemblyName As String
+    Private _strName As String
+
+#End Region 'Fields
+
+#Region "Properties"
+
+    Public Property AssemblyName() As String
+        Get
+            Return _strAssemblyName
+        End Get
+        Set(ByVal value As String)
+            _strAssemblyName = value
+        End Set
+    End Property
+
+    Public Property Name() As String
+        Get
+            Return _strName
+        End Get
+        Set(ByVal value As String)
+            _strName = value
+        End Set
+    End Property
+
+    Public Property SearchMovie() As Boolean
+        Get
+            Return _bSearchMovie
+        End Get
+        Set(ByVal value As Boolean)
+            _bSearchMovie = value
+        End Set
+    End Property
+
+    Public Property SearchMovieSet() As Boolean
+        Get
+            Return _bSearchMovieset
+        End Get
+        Set(ByVal value As Boolean)
+            _bSearchMovieset = value
+        End Set
+    End Property
+
+    Public Property SearchTVEpisode() As Boolean
+        Get
+            Return _bSearchTVEpisode
+        End Get
+        Set(ByVal value As Boolean)
+            _bSearchTVEpisode = value
+        End Set
+    End Property
+
+    Public Property SearchTVSeason() As Boolean
+        Get
+            Return _bSearchTVSeason
+        End Get
+        Set(ByVal value As Boolean)
+            _bSearchTVSeason = value
+        End Set
+    End Property
+
+    Public Property SearchTVShow() As Boolean
+        Get
+            Return _bSearchTVShow
+        End Get
+        Set(ByVal value As Boolean)
+            _bSearchTVShow = value
+        End Set
+    End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New(ByVal strAssemblyName As String, ByVal strName As String, ByVal lstSearchEngineCapatibilities As List(Of Enums.AddonEventType))
+        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_Movie) Then _bSearchMovie = True
+        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_MovieSet) Then _bSearchMovieset = True
+        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_TVEpisode) Then _bSearchTVEpisode = True
+        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_TVSeason) Then _bSearchTVSeason = True
+        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_TVShow) Then _bSearchTVShow = True
+        _strAssemblyName = strAssemblyName
+        _strName = strName
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+#End Region 'Methods
 
 End Class

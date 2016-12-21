@@ -74,7 +74,7 @@ Public Class AddonsManager
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPP", .Name = "Ember Application", .Version = My.Application.Info.Version.ToString()})
         VersionList.Add(New VersionItem With {.AssemblyFileName = "*EmberAPI", .Name = "Ember API", .Version = Functions.EmberAPIVersion()})
         For Each nExternalModule As AddonClass In Addons
-            VersionList.Add(New VersionItem With {.Name = nExternalModule.Addon.Name,
+            VersionList.Add(New VersionItem With {.Name = nExternalModule.Addon.Shortname,
               .AssemblyFileName = nExternalModule.AssemblyFileName,
               .Version = nExternalModule.Addon.Version})
         Next
@@ -128,6 +128,21 @@ Public Class AddonsManager
                         nAddon.AssemblyName = tAssemblyItem.AssemblyName
                         nAddon.AssemblyFileName = tAssemblyItem.Assembly.ManifestModule.Name
                         Addons.Add(nAddon)
+
+                        'add addon to the list of available scrapers
+                        If nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_Movie) OrElse
+                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_MovieSet) OrElse
+                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_TVEpisode) OrElse
+                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_TVSeason) OrElse
+                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_TVShow) Then
+                            Master.ScraperList.Add(New ScraperProperties(nAddon.AssemblyName, nAddon.Addon.Shortname, nAddon.Addon.Capabilities_ScraperCapatibilities))
+                        End If
+
+                        'add addon to the list of available search engines
+                        If nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Search_Movie) OrElse
+                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Search_Movie) Then
+                            Master.SearchEngineList.Add(New SearchEngineProperties(nAddon.AssemblyName, nAddon.Addon.Shortname, nAddon.Addon.Capabilities_AddonEventTypes))
+                        End If
 
                         logger.Info(String.Concat("[AddonsManager] [LoadAddons] Addon loaded: ", nAddon.AssemblyName))
 
@@ -235,15 +250,15 @@ Public Class AddonsManager
 
         Try
             Dim nAddons = Addons.Where(Function(e) e.Addon.Capabilities_AddonEventTypes.Contains(eModuleEventType) AndAlso e.Addon.Enabled)
-            If (nAddons.Count() <= 0) Then
+            If nAddons.Count() <= 0 Then
                 logger.Warn("[AddonsManager] [RunGeneric] No generic modules defined <{0}>", eModuleEventType.ToString)
             Else
                 For Each nAddon In nAddons
                     Try
-                        logger.Trace("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.Addon.Name)
+                        logger.Trace("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.Addon.Shortname)
                         ret = nAddon.Addon.Run(DBElement, eModuleEventType, _params)
                     Catch ex As Exception
-                        logger.Error("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.Addon.Name)
+                        logger.Error("[AddonsManager] [RunGeneric] Run generic module <{0}>", nAddon.Addon.Shortname)
                         logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                     If ret.bBreakChain OrElse RunOnlyOne Then Exit For
@@ -288,7 +303,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [Scrape] [Abort] No addons found")
         Else
             For Each nAddon In Addons
-                logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Shortname))
 
                 Dim nAddonResult = nAddon.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
 
@@ -361,7 +376,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [Scrape] [Abort] No addons found")
         Else
             For Each nAddon In Addons
-                logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [Scrape] [Using] {0}", nAddon.Addon.Shortname))
 
                 Dim nAddonResult = nAddon.Addon.Run(tDBElement, Enums.AddonEventType.Search_Movie, Nothing)
 
@@ -454,7 +469,7 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Using] {0}", _externalScraperModule.Addon.Shortname))
 
                     ret = _externalScraperModule.Addon.Run(oDBMovie, Enums.AddonEventType.Scrape_Movie, Nothing)
 
@@ -536,7 +551,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeData_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.Addon.Shortname))
 
                 ret = _externalScraperModule.Addon.Run(oDBMovieSet, Enums.AddonEventType.Scrape_MovieSet, Nothing)
 
@@ -593,7 +608,7 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_TVEpisode] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Using] {0}", _externalScraperModule.Addon.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Using] {0}", _externalScraperModule.Addon.Shortname))
 
                     ret = _externalScraperModule.Addon.Run(oEpisode, Enums.AddonEventType.Scrape_TVEpisode, Nothing)
 
@@ -666,7 +681,7 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_TVSeason] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Using] {0}", _externalScraperModule.Addon.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVSeason] [Using] {0}", _externalScraperModule.Addon.Shortname))
 
                     ret = _externalScraperModule.Addon.Run(oSeason, Enums.AddonEventType.Scrape_TVSeason, Nothing)
 
@@ -747,7 +762,7 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeData_TVShow] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Using] {0}", _externalScraperModule.Addon.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVShow] [Using] {0}", _externalScraperModule.Addon.Shortname))
 
                     ret = _externalScraperModule.Addon.Run(oShow, Enums.AddonEventType.Scrape_TVShow, Nothing)
 
@@ -821,7 +836,7 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeImage_Movie] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Using] {0}", _externalScraperModule.Addon.Shortname))
                     If QueryScraperCapabilities_Image_Movie(_externalScraperModule, ScrapeModifiers) Then
                         ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
                         If ret.ScraperResult_ImageContainer IsNot Nothing Then
@@ -872,7 +887,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeImage_MovieSet] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.Addon.Shortname))
                 If QueryScraperCapabilities_Image_MovieSet(_externalScraperModule, ScrapeModifiers) Then
                     ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_MovieSet, Nothing)
                     If ret.ScraperResult_ImageContainer IsNot Nothing Then
@@ -952,7 +967,7 @@ Public Class AddonsManager
                 logger.Warn("[AddonsManager] [ScrapeImage_TV] [Abort] No scrapers enabled")
             Else
                 For Each _externalScraperModule In modules
-                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.Addon.Name))
+                    logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Using] {0}", _externalScraperModule.Addon.Shortname))
                     If QueryScraperCapabilities_Image_TV(_externalScraperModule, ScrapeModifiers) Then
                         ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
                         If ret.ScraperResult_ImageContainer IsNot Nothing Then
@@ -1009,7 +1024,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeTheme_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Using] {0}", _externalScraperModule.Addon.Shortname))
                 ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
                 If ret.ScraperResult_Themes IsNot Nothing Then
                     ThemeList.AddRange(ret.ScraperResult_Themes)
@@ -1041,7 +1056,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeTheme_TVShow] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_TVShow] [Using] {0}", _externalScraperModule.Addon.Shortname))
                 ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_TVShow, Nothing)
                 If ret.ScraperResult_Themes IsNot Nothing Then
                     ThemeList.AddRange(ret.ScraperResult_Themes)
@@ -1074,7 +1089,7 @@ Public Class AddonsManager
             logger.Warn("[AddonsManager] [ScrapeTrailer_Movie] [Abort] No scrapers enabled")
         Else
             For Each _externalScraperModule In modules
-                logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.Addon.Name))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Using] {0}", _externalScraperModule.Addon.Shortname))
                 ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movie, Nothing)
                 If ret.ScraperResult_Trailers IsNot Nothing Then
                     TrailerList.AddRange(ret.ScraperResult_Trailers)
@@ -1251,7 +1266,6 @@ Public Class AddonsManager
         Private _MediaTabSelected As Structures.MainTabType
         Private _OpenImageViewer As OpenImageViewer
         Private _TrayMenu As ContextMenuStrip
-
 
 #End Region 'Fields
 
@@ -1552,6 +1566,7 @@ Public Class AddonsManager
     Protected Overrides Sub Finalize()
         MyBase.Finalize()
     End Sub
+
 End Class
 
 Public Class XMLAddonSettings

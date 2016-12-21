@@ -177,6 +177,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="clsAPIIMDB.vb" />
+    <Compile Include="clsAPINotification.vb" />
+    <Compile Include="clsAPIRenamer.vb" />
     <Compile Include="clsAPIScraper.vb" />
     <Compile Include="clsAPITaskManager.vb" />
     <Compile Include="clsAPIThemes.vb" />
@@ -244,7 +246,6 @@
     <Compile Include="XML Serialization\clsXMLLanguageHelp.vb" />
     <Compile Include="XML Serialization\clsXMLLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLRatings.vb" />
-    <Compile Include="XML Serialization\clsXMLSettings.vb" />
     <Compile Include="XML Serialization\clsXMLMovieCertLanguages.vb" />
     <Compile Include="XML Serialization\clsXMLScraperLanguages.vb" />
   </ItemGroup>

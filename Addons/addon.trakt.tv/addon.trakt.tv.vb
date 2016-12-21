@@ -39,7 +39,8 @@ Public Class Addon
 
     Private _assemblyname As String = String.Empty
     Private _enabled As Boolean = False
-    Private _name As String = "Trakt.tv"
+    Private _shortname As String = "Trakt.tv"
+
     Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
@@ -122,9 +123,9 @@ Public Class Addon
         End Get
     End Property
 
-    ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -176,7 +177,7 @@ Public Class Addon
     End Sub
 
     Private Sub Handle_StateChanged(ByVal bEnabled As Boolean)
-        RaiseEvent StateChanged(_name, bEnabled)
+        RaiseEvent StateChanged(_shortname, bEnabled)
     End Sub
 
     Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
@@ -199,7 +200,7 @@ Public Class Addon
         _settingspanel.chkGetWatchedStateScraperSingle_TVEpisode.Checked = _AddonSettings.GetWatchedStateScraperSingle_TVEpisode
 
         SPanel.ImageIndex = If(_enabled, 9, 10)
-        SPanel.Name = _name
+        SPanel.Name = _shortname
         SPanel.Panel = _settingspanel.pnlSettings
         SPanel.Prefix = "Trakt_"
         SPanel.Text = "Trakt.tv"

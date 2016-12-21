@@ -45,7 +45,8 @@ Public Class Addon
 
     Private _assemblyname As String = String.Empty
     Private _enabled As Boolean = False
-    Private _name As String = "Kodi"
+    Private _shortname As String = "Kodi"
+
     Private _settingspanel As frmSettingsPanel
 
     'reflects the current host(s) settings/setup configured in settings, will be filled at module startup from XML settings (and is used to write changes of settings back into XML)
@@ -151,9 +152,9 @@ Public Class Addon
         End Get
     End Property
 
-    ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -314,10 +315,10 @@ Public Class Addon
                                         If Result IsNot Nothing Then
                                             mDBElement.MainDetails.LastPlayed = Result.LastPlayed
                                             mDBElement.MainDetails.PlayCount = Result.PlayCount
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                             getError = True
                                         End If
                                     Else
@@ -353,10 +354,10 @@ Public Class Addon
                                         If Result IsNot Nothing Then
                                             mDBElement.MainDetails.LastPlayed = Result.LastPlayed
                                             mDBElement.MainDetails.PlayCount = Result.PlayCount
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                             getError = True
                                         End If
                                     Else
@@ -393,10 +394,10 @@ Public Class Addon
                                                 If Result IsNot Nothing Then
                                                     tEpisode.MainDetails.LastPlayed = Result.LastPlayed
                                                     tEpisode.MainDetails.PlayCount = Result.PlayCount
-                                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                 Else
                                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", tEpisode.MainDetails.Title))
-                                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tEpisode.MainDetails.Title), Nothing}))
+                                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", tEpisode.MainDetails.Title)))
                                                     getError = True
                                                 End If
                                             Else
@@ -428,10 +429,10 @@ Public Class Addon
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title)))
                                     getError = True
                                 End If
                             Else
@@ -445,10 +446,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -471,10 +472,10 @@ Public Class Addon
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title)))
                                     getError = True
                                 End If
                             Else
@@ -488,10 +489,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -513,10 +514,10 @@ Public Class Addon
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title)))
                                     getError = True
                                 End If
                             Else
@@ -530,10 +531,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1032, "Removal failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -556,10 +557,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -573,10 +574,10 @@ Public Class Addon
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                             getError = True
                                         End If
                                     Else
@@ -604,10 +605,10 @@ Public Class Addon
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
                                 If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _AddonSettings.SendNotifications)) Then
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                     getError = True
                                 End If
                             Else
@@ -621,10 +622,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _AddonSettings.SendNotifications)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -648,10 +649,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -665,10 +666,10 @@ Public Class Addon
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                             getError = True
                                         End If
                                     Else
@@ -697,10 +698,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -714,10 +715,10 @@ Public Class Addon
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                             getError = True
                                         End If
                                     Else
@@ -746,10 +747,10 @@ Public Class Addon
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
                                     If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                         getError = True
                                     End If
                                 Else
@@ -763,10 +764,10 @@ Public Class Addon
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
                                         If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
-                                            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title), Nothing}))
+                                            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1445, "Sync Failed"), ": ", mDBElement.MainDetails.Title)))
                                             getError = True
                                         End If
                                     Else
@@ -808,11 +809,11 @@ Public Class Addon
                                                         mDBElement.MainDetails.PlayCount = Result.PlayCount
                                                         Master.DB.Save_Movie(mDBElement, False, True, False, True, False)
                                                         RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
-                                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                     End If
                                                 Else
                                                     logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
-                                                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                                                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                                                     getError = True
                                                 End If
                                             Else
@@ -831,11 +832,11 @@ Public Class Addon
                                                         mDBElement.MainDetails.PlayCount = Result.PlayCount
                                                         Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
                                                         RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
-                                                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                     End If
                                                 Else
                                                     logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
-                                                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                                                    'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                                                     getError = True
                                                 End If
                                             Else
@@ -856,11 +857,11 @@ Public Class Addon
                                                                 tEpisode.MainDetails.PlayCount = Result.PlayCount
                                                                 Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
                                                                 RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
-                                                                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.MainDetails.Title), New Bitmap(My.Resources.logo)}))
+                                                                Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                             End If
                                                         Else
                                                             logger.Warn("[KodiInterface] [GenericRunCallBack]: Please Scrape In Ember First!")
-                                                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                                                            'ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                                                             getError = True
                                                         End If
                                                     Else
@@ -1297,7 +1298,7 @@ Public Class Addon
         Next
         _settingspanel.cbGetWatchedStateHost.SelectedIndex = _settingspanel.cbGetWatchedStateHost.FindStringExact(_AddonSettings.GetWatchedStateHost)
 
-        SPanel.Name = _name
+        SPanel.Name = _shortname
         SPanel.Text = "Kodi Interface"
         SPanel.Prefix = "Kodi_"
         SPanel.Type = Enums.SettingsPanelType.Addon
@@ -1365,12 +1366,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = mHost, .mInternalType = InternalType.GetPlaycount, .mType = Enums.AddonEventType.Task})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1390,12 +1391,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.AddonEventType.Task})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1418,7 +1419,7 @@ Public Class Addon
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1438,12 +1439,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.AddonEventType.Task})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1462,7 +1463,7 @@ Public Class Addon
                 AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Remove_Movie})
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1481,7 +1482,7 @@ Public Class Addon
                 AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Remove_TVEpisode})
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1500,7 +1501,7 @@ Public Class Addon
                 AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Remove_TVShow})
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1522,12 +1523,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_Movie})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1548,11 +1549,11 @@ Public Class Addon
                     'add job to tasklist and get everything done
                     AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_MovieSet})
                 Else
-                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                    Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1574,12 +1575,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_TVEpisode})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1602,7 +1603,7 @@ Public Class Addon
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1625,7 +1626,7 @@ Public Class Addon
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1647,12 +1648,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_TVShow})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1674,12 +1675,12 @@ Public Class Addon
                         'add job to tasklist and get everything done
                         AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_TVShow})
                     Else
-                        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"error", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1442, "Please Scrape In Ember First!"), Nothing}))
+                        Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                     End If
                 End If
             Next
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1692,12 +1693,12 @@ Public Class Addon
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Host.Label & " | " & Master.eLang.GetString(1450, "Cleaning Video Library..."), New Bitmap(My.Resources.logo)))
 
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.VideoLibrary_Clean, .mType = Enums.AddonEventType.Task})
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1710,12 +1711,12 @@ Public Class Addon
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)))
 
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.VideoLibrary_Update, .mType = Enums.AddonEventType.Task})
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
     ''' <summary>
@@ -1728,12 +1729,12 @@ Public Class Addon
         Dim Host As Host = DirectCast(DirectCast(sender, ToolStripMenuItem).Tag, Host)
         If Host IsNot Nothing Then
             Dim _APIKodi As New Kodi.APIKodi(Host)
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Host.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library..."), New Bitmap(My.Resources.logo)))
 
             'add job to tasklist and get everything done
             AddTask(New KodiTask With {.mHost = Host, .mInternalType = InternalType.GetPlaycount, .mType = Enums.AddonEventType.Task})
         Else
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", Master.eLang.GetString(1447, "No Host Configured!")))
         End If
     End Sub
 
@@ -1856,7 +1857,7 @@ Public Class Addon
     End Sub
 
     Private Sub Handle_StateChanged(ByVal bEnabled As Boolean)
-        RaiseEvent StateChanged(_name, bEnabled)
+        RaiseEvent StateChanged(_shortname, bEnabled)
     End Sub
 
 #End Region 'Methods

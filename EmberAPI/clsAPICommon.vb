@@ -633,7 +633,6 @@ Public Class Enums
         MediaPlayerPlaylistClear_Video = 23
         MediaPlayerStop_Audio = 24
         MediaPlayerStop_Video = 25
-        Notification = 26
         OnBannerSave_Movie = 24
         OnClearArtSave_Movie = 28
         OnClearLogoSave_Movie = 29
@@ -826,6 +825,22 @@ Public Class Enums
         HD1500 = 2
         HD1426 = 3
         Any = 99
+    End Enum
+
+    Public Enum NotificationType As Integer
+        [Error] = 0
+        Info = 1
+        Warn = 2
+        Added_Movie = 3
+        Added_MovieSet = 4
+        Added_TVEpisode = 5
+        Added_TVSeason = 6
+        Added_TVShows = 7
+        Scraped_Movie = 8
+        Scraped_MovieSet = 9
+        Scraped_TVEpisode = 10
+        Scraped_TVSeason = 11
+        Scraped_TVShow = 12
     End Enum
 
     Public Enum ScannerEventType As Integer

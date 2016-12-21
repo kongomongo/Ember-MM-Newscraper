@@ -30,7 +30,7 @@ Public Class VideobusterDE_Trailer
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _name As String = "Videobuster.de"
+    Private _shortname As String = "Videobuster.de"
 
 #End Region 'Fields
 
@@ -77,9 +77,9 @@ Public Class VideobusterDE_Trailer
         End Get
     End Property
 
-    Public ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -101,8 +101,8 @@ Public Class VideobusterDE_Trailer
         RaiseEvent SettingsChanged()
     End Sub
 
-    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.Addon.Init
-        _assemblyname = sAssemblyName
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
     End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
@@ -113,17 +113,20 @@ Public Class VideobusterDE_Trailer
         logger.Trace("[Videobuster.de] [Run] [Start]")
         Dim nModuleResult As New Interfaces.AddonResult
 
-        Dim strTitle As String = String.Empty
-        If tDBElement.MainDetails.TitleSpecified Then
-            strTitle = tDBElement.MainDetails.Title
-        ElseIf tDBElement.MainDetails.OriginalTitleSpecified Then
-            strTitle = tDBElement.MainDetails.OriginalTitle
-        End If
+        Select Case eAddonEventType
+            Case Enums.AddonEventType.Scrape_Movie
+                Dim strTitle As String = String.Empty
+                If tDBElement.MainDetails.TitleSpecified Then
+                    strTitle = tDBElement.MainDetails.Title
+                ElseIf tDBElement.MainDetails.OriginalTitleSpecified Then
+                    strTitle = tDBElement.MainDetails.OriginalTitle
+                End If
 
-        If Not String.IsNullOrEmpty(strTitle) Then
-            Dim _scraper As New Scraper()
-            nModuleResult = _scraper.GetTrailers(strTitle)
-        End If
+                If Not String.IsNullOrEmpty(strTitle) Then
+                    Dim _scraper As New Scraper()
+                    nModuleResult = _scraper.Scrape_Movie(strTitle, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
+                End If
+        End Select
 
         logger.Trace("[Videobuster.de] [Run] [Done]")
         Return nModuleResult

@@ -31,7 +31,8 @@ Public Class Addon
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _name As String = "TVDB"
+    Private _shortname As String = "TVDB"
+
     Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
@@ -108,9 +109,9 @@ Public Class Addon
         End Get
     End Property
 
-    Public ReadOnly Property Name() As String Implements Interfaces.Addon.Name
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
@@ -132,8 +133,8 @@ Public Class Addon
         RaiseEvent SettingsChanged()
     End Sub
 
-    Public Sub Init(ByVal sAssemblyName As String) Implements Interfaces.Addon.Init
-        _assemblyname = sAssemblyName
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
         LoadSettings()
     End Sub
 
@@ -144,7 +145,7 @@ Public Class Addon
         _settingspanel.txtAPIKey.Text = _strPrivateAPIKey
 
         nSettingsPanel.ImageIndex = -1
-        nSettingsPanel.Name = _name
+        nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "TVDB_"
         nSettingsPanel.Text = "TVDB"

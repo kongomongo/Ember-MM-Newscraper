@@ -20,7 +20,6 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.IO
 Imports System.Text.RegularExpressions
 
 Public Class Scraper
@@ -153,16 +152,20 @@ Public Class Scraper
             End If
 
             'Trailer
-            If FilteredOptions.bMainTrailer Then
+            If FilteredOptions.bMainTrailer Then 'todo: proper trailer result
                 'Get first IMDB trailer if possible
-                Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
+                Dim TrailerList As List(Of MediaContainers.Trailer) = IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
                 If TrailerList.Count > 0 Then
-                    Dim sIMDb As New EmberAPI.IMDb.Scraper
+                    Dim sIMDb As New IMDb.Scraper
                     sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
                     If sIMDb.VideoLinks.Count > 0 Then
                         nMovie.Trailer = sIMDb.VideoLinks.FirstOrDefault().Value.URL.ToString
                     End If
                 End If
+                Dim alTrailers = IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
+                For Each tTrailer In alTrailers
+                    tTrailer.Scraper = "IMDB"
+                Next
             End If
 
             'Top250
@@ -421,7 +424,7 @@ mPlot:          'Plot
         End Try
     End Function
 
-    Public Function GetTVEpisodeInfo(ByVal strIMDBID As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
+    Public Function GetInfo_TVEpisode(ByVal strIMDBID As String, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
         If String.IsNullOrEmpty(strIMDBID) OrElse strIMDBID.Length < 2 Then Return Nothing
 
         Dim nTVEpisode As New MediaContainers.MainDetails
@@ -580,7 +583,7 @@ mPlot:          'Plot
         Return nTVEpisode
     End Function
 
-    Public Function GetTVEpisodeInfo(ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByVal iEpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
+    Public Function GetInfo_TVEpisode(ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByVal iEpisodeNumber As Integer, ByRef FilteredOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
         If String.IsNullOrEmpty(strTVShowIMDBID) OrElse iSeasonNumber = -1 OrElse iEpisodeNumber = -1 Then Return Nothing
 
         Dim strTVEpisodeIMDBID As String = String.Empty
@@ -602,7 +605,7 @@ mPlot:          'Plot
                 If rEpisodes.Count > 0 Then
                     For Each tEpisode As Match In rEpisodes
                         If CInt(tEpisode.Groups("EPISODE").Value) = iEpisodeNumber Then
-                            Dim nEpisode As MediaContainers.MainDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
+                            Dim nEpisode As MediaContainers.MainDetails = GetInfo_TVEpisode(tEpisode.Groups("IMDB").Value, FilteredOptions)
                             If nEpisode IsNot Nothing Then
                                 Return nEpisode
                             End If
@@ -615,7 +618,7 @@ mPlot:          'Plot
         Return Nothing
     End Function
 
-    Public Sub GetTVSeasonInfo(ByRef nTVShow As MediaContainers.MainDetails, ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
+    Public Sub GetInfo_TVSeason(ByRef nTVShow As MediaContainers.MainDetails, ByVal strTVShowIMDBID As String, ByVal iSeasonNumber As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByRef FilteredOptions As Structures.ScrapeOptions)
 
         If ScrapeModifiers.withEpisodes Then
             Dim HTML As String
@@ -634,7 +637,7 @@ mPlot:          'Plot
                     Dim rEpisodes As MatchCollection = Regex.Matches(HTML.Substring(D, W - D), TVEPISODE_PATTERN, RegexOptions.Singleline Or RegexOptions.IgnoreCase)
                     If rEpisodes.Count > 0 Then
                         For Each tEpisode As Match In rEpisodes
-                            Dim nEpisode As MediaContainers.MainDetails = GetTVEpisodeInfo(tEpisode.Groups("IMDB").Value, FilteredOptions)
+                            Dim nEpisode As MediaContainers.MainDetails = GetInfo_TVEpisode(tEpisode.Groups("IMDB").Value, FilteredOptions)
                             If nEpisode IsNot Nothing Then
                                 nTVShow.KnownEpisodes.Add(nEpisode)
                             End If
@@ -651,7 +654,7 @@ mPlot:          'Plot
     ''' <param name="GetPoster">Scrape posters for the tv show?</param>
     ''' <param name="Options">Module settings<param>
     ''' <returns>True: success, false: no success</returns>
-    Public Function GetTVShowInfo(ByVal strID As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
+    Public Function GetInfo_TVShow(ByVal strID As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
         If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing
 
         Try
@@ -896,7 +899,7 @@ mPlot:          'Plot
                             For Each tSeason As Match In rSeasons
                                 Dim iSeason As Integer = -1
                                 If Integer.TryParse(tSeason.Groups("name").Value, iSeason) Then
-                                    GetTVSeasonInfo(nTVShow, nTVShow.IMDB, iSeason, ScrapeModifiers, FilteredOptions)
+                                    GetInfo_TVSeason(nTVShow, nTVShow.IMDB, iSeason, ScrapeModifiers, FilteredOptions)
                                     If ScrapeModifiers.withSeasons Then
                                         nTVShow.KnownSeasons.Add(New MediaContainers.MainDetails With {.Season = iSeason})
                                     End If
@@ -914,36 +917,6 @@ mPlot:          'Plot
         End Try
 
         Return Nothing
-    End Function
-
-    Public Function GetMovieStudios(ByVal strID As String) As List(Of String)
-        Dim alStudio As New List(Of String)
-        If (String.IsNullOrEmpty(strID)) Then
-            logger.Warn("Attempting to GetMovieStudios with invalid ID <{0}>", strID)
-            Return alStudio
-        End If
-        Dim HTML As String
-        Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
-        intHTTP.Dispose()
-        intHTTP = Nothing
-
-        If (String.IsNullOrEmpty(HTML)) Then
-            logger.Warn("IMDB Query returned no results for ID of <{0}>", strID)
-            Return alStudio
-        End If
-        Dim D, W As Integer
-
-        D = HTML.IndexOf("<b class=""blackcatheader"">Production Companies</b>")
-        If D > 0 Then W = HTML.IndexOf("</ul>", D)
-        If D > 0 AndAlso W > 0 Then
-            Dim Ps = From P1 In Regex.Matches(HTML.Substring(D, W - D), HREF_PATTERN)
-                     Where Not DirectCast(P1, Match).Groups("name").ToString = String.Empty
-                     Select Studio = HttpUtility.HtmlDecode(DirectCast(P1, Match).Groups("name").ToString)
-            alStudio.AddRange(Ps.ToArray)
-        End If
-
-        Return alStudio
     End Function
 
     Private Function CleanTitle(ByVal sString As String) As String
@@ -1016,7 +989,7 @@ mPlot:          'Plot
         Return Regex.Match(strObj, IMDB_ID_REGEX).ToString
     End Function
 
-    Private Function SearchMovie(ByVal sMovieTitle As String, ByVal sMovieYear As String) As List(Of MediaContainers.MainDetails)
+    Private Function Search_Movie(ByVal sMovieTitle As String, ByVal sMovieYear As String) As List(Of MediaContainers.MainDetails)
 
         Dim sMovie As String = String.Concat(sMovieTitle, " ", If(Not String.IsNullOrEmpty(sMovieYear), String.Concat("(", sMovieYear, ")"), String.Empty))
 
@@ -1169,7 +1142,7 @@ mPlot:          'Plot
         Return nSearchResults
     End Function
 
-    Private Function SearchTVShow(ByVal sShowTitle As String) As List(Of MediaContainers.MainDetails)
+    Private Function Search_TVShow(ByVal sShowTitle As String) As List(Of MediaContainers.MainDetails)
         Dim sShow As String = sShowTitle
 
         Dim nSearchResults As New List(Of MediaContainers.MainDetails)

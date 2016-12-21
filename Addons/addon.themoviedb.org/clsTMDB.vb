@@ -83,17 +83,17 @@ Public Class Scraper
             If (tScrapeModifiers.MainExtrafanarts OrElse tScrapeModifiers.MainExtrathumbs OrElse tScrapeModifiers.MainFanart) AndAlso Results.Backdrops IsNot Nothing Then
                 For Each tImage In Results.Backdrops
                     nImagesContainer.MainFanarts.Add(New MediaContainers.Image With {
-                                                         .Height = tImage.Height.ToString,
-                                                         .Likes = 0,
-                                                         .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
-                                                         .Scraper = "TMDB",
-                                                         .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
-                                                         .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
-                                                         .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w300" & tImage.FilePath,
-                                                         .VoteAverage = tImage.VoteAverage.ToString,
-                                                         .VoteCount = tImage.VoteCount,
-                                                         .Width = tImage.Width.ToString
-                                                         })
+                                                     .Height = tImage.Height.ToString,
+                                                     .Likes = 0,
+                                                     .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                                     .Scraper = "TMDB",
+                                                     .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                                     .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                                     .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w300" & tImage.FilePath,
+                                                     .VoteAverage = tImage.VoteAverage.ToString,
+                                                     .VoteCount = tImage.VoteCount,
+                                                     .Width = tImage.Width.ToString
+                                                     })
                 Next
             End If
 
@@ -101,17 +101,17 @@ Public Class Scraper
             If tScrapeModifiers.MainPoster AndAlso Results.Posters IsNot Nothing Then
                 For Each tImage In Results.Posters
                     nImagesContainer.MainPosters.Add(New MediaContainers.Image With {
-                                                         .Height = tImage.Height.ToString,
-                                                         .Likes = 0,
-                                                         .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
-                                                         .Scraper = "TMDB",
-                                                         .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
-                                                         .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
-                                                         .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                                         .VoteAverage = tImage.VoteAverage.ToString,
-                                                         .VoteCount = tImage.VoteCount,
-                                                         .Width = tImage.Width.ToString
-                                                         })
+                                                     .Height = tImage.Height.ToString,
+                                                     .Likes = 0,
+                                                     .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                                     .Scraper = "TMDB",
+                                                     .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                                     .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                                     .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                                     .VoteAverage = tImage.VoteAverage.ToString,
+                                                     .VoteCount = tImage.VoteCount,
+                                                     .Width = tImage.Width.ToString
+                                                     })
                 Next
             End If
 
@@ -139,17 +139,17 @@ Public Class Scraper
             If tScrapeModifiers.MainFanart AndAlso Result.Images.Backdrops IsNot Nothing Then
                 For Each tImage In Result.Images.Backdrops
                     nImagesContainer.MainFanarts.Add(New MediaContainers.Image With {
-                                                         .Height = tImage.Height.ToString,
-                                                         .Likes = 0,
-                                                         .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
-                                                         .Scraper = "TMDB",
-                                                         .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
-                                                         .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
-                                                         .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w300" & tImage.FilePath,
-                                                         .VoteAverage = tImage.VoteAverage.ToString,
-                                                         .VoteCount = tImage.VoteCount,
-                                                         .Width = tImage.Width.ToString
-                                                         })
+                                                     .Height = tImage.Height.ToString,
+                                                     .Likes = 0,
+                                                     .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                                     .Scraper = "TMDB",
+                                                     .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                                     .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                                     .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w300" & tImage.FilePath,
+                                                     .VoteAverage = tImage.VoteAverage.ToString,
+                                                     .VoteCount = tImage.VoteCount,
+                                                     .Width = tImage.Width.ToString
+                                                     })
                 Next
             End If
 
@@ -157,17 +157,17 @@ Public Class Scraper
             If tScrapeModifiers.MainPoster AndAlso Result.Images.Posters IsNot Nothing Then
                 For Each tImage In Result.Images.Posters
                     nImagesContainer.MainPosters.Add(New MediaContainers.Image With {
-                                                         .Height = tImage.Height.ToString,
-                                                         .Likes = 0,
-                                                         .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
-                                                         .Scraper = "TMDB",
-                                                         .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
-                                                         .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
-                                                         .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                                         .VoteAverage = tImage.VoteAverage.ToString,
-                                                         .VoteCount = tImage.VoteCount,
-                                                         .Width = tImage.Width.ToString
-                                                         })
+                                                     .Height = tImage.Height.ToString,
+                                                     .Likes = 0,
+                                                     .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                                     .Scraper = "TMDB",
+                                                     .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                                     .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                                     .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                                     .VoteAverage = tImage.VoteAverage.ToString,
+                                                     .VoteCount = tImage.VoteCount,
+                                                     .Width = tImage.Width.ToString
+                                                     })
                 Next
             End If
 
@@ -184,18 +184,18 @@ Public Class Scraper
                         If tScrapeModifiers.SeasonPoster AndAlso Result_Season.Images.Posters IsNot Nothing Then
                             For Each tImage In Result_Season.Images.Posters
                                 nImagesContainer.SeasonPosters.Add(New MediaContainers.Image With {
-                                                                       .Height = tImage.Height.ToString,
-                                                                       .Likes = 0,
-                                                                       .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
-                                                                       .Scraper = "TMDB",
-                                                                       .Season = tSeason.SeasonNumber,
-                                                                       .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
-                                                                       .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
-                                                                       .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                                                       .VoteAverage = tImage.VoteAverage.ToString,
-                                                                       .VoteCount = tImage.VoteCount,
-                                                                       .Width = tImage.Width.ToString
-                                                                       })
+                                                                   .Height = tImage.Height.ToString,
+                                                                   .Likes = 0,
+                                                                   .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                                                   .Scraper = "TMDB",
+                                                                   .Season = tSeason.SeasonNumber,
+                                                                   .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                                                   .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                                                   .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                                                   .VoteAverage = tImage.VoteAverage.ToString,
+                                                                   .VoteCount = tImage.VoteCount,
+                                                                   .Width = tImage.Width.ToString
+                                                                   })
                             Next
                         End If
 
@@ -205,12 +205,12 @@ Public Class Scraper
                                 'EpisodePoster
                                 If tScrapeModifiers.EpisodePoster AndAlso tEpisode.StillPath IsNot Nothing Then
                                     nImagesContainer.EpisodePosters.Add(New MediaContainers.Image With {
-                                                                            .Episode = tEpisode.EpisodeNumber,
-                                                                            .Scraper = "TMDB",
-                                                                            .Season = tEpisode.SeasonNumber,
-                                                                            .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tEpisode.StillPath,
-                                                                            .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tEpisode.StillPath
-                                                                            })
+                                                                        .Episode = tEpisode.EpisodeNumber,
+                                                                        .Scraper = "TMDB",
+                                                                        .Season = tEpisode.SeasonNumber,
+                                                                        .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tEpisode.StillPath,
+                                                                        .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tEpisode.StillPath
+                                                                        })
                                 End If
                             Next
                         End If
@@ -249,19 +249,19 @@ Public Class Scraper
             If tScrapeModifiers.EpisodePoster AndAlso Results.Stills IsNot Nothing Then
                 For Each tImage In Results.Stills
                     nImagesContainer.EpisodePosters.Add(New MediaContainers.Image With {
-                                                            .Episode = iEpisode,
-                                                            .Height = tImage.Height.ToString,
-                                                            .Likes = 0,
-                                                            .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
-                                                            .Scraper = "TMDB",
-                                                            .Season = iSeason,
-                                                            .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
-                                                            .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
-                                                            .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
-                                                            .VoteAverage = tImage.VoteAverage.ToString,
-                                                            .VoteCount = tImage.VoteCount,
-                                                            .Width = tImage.Width.ToString
-                                                            })
+                                                        .Episode = iEpisode,
+                                                        .Height = tImage.Height.ToString,
+                                                        .Likes = 0,
+                                                        .LongLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(tImage.Iso_639_1)),
+                                                        .Scraper = "TMDB",
+                                                        .Season = iSeason,
+                                                        .ShortLang = If(String.IsNullOrEmpty(tImage.Iso_639_1), String.Empty, tImage.Iso_639_1),
+                                                        .URLOriginal = _TMDBApiG.Config.Images.BaseUrl & "original" & tImage.FilePath,
+                                                        .URLThumb = _TMDBApiG.Config.Images.BaseUrl & "w185" & tImage.FilePath,
+                                                        .VoteAverage = tImage.VoteAverage.ToString,
+                                                        .VoteCount = tImage.VoteCount,
+                                                        .Width = tImage.Width.ToString
+                                                        })
                 Next
             End If
 
@@ -272,27 +272,48 @@ Public Class Scraper
         Return nImagesContainer
     End Function
 
-    Public Function GetInfo_Movie(ByVal strID As String, ByVal tScrapeOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
+    Public Function GetInfo_Movie(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
         If String.IsNullOrEmpty(strID) Then Return Nothing
 
-        Dim nMovie As New MediaContainers.MainDetails
+        Dim nMainDetails As New MediaContainers.MainDetails
+        Dim nTrailers As New List(Of MediaContainers.Trailer)
 
         Dim APIResult As Task(Of TMDbLib.Objects.Movies.Movie)
         Dim APIResultE As Task(Of TMDbLib.Objects.Movies.Movie)
 
         If strID.ToLower.StartsWith("tt") Then
             'search movie by IMDB ID
-            APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+            APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(
+                                     strID,
+                                     TMDbLib.Objects.Movies.MovieMethods.Credits Or
+                                     TMDbLib.Objects.Movies.MovieMethods.Releases Or
+                                     TMDbLib.Objects.Movies.MovieMethods.Videos
+                                     ))
             If _AddonSettings.FallBackToEng Then
-                APIResultE = Task.Run(Function() _TMDBApiE.GetMovieAsync(strID, TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+                APIResultE = Task.Run(Function() _TMDBApiE.GetMovieAsync(
+                                          strID,
+                                          TMDbLib.Objects.Movies.MovieMethods.Credits Or
+                                          TMDbLib.Objects.Movies.MovieMethods.Releases Or
+                                          TMDbLib.Objects.Movies.MovieMethods.Videos
+                                          ))
             Else
                 APIResultE = APIResult
             End If
         Else
             'search movie by TMDB ID
-            APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+            APIResult = Task.Run(Function() _TMDBApi.GetMovieAsync(
+                                     CInt(strID),
+                                     TMDbLib.Objects.Movies.MovieMethods.Credits Or
+                                     TMDbLib.Objects.Movies.MovieMethods.Releases Or
+                                     TMDbLib.Objects.Movies.MovieMethods.Videos
+                                     ))
             If _AddonSettings.FallBackToEng Then
-                APIResultE = Task.Run(Function() _TMDBApiE.GetMovieAsync(CInt(strID), TMDbLib.Objects.Movies.MovieMethods.Credits Or TMDbLib.Objects.Movies.MovieMethods.Releases Or TMDbLib.Objects.Movies.MovieMethods.Videos))
+                APIResultE = Task.Run(Function() _TMDBApiE.GetMovieAsync(
+                                          CInt(strID),
+                                          TMDbLib.Objects.Movies.MovieMethods.Credits Or
+                                          TMDbLib.Objects.Movies.MovieMethods.Releases Or
+                                          TMDbLib.Objects.Movies.MovieMethods.Videos
+                                          ))
             Else
                 APIResultE = APIResult
             End If
@@ -307,22 +328,22 @@ Public Class Scraper
             Return Nothing
         End If
 
-        nMovie.Scrapersource = "TMDB"
+        nMainDetails.Scrapersource = "TMDB"
 
         'IDs
-        nMovie.TMDB = Result.Id
-        If Result.ImdbId IsNot Nothing Then nMovie.IMDB = Result.ImdbId
+        nMainDetails.TMDB = Result.Id
+        If Result.ImdbId IsNot Nothing Then nMainDetails.IMDB = Result.ImdbId
 
         'Cast (Actors)
         If tScrapeOptions.bMainActors Then
             If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.Movies.Cast In Result.Credits.Cast
-                    nMovie.Actors.Add(New MediaContainers.Person With {
-                                          .Name = aCast.Name,
-                                          .Role = aCast.Character,
-                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                          .TMDB = CStr(aCast.Id)
-                                          })
+                    nMainDetails.Actors.Add(New MediaContainers.Person With {
+                                      .Name = aCast.Name,
+                                      .Role = aCast.Character,
+                                      .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                      .TMDB = CStr(aCast.Id)
+                                      })
                 Next
             End If
         End If
@@ -334,7 +355,7 @@ Public Class Scraper
                     If Not String.IsNullOrEmpty(cCountry.Certification) Then
                         Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = cCountry.Iso_3166_1.ToLower)
                         If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                            nMovie.Certifications.Add(String.Concat(CertificationLanguage.name, ":", cCountry.Certification))
+                            nMainDetails.Certifications.Add(String.Concat(CertificationLanguage.name, ":", cCountry.Certification))
                         Else
                             logger.Warn("Unhandled certification language encountered: {0}", cCountry.Iso_3166_1.ToLower)
                         End If
@@ -347,22 +368,24 @@ Public Class Scraper
         If tScrapeOptions.bMainCollectionID Then
             If Result.BelongsToCollection Is Nothing Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.BelongsToCollection IsNot Nothing Then
-                    nMovie.AddSet(New MediaContainers.SetDetails With {
-                                      .ID = -1,
-                                      .Order = -1,
-                                      .Plot = String.Empty,
-                                      .Title = ResultE.BelongsToCollection.Name,
-                                      .TMDB = ResultE.BelongsToCollection.Id})
-                    nMovie.TMDBColID = ResultE.BelongsToCollection.Id
-                End If
-            Else
-                nMovie.AddSet(New MediaContainers.SetDetails With {
+                    nMainDetails.AddSet(New MediaContainers.SetDetails With {
                                   .ID = -1,
                                   .Order = -1,
                                   .Plot = String.Empty,
                                   .Title = ResultE.BelongsToCollection.Name,
-                                  .TMDB = ResultE.BelongsToCollection.Id})
-                nMovie.TMDBColID = Result.BelongsToCollection.Id
+                                  .TMDB = ResultE.BelongsToCollection.Id
+                                  })
+                    nMainDetails.TMDBColID = ResultE.BelongsToCollection.Id
+                End If
+            Else
+                nMainDetails.AddSet(New MediaContainers.SetDetails With {
+                              .ID = -1,
+                              .Order = -1,
+                              .Plot = String.Empty,
+                              .Title = ResultE.BelongsToCollection.Name,
+                              .TMDB = ResultE.BelongsToCollection.Id
+                              })
+                nMainDetails.TMDBColID = Result.BelongsToCollection.Id
             End If
         End If
 
@@ -370,7 +393,7 @@ Public Class Scraper
         If tScrapeOptions.bMainCountries Then
             If Result.ProductionCountries IsNot Nothing AndAlso Result.ProductionCountries.Count > 0 Then
                 For Each aContry As TMDbLib.Objects.Movies.ProductionCountry In Result.ProductionCountries
-                    nMovie.Countries.Add(aContry.Name)
+                    nMainDetails.Countries.Add(aContry.Name)
                 Next
             End If
         End If
@@ -380,10 +403,10 @@ Public Class Scraper
             If Result.Credits IsNot Nothing AndAlso Result.Credits.Crew IsNot Nothing Then
                 For Each aCrew As TMDbLib.Objects.General.Crew In Result.Credits.Crew
                     If tScrapeOptions.bMainDirectors AndAlso aCrew.Department = "Directing" AndAlso aCrew.Job = "Director" Then
-                        nMovie.Directors.Add(aCrew.Name)
+                        nMainDetails.Directors.Add(aCrew.Name)
                     End If
                     If tScrapeOptions.bMainWriters AndAlso aCrew.Department = "Writing" AndAlso (aCrew.Job = "Author" OrElse aCrew.Job = "Screenplay" OrElse aCrew.Job = "Writer") Then
-                        nMovie.Credits.Add(aCrew.Name)
+                        nMainDetails.Credits.Add(aCrew.Name)
                     End If
                 Next
             End If
@@ -402,7 +425,7 @@ Public Class Scraper
 
             If aGenres IsNot Nothing Then
                 For Each tGenre As TMDbLib.Objects.General.Genre In aGenres
-                    nMovie.Genres.Add(tGenre.Name)
+                    nMainDetails.Genres.Add(tGenre.Name)
                 Next
             End If
         End If
@@ -411,10 +434,10 @@ Public Class Scraper
         If tScrapeOptions.bMainOriginalTitle Then
             If Result.OriginalTitle Is Nothing OrElse (Result.OriginalTitle IsNot Nothing AndAlso String.IsNullOrEmpty(Result.OriginalTitle)) Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.OriginalTitle IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.OriginalTitle) Then
-                    nMovie.OriginalTitle = ResultE.OriginalTitle
+                    nMainDetails.OriginalTitle = ResultE.OriginalTitle
                 End If
             Else
-                nMovie.OriginalTitle = Result.OriginalTitle
+                nMainDetails.OriginalTitle = Result.OriginalTitle
             End If
         End If
 
@@ -422,17 +445,17 @@ Public Class Scraper
         If tScrapeOptions.bMainPlot Then
             If Result.Overview Is Nothing OrElse (Result.Overview IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Overview)) Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.Overview IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Overview) Then
-                    nMovie.Plot = ResultE.Overview
+                    nMainDetails.Plot = ResultE.Overview
                 End If
             Else
-                nMovie.Plot = Result.Overview
+                nMainDetails.Plot = Result.Overview
             End If
         End If
 
         'Rating
         If tScrapeOptions.bMainRating Then
-            nMovie.Rating = CStr(Result.VoteAverage)
-            nMovie.Votes = CStr(Result.VoteCount)
+            nMainDetails.Rating = CStr(Result.VoteAverage)
+            nMainDetails.Votes = CStr(Result.VoteCount)
         End If
 
         'ReleaseDate
@@ -449,9 +472,9 @@ Public Class Scraper
                 Dim RelDate As Date
                 If Date.TryParse(ScrapedDate, RelDate) Then
                     'always save date in same date format not depending on users language setting!
-                    nMovie.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
+                    nMainDetails.ReleaseDate = RelDate.ToString("yyyy-MM-dd")
                 Else
-                    nMovie.ReleaseDate = ScrapedDate
+                    nMainDetails.ReleaseDate = ScrapedDate
                 End If
             End If
         End If
@@ -460,10 +483,10 @@ Public Class Scraper
         If tScrapeOptions.bMainRuntime Then
             If Result.Runtime Is Nothing OrElse Result.Runtime = 0 Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.Runtime IsNot Nothing Then
-                    nMovie.Runtime = CStr(ResultE.Runtime)
+                    nMainDetails.Runtime = CStr(ResultE.Runtime)
                 End If
             Else
-                nMovie.Runtime = CStr(Result.Runtime)
+                nMainDetails.Runtime = CStr(Result.Runtime)
             End If
         End If
 
@@ -471,7 +494,7 @@ Public Class Scraper
         If tScrapeOptions.bMainStudios Then
             If Result.ProductionCompanies IsNot Nothing AndAlso Result.ProductionCompanies.Count > 0 Then
                 For Each cStudio In Result.ProductionCompanies
-                    nMovie.Studios.Add(cStudio.Name)
+                    nMainDetails.Studios.Add(cStudio.Name)
                 Next
             End If
         End If
@@ -480,10 +503,10 @@ Public Class Scraper
         If tScrapeOptions.bMainTagline Then
             If Result.Tagline Is Nothing OrElse (Result.Tagline IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Tagline)) Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.Tagline IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Tagline) Then
-                    nMovie.Tagline = ResultE.Tagline
+                    nMainDetails.Tagline = ResultE.Tagline
                 End If
             Else
-                nMovie.Tagline = Result.Tagline
+                nMainDetails.Tagline = Result.Tagline
             End If
         End If
 
@@ -491,15 +514,15 @@ Public Class Scraper
         If tScrapeOptions.bMainTitle Then
             If Result.Title Is Nothing OrElse (Result.Title IsNot Nothing AndAlso String.IsNullOrEmpty(Result.Title)) Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.Title IsNot Nothing AndAlso Not String.IsNullOrEmpty(ResultE.Title) Then
-                    nMovie.Title = ResultE.Title
+                    nMainDetails.Title = ResultE.Title
                 End If
             Else
-                nMovie.Title = Result.Title
+                nMainDetails.Title = Result.Title
             End If
         End If
 
         'Trailer
-        If tScrapeOptions.bMainTrailer Then
+        If tScrapeOptions.bMainTrailer OrElse tScrapeModifiers.MainTrailer Then
             Dim aTrailers As List(Of TMDbLib.Objects.General.Video) = Nothing
             If Result.Videos Is Nothing OrElse (Result.Videos IsNot Nothing AndAlso Result.Videos.Results.Count = 0) Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.Videos IsNot Nothing AndAlso ResultE.Videos.Results.Count > 0 Then
@@ -510,10 +533,26 @@ Public Class Scraper
             End If
 
             If aTrailers IsNot Nothing AndAlso aTrailers.Count > 0 Then
-                For Each tTrailer In aTrailers
-                    If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key) Then
-                        nMovie.Trailer = "http://www.youtube.com/watch?hd=1&v=" & tTrailer.Key
+                For Each nTrailer In aTrailers
+                    If YouTube.Scraper.IsAvailable("http://www.youtube.com/watch?hd=1&v=" & nTrailer.Key) Then
+                        nMainDetails.Trailer = "http://www.youtube.com/watch?hd=1&v=" & nTrailer.Key
                         Exit For
+                    End If
+                Next
+
+                For Each nTrailer In aTrailers.Where(Function(f) f.Site = "YouTube")
+                    Dim tLink As String = String.Format("http://www.youtube.com/watch?v={0}", nTrailer.Key)
+                    If YouTube.Scraper.IsAvailable(tLink) Then
+                        Dim tName As String = YouTube.Scraper.GetVideoTitle(tLink)
+                        nTrailers.Add(New MediaContainers.Trailer With {
+                                           .LongLang = If(String.IsNullOrEmpty(nTrailer.Iso_639_1), String.Empty, Localization.ISOGetLangByCode2(nTrailer.Iso_639_1)),
+                                           .Quality = GetVideoQuality(nTrailer.Size),
+                                           .Scraper = "TMDB",
+                                           .ShortLang = If(String.IsNullOrEmpty(nTrailer.Iso_639_1), String.Empty, nTrailer.Iso_639_1),
+                                           .Source = nTrailer.Site,
+                                           .Title = tName,
+                                           .Type = GetVideoType(nTrailer.Type),
+                                           .URLWebsite = tLink})
                     End If
                 Next
             End If
@@ -523,14 +562,14 @@ Public Class Scraper
         If tScrapeOptions.bMainYear Then
             If Result.ReleaseDate Is Nothing OrElse (Result.ReleaseDate IsNot Nothing AndAlso String.IsNullOrEmpty(CStr(Result.ReleaseDate))) Then
                 If _AddonSettings.FallBackToEng AndAlso ResultE.ReleaseDate IsNot Nothing AndAlso Not String.IsNullOrEmpty(CStr(ResultE.ReleaseDate)) Then
-                    nMovie.Year = CStr(ResultE.ReleaseDate.Value.Year)
+                    nMainDetails.Year = CStr(ResultE.ReleaseDate.Value.Year)
                 End If
             Else
-                nMovie.Year = CStr(Result.ReleaseDate.Value.Year)
+                nMainDetails.Year = CStr(Result.ReleaseDate.Value.Year)
             End If
         End If
 
-        Return nMovie
+        Return New Interfaces.AddonResult With {.ScraperResult_Data = nMainDetails, .ScraperResult_Trailers = nTrailers}
     End Function
 
     Public Function GetInfo_MovieSet(ByVal strID As String, ByVal tScrapeOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
@@ -603,7 +642,12 @@ Public Class Scraper
 
         For Each aSeason As TMDbLib.Objects.Search.SearchTvSeason In ShowInfo.Seasons
             Dim seasonAPIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
-            seasonAPIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(iShowID, aSeason.SeasonNumber, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
+            seasonAPIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(
+                                           iShowID,
+                                           aSeason.SeasonNumber,
+                                           TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or
+                                           TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds
+                                           ))
 
             Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = seasonAPIResult.Result
             Dim EpisodeList As IEnumerable(Of TMDbLib.Objects.Search.TvSeasonEpisode) = SeasonInfo.Episodes.Where(Function(f) CBool(f.AirDate = CDate(strAired)))
@@ -619,7 +663,13 @@ Public Class Scraper
 
     Public Function GetInfo_TVEpisode(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal tScrapeOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
         Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvEpisode)
-        APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeAsync(iShowID, iSeason, iEpisode, TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds))
+        APIResult = Task.Run(Function() _TMDBApi.GetTvEpisodeAsync(
+                                 iShowID,
+                                 iSeason,
+                                 iEpisode,
+                                 TMDbLib.Objects.TvShows.TvEpisodeMethods.Credits Or
+                                 TMDbLib.Objects.TvShows.TvEpisodeMethods.ExternalIds
+                                 ))
 
         If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing Then
             Dim EpisodeInfo As TMDbLib.Objects.TvShows.TvEpisode = APIResult.Result
@@ -661,10 +711,12 @@ Public Class Scraper
         If tScrapeOptions.bEpisodeActors Then
             If tEpisodeInfo.Credits IsNot Nothing AndAlso tEpisodeInfo.Credits.Cast IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.TvShows.Cast In tEpisodeInfo.Credits.Cast
-                    nTVEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                           .Role = aCast.Character,
-                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .TMDB = CStr(aCast.Id)})
+                    nTVEpisode.Actors.Add(New MediaContainers.Person With {
+                                          .Name = aCast.Name,
+                                          .Role = aCast.Character,
+                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                          .TMDB = CStr(aCast.Id)
+                                          })
                 Next
             End If
         End If
@@ -703,10 +755,12 @@ Public Class Scraper
         If tScrapeOptions.bEpisodeGuestStars Then
             If tEpisodeInfo.GuestStars IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.TvShows.Cast In tEpisodeInfo.GuestStars
-                    nTVEpisode.GuestStars.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                           .Role = aCast.Character,
-                                                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                                                           .TMDB = CStr(aCast.Id)})
+                    nTVEpisode.GuestStars.Add(New MediaContainers.Person With {
+                                              .Name = aCast.Name,
+                                              .Role = aCast.Character,
+                                              .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                              .TMDB = CStr(aCast.Id)
+                                              })
                 Next
             End If
         End If
@@ -744,7 +798,12 @@ Public Class Scraper
         Dim nSeason As New MediaContainers.MainDetails
 
         Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
-        APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(iShowID, iSeason, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
+        APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(
+                                 iShowID,
+                                 iSeason,
+                                 TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or
+                                 TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds
+                                 ))
 
         If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing Then
             Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
@@ -802,7 +861,12 @@ Public Class Scraper
 
     Public Function GetInfo_TVSeason(ByVal iShowID As Integer, ByVal iSeason As Integer, ByVal tScrapeOptions As Structures.ScrapeOptions) As MediaContainers.MainDetails
         Dim APIResult As Task(Of TMDbLib.Objects.TvShows.TvSeason)
-        APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(iShowID, iSeason, TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds))
+        APIResult = Task.Run(Function() _TMDBApi.GetTvSeasonAsync(
+                                 iShowID,
+                                 iSeason,
+                                 TMDbLib.Objects.TvShows.TvSeasonMethods.Credits Or
+                                 TMDbLib.Objects.TvShows.TvSeasonMethods.ExternalIds
+                                 ))
 
         If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing Then
             Dim SeasonInfo As TMDbLib.Objects.TvShows.TvSeason = APIResult.Result
@@ -878,9 +942,19 @@ Public Class Scraper
         Dim APIResultE As Task(Of TMDbLib.Objects.TvShows.TvShow)
 
         'search tvshow by TMDB ID
-        APIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(iTMDB, TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
+        APIResult = Task.Run(Function() _TMDBApi.GetTvShowAsync(
+                                 iTMDB,
+                                 TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or
+                                 TMDbLib.Objects.TvShows.TvShowMethods.Credits Or
+                                 TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds
+                                 ))
         If _AddonSettings.FallBackToEng Then
-            APIResultE = Task.Run(Function() _TMDBApiE.GetTvShowAsync(iTMDB, TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or TMDbLib.Objects.TvShows.TvShowMethods.Credits Or TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds))
+            APIResultE = Task.Run(Function() _TMDBApiE.GetTvShowAsync(
+                                      iTMDB,
+                                      TMDbLib.Objects.TvShows.TvShowMethods.ContentRatings Or
+                                      TMDbLib.Objects.TvShows.TvShowMethods.Credits Or
+                                      TMDbLib.Objects.TvShows.TvShowMethods.ExternalIds
+                                      ))
         Else
             APIResultE = APIResult
         End If
@@ -910,11 +984,11 @@ Public Class Scraper
             If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.TvShows.Cast In Result.Credits.Cast
                     nTVShow.Actors.Add(New MediaContainers.Person With {
-                                           .Name = aCast.Name,
-                                           .Role = aCast.Character,
-                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                           .TMDB = CStr(aCast.Id)
-                                           })
+                                       .Name = aCast.Name,
+                                       .Role = aCast.Character,
+                                       .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                       .TMDB = CStr(aCast.Id)
+                                       })
                 Next
             End If
         End If
@@ -1072,16 +1146,32 @@ Public Class Scraper
         Return nTVShow
     End Function
 
-    Public Function GetTMDBbyTVDB(ByVal iTVDB As Integer) As Integer
+    Public Async Function GetTMDBbyIMDB(ByVal strIMDB As String, ByVal tContentType As Enums.ContentType) As Task(Of Integer)
         Dim iTMDB As Integer = -1
 
         Try
-            Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
-            APIResult = Task.Run(Function() _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.TvDb, CStr(iTVDB)))
+            Dim APIResult As TMDbLib.Objects.Find.FindContainer
+            APIResult = Await _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.Imdb, strIMDB)
 
-            If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing AndAlso APIResult.Result IsNot Nothing AndAlso
-                    APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
-                iTMDB = APIResult.Result.TvResults.Item(0).Id
+            If APIResult IsNot Nothing Then
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        If APIResult.MovieResults IsNot Nothing AndAlso APIResult.MovieResults.Count > 0 Then
+                            iTMDB = APIResult.MovieResults.Item(0).Id
+                        End If
+                    Case Enums.ContentType.TVEpisode
+                        If APIResult.TvEpisode IsNot Nothing AndAlso APIResult.TvEpisode.Count > 0 Then
+                            iTMDB = APIResult.TvEpisode.Item(0).Id
+                        End If
+                    Case Enums.ContentType.TVSeason
+                        If APIResult.TvSeason IsNot Nothing AndAlso APIResult.TvSeason.Count > 0 Then
+                            iTMDB = APIResult.TvSeason.Item(0).Id
+                        End If
+                    Case Enums.ContentType.TVShow
+                        If APIResult.TvResults IsNot Nothing AndAlso APIResult.TvResults.Count > 0 Then
+                            iTMDB = APIResult.TvResults.Item(0).Id
+                        End If
+                End Select
             End If
 
         Catch ex As Exception
@@ -1091,9 +1181,76 @@ Public Class Scraper
         Return iTMDB
     End Function
 
+    Public Function GetTMDBbyTVDB(ByVal iTVDB As Integer, ByVal tContentType As Enums.ContentType) As Integer
+        Dim iTMDB As Integer = -1
+
+        Try
+            Dim APIResult As Task(Of TMDbLib.Objects.Find.FindContainer)
+            APIResult = Task.Run(Function() _TMDBApi.FindAsync(TMDbLib.Objects.Find.FindExternalSource.TvDb, CStr(iTVDB)))
+
+            If APIResult IsNot Nothing AndAlso APIResult.Exception Is Nothing Then
+                Select Case tContentType
+                    Case Enums.ContentType.Movie
+                        If APIResult.Result.MovieResults IsNot Nothing AndAlso APIResult.Result.MovieResults.Count > 0 Then
+                            iTMDB = APIResult.Result.MovieResults.Item(0).Id
+                        End If
+                    Case Enums.ContentType.TVEpisode
+                        If APIResult.Result.TvEpisode IsNot Nothing AndAlso APIResult.Result.TvEpisode.Count > 0 Then
+                            iTMDB = APIResult.Result.TvEpisode.Item(0).Id
+                        End If
+                    Case Enums.ContentType.TVSeason
+                        If APIResult.Result.TvSeason IsNot Nothing AndAlso APIResult.Result.TvSeason.Count > 0 Then
+                            iTMDB = APIResult.Result.TvSeason.Item(0).Id
+                        End If
+                    Case Enums.ContentType.TVShow
+                        If APIResult.Result.TvResults IsNot Nothing AndAlso APIResult.Result.TvResults.Count > 0 Then
+                            iTMDB = APIResult.Result.TvResults.Item(0).Id
+                        End If
+                End Select
+            End If
+
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
+
+        Return iTMDB
+    End Function
+
+    Private Function GetVideoType(ByRef Type As String) As Enums.TrailerType
+        If String.IsNullOrEmpty(Type) Then Return Enums.TrailerType.Any
+
+        Select Case Type.ToLower
+            Case "clip"
+                Return Enums.TrailerType.Clip
+            Case "featurette"
+                Return Enums.TrailerType.Featurette
+            Case "teaser"
+                Return Enums.TrailerType.Teaser
+            Case "trailer"
+                Return Enums.TrailerType.Trailer
+            Case Else
+                Return Enums.TrailerType.Any
+        End Select
+    End Function
+
+    Private Function GetVideoQuality(ByRef Size As Integer) As Enums.TrailerVideoQuality
+        If Size = 0 Then Return Enums.TrailerVideoQuality.Any
+
+        Select Case Size
+            Case 1080
+                Return Enums.TrailerVideoQuality.HD1080p
+            Case 720
+                Return Enums.TrailerVideoQuality.HD720p
+            Case 480
+                Return Enums.TrailerVideoQuality.HQ480p
+            Case Else
+                Return Enums.TrailerVideoQuality.Any
+        End Select
+    End Function
+
     Public Function Scrape_Movie(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
         Dim nAddonResult As New Interfaces.AddonResult
-        nAddonResult.ScraperResult_Data = GetInfo_Movie(strID, tScrapeOptions)
+        nAddonResult = GetInfo_Movie(strID, tScrapeModifiers, tScrapeOptions)
         nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.Movie)
         Return nAddonResult
     End Function

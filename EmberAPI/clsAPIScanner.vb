@@ -40,7 +40,7 @@ Public Class Scanner
 
 #Region "Events"
 
-    Public Event ProgressUpdate(ByVal eProgressValue As ProgressValue)
+    Public Event ScannerProgressUpdate(ByVal eProgressValue As ProgressValue)
 
 #End Region 'Events
 
@@ -625,7 +625,7 @@ Public Class Scanner
         If DBMovie.NfoPathSpecified Then
             DBMovie.MainDetails = NFO.LoadFromNFO_Movie(DBMovie.NfoPath, DBMovie.IsSingle)
             If Not DBMovie.MainDetails.FileInfoSpecified AndAlso DBMovie.MainDetails.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                MediaInfo.UpdateMediaInfo(DBMovie)
+                MediaInfo.UpdateMediaInfo_Movie(DBMovie)
             End If
         End If
 
@@ -783,7 +783,7 @@ Public Class Scanner
                 End If
 
                 If Not cEpisode.MainDetails.FileInfoSpecified AndAlso cEpisode.MainDetails.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                    MediaInfo.UpdateTVMediaInfo(cEpisode)
+                    MediaInfo.UpdateMediaInfo_TVEpisode(cEpisode)
                 End If
             Else
                 If isNew AndAlso cEpisode.TVShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
@@ -802,7 +802,7 @@ Public Class Scanner
 
                             'if we had info for it (based on title) and mediainfo scanning is enabled
                             If Master.eSettings.TVScraperMetaDataScan Then
-                                MediaInfo.UpdateTVMediaInfo(cEpisode)
+                                MediaInfo.UpdateMediaInfo_TVEpisode(cEpisode)
                             End If
                         End If
                     End If
@@ -1041,7 +1041,7 @@ Public Class Scanner
                                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                                     Dim ScrapeModifiers As New Structures.ScrapeModifiers
                                     If Not tmpSeason.ImagesContainer.Banner.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner Then ScrapeModifiers.SeasonBanner = True
-                                    If Not tmpSeason.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart Then ScrapeModifiers.SeasonFanart = True
+                                    If Not tmpSeason.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart Then ScrapeModifiers.SeasonFanart = True
                                     If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape Then ScrapeModifiers.SeasonLandscape = True
                                     If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster Then ScrapeModifiers.SeasonPoster = True
                                     If ScrapeModifiers.SeasonBanner OrElse ScrapeModifiers.SeasonFanart OrElse ScrapeModifiers.SeasonLandscape OrElse ScrapeModifiers.SeasonPoster Then
@@ -1794,13 +1794,13 @@ Public Class Scanner
 
     Private Sub bwPrelim_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwPrelim.ProgressChanged
         Dim tProgressValue As ProgressValue = DirectCast(e.UserState, ProgressValue)
-        RaiseEvent ProgressUpdate(tProgressValue)
+        RaiseEvent ScannerProgressUpdate(tProgressValue)
 
         Select Case tProgressValue.EventType
             Case Enums.ScannerEventType.Added_Movie
-                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"newmovie", 3, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message, Nothing}))
+                Notifications.Show(New Notifications.Notification(Enums.NotificationType.Added_Movie, Master.eLang.GetString(817, "New Movie Added"), tProgressValue.Message))
             Case Enums.ScannerEventType.Added_TVEpisode
-                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"newep", 4, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message, Nothing}))
+                Notifications.Show(New Notifications.Notification(Enums.NotificationType.Added_TVEpisode, Master.eLang.GetString(818, "New Episode Added"), tProgressValue.Message))
         End Select
     End Sub
 
@@ -1815,7 +1815,7 @@ Public Class Scanner
                 Dim params As New List(Of Object)(New Object() {False, False, False, True, Args.SourceID})
                 AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterUpdateDB_TV, params, Nothing)
             End If
-            RaiseEvent ProgressUpdate(New ProgressValue With {.EventType = Enums.ScannerEventType.ScannerEnded})
+            RaiseEvent ScannerProgressUpdate(New ProgressValue With {.EventType = Enums.ScannerEventType.ScannerEnded})
         End If
     End Sub
 

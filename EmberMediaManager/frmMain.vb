@@ -1908,7 +1908,7 @@ Public Class frmMain
             If Not Cancelled Then
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
-                    MediaInfo.UpdateMediaInfo(DBScrapeMovie)
+                    MediaInfo.UpdateMediaInfo_Movie(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
@@ -2016,7 +2016,7 @@ Public Class frmMain
 
     Private Sub bwMovieScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_Movie, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_Movie(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2176,7 +2176,7 @@ Public Class frmMain
 
     Private Sub bwMovieSetScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieSetScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_MovieSet, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_MovieSet(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2325,7 +2325,7 @@ Public Class frmMain
                 If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
                     For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FilenameSpecified)
-                        MediaInfo.UpdateTVMediaInfo(tEpisode)
+                        MediaInfo.UpdateMediaInfo_TVEpisode(tEpisode)
                     Next
                 End If
 
@@ -2347,7 +2347,7 @@ Public Class frmMain
 
     Private Sub bwTVScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"tvshowscraped", 3, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_TVShow, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVShow(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2444,7 +2444,7 @@ Public Class frmMain
 
             If Not Cancelled Then
                 If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
-                    MediaInfo.UpdateTVMediaInfo(DBScrapeEpisode)
+                    MediaInfo.UpdateMediaInfo_TVEpisode(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
 
@@ -2493,7 +2493,7 @@ Public Class frmMain
 
     Private Sub bwTVEpisodeScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVEpisodeScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"tvepisodescraped", 3, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_TVEpisode, Master.eLang.GetString(883, "Episode Scraped"), e.UserState.ToString))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVEpisode(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2625,7 +2625,7 @@ Public Class frmMain
 
     Private Sub bwTVSeasonScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwTVSeasonScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Notification, New List(Of Object)(New Object() {"tvseasonscraped", 3, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString, Nothing}))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_TVSeason, Master.eLang.GetString(247, "Season Scraped"), e.UserState.ToString))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_TVSeason(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -4142,7 +4142,7 @@ Public Class frmMain
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
                         If Master.eSettings.TVScraperMetaDataScan Then
-                            MediaInfo.UpdateTVMediaInfo(tmpEpisode)
+                            MediaInfo.UpdateMediaInfo_TVEpisode(tmpEpisode)
                         End If
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
                     End If
@@ -6630,7 +6630,7 @@ Public Class frmMain
                 Case "MetaData" 'Metadata - need to add this column to the view.
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodeMeta, True)
             End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
+            If Master.eSettings.TVGeneralClickScrapeask Then
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
             Else
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -6702,7 +6702,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                If Master.eSettings.TVGeneralClickScrapeask Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -7090,7 +7090,7 @@ Public Class frmMain
                 Case "PosterPath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.SeasonPoster, True)
             End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
+            If Master.eSettings.TVGeneralClickScrapeask Then
                 CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
             Else
                 CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -7159,7 +7159,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(72, "Poster Only")
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                If Master.eSettings.TVGeneralClickScrapeask Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -7477,7 +7477,7 @@ Public Class frmMain
                 Case "ThemePath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainTheme, True)
             End Select
-            If Master.eSettings.TVGeneralClickScrapeAsk Then
+            If Master.eSettings.TVGeneralClickScrapeask Then
                 CreateScrapeList_TV(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
             Else
                 CreateScrapeList_TV(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -7560,7 +7560,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(1125, "Theme Only")
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeAsk Then
+                If Master.eSettings.TVGeneralClickScrapeask Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -9848,7 +9848,7 @@ Public Class frmMain
         Visible = False
 
         If Master.isWindows Then 'Dam mono on MacOSX don't have trayicon implemented yet
-            TrayIcon = New System.Windows.Forms.NotifyIcon(components)
+            TrayIcon = New NotifyIcon(components)
             TrayIcon.Icon = Icon
             TrayIcon.ContextMenuStrip = cmnuTray
             TrayIcon.Text = "Ember Media Manager"
@@ -9914,7 +9914,7 @@ Public Class frmMain
         pbGenre(0) = New PictureBox()
 
         AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
-        AddHandler fScanner.ProgressUpdate, AddressOf ScannerProgressUpdate
+        AddHandler fScanner.ScannerProgressUpdate, AddressOf ScannerProgressUpdate
         AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
         AddHandler AddonsManager.Instance.GenericEvent, AddressOf GenericRunCallBack
         AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
@@ -10230,7 +10230,7 @@ Public Class frmMain
                         Master.fLoading.SetLoadingMesg(Master.eLang.GetString(859, "Running Module..."))
                         Dim strModuleName As String = CStr(_params(1))
                         Dim oParameters As List(Of Object) = CType(_params(2), List(Of Object))
-                        Dim gModule As AddonsManager.AddonClass = AddonsManager.Instance.Addons.FirstOrDefault(Function(y) y.Addon.Name = strModuleName)
+                        Dim gModule As AddonsManager.AddonClass = AddonsManager.Instance.Addons.FirstOrDefault(Function(y) y.Addon.Shortname = strModuleName)
                         If gModule IsNot Nothing Then
                             gModule.Addon.Run(Nothing, Enums.AddonEventType.CommandLine, oParameters)
                         End If
@@ -10269,13 +10269,6 @@ Public Class frmMain
                         SetControlsEnabled(Convert.ToBoolean(_params(1)), If(_params.Count = 3, Convert.ToBoolean(_params(2)), False))
                     Case "filllist"
                         FillList(CBool(_params(1)), CBool(_params(2)), CBool(_params(3)))
-                End Select
-            Case Enums.AddonEventType.Notification
-                Select Case _params(0).ToString
-                    Case "error"
-                        dlgErrorViewer.Show(Me)
-                    Case Else
-                        Activate()
                 End Select
 
             Case Enums.AddonEventType.AfterEdit_Movie
