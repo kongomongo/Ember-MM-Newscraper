@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5B501BD8-D4BC-4719-B708-D4B91E3530D1}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.EmberCore.GenresEditor</RootNamespace>
-    <AssemblyName>generic.EmberCore.GenresEditor</AssemblyName>
+    <RootNamespace>core</RootNamespace>
+    <AssemblyName>core.genremanager</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -134,13 +134,7 @@
     <Compile Include="dlgGenreManager.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmSettingsPanel.Designer.vb">
-      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmSettingsPanel.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="genericGenreManager.vb" />
+    <Compile Include="core.genremanager.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -162,10 +156,6 @@
       <DependentUpon>dlgGenreManager.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmSettingsPanel.resx">
-      <DependentUpon>frmSettingsPanel.vb</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
@@ -174,7 +164,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

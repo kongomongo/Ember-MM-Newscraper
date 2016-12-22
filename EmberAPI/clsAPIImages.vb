@@ -2417,8 +2417,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieClearArtPrefSize = Enums.MovieClearArtSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieClearArtSize = Master.eSettings.MovieClearArtPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieClearArtPrefSizeOnly AndAlso Not Master.eSettings.MovieClearArtPrefSize = Enums.MovieClearArtSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2429,8 +2440,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieSetClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieSetClearArtPrefSize = Enums.MovieClearArtSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieClearArtSize = Master.eSettings.MovieSetClearArtPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetClearArtPrefSizeOnly AndAlso Not Master.eSettings.MovieSetClearArtPrefSize = Enums.MovieClearArtSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2441,8 +2463,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieClearLogoPrefSize = Enums.MovieClearLogoSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieClearLogoSize = Master.eSettings.MovieClearLogoPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieClearLogoPrefSizeOnly AndAlso Not Master.eSettings.MovieClearLogoPrefSize = Enums.MovieClearLogoSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2453,8 +2486,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieSetClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieSetClearLogoPrefSize = Enums.MovieClearLogoSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieClearLogoSize = Master.eSettings.MovieSetClearLogoPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetClearLogoPrefSizeOnly AndAlso Not Master.eSettings.MovieSetClearLogoPrefSize = Enums.MovieClearLogoSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2465,8 +2509,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieDiscArtPrefSize = Enums.MovieDiscArtSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieDiscArtSize = Master.eSettings.MovieDiscArtPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieDiscArtPrefSizeOnly AndAlso Not Master.eSettings.MovieDiscArtPrefSize = Enums.MovieDiscArtSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2621,8 +2676,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieSetDiscArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieSetDiscArtPrefSize = Enums.MovieDiscArtSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieDiscArtSize = Master.eSettings.MovieSetDiscArtPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetDiscArtPrefSizeOnly AndAlso Not Master.eSettings.MovieSetDiscArtPrefSize = Enums.MovieDiscArtSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2633,8 +2699,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieLandscapePrefSize = Enums.MovieLandscapeSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieLandscapeSize = Master.eSettings.MovieLandscapePrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieLandscapePrefSizeOnly AndAlso Not Master.eSettings.MovieLandscapePrefSize = Enums.MovieLandscapeSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2645,8 +2722,19 @@ Public Class Images
 
     Public Shared Function GetPreferredMovieSetLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
+        imgResult = Nothing
 
-        imgResult = ImageList.First
+        If Master.eSettings.MovieSetLandscapePrefSize = Enums.MovieLandscapeSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.MovieLandscapeSize = Master.eSettings.MovieSetLandscapePrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.MovieSetLandscapePrefSizeOnly AndAlso Not Master.eSettings.MovieSetLandscapePrefSize = Enums.MovieLandscapeSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2793,10 +2881,32 @@ Public Class Images
     Public Shared Function GetPreferredTVAllSeasonsLandscape(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
 
-        imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not SeasonImageList.Count = 0 Then
+            If Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
 
-        If imgResult Is Nothing Then
-            imgResult = ShowImageList.First
+            If imgResult Is Nothing Then
+                imgResult = SeasonImageList.Find(Function(f) f.TVLandscapeSize = Master.eSettings.TVAllSeasonsLandscapePrefSize AndAlso f.Season = 999)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            End If
+        End If
+
+        If Not ShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+                imgResult = ShowImageList.First
+            End If
+
+            If imgResult Is Nothing Then
+                imgResult = ShowImageList.Find(Function(f) f.TVLandscapeSize = Master.eSettings.TVAllSeasonsLandscapePrefSize)
+            End If
+
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+                imgResult = ShowImageList.First
+            End If
         End If
 
         If imgResult IsNot Nothing Then
@@ -2973,7 +3083,17 @@ Public Class Images
     Public Shared Function GetPreferredTVSeasonLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.Find(Function(f) f.Season = iSeason)
+        If Master.eSettings.TVSeasonLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVLandscapeSize = Master.eSettings.TVSeasonLandscapePrefSize AndAlso f.Season = iSeason)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVSeasonLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -3035,7 +3155,17 @@ Public Class Images
     Public Shared Function GetPreferredTVShowCharacterArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        If Master.eSettings.TVShowCharacterArtPrefSize = Enums.TVCharacterArtSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVCharacterArtSize = Master.eSettings.TVShowCharacterArtPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowCharacterArtPrefSizeOnly AndAlso Not Master.eSettings.TVShowCharacterArtPrefSize = Enums.TVCharacterArtSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -3047,7 +3177,17 @@ Public Class Images
     Public Shared Function GetPreferredTVShowClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        If Master.eSettings.TVShowClearArtPrefSize = Enums.TVClearArtSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVClearArtSize = Master.eSettings.TVShowClearArtPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowClearArtPrefSizeOnly AndAlso Not Master.eSettings.TVShowClearArtPrefSize = Enums.TVClearArtSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -3059,7 +3199,17 @@ Public Class Images
     Public Shared Function GetPreferredTVShowClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        If Master.eSettings.TVShowClearLogoPrefSize = Enums.TVClearLogoSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVClearLogoSize = Master.eSettings.TVShowClearLogoPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowClearLogoPrefSizeOnly AndAlso Not Master.eSettings.TVShowClearLogoPrefSize = Enums.TVClearLogoSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True
@@ -3154,7 +3304,17 @@ Public Class Images
     Public Shared Function GetPreferredTVShowLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         If ImageList.Count = 0 Then Return False
 
-        imgResult = ImageList.First
+        If Master.eSettings.TVShowLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+            imgResult = ImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = ImageList.Find(Function(f) f.TVLandscapeSize = Master.eSettings.TVShowLandscapePrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVShowLandscapePrefSize = Enums.TVLandscapeSize.Any Then
+            imgResult = ImageList.First
+        End If
 
         If imgResult IsNot Nothing Then
             Return True

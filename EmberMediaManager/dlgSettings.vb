@@ -2660,15 +2660,23 @@ Public Class dlgSettings
             cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
             cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
+            cbMovieClearArtPrefSize.SelectedValue = .MovieClearArtPrefSize
+            cbMovieClearLogoPrefSize.SelectedValue = .MovieClearLogoPrefSize
+            cbMovieDiscArtPrefSize.SelectedValue = .MovieDiscArtPrefSize
             cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
             cbMovieExtrathumbsPrefSize.SelectedValue = .MovieExtrathumbsPrefSize
             cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
             cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieGeneralCustomScrapeButtonModifierType
             cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieGeneralCustomScrapeButtonScrapeType
+            cbMovieLandscapePrefSize.SelectedValue = .MovieLandscapePrefSize
             cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
             cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
             cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
+            cbMovieSetClearArtPrefSize.SelectedValue = .MovieSetClearArtPrefSize
+            cbMovieSetClearLogoPrefSize.SelectedValue = .MovieSetClearLogoPrefSize
+            cbMovieSetDiscArtPrefSize.SelectedValue = .MovieSetDiscArtPrefSize
             cbMovieSetFanartPrefSize.SelectedValue = .MovieSetFanartPrefSize
+            cbMovieSetLandscapePrefSize.SelectedValue = .MovieSetLandscapePrefSize
             cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieSetGeneralCustomScrapeButtonModifierType
             cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieSetGeneralCustomScrapeButtonScrapeType
             cbMovieSetPosterPrefSize.SelectedValue = .MovieSetPosterPrefSize
@@ -2677,6 +2685,7 @@ Public Class dlgSettings
             cbTVAllSeasonsBannerPrefSize.SelectedValue = .TVAllSeasonsBannerPrefSize
             cbTVAllSeasonsBannerPrefType.SelectedValue = .TVAllSeasonsBannerPrefType
             cbTVAllSeasonsFanartPrefSize.SelectedValue = .TVAllSeasonsFanartPrefSize
+            cbTVAllSeasonsLandscapePrefSize.SelectedValue = .TVAllSeasonsLandscapePrefSize
             cbTVAllSeasonsPosterPrefSize.SelectedValue = .TVAllSeasonsPosterPrefSize
             cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
             cbTVEpisodePosterPrefSize.SelectedValue = .TVEpisodePosterPrefSize
@@ -2687,11 +2696,16 @@ Public Class dlgSettings
             cbTVSeasonBannerPrefSize.SelectedValue = .TVSeasonBannerPrefSize
             cbTVSeasonBannerPrefType.SelectedValue = .TVSeasonBannerPrefType
             cbTVSeasonFanartPrefSize.SelectedValue = .TVSeasonFanartPrefSize
+            cbTVSeasonLandscapePrefSize.SelectedValue = .TVSeasonLandscapePrefSize
             cbTVSeasonPosterPrefSize.SelectedValue = .TVSeasonPosterPrefSize
             cbTVShowBannerPrefSize.SelectedValue = .TVShowBannerPrefSize
             cbTVShowBannerPrefType.SelectedValue = .TVShowBannerPrefType
+            cbTVShowCharacterArtPrefSize.SelectedValue = .TVShowCharacterArtPrefSize
+            cbTVShowClearArtPrefSize.SelectedValue = .TVShowClearArtPrefSize
+            cbTVShowClearLogoPrefSize.SelectedValue = .TVShowClearLogoPrefSize
             cbTVShowExtrafanartsPrefSize.SelectedValue = .TVShowExtrafanartsPrefSize
             cbTVShowFanartPrefSize.SelectedValue = .TVShowFanartPrefSize
+            cbTVShowLandscapePrefSize.SelectedValue = .TVShowLandscapePrefSize
             cbTVShowPosterPrefSize.SelectedValue = .TVShowPosterPrefSize
             chkCleanDotFanartJPG.Checked = .CleanDotFanartJPG
             chkCleanExtrathumbs.Checked = .CleanExtrathumbs
@@ -2737,7 +2751,7 @@ Public Class dlgSettings
             chkMovieActorThumbsKeepExisting.Checked = .MovieActorThumbsKeepExisting
             chkMovieSourcesBackdropsAuto.Checked = .MovieBackdropsAuto
             chkMovieBannerKeepExisting.Checked = .MovieBannerKeepExisting
-            chkMovieBannerPrefOnly.Checked = .MovieBannerPrefSizeOnly
+            chkMovieBannerPrefSizeOnly.Checked = .MovieBannerPrefSizeOnly
             chkMovieBannerResize.Checked = .MovieBannerResize
             If .MovieBannerResize Then
                 txtMovieBannerHeight.Text = .MovieBannerHeight.ToString
@@ -2745,13 +2759,16 @@ Public Class dlgSettings
             End If
             chkMovieCleanDB.Checked = .MovieCleanDB
             chkMovieClearArtKeepExisting.Checked = .MovieClearArtKeepExisting
+            chkMovieClearArtPrefSizeOnly.Checked = .MovieClearArtPrefSizeOnly
             chkMovieClearLogoKeepExisting.Checked = .MovieClearLogoKeepExisting
+            chkMovieClearLogoPrefSizeOnly.Checked = .MovieClearLogoPrefSizeOnly
             chkMovieClickScrape.Checked = .MovieClickScrape
             chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
             chkMovieDiscArtKeepExisting.Checked = .MovieDiscArtKeepExisting
+            chkMovieDiscArtPrefSizeOnly.Checked = .MovieDiscArtPrefSizeOnly
             chkMovieDisplayYear.Checked = .MovieDisplayYear
             chkMovieExtrafanartsKeepExisting.Checked = .MovieExtrafanartsKeepExisting
-            chkMovieExtrafanartsPrefOnly.Checked = .MovieExtrafanartsPrefSizeOnly
+            chkMovieExtrafanartsPrefSizeOnly.Checked = .MovieExtrafanartsPrefSizeOnly
             chkMovieExtrafanartsPreselect.Checked = .MovieExtrafanartsPreselect
             chkMovieExtrafanartsResize.Checked = .MovieExtrafanartsResize
             If .MovieExtrafanartsResize Then
@@ -2763,7 +2780,7 @@ Public Class dlgSettings
             chkMovieExtrathumbsCreatorNoSpoilers.Checked = .MovieExtrathumbsCreatorNoSpoilers
             chkMovieExtrathumbsCreatorUseETasFA.Checked = .MovieExtrathumbsCreatorUseETasFA
             chkMovieExtrathumbsKeepExisting.Checked = .MovieExtrathumbsKeepExisting
-            chkMovieExtrathumbsPrefOnly.Checked = .MovieExtrathumbsPrefSizeOnly
+            chkMovieExtrathumbsPrefSizeOnly.Checked = .MovieExtrathumbsPrefSizeOnly
             chkMovieExtrathumbsPreselect.Checked = .MovieExtrathumbsPreselect
             chkMovieExtrathumbsResize.Checked = .MovieExtrathumbsResize
             If .MovieExtrathumbsResize Then
@@ -2771,7 +2788,7 @@ Public Class dlgSettings
                 txtMovieExtrathumbsWidth.Text = .MovieExtrathumbsWidth.ToString
             End If
             chkMovieFanartKeepExisting.Checked = .MovieFanartKeepExisting
-            chkMovieFanartPrefOnly.Checked = .MovieFanartPrefSizeOnly
+            chkMovieFanartPrefSizeOnly.Checked = .MovieFanartPrefSizeOnly
             chkMovieFanartResize.Checked = .MovieFanartResize
             If .MovieFanartResize Then
                 txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
@@ -2789,6 +2806,7 @@ Public Class dlgSettings
             End If
             chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
             chkMovieLandscapeKeepExisting.Checked = .MovieLandscapeKeepExisting
+            chkMovieLandscapePrefSizeOnly.Checked = .MovieLandscapePrefSizeOnly
             chkMovieLockActors.Checked = .MovieLockActors
             chkMovieLockCert.Checked = .MovieLockCert
             chkMovieLockCountry.Checked = .MovieLockCountry
@@ -2815,7 +2833,7 @@ Public Class dlgSettings
             chkMovieLockCredits.Checked = .MovieLockCredits
             chkMovieLockYear.Checked = .MovieLockYear
             chkMoviePosterKeepExisting.Checked = .MoviePosterKeepExisting
-            chkMoviePosterPrefOnly.Checked = .MoviePosterPrefSizeOnly
+            chkMoviePosterPrefSizeOnly.Checked = .MoviePosterPrefSizeOnly
             chkMoviePosterResize.Checked = .MoviePosterResize
             If .MoviePosterResize Then
                 txtMoviePosterHeight.Text = .MoviePosterHeight.ToString
@@ -2823,7 +2841,7 @@ Public Class dlgSettings
             End If
             chkMovieProperCase.Checked = .MovieProperCase
             chkMovieSetBannerKeepExisting.Checked = .MovieSetBannerKeepExisting
-            chkMovieSetBannerPrefOnly.Checked = .MovieSetBannerPrefSizeOnly
+            chkMovieSetBannerPrefSizeOnly.Checked = .MovieSetBannerPrefSizeOnly
             chkMovieSetBannerResize.Checked = .MovieSetBannerResize
             If .MovieSetBannerResize Then
                 txtMovieSetBannerHeight.Text = .MovieSetBannerHeight.ToString
@@ -2832,12 +2850,15 @@ Public Class dlgSettings
             chkMovieSetCleanDB.Checked = .MovieSetCleanDB
             chkMovieSetCleanFiles.Checked = .MovieSetCleanFiles
             chkMovieSetClearArtKeepExisting.Checked = .MovieSetClearArtKeepExisting
+            chkMovieSetClearArtPrefSizeOnly.Checked = .MovieSetClearArtPrefSizeOnly
             chkMovieSetClearLogoKeepExisting.Checked = .MovieSetClearLogoKeepExisting
+            chkMovieSetClearLogoPrefSizeOnly.Checked = .MovieSetClearLogoPrefSizeOnly
             chkMovieSetClickScrape.Checked = .MovieSetClickScrape
             chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
             chkMovieSetDiscArtKeepExisting.Checked = .MovieSetDiscArtKeepExisting
+            chkMovieSetDiscArtPrefSizeOnly.Checked = .MovieSetDiscArtPrefSizeOnly
             chkMovieSetFanartKeepExisting.Checked = .MovieSetFanartKeepExisting
-            chkMovieSetFanartPrefOnly.Checked = .MovieSetFanartPrefSizeOnly
+            chkMovieSetFanartPrefSizeOnly.Checked = .MovieSetFanartPrefSizeOnly
             chkMovieSetFanartResize.Checked = .MovieSetFanartResize
             If .MovieSetFanartResize Then
                 txtMovieSetFanartHeight.Text = .MovieSetFanartHeight.ToString
@@ -2853,10 +2874,11 @@ Public Class dlgSettings
                 chkMovieSetImagesGetEnglishImages.Checked = .MovieSetImagesGetEnglishImages
             End If
             chkMovieSetLandscapeKeepExisting.Checked = .MovieSetLandscapeKeepExisting
+            chkMovieSetLandscapePrefSizeOnly.Checked = .MovieSetLandscapePrefSizeOnly
             chkMovieSetLockPlot.Checked = .MovieSetLockPlot
             chkMovieSetLockTitle.Checked = .MovieSetLockTitle
             chkMovieSetPosterKeepExisting.Checked = .MovieSetPosterKeepExisting
-            chkMovieSetPosterPrefOnly.Checked = .MovieSetPosterPrefSizeOnly
+            chkMovieSetPosterPrefSizeOnly.Checked = .MovieSetPosterPrefSizeOnly
             chkMovieSetPosterResize.Checked = .MovieSetPosterResize
             If .MovieSetPosterResize Then
                 txtMovieSetPosterHeight.Text = .MovieSetPosterHeight.ToString
@@ -2923,6 +2945,7 @@ Public Class dlgSettings
                 txtTVAllSeasonsFanartWidth.Text = .TVAllSeasonsFanartWidth.ToString
             End If
             chkTVAllSeasonsLandscapeKeepExisting.Checked = .TVAllSeasonsLandscapeKeepExisting
+            chkTVAllSeasonsLandscapePrefSizeOnly.Checked = .TVAllSeasonsLandscapePrefSizeOnly
             chkTVAllSeasonsPosterKeepExisting.Checked = .TVAllSeasonsPosterKeepExisting
             chkTVAllSeasonsPosterPrefSizeOnly.Checked = .TVAllSeasonsPosterPrefSizeOnly
             chkTVAllSeasonsPosterResize.Checked = .TVAllSeasonsPosterResize
@@ -2950,7 +2973,7 @@ Public Class dlgSettings
             End If
             chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
             chkTVGeneralClickScrape.Checked = .TVGeneralClickScrape
-            chkTVGeneralClickScrapeAsk.Checked = .TVGeneralClickScrapeAsk
+            chkTVGeneralClickScrapeAsk.Checked = .TVGeneralClickScrapeask
             chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
             chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
@@ -3029,14 +3052,6 @@ Public Class dlgSettings
                 txtTVSeasonBannerHeight.Text = .TVSeasonBannerHeight.ToString
                 txtTVSeasonBannerWidth.Text = .TVSeasonBannerWidth.ToString
             End If
-            chkTVShowExtrafanartsKeepExisting.Checked = .TVShowExtrafanartsKeepExisting
-            chkTVShowExtrafanartsPrefSizeOnly.Checked = .TVShowExtrafanartsPrefOnly
-            chkTVShowExtrafanartsPreselect.Checked = .TVShowExtrafanartsPreselect
-            chkTVShowExtrafanartsResize.Checked = .TVShowExtrafanartsResize
-            If .TVShowExtrafanartsResize Then
-                txtTVShowExtrafanartsHeight.Text = .TVShowExtrafanartsHeight.ToString
-                txtTVShowExtrafanartsWidth.Text = .TVShowExtrafanartsWidth.ToString
-            End If
             chkTVSeasonFanartKeepExisting.Checked = .TVSeasonFanartKeepExisting
             chkTVSeasonFanartPrefSizeOnly.Checked = .TVSeasonFanartPrefSizeOnly
             chkTVSeasonFanartResize.Checked = .TVSeasonFanartResize
@@ -3045,6 +3060,7 @@ Public Class dlgSettings
                 txtTVSeasonFanartWidth.Text = .TVSeasonFanartWidth.ToString
             End If
             chkTVSeasonLandscapeKeepExisting.Checked = .TVSeasonLandscapeKeepExisting
+            chkTVSeasonLandscapePrefSizeOnly.Checked = .TVSeasonLandscapePrefSizeOnly
             chkTVSeasonPosterKeepExisting.Checked = .TVSeasonPosterKeepExisting
             chkTVSeasonPosterPrefSizeOnly.Checked = .TVSeasonPosterPrefSizeOnly
             chkTVSeasonPosterResize.Checked = .TVSeasonPosterResize
@@ -3060,8 +3076,19 @@ Public Class dlgSettings
                 txtTVShowBannerWidth.Text = .TVShowBannerWidth.ToString
             End If
             chkTVShowCharacterArtKeepExisting.Checked = .TVShowCharacterArtKeepExisting
+            chkTVShowCharacterArtPrefSizeOnly.Checked = .TVShowCharacterArtPrefSizeOnly
             chkTVShowClearArtKeepExisting.Checked = .TVShowClearArtKeepExisting
+            chkTVShowClearArtPrefSizeOnly.Checked = .TVShowClearArtPrefSizeOnly
             chkTVShowClearLogoKeepExisting.Checked = .TVShowClearLogoKeepExisting
+            chkTVShowClearLogoPrefSizeOnly.Checked = .TVShowClearLogoPrefSizeOnly
+            chkTVShowExtrafanartsKeepExisting.Checked = .TVShowExtrafanartsKeepExisting
+            chkTVShowExtrafanartsPrefSizeOnly.Checked = .TVShowExtrafanartsPrefSizeOnly
+            chkTVShowExtrafanartsPreselect.Checked = .TVShowExtrafanartsPreselect
+            chkTVShowExtrafanartsResize.Checked = .TVShowExtrafanartsResize
+            If .TVShowExtrafanartsResize Then
+                txtTVShowExtrafanartsHeight.Text = .TVShowExtrafanartsHeight.ToString
+                txtTVShowExtrafanartsWidth.Text = .TVShowExtrafanartsWidth.ToString
+            End If
             chkTVShowFanartKeepExisting.Checked = .TVShowFanartKeepExisting
             chkTVShowFanartPrefSizeOnly.Checked = .TVShowFanartPrefSizeOnly
             chkTVShowFanartResize.Checked = .TVShowFanartResize
@@ -3070,6 +3097,7 @@ Public Class dlgSettings
                 txtTVShowFanartWidth.Text = .TVShowFanartWidth.ToString
             End If
             chkTVShowLandscapeKeepExisting.Checked = .TVShowLandscapeKeepExisting
+            chkTVShowLandscapePrefSizeOnly.Checked = .TVShowLandscapePrefSizeOnly
             chkTVShowPosterKeepExisting.Checked = .TVShowPosterKeepExisting
             chkTVShowPosterPrefSizeOnly.Checked = .TVShowPosterPrefSizeOnly
             chkTVShowPosterResize.Checked = .TVShowPosterResize
@@ -4000,6 +4028,44 @@ Public Class dlgSettings
         cbMovieSetBannerPrefSize.ValueMember = "Value"
     End Sub
 
+    Private Sub LoadMovieClearArtSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieClearArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearArtSize.Any)
+        items.Add("1000x562", Enums.MovieClearArtSize.HD562)
+        items.Add("500x281", Enums.MovieClearArtSize.SD281)
+        cbMovieClearArtPrefSize.DataSource = items.ToList
+        cbMovieClearArtPrefSize.DisplayMember = "Key"
+        cbMovieClearArtPrefSize.ValueMember = "Value"
+        cbMovieSetClearArtPrefSize.DataSource = items.ToList
+        cbMovieSetClearArtPrefSize.DisplayMember = "Key"
+        cbMovieSetClearArtPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieClearLogoSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieClearLogoSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearLogoSize.Any)
+        items.Add("800x310", Enums.MovieClearLogoSize.HD310)
+        items.Add("400x155", Enums.MovieClearLogoSize.SD155)
+        cbMovieClearLogoPrefSize.DataSource = items.ToList
+        cbMovieClearLogoPrefSize.DisplayMember = "Key"
+        cbMovieClearLogoPrefSize.ValueMember = "Value"
+        cbMovieSetClearLogoPrefSize.DataSource = items.ToList
+        cbMovieSetClearLogoPrefSize.DisplayMember = "Key"
+        cbMovieSetClearLogoPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieDiscArtSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieDiscArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieDiscArtSize.Any)
+        items.Add("1000x1000", Enums.MovieDiscArtSize.HD1000)
+        cbMovieDiscArtPrefSize.DataSource = items.ToList
+        cbMovieDiscArtPrefSize.DisplayMember = "Key"
+        cbMovieDiscArtPrefSize.ValueMember = "Value"
+        cbMovieSetDiscArtPrefSize.DataSource = items.ToList
+        cbMovieSetDiscArtPrefSize.DisplayMember = "Key"
+        cbMovieSetDiscArtPrefSize.ValueMember = "Value"
+    End Sub
+
     Private Sub LoadMovieFanartSizes()
         Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
@@ -4020,6 +4086,18 @@ Public Class dlgSettings
         cbMovieSetFanartPrefSize.DataSource = items.ToList
         cbMovieSetFanartPrefSize.DisplayMember = "Key"
         cbMovieSetFanartPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieLandscapeSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieLandscapeSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieLandscapeSize.Any)
+        items.Add("1000x562", Enums.MovieLandscapeSize.HD562)
+        cbMovieLandscapePrefSize.DataSource = items.ToList
+        cbMovieLandscapePrefSize.DisplayMember = "Key"
+        cbMovieLandscapePrefSize.ValueMember = "Value"
+        cbMovieSetLandscapePrefSize.DataSource = items.ToList
+        cbMovieSetLandscapePrefSize.DisplayMember = "Key"
+        cbMovieSetLandscapePrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMoviePosterSizes()
@@ -4060,6 +4138,68 @@ Public Class dlgSettings
         cbMovieTrailerPrefVideoQual.ValueMember = "Value"
     End Sub
 
+    Private Sub LoadTVBannerSizes()
+        Dim items As New Dictionary(Of String, Enums.TVBannerSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVBannerSize.Any)
+        items.Add("1000x185", Enums.TVBannerSize.HD185)
+        items.Add("758x140", Enums.TVBannerSize.HD140)
+        cbTVAllSeasonsBannerPrefSize.DataSource = items.ToList
+        cbTVAllSeasonsBannerPrefSize.DisplayMember = "Key"
+        cbTVAllSeasonsBannerPrefSize.ValueMember = "Value"
+        cbTVSeasonBannerPrefSize.DataSource = items.ToList
+        cbTVSeasonBannerPrefSize.DisplayMember = "Key"
+        cbTVSeasonBannerPrefSize.ValueMember = "Value"
+        cbTVShowBannerPrefSize.DataSource = items.ToList
+        cbTVShowBannerPrefSize.DisplayMember = "Key"
+        cbTVShowBannerPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVBannerTypes()
+        Dim items As New Dictionary(Of String, Enums.TVBannerType)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVBannerType.Any)
+        items.Add(Master.eLang.GetString(746, "Blank"), Enums.TVBannerType.Blank)
+        items.Add(Master.eLang.GetString(747, "Graphical"), Enums.TVBannerType.Graphical)
+        items.Add(Master.eLang.GetString(748, "Text"), Enums.TVBannerType.Text)
+        cbTVAllSeasonsBannerPrefType.DataSource = items.ToList
+        cbTVAllSeasonsBannerPrefType.DisplayMember = "Key"
+        cbTVAllSeasonsBannerPrefType.ValueMember = "Value"
+        cbTVSeasonBannerPrefType.DataSource = items.ToList
+        cbTVSeasonBannerPrefType.DisplayMember = "Key"
+        cbTVSeasonBannerPrefType.ValueMember = "Value"
+        cbTVShowBannerPrefType.DataSource = items.ToList
+        cbTVShowBannerPrefType.DisplayMember = "Key"
+        cbTVShowBannerPrefType.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVCharacterArtSizes()
+        Dim items As New Dictionary(Of String, Enums.TVCharacterArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVCharacterArtSize.Any)
+        items.Add("512x512", Enums.TVCharacterArtSize.HD512)
+        cbTVShowCharacterArtPrefSize.DataSource = items.ToList
+        cbTVShowCharacterArtPrefSize.DisplayMember = "Key"
+        cbTVShowCharacterArtPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVClearArtSizes()
+        Dim items As New Dictionary(Of String, Enums.TVClearArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVClearArtSize.Any)
+        items.Add("1000x562", Enums.TVClearArtSize.HD562)
+        items.Add("500x281", Enums.TVClearArtSize.SD281)
+        cbTVShowClearArtPrefSize.DataSource = items.ToList
+        cbTVShowClearArtPrefSize.DisplayMember = "Key"
+        cbTVShowClearArtPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVClearLogoSizes()
+        Dim items As New Dictionary(Of String, Enums.TVClearLogoSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVClearLogoSize.Any)
+        items.Add("800x310", Enums.TVClearLogoSize.HD310)
+        items.Add("400x155", Enums.TVClearLogoSize.SD155)
+        cbTVShowClearLogoPrefSize.DataSource = items.ToList
+        cbTVShowClearLogoPrefSize.DisplayMember = "Key"
+        cbTVShowClearLogoPrefSize.ValueMember = "Value"
+    End Sub
+
     Private Sub LoadTVFanartSizes()
         Dim items As New Dictionary(Of String, Enums.TVFanartSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.TVFanartSize.Any)
@@ -4082,6 +4222,22 @@ Public Class dlgSettings
         cbTVShowFanartPrefSize.DataSource = items.ToList
         cbTVShowFanartPrefSize.DisplayMember = "Key"
         cbTVShowFanartPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadTVLandscapeSizes()
+        Dim items As New Dictionary(Of String, Enums.TVLandscapeSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVLandscapeSize.Any)
+        items.Add("1000x562", Enums.TVLandscapeSize.HD562)
+        items.Add("500x281", Enums.TVLandscapeSize.SD281)
+        cbTVAllSeasonsLandscapePrefSize.DataSource = items.ToList
+        cbTVAllSeasonsLandscapePrefSize.DisplayMember = "Key"
+        cbTVAllSeasonsLandscapePrefSize.ValueMember = "Value"
+        cbTVSeasonLandscapePrefSize.DataSource = items.ToList
+        cbTVSeasonLandscapePrefSize.DisplayMember = "Key"
+        cbTVSeasonLandscapePrefSize.ValueMember = "Value"
+        cbTVShowLandscapePrefSize.DataSource = items.ToList
+        cbTVShowLandscapePrefSize.DisplayMember = "Key"
+        cbTVShowLandscapePrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadTVPosterSizes()
@@ -4127,39 +4283,6 @@ Public Class dlgSettings
         cbTVScraperOptionsOrdering.DataSource = items.ToList
         cbTVScraperOptionsOrdering.DisplayMember = "Key"
         cbTVScraperOptionsOrdering.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadTVBannerSizes()
-        Dim items As New Dictionary(Of String, Enums.TVBannerSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVBannerSize.Any)
-        items.Add("1000x185", Enums.TVBannerSize.HD185)
-        items.Add("758x140", Enums.TVBannerSize.HD140)
-        cbTVAllSeasonsBannerPrefSize.DataSource = items.ToList
-        cbTVAllSeasonsBannerPrefSize.DisplayMember = "Key"
-        cbTVAllSeasonsBannerPrefSize.ValueMember = "Value"
-        cbTVSeasonBannerPrefSize.DataSource = items.ToList
-        cbTVSeasonBannerPrefSize.DisplayMember = "Key"
-        cbTVSeasonBannerPrefSize.ValueMember = "Value"
-        cbTVShowBannerPrefSize.DataSource = items.ToList
-        cbTVShowBannerPrefSize.DisplayMember = "Key"
-        cbTVShowBannerPrefSize.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadTVBannerTypes()
-        Dim items As New Dictionary(Of String, Enums.TVBannerType)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVBannerType.Any)
-        items.Add(Master.eLang.GetString(746, "Blank"), Enums.TVBannerType.Blank)
-        items.Add(Master.eLang.GetString(747, "Graphical"), Enums.TVBannerType.Graphical)
-        items.Add(Master.eLang.GetString(748, "Text"), Enums.TVBannerType.Text)
-        cbTVAllSeasonsBannerPrefType.DataSource = items.ToList
-        cbTVAllSeasonsBannerPrefType.DisplayMember = "Key"
-        cbTVAllSeasonsBannerPrefType.ValueMember = "Value"
-        cbTVSeasonBannerPrefType.DataSource = items.ToList
-        cbTVSeasonBannerPrefType.DisplayMember = "Key"
-        cbTVSeasonBannerPrefType.ValueMember = "Value"
-        cbTVShowBannerPrefType.DataSource = items.ToList
-        cbTVShowBannerPrefType.DisplayMember = "Key"
-        cbTVShowBannerPrefType.ValueMember = "Value"
     End Sub
 
     Private Sub LoadTVMetadata()
@@ -4734,22 +4857,28 @@ Public Class dlgSettings
             End If
             .MovieBannerHeight = If(Not String.IsNullOrEmpty(txtMovieBannerHeight.Text), Convert.ToInt32(txtMovieBannerHeight.Text), 0)
             .MovieBannerKeepExisting = chkMovieBannerKeepExisting.Checked
-            .MovieBannerPrefSizeOnly = chkMovieBannerPrefOnly.Checked
             .MovieBannerPrefSize = CType(cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
+            .MovieBannerPrefSizeOnly = chkMovieBannerPrefSizeOnly.Checked
             .MovieBannerResize = chkMovieBannerResize.Checked
             .MovieBannerWidth = If(Not String.IsNullOrEmpty(txtMovieBannerWidth.Text), Convert.ToInt32(txtMovieBannerWidth.Text), 0)
             .MovieCleanDB = chkMovieCleanDB.Checked
             .MovieClearArtKeepExisting = chkMovieClearArtKeepExisting.Checked
+            .MovieClearArtPrefSize = CType(cbMovieClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearArtSize)).Value
+            .MovieClearArtPrefSizeOnly = chkMovieClearArtPrefSizeOnly.Checked
             .MovieClearLogoKeepExisting = chkMovieClearLogoKeepExisting.Checked
+            .MovieClearLogoPrefSize = CType(cbMovieClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearLogoSize)).Value
+            .MovieClearLogoPrefSizeOnly = chkMovieClearLogoPrefSizeOnly.Checked
             .MovieClickScrape = chkMovieClickScrape.Checked
             .MovieClickScrapeAsk = chkMovieClickScrapeAsk.Checked
             .MovieDiscArtKeepExisting = chkMovieDiscArtKeepExisting.Checked
+            .MovieDiscArtPrefSize = CType(cbMovieDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieDiscArtSize)).Value
+            .MovieDiscArtPrefSizeOnly = chkMovieDiscArtPrefSizeOnly.Checked
             .MovieDisplayYear = chkMovieDisplayYear.Checked
             .MovieExtrafanartsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsHeight.Text), Convert.ToInt32(txtMovieExtrafanartsHeight.Text), 0)
             .MovieExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsLimit.Text), Convert.ToInt32(txtMovieExtrafanartsLimit.Text), 0)
             .MovieExtrafanartsKeepExisting = chkMovieExtrafanartsKeepExisting.Checked
-            .MovieExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefOnly.Checked
             .MovieExtrafanartsPrefSize = CType(cbMovieExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefSizeOnly.Checked
             .MovieExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
             .MovieExtrafanartsResize = chkMovieExtrafanartsResize.Checked
             .MovieExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
@@ -4760,15 +4889,15 @@ Public Class dlgSettings
             .MovieExtrathumbsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsHeight.Text), Convert.ToInt32(txtMovieExtrathumbsHeight.Text), 0)
             .MovieExtrathumbsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsLimit.Text), Convert.ToInt32(txtMovieExtrathumbsLimit.Text), 0)
             .MovieExtrathumbsKeepExisting = chkMovieExtrathumbsKeepExisting.Checked
-            .MovieExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefOnly.Checked
             .MovieExtrathumbsPrefSize = CType(cbMovieExtrathumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefSizeOnly.Checked
             .MovieExtrathumbsPreselect = chkMovieExtrathumbsPreselect.Checked
             .MovieExtrathumbsResize = chkMovieExtrathumbsResize.Checked
             .MovieExtrathumbsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsWidth.Text), Convert.ToInt32(txtMovieExtrathumbsWidth.Text), 0)
             .MovieFanartHeight = If(Not String.IsNullOrEmpty(txtMovieFanartHeight.Text), Convert.ToInt32(txtMovieFanartHeight.Text), 0)
             .MovieFanartKeepExisting = chkMovieFanartKeepExisting.Checked
-            .MovieFanartPrefSizeOnly = chkMovieFanartPrefOnly.Checked
             .MovieFanartPrefSize = CType(cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieFanartPrefSizeOnly = chkMovieFanartPrefSizeOnly.Checked
             .MovieFanartResize = chkMovieFanartResize.Checked
             .MovieFanartWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
             .MovieFilterCustom.Clear()
@@ -4809,6 +4938,8 @@ Public Class dlgSettings
                 .MovieIMDBURL = "akas.imdb.com"
             End If
             .MovieLandscapeKeepExisting = chkMovieLandscapeKeepExisting.Checked
+            .MovieLandscapePrefSize = CType(cbMovieLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieLandscapeSize)).Value
+            .MovieLandscapePrefSizeOnly = chkMovieLandscapePrefSizeOnly.Checked
             .MovieLevTolerance = If(Not String.IsNullOrEmpty(txtMovieLevTolerance.Text), Convert.ToInt32(txtMovieLevTolerance.Text), 0)
             .MovieLockActors = chkMovieLockActors.Checked
             .MovieLockCert = chkMovieLockCert.Checked
@@ -4839,28 +4970,34 @@ Public Class dlgSettings
             .MovieMetadataPerFileType.AddRange(MovieMeta)
             .MoviePosterHeight = If(Not String.IsNullOrEmpty(txtMoviePosterHeight.Text), Convert.ToInt32(txtMoviePosterHeight.Text), 0)
             .MoviePosterKeepExisting = chkMoviePosterKeepExisting.Checked
-            .MoviePosterPrefSizeOnly = chkMoviePosterPrefOnly.Checked
             .MoviePosterPrefSize = CType(cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
+            .MoviePosterPrefSizeOnly = chkMoviePosterPrefSizeOnly.Checked
             .MoviePosterResize = chkMoviePosterResize.Checked
             .MoviePosterWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
             .MovieProperCase = chkMovieProperCase.Checked
             .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(txtMovieSetBannerHeight.Text), Convert.ToInt32(txtMovieSetBannerHeight.Text), 0)
             .MovieSetBannerKeepExisting = chkMovieSetBannerKeepExisting.Checked
-            .MovieSetBannerPrefSizeOnly = chkMovieSetBannerPrefOnly.Checked
             .MovieSetBannerPrefSize = CType(cbMovieSetBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
+            .MovieSetBannerPrefSizeOnly = chkMovieSetBannerPrefSizeOnly.Checked
             .MovieSetBannerResize = chkMovieSetBannerResize.Checked
             .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(txtMovieSetBannerWidth.Text), Convert.ToInt32(txtMovieSetBannerWidth.Text), 0)
             .MovieSetCleanDB = chkMovieSetCleanDB.Checked
             .MovieSetCleanFiles = chkMovieSetCleanFiles.Checked
             .MovieSetClearArtKeepExisting = chkMovieSetClearArtKeepExisting.Checked
+            .MovieSetClearArtPrefSize = CType(cbMovieSetClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearArtSize)).Value
+            .MovieSetClearArtPrefSizeOnly = chkMovieSetClearArtPrefSizeOnly.Checked
             .MovieSetClearLogoKeepExisting = chkMovieSetClearLogoKeepExisting.Checked
+            .MovieSetClearLogoPrefSize = CType(cbMovieSetClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearLogoSize)).Value
+            .MovieSetClearLogoPrefSizeOnly = chkMovieSetClearLogoPrefSizeOnly.Checked
             .MovieSetClickScrape = chkMovieSetClickScrape.Checked
             .MovieSetClickScrapeAsk = chkMovieSetClickScrapeAsk.Checked
             .MovieSetDiscArtKeepExisting = chkMovieSetDiscArtKeepExisting.Checked
+            .MovieSetDiscArtPrefSize = CType(cbMovieSetDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieDiscArtSize)).Value
+            .MovieSetDiscArtPrefSizeOnly = chkMovieSetDiscArtPrefSizeOnly.Checked
             .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(txtMovieSetFanartHeight.Text), Convert.ToInt32(txtMovieSetFanartHeight.Text), 0)
             .MovieSetFanartKeepExisting = chkMovieSetFanartKeepExisting.Checked
-            .MovieSetFanartPrefSizeOnly = chkMovieSetFanartPrefOnly.Checked
             .MovieSetFanartPrefSize = CType(cbMovieSetFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieSetFanartPrefSizeOnly = chkMovieSetFanartPrefSizeOnly.Checked
             .MovieSetFanartResize = chkMovieSetFanartResize.Checked
             .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(txtMovieSetFanartWidth.Text), Convert.ToInt32(txtMovieSetFanartWidth.Text), 0)
             .MovieSetGeneralCustomScrapeButtonEnabled = rbMovieSetGeneralCustomScrapeButtonEnabled.Checked
@@ -4879,11 +5016,13 @@ Public Class dlgSettings
             .MovieSetImagesGetEnglishImages = chkMovieSetImagesGetEnglishImages.Checked
             .MovieSetImagesMediaLanguageOnly = chkMovieSetImagesMediaLanguageOnly.Checked
             .MovieSetLandscapeKeepExisting = chkMovieSetLandscapeKeepExisting.Checked
+            .MovieSetLandscapePrefSize = CType(cbMovieSetLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieLandscapeSize)).Value
+            .MovieSetLandscapePrefSizeOnly = chkMovieSetLandscapePrefSizeOnly.Checked
             .MovieSetLockPlot = chkMovieSetLockPlot.Checked
             .MovieSetLockTitle = chkMovieSetLockTitle.Checked
             .MovieSetPosterHeight = If(Not String.IsNullOrEmpty(txtMovieSetPosterHeight.Text), Convert.ToInt32(txtMovieSetPosterHeight.Text), 0)
             .MovieSetPosterKeepExisting = chkMovieSetPosterKeepExisting.Checked
-            .MovieSetPosterPrefSizeOnly = chkMovieSetPosterPrefOnly.Checked
+            .MovieSetPosterPrefSizeOnly = chkMovieSetPosterPrefSizeOnly.Checked
             .MovieSetPosterPrefSize = CType(cbMovieSetPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
             .MovieSetPosterResize = chkMovieSetPosterResize.Checked
             .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(txtMovieSetPosterWidth.Text), Convert.ToInt32(txtMovieSetPosterWidth.Text), 0)
@@ -4990,6 +5129,8 @@ Public Class dlgSettings
             .TVAllSeasonsFanartResize = chkTVAllSeasonsFanartResize.Checked
             .TVAllSeasonsFanartWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsFanartWidth.Text), Convert.ToInt32(txtTVAllSeasonsFanartWidth.Text), 0)
             .TVAllSeasonsLandscapeKeepExisting = chkTVAllSeasonsLandscapeKeepExisting.Checked
+            .TVAllSeasonsLandscapePrefSize = CType(cbTVAllSeasonsLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVLandscapeSize)).Value
+            .TVAllSeasonsLandscapePrefSizeOnly = chkTVAllSeasonsLandscapePrefSizeOnly.Checked
             .TVAllSeasonsPosterHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsPosterHeight.Text), Convert.ToInt32(txtTVAllSeasonsPosterHeight.Text), 0)
             .TVAllSeasonsPosterKeepExisting = chkTVAllSeasonsPosterKeepExisting.Checked
             .TVAllSeasonsPosterPrefSize = CType(cbTVAllSeasonsPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
@@ -5026,7 +5167,7 @@ Public Class dlgSettings
                 .TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
             End If
             .TVGeneralClickScrape = chkTVGeneralClickScrape.Checked
-            .TVGeneralClickScrapeAsk = chkTVGeneralClickScrapeAsk.Checked
+            .TVGeneralClickScrapeask = chkTVGeneralClickScrapeAsk.Checked
             .TVGeneralCustomScrapeButtonEnabled = rbTVGeneralCustomScrapeButtonEnabled.Checked
             .TVGeneralCustomScrapeButtonModifierType = CType(cbTVGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
             .TVGeneralCustomScrapeButtonScrapeType = CType(cbTVGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
@@ -5132,6 +5273,8 @@ Public Class dlgSettings
             .TVSeasonFanartResize = chkTVSeasonFanartResize.Checked
             .TVSeasonFanartWidth = If(Not String.IsNullOrEmpty(txtTVSeasonFanartWidth.Text), Convert.ToInt32(txtTVSeasonFanartWidth.Text), 0)
             .TVSeasonLandscapeKeepExisting = chkTVSeasonLandscapeKeepExisting.Checked
+            .TVSeasonLandscapePrefSize = CType(cbTVSeasonLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVLandscapeSize)).Value
+            .TVSeasonLandscapePrefSizeOnly = chkTVSeasonLandscapePrefSizeOnly.Checked
             .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(txtTVSeasonPosterHeight.Text), Convert.ToInt32(txtTVSeasonPosterHeight.Text), 0)
             .TVSeasonPosterKeepExisting = chkTVSeasonPosterKeepExisting.Checked
             .TVSeasonPosterPrefSize = CType(cbTVSeasonPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVSeasonPosterSize)).Value
@@ -5146,12 +5289,18 @@ Public Class dlgSettings
             .TVShowBannerResize = chkTVShowBannerResize.Checked
             .TVShowBannerWidth = If(Not String.IsNullOrEmpty(txtTVShowBannerWidth.Text), Convert.ToInt32(txtTVShowBannerWidth.Text), 0)
             .TVShowCharacterArtKeepExisting = chkTVShowCharacterArtKeepExisting.Checked
+            .TVShowCharacterArtPrefSize = CType(cbTVShowCharacterArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVCharacterArtSize)).Value
+            .TVShowCharacterArtPrefSizeOnly = chkTVShowCharacterArtPrefSizeOnly.Checked
             .TVShowClearArtKeepExisting = chkTVShowClearArtKeepExisting.Checked
+            .TVShowClearArtPrefSize = CType(cbTVShowClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVClearArtSize)).Value
+            .TVShowClearArtPrefSizeOnly = chkTVShowClearArtPrefSizeOnly.Checked
             .TVShowClearLogoKeepExisting = chkTVShowClearLogoKeepExisting.Checked
+            .TVShowClearLogoPrefSize = CType(cbTVShowClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVClearLogoSize)).Value
+            .TVShowClearLogoPrefSizeOnly = chkTVShowClearLogoPrefSizeOnly.Checked
             .TVShowExtrafanartsHeight = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsHeight.Text), Convert.ToInt32(txtTVShowExtrafanartsHeight.Text), 0)
             .TVShowExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsLimit.Text), Convert.ToInt32(txtTVShowExtrafanartsLimit.Text), 0)
             .TVShowExtrafanartsKeepExisting = chkTVShowExtrafanartsKeepExisting.Checked
-            .TVShowExtrafanartsPrefOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
+            .TVShowExtrafanartsPrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
             .TVShowExtrafanartsPrefSize = CType(cbTVShowExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
             .TVShowExtrafanartsPrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
             .TVShowExtrafanartsPreselect = chkTVShowExtrafanartsPreselect.Checked
@@ -5167,6 +5316,8 @@ Public Class dlgSettings
             .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
             If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
             .TVShowLandscapeKeepExisting = chkTVShowLandscapeKeepExisting.Checked
+            .TVShowLandscapePrefSize = CType(cbTVShowLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVLandscapeSize)).Value
+            .TVShowLandscapePrefSizeOnly = chkTVShowLandscapePrefSizeOnly.Checked
             .TVShowPosterHeight = If(Not String.IsNullOrEmpty(txtTVShowPosterHeight.Text), Convert.ToInt32(txtTVShowPosterHeight.Text), 0)
             .TVShowPosterKeepExisting = chkTVShowPosterKeepExisting.Checked
             .TVShowPosterPrefSize = CType(cbTVShowPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
@@ -6212,25 +6363,39 @@ Public Class dlgSettings
 
         'Only
         Dim strOnly As String = Master.eLang.GetString(145, "Only")
-        chkMovieBannerPrefOnly.Text = strOnly
-        chkMovieExtrafanartsPrefOnly.Text = strOnly
-        chkMovieExtrathumbsPrefOnly.Text = strOnly
-        chkMovieFanartPrefOnly.Text = strOnly
-        chkMoviePosterPrefOnly.Text = strOnly
-        chkMovieSetBannerPrefOnly.Text = strOnly
-        chkMovieSetFanartPrefOnly.Text = strOnly
-        chkMovieSetPosterPrefOnly.Text = strOnly
+        chkMovieBannerPrefSizeOnly.Text = strOnly
+        chkMovieClearArtPrefSizeOnly.Text = strOnly
+        chkMovieClearLogoPrefSizeOnly.Text = strOnly
+        chkMovieDiscArtPrefSizeOnly.Text = strOnly
+        chkMovieExtrafanartsPrefSizeOnly.Text = strOnly
+        chkMovieExtrathumbsPrefSizeOnly.Text = strOnly
+        chkMovieFanartPrefSizeOnly.Text = strOnly
+        chkMovieDiscArtPrefSizeOnly.Text = strOnly
+        chkMoviePosterPrefSizeOnly.Text = strOnly
+        chkMovieSetBannerPrefSizeOnly.Text = strOnly
+        chkMovieSetClearArtPrefSizeOnly.Text = strOnly
+        chkMovieSetClearLogoPrefSizeOnly.Text = strOnly
+        chkMovieSetDiscArtPrefSizeOnly.Text = strOnly
+        chkMovieSetFanartPrefSizeOnly.Text = strOnly
+        chkMovieSetLandscapePrefSizeOnly.Text = strOnly
+        chkMovieSetPosterPrefSizeOnly.Text = strOnly
         chkTVAllSeasonsBannerPrefSizeOnly.Text = strOnly
         chkTVAllSeasonsFanartPrefSizeOnly.Text = strOnly
+        chkTVAllSeasonsLandscapePrefSizeOnly.Text = strOnly
         chkTVAllSeasonsPosterPrefSizeOnly.Text = strOnly
         chkTVEpisodeFanartPrefSizeOnly.Text = strOnly
         chkTVEpisodePosterPrefSizeOnly.Text = strOnly
         chkTVSeasonBannerPrefSizeOnly.Text = strOnly
         chkTVSeasonFanartPrefSizeOnly.Text = strOnly
+        chkTVSeasonLandscapePrefSizeOnly.Text = strOnly
         chkTVSeasonPosterPrefSizeOnly.Text = strOnly
         chkTVShowBannerPrefSizeOnly.Text = strOnly
+        chkTVShowCharacterArtPrefSizeOnly.Text = strOnly
+        chkTVShowClearArtPrefSizeOnly.Text = strOnly
+        chkTVShowClearLogoPrefSizeOnly.Text = strOnly
         chkTVShowExtrafanartsPrefSizeOnly.Text = strOnly
         chkTVShowFanartPrefSizeOnly.Text = strOnly
+        chkTVShowLandscapePrefSizeOnly.Text = strOnly
         chkTVShowPosterPrefSizeOnly.Text = strOnly
 
         'Only Get Images for the Media Language
@@ -6332,24 +6497,38 @@ Public Class dlgSettings
         'Preferred Size:
         Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
         lblMovieBannerSize.Text = strPreferredSize
+        lblMovieClearArtSize.Text = strPreferredSize
+        lblMovieClearLogoSize.Text = strPreferredSize
+        lblMovieDiscArtSize.Text = strPreferredSize
         lblMovieExtrafanartsSize.Text = strPreferredSize
         lblMovieExtrathumbsSize.Text = strPreferredSize
         lblMovieFanartSize.Text = strPreferredSize
+        lblMovieLandscapeSize.Text = strPreferredSize
         lblMoviePosterSize.Text = strPreferredSize
         lblMovieSetBannerSize.Text = strPreferredSize
+        lblMovieSetClearArtSize.Text = strPreferredSize
+        lblMovieSetClearLogoSize.Text = strPreferredSize
+        lblMovieSetDiscArtSize.Text = strPreferredSize
         lblMovieSetFanartSize.Text = strPreferredSize
+        lblMovieSetLandscapeSize.Text = strPreferredSize
         lblMovieSetPosterSize.Text = strPreferredSize
         lblTVAllSeasonsBannerPrefSize.Text = strPreferredSize
         lblTVAllSeasonsFanartPrefSize.Text = strPreferredSize
+        lblTVAllSeasonsLandscapePrefSize.Text = strPreferredSize
         lblTVAllSeasonsPosterPrefSize.Text = strPreferredSize
         lblTVEpisodeFanartPrefSize.Text = strPreferredSize
         lblTVEpisodePosterPrefSize.Text = strPreferredSize
         lblTVSeasonBannerPrefSize.Text = strPreferredSize
         lblTVSeasonFanartPrefSize.Text = strPreferredSize
+        lblTVSeasonLandscapePrefSize.Text = strPreferredSize
         lblTVSeasonPosterPrefSize.Text = strPreferredSize
         lblTVShowBannerPrefSize.Text = strPreferredSize
+        lblTVShowCharacterArtPrefSize.Text = strPreferredSize
+        lblTVShowClearArtPrefSize.Text = strPreferredSize
+        lblTVShowClearLogoPrefSize.Text = strPreferredSize
         lblTVShowExtrafanartsSize.Text = strPreferredSize
         lblTVShowFanartPrefSize.Text = strPreferredSize
+        lblTVShowLandscapePrefSize.Text = strPreferredSize
         lblTVShowPosterPrefSize.Text = strPreferredSize
 
         'Preferred Type:
@@ -6728,17 +6907,25 @@ Public Class dlgSettings
         lblTVSkipLessThanMB.Text = lblMovieSkipLessThanMB.Text
 
         LoadGeneralDateTime()
-        LoadMovieBannerSizes()
         LoadCustomScraperButtonModifierTypes_Movie()
         LoadCustomScraperButtonModifierTypes_MovieSet()
         LoadCustomScraperButtonModifierTypes_TV()
         LoadCustomScraperButtonScrapeTypes()
+        LoadMovieBannerSizes()
+        LoadMovieClearArtSizes()
+        LoadMovieClearLogoSizes()
+        LoadMovieDiscArtSizes()
         LoadMovieFanartSizes()
+        LoadMovieLandscapeSizes()
         LoadMoviePosterSizes()
         LoadMovieTrailerQualities()
         LoadTVBannerSizes()
         LoadTVBannerTypes()
+        LoadTVCharacterArtSizes()
+        LoadTVClearArtSizes()
+        LoadTVClearLogoSizes()
         LoadTVFanartSizes()
+        LoadTVLandscapeSizes()
         LoadTVPosterSizes()
         LoadTVScraperOptionsOrdering()
     End Sub
@@ -7803,7 +7990,7 @@ Public Class dlgSettings
         chkMovieBannerExtended.CheckedChanged,
         chkMovieBannerKeepExisting.CheckedChanged,
         chkMovieBannerNMJ.CheckedChanged,
-        chkMovieBannerPrefOnly.CheckedChanged,
+        chkMovieBannerPrefSizeOnly.CheckedChanged,
         chkMovieBannerYAMJ.CheckedChanged,
         chkMovieCleanDB.CheckedChanged,
         chkMovieClearArtAD.CheckedChanged,
@@ -7822,7 +8009,7 @@ Public Class dlgSettings
         chkMovieExtrafanartsExpertVTS.CheckedChanged,
         chkMovieExtrafanartsFrodo.CheckedChanged,
         chkMovieExtrafanartsKeepExisting.CheckedChanged,
-        chkMovieExtrafanartsPrefOnly.CheckedChanged,
+        chkMovieExtrafanartsPrefSizeOnly.CheckedChanged,
         chkMovieExtrafanartsPreselect.CheckedChanged,
         chkMovieExtrathumbsCreatorNoBlackBars.CheckedChanged,
         chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged,
@@ -7832,14 +8019,14 @@ Public Class dlgSettings
         chkMovieExtrathumbsExpertVTS.CheckedChanged,
         chkMovieExtrathumbsFrodo.CheckedChanged,
         chkMovieExtrathumbsKeepExisting.CheckedChanged,
-        chkMovieExtrathumbsPrefOnly.CheckedChanged,
+        chkMovieExtrathumbsPrefSizeOnly.CheckedChanged,
         chkMovieExtrathumbsPreselect.CheckedChanged,
         chkMovieFanartBoxee.CheckedChanged,
         chkMovieFanartEden.CheckedChanged,
         chkMovieFanartFrodo.CheckedChanged,
         chkMovieFanartKeepExisting.CheckedChanged,
         chkMovieFanartNMJ.CheckedChanged,
-        chkMovieFanartPrefOnly.CheckedChanged,
+        chkMovieFanartPrefSizeOnly.CheckedChanged,
         chkMovieFanartYAMJ.CheckedChanged,
         chkMovieGeneralIgnoreLastScan.CheckedChanged,
         chkMovieGeneralMarkNew.CheckedChanged,
@@ -7886,7 +8073,7 @@ Public Class dlgSettings
         chkMoviePosterFrodo.CheckedChanged,
         chkMoviePosterKeepExisting.CheckedChanged,
         chkMoviePosterNMJ.CheckedChanged,
-        chkMoviePosterPrefOnly.CheckedChanged,
+        chkMoviePosterPrefSizeOnly.CheckedChanged,
         chkMoviePosterYAMJ.CheckedChanged,
         chkMovieRecognizeVTSExpertVTS.CheckedChanged,
         chkMovieScanOrderModify.CheckedChanged,
@@ -7923,7 +8110,7 @@ Public Class dlgSettings
         chkMovieSetBannerExtended.CheckedChanged,
         chkMovieSetBannerKeepExisting.CheckedChanged,
         chkMovieSetBannerMSAA.CheckedChanged,
-        chkMovieSetBannerPrefOnly.CheckedChanged,
+        chkMovieSetBannerPrefSizeOnly.CheckedChanged,
         chkMovieSetCleanDB.CheckedChanged,
         chkMovieSetCleanFiles.CheckedChanged,
         chkMovieSetClearArtExtended.CheckedChanged,
@@ -7937,7 +8124,7 @@ Public Class dlgSettings
         chkMovieSetFanartExtended.CheckedChanged,
         chkMovieSetFanartKeepExisting.CheckedChanged,
         chkMovieSetFanartMSAA.CheckedChanged,
-        chkMovieSetFanartPrefOnly.CheckedChanged,
+        chkMovieSetFanartPrefSizeOnly.CheckedChanged,
         chkMovieSetGeneralMarkNew.CheckedChanged,
         chkMovieSetImagesCacheEnabled.CheckedChanged,
         chkMovieSetImagesGetBlankImages.CheckedChanged,
@@ -7950,7 +8137,7 @@ Public Class dlgSettings
         chkMovieSetPosterExtended.CheckedChanged,
         chkMovieSetPosterKeepExisting.CheckedChanged,
         chkMovieSetPosterMSAA.CheckedChanged,
-        chkMovieSetPosterPrefOnly.CheckedChanged,
+        chkMovieSetPosterPrefSizeOnly.CheckedChanged,
         chkMovieSetScraperPlot.CheckedChanged,
         chkMovieSetScraperTitle.CheckedChanged,
         chkMovieSortBeforeScan.CheckedChanged,
@@ -8235,7 +8422,7 @@ Public Class dlgSettings
         txtTVShowPosterHeight.TextChanged,
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged, chkMovieClearLogoPrefSizeOnly.CheckedChanged, chkMovieClearArtPrefSizeOnly.CheckedChanged, cbMovieClearLogoPrefSize.SelectedIndexChanged, cbMovieClearArtPrefSize.SelectedIndexChanged, chkMovieLandscapePrefSizeOnly.CheckedChanged, chkMovieDiscArtPrefSizeOnly.CheckedChanged, cbMovieLandscapePrefSize.SelectedIndexChanged, cbMovieDiscArtPrefSize.SelectedIndexChanged, chkTVShowLandscapePrefSizeOnly.CheckedChanged, chkTVShowClearLogoPrefSizeOnly.CheckedChanged, chkTVShowClearArtPrefSizeOnly.CheckedChanged, chkTVShowCharacterArtPrefSizeOnly.CheckedChanged, cbTVShowLandscapePrefSize.SelectedIndexChanged, cbTVShowClearLogoPrefSize.SelectedIndexChanged, cbTVShowClearArtPrefSize.SelectedIndexChanged, cbTVShowCharacterArtPrefSize.SelectedIndexChanged, cbTVShowBannerPrefSize.SelectedIndexChanged, cbTVSeasonBannerPrefSize.SelectedIndexChanged, cbTVAllSeasonsBannerPrefSize.SelectedIndexChanged, chkMovieSetDiscArtKeepExisting.CheckedChanged
 
         SetApplyButton(True)
     End Sub

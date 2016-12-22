@@ -30,6 +30,8 @@ Public Class Scraper
 
 #Region "Events"
 
+    Public Event ScraperProgressUpdate(ByVal eProgressValue As ProgressValue)
+
 #End Region 'Events
 
 #Region "Properties"
@@ -46,11 +48,11 @@ Public Class Scraper
     '    logger.Trace(String.Format("[Scraper] [Search] [Done] {0}", tDBElement.Filename))
     'End Function
 
-    Public Shared Function Run(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
+    Public Function Run(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[Scraper] [Run] [Start] {0}", tDBElement.Filename))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             If tDBElement.MainDetails.AnyUniqueIDSpecified Then
-                Dim nSearchResults As AddonsManager.ScrapeResults = AddonsManager.Instance.Search(tDBElement)
+                'Dim nSearchResults As AddonsManager.ScrapeResults = AddonsManager.Instance.Search(tDBElement)
                 Dim nScrapeResults As AddonsManager.ScrapeResults = AddonsManager.Instance.Scrape(tDBElement)
                 If Not nScrapeResults.bCancelled AndAlso Not nScrapeResults.bError Then
 
@@ -68,6 +70,7 @@ Public Class Scraper
                     'Create cache paths
                     tDBElement.MainDetails.CreateCachePaths_ActorsThumbs()
                     nScrapeResults.lstImages.CreateCachePaths(tDBElement)
+                    RaiseEvent ScraperProgressUpdate(New ProgressValue With {.DBElement = tDBElement, .EventType = Enums.ScraperEventType.ShowScrapeResults})
                 Else
 
                 End If
@@ -103,6 +106,23 @@ Public Class Scraper
     End Sub
 
 #End Region 'Methods
+
+#Region "Nested Types"
+
+    Public Structure ProgressValue
+
+#Region "Fields"
+
+        Dim DBElement As Database.DBElement
+        Dim EventType As Enums.ScraperEventType
+        Dim ID As Long
+        Dim Message As String
+
+#End Region 'Fields
+
+    End Structure
+
+#End Region 'Nested Types
 
 End Class
 

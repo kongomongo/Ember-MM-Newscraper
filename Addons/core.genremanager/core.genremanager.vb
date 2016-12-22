@@ -20,9 +20,19 @@
 
 Imports EmberAPI
 Imports NLog
+Imports System.Drawing
+Imports System.Windows.Forms
 
-Public Class Addon
+Public Class Core
     Implements Interfaces.Addon
+
+#Region "Delegates"
+
+    Public Delegate Sub Delegate_SetToolsStripItem(value As ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(value As ToolStripItem)
+    Public Delegate Sub Delegate_AddToolsStripItem(tsi As ToolStripMenuItem, value As ToolStripMenuItem)
+
+#End Region 'Delegates
 
 #Region "Fields"
 
@@ -30,7 +40,10 @@ Public Class Addon
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _shortname As String = "TelevisionTunes.com"
+    Private _shortname As String = "GenreManager"
+
+    Private WithEvents cmnuTrayToolsRenamer As New ToolStripMenuItem
+    Private WithEvents mnuMainToolsRenamer As New ToolStripMenuItem
 
 #End Region 'Fields
 
@@ -50,25 +63,19 @@ Public Class Addon
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            _enabled = value
+            Return
         End Set
     End Property
 
     Public ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType) Implements Interfaces.Addon.Capabilities_AddonEventTypes
         Get
-            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
-                                                      Enums.AddonEventType.Scrape_Movie,
-                                                      Enums.AddonEventType.Scrape_TVShow
-                                                      })
+            Return New List(Of Enums.AddonEventType)
         End Get
     End Property
 
     Public ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibilities
         Get
-            Return New List(Of Enums.ScraperCapatibility)(New Enums.ScraperCapatibility() {
-                                                          Enums.ScraperCapatibility.Movie_Theme,
-                                                          Enums.ScraperCapatibility.TVShow_Theme
-                                                          })
+            Return New List(Of Enums.ScraperCapatibility)
         End Get
     End Property
 
@@ -94,6 +101,31 @@ Public Class Addon
 
 #Region "Methods"
 
+    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
+        If control.Owner.InvokeRequired Then
+            control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
+        Else
+            control.DropDownItems.Add(value)
+        End If
+    End Sub
+
+    Sub Enable()
+        Dim tsi As New ToolStripMenuItem
+
+        'mnuMainTools menu
+        mnuMainToolsRenamer.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsRenamer.Text = Master.eLang.GetString(782, "Genre Manager")
+        mnuMainToolsRenamer.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, mnuMainToolsRenamer)
+
+        'cmnuTrayTools
+        cmnuTrayToolsRenamer.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsRenamer.Text = Master.eLang.GetString(782, "Genre Manager")
+        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
+        AddToolsStripItem(tsi, cmnuTrayToolsRenamer)
+    End Sub
+
     Private Sub Handle_NeedsRestart()
         RaiseEvent NeedsRestart()
     End Sub
@@ -104,49 +136,24 @@ Public Class Addon
 
     Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
         _assemblyname = strAssemblyName
+        Enable()
     End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
         Return Nothing
     End Function
 
+    Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsRenamer.Click, cmnuTrayToolsRenamer.Click
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
+        Using dGenreManager As New dlgGenreManager
+            dGenreManager.ShowDialog()
+        End Using
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
+        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
-        logger.Trace("[TelevisionTunes] [Run] [Start]")
-        Dim nModuleResult As New Interfaces.AddonResult
-
-        Select Case eAddonEventType
-            Case Enums.AddonEventType.Scrape_Movie
-                If tDBElement.ScrapeModifiers.MainTheme Then
-                    Dim strTitle As String = String.Empty
-                    If tDBElement.MainDetails.OriginalTitleSpecified Then
-                        strTitle = tDBElement.MainDetails.OriginalTitle
-                    ElseIf tDBElement.MainDetails.TitleSpecified Then
-                        strTitle = tDBElement.MainDetails.Title
-                    End If
-
-                    If Not String.IsNullOrEmpty(strTitle) Then
-                        Dim _scraper As New Scraper()
-                        nModuleResult = _scraper.Scrape_Movie_TVShow(strTitle)
-                    End If
-                End If
-            Case Enums.AddonEventType.Scrape_TVShow
-                If tDBElement.ScrapeModifiers.MainTheme Then
-                    Dim strTitle As String = String.Empty
-                    If tDBElement.MainDetails.OriginalTitleSpecified Then
-                        strTitle = tDBElement.MainDetails.OriginalTitle
-                    ElseIf tDBElement.MainDetails.TitleSpecified Then
-                        strTitle = tDBElement.MainDetails.Title
-                    End If
-
-                    If Not String.IsNullOrEmpty(strTitle) Then
-                        Dim _scraper As New Scraper()
-                        nModuleResult = _scraper.Scrape_Movie_TVShow(strTitle)
-                    End If
-                End If
-        End Select
-
-        logger.Trace("[TelevisionTunes] [Run] [Done]")
-        Return nModuleResult
+        Return New Interfaces.AddonResult
     End Function
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup

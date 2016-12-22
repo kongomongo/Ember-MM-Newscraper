@@ -42,13 +42,13 @@ Public Class Scraper
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _AddonSettings As FanartTV.AddonSettings
+    Private _AddonSettings As Addon.AddonSettings
 
 #End Region 'Fields
 
 #Region "Methods"
 
-    Public Sub New(ByVal SpecialSettings As FanartTV.AddonSettings)
+    Public Sub New(ByVal SpecialSettings As Addon.AddonSettings)
         Try
             _AddonSettings = SpecialSettings
 

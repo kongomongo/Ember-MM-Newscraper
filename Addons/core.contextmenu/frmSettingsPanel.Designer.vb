@@ -22,8 +22,8 @@ Partial Class frmSettingsPanel
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.pnlMain = New System.Windows.Forms.Panel()
-        Me.tblMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSettings = New System.Windows.Forms.Panel()
+        Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnable = New System.Windows.Forms.CheckBox()
         Me.chkCascade = New System.Windows.Forms.CheckBox()
         Me.gbItems = New System.Windows.Forms.GroupBox()
@@ -31,42 +31,42 @@ Partial Class frmSettingsPanel
         Me.chkScanFolder = New System.Windows.Forms.CheckBox()
         Me.chkAddMovieSource = New System.Windows.Forms.CheckBox()
         Me.chkAddTVShowSource = New System.Windows.Forms.CheckBox()
-        Me.pnlMain.SuspendLayout()
-        Me.tblMain.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
+        Me.tblSettings.SuspendLayout()
         Me.gbItems.SuspendLayout()
         Me.tblItems.SuspendLayout()
         Me.SuspendLayout()
         '
-        'pnlMain
+        'pnlSettings
         '
-        Me.pnlMain.Controls.Add(Me.tblMain)
-        Me.pnlMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlMain.Location = New System.Drawing.Point(0, 0)
-        Me.pnlMain.Name = "pnlMain"
-        Me.pnlMain.Size = New System.Drawing.Size(297, 153)
-        Me.pnlMain.TabIndex = 0
+        Me.pnlSettings.Controls.Add(Me.tblSettings)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(297, 153)
+        Me.pnlSettings.TabIndex = 0
         '
-        'tblMain
+        'tblSettings
         '
-        Me.tblMain.AutoScroll = True
-        Me.tblMain.AutoSize = True
-        Me.tblMain.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.tblMain.ColumnCount = 2
-        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMain.Controls.Add(Me.chkEnable, 0, 0)
-        Me.tblMain.Controls.Add(Me.chkCascade, 0, 1)
-        Me.tblMain.Controls.Add(Me.gbItems, 0, 2)
-        Me.tblMain.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMain.Location = New System.Drawing.Point(0, 0)
-        Me.tblMain.Name = "tblMain"
-        Me.tblMain.RowCount = 4
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMain.Size = New System.Drawing.Size(297, 153)
-        Me.tblMain.TabIndex = 0
+        Me.tblSettings.AutoScroll = True
+        Me.tblSettings.AutoSize = True
+        Me.tblSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.tblSettings.ColumnCount = 2
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.Controls.Add(Me.chkEnable, 0, 0)
+        Me.tblSettings.Controls.Add(Me.chkCascade, 0, 1)
+        Me.tblSettings.Controls.Add(Me.gbItems, 0, 2)
+        Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettings.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettings.Name = "tblSettings"
+        Me.tblSettings.RowCount = 4
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(297, 153)
+        Me.tblSettings.TabIndex = 0
         '
         'chkEnable
         '
@@ -153,24 +153,24 @@ Partial Class frmSettingsPanel
         Me.chkAddTVShowSource.Text = "Add folder as a tv show source..."
         Me.chkAddTVShowSource.UseVisualStyleBackColor = True
         '
-        'frmSettingsHolder
+        'frmSettingsPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(297, 153)
-        Me.Controls.Add(Me.pnlMain)
+        Me.Controls.Add(Me.pnlSettings)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSettingsHolder"
+        Me.Name = "frmSettingsPanel"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmContextMenu"
-        Me.pnlMain.ResumeLayout(False)
-        Me.pnlMain.PerformLayout()
-        Me.tblMain.ResumeLayout(False)
-        Me.tblMain.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
+        Me.tblSettings.ResumeLayout(False)
+        Me.tblSettings.PerformLayout()
         Me.gbItems.ResumeLayout(False)
         Me.gbItems.PerformLayout()
         Me.tblItems.ResumeLayout(False)
@@ -178,8 +178,8 @@ Partial Class frmSettingsPanel
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents pnlMain As System.Windows.Forms.Panel
-    Friend WithEvents tblMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
+    Friend WithEvents tblSettings As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents chkEnable As System.Windows.Forms.CheckBox
     Friend WithEvents chkCascade As System.Windows.Forms.CheckBox
     Friend WithEvents gbItems As System.Windows.Forms.GroupBox

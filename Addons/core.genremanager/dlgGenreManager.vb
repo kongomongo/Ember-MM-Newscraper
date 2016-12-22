@@ -29,6 +29,7 @@ Public Class dlgGenreManager
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
     Friend WithEvents bwCleanDatabase As New System.ComponentModel.BackgroundWorker
     Private tmpGenreXML As clsXMLGenres
 
@@ -409,9 +410,5 @@ Public Class dlgGenreManager
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

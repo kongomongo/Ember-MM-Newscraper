@@ -32,6 +32,7 @@ Imports System.Text.RegularExpressions
 Public Class Database
 
 #Region "Fields"
+
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Friend WithEvents bwPatchDB As New System.ComponentModel.BackgroundWorker

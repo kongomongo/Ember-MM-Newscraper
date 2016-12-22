@@ -3289,15 +3289,23 @@ Namespace MediaContainers
         Private _localfilepath As String
         Private _longlang As String
         Private _moviebannersize As Enums.MovieBannerSize
+        Private _movieclearartsize As Enums.MovieClearArtSize
+        Private _movieclearlogosize As Enums.MovieClearLogoSize
+        Private _moviediscartsize As Enums.MovieDiscArtSize
         Private _moviefanartsize As Enums.MovieFanartSize
+        Private _movielandscapesize As Enums.MovieLandscapeSize
         Private _moviepostersize As Enums.MoviePosterSize
         Private _scraper As String
         Private _season As Integer
         Private _shortlang As String
         Private _tvbannersize As Enums.TVBannerSize
         Private _tvbannertype As Enums.TVBannerType
+        Private _tvcharacterartsize As Enums.TVCharacterArtSize
+        Private _tvclearartsize As Enums.TVClearArtSize
+        Private _tvclearlogosize As Enums.TVClearLogoSize
         Private _tvepisodepostersize As Enums.TVEpisodePosterSize
         Private _tvfanartsize As Enums.TVFanartSize
+        Private _tvlandscapesize As Enums.TVLandscapeSize
         Private _tvpostersize As Enums.TVPosterSize
         Private _tvseasonpostersize As Enums.TVSeasonPosterSize
         Private _urloriginal As String
@@ -3449,9 +3457,33 @@ Namespace MediaContainers
             End Get
         End Property
 
+        Public ReadOnly Property MovieClearArtSize() As Enums.MovieClearArtSize
+            Get
+                Return _movieclearartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property MovieClearLogoSize() As Enums.MovieClearLogoSize
+            Get
+                Return _movieclearlogosize
+            End Get
+        End Property
+
+        Public ReadOnly Property MovieDiscArtSize() As Enums.MovieDiscArtSize
+            Get
+                Return _moviediscartsize
+            End Get
+        End Property
+
         Public ReadOnly Property MovieFanartSize() As Enums.MovieFanartSize
             Get
                 Return _moviefanartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property MovieLandscapeSize() As Enums.MovieLandscapeSize
+            Get
+                Return _movielandscapesize
             End Get
         End Property
 
@@ -3503,6 +3535,24 @@ Namespace MediaContainers
             End Set
         End Property
 
+        Public ReadOnly Property TVCharacterArtSize() As Enums.TVCharacterArtSize
+            Get
+                Return _tvcharacterartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property TVClearArtSize() As Enums.TVClearArtSize
+            Get
+                Return _tvclearartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property TVClearLogoSize() As Enums.TVClearLogoSize
+            Get
+                Return _tvclearlogosize
+            End Get
+        End Property
+
         Public ReadOnly Property TVEpisodePosterSize() As Enums.TVEpisodePosterSize
             Get
                 Return _tvepisodepostersize
@@ -3512,6 +3562,12 @@ Namespace MediaContainers
         Public ReadOnly Property TVFanartSize() As Enums.TVFanartSize
             Get
                 Return _tvfanartsize
+            End Get
+        End Property
+
+        Public ReadOnly Property TVLandscapeSize() As Enums.TVLandscapeSize
+            Get
+                Return _tvlandscapesize
             End Get
         End Property
 
@@ -3591,15 +3647,23 @@ Namespace MediaContainers
             _localfilepath = String.Empty
             _longlang = String.Empty
             _moviebannersize = Enums.MovieBannerSize.Any
+            _movieclearartsize = Enums.MovieClearArtSize.Any
+            _movieclearlogosize = Enums.MovieClearLogoSize.Any
+            _moviediscartsize = Enums.MovieDiscArtSize.Any
             _moviefanartsize = Enums.MovieFanartSize.Any
+            _movielandscapesize = Enums.MovieLandscapeSize.Any
             _moviepostersize = Enums.MoviePosterSize.Any
             _scraper = String.Empty
             _season = -1
             _shortlang = String.Empty
             _tvbannersize = Enums.TVBannerSize.Any
             _tvbannertype = Enums.TVBannerType.Any
+            _tvcharacterartsize = Enums.TVCharacterArtSize.Any
+            _tvclearartsize = Enums.TVClearArtSize.Any
+            _tvclearlogosize = Enums.TVClearLogoSize.Any
             _tvepisodepostersize = Enums.TVEpisodePosterSize.Any
             _tvfanartsize = Enums.TVFanartSize.Any
+            _tvlandscapesize = Enums.TVLandscapeSize.Any
             _tvpostersize = Enums.TVPosterSize.Any
             _tvseasonpostersize = Enums.TVSeasonPosterSize.Any
             _urloriginal = String.Empty
@@ -3636,6 +3700,7 @@ Namespace MediaContainers
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.HD1080
                     _tvfanartsize = Enums.TVFanartSize.HD1080
                 Case "1000"
+                    _moviediscartsize = Enums.MovieDiscArtSize.HD1000
                     _tvpostersize = Enums.TVPosterSize.HD1000
                 Case "720"
                     _moviefanartsize = Enums.MovieFanartSize.HD720
@@ -3643,20 +3708,45 @@ Namespace MediaContainers
                     _tvfanartsize = Enums.TVFanartSize.HD720
                 Case "578"
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.HD578
+                Case "562"
+                    _movieclearartsize = Enums.MovieClearArtSize.HD562
+                    _movielandscapesize = Enums.MovieLandscapeSize.HD562
+                    _tvclearartsize = Enums.TVClearArtSize.HD562
+                    _tvlandscapesize = Enums.TVLandscapeSize.HD562
+                Case "512"
+                    _tvcharacterartsize = Enums.TVCharacterArtSize.HD512
+                Case "310"
+                    _movieclearlogosize = Enums.MovieClearLogoSize.HD310
+                    _tvclearlogosize = Enums.TVClearLogoSize.HD310
+                Case "281"
+                    _movieclearartsize = Enums.MovieClearArtSize.SD281
+                    _tvclearartsize = Enums.TVClearArtSize.SD281
+                    _tvlandscapesize = Enums.TVLandscapeSize.SD281
                 Case "225", "300" '225 = 16:9 / 300 = 4:3
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.SD225
                 Case "185"
                     _moviebannersize = Enums.MovieBannerSize.HD185
                     _tvbannersize = Enums.TVBannerSize.HD185
+                Case "155"
+                    _movieclearlogosize = Enums.MovieClearLogoSize.SD155
+                    _tvclearlogosize = Enums.TVClearLogoSize.SD155
                 Case "140"
                     _tvbannersize = Enums.TVBannerSize.HD140
                 Case Else
                     _moviebannersize = Enums.MovieBannerSize.Any
+                    _movieclearartsize = Enums.MovieClearArtSize.Any
+                    _movieclearlogosize = Enums.MovieClearLogoSize.Any
+                    _moviediscartsize = Enums.MovieDiscArtSize.Any
                     _moviefanartsize = Enums.MovieFanartSize.Any
+                    _movielandscapesize = Enums.MovieLandscapeSize.Any
                     _moviepostersize = Enums.MoviePosterSize.Any
                     _tvbannersize = Enums.TVBannerSize.Any
+                    _tvcharacterartsize = Enums.TVCharacterArtSize.Any
+                    _tvclearartsize = Enums.TVClearArtSize.Any
+                    _tvclearlogosize = Enums.TVClearLogoSize.Any
                     _tvepisodepostersize = Enums.TVEpisodePosterSize.Any
                     _tvfanartsize = Enums.TVFanartSize.Any
+                    _tvlandscapesize = Enums.TVLandscapeSize.Any
                     _tvpostersize = Enums.TVPosterSize.Any
                     _tvseasonpostersize = Enums.TVSeasonPosterSize.Any
             End Select

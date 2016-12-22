@@ -47,7 +47,7 @@ Public Class frmSettingsPanel
         CreateDummies()
     End Sub
 
-#End Region
+#End Region 'Constructors
 
 #Region "Methods"
 

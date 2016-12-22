@@ -49,6 +49,7 @@ Public Class Master
     Public Shared isWindows As Boolean = Functions.CheckIfWindows
     Public Shared ScraperList As New List(Of ScraperProperties)
     Public Shared SearchEngineList As New List(Of SearchEngineProperties)
+    Public Shared ScraperEngine As New Scraper
 
     Public Shared strVersionOverwrite As String = "1.4.8.0 Alpha 23"
 

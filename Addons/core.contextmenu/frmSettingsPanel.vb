@@ -27,11 +27,16 @@ Public Class frmSettingsPanel
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
-    Private SettingsHasChanged As Boolean = False
 
 #End Region 'Fields
 
-    Public Event ModuleSettingsChanged()
+#Region "Events"
+
+    Public Event SettingsChanged()
+
+#End Region 'Events
+
+#Region "Constructors"
 
     Sub New()
         ' This call is required by the Windows Form Designer.
@@ -40,6 +45,10 @@ Public Class frmSettingsPanel
         SetUp()
         FillSettings()
     End Sub
+
+#End Region
+
+#Region "Methods"
 
     Private Sub SetUp()
         chkCascade.Text = Master.eLang.GetString(1397, "Cascade context menu")
@@ -385,8 +394,6 @@ Public Class frmSettingsPanel
         End If
     End Function
 
-#Region "Nested Types"
-
-#End Region 'Nested Types
+#End Region 'Methods
 
 End Class

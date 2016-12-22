@@ -19,18 +19,16 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports NLog
 
-Public Class Addon
+Public Class Core
     Implements Interfaces.Addon
 
 #Region "Fields"
 
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
-
-    Private _assemblyname As String
+    Private _assemblyname As String = String.Empty
     Private _enabled As Boolean = True
-    Private _shortname As String = "TelevisionTunes.com"
+    Private _shortname As String = "ContextMenu"
+    Private _settingspanel As frmSettingsPanel
 
 #End Region 'Fields
 
@@ -50,25 +48,19 @@ Public Class Addon
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            _enabled = value
+            Return
         End Set
     End Property
 
     Public ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType) Implements Interfaces.Addon.Capabilities_AddonEventTypes
         Get
-            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
-                                                      Enums.AddonEventType.Scrape_Movie,
-                                                      Enums.AddonEventType.Scrape_TVShow
-                                                      })
+            Return New List(Of Enums.AddonEventType)
         End Get
     End Property
 
     Public ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibilities
         Get
-            Return New List(Of Enums.ScraperCapatibility)(New Enums.ScraperCapatibility() {
-                                                          Enums.ScraperCapatibility.Movie_Theme,
-                                                          Enums.ScraperCapatibility.TVShow_Theme
-                                                          })
+            Return New List(Of Enums.ScraperCapatibility)
         End Get
     End Property
 
@@ -107,46 +99,23 @@ Public Class Addon
     End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
-        Return Nothing
+        Dim SPanel As New Containers.SettingsPanel
+        _settingspanel = New frmSettingsPanel
+
+        SPanel.Image = My.Resources.ContextMenu
+        SPanel.ImageIndex = -1
+        SPanel.Name = Master.eLang.GetString(1395, "Context Menu")
+        SPanel.Panel = _settingspanel.pnlSettings
+        SPanel.Prefix = "ContextMenu_"
+        SPanel.Text = Master.eLang.GetString(1395, "Context Menu")
+        SPanel.Type = Enums.SettingsPanelType.Core
+
+        AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        Return SPanel
     End Function
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
-        logger.Trace("[TelevisionTunes] [Run] [Start]")
-        Dim nModuleResult As New Interfaces.AddonResult
-
-        Select Case eAddonEventType
-            Case Enums.AddonEventType.Scrape_Movie
-                If tDBElement.ScrapeModifiers.MainTheme Then
-                    Dim strTitle As String = String.Empty
-                    If tDBElement.MainDetails.OriginalTitleSpecified Then
-                        strTitle = tDBElement.MainDetails.OriginalTitle
-                    ElseIf tDBElement.MainDetails.TitleSpecified Then
-                        strTitle = tDBElement.MainDetails.Title
-                    End If
-
-                    If Not String.IsNullOrEmpty(strTitle) Then
-                        Dim _scraper As New Scraper()
-                        nModuleResult = _scraper.Scrape_Movie_TVShow(strTitle)
-                    End If
-                End If
-            Case Enums.AddonEventType.Scrape_TVShow
-                If tDBElement.ScrapeModifiers.MainTheme Then
-                    Dim strTitle As String = String.Empty
-                    If tDBElement.MainDetails.OriginalTitleSpecified Then
-                        strTitle = tDBElement.MainDetails.OriginalTitle
-                    ElseIf tDBElement.MainDetails.TitleSpecified Then
-                        strTitle = tDBElement.MainDetails.Title
-                    End If
-
-                    If Not String.IsNullOrEmpty(strTitle) Then
-                        Dim _scraper As New Scraper()
-                        nModuleResult = _scraper.Scrape_Movie_TVShow(strTitle)
-                    End If
-                End If
-        End Select
-
-        logger.Trace("[TelevisionTunes] [Run] [Done]")
-        Return nModuleResult
+        Return New Interfaces.AddonResult
     End Function
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup

@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Die Werte der Assemblyattribute überprüfen
 
-<Assembly: AssemblyTitle("generic.EmberCore.ContextMenu")> 
+<Assembly: AssemblyTitle("core.contextmenu")>
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
-<Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("generic.EmberCore.ContextMenu")> 
-<Assembly: AssemblyCopyright("Copyright ©  2015")> 
+<Assembly: AssemblyCompany("Ember Media Manager")>
+<Assembly: AssemblyProduct("core.contextmenu")>
+<Assembly: AssemblyCopyright("Copyright ©  2016")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
-<Assembly: Guid("e632b000-f3eb-4759-88a8-15f0b7eeb534")> 
+<Assembly: Guid("e632b000-f3eb-4759-88a8-15f0b7eeb534")>
 
 ' Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' übernehmen, indem Sie "*" eingeben:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.4.7.0")> 
-<Assembly: AssemblyFileVersion("1.4.7.0")> 
+<Assembly: AssemblyVersion("1.4.8.0")>
+<Assembly: AssemblyFileVersion("1.4.8.0")>

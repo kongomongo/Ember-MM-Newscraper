@@ -790,13 +790,13 @@ Public Class Enums
 
     Public Enum MovieClearArtSize As Integer
         HD562 = 0
-        HD281 = 1
+        SD281 = 1
         Any = 99
     End Enum
 
     Public Enum MovieClearLogoSize As Integer
         HD310 = 0
-        HD155 = 1
+        SD155 = 1
         Any = 99
     End Enum
 
@@ -853,6 +853,13 @@ Public Class Enums
         Refresh_TVShow = 6
         ScannerEnded = 7
         ScannerStarted = 8
+    End Enum
+
+    Public Enum ScraperEventType As Integer
+        ShowScrapeResults = 0
+        ShowSearchResults = 1
+        ScraperEnded = 2
+        ScraperStarted = 3
     End Enum
 
     Public Enum ScrapeModifierType As Integer
@@ -1100,13 +1107,13 @@ Public Class Enums
 
     Public Enum TVClearArtSize As Integer
         HD562 = 0
-        HD281 = 1
+        SD281 = 1
         Any = 99
     End Enum
 
     Public Enum TVClearLogoSize As Integer
         HD310 = 0
-        HD155 = 1
+        SD155 = 1
         Any = 99
     End Enum
 
@@ -1128,7 +1135,7 @@ Public Class Enums
 
     Public Enum TVLandscapeSize As Integer
         HD562 = 0
-        HD281 = 1
+        SD281 = 1
         Any = 99
     End Enum
 

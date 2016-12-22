@@ -375,6 +375,8 @@ Public Class Settings
     Private _tvallseasonsfanartresize As Boolean
     Private _tvallseasonsfanartwidth As Integer
     Private _tvallseasonslandscapekeepexisting As Boolean
+    Private _tvallseasonslandscapeprefsize As Enums.TVLandscapeSize
+    Private _tvallseasonslandscapeprefsizeonly As Boolean
     Private _tvallseasonsposterheight As Integer
     Private _tvallseasonsposterkeepexisting As Boolean
     Private _tvallseasonsposterprefsize As Enums.TVPosterSize
@@ -545,7 +547,6 @@ Public Class Settings
     Private _tvshowextrafanartsheight As Integer
     Private _tvshowextrafanartskeepexisting As Boolean
     Private _tvshowextrafanartslimit As Integer
-    Private _tvshowextrafanartsprefonly As Boolean
     Private _tvshowextrafanartsprefsize As Enums.TVFanartSize
     Private _tvshowextrafanartsprefsizeonly As Boolean
     Private _tvshowextrafanartspreselect As Boolean
@@ -1694,15 +1695,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             _moviesetfanartheight = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsPrefOnly() As Boolean
-        Get
-            Return _tvshowextrafanartsprefonly
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowextrafanartsprefonly = value
         End Set
     End Property
 
@@ -3725,7 +3717,7 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetClearlogoPrefSize() As Enums.MovieClearLogoSize
+    Public Property MovieSetClearLogoPrefSize() As Enums.MovieClearLogoSize
         Get
             Return _moviesetclearlogoprefsize
         End Get
@@ -4055,6 +4047,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Enums.TVFanartSize)
             _tvallseasonsfanartprefsize = value
+        End Set
+    End Property
+
+    Public Property TVAllSeasonsLandscapePrefSize() As Enums.TVLandscapeSize
+        Get
+            Return _tvallseasonslandscapeprefsize
+        End Get
+        Set(ByVal value As Enums.TVLandscapeSize)
+            _tvallseasonslandscapeprefsize = value
+        End Set
+    End Property
+
+    Public Property TVAllSeasonsLandscapePrefSizeOnly() As Boolean
+        Get
+            Return _tvallseasonslandscapeprefsizeonly
+        End Get
+        Set(ByVal value As Boolean)
+            _tvallseasonslandscapeprefsizeonly = value
         End Set
     End Property
 
@@ -8369,7 +8379,7 @@ Public Class Settings
         MovieSetClearArtPrefSize = Enums.MovieClearArtSize.Any
         MovieSetClearArtPrefSizeOnly = False
         MovieSetClearLogoKeepExisting = False
-        MovieSetClearlogoPrefSize = Enums.MovieClearLogoSize.Any
+        MovieSetClearLogoPrefSize = Enums.MovieClearLogoSize.Any
         MovieSetClearLogoPrefSizeOnly = False
         MovieSetClickScrape = False
         MovieSetClickScrapeAsk = False
@@ -8454,8 +8464,8 @@ Public Class Settings
         TVAllSeasonsFanartResize = False
         TVAllSeasonsFanartWidth = 0
         TVAllSeasonsLandscapeKeepExisting = False
-        'TVAllSeasonsLandscapeKeepPrefSize = Enums.TVLandscapeSize.Any
-        'TVAllSeasonsLandscapeKeepPrefSizeOnly = False
+        TVAllSeasonsLandscapePrefSize = Enums.TVLandscapeSize.Any
+        TVAllSeasonsLandscapePrefSizeOnly = False
         TVAllSeasonsPosterHeight = 0
         TVAllSeasonsPosterKeepExisting = False
         TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any
@@ -8622,10 +8632,14 @@ Public Class Settings
         TVShowCharacterArtPrefSize = Enums.TVCharacterArtSize.Any
         TVShowCharacterArtPrefSizeOnly = False
         TVShowClearArtKeepExisting = False
+        TVShowClearArtPrefSize = Enums.TVClearArtSize.Any
+        TVShowClearArtPrefSizeOnly = False
         TVShowClearLogoKeepExisting = False
+        TVShowClearLogoPrefSize = Enums.TVClearLogoSize.Any
+        TVShowClearLogoPrefSizeOnly = False
         TVShowExtrafanartsLimit = 4
         TVShowExtrafanartsKeepExisting = False
-        TVShowExtrafanartsPrefOnly = False
+        TVShowExtrafanartsPrefSizeOnly = False
         TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
         TVShowExtrafanartsPrefSizeOnly = False
         TVShowExtrafanartsPreselect = True
@@ -8641,6 +8655,8 @@ Public Class Settings
         TVShowFilterCustom = New List(Of String)
         TVShowFilterCustomIsEmpty = False
         TVShowLandscapeKeepExisting = False
+        TVShowLandscapePrefSize = Enums.TVLandscapeSize.Any
+        TVShowLandscapePrefSizeOnly = False
         TVShowMatching = New List(Of regexp)
         TVShowMissingBanner = False
         TVShowMissingCharacterArt = False

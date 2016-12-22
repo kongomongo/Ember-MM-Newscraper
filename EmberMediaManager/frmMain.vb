@@ -1873,7 +1873,7 @@ Public Class frmMain
 
             logger.Trace(String.Format("[Movie Scraper] [Start] Scraping {0}", OldListTitle))
 
-            Scraper.Run(DBScrapeMovie, Args.ScrapeList.Count = 1)
+            Master.ScraperEngine.Run(DBScrapeMovie, Args.ScrapeList.Count = 1)
 
             If tScrapeItem.ScrapeModifiers.MainNFO Then
                 If Not AddonsManager.Instance.ScrapeData_Movie(DBScrapeMovie, Args.ScrapeList.Count = 1) Then
@@ -9913,11 +9913,12 @@ Public Class frmMain
         pnlGenre(0) = New Panel()
         pbGenre(0) = New PictureBox()
 
-        AddHandler fCommandLine.TaskEvent, AddressOf TaskRunCallBack
-        AddHandler fScanner.ScannerProgressUpdate, AddressOf ScannerProgressUpdate
-        AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
-        AddHandler AddonsManager.Instance.GenericEvent, AddressOf GenericRunCallBack
-        AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
+        AddHandler fCommandLine.TaskEvent, AddressOf Handle_TaskRunCallBack
+        AddHandler fScanner.ScannerProgressUpdate, AddressOf Handle_ScannerProgressUpdate
+        AddHandler fTaskManager.ProgressUpdate, AddressOf Handle_TaskManagerProgressUpdate
+        AddHandler AddonsManager.Instance.GenericEvent, AddressOf Handle_GenericRunCallBack
+        AddHandler Master.DB.GenericEvent, AddressOf Handle_GenericRunCallBack
+        AddHandler Master.ScraperEngine.ScraperProgressUpdate, AddressOf Handle_ScraperProgressUpdate
 
         Functions.DGVDoubleBuffer(dgvMovies)
         Functions.DGVDoubleBuffer(dgvMovieSets)
@@ -9939,7 +9940,6 @@ Public Class frmMain
             Application.DoEvents()
             Threading.Thread.Sleep(50)
         End While
-
 
         RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
         RemoveHandler dgvMovies.RowsAdded, AddressOf dgvMovies_RowsAdded
@@ -10175,21 +10175,13 @@ Public Class frmMain
             If Not Functions.CheckIfWindows Then Mono_Shown()
         End If
     End Sub
-
-    Private Sub TaskRunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
-        TaskList.Add(New Task With {.mType = mType, .Params = _params})
-        If TasksDone Then
-            tmrRunTasks.Start()
-            TasksDone = False
-        End If
-    End Sub
     ''' <summary>
     ''' This is a generic callback function.
     ''' </summary>
     ''' <param name="mType"></param>
     ''' <param name="_params"></param>
     ''' <remarks></remarks>
-    Private Sub GenericRunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
+    Private Sub Handle_GenericRunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
         Select Case mType
 
             Case Enums.AddonEventType.CommandLine
@@ -10300,7 +10292,75 @@ Public Class frmMain
         End Select
     End Sub
 
-    Private Sub TaskManagerProgressUpdate(ByVal eProgressValue As TaskManager.ProgressValue)
+    Private Sub Handle_ScannerProgressUpdate(ByVal eProgressValue As Scanner.ProgressValue)
+        Select Case eProgressValue.EventType
+            Case Enums.ScannerEventType.Added_Movie
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(815, "Added Movie"), ":"), " ", eProgressValue.Message))
+                AddRow_Movie(eProgressValue.ID)
+            Case Enums.ScannerEventType.Added_TVEpisode
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(814, "Added Episode"), ":"), " ", eProgressValue.Message))
+            Case Enums.ScannerEventType.Added_TVShow
+                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1089, "Added TV Show"), ":"), " ", eProgressValue.Message))
+                AddRow_TVShow(eProgressValue.ID)
+            Case Enums.ScannerEventType.CleaningDatabase
+                SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
+            Case Enums.ScannerEventType.PreliminaryTasks
+                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
+            Case Enums.ScannerEventType.Refresh_TVShow
+                RefreshRow_TVShow(eProgressValue.ID, True)
+            Case Enums.ScannerEventType.ScannerEnded
+                If Not Master.isCL Then
+                    SetStatus(String.Empty)
+                    FillList(False, True, False)
+                    tspbLoading.Visible = False
+                    tslLoading.Visible = False
+                    LoadingDone = True
+                Else
+                    FillList(True, True, True)
+                    LoadingDone = True
+                End If
+        End Select
+    End Sub
+
+    Private Sub Handle_ScraperProgressUpdate(ByVal eProgressValue As Scraper.ProgressValue)
+        Select Case eProgressValue.EventType
+            Case Enums.ScraperEventType.ShowScrapeResults
+                If eProgressValue.DBElement IsNot Nothing Then
+                    Select Case eProgressValue.DBElement.ContentType
+                        Case Enums.ContentType.Movie
+                            InfoDownloaded_Movie(eProgressValue.DBElement)
+                    End Select
+                End If
+
+                '    Case Enums.ScannerEventType.Added_Movie
+                '        SetStatus(String.Concat(String.Concat(Master.eLang.GetString(815, "Added Movie"), ":"), " ", eProgressValue.Message))
+                '        AddRow_Movie(eProgressValue.ID)
+                '    Case Enums.ScannerEventType.Added_TVEpisode
+                '        SetStatus(String.Concat(String.Concat(Master.eLang.GetString(814, "Added Episode"), ":"), " ", eProgressValue.Message))
+                '    Case Enums.ScannerEventType.Added_TVShow
+                '        SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1089, "Added TV Show"), ":"), " ", eProgressValue.Message))
+                '        AddRow_TVShow(eProgressValue.ID)
+                '    Case Enums.ScannerEventType.CleaningDatabase
+                '        SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
+                '    Case Enums.ScannerEventType.PreliminaryTasks
+                '        SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
+                '    Case Enums.ScannerEventType.Refresh_TVShow
+                '        RefreshRow_TVShow(eProgressValue.ID, True)
+                '    Case Enums.ScannerEventType.ScannerEnded
+                '        If Not Master.isCL Then
+                '            SetStatus(String.Empty)
+                '            FillList(False, True, False)
+                '            tspbLoading.Visible = False
+                '            tslLoading.Visible = False
+                '            LoadingDone = True
+                '        Else
+                '            FillList(True, True, True)
+                '            LoadingDone = True
+                '        End If
+        End Select
+    End Sub
+
+    Private Sub Handle_TaskManagerProgressUpdate(ByVal eProgressValue As TaskManager.ProgressValue)
         Select Case eProgressValue.EventType
 
             Case Enums.TaskManagerEventType.RefreshRow
@@ -10332,6 +10392,14 @@ Public Class frmMain
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", eProgressValue.EventType)
         End Select
+    End Sub
+
+    Private Sub Handle_TaskRunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
+        TaskList.Add(New Task With {.mType = mType, .Params = _params})
+        If TasksDone Then
+            tmrRunTasks.Start()
+            TasksDone = False
+        End If
     End Sub
 
     Public Sub ChangeToolStripLabel(control As ToolStripLabel, bVisible As Boolean, strValue As String)
@@ -15392,36 +15460,6 @@ Public Class frmMain
         Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
     End Sub
 
-    Private Sub ScannerProgressUpdate(ByVal eProgressValue As Scanner.ProgressValue)
-        Select Case eProgressValue.EventType
-            Case Enums.ScannerEventType.Added_Movie
-                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(815, "Added Movie"), ":"), " ", eProgressValue.Message))
-                AddRow_Movie(eProgressValue.ID)
-            Case Enums.ScannerEventType.Added_TVEpisode
-                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(814, "Added Episode"), ":"), " ", eProgressValue.Message))
-            Case Enums.ScannerEventType.Added_TVShow
-                SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1089, "Added TV Show"), ":"), " ", eProgressValue.Message))
-                AddRow_TVShow(eProgressValue.ID)
-            Case Enums.ScannerEventType.CleaningDatabase
-                SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
-            Case Enums.ScannerEventType.PreliminaryTasks
-                SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
-            Case Enums.ScannerEventType.Refresh_TVShow
-                RefreshRow_TVShow(eProgressValue.ID, True)
-            Case Enums.ScannerEventType.ScannerEnded
-                If Not Master.isCL Then
-                    SetStatus(String.Empty)
-                    FillList(False, True, False)
-                    tspbLoading.Visible = False
-                    tslLoading.Visible = False
-                    LoadingDone = True
-                Else
-                    FillList(True, True, True)
-                    LoadingDone = True
-                End If
-        End Select
-    End Sub
-
     Private Sub scMain_SplitterMoved(ByVal sender As System.Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scMain.SplitterMoved
         Try
             If Created Then
@@ -17351,7 +17389,7 @@ Public Class frmMain
         tmrRunTasks.Enabled = False
         TasksDone = False
         While TaskList.Count > 0
-            GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params)
+            Handle_GenericRunCallBack(TaskList.Item(0).mType, TaskList.Item(0).Params)
             TaskList.RemoveAt(0)
         End While
         TasksDone = True

@@ -21,7 +21,7 @@
 Imports EmberAPI
 Imports NLog
 
-Public Class VideobusterDE_Trailer
+Public Class Addon
     Implements Interfaces.Addon
 
 #Region "Fields"
@@ -36,10 +36,10 @@ Public Class VideobusterDE_Trailer
 
 #Region "Events"
 
-    Public Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.StateChanged
     Public Event GenericEvent(ByVal eType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.Addon.GenericEvent
     Public Event NeedsRestart() Implements Interfaces.Addon.NeedsRestart
     Public Event SettingsChanged() Implements Interfaces.Addon.SettingsChanged
+    Public Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.StateChanged
 
 #End Region 'Events
 

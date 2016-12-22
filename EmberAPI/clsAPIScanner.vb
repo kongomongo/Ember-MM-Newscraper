@@ -27,7 +27,7 @@ Public Class Scanner
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Public MoviePaths As New List(Of String)
     Public SourceLastScan As New DateTime

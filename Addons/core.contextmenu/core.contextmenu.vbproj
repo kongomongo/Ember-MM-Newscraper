@@ -8,8 +8,8 @@
     <OutputType>Library</OutputType>
     <StartupObject>
     </StartupObject>
-    <RootNamespace>generic.EmberCore.ContextMenu</RootNamespace>
-    <AssemblyName>generic.EmberCore.ContextMenu</AssemblyName>
+    <RootNamespace>core</RootNamespace>
+    <AssemblyName>core.contextmenu</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -158,7 +158,7 @@
     <Compile Include="frmSettingsPanel.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="genericContextMenu.vb" />
+    <Compile Include="core.contextmenu.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -197,7 +197,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
