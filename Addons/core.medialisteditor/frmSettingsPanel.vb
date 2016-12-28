@@ -39,7 +39,7 @@ Public Class frmSettingsPanel
 
 #End Region 'Events
 
-#Region "Methods"
+#Region "Constructors"
 
     Sub New()
         ' This call is required by the Windows Form Designer.
@@ -49,6 +49,10 @@ Public Class frmSettingsPanel
         GetViews()
         LoadCustomTabs()
     End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
 
     Private Sub SetUp()
         btnCustomTabAdd.Text = Master.eLang.GetString(28, "Add")

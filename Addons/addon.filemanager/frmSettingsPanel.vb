@@ -25,7 +25,8 @@ Imports NLog
 Public Class frmSettingsPanel
 
 #Region "Fields"
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Dim isSelected As Boolean = False
 
@@ -33,11 +34,20 @@ Public Class frmSettingsPanel
 
 #Region "Events"
 
-    Public Event ModuleEnabledChanged(ByVal State As Boolean)
-
-    Public Event ModuleSettingsChanged()
+    Public Event SettingsChanged()
+    Public Event StateChanged(ByVal bEnabled As Boolean)
 
 #End Region 'Events
+
+#Region "Constructors"
+
+    Public Sub New()
+        InitializeComponent()
+        SetUp()
+        LoadContentTypes()
+    End Sub
+
+#End Region 'Constructors
 
 #Region "Methods"
 
@@ -50,9 +60,9 @@ Public Class frmSettingsPanel
     Private Sub btnPathEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPathEdit.Click
         lvPaths.SelectedItems(0).SubItems(0).Text = txtName.Text
         lvPaths.SelectedItems(0).SubItems(1).Text = txtPath.Text
-        lvPaths.SelectedItems(0).SubItems(2).Text = CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.ContentType)).Value.ToString
-        txtName.Text = ""
-        txtPath.Text = ""
+        lvPaths.SelectedItems(0).SubItems(2).Text = CType(cbType.SelectedItem, KeyValuePair(Of String, Enums.ContentType)).Value.ToString
+        txtName.Text = String.Empty
+        txtPath.Text = String.Empty
         cbType.SelectedIndex = -1
         isSelected = False
         CheckButtons()
@@ -62,33 +72,33 @@ Public Class frmSettingsPanel
         Dim li As New ListViewItem
         li.Text = txtName.Text
         li.SubItems.Add(txtPath.Text)
-        li.SubItems.Add(CType(Me.cbType.SelectedItem, KeyValuePair(Of String, Enums.ContentType)).Value.ToString)
+        li.SubItems.Add(CType(cbType.SelectedItem, KeyValuePair(Of String, Enums.ContentType)).Value.ToString)
         lvPaths.Items.Add(li)
-        txtName.Text = ""
-        txtPath.Text = ""
+        txtName.Text = String.Empty
+        txtPath.Text = String.Empty
         cbType.SelectedIndex = -1
         CheckButtons()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnPathRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPathRemove.Click
         lvPaths.Items.RemoveAt(lvPaths.SelectedItems(0).Index)
-        txtName.Text = ""
-        txtPath.Text = ""
+        txtName.Text = String.Empty
+        txtPath.Text = String.Empty
         cbType.SelectedIndex = -1
         isSelected = False
         CheckButtons()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnTeraCopyPathBrowse_Click(sender As Object, e As EventArgs) Handles btnTeraCopyPathBrowse.Click
         Try
-            With Me.ofdBrowse
+            With ofdBrowse
                 .FileName = "TeraCopy.exe"
                 .Filter = "TeraCopy|*.exe"
                 If .ShowDialog = Windows.Forms.DialogResult.OK Then
                     If Not String.IsNullOrEmpty(.FileName) Then
-                        Me.txtTeraCopyPath.Text = .FileName
+                        txtTeraCopyPath.Text = .FileName
                     End If
                 End If
             End With
@@ -105,14 +115,14 @@ Public Class frmSettingsPanel
         End If
     End Sub
 
-    Private Sub chkEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(chkEnabled.Checked)
+    Private Sub chkEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent StateChanged(chkEnabled.Checked)
     End Sub
 
     Private Sub chkTeraCopyEnable_CheckedChanged(sender As Object, e As EventArgs) Handles chkTeraCopyEnable.CheckedChanged
-        Me.txtTeraCopyPath.Enabled = Me.chkTeraCopyEnable.Checked
-        Me.btnTeraCopyPathBrowse.Enabled = Me.chkTeraCopyEnable.Checked
-        RaiseEvent ModuleSettingsChanged()
+        txtTeraCopyPath.Enabled = chkTeraCopyEnable.Checked
+        btnTeraCopyPathBrowse.Enabled = chkTeraCopyEnable.Checked
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub lblTeraCopyLink_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblTeraCopyLink.LinkClicked
@@ -137,9 +147,9 @@ Public Class frmSettingsPanel
 
             Select Case lvPaths.SelectedItems(0).SubItems(2).Text
                 Case "Movie"
-                    Me.cbType.SelectedIndex = 0
+                    cbType.SelectedIndex = 0
                 Case "Show"
-                    Me.cbType.SelectedIndex = 1
+                    cbType.SelectedIndex = 1
             End Select
         Else
             isSelected = False
@@ -149,37 +159,31 @@ Public Class frmSettingsPanel
         CheckButtons()
     End Sub
 
-    Public Sub New()
-        InitializeComponent()
-        Me.SetUp()
-        Me.LoadContentTypes()
-    End Sub
-
-    Private Sub SetUp()
-        Me.ColumnHeader1.Text = Master.eLang.GetString(232, "Name")
-        Me.ColumnHeader2.Text = Master.eLang.GetString(410, "Path")
-        Me.ColumnHeader3.Text = Master.eLang.GetString(1288, "Type")
-        Me.chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-        Me.chkTeraCopyEnable.Text = Master.eLang.GetString(332, "Use TeraCopy to copy/move files")
-        Me.lblName.Text = Master.eLang.GetString(232, "Name")
-        Me.lblPath.Text = Master.eLang.GetString(410, "Path")
-        Me.lblTeraCopyPath.Text = Master.eLang.GetString(333, "Path to TeraCopy:")
-        Me.lblType.Text = Master.eLang.GetString(1288, "Type")
-    End Sub
-
     Private Sub LoadContentTypes()
         Dim items As New Dictionary(Of String, Enums.ContentType)
         items.Add(Master.eLang.GetString(1379, "Movie"), Enums.ContentType.Movie)
         items.Add(Master.eLang.GetString(700, "TV Show"), Enums.ContentType.TVShow)
-        Me.cbType.DataSource = items.ToList
-        Me.cbType.DisplayMember = "Key"
-        Me.cbType.ValueMember = "Value"
+        cbType.DataSource = items.ToList
+        cbType.DisplayMember = "Key"
+        cbType.ValueMember = "Value"
 
-        Me.cbType.SelectedIndex = -1
+        cbType.SelectedIndex = -1
     End Sub
 
     Private Sub cbType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbType.SelectedIndexChanged
         CheckButtons()
+    End Sub
+
+    Private Sub SetUp()
+        ColumnHeader1.Text = Master.eLang.GetString(232, "Name")
+        ColumnHeader2.Text = Master.eLang.GetString(410, "Path")
+        ColumnHeader3.Text = Master.eLang.GetString(1288, "Type")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkTeraCopyEnable.Text = Master.eLang.GetString(332, "Use TeraCopy to copy/move files")
+        lblName.Text = Master.eLang.GetString(232, "Name")
+        lblPath.Text = Master.eLang.GetString(410, "Path")
+        lblTeraCopyPath.Text = Master.eLang.GetString(333, "Path to TeraCopy:")
+        lblType.Text = Master.eLang.GetString(1288, "Type")
     End Sub
 
     Private Sub txtName_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtName.TextChanged
@@ -191,7 +195,7 @@ Public Class frmSettingsPanel
     End Sub
 
     Private Sub txtTeraCopyPath_TextChanged(sender As Object, e As EventArgs) Handles txtTeraCopyPath.TextChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
 #End Region 'Methods

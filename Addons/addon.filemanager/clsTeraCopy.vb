@@ -23,11 +23,12 @@ Imports System.IO
 Imports EmberAPI
 
 Namespace TeraCopy
+
     Public Class Filelist
 
 #Region "Fields"
 
-        Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+        Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
         Private _apppath As String
         Private _destination As String
@@ -40,10 +41,10 @@ Namespace TeraCopy
 
         Public Property Sources() As List(Of String)
             Get
-                Return Me._sources
+                Return _sources
             End Get
             Set(ByVal value As List(Of String))
-                Me._sources = value
+                _sources = value
             End Set
         End Property
 
@@ -52,10 +53,10 @@ Namespace TeraCopy
 #Region "Methods"
 
         Public Sub New(ByVal AppPath As String, ByVal Destination As String, ByVal doMove As Boolean)
-            Me.Clear()
-            Me._apppath = AppPath
-            Me._destination = Destination
-            Me._doMove = doMove
+            Clear()
+            _apppath = AppPath
+            _destination = Destination
+            _doMove = doMove
         End Sub
 
         Private Sub Clear()
@@ -68,7 +69,7 @@ Namespace TeraCopy
         Public Sub RunTeraCopy()
             Try
                 If File.Exists(_apppath) Then
-                    If Not String.IsNullOrEmpty(Me._destination) AndAlso Me._sources.Count > 0 Then
+                    If Not String.IsNullOrEmpty(_destination) AndAlso _sources.Count > 0 Then
                         If Not Directory.Exists(_destination) Then
                             Directory.CreateDirectory(_destination)
                         End If

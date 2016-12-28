@@ -19,7 +19,6 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports System.Windows.Forms
 
 Public Class Core
     Implements Interfaces.Addon

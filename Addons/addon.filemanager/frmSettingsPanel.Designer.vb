@@ -406,7 +406,7 @@ Partial Class frmSettingsPanel
         Me.Name = "frmSettingsHolder"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Settings for Media File Manager"
+        Me.Text = "Settings for File Manager"
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)

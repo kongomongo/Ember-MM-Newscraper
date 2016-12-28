@@ -22,8 +22,8 @@ Imports System.IO
 Imports EmberAPI
 Imports NLog
 
-Public Class FileManagerExternalModule
-    Implements Interfaces.GenericModule
+Public Class Addon
+    Implements Interfaces.Addon
 
 #Region "Delegates"
 
@@ -35,47 +35,42 @@ Public Class FileManagerExternalModule
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
-
-    Private _AssemblyName As String = String.Empty
-    Private _MySettings As New MySettings
-    Private eSettings As New Settings
+    Private _assemblyname As String
     Private _enabled As Boolean = False
-    Private _Name As String = Master.eLang.GetString(311, "Media File Manager")
-    Private _setup As frmSettingsPanel
+    Private _shortname As String = "FileManager"
+    Private _settingspanel As frmSettingsPanel
+
+    Private _AddonSettings As New AddonSettings
+    Private eSettings As New Settings
     Private withErrors As Boolean
     Private cmnuMediaCustomList As New List(Of ToolStripMenuItem)
     Private cmnuMedia_Movies As New ToolStripMenuItem
     Private cmnuMedia_Shows As New ToolStripMenuItem
-    Private cmnuSep_Movies As New System.Windows.Forms.ToolStripSeparator
-    Private cmnuSep_Shows As New System.Windows.Forms.ToolStripSeparator
+    Private cmnuSep_Movies As New ToolStripSeparator
+    Private cmnuSep_Shows As New ToolStripSeparator
     Private WithEvents cmnuMediaCopy_Movies As New ToolStripMenuItem
     Private WithEvents cmnuMediaCopy_Shows As New ToolStripMenuItem
     Private WithEvents cmnuMediaMove_Movies As New ToolStripMenuItem
     Private WithEvents cmnuMediaMove_Shows As New ToolStripMenuItem
 
+    Friend WithEvents bwCopyDirectory As New System.ComponentModel.BackgroundWorker
+
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
+    Public Event GenericEvent(ByVal eType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.Addon.GenericEvent
+    Public Event NeedsRestart() Implements Interfaces.Addon.NeedsRestart
+    Public Event SettingsChanged() Implements Interfaces.Addon.SettingsChanged
+    Public Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.StateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
-        Get
-            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic})
-        End Get
-    End Property
-
-    Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.Addon.Enabled
         Get
             Return _enabled
         End Get
@@ -90,92 +85,39 @@ Public Class FileManagerExternalModule
         End Set
     End Property
 
-    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+    Public ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType) Implements Interfaces.Addon.Capabilities_AddonEventTypes
         Get
-            Return False
+            Return New List(Of Enums.AddonEventType)
         End Get
     End Property
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
+    Public ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibilities
         Get
-            Return _Name
+            Return New List(Of Enums.ScraperCapatibility)
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
+    Public ReadOnly Property IsBusy() As Boolean Implements Interfaces.Addon.IsBusy
         Get
-            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return bwCopyDirectory.IsBusy
+        End Get
+    End Property
+
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
+        Get
+            Return _shortname
+        End Get
+    End Property
+
+    Public ReadOnly Property Version() As String Implements Interfaces.Addon.Version
+        Get
+            Return Diagnostics.FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
 #End Region 'Properties
 
 #Region "Methods"
-
-    'Public Shared Function MoveFileWithStream(ByVal sPathFrom As String, ByVal sPathTo As String) As Boolean
-    '    Try
-    '        Using SourceStream As FileStream = New FileStream(String.Concat("", sPathFrom, ""), FileMode.Open, FileAccess.Read)
-    '            Using DestinationStream As FileStream = New FileStream(String.Concat("", sPathTo, ""), FileMode.Create, FileAccess.Write)
-    '                Dim StreamBuffer(4096) As Byte
-    '                Dim nbytes As Integer
-    '                Do
-    '                    nbytes = SourceStream.Read(StreamBuffer, 0, 4096)
-    '                    DestinationStream.Write(StreamBuffer, 0, nbytes)
-    '                Loop While nbytes > 0
-    '                StreamBuffer = Nothing
-    '            End Using
-    '        End Using
-    '    Catch ex As Exception
-    '        Return False
-    '        logger.Error(ex, New StackFrame().GetMethod().Name)
-    '    End Try
-    '    Return True
-    'End Function
-
-    Public Sub LoadSettings()
-        eSettings.ModuleSettings.Clear()
-        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("MoviePaths")
-        If eMovies IsNot Nothing Then
-            For Each sett In eMovies
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.Movie})
-            Next
-        End If
-        Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("ShowPaths")
-        If eShows IsNot Nothing Then
-            For Each sett In eShows
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.TVShow})
-            Next
-        End If
-        _MySettings.TeraCopy = AdvancedSettings.GetBooleanSetting("TeraCopy", False)
-        _MySettings.TeraCopyPath = AdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
-    End Sub
-
-    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult_old With {.breakChain = False}
-    End Function
-
-    Public Sub SaveSettings()
-        Using settings = New AdvancedSettings()
-            settings.SetBooleanSetting("TeraCopy", _MySettings.TeraCopy)
-            settings.SetSetting("TeraCopyPath", _MySettings.TeraCopyPath)
-
-            Dim eMovies As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.Movie)
-                eMovies.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
-            Next
-            If eMovies IsNot Nothing Then
-                settings.SetComplexSetting("MoviePaths", eMovies)
-            End If
-
-            Dim eShows As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.TVShow)
-                eShows.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
-            Next
-            If eShows IsNot Nothing Then
-                settings.SetComplexSetting("ShowPaths", eShows)
-            End If
-        End Using
-    End Sub
 
     Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
@@ -201,6 +143,14 @@ Public Class FileManagerExternalModule
         End Using
     End Sub
 
+    Private Sub DirectoryCopyMove(ByVal sourceDirName As String, ByVal destDirName As String, ByVal doMove As Boolean)
+        If Not doMove Then
+            FileUtils.Common.DirectoryCopy(sourceDirName, destDirName, True, True)
+        Else
+            FileUtils.Common.DirectoryMove(sourceDirName, destDirName, True, True)
+        End If
+    End Sub
+
     Sub DirectoryMove(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
         Using dCopy As New dlgCopyFiles
             dCopy.Show()
@@ -224,25 +174,9 @@ Public Class FileManagerExternalModule
         RemoveToolsStripItem_Shows(cmnuSep_Shows)
     End Sub
 
-    Public Sub RemoveToolsStripItem_Movies(value As ToolStripItem)
-        If (AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired) Then
-            AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Movies), New Object() {value})
-            Exit Sub
-        End If
-        AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Remove(value)
-    End Sub
-
-    Public Sub RemoveToolsStripItem_Shows(value As ToolStripItem)
-        If (AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.InvokeRequired) Then
-            AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
-            Exit Sub
-        End If
-        AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Items.Remove(value)
-    End Sub
-
     Sub Enable()
         'cmnuMovies
-        cmnuMedia_Movies.Text = Master.eLang.GetString(311, "Media File Manager")
+        cmnuMedia_Movies.Text = Master.eLang.GetString(311, "File Manager")
         cmnuMediaMove_Movies.Text = Master.eLang.GetString(312, "Move To")
         cmnuMediaMove_Movies.Tag = "MOVE"
         cmnuMediaCopy_Movies.Text = Master.eLang.GetString(313, "Copy To")
@@ -254,7 +188,7 @@ Public Class FileManagerExternalModule
         SetToolsStripItem_Movies(cmnuMedia_Movies)
 
         'cmnuShows
-        cmnuMedia_Shows.Text = Master.eLang.GetString(311, "Media File Manager")
+        cmnuMedia_Shows.Text = Master.eLang.GetString(311, "File Manager")
         cmnuMediaMove_Shows.Text = Master.eLang.GetString(312, "Move To")
         cmnuMediaMove_Shows.Tag = "MOVE"
         cmnuMediaCopy_Shows.Text = Master.eLang.GetString(313, "Copy To")
@@ -273,32 +207,6 @@ Public Class FileManagerExternalModule
         SetToolsStripItemVisibility(cmnuMedia_Shows, True)
         SetToolsStripItemVisibility(cmnuSep_Movies, True)
         SetToolsStripItemVisibility(cmnuSep_Shows, True)
-    End Sub
-
-    Public Sub SetToolsStripItemVisibility(control As ToolStripItem, value As Boolean)
-        If control.Owner IsNot Nothing Then
-            If control.Owner.InvokeRequired Then
-                control.Owner.Invoke(New Delegate_SetToolsStripItemVisibility(AddressOf SetToolsStripItemVisibility), New Object() {control, value})
-            Else
-                control.Visible = value
-            End If
-        End If
-    End Sub
-
-    Public Sub SetToolsStripItem_Movies(value As ToolStripItem)
-        If AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired Then
-            AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
-        Else
-            AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Add(value)
-        End If
-    End Sub
-
-    Public Sub SetToolsStripItem_Shows(value As ToolStripItem)
-        If AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.InvokeRequired Then
-            AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
-        Else
-            AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Items.Add(value)
-        End If
     End Sub
 
     Private Sub FolderSubMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -325,12 +233,12 @@ Public Class FileManagerExternalModule
                     doMove = True
             End Select
 
-            If _MySettings.TeraCopy AndAlso (String.IsNullOrEmpty(_MySettings.TeraCopyPath) OrElse Not File.Exists(_MySettings.TeraCopyPath)) Then
+            If _AddonSettings.TeraCopy AndAlso (String.IsNullOrEmpty(_AddonSettings.TeraCopyPath) OrElse Not File.Exists(_AddonSettings.TeraCopyPath)) Then
                 MessageBox.Show(Master.eLang.GetString(398, "TeraCopy.exe not found"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Exit Try
             End If
 
-            Dim mTeraCopy As New TeraCopy.Filelist(_MySettings.TeraCopyPath, dstPath, doMove)
+            Dim mTeraCopy As New TeraCopy.Filelist(_AddonSettings.TeraCopyPath, dstPath, doMove)
 
             If Not String.IsNullOrEmpty(dstPath) Then
                 If ContentType = Enums.ContentType.Movie Then
@@ -367,7 +275,7 @@ Public Class FileManagerExternalModule
                                 Dim mMovie As Database.DBElement = Master.DB.Load_Movie(movieID)
                                 ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                                 If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
-                                    If _MySettings.TeraCopy Then
+                                    If _AddonSettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(ItemsToWork(0).ToString)
                                     Else
                                         Select Case tMItem.OwnerItem.Tag.ToString
@@ -380,13 +288,13 @@ Public Class FileManagerExternalModule
                                     End If
                                 End If
                             Next
-                            If Not _MySettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
+                            If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
                                 Dim mShow As Database.DBElement = Master.DB.Load_TVShow(tShowID, False, False)
                                 If Directory.Exists(mShow.ShowPath) Then
-                                    If _MySettings.TeraCopy Then
+                                    If _AddonSettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(mShow.ShowPath)
                                     Else
                                         Select Case tMItem.OwnerItem.Tag.ToString
@@ -399,9 +307,9 @@ Public Class FileManagerExternalModule
                                     End If
                                 End If
                             Next
-                            If Not _MySettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.TV = True})
+                            If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.TV = True})
                         End If
-                        If _MySettings.TeraCopy Then mTeraCopy.RunTeraCopy()
+                        If _AddonSettings.TeraCopy Then mTeraCopy.RunTeraCopy()
                     End If
                 End If
             End If
@@ -411,45 +319,65 @@ Public Class FileManagerExternalModule
         End Try
     End Sub
 
-    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
+    Private Sub Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
+    Private Sub Handle_StateChanged(ByVal bEnabled As Boolean)
+        RaiseEvent StateChanged(_shortname, bEnabled)
     End Sub
 
-    Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
-        _AssemblyName = sAssemblyName
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
         LoadSettings()
     End Sub
 
-    Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsPanel
-        _setup.chkEnabled.Checked = _enabled
-        _setup.chkTeraCopyEnable.Checked = _MySettings.TeraCopy
-        _setup.txtTeraCopyPath.Text = _MySettings.TeraCopyPath
-        _setup.lvPaths.Items.Clear()
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
+        LoadSettings()
+        Dim nSettingsPanel As New Containers.SettingsPanel
+        _settingspanel = New frmSettingsPanel
+        _settingspanel.chkEnabled.Checked = _enabled
+        _settingspanel.chkTeraCopyEnable.Checked = _AddonSettings.TeraCopy
+        _settingspanel.txtTeraCopyPath.Text = _AddonSettings.TeraCopyPath
+        _settingspanel.lvPaths.Items.Clear()
         Dim lvItem As ListViewItem
         For Each e As SettingItem In eSettings.ModuleSettings
             lvItem = New ListViewItem
             lvItem.Text = e.Name
             lvItem.SubItems.Add(e.FolderPath)
             lvItem.SubItems.Add(e.Type.ToString)
-            _setup.lvPaths.Items.Add(lvItem)
+            _settingspanel.lvPaths.Items.Add(lvItem)
         Next
-        SPanel.Name = _Name
-        SPanel.Text = Master.eLang.GetString(311, "Media File Manager")
-        SPanel.Prefix = "FileManager_"
-        SPanel.Type = Enums.SettingsPanelType.Addon
-        SPanel.ImageIndex = If(_enabled, 9, 10)
-        SPanel.Order = 100
-        SPanel.Panel = _setup.pnlSettings
-        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        Return SPanel
+
+        nSettingsPanel.ImageIndex = If(_enabled, 9, 10)
+        nSettingsPanel.Name = _shortname
+        nSettingsPanel.Panel = _settingspanel.pnlSettings
+        nSettingsPanel.Prefix = "FileManager_"
+        nSettingsPanel.Title = Master.eLang.GetString(311, "File Manager")
+        nSettingsPanel.Type = Enums.SettingsPanelType.Addon
+
+        AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        AddHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        Return nSettingsPanel
     End Function
+
+    Public Sub LoadSettings()
+        eSettings.ModuleSettings.Clear()
+        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("MoviePaths")
+        If eMovies IsNot Nothing Then
+            For Each sett In eMovies
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.Movie})
+            Next
+        End If
+        Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("ShowPaths")
+        If eShows IsNot Nothing Then
+            For Each sett In eShows
+                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.TVShow})
+            Next
+        End If
+        _AddonSettings.TeraCopy = clsXMLAdvancedSettings.GetBooleanSetting("TeraCopy", False)
+        _AddonSettings.TeraCopyPath = clsXMLAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
+    End Sub
 
     Sub PopulateFolders(ByVal mnu As ToolStripMenuItem, ByVal ContentType As Enums.ContentType)
         mnu.DropDownItems.Clear()
@@ -484,17 +412,37 @@ Public Class FileManagerExternalModule
         SetToolsStripItemVisibility(cmnuMedia_Shows, True)
     End Sub
 
-    Sub SaveSetupModule(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Enabled = _setup.chkEnabled.Checked
-        _MySettings.TeraCopy = _setup.chkTeraCopyEnable.Checked
-        _MySettings.TeraCopyPath = _setup.txtTeraCopyPath.Text
+    Public Sub RemoveToolsStripItem_Movies(value As ToolStripItem)
+        If (AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired) Then
+            AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Movies), New Object() {value})
+            Exit Sub
+        End If
+        AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Remove(value)
+    End Sub
+
+    Public Sub RemoveToolsStripItem_Shows(value As ToolStripItem)
+        If (AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.InvokeRequired) Then
+            AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem_Shows), New Object() {value})
+            Exit Sub
+        End If
+        AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Items.Remove(value)
+    End Sub
+
+    Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
+        Return New Interfaces.AddonResult
+    End Function
+
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+        Enabled = _settingspanel.chkEnabled.Checked
+        _AddonSettings.TeraCopy = _settingspanel.chkTeraCopyEnable.Checked
+        _AddonSettings.TeraCopyPath = _settingspanel.txtTeraCopyPath.Text
         eSettings.ModuleSettings.Clear()
-        For Each e As ListViewItem In _setup.lvPaths.Items
+        For Each e As ListViewItem In _settingspanel.lvPaths.Items
             If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "Movie" Then
                 eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.ContentType.Movie})
             End If
         Next
-        For Each e As ListViewItem In _setup.lvPaths.Items
+        For Each e As ListViewItem In _settingspanel.lvPaths.Items
             If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "TVShow" Then
                 eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.ContentType.TVShow})
             End If
@@ -504,18 +452,59 @@ Public Class FileManagerExternalModule
         PopulateFolders(cmnuMediaMove_Shows, Enums.ContentType.TVShow)
         PopulateFolders(cmnuMediaCopy_Movies, Enums.ContentType.Movie)
         PopulateFolders(cmnuMediaCopy_Shows, Enums.ContentType.TVShow)
-        If DoDispose Then
-            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            _setup.Dispose()
+        If bDoDispose Then
+            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+            _settingspanel.Dispose()
         End If
     End Sub
 
-    Private Sub DirectoryCopyMove(ByVal sourceDirName As String, ByVal destDirName As String, ByVal doMove As Boolean)
-        If Not doMove Then
-            FileUtils.Common.DirectoryCopy(sourceDirName, destDirName, True, True)
+    Public Sub SaveSettings()
+        Using settings = New clsXMLAdvancedSettings()
+            settings.SetBooleanSetting("TeraCopy", _AddonSettings.TeraCopy)
+            settings.SetSetting("TeraCopyPath", _AddonSettings.TeraCopyPath)
+
+            Dim eMovies As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.Movie)
+                eMovies.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
+            Next
+            If eMovies IsNot Nothing Then
+                settings.SetComplexSetting("MoviePaths", eMovies)
+            End If
+
+            Dim eShows As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.TVShow)
+                eShows.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
+            Next
+            If eShows IsNot Nothing Then
+                settings.SetComplexSetting("ShowPaths", eShows)
+            End If
+        End Using
+    End Sub
+
+    Public Sub SetToolsStripItemVisibility(control As ToolStripItem, value As Boolean)
+        If control.Owner IsNot Nothing Then
+            If control.Owner.InvokeRequired Then
+                control.Owner.Invoke(New Delegate_SetToolsStripItemVisibility(AddressOf SetToolsStripItemVisibility), New Object() {control, value})
+            Else
+                control.Visible = value
+            End If
+        End If
+    End Sub
+
+    Public Sub SetToolsStripItem_Movies(value As ToolStripItem)
+        If AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.InvokeRequired Then
+            AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Movies), New Object() {value})
         Else
-            FileUtils.Common.DirectoryMove(sourceDirName, destDirName, True, True)
+            AddonsManager.Instance.RuntimeObjects.ContextMenuMovieList.Items.Add(value)
+        End If
+    End Sub
+
+    Public Sub SetToolsStripItem_Shows(value As ToolStripItem)
+        If AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.InvokeRequired Then
+            AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Invoke(New Delegate_SetToolsStripItem(AddressOf SetToolsStripItem_Shows), New Object() {value})
+        Else
+            AddonsManager.Instance.RuntimeObjects.ContextMenuTVShowList.Items.Add(value)
         End If
     End Sub
 
@@ -535,7 +524,7 @@ Public Class FileManagerExternalModule
 
     End Structure
 
-    Private Structure MySettings
+    Private Structure AddonSettings
 
 #Region "Fields"
 

@@ -38,7 +38,6 @@ Public Class Addon
     Private _shortname As String = "Renamer"
     Private _settingspanel As frmSettingsPanel
 
-
     Private _AddonSettings As New AddonSettings
     Private cmnuRenamer_Movies As New ToolStripMenuItem
     Private cmnuRenamer_Episodes As New ToolStripMenuItem

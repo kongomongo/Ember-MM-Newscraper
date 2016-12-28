@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F6CACA89-E8E4-45D9-B942-97FBD4ADD106}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>generic.EmberCore.MediaFileManager</RootNamespace>
-    <AssemblyName>generic.EmberCore.MediaFileManager</AssemblyName>
+    <RootNamespace>addon.filemanager</RootNamespace>
+    <AssemblyName>addon.filemanager</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -152,7 +152,7 @@
     <Compile Include="dlgCopyFiles.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Module.MediaFileManagerModule.vb" />
+    <Compile Include="addon.filemanager.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

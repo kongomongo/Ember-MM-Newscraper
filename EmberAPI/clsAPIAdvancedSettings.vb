@@ -207,6 +207,7 @@ Public Class clsXMLAdvancedSettings
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
+            Return False
         End Try
         Return True
     End Function
