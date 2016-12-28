@@ -109,7 +109,7 @@ Public Class Core
         End If
     End Sub
 
-    Sub Enable()
+    Private Sub Enable()
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu

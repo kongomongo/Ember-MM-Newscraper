@@ -24,8 +24,8 @@ Partial Class frmSettingsPanel
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsPanel))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.pnlMediaListEditor = New System.Windows.Forms.Panel()
-        Me.tblMediaListEditor = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSettings = New System.Windows.Forms.Panel()
+        Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbCustomMediaList = New System.Windows.Forms.GroupBox()
         Me.tblMediaListCurrent = New System.Windows.Forms.TableLayoutPanel()
         Me.lblCustomMediaListType = New System.Windows.Forms.Label()
@@ -49,8 +49,8 @@ Partial Class frmSettingsPanel
         Me.dgvCustomTab = New System.Windows.Forms.DataGridView()
         Me.colCustomTabName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colCustomTabList = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        Me.pnlMediaListEditor.SuspendLayout()
-        Me.tblMediaListEditor.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
+        Me.tblSettings.SuspendLayout()
         Me.gbCustomMediaList.SuspendLayout()
         Me.tblMediaListCurrent.SuspendLayout()
         Me.gbCustomTab.SuspendLayout()
@@ -58,41 +58,41 @@ Partial Class frmSettingsPanel
         CType(Me.dgvCustomTab, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'pnlMediaListEditor
+        'pnlSettings
         '
-        Me.pnlMediaListEditor.AutoSize = True
-        Me.pnlMediaListEditor.Controls.Add(Me.tblMediaListEditor)
-        Me.pnlMediaListEditor.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlMediaListEditor.Location = New System.Drawing.Point(0, 0)
-        Me.pnlMediaListEditor.Name = "pnlMediaListEditor"
-        Me.pnlMediaListEditor.Size = New System.Drawing.Size(701, 679)
-        Me.pnlMediaListEditor.TabIndex = 0
+        Me.pnlSettings.AutoSize = True
+        Me.pnlSettings.Controls.Add(Me.tblSettings)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(701, 679)
+        Me.pnlSettings.TabIndex = 0
         '
-        'tblMediaListEditor
+        'tblSettings
         '
-        Me.tblMediaListEditor.AutoScroll = True
-        Me.tblMediaListEditor.AutoSize = True
-        Me.tblMediaListEditor.ColumnCount = 2
-        Me.tblMediaListEditor.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMediaListEditor.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMediaListEditor.Controls.Add(Me.gbCustomMediaList, 0, 0)
-        Me.tblMediaListEditor.Controls.Add(Me.gbCustomTab, 0, 2)
-        Me.tblMediaListEditor.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMediaListEditor.Location = New System.Drawing.Point(0, 0)
-        Me.tblMediaListEditor.Name = "tblMediaListEditor"
-        Me.tblMediaListEditor.RowCount = 4
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMediaListEditor.Size = New System.Drawing.Size(701, 679)
-        Me.tblMediaListEditor.TabIndex = 15
+        Me.tblSettings.AutoScroll = True
+        Me.tblSettings.AutoSize = True
+        Me.tblSettings.ColumnCount = 2
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.Controls.Add(Me.gbCustomMediaList, 0, 0)
+        Me.tblSettings.Controls.Add(Me.gbCustomTab, 0, 2)
+        Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettings.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettings.Name = "tblSettings"
+        Me.tblSettings.RowCount = 4
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSettings.Size = New System.Drawing.Size(701, 679)
+        Me.tblSettings.TabIndex = 15
         '
         'gbCustomMediaList
         '
@@ -420,23 +420,23 @@ Partial Class frmSettingsPanel
         Me.colCustomTabList.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         Me.colCustomTabList.Width = 360
         '
-        'frmMediaListEditor
+        'frmSettingsPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(701, 679)
-        Me.Controls.Add(Me.pnlMediaListEditor)
+        Me.Controls.Add(Me.pnlSettings)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmMediaListEditor"
+        Me.Name = "frmSettingsPanel"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmFilterEditor"
-        Me.pnlMediaListEditor.ResumeLayout(False)
-        Me.pnlMediaListEditor.PerformLayout()
-        Me.tblMediaListEditor.ResumeLayout(False)
-        Me.tblMediaListEditor.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
+        Me.tblSettings.ResumeLayout(False)
+        Me.tblSettings.PerformLayout()
         Me.gbCustomMediaList.ResumeLayout(False)
         Me.gbCustomMediaList.PerformLayout()
         Me.tblMediaListCurrent.ResumeLayout(False)
@@ -450,7 +450,7 @@ Partial Class frmSettingsPanel
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents pnlMediaListEditor As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents cbCustomMediaList As System.Windows.Forms.ComboBox
     Friend WithEvents btnCustomMediaListRemove As System.Windows.Forms.Button
     Friend WithEvents btnCustomMediaListAdd As System.Windows.Forms.Button
@@ -466,7 +466,7 @@ Partial Class frmSettingsPanel
     Friend WithEvents txtCustomMediaListName As System.Windows.Forms.TextBox
     Friend WithEvents txtCustomMediaListPrefix As System.Windows.Forms.TextBox
     Friend WithEvents lblPrefix As System.Windows.Forms.Label
-    Friend WithEvents tblMediaListEditor As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents tblSettings As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tblMediaListCurrent As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents gbCustomTab As System.Windows.Forms.GroupBox
     Friend WithEvents tblCustomTabs As System.Windows.Forms.TableLayoutPanel

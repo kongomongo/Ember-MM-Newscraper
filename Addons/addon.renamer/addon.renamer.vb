@@ -303,7 +303,7 @@ Public Class Addon
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
         LoadSettings()
-        Dim SPanel As New Containers.SettingsPanel
+        Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
         _settingspanel.txtFolderPatternMovies.Text = _AddonSettings.FoldersPattern_Movies
@@ -319,16 +319,16 @@ Public Class Addon
         _settingspanel.chkRenameSingleShows.Checked = _AddonSettings.RenameSingle_Shows
         _settingspanel.chkRenameUpdateEpisodes.Checked = _AddonSettings.RenameUpdate_Episodes
 
-        SPanel.ImageIndex = If(_enabled, 9, 10)
-        SPanel.Name = _shortname
-        SPanel.Panel = _settingspanel.pnlSettings
-        SPanel.Prefix = "Renamer_"
-        SPanel.Text = Master.eLang.GetString(295, "Renamer")
-        SPanel.Type = Enums.SettingsPanelType.Addon
+        nSettingsPanel.ImageIndex = If(_enabled, 9, 10)
+        nSettingsPanel.Name = _shortname
+        nSettingsPanel.Panel = _settingspanel.pnlSettings
+        nSettingsPanel.Prefix = "Renamer_"
+        nSettingsPanel.Title = Master.eLang.GetString(295, "Renamer")
+        nSettingsPanel.Type = Enums.SettingsPanelType.Addon
 
         AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
         AddHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-        Return SPanel
+        Return nSettingsPanel
     End Function
 
     Public Sub LoadSettings()

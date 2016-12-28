@@ -24,7 +24,6 @@ Imports NLog
 Public Class Addon
     Implements Interfaces.Addon
 
-
 #Region "Fields"
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
@@ -147,7 +146,7 @@ Public Class Addon
         nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "FanartTV_"
-        nSettingsPanel.Text = "FanartTV"
+        nSettingsPanel.Title = "Fanart.tv"
         nSettingsPanel.Type = Enums.SettingsPanelType.Addon
 
         AddHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart

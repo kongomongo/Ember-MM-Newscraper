@@ -405,8 +405,8 @@ Partial Class frmSettingsPanel
     Friend WithEvents pnlSettingBottom As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsBottom As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
-    Friend WithEvents gbScraperFieldsOpts As GroupBox
-    Friend WithEvents tblScraperFieldsOpts As TableLayoutPanel
-    Friend WithEvents chkStudios As CheckBox
-    Friend WithEvents chkStudiowithDistributors As CheckBox
+    Friend WithEvents gbScraperFieldsOpts As System.Windows.Forms.GroupBox
+    Friend WithEvents tblScraperFieldsOpts As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkStudios As System.Windows.Forms.CheckBox
+    Friend WithEvents chkStudiowithDistributors As System.Windows.Forms.CheckBox
 End Class

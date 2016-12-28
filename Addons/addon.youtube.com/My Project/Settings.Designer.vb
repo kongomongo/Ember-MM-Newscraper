@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.addon.My.MySettings
+        Friend ReadOnly Property Settings() As Global.addon.youtube.com.My.MySettings
             Get
-                Return Global.addon.My.MySettings.Default
+                Return Global.addon.youtube.com.My.MySettings.Default
             End Get
         End Property
     End Module

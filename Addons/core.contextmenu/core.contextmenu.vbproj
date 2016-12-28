@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <StartupObject>
     </StartupObject>
-    <RootNamespace>core</RootNamespace>
+    <RootNamespace>core.contextmenu</RootNamespace>
     <AssemblyName>core.contextmenu</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -122,34 +122,20 @@
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
-    <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
-    <Import Include="System.Windows.Forms" />
     <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
     <Import Include="System.Threading.Tasks" />
+    <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="frmSettingsPanel.Designer.vb">
@@ -202,6 +188,7 @@
     <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

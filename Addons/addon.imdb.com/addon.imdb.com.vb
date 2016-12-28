@@ -169,7 +169,7 @@ Public Class Addon
         nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "IMDB_"
-        nSettingsPanel.Text = "IMDB"
+        nSettingsPanel.Title = "IMDB"
         nSettingsPanel.Type = Enums.SettingsPanelType.Addon
 
         AddHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart

@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8ECB31A8-60E7-45C9-9D9B-5DDD0C3C6302}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>addon</RootNamespace>
+    <RootNamespace>addon.videobuster.de</RootNamespace>
     <AssemblyName>addon.videobuster.de</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -100,31 +100,16 @@
   <ItemGroup>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Linq" />
-    <Import Include="System.Windows.Forms" />
-    <Import Include="System.Xml.Linq" />
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
@@ -170,6 +155,7 @@
     <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

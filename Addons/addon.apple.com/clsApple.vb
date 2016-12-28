@@ -21,9 +21,6 @@
 Imports System.Text.RegularExpressions
 Imports EmberAPI
 Imports NLog
-Imports System.Net
-Imports System.Web.Script.Serialization
-Imports System.Dynamic
 
 Public Class Scraper
 
@@ -130,7 +127,7 @@ Public Class Scraper
                     End If
 
                 Else
-                    Dim serializer = New JavaScriptSerializer
+                    Dim serializer = New Script.Serialization.JavaScriptSerializer
                     Dim jsonresult = serializer.Deserialize(Of AppleTrailerQuery)(HttpUtility.HtmlDecode(sjson))
 
                     If Not jsonresult Is Nothing AndAlso Not jsonresult.error AndAlso Not jsonresult.results Is Nothing AndAlso jsonresult.results.Count > 0 Then

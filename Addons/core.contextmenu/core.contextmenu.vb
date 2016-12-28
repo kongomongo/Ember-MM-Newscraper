@@ -99,19 +99,19 @@ Public Class Core
     End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
-        Dim SPanel As New Containers.SettingsPanel
+        Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
 
-        SPanel.Image = My.Resources.ContextMenu
-        SPanel.ImageIndex = -1
-        SPanel.Name = Master.eLang.GetString(1395, "Context Menu")
-        SPanel.Panel = _settingspanel.pnlSettings
-        SPanel.Prefix = "ContextMenu_"
-        SPanel.Text = Master.eLang.GetString(1395, "Context Menu")
-        SPanel.Type = Enums.SettingsPanelType.Core
+        nSettingsPanel.Image = My.Resources.ContextMenu
+        nSettingsPanel.ImageIndex = -1
+        nSettingsPanel.Name = Master.eLang.GetString(1395, "Context Menu")
+        nSettingsPanel.Panel = _settingspanel.pnlSettings
+        nSettingsPanel.Prefix = "ContextMenu_"
+        nSettingsPanel.Title = Master.eLang.GetString(1395, "Context Menu")
+        nSettingsPanel.Type = Enums.SettingsPanelType.Core
 
         AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-        Return SPanel
+        Return nSettingsPanel
     End Function
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
@@ -119,7 +119,10 @@ Public Class Core
     End Function
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
-        Return
+        If bDoDispose Then
+            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+            _settingspanel.Dispose()
+        End If
     End Sub
 
 #End Region 'Methods

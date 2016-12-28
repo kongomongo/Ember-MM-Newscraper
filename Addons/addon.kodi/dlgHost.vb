@@ -18,7 +18,7 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports addon.Addon
+Imports addon.kodi.Addon
 Imports EmberAPI
 Imports NLog
 

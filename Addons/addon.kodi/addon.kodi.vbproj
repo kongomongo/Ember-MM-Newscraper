@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <StartupObject>
     </StartupObject>
-    <RootNamespace>addon</RootNamespace>
+    <RootNamespace>addon.kodi</RootNamespace>
     <AssemblyName>addon.kodi</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -83,33 +83,21 @@
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.93.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\System.Data.SQLite.Core.1.0.93.0\lib\net45\System.Data.SQLite.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
     <Import Include="System.Drawing" />
     <Import Include="System.Diagnostics" />
     <Import Include="System.Windows.Forms" />
     <Import Include="System.Linq" />
-    <Import Include="System.Xml.Linq" />
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +178,7 @@
     <ProjectReference Include="..\..\EmberAPI\EmberAPI.vbproj">
       <Project>{208aa35e-c6ae-4d2d-a9dd-b6efd19a4279}</Project>
       <Name>EmberAPI</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\..\KodiAPI\KodiAPI.csproj">
       <Project>{fe178193-f90c-42e8-bf0c-5d64e10ab6f0}</Project>

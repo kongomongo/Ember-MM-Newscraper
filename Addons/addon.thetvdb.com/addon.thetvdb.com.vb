@@ -148,7 +148,7 @@ Public Class Addon
         nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "TVDB_"
-        nSettingsPanel.Text = "TVDB"
+        nSettingsPanel.Title = "TVDB"
         nSettingsPanel.Type = Enums.SettingsPanelType.Addon
 
         AddHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart

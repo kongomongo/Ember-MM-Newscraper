@@ -19,7 +19,7 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports addon.Addon
+Imports addon.kodi.Addon
 Imports NLog
 Imports XBMCRPC
 Imports System.IO

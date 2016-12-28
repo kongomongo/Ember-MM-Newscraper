@@ -274,7 +274,7 @@ Public Class Containers
         Dim _panel As Panel
         Dim _parent As String
         Dim _prefix As String
-        Dim _text As String
+        Dim _title As String
         Dim _type As Enums.SettingsPanelType
 
 #End Region 'Fields
@@ -357,12 +357,12 @@ Public Class Containers
             End Set
         End Property
 
-        Public Property Text() As String
+        Public Property Title() As String
             Get
-                Return _text
+                Return _title
             End Get
             Set(ByVal value As String)
-                _text = value
+                _title = value
             End Set
         End Property
 
@@ -387,7 +387,7 @@ Public Class Containers
             _panel = New Panel
             _parent = String.Empty
             _prefix = String.Empty
-            _text = String.Empty
+            _title = String.Empty
             _type = Enums.SettingsPanelType.Addon
         End Sub
 

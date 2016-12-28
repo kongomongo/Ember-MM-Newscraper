@@ -21,8 +21,8 @@
 Imports EmberAPI
 Imports System.Windows.Forms
 
-Public Class genericMediaListEditor
-    Implements Interfaces.GenericModule
+Public Class Core
+    Implements Interfaces.Addon
 
 #Region "Delegates"
 
@@ -34,53 +34,60 @@ Public Class genericMediaListEditor
 
 #Region "Fields"
 
-    Private _AssemblyName As String = String.Empty
-    Private _name As String = "Media List Editor"
-    Private _setup As frmSettingsPanel
+    Private _assemblyname As String
+    Private _enabled As Boolean = True
+    Private _shortname As String = "MediaListEditor"
+    Private _settingspanel As frmSettingsPanel
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
+    Public Event GenericEvent(ByVal eType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.Addon.GenericEvent
+    Public Event NeedsRestart() Implements Interfaces.Addon.NeedsRestart
+    Public Event SettingsChanged() Implements Interfaces.Addon.SettingsChanged
+    Public Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.StateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.Addon.Enabled
         Get
-            Return True
+            Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            Enable()
+            Return
         End Set
     End Property
 
-    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+    Public ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType) Implements Interfaces.Addon.Capabilities_AddonEventTypes
+        Get
+            Return New List(Of Enums.AddonEventType)
+        End Get
+    End Property
+
+    Public ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibilities
+        Get
+            Return New List(Of Enums.ScraperCapatibility)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsBusy() As Boolean Implements Interfaces.Addon.IsBusy
         Get
             Return False
         End Get
     End Property
 
-    Public ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _name
+            Return _shortname
         End Get
     End Property
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
+    Public ReadOnly Property Version() As String Implements Interfaces.Addon.Version
         Get
-            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic})
-        End Get
-    End Property
-
-    Public ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
-        Get
-            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return Diagnostics.FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -88,53 +95,12 @@ Public Class genericMediaListEditor
 
 #Region "Methods"
 
-    Public Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
-        _AssemblyName = sAssemblyName
-    End Sub
-
-    Public Function InjectSetup() As EmberAPI.Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        Dim SPanel As New Containers.SettingsPanel
-        _setup = New frmSettingsPanel
-        SPanel.Name = _name
-        SPanel.Text = Master.eLang.GetString(1385, "Media List Editor")
-        SPanel.Prefix = "MediaListEditor_"
-        SPanel.Type = Enums.SettingsPanelType.Core
-        SPanel.ImageIndex = -1
-        SPanel.Image = My.Resources.FilterEditor
-        SPanel.Order = 100
-        SPanel.Panel = _setup.pnlMediaListEditor
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        AddHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-        Return SPanel
-    End Function
-
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Private Sub Handle_SetupNeedsRestart()
-        RaiseEvent SetupNeedsRestart()
-    End Sub
-
-    Public Function RunGeneric(ByVal mType As EmberAPI.Enums.AddonEventType, ByRef _params As System.Collections.Generic.List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
-        Return New Interfaces.ModuleResult_old With {.breakChain = False}
-    End Function
-
-    Public Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        If Not _setup Is Nothing Then _setup.SaveChanges()
-        If DoDispose Then
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            RemoveHandler _setup.SetupNeedsRestart, AddressOf Handle_SetupNeedsRestart
-            _setup.Dispose()
-        End If
-    End Sub
-
-    Sub Enable()
-        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
+    Private Sub Enable()
+        Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
         If CustomTabs IsNot Nothing Then
             Dim tabc As New TabControl
             Dim NewCustomTabs As New List(Of TabPage)
-            tabc = DirectCast(AddonsManager.Instance.RuntimeObjects.MainTabControl, TabControl)
+            tabc = AddonsManager.Instance.RuntimeObjects.MainTabControl
             For Each cTab In CustomTabs
                 If Master.DB.ViewExists(cTab.Value) Then
                     Dim cTabType As Enums.ContentType = Enums.ContentType.None
@@ -157,6 +123,48 @@ Public Class genericMediaListEditor
         End If
     End Sub
 
+    Private Sub Handle_NeedsRestart()
+        RaiseEvent NeedsRestart()
+    End Sub
+
+    Private Sub Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
+    End Sub
+
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
+        Enable()
+    End Sub
+
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
+        Dim nSettingsPanel As New Containers.SettingsPanel
+        _settingspanel = New frmSettingsPanel
+
+        nSettingsPanel.Image = My.Resources.logo
+        nSettingsPanel.ImageIndex = -1
+        nSettingsPanel.Name = _shortname
+        nSettingsPanel.Panel = _settingspanel.pnlSettings
+        nSettingsPanel.Prefix = "MediaListEditor_"
+        nSettingsPanel.Title = Master.eLang.GetString(1385, "Media List Editor")
+        nSettingsPanel.Type = Enums.SettingsPanelType.Core
+
+        AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        Return nSettingsPanel
+    End Function
+
+    Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
+        Return New Interfaces.AddonResult
+    End Function
+
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+        If Not _settingspanel Is Nothing Then _settingspanel.SaveChanges()
+
+        If bDoDispose Then
+            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+            _settingspanel.Dispose()
+        End If
+    End Sub
+
     Public Sub TabPageAdd(cTabs As List(Of TabPage), tabc As System.Windows.Forms.TabControl)
         If (tabc.InvokeRequired) Then
             tabc.Invoke(New Delegate_TabPageAdd(AddressOf TabPageAdd), New Object() {cTabs, tabc})
@@ -166,9 +174,5 @@ Public Class genericMediaListEditor
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

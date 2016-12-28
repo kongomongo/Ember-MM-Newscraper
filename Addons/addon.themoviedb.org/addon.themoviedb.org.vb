@@ -188,7 +188,7 @@ Public Class Addon
         nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
         nSettingsPanel.Prefix = "TMDB_"
-        nSettingsPanel.Text = "TMDB"
+        nSettingsPanel.Title = "TMDB"
         nSettingsPanel.Type = Enums.SettingsPanelType.Addon
 
         AddHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart

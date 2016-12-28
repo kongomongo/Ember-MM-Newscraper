@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A9188CF1-BD07-4D24-BC4A-906A43012F37}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>addon</RootNamespace>
+    <RootNamespace>addon.themoviedb.org</RootNamespace>
     <AssemblyName>addon.themoviedb.org</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
@@ -129,20 +129,10 @@
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="TMDbLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\TMDbLib.1.0.0\lib\net45\TMDbLib.dll</HintPath>
       <Private>True</Private>
@@ -152,12 +142,9 @@
     <Import Include="System" />
     <Import Include="System.Collections" />
     <Import Include="System.Collections.Generic" />
-    <Import Include="System.Drawing" />
     <Import Include="System.Linq" />
     <Import Include="System.Threading.Tasks" />
     <Import Include="System.Web" />
-    <Import Include="System.Windows.Forms" />
-    <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="addon.themoviedb.org.vb" />

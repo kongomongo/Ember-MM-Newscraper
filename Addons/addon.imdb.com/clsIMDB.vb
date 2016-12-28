@@ -154,15 +154,15 @@ Public Class Scraper
             'Trailer
             If FilteredOptions.bMainTrailer Then 'todo: proper trailer result
                 'Get first IMDB trailer if possible
-                Dim TrailerList As List(Of MediaContainers.Trailer) = IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
+                Dim TrailerList As List(Of MediaContainers.Trailer) = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
                 If TrailerList.Count > 0 Then
-                    Dim sIMDb As New IMDb.Scraper
+                    Dim sIMDb As New EmberAPI.IMDb.Scraper
                     sIMDb.GetVideoLinks(TrailerList.Item(0).URLWebsite)
                     If sIMDb.VideoLinks.Count > 0 Then
                         nMovie.Trailer = sIMDb.VideoLinks.FirstOrDefault().Value.URL.ToString
                     End If
                 End If
-                Dim alTrailers = IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
+                Dim alTrailers = EmberAPI.IMDb.Scraper.GetMovieTrailersByIMDBID(nMovie.IMDB)
                 For Each tTrailer In alTrailers
                     tTrailer.Scraper = "IMDB"
                 Next

@@ -1274,7 +1274,8 @@ Public Class Addon
     ''' Triggered when user enters settings in Ember
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
         LoadSettings()
-        Dim SPanel As New Containers.SettingsPanel
+        Dim nSettingsPanel As New Containers.SettingsPanel
+
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
         _settingspanel.chkGetWatchedState.Checked = _AddonSettings.GetWatchedState
@@ -1298,17 +1299,17 @@ Public Class Addon
         Next
         _settingspanel.cbGetWatchedStateHost.SelectedIndex = _settingspanel.cbGetWatchedStateHost.FindStringExact(_AddonSettings.GetWatchedStateHost)
 
-        SPanel.Name = _shortname
-        SPanel.Text = "Kodi Interface"
-        SPanel.Prefix = "Kodi_"
-        SPanel.Type = Enums.SettingsPanelType.Addon
-        SPanel.ImageIndex = If(_enabled, 9, 10)
-        SPanel.Order = 100
-        SPanel.Panel = _settingspanel.pnlSettings()
+        nSettingsPanel.Name = _shortname
+        nSettingsPanel.Title = "Kodi Interface"
+        nSettingsPanel.Prefix = "Kodi_"
+        nSettingsPanel.Type = Enums.SettingsPanelType.Addon
+        nSettingsPanel.ImageIndex = If(_enabled, 9, 10)
+        nSettingsPanel.Order = 100
+        nSettingsPanel.Panel = _settingspanel.pnlSettings()
 
         AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
         AddHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-        Return SPanel
+        Return nSettingsPanel
     End Function
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup

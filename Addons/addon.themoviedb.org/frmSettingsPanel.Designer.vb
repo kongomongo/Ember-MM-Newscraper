@@ -392,7 +392,7 @@ Partial Class frmSettingsPanel
         'pbLogo
         '
         Me.pbLogo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pbLogo.Image = Global.addon.My.Resources.Resources.logo_powered_by_rectangle_blue
+        Me.pbLogo.Image = My.Resources.Resources.logo_powered_by_rectangle_blue
         Me.pbLogo.Location = New System.Drawing.Point(3, 300)
         Me.pbLogo.Name = "pbLogo"
         Me.pbLogo.Size = New System.Drawing.Size(350, 50)
@@ -486,17 +486,17 @@ Partial Class frmSettingsPanel
     Friend WithEvents tblScraperOpts As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsMain As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkSearchDeviant_Movie As CheckBox
-    Friend WithEvents gbMovie As GroupBox
-    Friend WithEvents tblMovie As TableLayoutPanel
-    Friend WithEvents gbMovieSet As GroupBox
-    Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
-    Friend WithEvents chkFallBackToEng_MovieSet As CheckBox
-    Friend WithEvents gbTVShow As GroupBox
-    Friend WithEvents TableLayoutPanel2 As TableLayoutPanel
-    Friend WithEvents chkFallBackToEng_TV As CheckBox
-    Friend WithEvents chkIncludeAdultItems_TV As CheckBox
-    Friend WithEvents chkIncludeAdultItems_MovieSet As CheckBox
+    Friend WithEvents chkSearchDeviant_Movie As System.Windows.Forms.CheckBox
+    Friend WithEvents gbMovie As System.Windows.Forms.GroupBox
+    Friend WithEvents tblMovie As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbMovieSet As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel1 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkFallBackToEng_MovieSet As System.Windows.Forms.CheckBox
+    Friend WithEvents gbTVShow As System.Windows.Forms.GroupBox
+    Friend WithEvents TableLayoutPanel2 As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents chkFallBackToEng_TV As System.Windows.Forms.CheckBox
+    Friend WithEvents chkIncludeAdultItems_TV As System.Windows.Forms.CheckBox
+    Friend WithEvents chkIncludeAdultItems_MovieSet As System.Windows.Forms.CheckBox
     Friend WithEvents txtAPIKey As EmberAPI.FormUtils.TextBox_with_Watermark
-    Friend WithEvents pbLogo As PictureBox
+    Friend WithEvents pbLogo As System.Windows.Forms.PictureBox
 End Class

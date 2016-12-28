@@ -40,7 +40,7 @@ Public Class Scraper
             'Next
         End If
         If tScrapeModifiers.MainTrailer Then
-            nAddonResult.ScraperResult_Trailers = YouTube.Scraper.SearchOnYouTube(String.Concat(strTitle, " ", Master.eSettings.MovieTrailerDefaultSearch))
+            nAddonResult.ScraperResult_Trailers = EmberAPI.YouTube.Scraper.SearchOnYouTube(String.Concat(strTitle, " ", Master.eSettings.MovieTrailerDefaultSearch))
             For Each nTrailer In nAddonResult.ScraperResult_Trailers
                 nTrailer.Scraper = "YouTube"
             Next
