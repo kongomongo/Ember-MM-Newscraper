@@ -102,7 +102,7 @@ Public Class Core
         Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
 
-        nSettingsPanel.Image = My.Resources.ContextMenu
+        nSettingsPanel.Image = My.Resources.icon
         nSettingsPanel.ImageIndex = -1
         nSettingsPanel.Name = Master.eLang.GetString(1395, "Context Menu")
         nSettingsPanel.Panel = _settingspanel.pnlSettings

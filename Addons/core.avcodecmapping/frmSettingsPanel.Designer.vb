@@ -25,7 +25,7 @@ Partial Class frmSettingsPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsPanel))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.pnlGenres = New System.Windows.Forms.Panel()
+        Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.btnSetDefaultsVideo = New System.Windows.Forms.Button()
         Me.btnSetDefaultsAudio = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -40,27 +40,27 @@ Partial Class frmSettingsPanel
         Me.dgvAudio = New System.Windows.Forms.DataGridView()
         Me.Codec = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.pnlGenres.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
         CType(Me.dgvVideo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvAudio, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'pnlGenres
+        'pnlSettings
         '
-        Me.pnlGenres.Controls.Add(Me.btnSetDefaultsVideo)
-        Me.pnlGenres.Controls.Add(Me.btnSetDefaultsAudio)
-        Me.pnlGenres.Controls.Add(Me.Label2)
-        Me.pnlGenres.Controls.Add(Me.Label1)
-        Me.pnlGenres.Controls.Add(Me.btnRemoveVideo)
-        Me.pnlGenres.Controls.Add(Me.btnAddVideo)
-        Me.pnlGenres.Controls.Add(Me.dgvVideo)
-        Me.pnlGenres.Controls.Add(Me.btnRemoveAudio)
-        Me.pnlGenres.Controls.Add(Me.btnAddAudio)
-        Me.pnlGenres.Controls.Add(Me.dgvAudio)
-        Me.pnlGenres.Location = New System.Drawing.Point(0, 0)
-        Me.pnlGenres.Name = "pnlGenres"
-        Me.pnlGenres.Size = New System.Drawing.Size(634, 366)
-        Me.pnlGenres.TabIndex = 0
+        Me.pnlSettings.Controls.Add(Me.btnSetDefaultsVideo)
+        Me.pnlSettings.Controls.Add(Me.btnSetDefaultsAudio)
+        Me.pnlSettings.Controls.Add(Me.Label2)
+        Me.pnlSettings.Controls.Add(Me.Label1)
+        Me.pnlSettings.Controls.Add(Me.btnRemoveVideo)
+        Me.pnlSettings.Controls.Add(Me.btnAddVideo)
+        Me.pnlSettings.Controls.Add(Me.dgvVideo)
+        Me.pnlSettings.Controls.Add(Me.btnRemoveAudio)
+        Me.pnlSettings.Controls.Add(Me.btnAddAudio)
+        Me.pnlSettings.Controls.Add(Me.dgvAudio)
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(634, 366)
+        Me.pnlSettings.TabIndex = 0
         '
         'btnSetDefaultsVideo
         '
@@ -236,27 +236,27 @@ Partial Class frmSettingsPanel
         Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         Me.DataGridViewComboBoxColumn1.Width = 150
         '
-        'frmAVCodecEditor
+        'frmSettingsPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(634, 366)
-        Me.Controls.Add(Me.pnlGenres)
+        Me.Controls.Add(Me.pnlSettings)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmAVCodecEditor"
+        Me.Name = "frmSettingsPanel"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmAVCodecEditor"
-        Me.pnlGenres.ResumeLayout(False)
-        Me.pnlGenres.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
         CType(Me.dgvVideo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvAudio, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents pnlGenres As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents dgvAudio As System.Windows.Forms.DataGridView
     Friend WithEvents btnRemoveAudio As System.Windows.Forms.Button
     Friend WithEvents btnAddAudio As System.Windows.Forms.Button

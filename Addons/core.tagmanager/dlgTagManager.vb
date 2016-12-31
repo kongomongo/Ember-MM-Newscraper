@@ -20,16 +20,14 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.Diagnostics
-Imports System.IO
-Imports System.Text.RegularExpressions
+Imports System.Data
 Imports System.Windows.Forms
 
 Public Class dlgTagManager
 
 #Region "Fields"
 
-    Shared logger As Logger = NLog.LogManager.GetCurrentClassLogger()
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     'backgroundworker used for commandline scraping in this module
     Friend WithEvents bwLoad As New System.ComponentModel.BackgroundWorker
@@ -97,7 +95,7 @@ Public Class dlgTagManager
         'load current movielist-view/selection
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.Rows
             Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+            If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                 lstFilteredMovies.Add(DBElement)
             End If
         Next
@@ -545,7 +543,7 @@ Public Class dlgTagManager
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
             Next
@@ -561,7 +559,7 @@ Public Class dlgTagManager
             'load current movielist-view/selection
             For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListMovies.SelectedRows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
             Next
@@ -580,7 +578,7 @@ Public Class dlgTagManager
                                                                 "ORDER BY ListTitle COLLATE NOCASE;"))
             For Each sRow As DataRow In dtmovies.Rows
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(Convert.ToInt64(sRow("idMovie")))
-                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBElement, True) Then
+                If DBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBElement, True) Then
                     lstFilteredMovies.Add(DBElement)
                 End If
             Next

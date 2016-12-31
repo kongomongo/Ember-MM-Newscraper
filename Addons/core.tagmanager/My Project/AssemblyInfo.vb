@@ -6,11 +6,11 @@ Imports System.Runtime.InteropServices
 ' set of attributes. Change these attribute values to modify the information
 ' associated with an assembly.
 ' Review the values of the assembly attributes
-<Assembly: AssemblyTitle("generic.EmberCore.TagManager")> 
+<Assembly: AssemblyTitle("core.tagmanager")>
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
-<Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("generic.EmberCore.TagManager")> 
-<Assembly: AssemblyCopyright("Copyright © 2015")> 
+<Assembly: AssemblyCompany("Ember Media Manager")>
+<Assembly: AssemblyProduct("core.tagmanager")>
+<Assembly: AssemblyCopyright("Copyright © 2016")>
 <Assembly: AssemblyTrademark("")>
 <Assembly: ComVisible(False)>
 

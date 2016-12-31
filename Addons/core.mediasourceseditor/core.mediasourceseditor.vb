@@ -19,14 +19,11 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports NLog
 
 Public Class Addon
     Implements Interfaces.Addon
 
 #Region "Fields"
-
-    Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private _assemblyname As String
     Private _enabled As Boolean = True

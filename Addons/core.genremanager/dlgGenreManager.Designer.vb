@@ -230,7 +230,7 @@ Partial Class dlgGenreManager
         '
         Me.btnImageChange.Enabled = False
         Me.btnImageChange.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnImageChange.Image = My.Resources.Resources.image
+        Me.btnImageChange.Image = My.Resources.Resources.icon
         Me.btnImageChange.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnImageChange.Location = New System.Drawing.Point(3, 109)
         Me.btnImageChange.Name = "btnImageChange"

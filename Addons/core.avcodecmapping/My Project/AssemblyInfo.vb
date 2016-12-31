@@ -6,16 +6,16 @@ Imports System.Runtime.InteropServices
 ' set of attributes. Change these attribute values to modify the information
 ' associated with an assembly.
 ' Review the values of the assembly attributes
-<Assembly: AssemblyTitle("generic.EmberCore.MetadataEditor")> 
+<Assembly: AssemblyTitle("core.avcodecmapping")>
 <Assembly: AssemblyDescription("http://forum.xbmc.org/forumdisplay.php?fid=195")> 
-<Assembly: AssemblyCompany("Ember Media Manager")> 
-<Assembly: AssemblyProduct("generic.EmberCore.MetadataEditor")> 
-<Assembly: AssemblyCopyright("Copyright © 2013")> 
+<Assembly: AssemblyCompany("Ember Media Manager")>
+<Assembly: AssemblyProduct("core.avcodecmapping")>
+<Assembly: AssemblyCopyright("Copyright © 2016")>
 <Assembly: AssemblyTrademark("")> 
 <Assembly: ComVisible(False)> 
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("2AD833C5-6DEB-43A1-AEA5-89B8C68E189B")> 
+<Assembly: Guid("2AD833C5-6DEB-43A1-AEA5-89B8C68E189B")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -27,5 +27,5 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")>
-<Assembly: AssemblyVersion("1.4.3.0")> 
-<Assembly: AssemblyFileVersion("1.4.3.0")> 
+<Assembly: AssemblyVersion("1.4.8.0")>
+<Assembly: AssemblyFileVersion("1.4.8.0")>

@@ -45,12 +45,12 @@ Public Class Addon
 
     Private _assemblyname As String = String.Empty
     Private _enabled As Boolean = False
-    Private _shortname As String = "Kodi"
+    Private _shortname As String = "KodiInterface"
 
     Private _settingspanel As frmSettingsPanel
 
     'reflects the current host(s) settings/setup configured in settings, will be filled at module startup from XML settings (and is used to write changes of settings back into XML)
-    Private _AddonSettings As New AddonSettings
+    Private _addonsettings As New AddonSettings
     Private _xmlSettingsPath As String = Path.Combine(Master.SettingsPath, "Interface.Kodi.xml")
     Private cmnuKodi_MovieSets As New ToolStripMenuItem
     Private cmnuKodi_Movies As New ToolStripMenuItem
@@ -196,27 +196,27 @@ Public Class Addon
         Else
             Select Case eAddonEventType
                 Case Enums.AddonEventType.BeforeEdit_Movie
-                    If Not _AddonSettings.GetWatchedState OrElse Not _AddonSettings.GetWatchedStateBeforeEdit_Movie Then
+                    If Not _addonsettings.GetWatchedState OrElse Not _addonsettings.GetWatchedStateBeforeEdit_Movie Then
                         Return New Interfaces.AddonResult
                     End If
                 Case Enums.AddonEventType.BeforeEdit_TVEpisode
-                    If Not _AddonSettings.GetWatchedState OrElse Not _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode Then
+                    If Not _addonsettings.GetWatchedState OrElse Not _addonsettings.GetWatchedStateBeforeEdit_TVEpisode Then
                         Return New Interfaces.AddonResult
                     End If
                 Case Enums.AddonEventType.DuringScrapingMulti_Movie
-                    If Not _AddonSettings.GetWatchedState OrElse Not _AddonSettings.GetWatchedStateScraperMulti_Movie Then
+                    If Not _addonsettings.GetWatchedState OrElse Not _addonsettings.GetWatchedStateScraperMulti_Movie Then
                         Return New Interfaces.AddonResult
                     End If
                 Case Enums.AddonEventType.DuringScrapingMulti_TVEpisode, Enums.AddonEventType.DuringScrapingMulti_TVSeason, Enums.AddonEventType.DuringScrapingMulti_TVShow
-                    If Not _AddonSettings.GetWatchedState OrElse Not _AddonSettings.GetWatchedStateScraperMulti_TVEpisode Then
+                    If Not _addonsettings.GetWatchedState OrElse Not _addonsettings.GetWatchedStateScraperMulti_TVEpisode Then
                         Return New Interfaces.AddonResult
                     End If
                 Case Enums.AddonEventType.DuringScrapingSingle_Movie
-                    If Not _AddonSettings.GetWatchedState OrElse Not _AddonSettings.GetWatchedStateScraperSingle_Movie Then
+                    If Not _addonsettings.GetWatchedState OrElse Not _addonsettings.GetWatchedStateScraperSingle_Movie Then
                         Return New Interfaces.AddonResult
                     End If
                 Case Enums.AddonEventType.DuringScrapingSingle_TVEpisode, Enums.AddonEventType.DuringScrapingSingle_TVSeason, Enums.AddonEventType.DuringScrapingSingle_TVShow
-                    If Not _AddonSettings.GetWatchedState OrElse Not _AddonSettings.GetWatchedStateScraperSingle_TVEpisode Then
+                    If Not _addonsettings.GetWatchedState OrElse Not _addonsettings.GetWatchedStateScraperSingle_TVEpisode Then
                         Return New Interfaces.AddonResult
                     End If
             End Select
@@ -296,13 +296,13 @@ Public Class Addon
         Dim GenericSubEventProgressAsync = New Progress(Of GenericSubEventCallBackAsync)(GenericSubEventActionAsync)
 
         'check if at least one host is configured, else skip
-        If _AddonSettings.Hosts.Count > 0 Then
+        If _addonsettings.Hosts.Count > 0 Then
             Select Case mType
 
                 'Before Edit Movie / Scraper Multi Movie / Scraper Single Movie
                 Case Enums.AddonEventType.BeforeEdit_Movie, Enums.AddonEventType.DuringScrapingMulti_Movie, Enums.AddonEventType.DuringScrapingSingle_Movie
-                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_AddonSettings.GetWatchedStateHost) Then
-                        mHost = _AddonSettings.Hosts.FirstOrDefault(Function(f) f.Label = _AddonSettings.GetWatchedStateHost)
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_addonsettings.GetWatchedStateHost) Then
+                        mHost = _addonsettings.Hosts.FirstOrDefault(Function(f) f.Label = _addonsettings.GetWatchedStateHost)
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -334,14 +334,14 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _AddonSettings.GetWatchedStateHost))
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _addonsettings.GetWatchedStateHost))
                         End If
                     End If
 
                 'Before Edit TVEpisode / Scraper Multi TVEpisode / Scraper Single TVEpisode
                 Case Enums.AddonEventType.BeforeEdit_TVEpisode, Enums.AddonEventType.DuringScrapingMulti_TVEpisode, Enums.AddonEventType.DuringScrapingSingle_TVEpisode
-                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_AddonSettings.GetWatchedStateHost) Then
-                        mHost = _AddonSettings.Hosts.FirstOrDefault(Function(f) f.Label = _AddonSettings.GetWatchedStateHost)
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_addonsettings.GetWatchedStateHost) Then
+                        mHost = _addonsettings.Hosts.FirstOrDefault(Function(f) f.Label = _addonsettings.GetWatchedStateHost)
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -373,13 +373,13 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _AddonSettings.GetWatchedStateHost))
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _addonsettings.GetWatchedStateHost))
                         End If
                     End If
 
                 Case Enums.AddonEventType.DuringScrapingMulti_TVSeason, Enums.AddonEventType.DuringScrapingMulti_TVShow, Enums.AddonEventType.DuringScrapingSingle_TVSeason, Enums.AddonEventType.DuringScrapingSingle_TVShow
-                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_AddonSettings.GetWatchedStateHost) Then
-                        mHost = _AddonSettings.Hosts.FirstOrDefault(Function(f) f.Label = _AddonSettings.GetWatchedStateHost)
+                    If mDBElement IsNot Nothing AndAlso Not String.IsNullOrEmpty(_addonsettings.GetWatchedStateHost) Then
+                        mHost = _addonsettings.Hosts.FirstOrDefault(Function(f) f.Label = _addonsettings.GetWatchedStateHost)
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
 
@@ -415,7 +415,7 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _AddonSettings.GetWatchedStateHost))
+                            logger.Warn(String.Format("[KodiInterface] [GenericRunCallBack]: Hostname ({0}) not found in host list!", _addonsettings.GetWatchedStateHost))
                         End If
                     End If
 
@@ -428,7 +428,7 @@ Public Class Addon
                             'connection test
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
-                                If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                     Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
@@ -439,13 +439,13 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            For Each tHost As Host In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.Movie).Count > 0)
+                            For Each tHost As Host In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.Movie).Count > 0)
                                 Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.Remove_Movie(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
@@ -471,7 +471,7 @@ Public Class Addon
                             'connection test
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
-                                If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                     Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
@@ -482,13 +482,13 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            For Each tHost In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
+                            For Each tHost In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                 Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.Remove_TVEpisode(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
@@ -513,7 +513,7 @@ Public Class Addon
                             'connection test
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
-                                If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                     Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
@@ -524,13 +524,13 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            For Each tHost In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
+                            For Each tHost In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                 Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.Remove_TVShow(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1031, "Removal OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Removal failed:  ", mDBElement.MainDetails.Title))
@@ -556,7 +556,7 @@ Public Class Addon
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -567,13 +567,13 @@ Public Class Addon
                                     getError = True
                                 End If
                             Else
-                                For Each tHost As Host In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.Movie).Count > 0)
+                                For Each tHost As Host In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.Movie).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_Movie(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -604,7 +604,7 @@ Public Class Addon
                             'connection test
                             If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                 'run task
-                                If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _AddonSettings.SendNotifications)) Then
+                                If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _addonsettings.SendNotifications)) Then
                                     Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                 Else
                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -615,13 +615,13 @@ Public Class Addon
                                 getError = True
                             End If
                         Else
-                            For Each tHost In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso Not String.IsNullOrEmpty(f.MovieSetArtworksPath))
+                            For Each tHost In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso Not String.IsNullOrEmpty(f.MovieSetArtworksPath))
                                 Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _AddonSettings.SendNotifications)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_MovieSet(mDBElement, _addonsettings.SendNotifications)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -648,7 +648,7 @@ Public Class Addon
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -659,13 +659,13 @@ Public Class Addon
                                     getError = True
                                 End If
                             Else
-                                For Each tHost In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
+                                For Each tHost In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVEpisode(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -697,7 +697,7 @@ Public Class Addon
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -708,13 +708,13 @@ Public Class Addon
                                     getError = True
                                 End If
                             Else
-                                For Each tHost In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
+                                For Each tHost In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVSeason(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -746,7 +746,7 @@ Public Class Addon
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                     'run task
-                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                    If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                     Else
                                         logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -757,13 +757,13 @@ Public Class Addon
                                     getError = True
                                 End If
                             Else
-                                For Each tHost In _AddonSettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
+                                For Each tHost In _addonsettings.Hosts.Where(Function(f) f.RealTimeSync AndAlso f.Sources.Where(Function(c) c.ContentType = Enums.ContentType.TV).Count > 0)
                                     Dim _APIKodi As New Kodi.APIKodi(tHost)
 
                                     'connection test
                                     If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
                                         'run task
-                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _AddonSettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
+                                        If Await Task.Run(Function() _APIKodi.UpdateInfo_TVShow(mDBElement, _addonsettings.SendNotifications, GenericSubEventProgressAsync, GenericEventProcess)) Then
                                             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(tHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", tHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -930,22 +930,22 @@ Public Class Addon
     ''' 2015/06/27 Cocotus - First implementation
     ''' Used at module startup(=Ember startup) to load Kodi Hosts and also set other module settings
     Sub LoadSettings()
-        _AddonSettings.Clear()
+        _addonsettings.Clear()
         If File.Exists(_xmlSettingsPath) Then
             Dim xmlSer As XmlSerializer = Nothing
             Using xmlSR As StreamReader = New StreamReader(_xmlSettingsPath)
                 xmlSer = New XmlSerializer(GetType(AddonSettings))
-                _AddonSettings = DirectCast(xmlSer.Deserialize(xmlSR), AddonSettings)
+                _addonsettings = DirectCast(xmlSer.Deserialize(xmlSR), AddonSettings)
             End Using
         End If
     End Sub
 
     Private Sub CreateContextMenu(ByRef tMenu As ToolStripMenuItem, ByVal tContentType As Enums.ContentType)
         'Single Host
-        If _AddonSettings.Hosts IsNot Nothing AndAlso _AddonSettings.Hosts.Count = 1 Then
+        If _addonsettings.Hosts IsNot Nothing AndAlso _addonsettings.Hosts.Count = 1 Then
             Dim mnuHostSyncItem As New ToolStripMenuItem
             mnuHostSyncItem.Image = New Bitmap(My.Resources.menuSync)
-            mnuHostSyncItem.Tag = _AddonSettings.Hosts(0)
+            mnuHostSyncItem.Tag = _addonsettings.Hosts(0)
             mnuHostSyncItem.Text = Master.eLang.GetString(1446, "Sync")
             Select Case tContentType
                 Case Enums.ContentType.Movie
@@ -963,7 +963,7 @@ Public Class Addon
             If tContentType = Enums.ContentType.TVSeason OrElse tContentType = Enums.ContentType.TVShow Then
                 Dim mnuHostSyncFullItem As New ToolStripMenuItem
                 mnuHostSyncFullItem.Image = New Bitmap(My.Resources.menuSync)
-                mnuHostSyncFullItem.Tag = _AddonSettings.Hosts(0)
+                mnuHostSyncFullItem.Tag = _addonsettings.Hosts(0)
                 mnuHostSyncFullItem.Text = Master.eLang.GetString(1008, "Sync Full")
                 Select Case tContentType
                     Case Enums.ContentType.TVSeason
@@ -974,8 +974,8 @@ Public Class Addon
                 tMenu.DropDownItems.Add(mnuHostSyncFullItem)
             End If
             If tContentType = Enums.ContentType.Movie OrElse tContentType = Enums.ContentType.TVEpisode OrElse tContentType = Enums.ContentType.TVSeason OrElse tContentType = Enums.ContentType.TVShow Then
-                If _AddonSettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_AddonSettings.GetWatchedStateHost) Then
-                    Dim mHost As Host = _AddonSettings.Hosts.FirstOrDefault(Function(f) f.Label = _AddonSettings.GetWatchedStateHost)
+                If _addonsettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_addonsettings.GetWatchedStateHost) Then
+                    Dim mHost As Host = _addonsettings.Hosts.FirstOrDefault(Function(f) f.Label = _addonsettings.GetWatchedStateHost)
                     If mHost IsNot Nothing Then
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
                         mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuWatchedState)
@@ -998,7 +998,7 @@ Public Class Addon
             If tContentType = Enums.ContentType.Movie OrElse tContentType = Enums.ContentType.TVEpisode OrElse tContentType = Enums.ContentType.TVShow Then
                 Dim mnuHostRemoveItem As New ToolStripMenuItem
                 mnuHostRemoveItem.Image = New Bitmap(My.Resources.menuRemove)
-                mnuHostRemoveItem.Tag = _AddonSettings.Hosts(0)
+                mnuHostRemoveItem.Tag = _addonsettings.Hosts(0)
                 mnuHostRemoveItem.Text = Master.eLang.GetString(30, "Remove")
                 Select Case tContentType
                     Case Enums.ContentType.Movie
@@ -1012,8 +1012,8 @@ Public Class Addon
             End If
 
             'Multiple Hosts
-        ElseIf _AddonSettings.Hosts IsNot Nothing AndAlso _AddonSettings.Hosts.Count > 1 Then
-            For Each kHost As Host In _AddonSettings.Hosts
+        ElseIf _addonsettings.Hosts IsNot Nothing AndAlso _addonsettings.Hosts.Count > 1 Then
+            For Each kHost As Host In _addonsettings.Hosts
                 Dim mnuHost As New ToolStripMenuItem
                 mnuHost.Image = New Bitmap(My.Resources.icon)
                 mnuHost.Text = kHost.Label
@@ -1065,13 +1065,13 @@ Public Class Addon
                 tMenu.DropDownItems.Add(mnuHost)
             Next
             If tContentType = Enums.ContentType.Movie OrElse tContentType = Enums.ContentType.TVEpisode OrElse tContentType = Enums.ContentType.TVSeason OrElse tContentType = Enums.ContentType.TVShow Then
-                If _AddonSettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_AddonSettings.GetWatchedStateHost) Then
-                    Dim mHost As Host = _AddonSettings.Hosts.FirstOrDefault(Function(f) f.Label = _AddonSettings.GetWatchedStateHost)
+                If _addonsettings.GetWatchedState AndAlso Not String.IsNullOrEmpty(_addonsettings.GetWatchedStateHost) Then
+                    Dim mHost As Host = _addonsettings.Hosts.FirstOrDefault(Function(f) f.Label = _addonsettings.GetWatchedStateHost)
                     If mHost IsNot Nothing Then
                         Dim mnuHostGetPlaycount As New ToolStripMenuItem
                         mnuHostGetPlaycount.Image = New Bitmap(My.Resources.menuWatchedState)
                         mnuHostGetPlaycount.Tag = mHost
-                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Watched State"), _AddonSettings.GetWatchedStateHost)
+                        mnuHostGetPlaycount.Text = String.Format("{0} ({1})", Master.eLang.GetString(1070, "Get Watched State"), _addonsettings.GetWatchedStateHost)
                         Select Case tContentType
                             Case Enums.ContentType.Movie
                                 AddHandler mnuHostGetPlaycount.Click, AddressOf cmnuHostGetPlaycount_Movie_Click
@@ -1097,21 +1097,21 @@ Public Class Addon
     Private Sub CreateToolsMenu(ByRef tMenu As ToolStripMenuItem)
         Dim mnuHostSyncPlaycounts As New ToolStripMenuItem
         mnuHostSyncPlaycounts.Text = "Sync Playcount"
-        If _AddonSettings.Hosts IsNot Nothing AndAlso _AddonSettings.Hosts.Count = 1 Then
+        If _addonsettings.Hosts IsNot Nothing AndAlso _addonsettings.Hosts.Count = 1 Then
             Dim mnuHostScanVideoLibrary As New ToolStripMenuItem
             mnuHostScanVideoLibrary.Image = New Bitmap(My.Resources.menuSync)
-            mnuHostScanVideoLibrary.Tag = _AddonSettings.Hosts(0)
+            mnuHostScanVideoLibrary.Tag = _addonsettings.Hosts(0)
             mnuHostScanVideoLibrary.Text = Master.eLang.GetString(82, "Update Library")
             AddHandler mnuHostScanVideoLibrary.Click, AddressOf mnuHostScanVideoLibrary_Click
             tMenu.DropDownItems.Add(mnuHostScanVideoLibrary)
             Dim mnuHostCleanVideoLibrary As New ToolStripMenuItem
             mnuHostCleanVideoLibrary.Image = New Bitmap(My.Resources.menuClean)
-            mnuHostCleanVideoLibrary.Tag = _AddonSettings.Hosts(0)
+            mnuHostCleanVideoLibrary.Tag = _addonsettings.Hosts(0)
             mnuHostCleanVideoLibrary.Text = Master.eLang.GetString(709, "Clean Database")
             AddHandler mnuHostCleanVideoLibrary.Click, AddressOf mnuHostCleanVideoLibrary_Click
             tMenu.DropDownItems.Add(mnuHostCleanVideoLibrary)
-        ElseIf _AddonSettings.Hosts IsNot Nothing AndAlso _AddonSettings.Hosts.Count > 1 Then
-            For Each kHost As Host In _AddonSettings.Hosts
+        ElseIf _addonsettings.Hosts IsNot Nothing AndAlso _addonsettings.Hosts.Count > 1 Then
+            For Each kHost As Host In _addonsettings.Hosts
                 Dim mnuHost As New ToolStripMenuItem
                 mnuHost.Image = New Bitmap(My.Resources.icon)
                 mnuHost.Text = kHost.Label
@@ -1278,34 +1278,33 @@ Public Class Addon
 
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
-        _settingspanel.chkGetWatchedState.Checked = _AddonSettings.GetWatchedState
-        _settingspanel.chkGetWatchedStateBeforeEdit_Movie.Checked = _AddonSettings.GetWatchedStateBeforeEdit_Movie
-        _settingspanel.chkGetWatchedStateBeforeEdit_TVEpisode.Checked = _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode
-        _settingspanel.chkGetWatchedStateScraperMulti_Movie.Checked = _AddonSettings.GetWatchedStateScraperMulti_Movie
-        _settingspanel.chkGetWatchedStateScraperMulti_TVEpisode.Checked = _AddonSettings.GetWatchedStateScraperMulti_TVEpisode
-        _settingspanel.chkGetWatchedStateScraperSingle_Movie.Checked = _AddonSettings.GetWatchedStateScraperSingle_Movie
-        _settingspanel.chkGetWatchedStateScraperSingle_TVEpisode.Checked = _AddonSettings.GetWatchedStateScraperSingle_TVEpisode
-        _settingspanel.chkNotification.Checked = _AddonSettings.SendNotifications
-        If _AddonSettings.GetWatchedState Then
+        _settingspanel.chkGetWatchedState.Checked = _addonsettings.GetWatchedState
+        _settingspanel.chkGetWatchedStateBeforeEdit_Movie.Checked = _addonsettings.GetWatchedStateBeforeEdit_Movie
+        _settingspanel.chkGetWatchedStateBeforeEdit_TVEpisode.Checked = _addonsettings.GetWatchedStateBeforeEdit_TVEpisode
+        _settingspanel.chkGetWatchedStateScraperMulti_Movie.Checked = _addonsettings.GetWatchedStateScraperMulti_Movie
+        _settingspanel.chkGetWatchedStateScraperMulti_TVEpisode.Checked = _addonsettings.GetWatchedStateScraperMulti_TVEpisode
+        _settingspanel.chkGetWatchedStateScraperSingle_Movie.Checked = _addonsettings.GetWatchedStateScraperSingle_Movie
+        _settingspanel.chkGetWatchedStateScraperSingle_TVEpisode.Checked = _addonsettings.GetWatchedStateScraperSingle_TVEpisode
+        _settingspanel.chkNotification.Checked = _addonsettings.SendNotifications
+        If _addonsettings.GetWatchedState Then
             _settingspanel.cbGetWatchedStateHost.Enabled = True
         Else
             _settingspanel.cbGetWatchedStateHost.Enabled = False
         End If
-        _settingspanel.HostList = _AddonSettings.Hosts
+        _settingspanel.HostList = _addonsettings.Hosts
         _settingspanel.lbHosts.Items.Clear()
         For Each tHost As Host In _settingspanel.HostList
             _settingspanel.cbGetWatchedStateHost.Items.Add(tHost.Label)
             _settingspanel.lbHosts.Items.Add(tHost.Label)
         Next
-        _settingspanel.cbGetWatchedStateHost.SelectedIndex = _settingspanel.cbGetWatchedStateHost.FindStringExact(_AddonSettings.GetWatchedStateHost)
+        _settingspanel.cbGetWatchedStateHost.SelectedIndex = _settingspanel.cbGetWatchedStateHost.FindStringExact(_addonsettings.GetWatchedStateHost)
 
-        nSettingsPanel.Name = _shortname
-        nSettingsPanel.Title = "Kodi Interface"
-        nSettingsPanel.Prefix = "Kodi_"
-        nSettingsPanel.Type = Enums.SettingsPanelType.Addon
         nSettingsPanel.ImageIndex = If(_enabled, 9, 10)
-        nSettingsPanel.Order = 100
+        nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings()
+        nSettingsPanel.Prefix = "KodiInterface_"
+        nSettingsPanel.Title = "Kodi Interface"
+        nSettingsPanel.Type = Enums.SettingsPanelType.Addon
 
         AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
         AddHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
@@ -1314,15 +1313,15 @@ Public Class Addon
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
-        _AddonSettings.SendNotifications = _settingspanel.chkNotification.Checked
-        _AddonSettings.GetWatchedState = _settingspanel.chkGetWatchedState.Checked AndAlso _settingspanel.cbGetWatchedStateHost.SelectedItem IsNot Nothing
-        _AddonSettings.GetWatchedStateBeforeEdit_Movie = _settingspanel.chkGetWatchedStateBeforeEdit_Movie.Checked
-        _AddonSettings.GetWatchedStateBeforeEdit_TVEpisode = _settingspanel.chkGetWatchedStateBeforeEdit_TVEpisode.Checked
-        _AddonSettings.GetWatchedStateScraperMulti_Movie = _settingspanel.chkGetWatchedStateScraperMulti_Movie.Checked
-        _AddonSettings.GetWatchedStateScraperMulti_TVEpisode = _settingspanel.chkGetWatchedStateScraperMulti_TVEpisode.Checked
-        _AddonSettings.GetWatchedStateScraperSingle_Movie = _settingspanel.chkGetWatchedStateScraperSingle_Movie.Checked
-        _AddonSettings.GetWatchedStateScraperSingle_TVEpisode = _settingspanel.chkGetWatchedStateScraperSingle_TVEpisode.Checked
-        _AddonSettings.GetWatchedStateHost = If(_settingspanel.cbGetWatchedStateHost.SelectedItem IsNot Nothing, _settingspanel.cbGetWatchedStateHost.SelectedItem.ToString(), String.Empty)
+        _addonsettings.SendNotifications = _settingspanel.chkNotification.Checked
+        _addonsettings.GetWatchedState = _settingspanel.chkGetWatchedState.Checked AndAlso _settingspanel.cbGetWatchedStateHost.SelectedItem IsNot Nothing
+        _addonsettings.GetWatchedStateBeforeEdit_Movie = _settingspanel.chkGetWatchedStateBeforeEdit_Movie.Checked
+        _addonsettings.GetWatchedStateBeforeEdit_TVEpisode = _settingspanel.chkGetWatchedStateBeforeEdit_TVEpisode.Checked
+        _addonsettings.GetWatchedStateScraperMulti_Movie = _settingspanel.chkGetWatchedStateScraperMulti_Movie.Checked
+        _addonsettings.GetWatchedStateScraperMulti_TVEpisode = _settingspanel.chkGetWatchedStateScraperMulti_TVEpisode.Checked
+        _addonsettings.GetWatchedStateScraperSingle_Movie = _settingspanel.chkGetWatchedStateScraperSingle_Movie.Checked
+        _addonsettings.GetWatchedStateScraperSingle_TVEpisode = _settingspanel.chkGetWatchedStateScraperSingle_TVEpisode.Checked
+        _addonsettings.GetWatchedStateHost = If(_settingspanel.cbGetWatchedStateHost.SelectedItem IsNot Nothing, _settingspanel.cbGetWatchedStateHost.SelectedItem.ToString(), String.Empty)
 
         SaveSettings()
 
@@ -1346,7 +1345,7 @@ Public Class Addon
             End If
             Using xmlSW As New StreamWriter(_xmlSettingsPath)
                 Dim xmlSer As New XmlSerializer(GetType(AddonSettings))
-                xmlSer.Serialize(xmlSW, _AddonSettings)
+                xmlSer.Serialize(xmlSW, _addonsettings)
             End Using
         End If
     End Sub

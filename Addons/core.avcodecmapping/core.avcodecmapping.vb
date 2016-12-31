@@ -19,28 +19,17 @@
 ' ################################################################################
 
 Imports EmberAPI
-Imports System.Drawing
-Imports System.Windows.Forms
 
 Public Class Core
     Implements Interfaces.Addon
-
-#Region "Delegates"
-
-    Public Delegate Sub Delegate_SetToolsStripItem(value As ToolStripItem)
-    Public Delegate Sub Delegate_RemoveToolsStripItem(value As ToolStripItem)
-    Public Delegate Sub Delegate_AddToolsStripItem(tsi As ToolStripMenuItem, value As ToolStripMenuItem)
-
-#End Region 'Delegates
 
 #Region "Fields"
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _shortname As String = "GenreManager"
+    Private _shortname As String = "AVCodecMapping"
 
-    Private WithEvents cmnuTrayTools As New ToolStripMenuItem
-    Private WithEvents mnuMainTools As New ToolStripMenuItem
+    Private _settingspanel As frmSettingsPanel
 
 #End Region 'Fields
 
@@ -60,7 +49,7 @@ Public Class Core
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            Return
+            _enabled = value
         End Set
     End Property
 
@@ -98,31 +87,6 @@ Public Class Core
 
 #Region "Methods"
 
-    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
-        If control.Owner.InvokeRequired Then
-            control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
-        Else
-            control.DropDownItems.Add(value)
-        End If
-    End Sub
-
-    Private Sub Enable()
-        Dim tsi As New ToolStripMenuItem
-
-        'mnuMainTools menu
-        mnuMainTools.Image = New Bitmap(My.Resources.icon)
-        mnuMainTools.Text = Master.eLang.GetString(782, "Genre Manager")
-        mnuMainTools.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
-        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, mnuMainTools)
-
-        'cmnuTrayTools
-        cmnuTrayTools.Image = New Bitmap(My.Resources.icon)
-        cmnuTrayTools.Text = Master.eLang.GetString(782, "Genre Manager")
-        tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, cmnuTrayTools)
-    End Sub
-
     Private Sub Handle_NeedsRestart()
         RaiseEvent NeedsRestart()
     End Sub
@@ -133,28 +97,34 @@ Public Class Core
 
     Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
         _assemblyname = strAssemblyName
-        Enable()
     End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
-        Return Nothing
-    End Function
+        Dim nSettingsPanel As New Containers.SettingsPanel
+        _settingspanel = New frmSettingsPanel
 
-    Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainTools.Click, cmnuTrayTools.Click
-        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-        Using dGenreManager As New dlgGenreManager
-            dGenreManager.ShowDialog()
-        End Using
-        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
-        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
-    End Sub
+        nSettingsPanel.Image = My.Resources.icon
+        nSettingsPanel.ImageIndex = -1
+        nSettingsPanel.Name = _shortname
+        nSettingsPanel.Panel = _settingspanel.pnlSettings
+        nSettingsPanel.Prefix = "AVCodecMapping_"
+        nSettingsPanel.Title = Master.eLang.GetString(785, "Audio & Video Codec Mapping")
+        nSettingsPanel.Type = Enums.SettingsPanelType.Core
+
+        AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        Return nSettingsPanel
+    End Function
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
         Return New Interfaces.AddonResult
     End Function
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
-        Return
+        If Not _settingspanel Is Nothing Then _settingspanel.SaveChanges()
+        If bDoDispose Then
+            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+            _settingspanel.Dispose()
+        End If
     End Sub
 
 #End Region 'Methods

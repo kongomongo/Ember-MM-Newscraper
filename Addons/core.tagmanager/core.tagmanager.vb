@@ -27,9 +27,8 @@ Public Class Core
 
 #Region "Delegates"
 
-    Public Delegate Sub Delegate_SetToolsStripItem(value As ToolStripItem)
-    Public Delegate Sub Delegate_RemoveToolsStripItem(value As ToolStripItem)
-    Public Delegate Sub Delegate_AddToolsStripItem(tsi As ToolStripMenuItem, value As ToolStripMenuItem)
+    Public Delegate Sub Delegate_AddToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+    Public Delegate Sub Delegate_RemoveToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
 
 #End Region 'Delegates
 
@@ -37,7 +36,7 @@ Public Class Core
 
     Private _assemblyname As String
     Private _enabled As Boolean = True
-    Private _shortname As String = "GenreManager"
+    Private _shortname As String = "TagManager"
 
     Private WithEvents cmnuTrayTools As New ToolStripMenuItem
     Private WithEvents mnuMainTools As New ToolStripMenuItem
@@ -60,7 +59,7 @@ Public Class Core
             Return _enabled
         End Get
         Set(ByVal value As Boolean)
-            Return
+            _enabled = value
         End Set
     End Property
 
@@ -98,7 +97,7 @@ Public Class Core
 
 #Region "Methods"
 
-    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
+    Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
         If control.Owner.InvokeRequired Then
             control.Owner.Invoke(New Delegate_AddToolsStripItem(AddressOf AddToolsStripItem), New Object() {control, value})
         Else
@@ -106,29 +105,20 @@ Public Class Core
         End If
     End Sub
 
-    Private Sub Enable()
+    Sub Enable()
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools menu
         mnuMainTools.Image = New Bitmap(My.Resources.icon)
-        mnuMainTools.Text = Master.eLang.GetString(782, "Genre Manager")
-        mnuMainTools.Tag = New Structures.ModulesMenus With {.ForMovies = True, .IfTabMovies = True, .ForTVShows = True, .IfTabTVShows = True}
+        mnuMainTools.Text = Master.eLang.GetString(868, "Tag Manager")
         tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, mnuMainTools)
 
         'cmnuTrayTools
         cmnuTrayTools.Image = New Bitmap(My.Resources.icon)
-        cmnuTrayTools.Text = Master.eLang.GetString(782, "Genre Manager")
+        cmnuTrayTools.Text = Master.eLang.GetString(868, "Tag Manager")
         tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
         AddToolsStripItem(tsi, cmnuTrayTools)
-    End Sub
-
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
-    End Sub
-
-    Private Sub Handle_SettingsChanged()
-        RaiseEvent SettingsChanged()
     End Sub
 
     Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
@@ -140,13 +130,22 @@ Public Class Core
         Return Nothing
     End Function
 
-    Private Sub mnuMainToolsRenamer_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainTools.Click, cmnuTrayTools.Click
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainTools.Click, cmnuTrayTools.Click
         RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-        Using dGenreManager As New dlgGenreManager
-            dGenreManager.ShowDialog()
+
+        Using dTagManager As New dlgTagManager
+            dTagManager.ShowDialog()
         End Using
+
         RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
-        RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"filllist", True, True, True}))
+    End Sub
+
+    Public Sub RemoveToolsStripItem(control As ToolStripMenuItem, value As System.Windows.Forms.ToolStripItem)
+        If control.Owner.InvokeRequired Then
+            control.Owner.Invoke(New Delegate_RemoveToolsStripItem(AddressOf RemoveToolsStripItem), New Object() {control, value})
+        Else
+            control.DropDownItems.Remove(value)
+        End If
     End Sub
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run

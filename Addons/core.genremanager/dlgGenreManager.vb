@@ -55,7 +55,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub btnGenreAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGenreAdd.Click
-        Dim strGenre As String = InputBox(Master.eLang.GetString(640, "Enter the new Genre"), Master.eLang.GetString(641, "New Genre"))
+        Dim strGenre As String = Microsoft.VisualBasic.InputBox(Master.eLang.GetString(640, "Enter the new Genre"), Master.eLang.GetString(641, "New Genre"))
         If Not String.IsNullOrEmpty(strGenre) Then
             Dim gProperty As New genreProperty With {.isNew = False, .Name = strGenre}
             tmpGenreXML.Genres.Add(gProperty)
@@ -82,7 +82,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub btnGenreRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnGenreRemove.Click
-        If MsgBox(Master.eLang.GetString(661, "This will remove the Genre from all Mappings. Are you sure?"), MsgBoxStyle.YesNo, Master.eLang.GetString(662, "Remove Genre")) = MsgBoxResult.Yes Then
+        If MessageBox.Show(Master.eLang.GetString(661, "This will remove the Genre from all Mappings. Are you sure?"), Master.eLang.GetString(662, "Remove Genre"), MessageBoxButtons.YesNo) = DialogResult.Yes Then
             If dgvGenres.SelectedRows.Count > 0 Then 'AndAlso Not dgvLang.CurrentRow.Cells(1).Value Is Nothing Then
                 Dim gProperty As genreProperty = DirectCast(dgvGenres.SelectedRows(0).Tag, genreProperty)
                 tmpGenreXML.Genres.Remove(gProperty)
@@ -121,7 +121,7 @@ Public Class dlgGenreManager
     End Sub
 
     Private Sub btnMappingAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMappingAdd.Click
-        Dim strSearchString As String = InputBox(Master.eLang.GetString(1000, "Enter the new Mapping"), Master.eLang.GetString(1005, "New Mapping"))
+        Dim strSearchString As String = Microsoft.VisualBasic.InputBox(Master.eLang.GetString(1000, "Enter the new Mapping"), Master.eLang.GetString(1005, "New Mapping"))
         If Not String.IsNullOrEmpty(strSearchString) Then
             Dim gMapping As New genreMapping With {.SearchString = strSearchString}
             tmpGenreXML.Mappings.Add(gMapping)

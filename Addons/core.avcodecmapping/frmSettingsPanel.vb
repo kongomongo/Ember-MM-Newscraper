@@ -18,14 +18,14 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
-Imports System.Windows.Forms
 Imports EmberAPI
+Imports System.Windows.Forms
 
 Public Class frmSettingsPanel
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged()
+    Public Event SettingsChanged()
 
 #End Region 'Events
 
@@ -36,7 +36,7 @@ Public Class frmSettingsPanel
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
 
-        Dim formataudioconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        Dim formataudioconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
         If formataudioconversions IsNot Nothing Then
             For Each sett In formataudioconversions
                 dgvAudio.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -44,7 +44,7 @@ Public Class frmSettingsPanel
         End If
         dgvAudio.ClearSelection()
 
-        Dim formatvideoconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        Dim formatvideoconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
         If formatvideoconversions IsNot Nothing Then
             For Each sett In formatvideoconversions
                 dgvVideo.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -59,7 +59,7 @@ Public Class frmSettingsPanel
         dgvAudio.Rows(i).Tag = False
         dgvAudio.CurrentCell = dgvAudio.Rows(i).Cells(0)
         dgvAudio.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnAddVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddVideo.Click
@@ -67,42 +67,42 @@ Public Class frmSettingsPanel
         dgvVideo.Rows(i).Tag = False
         dgvVideo.CurrentCell = dgvVideo.Rows(i).Cells(0)
         dgvVideo.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnRemoveAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveAudio.Click
         If dgvAudio.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvAudio.Rows(dgvAudio.SelectedCells(0).RowIndex).Tag) Then
             dgvAudio.Rows.RemoveAt(dgvAudio.SelectedCells(0).RowIndex)
-            RaiseEvent ModuleSettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
     Private Sub btnRemoveVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveVideo.Click
         If dgvVideo.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvVideo.Rows(dgvVideo.SelectedCells(0).RowIndex).Tag) Then
             dgvVideo.Rows.RemoveAt(dgvVideo.SelectedCells(0).RowIndex)
-            RaiseEvent ModuleSettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
     Private Sub btnSetDefaultsAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsAudio.Click
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             settings.SetDefaults("AudioFormatConverts")
         End Using
         LoadAudio()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnSetDefaultsVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaultsVideo.Click
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             settings.SetDefaults("VideoFormatConverts")
         End Using
         LoadVideo()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub LoadAudio()
         dgvAudio.Rows.Clear()
-        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("AudioFormatConverts", "*EmberAPP")
         If formatconversions IsNot Nothing Then
             For Each sett In formatconversions
                 dgvAudio.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -113,7 +113,7 @@ Public Class frmSettingsPanel
 
     Private Sub LoadVideo()
         dgvVideo.Rows.Clear()
-        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
+        Dim formatconversions As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("VideoFormatConverts", "*EmberAPP")
         If formatconversions IsNot Nothing Then
             For Each sett In formatconversions
                 dgvVideo.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -123,11 +123,11 @@ Public Class frmSettingsPanel
     End Sub
 
     Private Sub dgvAudio_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvAudio.CurrentCellDirtyStateChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub dgvVideo_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvVideo.CurrentCellDirtyStateChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub dgvAudio_SelectionChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvAudio.SelectionChanged
@@ -172,14 +172,14 @@ Public Class frmSettingsPanel
 
     Public Sub SaveChanges()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("AudioFormatConvert:"))
+        For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("AudioFormatConvert:"))
             deleteitem.Add(sett.Name)
         Next
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
+        For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("VideoFormatConvert:"))
             deleteitem.Add(sett.Name)
         Next
 
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
