@@ -69,7 +69,7 @@ Public Class dlgTVChangeEp
     End Sub
 
     Private Sub ClearInfo()
-        Me.pbPreview.Image = Nothing
+        pbPreview.Image = Nothing
         lblTitle.Text = String.Empty
         txtPlot.Text = String.Empty
     End Sub

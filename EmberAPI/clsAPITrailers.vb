@@ -759,7 +759,7 @@ Public Class Trailers
         Try
             Try
                 Dim params As New List(Of Object)(New Object() {tDBElement})
-                AddonsManager.Instance.RunGeneric(Enums.AddonEventType.OnTrailerSave_Movie, params, False)
+                'AddonsManager.Instance.RunGeneric(Enums.AddonEventType.OnTrailerSave_Movie, params, False)
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try

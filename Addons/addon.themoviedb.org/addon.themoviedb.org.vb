@@ -277,10 +277,10 @@ Public Class Addon
                 End If
             Case Enums.AddonEventType.Scrape_TVShow
                 Dim iShowID As Integer = -1
-                If tDBElement.TVShowDetails.TMDBSpecified Then
-                    iShowID = tDBElement.TVShowDetails.TMDB
-                ElseIf tDBElement.TVShowDetails.TVDBSpecified Then
-                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.TVShowDetails.TVDB, Enums.ContentType.TVShow)
+                If tDBElement.MainDetails.TMDBSpecified Then
+                    iShowID = tDBElement.MainDetails.TMDB
+                ElseIf tDBElement.MainDetails.TVDBSpecified Then
+                    iShowID = _scraper.GetTMDBbyTVDB(tDBElement.MainDetails.TVDB, Enums.ContentType.TVShow)
                 End If
                 If Not iShowID = -1 Then
                     nModuleResult = _scraper.ScrapeTVShow(iShowID, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)

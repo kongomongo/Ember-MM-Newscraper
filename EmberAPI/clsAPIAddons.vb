@@ -593,6 +593,11 @@ Public Class AddonsManager
     Public Function ScrapeData_TVEpisode(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
         logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.Filename))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
+
+            For Each nModule In Addons.Where(Function(f) f.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.BeforeScraping_TVEpisode))
+                nModule.Addon.Run(tDBElement, Enums.AddonEventType.BeforeScraping_TVEpisode, Nothing)
+            Next
+
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As New Interfaces.AddonResult
             Dim ScrapedList As New List(Of MediaContainers.MainDetails)
@@ -1595,6 +1600,11 @@ Public Class XMLAddonSettings
 
 #Region "Methods"
 
+    Public Function GetComplexSetting(ByVal strKey As String) As List(Of AdvancedSettingsComplexSettingsTableItem)
+        Dim v = _XMLAddonSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = strKey)
+        Return If(v Is Nothing, Nothing, v.Table.Item)
+    End Function
+
     Public Function GetBooleanSetting(ByVal strKey As String, ByVal strDefValue As Boolean, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None) As Boolean
         If tContentType = Enums.ContentType.None Then
             Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey)
@@ -1604,6 +1614,16 @@ Public Class XMLAddonSettings
             Return If(v(0) Is Nothing, strDefValue, Convert.ToBoolean(v(0).Value))
         End If
         Return True
+    End Function
+
+    Public Function GetIntegerSetting(ByVal strKey As String, ByVal iDefValue As Integer, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None) As Integer
+        If tContentType = Enums.ContentType.None Then
+            Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey)
+            Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing OrElse Not Integer.TryParse(v(0).Value, 0), iDefValue, CInt(v(0).Value))
+        Else
+            Dim v = From e In _XMLAddonSettings.Setting.Where(Function(f) f.Name = strKey AndAlso f.Content = tContentType)
+            Return If(v(0) Is Nothing OrElse v(0).Value Is Nothing OrElse Not Integer.TryParse(v(0).Value, 0), iDefValue, CInt(v(0).Value))
+        End If
     End Function
 
     Public Function GetStringSetting(ByVal strKey As String, ByVal strDefValue As String, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None) As String
@@ -1644,6 +1664,15 @@ Public Class XMLAddonSettings
         End Try
     End Sub
 
+    Public Sub SetComplexSetting(ByVal strKey As String, ByVal tValue As List(Of AdvancedSettingsComplexSettingsTableItem))
+        Dim v = _XMLAddonSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = strKey)
+        If v Is Nothing Then
+            _XMLAddonSettings.ComplexSettings.Add(New AdvancedSettingsComplexSettings With {.Table = New AdvancedSettingsComplexSettingsTable With {.Name = strKey, .Item = tValue}})
+        Else
+            _XMLAddonSettings.ComplexSettings.FirstOrDefault(Function(f) f.Table.Name = strKey).Table.Item = tValue
+        End If
+    End Sub
+
     Public Sub SetBooleanSetting(ByVal strKey As String, ByVal bValue As Boolean, Optional ByVal isDefault As Boolean = False, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None)
         If tContentType = Enums.ContentType.None Then
             Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey)
@@ -1667,6 +1696,33 @@ Public Class XMLAddonSettings
                                            })
             Else
                 _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType).Value = Convert.ToString(bValue)
+            End If
+        End If
+    End Sub
+
+    Public Sub SetIntegerSetting(ByVal strKey As String, ByVal iValue As Integer, Optional ByVal isDefault As Boolean = False, Optional ByVal tContentType As Enums.ContentType = Enums.ContentType.None)
+        If tContentType = Enums.ContentType.None Then
+            Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey)
+            If v Is Nothing Then
+                _XMLAddonSettings.Setting.Add(New AdvancedSettingsSetting With {
+                                           .DefaultValue = If(isDefault, CStr(iValue), String.Empty),
+                                           .Name = strKey,
+                                           .Value = CStr(iValue)
+                                           })
+            Else
+                _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey).Value = CStr(iValue)
+            End If
+        Else
+            Dim v = _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType)
+            If v Is Nothing Then
+                _XMLAddonSettings.Setting.Add(New AdvancedSettingsSetting With {
+                                           .Content = tContentType,
+                                           .DefaultValue = If(isDefault, CStr(iValue), String.Empty),
+                                           .Name = strKey,
+                                           .Value = CStr(iValue)
+                                           })
+            Else
+                _XMLAddonSettings.Setting.FirstOrDefault(Function(f) f.Name = strKey AndAlso f.Content = tContentType).Value = CStr(iValue)
             End If
         End If
     End Sub

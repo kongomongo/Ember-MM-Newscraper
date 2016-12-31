@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class frmMediaSources
+Partial Class frmSettingsPanel
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
@@ -22,10 +22,10 @@ Partial Class frmMediaSources
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMediaSources))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsPanel))
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.pnlGenres = New System.Windows.Forms.Panel()
+        Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.btnRemoveByFile = New System.Windows.Forms.Button()
         Me.btnAddByFile = New System.Windows.Forms.Button()
         Me.dgvByFile = New System.Windows.Forms.DataGridView()
@@ -39,26 +39,26 @@ Partial Class frmMediaSources
         Me.dgvSources = New System.Windows.Forms.DataGridView()
         Me.Search = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewComboBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.pnlGenres.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
         CType(Me.dgvByFile, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'pnlGenres
+        'pnlSettings
         '
-        Me.pnlGenres.Controls.Add(Me.btnRemoveByFile)
-        Me.pnlGenres.Controls.Add(Me.btnAddByFile)
-        Me.pnlGenres.Controls.Add(Me.dgvByFile)
-        Me.pnlGenres.Controls.Add(Me.chkMapByFile)
-        Me.pnlGenres.Controls.Add(Me.btnSetDefaults)
-        Me.pnlGenres.Controls.Add(Me.Label1)
-        Me.pnlGenres.Controls.Add(Me.btnRemoveSource)
-        Me.pnlGenres.Controls.Add(Me.btnAddSource)
-        Me.pnlGenres.Controls.Add(Me.dgvSources)
-        Me.pnlGenres.Location = New System.Drawing.Point(0, 0)
-        Me.pnlGenres.Name = "pnlGenres"
-        Me.pnlGenres.Size = New System.Drawing.Size(634, 366)
-        Me.pnlGenres.TabIndex = 0
+        Me.pnlSettings.Controls.Add(Me.btnRemoveByFile)
+        Me.pnlSettings.Controls.Add(Me.btnAddByFile)
+        Me.pnlSettings.Controls.Add(Me.dgvByFile)
+        Me.pnlSettings.Controls.Add(Me.chkMapByFile)
+        Me.pnlSettings.Controls.Add(Me.btnSetDefaults)
+        Me.pnlSettings.Controls.Add(Me.Label1)
+        Me.pnlSettings.Controls.Add(Me.btnRemoveSource)
+        Me.pnlSettings.Controls.Add(Me.btnAddSource)
+        Me.pnlSettings.Controls.Add(Me.dgvSources)
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(634, 366)
+        Me.pnlSettings.TabIndex = 0
         '
         'btnRemoveByFile
         '
@@ -220,27 +220,27 @@ Partial Class frmMediaSources
         Me.DataGridViewComboBoxColumn1.Name = "DataGridViewComboBoxColumn1"
         Me.DataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         '
-        'frmMediaSources
+        'frmSettingsPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(634, 366)
-        Me.Controls.Add(Me.pnlGenres)
+        Me.Controls.Add(Me.pnlSettings)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmMediaSources"
+        Me.Name = "frmSettingsPanel"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmMediaSourcesEditor"
-        Me.pnlGenres.ResumeLayout(False)
-        Me.pnlGenres.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
         CType(Me.dgvByFile, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvSources, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
-    Friend WithEvents pnlGenres As System.Windows.Forms.Panel
+    Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents dgvSources As System.Windows.Forms.DataGridView
     Friend WithEvents btnRemoveSource As System.Windows.Forms.Button
     Friend WithEvents btnAddSource As System.Windows.Forms.Button

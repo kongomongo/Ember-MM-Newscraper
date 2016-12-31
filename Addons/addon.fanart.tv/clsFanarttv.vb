@@ -52,8 +52,8 @@ Public Class Scraper
         Try
             _AddonSettings = SpecialSettings
 
-            Global.FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
-            Global.FanartTv.API.cKey = SpecialSettings.APIKey
+            FanartTv.API.Key = "ea68f9d0847c1b7643813c70cbfc0196"
+            FanartTv.API.cKey = SpecialSettings.APIKey
 
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
@@ -64,10 +64,10 @@ Public Class Scraper
         Dim nImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
-            Dim Results = New Global.FanartTv.Movies.Movie(strTMDB_IMDB)
-            If Results Is Nothing OrElse Global.FanartTv.API.ErrorOccurred Then
-                If Global.FanartTv.API.ErrorMessage IsNot Nothing Then
-                    logger.Error(Global.FanartTv.API.ErrorMessage)
+            Dim Results = New FanartTv.Movies.Movie(strTMDB_IMDB)
+            If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
+                If FanartTv.API.ErrorMessage IsNot Nothing Then
+                    logger.Error(FanartTv.API.ErrorMessage)
                 End If
                 Return Nothing
             End If
@@ -228,10 +228,10 @@ Public Class Scraper
         Dim nImagesContainer As New MediaContainers.SearchResultsContainer
 
         Try
-            Dim Results = New Global.FanartTv.TV.Show(strTVDB)
-            If Results Is Nothing OrElse Global.FanartTv.API.ErrorOccurred Then
-                If Global.FanartTv.API.ErrorMessage IsNot Nothing Then
-                    logger.Error(Global.FanartTv.API.ErrorMessage)
+            Dim Results = New FanartTv.TV.Show(strTVDB)
+            If Results Is Nothing OrElse FanartTv.API.ErrorOccurred Then
+                If FanartTv.API.ErrorMessage IsNot Nothing Then
+                    logger.Error(FanartTv.API.ErrorMessage)
                 End If
                 Return Nothing
             End If

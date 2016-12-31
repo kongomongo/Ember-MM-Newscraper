@@ -635,7 +635,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property SeasonSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_season.ToString)
+                Return Not _season = -1
             End Get
         End Property
 
@@ -652,7 +652,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property EpisodeSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_episode.ToString)
+                Return Not _episode = -1
             End Get
         End Property
 

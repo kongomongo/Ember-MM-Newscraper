@@ -42,8 +42,9 @@ Public Class Addon
     Private _shortname As String = "FileManager"
     Private _settingspanel As frmSettingsPanel
 
-    Private _AddonSettings As New AddonSettings
-    Private eSettings As New Settings
+    Private _settings As New XMLAddonSettings
+    Private _addonsettings As New AddonSettings
+
     Private withErrors As Boolean
     Private cmnuMediaCustomList As New List(Of ToolStripMenuItem)
     Private cmnuMedia_Movies As New ToolStripMenuItem
@@ -174,7 +175,7 @@ Public Class Addon
         RemoveToolsStripItem_Shows(cmnuSep_Shows)
     End Sub
 
-    Sub Enable()
+    Private Sub Enable()
         'cmnuMovies
         cmnuMedia_Movies.Text = Master.eLang.GetString(311, "File Manager")
         cmnuMediaMove_Movies.Text = Master.eLang.GetString(312, "Move To")
@@ -218,14 +219,14 @@ Public Class Addon
             Dim doMove As Boolean = False
             Dim dstPath As String = String.Empty
             Dim useTeraCopy As Boolean = False
-            Dim ContentType As Enums.ContentType = DirectCast(tMItem.Tag, SettingItem).Type
+            Dim ContentType As Enums.ContentType = DirectCast(tMItem.Tag, PathItem).ContentType
 
-            If DirectCast(tMItem.Tag, SettingItem).FolderPath = "CUSTOM" Then
+            If DirectCast(tMItem.Tag, PathItem).Path = "CUSTOM" Then
                 Dim fl As New FolderBrowserDialog
                 fl.ShowDialog()
                 dstPath = fl.SelectedPath
             Else
-                dstPath = DirectCast(tMItem.Tag, SettingItem).FolderPath
+                dstPath = DirectCast(tMItem.Tag, PathItem).Path
             End If
 
             Select Case tMItem.OwnerItem.Tag.ToString
@@ -233,12 +234,12 @@ Public Class Addon
                     doMove = True
             End Select
 
-            If _AddonSettings.TeraCopy AndAlso (String.IsNullOrEmpty(_AddonSettings.TeraCopyPath) OrElse Not File.Exists(_AddonSettings.TeraCopyPath)) Then
+            If _addonsettings.TeraCopy AndAlso (String.IsNullOrEmpty(_addonsettings.TeraCopyPath) OrElse Not File.Exists(_addonsettings.TeraCopyPath)) Then
                 MessageBox.Show(Master.eLang.GetString(398, "TeraCopy.exe not found"), Master.eLang.GetString(1134, "Error"), MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Exit Try
             End If
 
-            Dim mTeraCopy As New TeraCopy.Filelist(_AddonSettings.TeraCopyPath, dstPath, doMove)
+            Dim mTeraCopy As New TeraCopy.Filelist(_addonsettings.TeraCopyPath, dstPath, doMove)
 
             If Not String.IsNullOrEmpty(dstPath) Then
                 If ContentType = Enums.ContentType.Movie Then
@@ -275,7 +276,7 @@ Public Class Addon
                                 Dim mMovie As Database.DBElement = Master.DB.Load_Movie(movieID)
                                 ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
                                 If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
-                                    If _AddonSettings.TeraCopy Then
+                                    If _addonsettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(ItemsToWork(0).ToString)
                                     Else
                                         Select Case tMItem.OwnerItem.Tag.ToString
@@ -288,13 +289,13 @@ Public Class Addon
                                     End If
                                 End If
                             Next
-                            If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
+                            If Not _addonsettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
                                 Dim mShow As Database.DBElement = Master.DB.Load_TVShow(tShowID, False, False)
                                 If Directory.Exists(mShow.ShowPath) Then
-                                    If _AddonSettings.TeraCopy Then
+                                    If _addonsettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(mShow.ShowPath)
                                     Else
                                         Select Case tMItem.OwnerItem.Tag.ToString
@@ -307,9 +308,9 @@ Public Class Addon
                                     End If
                                 End If
                             Next
-                            If Not _AddonSettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.TV = True})
+                            If Not _addonsettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.TV = True})
                         End If
-                        If _AddonSettings.TeraCopy Then mTeraCopy.RunTeraCopy()
+                        If _addonsettings.TeraCopy Then mTeraCopy.RunTeraCopy()
                     End If
                 End If
             End If
@@ -337,15 +338,14 @@ Public Class Addon
         Dim nSettingsPanel As New Containers.SettingsPanel
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
-        _settingspanel.chkTeraCopyEnable.Checked = _AddonSettings.TeraCopy
-        _settingspanel.txtTeraCopyPath.Text = _AddonSettings.TeraCopyPath
+        _settingspanel.chkTeraCopyEnable.Checked = _addonsettings.TeraCopy
+        _settingspanel.txtTeraCopyPath.Text = _addonsettings.TeraCopyPath
         _settingspanel.lvPaths.Items.Clear()
-        Dim lvItem As ListViewItem
-        For Each e As SettingItem In eSettings.ModuleSettings
-            lvItem = New ListViewItem
+        For Each e As PathItem In _addonsettings.Paths
+            Dim lvItem As New ListViewItem
             lvItem.Text = e.Name
-            lvItem.SubItems.Add(e.FolderPath)
-            lvItem.SubItems.Add(e.Type.ToString)
+            lvItem.SubItems.Add(e.Path)
+            lvItem.SubItems.Add(e.ContentType.ToString)
             _settingspanel.lvPaths.Items.Add(lvItem)
         Next
 
@@ -362,48 +362,64 @@ Public Class Addon
     End Function
 
     Public Sub LoadSettings()
-        eSettings.ModuleSettings.Clear()
-        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("MoviePaths")
+        _addonsettings = New AddonSettings
+        Dim eMovies As List(Of AdvancedSettingsComplexSettingsTableItem) = _settings.GetComplexSetting("MoviePaths")
         If eMovies IsNot Nothing Then
             For Each sett In eMovies
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.Movie})
+                _addonsettings.Paths.Add(New PathItem With {
+                                         .Name = sett.Name,
+                                         .Path = sett.Value,
+                                         .ContentType = Enums.ContentType.Movie
+                                         })
             Next
         End If
-        Dim eShows As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("ShowPaths")
-        If eShows IsNot Nothing Then
-            For Each sett In eShows
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = sett.Name, .FolderPath = sett.Value, .Type = Enums.ContentType.TVShow})
+        Dim eTVShows As List(Of AdvancedSettingsComplexSettingsTableItem) = _settings.GetComplexSetting("ShowPaths")
+        If eTVShows IsNot Nothing Then
+            For Each sett In eTVShows
+                _addonsettings.Paths.Add(New PathItem With {
+                                         .Name = sett.Name,
+                                         .Path = sett.Value,
+                                         .ContentType = Enums.ContentType.TVShow
+                                         })
             Next
         End If
-        _AddonSettings.TeraCopy = clsXMLAdvancedSettings.GetBooleanSetting("TeraCopy", False)
-        _AddonSettings.TeraCopyPath = clsXMLAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
+        _addonsettings.TeraCopy = clsXMLAdvancedSettings.GetBooleanSetting("TeraCopy", False)
+        _addonsettings.TeraCopyPath = clsXMLAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
     End Sub
 
-    Sub PopulateFolders(ByVal mnu As ToolStripMenuItem, ByVal ContentType As Enums.ContentType)
-        mnu.DropDownItems.Clear()
+    Sub PopulateFolders(ByVal tMenuItem As ToolStripMenuItem, ByVal tContentType As Enums.ContentType)
+        tMenuItem.DropDownItems.Clear()
         cmnuMediaCustomList.RemoveAll(Function(b) True)
 
         Dim FolderSubMenuItemCustom As New ToolStripMenuItem
         FolderSubMenuItemCustom.Text = String.Concat(Master.eLang.GetString(338, "Select path"), "...")
-        FolderSubMenuItemCustom.Tag = New SettingItem With {.Name = "CUSTOM", .FolderPath = "CUSTOM", .Type = ContentType}
-        mnu.DropDownItems.Add(FolderSubMenuItemCustom)
+        FolderSubMenuItemCustom.Tag = New PathItem With {
+            .Name = "CUSTOM",
+            .Path = "CUSTOM",
+            .ContentType = tContentType
+        }
+        tMenuItem.DropDownItems.Add(FolderSubMenuItemCustom)
         AddHandler FolderSubMenuItemCustom.Click, AddressOf FolderSubMenuItem_Click
 
-        If eSettings.ModuleSettings.Where(Function(f) f.Type = ContentType).Count > 0 Then
-            Dim SubMenuSep As New System.Windows.Forms.ToolStripSeparator
-            mnu.DropDownItems.Add(SubMenuSep)
+        If _addonsettings.Paths.Where(Function(f) f.ContentType = tContentType).Count > 0 Then
+            Dim SubMenuSep As New ToolStripSeparator
+            tMenuItem.DropDownItems.Add(SubMenuSep)
+
+            For Each e In _addonsettings.Paths.Where(Function(f) f.ContentType = tContentType)
+                Dim FolderSubMenuItem As New ToolStripMenuItem
+                FolderSubMenuItem.Text = e.Name
+                FolderSubMenuItem.Tag = New PathItem With {
+                    .Name = e.Name,
+                    .Path = e.Path,
+                    .ContentType = tContentType
+                }
+                cmnuMediaCustomList.Add(FolderSubMenuItem)
+                AddHandler FolderSubMenuItem.Click, AddressOf FolderSubMenuItem_Click
+            Next
         End If
 
-        For Each e In eSettings.ModuleSettings.Where(Function(f) f.Type = ContentType)
-            Dim FolderSubMenuItem As New ToolStripMenuItem
-            FolderSubMenuItem.Text = e.Name
-            FolderSubMenuItem.Tag = New SettingItem With {.Name = e.Name, .FolderPath = e.FolderPath, .Type = ContentType}
-            cmnuMediaCustomList.Add(FolderSubMenuItem)
-            AddHandler FolderSubMenuItem.Click, AddressOf FolderSubMenuItem_Click
-        Next
-
         For Each i In cmnuMediaCustomList
-            mnu.DropDownItems.Add(i)
+            tMenuItem.DropDownItems.Add(i)
         Next
 
         SetToolsStripItemVisibility(cmnuSep_Movies, True)
@@ -432,19 +448,56 @@ Public Class Addon
         Return New Interfaces.AddonResult
     End Function
 
+    Public Sub SaveSettings()
+        _settings = New XMLAddonSettings
+        _settings.SetBooleanSetting("TeraCopy", _addonsettings.TeraCopy)
+        _settings.SetStringSetting("TeraCopyPath", _addonsettings.TeraCopyPath)
+
+        Dim eMovies As New List(Of AdvancedSettingsComplexSettingsTableItem)
+        For Each e As PathItem In _addonsettings.Paths.Where(Function(f) f.ContentType = Enums.ContentType.Movie)
+            eMovies.Add(New AdvancedSettingsComplexSettingsTableItem With {
+                        .Name = e.Name,
+                        .Value = e.Path
+                        })
+        Next
+        If eMovies IsNot Nothing Then
+            _settings.SetComplexSetting("MoviePaths", eMovies)
+        End If
+
+        Dim eShows As New List(Of AdvancedSettingsComplexSettingsTableItem)
+        For Each e As PathItem In _addonsettings.Paths.Where(Function(f) f.ContentType = Enums.ContentType.TVShow)
+            eShows.Add(New AdvancedSettingsComplexSettingsTableItem With {
+                       .Name = e.Name,
+                       .Value = e.Path
+                       })
+        Next
+        If eShows IsNot Nothing Then
+            _settings.SetComplexSetting("ShowPaths", eShows)
+        End If
+        _settings.Save()
+    End Sub
+
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
-        _AddonSettings.TeraCopy = _settingspanel.chkTeraCopyEnable.Checked
-        _AddonSettings.TeraCopyPath = _settingspanel.txtTeraCopyPath.Text
-        eSettings.ModuleSettings.Clear()
+        _addonsettings.TeraCopy = _settingspanel.chkTeraCopyEnable.Checked
+        _addonsettings.TeraCopyPath = _settingspanel.txtTeraCopyPath.Text
+        _addonsettings.Paths.Clear()
         For Each e As ListViewItem In _settingspanel.lvPaths.Items
             If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "Movie" Then
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.ContentType.Movie})
+                _addonsettings.Paths.Add(New PathItem With {
+                                         .Name = e.SubItems(0).Text,
+                                         .Path = e.SubItems(1).Text,
+                                         .ContentType = Enums.ContentType.Movie
+                                         })
             End If
         Next
         For Each e As ListViewItem In _settingspanel.lvPaths.Items
             If Not String.IsNullOrEmpty(e.SubItems(0).Text) AndAlso Not String.IsNullOrEmpty(e.SubItems(1).Text) AndAlso e.SubItems(2).Text = "TVShow" Then
-                eSettings.ModuleSettings.Add(New SettingItem With {.Name = e.SubItems(0).Text, .FolderPath = e.SubItems(1).Text, .Type = Enums.ContentType.TVShow})
+                _addonsettings.Paths.Add(New PathItem With {
+                                         .Name = e.SubItems(0).Text,
+                                         .Path = e.SubItems(1).Text,
+                                         .ContentType = Enums.ContentType.TVShow
+                                         })
             End If
         Next
         SaveSettings()
@@ -457,29 +510,6 @@ Public Class Addon
             RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
             _settingspanel.Dispose()
         End If
-    End Sub
-
-    Public Sub SaveSettings()
-        Using settings = New clsXMLAdvancedSettings()
-            settings.SetBooleanSetting("TeraCopy", _AddonSettings.TeraCopy)
-            settings.SetSetting("TeraCopyPath", _AddonSettings.TeraCopyPath)
-
-            Dim eMovies As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.Movie)
-                eMovies.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
-            Next
-            If eMovies IsNot Nothing Then
-                settings.SetComplexSetting("MoviePaths", eMovies)
-            End If
-
-            Dim eShows As New List(Of AdvancedSettingsComplexSettingsTableItem)
-            For Each e As SettingItem In eSettings.ModuleSettings.Where(Function(f) f.Type = Enums.ContentType.TVShow)
-                eShows.Add(New AdvancedSettingsComplexSettingsTableItem With {.Name = e.Name, .Value = e.FolderPath})
-            Next
-            If eShows IsNot Nothing Then
-                settings.SetComplexSetting("ShowPaths", eShows)
-            End If
-        End Using
     End Sub
 
     Public Sub SetToolsStripItemVisibility(control As ToolStripItem, value As Boolean)
@@ -524,49 +554,27 @@ Public Class Addon
 
     End Structure
 
-    Private Structure AddonSettings
+    Private Class AddonSettings
 
 #Region "Fields"
 
-        Dim TeraCopy As Boolean
-        Dim TeraCopyPath As String
-
-#End Region 'Fields
-
-    End Structure
-
-    Class SettingItem
-
-#Region "Fields"
-
-        Public FolderPath As String
-        Public Name As String
-        Public Type As Enums.ContentType
+        Public Paths As New List(Of PathItem)
+        Public TeraCopy As Boolean
+        Public TeraCopyPath As String = String.Empty
 
 #End Region 'Fields
 
     End Class
 
-    Class Settings
+    Private Class PathItem
 
 #Region "Fields"
 
-        Private _settings As New List(Of SettingItem)
+        Public ContentType As Enums.ContentType
+        Public Name As String = String.Empty
+        Public Path As String = String.Empty
 
 #End Region 'Fields
-
-#Region "Properties"
-
-        Public Property ModuleSettings() As List(Of SettingItem)
-            Get
-                Return _settings
-            End Get
-            Set(ByVal value As List(Of SettingItem))
-                _settings = value
-            End Set
-        End Property
-
-#End Region 'Properties
 
     End Class
 

@@ -458,12 +458,12 @@ Public Class dlgEditTVEpisode
             dFileInfoEdit.Height = pnlFileInfo.Height
             dFileInfoEdit.Show()
 
-            Dim params As New List(Of Object)(New Object() {New Panel})
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.FrameExtrator_TVEpisode, params, Nothing, True, tmpDBElement)
-            pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
-            If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-                tcEdit.TabPages.Remove(tpFrameExtraction)
-            End If
+            'Dim params As New List(Of Object)(New Object() {New Panel})
+            'AddonsManager.Instance.RunGeneric(Enums.AddonEventType.FrameExtrator_TVEpisode, params, Nothing, True, tmpDBElement)
+            'pnlFrameExtrator.Controls.Add(DirectCast(params(0), Panel))
+            'If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
+            '    tcEdit.TabPages.Remove(tpFrameExtraction)
+            'End If
 
             FillInfo()
         Else

@@ -1112,21 +1112,21 @@ Public Class dlgEdit
             If(Trailer.URLWebsiteSpecified, Trailer.URLWebsite, String.Empty)))
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)(New String() {Trailer.URLVideoStream})
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
+            'AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerPlaylistAdd_Video, paramsTrailerPreview, Nothing, True)
         End If
     End Sub
 
     Private Sub TrailerPlaylistClear()
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerPlaylistClear_Video, Nothing, Nothing, True)
+            'AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerPlaylistClear_Video, Nothing, Nothing, True)
         End If
     End Sub
 
     Private Sub TrailerStop()
         If AnyTrailerPlayerEnabled Then
             Dim paramsTrailerPreview As New List(Of Object)
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerStop_Video, Nothing, Nothing, True)
+            'AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayerStop_Video, Nothing, Nothing, True)
         End If
     End Sub
 
@@ -1200,12 +1200,12 @@ Public Class dlgEdit
         LoadShowLinks()
         LoadTags()
 
-        Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
-        AddonsManager.Instance.RunGeneric(Enums.AddonEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, _tmpDBElement)
-        pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
-        If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
-            tcEdit.TabPages.Remove(tpFrameExtraction)
-        End If
+        'Dim paramsFrameExtractor As New List(Of Object)(New Object() {New Panel})
+        'AddonsManager.Instance.RunGeneric(Enums.AddonEventType.FrameExtrator_Movie, paramsFrameExtractor, Nothing, True, _tmpDBElement)
+        'pnlFrameExtrator.Controls.Add(DirectCast(paramsFrameExtractor(0), Panel))
+        'If String.IsNullOrEmpty(pnlFrameExtrator.Controls.Item(0).Name) Then
+        '    tcEdit.TabPages.Remove(tpFrameExtraction)
+        'End If
 
         Dim paramsThemePreview As New List(Of Object)(New Object() {New Panel})
         AddonsManager.Instance.RunGeneric(Enums.AddonEventType.MediaPlayer_Audio, paramsThemePreview, Nothing, True)
@@ -2286,34 +2286,34 @@ Public Class dlgEdit
     End Sub
 
     Sub GenericRunCallBack(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object))
-        If mType = Enums.AddonEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
-            If _params(0).ToString = "FanartToSave" Then
-                _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
-                If _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                    pbFanart.Image = _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                    pbFanart.Tag = _tmpDBElement.ImagesContainer.Fanart
+        'If mType = Enums.AddonEventType.FrameExtrator_Movie AndAlso _params IsNot Nothing Then
+        '    If _params(0).ToString = "FanartToSave" Then
+        '        _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromFile(Path.Combine(Master.TempPath, "frame.jpg"), True)
+        '        If _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+        '            pbFanart.Image = _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+        '            pbFanart.Tag = _tmpDBElement.ImagesContainer.Fanart
 
-                    lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
-                    lblFanartSize.Visible = True
-                End If
-            ElseIf _params(0).ToString = "ExtrafanartToSave" Then
-                Dim fPath As String = _params(1).ToString
-                If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                    Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.LoadFromFile(fPath, True)
-                    _tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
-                    RefreshExtrafanarts()
-                End If
-            ElseIf _params(0).ToString = "ExtrathumbToSave" Then
-                Dim fPath As String = _params(1).ToString
-                If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
-                    Dim eImg As New MediaContainers.Image
-                    eImg.ImageOriginal.LoadFromFile(fPath, True)
-                    _tmpDBElement.ImagesContainer.Extrathumbs.Add(eImg)
-                    RefreshExtrathumbs()
-                End If
-            End If
-        End If
+        '            lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
+        '            lblFanartSize.Visible = True
+        '        End If
+        '    ElseIf _params(0).ToString = "ExtrafanartToSave" Then
+        '        Dim fPath As String = _params(1).ToString
+        '        If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
+        '            Dim eImg As New MediaContainers.Image
+        '            eImg.ImageOriginal.LoadFromFile(fPath, True)
+        '            _tmpDBElement.ImagesContainer.Extrafanarts.Add(eImg)
+        '            RefreshExtrafanarts()
+        '        End If
+        '    ElseIf _params(0).ToString = "ExtrathumbToSave" Then
+        '        Dim fPath As String = _params(1).ToString
+        '        If Not String.IsNullOrEmpty(fPath) AndAlso File.Exists(fPath) Then
+        '            Dim eImg As New MediaContainers.Image
+        '            eImg.ImageOriginal.LoadFromFile(fPath, True)
+        '            _tmpDBElement.ImagesContainer.Extrathumbs.Add(eImg)
+        '            RefreshExtrathumbs()
+        '        End If
+        '    End If
+        'End If
     End Sub
 
     Private Sub txtOutline_KeyDown(ByVal sender As Object, e As KeyEventArgs) Handles txtOutline.KeyDown

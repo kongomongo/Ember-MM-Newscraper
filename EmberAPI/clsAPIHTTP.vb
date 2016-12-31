@@ -125,20 +125,20 @@ Public Class HTTP
         _cancelRequested = False
     End Sub
     ''' <summary>
-    ''' Download the data from the given <paramref name="URL"/>
+    ''' Download the data from the given <paramref name="strURL"/>
     ''' and return it as a <c>String</c>
     ''' </summary>
-    ''' <param name="URL"><c>URL</c> from which to download the data</param>
-    ''' <returns><c>String</c> representing the data retrieved from the <paramref name="URL"/>, or <c>String.Empty</c> on error.</returns>
+    ''' <param name="strURL"><c>URL</c> from which to download the data</param>
+    ''' <returns><c>String</c> representing the data retrieved from the <paramref name="strURL"/>, or <c>String.Empty</c> on error.</returns>
     ''' <remarks></remarks>
-    Public Function DownloadData(ByVal URL As String) As String
+    Public Function DownloadData(ByVal strURL As String) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
 
         Clear()
 
         Try
-            wrRequest = DirectCast(WebRequest.Create(URL), HttpWebRequest)
+            wrRequest = DirectCast(WebRequest.Create(strURL), HttpWebRequest)
             wrRequest.Timeout = _defaultRequestTimeout
             wrRequest.Headers.Add("Accept-Encoding", "gzip,deflate")
             wrRequest.KeepAlive = False
@@ -165,7 +165,7 @@ Public Class HTTP
                 _responseuri = wrResponse.ResponseUri.ToString
             End Using
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & URL & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & strURL & ">")
         End Try
 
         Return sResponse

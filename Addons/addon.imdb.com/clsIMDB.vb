@@ -652,7 +652,6 @@ mPlot:          'Plot
     ''' </summary>
     ''' <param name="strID">IMDB ID of tv show to be scraped</param>
     ''' <param name="GetPoster">Scrape posters for the tv show?</param>
-    ''' <param name="Options">Module settings<param>
     ''' <returns>True: success, false: no success</returns>
     Public Function GetInfo_TVShow(ByVal strID As String, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal FilteredOptions As Structures.ScrapeOptions, ByVal GetPoster As Boolean) As MediaContainers.MainDetails
         If String.IsNullOrEmpty(strID) OrElse strID.Length < 2 Then Return Nothing

@@ -555,164 +555,59 @@ Public Class Enums
 #Region "Enumerations"
 
     Public Enum AddonEventType As Integer
-        ''' <summary>
-        ''' Called after edit movie
-        ''' </summary>
-        ''' <remarks></remarks>
         AfterEdit_Movie = 0
-        ''' <summary>
-        ''' Called after edit movieset
-        ''' </summary>
-        ''' <remarks></remarks>
         AfterEdit_MovieSet = 1
-        ''' <summary>
-        ''' Called after edit episode
-        ''' </summary>
-        ''' <remarks></remarks>
         AfterEdit_TVEpisode = 2
-        ''' <summary>
-        ''' Called after edit season
-        ''' </summary>
-        ''' <remarks></remarks>
         AfterEdit_TVSeason = 3
-        ''' <summary>
-        ''' Called after edit show
-        ''' </summary>
-        ''' <remarks></remarks>
         AfterEdit_TVShow = 4
-        ''' <summary>
-        ''' Called after update DB process
-        ''' </summary>
-        ''' <remarks></remarks>
-        AfterUpdateDB_TV = 5
-        ''' <summary>
-        ''' Called after update DB process
-        ''' </summary>
-        ''' <remarks></remarks>
-        AfterUpdateDB_Movie = 6
-        ''' <summary>
-        ''' Called when Manual editing or reading from nfo
-        ''' </summary>
-        ''' <remarks></remarks>
+        AfterUpdateDB_Movie = 5
+        AfterUpdateDB_TV = 6
         BeforeEdit_Movie = 7
-        ''' <summary>
-        ''' Called when Manual editing or reading from nfo
-        ''' </summary>
-        ''' <remarks></remarks>
         BeforeEdit_MovieSet = 8
-        ''' <summary>
-        ''' Called when Manual editing or reading from nfo
-        ''' </summary>
-        ''' <remarks></remarks>
         BeforeEdit_TVEpisode = 9
-        ''' <summary>
-        ''' Called when Manual editing or reading from nfo
-        ''' </summary>
-        ''' <remarks></remarks>
         BeforeEdit_TVSeason = 10
-        ''' <summary>
-        ''' Called when Manual editing or reading from nfo
-        ''' </summary>
-        ''' <remarks></remarks>
         BeforeEdit_TVShow = 11
-        ''' <summary>
-        ''' Command Line Module Call
-        ''' </summary>
-        ''' <remarks></remarks>
-        CommandLine = 12
-        FrameExtrator_Movie = 13
-        FrameExtrator_TVEpisode = 14
-        Generic = 15
-        MediaPlayer_Audio = 16
-        MediaPlayer_Video = 17
-        MediaPlayerPlay_Audio = 18
-        MediaPlayerPlay_Video = 19
-        MediaPlayerPlaylistAdd_Audio = 20
-        MediaPlayerPlaylistAdd_Video = 21
-        MediaPlayerPlaylistClear_Audio = 22
-        MediaPlayerPlaylistClear_Video = 23
-        MediaPlayerStop_Audio = 24
-        MediaPlayerStop_Video = 25
-        OnBannerSave_Movie = 24
-        OnClearArtSave_Movie = 28
-        OnClearLogoSave_Movie = 29
-        OnDiscArtSave_Movie = 30
-        OnFanartDelete_Movie = 31
-        OnFanartSave_Movie = 32
-        OnLandscapeSave_Movie = 33
-        OnNFORead_TVShow = 34
-        OnNFOSave_Movie = 35
-        OnNFOSave_TVShow = 36
-        OnPosterDelete_Movie = 37
-        OnPosterSave_Movie = 38
-        OnThemeSave_Movie = 39
-        OnTrailerSave_Movie = 40
-        RandomFrameExtrator = 41
-        Remove_Movie = 42
-        Remove_MovieSet = 43
-        Remove_TVEpisode = 44
-        Remove_TVSeason = 45
-        Remove_TVShow = 46
-        ''' <summary>
-        ''' Called during auto scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingMulti_Movie = 47
-        ''' <summary>
-        ''' Called during auto scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingMulti_TVEpisode = 48
-        ''' <summary>
-        ''' Called during manual scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingSingle_Movie = 49
-        ''' <summary>
-        ''' Called during manual scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingSingle_TVEpisode = 50
-        ShowMovie = 51
-        ShowTVShow = 52
-        SyncModuleSettings = 53
-        Sync_Movie = 54
-        Sync_MovieSet = 55
-        Sync_TVEpisode = 56
-        Sync_TVSeason = 57
-        Sync_TVShow = 58
-        Task = 59
-        ''' <summary>
-        ''' Called during auto scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingMulti_TVShow = 60
-        ''' <summary>
-        ''' Called during manual scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingSingle_TVShow = 61
-        ''' <summary>
-        ''' Called during auto scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingMulti_TVSeason = 62
-        ''' <summary>
-        ''' Called during manual scraping
-        ''' </summary>
-        ''' <remarks></remarks>
-        DuringScrapingSingle_TVSeason = 63
-        DuringUpdateDB_TV = 64
-        Scrape_Movie = 65
-        Scrape_MovieSet = 66
-        Scrape_TVEpisode = 67
-        Scrape_TVSeason = 68
-        Scrape_TVShow = 69
-        Search_Movie = 70
-        Search_MovieSet = 71
-        Search_TVEpisode = 72
-        Search_TVSeason = 73
-        Search_TVShow = 74
+        BeforeScraping_Movie = 12
+        BeforeScraping_MovieSet = 13
+        BeforeScraping_TVEpisode = 14
+        BeforeScraping_TVSeason = 15
+        BeforeScraping_TVShow = 16
+        CommandLine = 17
+        DuringScrapingMulti_Movie = 18
+        DuringScrapingMulti_TVEpisode = 19
+        DuringScrapingMulti_TVSeason = 20
+        DuringScrapingMulti_TVShow = 21
+        DuringScrapingSingle_Movie = 22
+        DuringScrapingSingle_TVEpisode = 23
+        DuringScrapingSingle_TVSeason = 24
+        DuringScrapingSingle_TVShow = 25
+        DuringUpdateDB_TV = 26
+        Generic = 27
+        MediaPlayer_Audio = 36
+        MediaPlayer_Video = 37
+        Remove_Movie = 38
+        Remove_MovieSet = 39
+        Remove_TVEpisode = 40
+        Remove_TVSeason = 41
+        Remove_TVShow = 42
+        Scrape_Movie = 43
+        Scrape_MovieSet = 44
+        Scrape_TVEpisode = 45
+        Scrape_TVSeason = 46
+        Scrape_TVShow = 47
+        Search_Movie = 48
+        Search_MovieSet = 49
+        Search_TVEpisode = 50
+        Search_TVSeason = 51
+        Search_TVShow = 52
+        Show_Movie = 53
+        Show_TVShow = 54
+        Sync_Movie = 55
+        Sync_MovieSet = 56
+        Sync_TVEpisode = 57
+        Sync_TVSeason = 58
+        Sync_TVShow = 59
+        Task = 60
     End Enum
 
     Public Enum ContentType As Integer

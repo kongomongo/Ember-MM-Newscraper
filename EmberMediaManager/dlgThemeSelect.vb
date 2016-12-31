@@ -221,7 +221,7 @@ Public Class dlgThemeSelect
         End While
 
         DialogResult = DialogResult.Cancel
-        Me.Result = Nothing
+        Result = Nothing
     End Sub
 
 #End Region 'Methods

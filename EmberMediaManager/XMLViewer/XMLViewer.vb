@@ -62,7 +62,7 @@ Public Class XMLViewer
                                       & "\viewkind4\uc1\pard\lang1033\f0 {1}}}"
 
             ' Get the XDocument from the Text property.
-            Dim xmlDoc = XDocument.Parse(Me.Text, LoadOptions.None)
+            Dim xmlDoc = XDocument.Parse(Text, LoadOptions.None)
 
             Dim xmlRtfContent As New StringBuilder()
 
@@ -89,7 +89,7 @@ Public Class XMLViewer
             xmlRtfContent.Append(rootRtfContent)
 
             ' Construct the completed Rtf, and set the Rtf property to this value.
-            Me.Rtf = String.Format(rtfFormat, Settings.ToRtfFormatString(),
+            Rtf = String.Format(rtfFormat, Settings.ToRtfFormatString(),
                                    xmlRtfContent.ToString())
 
 

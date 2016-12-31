@@ -21,11 +21,11 @@
 Imports System.Windows.Forms
 Imports EmberAPI
 
-Public Class frmMediaSources
+Public Class frmSettingsPanel
 
 #Region "Events"
 
-    Public Event ModuleSettingsChanged()
+    Public Event SettingsChanged()
 
 #End Region 'Events
 
@@ -39,11 +39,11 @@ Public Class frmMediaSources
             LoadSources()
 
             dgvByFile.Rows.Clear()
-            For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+            For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
                 Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
             Next
             SetByFileStatus(False)
-            chkMapByFile.Checked = AdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
+            chkMapByFile.Checked = clsXMLAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
         Catch ex As Exception
         End Try
         SetUp()
@@ -51,7 +51,7 @@ Public Class frmMediaSources
 
     Private Sub LoadSources()
         dgvSources.Rows.Clear()
-        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = AdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
+        Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
         If sources IsNot Nothing Then
             For Each sett In sources
                 Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
@@ -66,16 +66,16 @@ Public Class frmMediaSources
         dgvSources.Rows(i).Tag = False
         dgvSources.CurrentCell = dgvSources.Rows(i).Cells(0)
         dgvSources.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
     Private Sub btnRemoveSource_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveSource.Click
         If dgvSources.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvSources.Rows(dgvSources.SelectedCells(0).RowIndex).Tag) Then
             dgvSources.Rows.RemoveAt(dgvSources.SelectedCells(0).RowIndex)
-            RaiseEvent ModuleSettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
     Private Sub dgvSources_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvSources.CurrentCellDirtyStateChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
 
@@ -111,10 +111,10 @@ Public Class frmMediaSources
 
     Public Sub SaveChanges()
         Dim deleteitem As New List(Of String)
-        For Each sett As AdvancedSettingsSetting In AdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
+        For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
             deleteitem.Add(sett.Name)
         Next
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             For Each s As String In deleteitem
                 settings.CleanSetting(s, "*EmberAPP")
             Next
@@ -138,16 +138,16 @@ Public Class frmMediaSources
     End Sub
 
     Private Sub btnSetDefaults_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDefaults.Click
-        Using settings = New AdvancedSettings()
+        Using settings = New clsXMLAdvancedSettings()
             settings.SetDefaults("MovieSources")
         End Using
         LoadSources()
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkMapByFile_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMapByFile.CheckedChanged
         SetByFileStatus(chkMapByFile.Checked)
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub SetByFileStatus(ByVal b As Boolean)
@@ -162,18 +162,18 @@ Public Class frmMediaSources
         dgvByFile.Rows(i).Tag = False
         dgvByFile.CurrentCell = dgvByFile.Rows(i).Cells(0)
         dgvByFile.BeginEdit(True)
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnRemoveByFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRemoveByFile.Click
         If dgvByFile.SelectedCells.Count > 0 AndAlso Not Convert.ToBoolean(dgvByFile.Rows(dgvByFile.SelectedCells(0).RowIndex).Tag) Then
             dgvByFile.Rows.RemoveAt(dgvByFile.SelectedCells(0).RowIndex)
-            RaiseEvent ModuleSettingsChanged()
+            RaiseEvent SettingsChanged()
         End If
     End Sub
 
     Private Sub dgvByFile_CurrentCellDirtyStateChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgvByFile.CurrentCellDirtyStateChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
 
