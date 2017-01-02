@@ -103,29 +103,29 @@ Public Class Images
     ''' <summary>
     ''' Delete the given arbitrary file
     ''' </summary>
-    ''' <param name="sPath"></param>
+    ''' <param name="strPath"></param>
     ''' <remarks>This version of Delete is wrapped in a try-catch block which 
     ''' will log errors before safely returning.</remarks>
-    Private Shared Sub Delete(ByVal sPath As String)
-        If Not String.IsNullOrEmpty(sPath) Then
+    Private Shared Sub Delete(ByVal strPath As String)
+        If Not String.IsNullOrEmpty(strPath) Then
             Try
-                File.Delete(sPath)
+                File.Delete(strPath)
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & strPath & ">")
             End Try
         End If
     End Sub
     ''' <summary>
     ''' Delete all movie images with specified image type
     ''' </summary>
-    ''' <param name="DBMovie"></param>
+    ''' <param name="tDBElement"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_Movie(ByVal DBMovie As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType, ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(DBMovie.Filename) Then Return
+    Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType, ByVal ForceFileCleanup As Boolean)
+        If Not tDBElement.FilenameSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.Movie(DBMovie, ImageType, ForceFileCleanup)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, ImageType, ForceFileCleanup)
                 Select Case ImageType
                     Case Enums.ScrapeModifierType.MainActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
@@ -143,58 +143,58 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovie.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
     ''' Delete all movieset images with specified image type
     ''' </summary>
-    ''' <param name="DBMovieSet"></param>
+    ''' <param name="tDBElement"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_MovieSet(ByVal DBMovieSet As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType, Optional ByVal bForceOldTitle As Boolean = False)
-        If String.IsNullOrEmpty(DBMovieSet.MainDetails.Title) Then Return
+    Public Shared Sub Delete_MovieSet(ByVal tDBElement As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType, Optional ByVal bForceOldTitle As Boolean = False)
+        If String.IsNullOrEmpty(tDBElement.MainDetails.Title) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.MovieSet(DBMovieSet, ImageType, bForceOldTitle)
+            For Each a In FileUtils.GetFilenameList.MovieSet(tDBElement, ImageType, bForceOldTitle)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBMovieSet.MainDetails.Title & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.MainDetails.Title & ">")
         End Try
     End Sub
     ''' <summary>
     ''' Delete all tv show AllSeasons images with specified image type
     ''' </summary>
-    ''' <param name="DBTVShow"></param>
+    ''' <param name="tDBElement"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVAllSeasons(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+    Public Shared Sub Delete_TVAllSeasons(ByVal tDBElement As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
+        If String.IsNullOrEmpty(tDBElement.ShowPath) Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, ImageType)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
     ''' Delete all tv episode images with specified image type
     ''' </summary>
-    ''' <param name="DBTVEpisode"></param>
+    ''' <param name="tDBElement"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVEpisode(ByVal DBTVEpisode As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
-        If String.IsNullOrEmpty(DBTVEpisode.Filename) Then Return
+    Public Shared Sub Delete_TVEpisode(ByVal tDBElement As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
+        If Not tDBElement.FilenameSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVEpisode(DBTVEpisode, ImageType)
+            For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, ImageType)
                 Select Case ImageType
                     Case Enums.ScrapeModifierType.EpisodeActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
@@ -208,38 +208,38 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVEpisode.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
     ''' Delete all tv season images with specified image type
     ''' </summary>
-    ''' <param name="DBTVSeason"></param>
+    ''' <param name="tDBElement"></param>
     ''' <param name="ImageType"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVSeason(ByVal DBTVSeason As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
-        If String.IsNullOrEmpty(DBTVSeason.ShowPath) Then Return
+    Public Shared Sub Delete_TVSeason(ByVal tDBElement As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
+        If Not tDBElement.ShowPathSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVSeason(DBTVSeason, ImageType)
+            For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, ImageType)
                 If File.Exists(a) Then
                     Delete(a)
                 End If
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVSeason.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
     ''' Delete all tv show images with specified image type
     ''' </summary>
-    ''' <param name="DBTVShow"></param>
+    ''' <param name="tDBElement"></param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+    Public Shared Sub Delete_TVShow(ByVal tDBElement As Database.DBElement, ByVal ImageType As Enums.ScrapeModifierType)
+        If Not tDBElement.ShowPathSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, ImageType)
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, ImageType)
                 Select Case ImageType
                     Case Enums.ScrapeModifierType.MainActorThumbs
                         Dim tmpPath As String = Directory.GetParent(a.Replace("<placeholder>", "dummy")).FullName
@@ -257,25 +257,25 @@ Public Class Images
                 End Select
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.ShowPath & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.ShowPath & ">")
         End Try
     End Sub
     ''' <summary>
     ''' Loads this Image from the contents of the supplied file
     ''' </summary>
-    ''' <param name="sPath">Path to the image file</param>
-    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
+    ''' <param name="strPath">Path to the image file</param>
+    ''' <param name="bLoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub LoadFromFile(ByVal sPath As String, Optional LoadBitmap As Boolean = False)
-        If Not String.IsNullOrEmpty(sPath) AndAlso File.Exists(sPath) Then
+    Public Sub LoadFromFile(ByVal strPath As String, Optional bLoadBitmap As Boolean = False)
+        If Not String.IsNullOrEmpty(strPath) AndAlso File.Exists(strPath) Then
             _ms = New MemoryStream()
-            Using fsImage As FileStream = File.OpenRead(sPath)
+            Using fsImage As FileStream = File.OpenRead(strPath)
                 Dim memStream As New MemoryStream
                 memStream.SetLength(fsImage.Length)
                 fsImage.Read(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
                 _ms.Write(memStream.GetBuffer, 0, CInt(Fix(fsImage.Length)))
                 _ms.Flush()
-                If LoadBitmap Then
+                If bLoadBitmap Then
                     _image = New Bitmap(_ms)
                 End If
             End Using
@@ -296,15 +296,15 @@ Public Class Images
     ''' <summary>
     ''' Loads this Image from the supplied URL
     ''' </summary>
-    ''' <param name="sURL">URL to the image file</param>
-    ''' <param name="LoadBitmap">Create bitmap from memorystream</param>
+    ''' <param name="strURL">URL to the image file</param>
+    ''' <param name="bLoadBitmap">Create bitmap from memorystream</param>
     ''' <remarks></remarks>
-    Public Sub LoadFromWeb(ByVal sURL As String, Optional LoadBitmap As Boolean = False)
-        If String.IsNullOrEmpty(sURL) Then Return
+    Public Sub LoadFromWeb(ByVal strURL As String, Optional bLoadBitmap As Boolean = False)
+        If String.IsNullOrEmpty(strURL) Then Return
 
         Try
             Dim sHTTP As New HTTP
-            sHTTP.StartDownloadImage(sURL)
+            sHTTP.StartDownloadImage(strURL)
             While sHTTP.IsDownloading
                 Application.DoEvents()
                 Threading.Thread.Sleep(50)
@@ -322,7 +322,7 @@ Public Class Images
 
                 'I do not copy from the _ms as it could not be a JPG
                 '_image = New Bitmap(sHTTP.Image)
-                If LoadBitmap Then
+                If bLoadBitmap Then
                     _image = New Bitmap(sHTTP.Image) '(Me._ms)
                 End If
 
@@ -333,18 +333,8 @@ Public Class Images
             End If
 
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & sURL & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & strURL & ">")
         End Try
-    End Sub
-
-    Public Sub ResizeExtraFanart(ByVal fromPath As String, ByVal toPath As String)
-        LoadFromFile(fromPath)
-        SaveToFile(toPath)
-    End Sub
-
-    Public Sub ResizeExtraThumb(ByVal fromPath As String, ByVal toPath As String)
-        LoadFromFile(fromPath)
-        SaveToFile(toPath)
     End Sub
     ''' <summary>
     ''' Stores the Image to the supplied <paramref name="sPath"/>
@@ -811,15 +801,15 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie's extrafanart
     ''' </summary>
-    ''' <param name="mMovie"><c>Structures.DBMovie</c> representing the movie being referred to</param>
+    ''' <param name="tDBElement"><c>Structures.DBMovie</c> representing the movie being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrafanart(ByVal mMovie As Database.DBElement, ByVal sName As String) As String
+    Public Function SaveAsMovieExtrafanart(ByVal tDBElement As Database.DBElement, ByVal sName As String) As String
         Dim efPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return efPath
+        If Not tDBElement.FilenameSpecified Then Return efPath
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrafanartsResize Then
@@ -834,7 +824,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ScrapeModifierType.MainExtrafanarts)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainExtrafanarts)
                 If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -858,24 +848,24 @@ Public Class Images
     ''' <summary>
     ''' Save all movie Extrathumbs
     ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
+    ''' <param name="tDBElement"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Shared Function SaveMovieExtrathumbs(ByVal mMovie As Database.DBElement) As String
+    Public Shared Function SaveMovieExtrathumbs(ByVal tDBElement As Database.DBElement) As String
         Dim etPath As String = String.Empty
 
         'First, (Down)Load all Extrathumbs from LocalFilePath or URL
-        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs
-            eImg.LoadAndCache(mMovie.ContentType, True)
+        For Each eImg As MediaContainers.Image In tDBElement.ImagesContainer.Extrathumbs
+            eImg.LoadAndCache(tDBElement.ContentType, True)
         Next
 
         'Secound, remove the old ones
-        Delete_Movie(mMovie, Enums.ScrapeModifierType.MainExtrathumbs, False)
+        Delete_Movie(tDBElement, Enums.ScrapeModifierType.MainExtrathumbs, False)
 
         'Thirdly, save all Extrathumbs
-        For Each eImg As MediaContainers.Image In mMovie.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
-            If eImg.LoadAndCache(mMovie.ContentType, True) Then
-                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(mMovie)
+        For Each eImg As MediaContainers.Image In tDBElement.ImagesContainer.Extrathumbs.OrderBy(Function(f) f.Index)
+            If eImg.LoadAndCache(tDBElement.ContentType, True) Then
+                etPath = eImg.ImageOriginal.SaveAsMovieExtrathumb(tDBElement)
             End If
         Next
 
@@ -889,15 +879,15 @@ Public Class Images
     ''' <summary>
     ''' Save the image as a movie's extrathumb
     ''' </summary>
-    ''' <param name="mMovie"><c>Database.DBElement</c> representing the movie being referred to</param>
+    ''' <param name="tDBElement"><c>Database.DBElement</c> representing the movie being referred to</param>
     ''' <returns><c>String</c> path to the saved image</returns>
     ''' <remarks></remarks>
-    Public Function SaveAsMovieExtrathumb(ByVal mMovie As Database.DBElement) As String
+    Public Function SaveAsMovieExtrathumb(ByVal tDBElement As Database.DBElement) As String
         Dim etPath As String = String.Empty
         Dim iMod As Integer = 0
         Dim iVal As Integer = 1
 
-        If String.IsNullOrEmpty(mMovie.Filename) Then Return etPath
+        If Not tDBElement.FilenameSpecified Then Return etPath
 
         Dim doResize As Boolean = False
         If Master.eSettings.MovieExtrathumbsResize Then
@@ -912,7 +902,7 @@ Public Class Images
                 UpdateMSfromImg(_image)
             End If
 
-            For Each a In FileUtils.GetFilenameList.Movie(mMovie, Enums.ScrapeModifierType.MainExtrathumbs)
+            For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainExtrathumbs)
                 If Not String.IsNullOrEmpty(a) Then
                     If Not Directory.Exists(a) Then
                         Directory.CreateDirectory(a)
@@ -931,19 +921,19 @@ Public Class Images
         Return etPath
     End Function
 
-    Public Shared Sub SaveTVEpisodeActorThumbs(ByVal mEpisode As Database.DBElement)
+    Public Shared Sub SaveTVEpisodeActorThumbs(ByVal tDBElement As Database.DBElement)
         'First, (Down)Load all actor thumbs from LocalFilePath or URL
-        For Each tActor As MediaContainers.Person In mEpisode.MainDetails.Actors
-            tActor.Thumb.LoadAndCache(mEpisode.ContentType, True)
+        For Each tActor As MediaContainers.Person In tDBElement.MainDetails.Actors
+            tActor.Thumb.LoadAndCache(tDBElement.ContentType, True)
         Next
 
         'Secound, remove the old ones
         'Images.Delete_TVEpisode(mEpisode, Enums.ModifierType.EpisodeActorThumbs) 'TODO: find a way to only remove actor thumbs that not needed in other episodes with same actor thumbs path
 
         'Thirdly, save all actor thumbs
-        For Each tActor As MediaContainers.Person In mEpisode.MainDetails.Actors
-            If tActor.Thumb.LoadAndCache(mEpisode.ContentType, True) Then
-                tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVEpisodeActorThumb(mEpisode, tActor)
+        For Each tActor As MediaContainers.Person In tDBElement.MainDetails.Actors
+            If tActor.Thumb.LoadAndCache(tDBElement.ContentType, True) Then
+                tActor.Thumb.LocalFilePath = tActor.Thumb.ImageOriginal.SaveAsTVEpisodeActorThumb(tDBElement, tActor)
             End If
         Next
     End Sub

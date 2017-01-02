@@ -33,7 +33,7 @@ Public Class dlgTrailerSelect
     Friend WithEvents bwDownloadTrailer As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwParseTrailer As New System.ComponentModel.BackgroundWorker
 
-    Private tmpDBElement As Database.DBElement
+    Private _tmpDBElement As Database.DBElement
     Private _result As New MediaContainers.Trailer
     Private tArray As New List(Of String)
     Private tURL As String = String.Empty
@@ -98,7 +98,7 @@ Public Class dlgTrailerSelect
 
         txtYouTubeSearch.Text = String.Concat(DBMovie.MainDetails.Title, " ", Master.eSettings.MovieTrailerDefaultSearch)
 
-        tmpDBElement = DBMovie
+        _tmpDBElement = DBMovie
 
         AddTrailersToList(tURLList)
 
@@ -271,7 +271,7 @@ Public Class dlgTrailerSelect
     Private Sub btnBrowse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowseLocalTrailer.Click
         Try
             With ofdTrailer
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+                .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
                 .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
                 .FilterIndex = 0
             End With
@@ -355,7 +355,7 @@ Public Class dlgTrailerSelect
     Private Sub bwCompileList_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCompileList.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Try
-            If AddonsManager.Instance.ScrapeTrailer_Movie(tmpDBElement, Enums.ScrapeModifierType.MainTrailer, nList) Then
+            If AddonsManager.Instance.ScrapeTrailer_Movie(_tmpDBElement, Enums.ScrapeModifierType.MainTrailer, nList) Then
                 Args.bType = True
             Else
                 Args.bType = False

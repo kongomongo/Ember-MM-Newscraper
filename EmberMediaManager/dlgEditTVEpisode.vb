@@ -28,7 +28,7 @@ Public Class dlgEditTVEpisode
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private tmpDBElement As Database.DBElement
+    Private _tmpDBElement As Database.DBElement
 
     Private lvwActorSorter As ListViewColumnSorter
     Private PreviousFrameValue As Integer
@@ -40,7 +40,7 @@ Public Class dlgEditTVEpisode
 
     Public ReadOnly Property Result As Database.DBElement
         Get
-            Return tmpDBElement
+            Return _tmpDBElement
         End Get
     End Property
 
@@ -57,7 +57,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Public Overloads Function ShowDialog(ByVal DBTVEpisode As Database.DBElement) As DialogResult
-        tmpDBElement = DBTVEpisode
+        _tmpDBElement = DBTVEpisode
         Return ShowDialog()
     End Function
 
@@ -130,8 +130,8 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub btnManual_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnManual.Click
-        If dlgManualEdit.ShowDialog(tmpDBElement.NfoPath) = DialogResult.OK Then
-            tmpDBElement.MainDetails = NFO.LoadFromNFO_TVEpisode(tmpDBElement.NfoPath, tmpDBElement.MainDetails.Season, tmpDBElement.MainDetails.Episode)
+        If dlgManualEdit.ShowDialog(_tmpDBElement.NfoPath) = DialogResult.OK Then
+            _tmpDBElement.MainDetails = NFO.LoadFromNFO_TVEpisode(_tmpDBElement.NfoPath, _tmpDBElement.MainDetails.Season, _tmpDBElement.MainDetails.Episode)
             FillInfo()
         End If
     End Sub
@@ -141,7 +141,7 @@ Public Class dlgEditTVEpisode
         pbFanart.Tag = Nothing
         lblFanartSize.Text = String.Empty
         lblFanartSize.Visible = False
-        tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
+        _tmpDBElement.ImagesContainer.Fanart = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemovePoster_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemovePoster.Click
@@ -149,7 +149,7 @@ Public Class dlgEditTVEpisode
         pbPoster.Tag = Nothing
         lblPosterSize.Text = String.Empty
         lblPosterSize.Visible = False
-        tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
+        _tmpDBElement.ImagesContainer.Poster = New MediaContainers.Image
     End Sub
 
     Private Sub btnRemoveSubtitle_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemoveSubtitle.Click
@@ -426,7 +426,7 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub dlgEditEpisode_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-        If tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tmpDBElement, True) Then
+        If _tmpDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(_tmpDBElement, True) Then
             If Not Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then tcEdit.TabPages.Remove(tpFanart)
             If Not Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then
                 tcEdit.TabPages.Remove(tpPoster)
@@ -447,7 +447,7 @@ Public Class dlgEditTVEpisode
                 pnlTop.BackgroundImage = iBackground
             End Using
 
-            Dim dFileInfoEdit As New dlgFileInfo(tmpDBElement, True)
+            Dim dFileInfoEdit As New dlgFileInfo(_tmpDBElement, True)
             dFileInfoEdit.TopLevel = False
             dFileInfoEdit.FormBorderStyle = FormBorderStyle.None
             dFileInfoEdit.BackColor = Color.White
@@ -472,26 +472,26 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub FillInfo()
-        txtAired.Text = tmpDBElement.MainDetails.Aired
-        txtCredits.Text = String.Join(" / ", tmpDBElement.MainDetails.Credits.ToArray)
-        txtDirectors.Text = String.Join(" / ", tmpDBElement.MainDetails.Directors.ToArray)
-        txtEpisode.Text = tmpDBElement.MainDetails.Episode.ToString
-        txtPlot.Text = tmpDBElement.MainDetails.Plot
-        txtRuntime.Text = tmpDBElement.MainDetails.Runtime
-        txtSeason.Text = tmpDBElement.MainDetails.Season.ToString
-        txtTitle.Text = tmpDBElement.MainDetails.Title
-        txtVotes.Text = tmpDBElement.MainDetails.Votes
+        txtAired.Text = _tmpDBElement.MainDetails.Aired
+        txtCredits.Text = String.Join(" / ", _tmpDBElement.MainDetails.Credits.ToArray)
+        txtDirectors.Text = String.Join(" / ", _tmpDBElement.MainDetails.Directors.ToArray)
+        txtEpisode.Text = _tmpDBElement.MainDetails.Episode.ToString
+        txtPlot.Text = _tmpDBElement.MainDetails.Plot
+        txtRuntime.Text = _tmpDBElement.MainDetails.Runtime
+        txtSeason.Text = _tmpDBElement.MainDetails.Season.ToString
+        txtTitle.Text = _tmpDBElement.MainDetails.Title
+        txtVotes.Text = _tmpDBElement.MainDetails.Votes
 
-        If Not String.IsNullOrEmpty(tmpDBElement.VideoSource) Then
-            txtVideoSource.Text = tmpDBElement.VideoSource
-        ElseIf Not String.IsNullOrEmpty(tmpDBElement.MainDetails.VideoSource) Then
-            txtVideoSource.Text = tmpDBElement.MainDetails.VideoSource
+        If Not String.IsNullOrEmpty(_tmpDBElement.VideoSource) Then
+            txtVideoSource.Text = _tmpDBElement.VideoSource
+        ElseIf Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.VideoSource) Then
+            txtVideoSource.Text = _tmpDBElement.MainDetails.VideoSource
         End If
 
         'Actors
         Dim lvItem As ListViewItem
         lvActors.Items.Clear()
-        For Each tActor As MediaContainers.Person In tmpDBElement.MainDetails.Actors
+        For Each tActor As MediaContainers.Person In _tmpDBElement.MainDetails.Actors
             lvItem = lvActors.Items.Add(tActor.ID.ToString)
             lvItem.Tag = tActor
             lvItem.SubItems.Add(tActor.Name)
@@ -499,7 +499,7 @@ Public Class dlgEditTVEpisode
             lvItem.SubItems.Add(tActor.URLOriginal)
         Next
 
-        Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.MainDetails.Rating)
+        Dim tRating As Single = NumUtils.ConvertToSingle(_tmpDBElement.MainDetails.Rating)
         tmpRating = tRating.ToString
         pbStar1.Tag = tRating
         pbStar2.Tag = tRating
@@ -513,26 +513,26 @@ Public Class dlgEditTVEpisode
         pbStar10.Tag = tRating
         If tRating > 0 Then BuildStars(tRating)
 
-        If tmpDBElement.MainDetails.PlayCountSpecified Then
+        If _tmpDBElement.MainDetails.PlayCountSpecified Then
             chkWatched.Checked = True
         Else
             chkWatched.Checked = False
         End If
-        If Not String.IsNullOrEmpty(tmpDBElement.MainDetails.LastPlayed) Then
+        If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.LastPlayed) Then
             Dim timecode As Double = 0
-            Double.TryParse(tmpDBElement.MainDetails.LastPlayed, timecode)
+            Double.TryParse(_tmpDBElement.MainDetails.LastPlayed, timecode)
             If timecode > 0 Then
                 txtLastPlayed.Text = Functions.ConvertFromUnixTimestamp(timecode).ToString("yyyy-MM-dd HH:mm:ss")
             Else
-                txtLastPlayed.Text = tmpDBElement.MainDetails.LastPlayed
+                txtLastPlayed.Text = _tmpDBElement.MainDetails.LastPlayed
             End If
         End If
 
         'Images and TabPages
-        With tmpDBElement.ImagesContainer
+        With _tmpDBElement.ImagesContainer
 
             'Load all images to MemoryStream and Bitmap
-            tmpDBElement.LoadAllImages(True, True)
+            _tmpDBElement.LoadAllImages(True, True)
 
             'Fanart
             If Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then
@@ -607,9 +607,9 @@ Public Class dlgEditTVEpisode
     Private Sub pbEpisodeFanart_DragDrop(sender As Object, e As DragEventArgs) Handles pbFanart.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            tmpDBElement.ImagesContainer.Fanart = tImage
-            pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-            pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
+            _tmpDBElement.ImagesContainer.Fanart = tImage
+            pbFanart.Image = _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+            pbFanart.Tag = _tmpDBElement.ImagesContainer.Fanart
             lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
             lblFanartSize.Visible = True
         End If
@@ -626,9 +626,9 @@ Public Class dlgEditTVEpisode
     Private Sub pbEpisodePoster_DragDrop(sender As Object, e As DragEventArgs) Handles pbPoster.DragDrop
         Dim tImage As MediaContainers.Image = FileUtils.DragAndDrop.GetDoppedImage(e)
         If tImage.ImageOriginal.Image IsNot Nothing Then
-            tmpDBElement.ImagesContainer.Poster = tImage
-            pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-            pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
+            _tmpDBElement.ImagesContainer.Poster = tImage
+            pbPoster.Image = _tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+            pbPoster.Tag = _tmpDBElement.ImagesContainer.Poster
             lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
             lblPosterSize.Visible = True
         End If
@@ -923,47 +923,47 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub SetInfo()
-        tmpDBElement.MainDetails.Aired = txtAired.Text.Trim
-        tmpDBElement.MainDetails.AddCreditsFromString(txtCredits.Text.Trim)
-        tmpDBElement.MainDetails.AddDirectorsFromString(txtDirectors.Text.Trim)
-        tmpDBElement.MainDetails.Episode = Convert.ToInt32(txtEpisode.Text.Trim)
-        tmpDBElement.MainDetails.Plot = txtPlot.Text.Trim
-        tmpDBElement.MainDetails.Rating = tmpRating
-        tmpDBElement.MainDetails.Runtime = txtRuntime.Text.Trim
-        tmpDBElement.MainDetails.Season = Convert.ToInt32(txtSeason.Text.Trim)
-        tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
-        tmpDBElement.MainDetails.Votes = txtVotes.Text.Trim
-        tmpDBElement.MainDetails.VideoSource = txtVideoSource.Text.Trim
-        tmpDBElement.VideoSource = txtVideoSource.Text.Trim
+        _tmpDBElement.MainDetails.Aired = txtAired.Text.Trim
+        _tmpDBElement.MainDetails.AddCreditsFromString(txtCredits.Text.Trim)
+        _tmpDBElement.MainDetails.AddDirectorsFromString(txtDirectors.Text.Trim)
+        _tmpDBElement.MainDetails.Episode = Convert.ToInt32(txtEpisode.Text.Trim)
+        _tmpDBElement.MainDetails.Plot = txtPlot.Text.Trim
+        _tmpDBElement.MainDetails.Rating = tmpRating
+        _tmpDBElement.MainDetails.Runtime = txtRuntime.Text.Trim
+        _tmpDBElement.MainDetails.Season = Convert.ToInt32(txtSeason.Text.Trim)
+        _tmpDBElement.MainDetails.Title = txtTitle.Text.Trim
+        _tmpDBElement.MainDetails.Votes = txtVotes.Text.Trim
+        _tmpDBElement.MainDetails.VideoSource = txtVideoSource.Text.Trim
+        _tmpDBElement.VideoSource = txtVideoSource.Text.Trim
 
         'Actors
-        tmpDBElement.MainDetails.Actors.Clear()
+        _tmpDBElement.MainDetails.Actors.Clear()
         If lvActors.Items.Count > 0 Then
             Dim iOrder As Integer = 0
             For Each lviActor As ListViewItem In lvActors.Items
                 Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
                 addActor.Order = iOrder
                 iOrder += 1
-                tmpDBElement.MainDetails.Actors.Add(addActor)
+                _tmpDBElement.MainDetails.Actors.Add(addActor)
             Next
         End If
 
         If chkWatched.Checked Then
             'Only set to 1 if field was empty before (otherwise it would overwrite Playcount everytime which is not desirable)
-            If Not tmpDBElement.MainDetails.PlayCountSpecified Then
-                tmpDBElement.MainDetails.PlayCount = 1
-                tmpDBElement.MainDetails.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            If Not _tmpDBElement.MainDetails.PlayCountSpecified Then
+                _tmpDBElement.MainDetails.PlayCount = 1
+                _tmpDBElement.MainDetails.LastPlayed = Date.Now.ToString("yyyy-MM-dd HH:mm:ss")
             End If
         Else
             'Unchecked Watched State -> Set Playcount back to 0, but only if it was filled before (check could save time)
-            If tmpDBElement.MainDetails.PlayCountSpecified Then
-                tmpDBElement.MainDetails.PlayCount = 0
-                tmpDBElement.MainDetails.LastPlayed = String.Empty
+            If _tmpDBElement.MainDetails.PlayCountSpecified Then
+                _tmpDBElement.MainDetails.PlayCount = 0
+                _tmpDBElement.MainDetails.LastPlayed = String.Empty
             End If
         End If
 
         Dim removeSubtitles As New List(Of MediaContainers.Subtitle)
-        For Each Subtitle In tmpDBElement.Subtitles
+        For Each Subtitle In _tmpDBElement.Subtitles
             If Subtitle.toRemove Then
                 removeSubtitles.Add(Subtitle)
             End If
@@ -972,7 +972,7 @@ Public Class dlgEditTVEpisode
             If File.Exists(Subtitle.SubsPath) Then
                 File.Delete(Subtitle.SubsPath)
             End If
-            tmpDBElement.Subtitles.Remove(Subtitle)
+            _tmpDBElement.Subtitles.Remove(Subtitle)
         Next
     End Sub
 
@@ -1002,10 +1002,10 @@ Public Class dlgEditTVEpisode
         btnSetSubtitleScrape.Text = strScrape
 
         Dim mTitle As String = String.Empty
-        mTitle = tmpDBElement.MainDetails.Title
+        mTitle = _tmpDBElement.MainDetails.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(656, "Edit Episode"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = tmpDBElement.Filename
+        tsFilename.Text = _tmpDBElement.FileItem.FullPath
         OK_Button.Text = Master.eLang.GetString(179, "OK")
         Cancel_Button.Text = Master.eLang.GetString(167, "Cancel")
         btnManual.Text = Master.eLang.GetString(230, "Manual Edit")
@@ -1045,16 +1045,16 @@ Public Class dlgEditTVEpisode
     Private Sub btnSetFanartLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetFanartLocal.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+                .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 4
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
-                If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
-                    pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                    pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
+                _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
+                If _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
+                    pbFanart.Image = _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                    pbFanart.Tag = _tmpDBElement.ImagesContainer.Fanart
 
                     lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                     lblFanartSize.Visible = True
@@ -1071,13 +1071,13 @@ Public Class dlgEditTVEpisode
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodeFanart, True)
-        If AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_TV(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodeFanarts.Count > 0 OrElse aContainer.MainFanarts.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
-                    If tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream Then
-                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                    _tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
+                    If _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing OrElse _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.LoadFromMemoryStream Then
+                        pbFanart.Image = _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
                     Else
@@ -1101,9 +1101,9 @@ Public Class dlgEditTVEpisode
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        tmpDBElement.ImagesContainer.Fanart = tImage
-                        pbFanart.Image = tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
-                        pbFanart.Tag = tmpDBElement.ImagesContainer.Fanart
+                        _tmpDBElement.ImagesContainer.Fanart = tImage
+                        pbFanart.Image = _tmpDBElement.ImagesContainer.Fanart.ImageOriginal.Image
+                        pbFanart.Tag = _tmpDBElement.ImagesContainer.Fanart
 
                         lblFanartSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbFanart.Image.Width, pbFanart.Image.Height)
                         lblFanartSize.Visible = True
@@ -1119,16 +1119,16 @@ Public Class dlgEditTVEpisode
     Private Sub btnSetPosterLocal_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSetPosterLocal.Click
         Try
             With ofdImage
-                .InitialDirectory = Directory.GetParent(tmpDBElement.Filename).FullName
+                .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
                 .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
                 .FilterIndex = 0
             End With
 
             If ofdImage.ShowDialog() = DialogResult.OK Then
-                tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
-                If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
-                    pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                    pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
+                _tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromFile(ofdImage.FileName, True)
+                If _tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing Then
+                    pbPoster.Image = _tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+                    pbPoster.Tag = _tmpDBElement.ImagesContainer.Poster
 
                     lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                     lblPosterSize.Visible = True
@@ -1145,13 +1145,13 @@ Public Class dlgEditTVEpisode
 
         Cursor = Cursors.WaitCursor
         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodePoster, True)
-        If AddonsManager.Instance.ScrapeImage_TV(tmpDBElement, aContainer, ScrapeModifiers, True) Then
+        If AddonsManager.Instance.ScrapeImage_TV(_tmpDBElement, aContainer, ScrapeModifiers, True) Then
             If aContainer.EpisodePosters.Count > 0 Then
                 Dim dlgImgS = New dlgImgSelect()
-                If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
-                    tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
-                    If tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream Then
-                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+                If dlgImgS.ShowDialog(_tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
+                    _tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
+                    If _tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image IsNot Nothing OrElse _tmpDBElement.ImagesContainer.Poster.ImageOriginal.LoadFromMemoryStream Then
+                        pbPoster.Image = _tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
                     Else
@@ -1175,9 +1175,9 @@ Public Class dlgEditTVEpisode
                 If dImgManual.ShowDialog() = DialogResult.OK Then
                     tImage = dImgManual.Results
                     If tImage.ImageOriginal.Image IsNot Nothing Then
-                        tmpDBElement.ImagesContainer.Poster = tImage
-                        pbPoster.Image = tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
-                        pbPoster.Tag = tmpDBElement.ImagesContainer.Poster
+                        _tmpDBElement.ImagesContainer.Poster = tImage
+                        pbPoster.Image = _tmpDBElement.ImagesContainer.Poster.ImageOriginal.Image
+                        pbPoster.Tag = _tmpDBElement.ImagesContainer.Poster
 
                         lblPosterSize.Text = String.Format(Master.eLang.GetString(269, "Size: {0}x{1}"), pbPoster.Image.Width, pbPoster.Image.Height)
                         lblPosterSize.Visible = True
@@ -1248,12 +1248,12 @@ Public Class dlgEditTVEpisode
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 Dim tmpFileInfo As New MediaContainers.Fileinfo
-                tmpFileInfo.StreamDetails.Subtitle.AddRange(tmpDBElement.Subtitles)
+                tmpFileInfo.StreamDetails.Subtitle.AddRange(_tmpDBElement.Subtitles)
                 Using dEditStream As New dlgFIStreamEditor
                     Dim stream As Object = dEditStream.ShowDialog(i.Tag.ToString, tmpFileInfo, Convert.ToInt16(i.Text))
                     If Not stream Is Nothing Then
                         If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                            tmpDBElement.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Subtitle)
+                            _tmpDBElement.Subtitles(Convert.ToInt16(i.Text)) = DirectCast(stream, MediaContainers.Subtitle)
                         End If
                         'NeedToRefresh = True
                         LoadSubtitles()
@@ -1270,7 +1270,7 @@ Public Class dlgEditTVEpisode
             If lvSubtitles.SelectedItems.Count > 0 Then
                 Dim i As ListViewItem = lvSubtitles.SelectedItems(0)
                 If i.Tag.ToString = Master.eLang.GetString(597, "Subtitle Stream") Then
-                    tmpDBElement.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
+                    _tmpDBElement.Subtitles(Convert.ToInt16(i.Text)).toRemove = True
                 End If
                 'NeedToRefresh = True
                 LoadSubtitles()
@@ -1287,7 +1287,7 @@ Public Class dlgEditTVEpisode
         lvSubtitles.Groups.Clear()
         lvSubtitles.Items.Clear()
         Try
-            If tmpDBElement.Subtitles.Count > 0 Then
+            If _tmpDBElement.Subtitles.Count > 0 Then
                 g = New ListViewGroup
                 g.Header = Master.eLang.GetString(597, "Subtitle Stream")
                 lvSubtitles.Groups.Add(g)
@@ -1306,8 +1306,8 @@ Public Class dlgEditTVEpisode
                 g.Items.Add(i)
                 lvSubtitles.Items.Add(i)
                 Dim s As MediaContainers.Subtitle
-                For c = 0 To tmpDBElement.Subtitles.Count - 1
-                    s = tmpDBElement.Subtitles(c)
+                For c = 0 To _tmpDBElement.Subtitles.Count - 1
+                    s = _tmpDBElement.Subtitles(c)
                     If Not s Is Nothing Then
                         i = New ListViewItem
                         i.Tag = Master.eLang.GetString(597, "Subtitle Stream")

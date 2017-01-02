@@ -526,7 +526,7 @@ Public Class dlgEdit
 
     Private Sub btnSetBannerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetBannerLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
@@ -589,7 +589,7 @@ Public Class dlgEdit
 
     Private Sub btnSetClearArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearArtLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
             .FilterIndex = 0
         End With
@@ -652,7 +652,7 @@ Public Class dlgEdit
 
     Private Sub btnSetClearLogoLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetClearLogoLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
             .FilterIndex = 0
         End With
@@ -716,7 +716,7 @@ Public Class dlgEdit
     Private Sub btnSetDiscArtLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetDiscArtLocal.Click
 
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.png"
             .FilterIndex = 0
         End With
@@ -841,7 +841,7 @@ Public Class dlgEdit
 
     Private Sub btnSetFanartLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetFanartLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 4
         End With
@@ -904,7 +904,7 @@ Public Class dlgEdit
 
     Private Sub btnSetLandscapeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetLandscapeLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
@@ -967,7 +967,7 @@ Public Class dlgEdit
 
     Private Sub btnSetPosterLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetPosterLocal.Click
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = Master.eLang.GetString(497, "Images") + "|*.jpg;*.png"
             .FilterIndex = 0
         End With
@@ -1021,7 +1021,7 @@ Public Class dlgEdit
     Private Sub btnSetThemeLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetThemeLocal.Click
         ThemeStop()
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Theme()
             .FilterIndex = 0
         End With
@@ -1063,7 +1063,7 @@ Public Class dlgEdit
         TrailerStop()
         Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
         With ofdLocalFiles
-            .InitialDirectory = Directory.GetParent(_tmpDBElement.Filename).FullName
+            .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
             .FilterIndex = 0
         End With
@@ -1445,31 +1445,27 @@ Public Class dlgEdit
             lvActorItem.SubItems.Add(nActor.URLOriginal)
         Next
 
-        If Not String.IsNullOrEmpty(_tmpDBElement.Filename) AndAlso String.IsNullOrEmpty(_tmpDBElement.MainDetails.VideoSource) Then
-            Dim vSource As String = APIXML.GetVideoSource(_tmpDBElement.Filename, False)
+        If _tmpDBElement.FilenameSpecified AndAlso String.IsNullOrEmpty(_tmpDBElement.MainDetails.VideoSource) Then
+            Dim vSource As String = APIXML.GetVideoSource(_tmpDBElement.FileItem, False)
             If Not String.IsNullOrEmpty(vSource) Then
                 _tmpDBElement.VideoSource = vSource
                 _tmpDBElement.MainDetails.VideoSource = _tmpDBElement.VideoSource
             ElseIf String.IsNullOrEmpty(_tmpDBElement.VideoSource) AndAlso clsXMLAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP") Then
-                _tmpDBElement.VideoSource = clsXMLAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(_tmpDBElement.Filename)), String.Empty, "*EmberAPP")
+                _tmpDBElement.VideoSource = clsXMLAdvancedSettings.GetSetting(String.Concat("MediaSourcesByExtension:", Path.GetExtension(_tmpDBElement.FileItem.FirstStackedPath)), String.Empty, "*EmberAPP")
                 _tmpDBElement.MainDetails.VideoSource = _tmpDBElement.VideoSource
             ElseIf Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.VideoSource) Then
                 _tmpDBElement.VideoSource = _tmpDBElement.MainDetails.VideoSource
             End If
         End If
 
-        Dim pExt As String = Path.GetExtension(_tmpDBElement.Filename).ToLower
-        If pExt = ".rar" OrElse pExt = ".iso" OrElse pExt = ".img" OrElse
-            pExt = ".bin" OrElse pExt = ".cue" OrElse pExt = ".dat" OrElse
-            pExt = ".disc" Then
+        Dim pExt As String = Path.GetExtension(_tmpDBElement.FileItem.FirstStackedPath).ToLower
+        If _tmpDBElement.FileItem.bIsDiscImage OrElse _tmpDBElement.FileItem.bIsDiscStub OrElse _tmpDBElement.FileItem.bIsRAR OrElse pExt = ".cue" OrElse pExt = ".dat" Then
             tcEdit.TabPages.Remove(tpFrameExtraction)
         Else
-            If Not pExt = ".disc" Then
+            If Not _tmpDBElement.FileItem.bIsDiscStub Then
                 tcEdit.TabPages.Remove(tpMediaStub)
             End If
         End If
-
-
 
         'Theme
         If Master.eSettings.FilenameAnyEnabled(_tmpDBElement.ContentType, Enums.ScrapeModifierType.MainTheme) Then
@@ -1490,9 +1486,9 @@ Public Class dlgEdit
         End If
 
         'DiscStub
-        If Path.GetExtension(_tmpDBElement.Filename).ToLower = ".disc" Then
+        If _tmpDBElement.FileItem.bIsDiscStub Then
             Dim DiscStub As New MediaStub.DiscStub
-            DiscStub = MediaStub.LoadDiscStub(_tmpDBElement.Filename)
+            DiscStub = MediaStub.LoadDiscStub(_tmpDBElement.FileItem.FirstStackedPath)
             txtMediaStubTitle.Text = DiscStub.Title
             txtMediaStubMessage.Text = DiscStub.Message
         End If
@@ -2124,8 +2120,8 @@ Public Class dlgEdit
             _tmpDBElement.MainDetails.Tags = clbTags.CheckedItems.Cast(Of Object).Select(Function(f) clbTags.GetItemText(f)).ToList
         End If
 
-        If Path.GetExtension(_tmpDBElement.Filename) = ".disc" Then
-            Dim StubFile As String = _tmpDBElement.Filename
+        If _tmpDBElement.FileItem.bIsDiscStub Then
+            Dim StubFile As String = _tmpDBElement.FileItem.FirstStackedPath
             Dim Title As String = txtMediaStubTitle.Text
             Dim Message As String = txtMediaStubMessage.Text
             MediaStub.SaveDiscStub(StubFile, Title, Message)
@@ -2206,7 +2202,7 @@ Public Class dlgEdit
         Dim mTitle As String = _tmpDBElement.MainDetails.Title
         Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
         Text = sTitle
-        tsFilename.Text = _tmpDBElement.Filename
+        tsFilename.Text = _tmpDBElement.FileItem.FullPath
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnChange.Text = Master.eLang.GetString(32, "Change Movie")

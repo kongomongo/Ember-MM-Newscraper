@@ -887,7 +887,7 @@ Public Class frmMain
         MoveInfoPanel()
     End Sub
 
-    Private Sub btnMIRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
+    Private Sub btnMetaDataRefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMetaDataRefresh.Click
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
@@ -897,7 +897,7 @@ Public Class frmMain
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
             End If
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
-            If dgvMovies.SelectedRows.Count = 1 AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
+            If dgvMovies.SelectedRows.Count = 1 AndAlso currTV.FilenameSpecified Then
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
                 Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodeMeta, True)
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -910,26 +910,8 @@ Public Class frmMain
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
     ''' <remarks></remarks>
-    Private Sub btnPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePlay.Click
+    Private Sub btnFilePlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFilePlay.Click
         Functions.Launch(txtFilePath.Text, True)
-        'Try
-        '    If Not String.IsNullOrEmpty(Me.txtFilePath.Text) Then
-        '        If File.Exists(Me.txtFilePath.Text) Then
-        '            If Master.isWindows Then
-        '                Process.Start(String.Concat("""", Me.txtFilePath.Text, """"))
-        '            Else
-        '                Using Explorer As New Process
-        '                    Explorer.StartInfo.FileName = "xdg-open"
-        '                    Explorer.StartInfo.Arguments = String.Format("""{0}""", Me.txtFilePath.Text)
-        '                    Explorer.Start()
-        '                End Using
-        '            End If
-
-        '        End If
-        '    End If
-        'Catch ex As Exception
-        '    logger.Error(ex, New StackFrame().GetMethod().Name)
-        'End Try
     End Sub
     ''' <summary>
     ''' Launch trailer using system default player
@@ -1688,7 +1670,7 @@ Public Class frmMain
             End If
 
             If MainFanart.Image IsNot Nothing Then
-                If String.IsNullOrEmpty(currTV.Filename) Then
+                If Not currTV.FilenameSpecified Then
                     MainFanart = ImageUtils.AddMissingStamp(MainFanart)
                 ElseIf NeedsGS Then
                     MainFanart = ImageUtils.GrayScale(MainFanart)
@@ -1908,7 +1890,7 @@ Public Class frmMain
             If Not Cancelled Then
                 If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
-                    MediaInfo.UpdateMediaInfo_Movie(DBScrapeMovie)
+                    MediaInfo.UpdateMediaInfo(DBScrapeMovie)
                 End If
                 If bwMovieScraper.CancellationPending Then Exit For
 
@@ -2325,7 +2307,7 @@ Public Class frmMain
                 If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
                     For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FilenameSpecified)
-                        MediaInfo.UpdateMediaInfo_TVEpisode(tEpisode)
+                        MediaInfo.UpdateMediaInfo(tEpisode)
                     Next
                 End If
 
@@ -2444,7 +2426,7 @@ Public Class frmMain
 
             If Not Cancelled Then
                 If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
-                    MediaInfo.UpdateMediaInfo_TVEpisode(DBScrapeEpisode)
+                    MediaInfo.UpdateMediaInfo(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
 
@@ -4142,7 +4124,7 @@ Public Class frmMain
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
                         If Master.eSettings.TVScraperMetaDataScan Then
-                            MediaInfo.UpdateMediaInfo_TVEpisode(tmpEpisode)
+                            MediaInfo.UpdateMediaInfo(tmpEpisode)
                         End If
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
                     End If
@@ -5863,7 +5845,7 @@ Public Class frmMain
                 bwDownloadPic.IsBusy OrElse bwMovieScraper.IsBusy OrElse bwReload_Movies.IsBusy _
                 OrElse bwCleanDB.IsBusy OrElse bwRewrite_Movies.IsBusy Then Return
 
-                SetStatus(currMovie.Filename)
+                SetStatus(currMovie.FileItem.FullPath)
 
                 If dgvMovies.SelectedRows.Count > 1 Then Return
 
@@ -9245,7 +9227,7 @@ Public Class frmMain
         End If
 
         If Master.eSettings.MovieScraperMetaDataScan Then
-            SetAVImages(APIXML.GetAVImages(currMovie.MainDetails.FileInfo, currMovie.Filename, False, currMovie.MainDetails.VideoSource))
+            SetAVImages(APIXML.GetAVImages(currMovie.MainDetails.FileInfo, False, currMovie.MainDetails.VideoSource))
             pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
         Else
@@ -9258,7 +9240,7 @@ Public Class frmMain
         txtIMDBID.Text = currMovie.MainDetails.IMDB
         txtTMDBID.Text = CStr(currMovie.MainDetails.TMDB)
 
-        txtFilePath.Text = currMovie.Filename
+        txtFilePath.Text = currMovie.FileItem.FullPath
         txtTrailerPath.Text = If(Not String.IsNullOrEmpty(currMovie.Trailer.LocalFilePath), currMovie.Trailer.LocalFilePath, currMovie.MainDetails.Trailer)
 
         lblReleaseDate.Text = currMovie.MainDetails.ReleaseDate
@@ -9330,7 +9312,7 @@ Public Class frmMain
         lblTitle.Text = If(Not currTV.FilenameSpecified, String.Concat(currTV.MainDetails.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.MainDetails.Title)
         txtPlot.Text = currTV.MainDetails.Plot
         lblDirectors.Text = String.Join(" / ", currTV.MainDetails.Directors.ToArray)
-        txtFilePath.Text = currTV.Filename
+        txtFilePath.Text = currTV.FileItem.FullPath
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.MainDetails.AiredSpecified, Date.Parse(currTV.MainDetails.Aired).ToShortDateString, "?"))
 
         Try
@@ -9410,8 +9392,8 @@ Public Class frmMain
         If clsXMLAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
-        If Master.eSettings.TVScraperMetaDataScan AndAlso Not String.IsNullOrEmpty(currTV.Filename) Then
-            SetAVImages(APIXML.GetAVImages(currTV.MainDetails.FileInfo, currTV.Filename, True, currTV.MainDetails.VideoSource))
+        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FilenameSpecified Then
+            SetAVImages(APIXML.GetAVImages(currTV.MainDetails.FileInfo, True, currTV.MainDetails.VideoSource))
             pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
         Else
@@ -14973,7 +14955,7 @@ Public Class frmMain
         Dim DBTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
         Dim epCount As Integer = 0
 
-        If DBTVEpisode.FilenameID = -1 Then Return False 'skipping missing episodes
+        If DBTVEpisode.FileID = -1 Then Return False 'skipping missing episodes
 
         If DBTVEpisode.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(DBTVEpisode, showMessage) Then
             fScanner.Load_TVEpisode(DBTVEpisode, False, BatchMode, False)
@@ -14983,7 +14965,7 @@ Public Class frmMain
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
                                                      Master.eLang.GetString(738, "Remove episode from library"),
                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-                Master.DB.Delete_TVEpisode(DBTVEpisode.Filename, False, BatchMode)
+                Master.DB.Delete_TVEpisode(DBTVEpisode.FileItem.FullPath, False, BatchMode)
                 Return True
             Else
                 Return False

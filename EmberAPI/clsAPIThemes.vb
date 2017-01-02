@@ -89,15 +89,15 @@ Public Class Themes
     ''' <summary>
     ''' Delete the given arbitrary file
     ''' </summary>
-    ''' <param name="sPath"></param>
+    ''' <param name="strPath"></param>
     ''' <remarks>This version of Delete is wrapped in a try-catch block which 
     ''' will log errors before safely returning.</remarks>
-    Public Shared Sub Delete(ByVal sPath As String)
-        If Not String.IsNullOrEmpty(sPath) Then
+    Public Shared Sub Delete(ByVal strPath As String)
+        If Not String.IsNullOrEmpty(strPath) Then
             Try
-                File.Delete(sPath)
+                File.Delete(strPath)
             Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & sPath & ">")
+                logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "Param: <" & strPath & ">")
             End Try
         End If
     End Sub
@@ -107,7 +107,7 @@ Public Class Themes
     ''' <param name="tDBElement"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
     Public Shared Sub Delete_Movie(ByVal tDBElement As Database.DBElement, ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(tDBElement.Filename) Then Return
+        If Not tDBElement.FilenameSpecified Then Return
 
         Try
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTheme, ForceFileCleanup)
@@ -118,19 +118,19 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & tDBElement.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>
     ''' Delete the tv show themes
     ''' </summary>
-    ''' <param name="DBTVShow"><c>DBMovie</c> structure representing the movie on which we should operate</param>
+    ''' <param name="tDBElement"><c>DBMovie</c> structure representing the movie on which we should operate</param>
     ''' <remarks></remarks>
-    Public Shared Sub Delete_TVShow(ByVal DBTVShow As Database.DBElement) ', ByVal ForceFileCleanup As Boolean)
-        If String.IsNullOrEmpty(DBTVShow.ShowPath) Then Return
+    Public Shared Sub Delete_TVShow(ByVal tDBElement As Database.DBElement) ', ByVal ForceFileCleanup As Boolean)
+        If Not tDBElement.ShowPathSpecified Then Return
 
         Try
-            For Each a In FileUtils.GetFilenameList.TVShow(DBTVShow, Enums.ScrapeModifierType.MainTheme) ', ForceFileCleanup)
+            For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainTheme) ', ForceFileCleanup)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     If File.Exists(String.Concat(a, t)) Then
                         Delete(String.Concat(a, t))
@@ -138,7 +138,7 @@ Public Class Themes
                 Next
             Next
         Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name & Convert.ToChar(Windows.Forms.Keys.Tab) & "<" & DBTVShow.Filename & ">")
+            logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
     ''' <summary>

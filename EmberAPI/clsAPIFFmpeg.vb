@@ -69,7 +69,7 @@ Namespace FFmpeg
         ''' Generates and saves thumbnail(s) for a specific DBElement. Returns generated thumbs in ImageContainer. 
         ''' The generated thumbnail(s) won't have black bars!
         ''' </summary>
-        ''' <param name="DBElement">Movie/Show/Episode for which thumbnails should be created</param>
+        ''' <param name="tDBElement">Movie/Show/Episode for which thumbnails should be created</param>
         ''' <param name="ThumbCount">Number of thumbnails to generate</param>
         ''' <param name="VideoFileDuration">Optional: The duration of videofile in seconds. Used to calculate the timeframe between thumbs. If not specified, duration will be calculated automatically</param>
         ''' <param name="NoSpoilers">true: Don't create thumbs for second half of video. Defaults to false if not specified (create tumbnails over whole movie)</param>
@@ -84,23 +84,23 @@ Namespace FFmpeg
         ''' 4. Use all above information and execute ffmpeg statement based on "intelligent" thumbnail extracting of ffmpeg discussed here:  http://superuser.com/questions/538112/meaningful-thumbnails-for-a-video-using-ffmpeg
         ''' 5. Save created thumbs under Ember temp folder and return specified amount of thumbs (prefer larger thumbs) as list of imagecontainer
         ''' </remarks>
-        Public Shared Function GenerateThumbnailsWithoutBars(ByVal DBElement As Database.DBElement, ByVal ThumbCount As Integer, Optional ByVal VideoFileDuration As Integer = 0, Optional ByVal NoSpoilers As Boolean = False, Optional ByVal Timeout As Integer = 20000) As List(Of MediaContainers.Image)
+        Public Shared Function GenerateThumbnailsWithoutBars(ByVal tDBElement As Database.DBElement, ByVal ThumbCount As Integer, Optional ByVal VideoFileDuration As Integer = 0, Optional ByVal NoSpoilers As Boolean = False, Optional ByVal Timeout As Integer = 20000) As List(Of MediaContainers.Image)
             'set TEMP folder as savepath for thumbs
             Dim thumbPath As String = Path.Combine(Master.TempPath, "extrathumbs")
             'Retrieve the full file path to the source video file
-            Dim ScanPath = GetVideoFileScanPath(DBElement)
+            Dim ScanPath = GetVideoFileScanPath(tDBElement)
             Dim lstThumbContainer As New List(Of MediaContainers.Image)
 
 
             If String.IsNullOrEmpty(ScanPath) Then
-                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), DBElement.Filename))
+                logger.Warn(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Could not set ScanPath. Abort creation of thumbnails! File: {0}"), tDBElement.FileItem.FirstStackedPath))
                 Return lstThumbContainer
             End If
 
             'Step 1: First get the duration if necessary since it is needed to calculate the timespan between thumbs
             If VideoFileDuration = 0 Then
                 'using FFmpeg...
-                Dim s As String = GetMediaInfoByFFmpeg(DBElement, ScanPath)
+                Dim s As String = GetMediaInfoByFFmpeg(tDBElement, ScanPath)
                 If s.Contains("Duration: ") Then
                     Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
                     If Not sTime = "N/A" Then
@@ -143,7 +143,7 @@ Namespace FFmpeg
             'Step 3: (Optional) Analyze video and retrieve real screensize without black bars
             Dim cropsize As String = ""
             If Master.eSettings.MovieExtrathumbsCreatorNoBlackBars Then
-                cropsize = GetScreenSizeWithoutBars(DBElement, VideoFileDuration, ScanPath, Timeout)
+                cropsize = GetScreenSizeWithoutBars(tDBElement, VideoFileDuration, ScanPath, Timeout)
             End If
 
             'Step 4: Build FFmpeg argument, which will generate the thumbs
@@ -179,7 +179,7 @@ Namespace FFmpeg
                     args = String.Format(CultureInfo.InvariantCulture, "-ss {0} -i ""{1}"" -vf {2} -frames:v 1 -q:v 0 ""{3}"" -y", videoThumbnailPositionStr, ScanPath, cropsize, Path.Combine(thumbPath, "thumb" & i & ".jpg"))
                 End If
                 'logger.Info(String.Format(("[FFmpeg] GenerateThumbnailsWithoutBars: Args: {0}"), args))
-                output = output & ExecuteFFmpeg(args:=args, timeout:=Timeout, dbelement:=DBElement)
+                output = output & ExecuteFFmpeg(args:=args, timeout:=Timeout, dbelement:=tDBElement)
             Next
 
             'Step 5: To find most interesting thumbs and to avoid black/white thumbs we sort all generated thumbs after size and pick the largest images (because those will contain more dynamic content)
@@ -278,17 +278,17 @@ Namespace FFmpeg
                         logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Result does not contain any cropvalues? Args: {0} Output: {1}"), String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2), cropscanresult))
                     End If
                 Else
-                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.Filename, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
+                    logger.Warn(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Failure Scan! File: {0} Args: {1}"), DBElement.FileItem.FirstStackedPath, String.Format("-ss {0} -i ""{1}"" -t {2} -vf cropdetect -f null NUL", (CInt(Duration / 4) * i), ScanPath, 2)))
                 End If
             Next
 
             If sortcrops.Count < 1 Then
-                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.Filename)
+                logger.Warn("[FFmpeg] GetScreenSizeWithoutBars: Resolution not found!" & " File: " & DBElement.FileItem.FirstStackedPath)
                 Return String.Empty
             Else
                 'sort list, highest resolution on top -> this one will be returned!
                 sortcrops = sortcrops.OrderByDescending(Function(X) X.Item2).ToList
-                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.Filename))
+                logger.Info(String.Format(("[FFmpeg] GetScreenSizeWithoutBars: Resolution: {0} File: {1}"), sortcrops(0).Item1, DBElement.FileItem.FirstStackedPath))
                 Return sortcrops(0).Item1
             End If
         End Function
@@ -618,19 +618,19 @@ Namespace FFmpeg
         ''' </remarks>
         Private Shared Function GetVideoFileScanPath(ByVal DBElement As Database.DBElement) As String
             Dim videofilepath As String = String.Empty
-            Dim videofileExt As String = Path.GetExtension(DBElement.Filename).ToLower
+            Dim videofileExt As String = Path.GetExtension(DBElement.FileItem.FirstStackedPath).ToLower
             If videofileExt = ".rar" AndAlso Not videofileExt = ".img" AndAlso Not videofileExt = ".cue" Then
                 'not supported?!
             End If
             Select Case DBElement.ContentType
                 Case Enums.ContentType.Movie
-                    If FileUtils.Common.isBDRip(DBElement.Filename) Then
+                    If DBElement.FileItem.bIsBDMV Then
                         'filename points to largest m2ts file, i.e:
                         'E:\Media_1\Movie\Horror\Europa Report\BDMV\STREAM\00000.m2ts
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.Filename) Then
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedPath)
+                    ElseIf DBElement.FileItem.bIsVideoTS Then
                         'filename points to largest VOB  file
-                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.Filename)
+                        videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedPath)
                     ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
                         Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
@@ -643,7 +643,7 @@ Namespace FFmpeg
                                 '  Run_Process(ToolPath, " /u", False, True)
                                 'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
                                 Functions.Run_Process(ToolPath, """" & videofilepath & """", False, True)
-                                System.Threading.Thread.Sleep(8000)
+                                Threading.Thread.Sleep(8000)
                                 'Toolpath doesn't contain virtualclonedrive.exe -> assume daemon tools with DS type drive!
                             Else
                                 'Unmount
@@ -667,17 +667,10 @@ Namespace FFmpeg
                         End If
                         'default case
                     Else
-                        videofilepath = DBElement.Filename
+                        videofilepath = DBElement.FileItem.FirstStackedPath
                     End If
                 Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.Filename))
-                    If FileUtils.Common.isBDRip(DBElement.ShowPath) Then
-                        'no tv support for now...
-                    ElseIf FileUtils.Common.isVideoTS(DBElement.ShowPath) Then
-                        'no tv support for now...
-                    Else
-                        'no tv support for now...
-                    End If
+                    logger.Warn(String.Format(("[FFmpeg] GetVideoFileScanPath: Current DBElement is not a movie - not supported! File: {0}"), DBElement.FileItem.FirstStackedPath))
                 Case Enums.ContentType.TVEpisode
                     'no tv support for now...
             End Select

@@ -172,7 +172,9 @@
     <Compile Include="clsAPIAdvancedSettings.vb" />
     <Compile Include="clsAPIApple.vb" />
     <Compile Include="clsAPICommandLine.vb" />
+    <Compile Include="clsAPIDiscImage.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
+    <Compile Include="clsAPIFileItem.vb" />
     <Compile Include="clsAPIWindowsFormsUtils.vb">
       <SubType>Component</SubType>
     </Compile>

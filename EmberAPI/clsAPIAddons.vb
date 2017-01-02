@@ -291,7 +291,7 @@ Public Class AddonsManager
     End Sub
 
     Public Function Scrape(ByRef tDBElement As Database.DBElement) As ScrapeResults
-        logger.Trace(String.Format("[AddonsManager] [Scrape] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
 
         Dim nScrapeResults As New ScrapeResults
 
@@ -359,12 +359,12 @@ Public Class AddonsManager
             Next
         End If
 
-        logger.Trace(String.Format("[AddonsManager] [Scrape] [Done] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return nScrapeResults
     End Function
 
     Public Function Search(ByRef tDBElement As Database.DBElement) As ScrapeResults
-        logger.Trace(String.Format("[AddonsManager] [Scrape] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
 
         Dim nScrapeResults As New ScrapeResults
 
@@ -432,7 +432,7 @@ Public Class AddonsManager
             Next
         End If
 
-        logger.Trace(String.Format("[AddonsManager] [Scrape] [Done] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [Scrape] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return nScrapeResults
     End Function
 
@@ -443,7 +443,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeData_Movie(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As New Interfaces.AddonResult
@@ -458,8 +458,8 @@ Public Class AddonsManager
                 tDBElement.ImagesContainer = New MediaContainers.ImagesContainer
                 tDBElement.MainDetails = New MediaContainers.MainDetails
 
-                tDBElement.MainDetails.Title = StringUtils.FilterTitleFromPath_Movie(tDBElement.Filename, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
-                tDBElement.MainDetails.Year = StringUtils.FilterYearFromPath_Movie(tDBElement.Filename, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
+                tDBElement.MainDetails.Title = StringUtils.FilterTitleFromPath_Movie(tDBElement.FileItem, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
+                tDBElement.MainDetails.Year = StringUtils.FilterYearFromPath_Movie(tDBElement.FileItem, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
             End If
 
             'create a clone of DBMovie
@@ -506,14 +506,14 @@ Public Class AddonsManager
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Done] {0}", tDBElement.Filename))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
             Else
-                logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Done] [No Scraper Results] {0}", tDBElement.Filename))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Done] [No Scraper Results] {0}", tDBElement.FileItem.FirstStackedPath))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.bCancelled
         Else
-            logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Abort] [Offline] {0}", tDBElement.Filename))
+            logger.Trace(String.Format("[AddonsManager] [ScrapeData_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -591,7 +591,7 @@ Public Class AddonsManager
     End Function
 
     Public Function ScrapeData_TVEpisode(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
 
             For Each nModule In Addons.Where(Function(f) f.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.BeforeScraping_TVEpisode))
@@ -656,14 +656,14 @@ Public Class AddonsManager
             End If
 
             If ScrapedList.Count > 0 Then
-                logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Done] {0}", tDBElement.Filename))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
             Else
-                logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Done] [No Scraper Results] {0}", tDBElement.Filename))
+                logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Done] [No Scraper Results] {0}", tDBElement.FileItem.FirstStackedPath))
                 Return True 'TODO: need a new trigger
             End If
             Return ret.bCancelled
         Else
-            logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Abort] [Offline] {0}", tDBElement.Filename))
+            logger.Trace(String.Format("[AddonsManager] [ScrapeData_TVEpisode] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -828,7 +828,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks>Note that if no movie scrapers are enabled, a silent warning is generated.</remarks>
     Public Function ScrapeImage_Movie(ByRef tDBElement As Database.DBElement, ByRef ImagesContainer As MediaContainers.SearchResultsContainer, ByVal ScrapeModifiers As Structures.ScrapeModifiers, ByVal bShowMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
             Dim ret As New Interfaces.AddonResult
@@ -865,10 +865,10 @@ Public Class AddonsManager
                 ImagesContainer.CreateCachePaths(tDBElement)
             End If
 
-            logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Done] {0}", tDBElement.Filename))
+            logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
             Return ret.bCancelled
         Else
-            logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.Filename))
+            logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -1004,7 +1004,7 @@ Public Class AddonsManager
             logger.Trace(String.Format("[AddonsManager] [ScrapeImage_TV] [Done] {0}", tDBElement.MainDetails.Title))
             Return ret.bCancelled
         Else
-            logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.Filename))
+            logger.Trace(String.Format("[AddonsManager] [ScrapeImage_Movie] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return True 'Cancelled
         End If
     End Function
@@ -1017,7 +1017,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
     Public Function ScrapeTheme_Movie(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef ThemeList As List(Of MediaContainers.Theme)) As Boolean
-        logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As New Interfaces.AddonResult
 
@@ -1037,7 +1037,7 @@ Public Class AddonsManager
                 If ret.bBreakChain Then Exit For
             Next
         End If
-        logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Done] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeTheme_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return ret.bCancelled
     End Function
     ''' <summary>
@@ -1082,7 +1082,7 @@ Public Class AddonsManager
     ''' <returns><c>True</c> if one of the scrapers was cancelled</returns>
     ''' <remarks></remarks>
     Public Function ScrapeTrailer_Movie(ByRef tDBElement As Database.DBElement, ByVal Type As Enums.ScrapeModifierType, ByRef TrailerList As List(Of MediaContainers.Trailer)) As Boolean
-        logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         Dim modules = Addons '.Where(Function(e) e.ProcessorModule.ScraperEnabled).OrderBy(Function(e) e.ModuleOrder)
         Dim ret As New Interfaces.AddonResult
 
@@ -1102,7 +1102,7 @@ Public Class AddonsManager
                 If ret.bBreakChain Then Exit For
             Next
         End If
-        logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Done] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[AddonsManager] [ScrapeTrailer_Movie] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return ret.bCancelled
     End Function
 

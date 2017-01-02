@@ -709,7 +709,7 @@ Public Class Database
                         Save_Movie(tmpDBElement, True, True, False, True, False)
                     End If
                 Else
-                    logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip Movie (not online): ", tmpDBElement.Filename))
+                    logger.Warn(String.Concat("[Database] [Cleanup_Genres] Skip Movie (not online): ", tmpDBElement.FileItem.FirstStackedPath))
                 End If
             Next
 
@@ -1730,7 +1730,7 @@ Public Class Database
                     If Not DBNull.Value.Equals(SQLreader("DateAdded")) Then _movieDB.DateAdded = Convert.ToInt64(SQLreader("DateAdded"))
                     If Not DBNull.Value.Equals(SQLreader("DateModified")) Then _movieDB.DateModified = Convert.ToInt64(SQLreader("DateModified"))
                     If Not DBNull.Value.Equals(SQLreader("ListTitle")) Then _movieDB.ListTitle = SQLreader("ListTitle").ToString
-                    If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.Filename = SQLreader("MoviePath").ToString
+                    If Not DBNull.Value.Equals(SQLreader("MoviePath")) Then _movieDB.FileItem = New FileItem(SQLreader("MoviePath").ToString)
                     _movieDB.IsSingle = Convert.ToBoolean(SQLreader("Type"))
                     If Not DBNull.Value.Equals(SQLreader("TrailerPath")) Then _movieDB.Trailer.LocalFilePath = SQLreader("TrailerPath").ToString
                     If Not DBNull.Value.Equals(SQLreader("NfoPath")) Then _movieDB.NfoPath = SQLreader("NfoPath").ToString
@@ -1995,7 +1995,7 @@ Public Class Database
         End If
 
         'Check if the file is available and ready to edit
-        If File.Exists(_movieDB.Filename) Then _movieDB.IsOnline = True
+        If File.Exists(_movieDB.FileItem.FirstStackedPath) Then _movieDB.IsOnline = True
 
         Return _movieDB
     End Function
@@ -2311,7 +2311,7 @@ Public Class Database
 
                     _TVDB.Source = Load_Source_TVShow(Convert.ToInt64(SQLreader("idSource")))
 
-                    _TVDB.FilenameID = PathID
+                    _TVDB.FileID = PathID
                     _TVDB.IsMark = Convert.ToBoolean(SQLreader("Mark"))
                     _TVDB.IsLock = Convert.ToBoolean(SQLreader("Lock"))
                     _TVDB.ShowID = Convert.ToInt64(SQLreader("idShow"))
@@ -2347,7 +2347,9 @@ Public Class Database
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader
                 If SQLreader.HasRows Then
                     SQLreader.Read()
-                    If Not DBNull.Value.Equals(SQLreader("strFilename")) Then _TVDB.Filename = SQLreader("strFilename").ToString
+                    If Not DBNull.Value.Equals(SQLreader("strFilename")) Then
+                        _TVDB.FileItem = New FileItem(SQLreader("strFilename").ToString)
+                    End If
                 End If
             End Using
         End Using
@@ -2502,7 +2504,7 @@ Public Class Database
         End If
 
         'Check if the file is available and ready to edit
-        If File.Exists(_TVDB.Filename) Then _TVDB.IsOnline = True
+        If File.Exists(_TVDB.FileItem.FirstStackedPath) Then _TVDB.IsOnline = True
 
         Return _TVDB
     End Function
@@ -3737,24 +3739,24 @@ Public Class Database
                         Case Enums.DateTime.Now
                             par_movie_DateAdded.Value = If(Not _movieDB.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _movieDB.DateAdded)
                         Case Enums.DateTime.ctime
-                            Dim ctime As Date = File.GetCreationTime(_movieDB.Filename)
+                            Dim ctime As Date = File.GetCreationTime(_movieDB.FileItem.FirstStackedPath)
                             If ctime.Year > 1601 Then
                                 par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             Else
-                                Dim mtime As Date = File.GetLastWriteTime(_movieDB.Filename)
+                                Dim mtime As Date = File.GetLastWriteTime(_movieDB.FileItem.FirstStackedPath)
                                 par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             End If
                         Case Enums.DateTime.mtime
-                            Dim mtime As Date = File.GetLastWriteTime(_movieDB.Filename)
+                            Dim mtime As Date = File.GetLastWriteTime(_movieDB.FileItem.FirstStackedPath)
                             If mtime.Year > 1601 Then
                                 par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
-                                Dim ctime As Date = File.GetCreationTime(_movieDB.Filename)
+                                Dim ctime As Date = File.GetCreationTime(_movieDB.FileItem.FirstStackedPath)
                                 par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             End If
                         Case Enums.DateTime.Newer
-                            Dim mtime As Date = File.GetLastWriteTime(_movieDB.Filename)
-                            Dim ctime As Date = File.GetCreationTime(_movieDB.Filename)
+                            Dim mtime As Date = File.GetLastWriteTime(_movieDB.FileItem.FirstStackedPath)
+                            Dim ctime As Date = File.GetCreationTime(_movieDB.FileItem.FirstStackedPath)
                             If mtime > ctime Then
                                 par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
@@ -3824,7 +3826,7 @@ Public Class Database
                 _movieDB.Trailer.SaveAllTrailers(_movieDB, bForceFileCleanup)
             End If
 
-            par_movie_MoviePath.Value = _movieDB.Filename
+            par_movie_MoviePath.Value = _movieDB.FileItem.FullPath
             par_movie_Type.Value = _movieDB.IsSingle
             par_movie_ListTitle.Value = _movieDB.ListTitle
 
@@ -4536,14 +4538,14 @@ Public Class Database
         Using SQLPCommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
 
             'first step: remove all existing episode informations for this file and set it to "Missing"
-            Delete_TVEpisode(_episode.Filename, False, True)
+            Delete_TVEpisode(_episode.FileItem.FullPath, False, True)
 
             'second step: create new episode DBElements and save it to database
             For Each tEpisode As MediaContainers.MainDetails In ListOfEpisodes
                 Dim newEpisode As New DBElement(Enums.ContentType.TVEpisode)
                 newEpisode = New DBElement(Enums.ContentType.TVEpisode)
                 newEpisode = CType(_episode.CloneDeep, DBElement)
-                newEpisode.FilenameID = -1
+                newEpisode.FileID = -1
                 newEpisode.ID = -1
                 newEpisode.MainDetails = tEpisode
                 newEpisode.MainDetails.FileInfo = _episode.MainDetails.FileInfo
@@ -4581,14 +4583,14 @@ Public Class Database
         End Using
 
         If _episode.FilenameSpecified Then
-            If _episode.FilenameIDSpecified Then
+            If _episode.FileIDSpecified Then
                 Using SQLpathcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                     SQLpathcommand.CommandText = String.Concat("INSERT OR REPLACE INTO files (idFile, strFilename) VALUES (?,?);")
 
                     Dim parID As SQLiteParameter = SQLpathcommand.Parameters.Add("parFileID", DbType.Int64, 0, "idFile")
                     Dim parFilename As SQLiteParameter = SQLpathcommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
-                    parID.Value = _episode.FilenameID
-                    parFilename.Value = _episode.Filename
+                    parID.Value = _episode.FileID
+                    parFilename.Value = _episode.FileItem.FullPath
                     SQLpathcommand.ExecuteNonQuery()
                 End Using
             Else
@@ -4596,20 +4598,20 @@ Public Class Database
                     SQLpathcommand.CommandText = "SELECT idFile FROM files WHERE strFilename = (?);"
 
                     Dim parPath As SQLiteParameter = SQLpathcommand.Parameters.Add("parFilename", DbType.String, 0, "strFilename")
-                    parPath.Value = _episode.Filename
+                    parPath.Value = _episode.FileItem.FullPath
 
                     Using SQLreader As SQLiteDataReader = SQLpathcommand.ExecuteReader
                         If SQLreader.HasRows Then
                             SQLreader.Read()
-                            _episode.FilenameID = Convert.ToInt64(SQLreader("idFile"))
+                            _episode.FileID = Convert.ToInt64(SQLreader("idFile"))
                         Else
                             Using SQLpcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
                                 SQLpcommand.CommandText = String.Concat("INSERT INTO files (",
                                      "strFilename) VALUES (?); SELECT LAST_INSERT_ROWID() FROM files;")
                                 Dim parEpPath As SQLiteParameter = SQLpcommand.Parameters.Add("parEpPath", DbType.String, 0, "strFilename")
-                                parEpPath.Value = _episode.Filename
+                                parEpPath.Value = _episode.FileItem.FullPath
 
-                                _episode.FilenameID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
+                                _episode.FileID = Convert.ToInt64(SQLpcommand.ExecuteScalar)
                             End Using
                         End If
                     End Using
@@ -4675,24 +4677,24 @@ Public Class Database
                         Case Enums.DateTime.Now
                             parDateAdded.Value = If(Not _episode.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), _episode.DateAdded)
                         Case Enums.DateTime.ctime
-                            Dim ctime As Date = File.GetCreationTime(_episode.Filename)
+                            Dim ctime As Date = File.GetCreationTime(_episode.FileItem.FirstStackedPath)
                             If ctime.Year > 1601 Then
                                 parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             Else
-                                Dim mtime As Date = File.GetLastWriteTime(_episode.Filename)
+                                Dim mtime As Date = File.GetLastWriteTime(_episode.FileItem.FirstStackedPath)
                                 parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             End If
                         Case Enums.DateTime.mtime
-                            Dim mtime As Date = File.GetLastWriteTime(_episode.Filename)
+                            Dim mtime As Date = File.GetLastWriteTime(_episode.FileItem.FirstStackedPath)
                             If mtime.Year > 1601 Then
                                 parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
-                                Dim ctime As Date = File.GetCreationTime(_episode.Filename)
+                                Dim ctime As Date = File.GetCreationTime(_episode.FileItem.FirstStackedPath)
                                 parDateAdded.Value = Functions.ConvertToUnixTimestamp(ctime)
                             End If
                         Case Enums.DateTime.Newer
-                            Dim mtime As Date = File.GetLastWriteTime(_episode.Filename)
-                            Dim ctime As Date = File.GetCreationTime(_episode.Filename)
+                            Dim mtime As Date = File.GetLastWriteTime(_episode.FileItem.FirstStackedPath)
+                            Dim ctime As Date = File.GetCreationTime(_episode.FileItem.FirstStackedPath)
                             If mtime > ctime Then
                                 parDateAdded.Value = Functions.ConvertToUnixTimestamp(mtime)
                             Else
@@ -4730,7 +4732,7 @@ Public Class Database
 
             'First let's save it to NFO, even because we will need the NFO path, also save Images
             'art Table be be linked later
-            If _episode.FilenameIDSpecified Then
+            If _episode.FileIDSpecified Then
                 If bToNFO Then NFO.SaveToNFO_TVEpisode(_episode)
                 If bToDisk Then
                     _episode.ImagesContainer.SaveAllImages(_episode, False)
@@ -4743,7 +4745,7 @@ Public Class Database
             parHasSub.Value = (_episode.Subtitles IsNot Nothing AndAlso _episode.Subtitles.Count > 0) OrElse _episode.MainDetails.FileInfo.StreamDetails.Subtitle.Count > 0
             parNew.Value = bForceIsNewFlag OrElse Not _episode.IDSpecified
             parMark.Value = _episode.IsMark
-            parTVFileID.Value = _episode.FilenameID
+            parTVFileID.Value = _episode.FileID
             parLock.Value = _episode.IsLock
             parSourceID.Value = _episode.Source.ID
             parVideoSource.Value = _episode.VideoSource
@@ -4967,7 +4969,7 @@ Public Class Database
         End Using
         If Not bBatchMode Then SQLtransaction.Commit()
 
-        If _episode.FilenameIDSpecified AndAlso bDoSync Then
+        If _episode.FileIDSpecified AndAlso bDoSync Then
             AddonsManager.Instance.RunGeneric(Enums.AddonEventType.Sync_TVEpisode, Nothing, Nothing, False, _episode)
         End If
 
@@ -5550,8 +5552,8 @@ Public Class Database
         Private _episodesorting As Enums.EpisodeSorting
         Private _extrafanartspath As String
         Private _extrathumbspath As String
-        Private _filename As String
-        Private _filenameid As Long
+        Private _fileid As Long
+        Private _fileitem As FileItem
         Private _id As Long
         Private _imagescontainer As New MediaContainers.ImagesContainer
         Private _islock As Boolean
@@ -5689,33 +5691,33 @@ Public Class Database
             End Get
         End Property
 
-        Public Property Filename() As String
+        Public Property FileID() As Long
             Get
-                Return _filename
+                Return _fileid
             End Get
-            Set(ByVal value As String)
-                _filename = value
+            Set(ByVal value As Long)
+                _fileid = value
+            End Set
+        End Property
+
+        Public ReadOnly Property FileIDSpecified() As Boolean
+            Get
+                Return Not _fileid = -1
+            End Get
+        End Property
+
+        Public Property FileItem() As FileItem
+            Get
+                Return _fileitem
+            End Get
+            Set(ByVal value As FileItem)
+                _fileitem = value
             End Set
         End Property
 
         Public ReadOnly Property FilenameSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_filename)
-            End Get
-        End Property
-
-        Public Property FilenameID() As Long
-            Get
-                Return _filenameid
-            End Get
-            Set(ByVal value As Long)
-                _filenameid = value
-            End Set
-        End Property
-
-        Public ReadOnly Property FilenameIDSpecified() As Boolean
-            Get
-                Return Not _filenameid = -1
+                Return Not String.IsNullOrEmpty(_fileitem.FullPath)
             End Get
         End Property
 
@@ -6101,8 +6103,7 @@ Public Class Database
             _episodesorting = Enums.EpisodeSorting.Episode
             _extrafanartspath = String.Empty
             _extrathumbspath = String.Empty
-            _filename = String.Empty
-            _filenameid = -1
+            _fileid = -1
             _id = -1
             _imagescontainer = New MediaContainers.ImagesContainer
             _islock = False

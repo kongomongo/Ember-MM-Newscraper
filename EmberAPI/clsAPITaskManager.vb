@@ -183,7 +183,7 @@ Public Class TaskManager
                                         End Using
                                     End Using
 
-                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(SQLReader_GetMovies("MoviePath").ToString, bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
+                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(New FileItem(SQLReader_GetMovies("MoviePath").ToString), bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
 
                                     If Not bLevFail_OldValue = bLevFail_NewValue Then
                                         par_OutOfTolerance.Value = bLevFail_NewValue

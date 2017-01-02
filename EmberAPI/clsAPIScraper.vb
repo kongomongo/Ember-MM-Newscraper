@@ -49,7 +49,7 @@ Public Class Scraper
     'End Function
 
     Public Function Run(ByRef tDBElement As Database.DBElement, ByVal bShowMessage As Boolean) As Boolean
-        logger.Trace(String.Format("[Scraper] [Run] [Start] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[Scraper] [Run] [Start] {0}", tDBElement.FileItem.FirstStackedPath))
         If tDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(tDBElement, bShowMessage) Then
             If tDBElement.MainDetails.AnyUniqueIDSpecified Then
                 'Dim nSearchResults As AddonsManager.ScrapeResults = AddonsManager.Instance.Search(tDBElement)
@@ -76,11 +76,11 @@ Public Class Scraper
                 End If
             End If
         Else
-            logger.Trace(String.Format("[Scraper] [Run] [Abort] [Offline] {0}", tDBElement.Filename))
+            logger.Trace(String.Format("[Scraper] [Run] [Abort] [Offline] {0}", tDBElement.FileItem.FirstStackedPath))
             Return False
         End If
 
-        logger.Trace(String.Format("[Scraper] [Run] [Done] {0}", tDBElement.Filename))
+        logger.Trace(String.Format("[Scraper] [Run] [Done] {0}", tDBElement.FileItem.FirstStackedPath))
         Return True
     End Function
 

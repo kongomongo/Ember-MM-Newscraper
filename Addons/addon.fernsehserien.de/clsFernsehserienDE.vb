@@ -79,7 +79,7 @@ Public Class clsFernsehserienDE
                 Dim iPage As Integer = 0
                 Dim iMaxPages As Integer = 10
 
-                Dim rRegexFilename = Regex.Match(tDBElement.Filename, _addonsettings.RegexFilename, RegexOptions.IgnoreCase)
+                Dim rRegexFilename = Regex.Match(tDBElement.FileItem.FirstStackedPath, _addonsettings.RegexFilename, RegexOptions.IgnoreCase)
 
                 If rRegexFilename.Success Then
                     Dim strStation As String = rRegexFilename.Groups("STATION").Value
