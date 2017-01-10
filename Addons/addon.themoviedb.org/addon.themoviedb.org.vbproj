@@ -133,8 +133,8 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="TMDbLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\TMDbLib.1.0.0\lib\net45\TMDbLib.dll</HintPath>
+    <Reference Include="TMDbLib, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\TMDbLib.1.0.2-alpha\lib\net45\TMDbLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

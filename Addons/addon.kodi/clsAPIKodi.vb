@@ -1667,29 +1667,6 @@ Namespace Kodi
             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", _currenthost.Label & " | " & Master.eLang.GetString(1448, "Updating Video Library...") & " OK!", New Bitmap(My.Resources.logo)))
         End Sub
         ''' <summary>
-        ''' Scan video library of Kodi host
-        ''' </summary>
-        ''' <returns>string with status message, if failed: Nothing</returns>
-        ''' <remarks>
-        ''' 2015/06/27 Cocotus - First implementation
-        ''' </remarks>
-        Public Async Function VideoLibrary_Scan() As Task(Of String)
-            If _kodi Is Nothing Then
-                logger.Error("[APIKodi] VideoLibrary_Scan: No host initialized! Abort!")
-                Return Nothing
-            End If
-
-            Try
-                Dim response As String = String.Empty
-                response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
-                logger.Trace("[APIKodi] VideoLibrary_Scan: " & _currenthost.Label)
-                Return response
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-                Return Nothing
-            End Try
-        End Function
-        ''' <summary>
         ''' Scan specific directory for new content
         ''' </summary>
         ''' <param name="tDBElement"></param>
@@ -1705,15 +1682,6 @@ Namespace Kodi
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     strLocalPath = tDBElement.FileItem.MainPath.FullName
-                    'If FileUtils.Common.isBDRip(tDBElement.Filename) OrElse FileUtils.Common.isVideoTS(tDBElement.Filename) Then
-                    '    strLocalPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
-                    'Else
-                    '    If Path.GetFileNameWithoutExtension(tDBElement.Filename).ToLower = "video_ts" Then
-                    '        strLocalPath = Directory.GetParent(Directory.GetParent(tDBElement.Filename).FullName).FullName
-                    '    Else
-                    '        strLocalPath = FileUtils.Common.GetMainPath(tDBElement.Filename).FullName
-                    '    End If
-                    'End If
                 Case Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                     'workaround for bug in Kodi JSON (needs DirectorySeparatorChar at the end of path to recognize new tv shows)
                     If tDBElement.ShowPath.Contains(Path.DirectorySeparatorChar) Then
@@ -1738,6 +1706,29 @@ Namespace Kodi
             Else
                 Return True
             End If
+        End Function
+        ''' <summary>
+        ''' Scan video library of Kodi host
+        ''' </summary>
+        ''' <returns>string with status message, if failed: Nothing</returns>
+        ''' <remarks>
+        ''' 2015/06/27 Cocotus - First implementation
+        ''' </remarks>
+        Public Async Function VideoLibrary_ScanState() As Task(Of String)
+            If _kodi Is Nothing Then
+                logger.Error("[APIKodi] VideoLibrary_Scan: No host initialized! Abort!")
+                Return Nothing
+            End If
+
+            Try
+                Dim response As String = String.Empty
+                response = Await _kodi.VideoLibrary.Scan.ConfigureAwait(False)
+                logger.Trace("[APIKodi] VideoLibrary_Scan: " & _currenthost.Label)
+                Return response
+            Catch ex As Exception
+                logger.Error(ex, New StackFrame().GetMethod().Name)
+                Return Nothing
+            End Try
         End Function
         ''' <summary>
         ''' Send message to Kodi which is displayed as notification

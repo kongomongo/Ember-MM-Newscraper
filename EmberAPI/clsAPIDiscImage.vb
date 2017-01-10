@@ -24,7 +24,7 @@ Public Class DiscImage
 
     Private _bismounted As Boolean
     Private _strcommandunmount As String
-    Private _strDriveletter As String
+    Private _strDriveLetter As String
 
 #End Region  'Fields
 
@@ -40,13 +40,17 @@ Public Class DiscImage
 
     Public ReadOnly Property IsMounted() As Boolean
         Get
-            Return _bismounted
+            Return Not String.IsNullOrEmpty(_strDriveLetter)
         End Get
     End Property
 
-    Public ReadOnly Property Driveletter() As String
+    Public ReadOnly Property Path() As String
         Get
-            Return _strDriveletter
+            If Not String.IsNullOrEmpty(_strDriveLetter) Then
+                Return String.Concat(_strDriveLetter, ":\")
+            Else
+                Return String.Empty
+            End If
         End Get
     End Property
 
@@ -57,10 +61,10 @@ Public Class DiscImage
     Public Sub Clear()
         _bismounted = False
         _strcommandunmount = String.Empty
-        _strDriveletter = String.Empty
+        _strDriveLetter = String.Empty
     End Sub
 
-    Public Function Mount(strPath As String) As Boolean
+    Public Sub Mount(ByVal strPath As String)
         'ISO-File Scanning using either DAIMON Tools / VCDMount.exe to mount and read file!
         Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F"
         'Toolpath either VCDMOUNT.exe or DTLite.exe!
@@ -77,6 +81,7 @@ Public Class DiscImage
                 'Mount
                 'Mount ISO on virtual drive, i.e c:\Program Files (x86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe U:\isotest\test2iso.ISO
                 Functions.Run_Process(strToolPath, """" & strPath & """", False, True)
+                _strDriveLetter = driveletter
 
                 'Toolpath doesn't contain vcdmount.exe -> assume daemon tools with DS type drive!
             Else
@@ -86,14 +91,15 @@ Public Class DiscImage
                 'Mount
                 'Mount ISO on Daemon Tools (Lite), i.e. C:\Program Files\DAEMON Tools Lite\DTAgent.exe -mount dt, 0, "U:\isotest\test2iso.ISO"
                 Functions.Run_Process(strToolPath, String.Format("-mount dt, 0, ""{0}""", strPath), False, True)
+                _strDriveLetter = driveletter
             End If
         End If
-        Return True
-    End Function
+    End Sub
 
     Public Sub Unmount()
         If Not String.IsNullOrEmpty(_strcommandunmount) Then
             Functions.Run_Process(Master.eSettings.GeneralDaemonPath, _strcommandunmount, False, True)
+            _strDriveLetter = String.Empty
         End If
     End Sub
 

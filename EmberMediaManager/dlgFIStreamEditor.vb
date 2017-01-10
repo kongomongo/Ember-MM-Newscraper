@@ -154,7 +154,7 @@ Public Class dlgFIStreamEditor
     Private Sub cbVideoMultiViewLayout_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbVideoMultiViewLayout.SelectedIndexChanged
         If Not cbVideoMultiViewLayout.Text = String.Empty Then
             txtVideoMultiViewCount.Text = "2"
-            txtVideoStereoMode.Text = MediaInfo.ConvertVideoStereoMode(cbVideoMultiViewLayout.Text)
+            txtVideoStereoMode.Text = MetaData.ConvertVideoStereoMode(cbVideoMultiViewLayout.Text)
         End If
     End Sub
 

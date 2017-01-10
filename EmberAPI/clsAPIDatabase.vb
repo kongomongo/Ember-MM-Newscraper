@@ -1489,18 +1489,12 @@ Public Class Database
 
     Public Function GetAll_MoviePaths() As List(Of String)
         Dim tList As New List(Of String)
-        Dim mPath As String = String.Empty
 
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
             SQLcommand.CommandText = "SELECT MoviePath FROM movie;"
             Using SQLreader As SQLiteDataReader = SQLcommand.ExecuteReader()
                 While SQLreader.Read
-                    mPath = SQLreader("MoviePath").ToString.ToLower
-                    If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(mPath)) Then
-                        tList.Add(mPath)
-                    Else
-                        tList.Add(FileUtils.Common.RemoveStackingMarkers(mPath))
-                    End If
+                    tList.Add(SQLreader("MoviePath").ToString.ToLower)
                 End While
             End Using
         End Using

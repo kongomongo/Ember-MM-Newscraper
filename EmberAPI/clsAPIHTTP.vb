@@ -195,7 +195,7 @@ Public Class HTTP
     Public Function PostDownloadData(ByVal URL As String, ByVal postDataList As List(Of String())) As String
         Dim sResponse As String = String.Empty
         Dim cEncoding As System.Text.Encoding
-        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(DateTime.Now)).ToString
+        Dim Idboundary As String = Convert.ToInt64(Functions.ConvertToUnixTimestamp(Date.Now)).ToString
         Dim Boundary As String = String.Format("--{0}", Idboundary)
         Dim postDataBytes As New List(Of Byte())
         Clear()

@@ -6054,7 +6054,7 @@ Namespace MediaContainers
         <XmlIgnore>
         Public ReadOnly Property ShortStereoMode() As String
             Get
-                Return ConvertVStereoToShort(_stereomode).Trim()
+                Return ConvertVStereoToShort()
             End Get
         End Property
 
@@ -6118,19 +6118,16 @@ Namespace MediaContainers
 
 #Region "Methods"
 
-        Public Shared Function ConvertVStereoToShort(ByVal sFormat As String) As String
-            If Not String.IsNullOrEmpty(sFormat) Then
-                Dim tFormat As String = String.Empty
-                Select Case sFormat.ToLower
+        Public Function ConvertVStereoToShort() As String
+            If Not String.IsNullOrEmpty(_stereomode.Trim) Then
+                Select Case _stereomode.Trim.ToLower
                     Case "bottom_top"
-                        tFormat = "tab"
+                        Return "tab"
                     Case "left_right", "right_left"
-                        tFormat = "sbs"
+                        Return "sbs"
                     Case Else
-                        tFormat = "unknown"
+                        Return "unknown"
                 End Select
-
-                Return tFormat
             Else
                 Return String.Empty
             End If

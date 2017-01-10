@@ -104,7 +104,7 @@ Namespace FFmpeg
                 If s.Contains("Duration: ") Then
                     Dim sTime As String = Regex.Match(s, "Duration: (?<dur>.*?),").Groups("dur").ToString
                     If Not sTime = "N/A" Then
-                        Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", DateTime.Today.ToString("d"), sTime))).Subtract(CDate(DateTime.Today))
+                        Dim ts As TimeSpan = CDate(CDate(String.Format("{0} {1}", Date.Today.ToString("d"), sTime))).Subtract(CDate(Date.Today))
                         VideoFileDuration = ((ts.Hours * 60) + ts.Minutes) * 60 + ts.Seconds
                     End If
                 End If

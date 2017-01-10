@@ -207,7 +207,7 @@ Public Class FileItem
     Private Function IsDiscImage() As Boolean
         If Not bIsDirectory Then
             Dim strExtensions() As String = {".bin", ".img", ".iso", ".nrg"}
-            If strExtensions.Contains(_fileinfo.Extension.ToLower) Then Return True
+            Return strExtensions.Contains(_fileinfo.Extension.ToLower)
         End If
         Return False
     End Function
@@ -215,7 +215,7 @@ Public Class FileItem
     Private Function IsOnline() As Boolean
         If Not bIsDirectory Then
             If Not String.IsNullOrEmpty(GetFirstStackedPath) Then
-                If File.Exists(_strpath) Then Return True
+                Return File.Exists(_strpath)
             End If
         Else
             If Directory.Exists(GetFirstStackedPath) Then Return True
@@ -226,7 +226,7 @@ Public Class FileItem
     Private Function IsRAR() As Boolean
         If Not bIsDirectory Then
             Dim strExtensions() As String = {".rar"}
-            If strExtensions.Contains(_fileinfo.Extension.ToLower) Then Return True
+            Return strExtensions.Contains(_fileinfo.Extension.ToLower)
         End If
         Return False
     End Function
@@ -234,14 +234,13 @@ Public Class FileItem
     Private Function IsDiscStub() As Boolean
         If Not bIsDirectory Then
             Dim strExtensions() As String = {".disc"}
-            If strExtensions.Contains(_fileinfo.Extension.ToLower) Then Return True
+            Return strExtensions.Contains(_fileinfo.Extension.ToLower)
         End If
         Return False
     End Function
 
     Private Function IsStack() As Boolean
-        If _strpath.StartsWith("stack://") Then Return True
-        Return False
+        Return _strpath.StartsWith("stack://")
     End Function
 
     Private Function IsVideoTS() As Boolean
@@ -273,25 +272,34 @@ Public Class FileItemList
         Clear()
     End Sub
 
-    Public Sub New(strPath As String)
+    Public Sub New(ByVal strPath As String, ByVal tContentType As Enums.ContentType)
         Clear()
-        Dim diPath As DirectoryInfo = New DirectoryInfo(strPath)
 
+        Dim intSkipLessThan As Integer = 0
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                intSkipLessThan = Master.eSettings.MovieSkipLessThan
+            Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                intSkipLessThan = Master.eSettings.TVSkipLessThan
+        End Select
+
+        Dim diPath As DirectoryInfo = New DirectoryInfo(strPath)
         'get all paths
-        Dim lstDirectories = diPath.GetDirectories
+        Dim lstDirectories = diPath.GetDirectories.Where(Function(f) FileUtils.Common.IsValidDir(f, tContentType))
         For Each nDirectoryInfo In lstDirectories
             _fileitemlist.Add(New FileItem(nDirectoryInfo))
         Next
 
         'get all files
-        Dim lstFiles = diPath.GetFiles.Where(
-            Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-            Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsXMLAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
-            ((Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))
-            ).OrderBy(Function(f) f.FullName)
+        Dim lstFiles = diPath.GetFiles.Where(Function(f) _
+                                                 Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
+                                                 Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsXMLAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
+                                                 ((Not intSkipLessThan > 0 OrElse f.Length >= intSkipLessThan * 1048576))
+                                                 ).OrderBy(Function(f) f.FullName)
         For Each nFileInfo In lstFiles
             _fileitemlist.Add(New FileItem(nFileInfo))
         Next
+        Stack()
     End Sub
 
 #End Region 'Constructors
@@ -357,12 +365,12 @@ Public Class FileItemList
         _fileitemlist.Remove(tFileItem)
     End Sub
 
-    Public Sub Stack()
+    Private Sub Stack()
         StackFolders()
         StackFiles()
     End Sub
 
-    Public Sub StackFolders()
+    Private Sub StackFolders()
         Dim strFolderStackingPattern As String = clsXMLAdvancedSettings.GetSetting("FolderStacking", "((cd|dvd|dis[ck])[0-9]+)$")
 
         'stack folders
@@ -373,29 +381,31 @@ Public Class FileItemList
                 'folder stacking is disabled, does not work in Kodi
                 'we only check for VIDEO_TS and BDMV structure
 
-                'check if VIDEO_TS
-                Dim strPath As String = Path.Combine(tFileItem1.FirstStackedPath, "VIDEO_TS.IFO")
-                If File.Exists(strPath) Then
-                    'VIDEO_TS structure found, change folder to file
-                    _fileitemlist(i) = New FileItem(strPath)
-                Else
-                    strPath = Path.Combine(tFileItem1.FirstStackedPath, "VIDEO_TS")
-                    strPath = Path.Combine(strPath, "VIDEO_TS.IFO")
+                If tFileItem1 IsNot Nothing Then
+                    'check if VIDEO_TS
+                    Dim strPath As String = Path.Combine(tFileItem1.FirstStackedPath, "VIDEO_TS.IFO")
                     If File.Exists(strPath) Then
                         'VIDEO_TS structure found, change folder to file
                         _fileitemlist(i) = New FileItem(strPath)
                     Else
-                        'check if BDMV
-                        strPath = Path.Combine(tFileItem1.FirstStackedPath, "index.bdmv")
+                        strPath = Path.Combine(tFileItem1.FirstStackedPath, "VIDEO_TS")
+                        strPath = Path.Combine(strPath, "VIDEO_TS.IFO")
                         If File.Exists(strPath) Then
-                            'BDMV structure found, change folder to file
+                            'VIDEO_TS structure found, change folder to file
                             _fileitemlist(i) = New FileItem(strPath)
                         Else
-                            strPath = Path.Combine(tFileItem1.FirstStackedPath, "BDMV")
-                            strPath = Path.Combine(strPath, "index.bdmv")
+                            'check if BDMV
+                            strPath = Path.Combine(tFileItem1.FirstStackedPath, "index.bdmv")
                             If File.Exists(strPath) Then
                                 'BDMV structure found, change folder to file
                                 _fileitemlist(i) = New FileItem(strPath)
+                            Else
+                                strPath = Path.Combine(tFileItem1.FirstStackedPath, "BDMV")
+                                strPath = Path.Combine(strPath, "index.bdmv")
+                                If File.Exists(strPath) Then
+                                    'BDMV structure found, change folder to file
+                                    _fileitemlist(i) = New FileItem(strPath)
+                                End If
                             End If
                         End If
                     End If
@@ -405,7 +415,7 @@ Public Class FileItemList
         End While
     End Sub
 
-    Public Sub StackFiles()
+    Private Sub StackFiles()
         Dim strFileStackingPattern As String = clsXMLAdvancedSettings.GetSetting("FileStacking", "(.*?)([ _.-]*(?:cd|dvd|p(?:ar)?t|dis[ck])[ _.-]*[0-9]+)(.*?)(\.[^.]+)$")
 
         'now stack the files, some of which may be from the previous stack iteration
@@ -417,46 +427,48 @@ Public Class FileItemList
                 Dim strStackName As String = String.Empty
                 Dim tFileItem1 As FileItem = GetItem(i)
 
-                Dim rResultFileItem1 As Match = Regex.Match(tFileItem1.FileInfo.Name, strFileStackingPattern, RegexOptions.IgnoreCase)
-                If rResultFileItem1.Success Then
-                    Dim strTitle1 As String = rResultFileItem1.Groups(1).Value
-                    Dim strVolume1 As String = rResultFileItem1.Groups(2).Value
-                    Dim strIgnore1 As String = rResultFileItem1.Groups(3).Value
-                    Dim strExtension1 As String = rResultFileItem1.Groups(4).Value
+                If tFileItem1 IsNot Nothing Then
+                    Dim rResultFileItem1 As Match = Regex.Match(tFileItem1.FileInfo.Name, strFileStackingPattern, RegexOptions.IgnoreCase)
+                    If rResultFileItem1.Success Then
+                        Dim strTitle1 As String = rResultFileItem1.Groups(1).Value
+                        Dim strVolume1 As String = rResultFileItem1.Groups(2).Value
+                        Dim strIgnore1 As String = rResultFileItem1.Groups(3).Value
+                        Dim strExtension1 As String = rResultFileItem1.Groups(4).Value
 
-                    Dim j As Integer = i + 1
-                    While j < _fileitemlist.Count
-                        Dim tFileItem2 As FileItem = GetItem(j)
+                        Dim j As Integer = i + 1
+                        While j < _fileitemlist.Count
+                            Dim tFileItem2 As FileItem = GetItem(j)
 
-                        Dim rResultFileItem2 As Match = Regex.Match(tFileItem2.FileInfo.Name, strFileStackingPattern, RegexOptions.IgnoreCase)
-                        If rResultFileItem2.Success Then
-                            Dim strTitle2 As String = rResultFileItem2.Groups(1).Value
-                            Dim strVolume2 As String = rResultFileItem2.Groups(2).Value
-                            Dim strIgnore2 As String = rResultFileItem2.Groups(3).Value
-                            Dim strExtension2 As String = rResultFileItem2.Groups(4).Value
+                            Dim rResultFileItem2 As Match = Regex.Match(tFileItem2.FileInfo.Name, strFileStackingPattern, RegexOptions.IgnoreCase)
+                            If rResultFileItem2.Success Then
+                                Dim strTitle2 As String = rResultFileItem2.Groups(1).Value
+                                Dim strVolume2 As String = rResultFileItem2.Groups(2).Value
+                                Dim strIgnore2 As String = rResultFileItem2.Groups(3).Value
+                                Dim strExtension2 As String = rResultFileItem2.Groups(4).Value
 
-                            If strTitle1.ToLower = strTitle2.ToLower Then
-                                If Not strVolume1.ToLower = strVolume2.ToLower Then
-                                    If strIgnore1.ToLower = strIgnore2.ToLower AndAlso strExtension1.ToLower = strExtension2.ToLower Then
-                                        If iStack.Count = 0 Then
-                                            strStackName = String.Concat(strTitle1, strIgnore1, strExtension1)
-                                            iStack.Add(i)
-                                            lngSize = tFileItem1.FileInfo.Length
+                                If strTitle1.ToLower = strTitle2.ToLower Then
+                                    If Not strVolume1.ToLower = strVolume2.ToLower Then
+                                        If strIgnore1.ToLower = strIgnore2.ToLower AndAlso strExtension1.ToLower = strExtension2.ToLower Then
+                                            If iStack.Count = 0 Then
+                                                strStackName = String.Concat(strTitle1, strIgnore1, strExtension1)
+                                                iStack.Add(i)
+                                                lngSize = tFileItem1.FileInfo.Length
+                                            End If
+                                            iStack.Add(j)
+                                            lngSize = tFileItem2.FileInfo.Length
+                                        Else 'Sequel
+                                            Exit While
                                         End If
-                                        iStack.Add(j)
-                                        lngSize = tFileItem2.FileInfo.Length
-                                    Else 'Sequel
+                                    Else 'False positive, try again with offset
                                         Exit While
                                     End If
-                                Else 'False positive, try again with offset
+                                Else 'Title mismatch
                                     Exit While
                                 End If
-                            Else 'Title mismatch
-                                Exit While
                             End If
-                        End If
-                        j += 1
-                    End While
+                            j += 1
+                        End While
+                    End If
                 End If
 
                 If iStack.Count > 1 Then

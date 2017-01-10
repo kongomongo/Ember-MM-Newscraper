@@ -1210,7 +1210,7 @@ Public Class Functions
     ''' <exception cref="ArgumentException"> thrown when <paramref name="timestamp"/> is <c>Double.NAN</c>.</exception>
     ''' <exception cref="ArgumentOutOfRangeException"> thrown when <paramref name="timestamp"/> is <c>Double.NegativeInfinity</c> or <c>Double.PositiveInfinity</c>,
     ''' or if resulting <c>DateTime</c> would be outside the bounds of Jan 1, 0001 and Dec 31, 9999</exception>
-    Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As DateTime
+    Public Shared Function ConvertFromUnixTimestamp(ByVal timestamp As Double) As Date
         If timestamp.CompareTo(Double.NaN) = 0 Then
             Throw New ArgumentException("Parameter was not a number (Double.NAN)", "timestamp")
         End If
@@ -1222,7 +1222,7 @@ Public Class Functions
         If timestamp > 253402300799.0R OrElse timestamp < -62135596800.0R Then
             Throw New ArgumentOutOfRangeException("timestamp", timestamp, "timestamp must resolve between Jan 1, 0001 and Dec 31, 9999")
         End If
-        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+        Dim origin As Date = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Return origin.AddSeconds(timestamp)
     End Function
     ''' <summary>
@@ -1231,8 +1231,8 @@ Public Class Functions
     ''' <param name="data">A valid VB-style DateTime</param>
     ''' <returns>A value representing the DateTime as a unix-style timestamp <c>Double</c></returns>
     ''' <remarks></remarks>
-    Public Shared Function ConvertToUnixTimestamp(ByVal data As DateTime) As Double
-        Dim origin As DateTime = New DateTime(1970, 1, 1, 0, 0, 0, 0)
+    Public Shared Function ConvertToUnixTimestamp(ByVal data As Date) As Double
+        Dim origin As Date = New DateTime(1970, 1, 1, 0, 0, 0, 0)
         Dim diff As System.TimeSpan = data - origin
         Return Math.Floor(diff.TotalSeconds)
     End Function
@@ -1240,8 +1240,8 @@ Public Class Functions
     Public Shared Function ConvertToProperDateTime(ByVal strDateTime As String) As String
         If String.IsNullOrEmpty(strDateTime) Then Return String.Empty
 
-        Dim parsedDateTime As DateTime
-        If DateTime.TryParse(strDateTime, parsedDateTime) Then
+        Dim parsedDateTime As Date
+        If Date.TryParse(strDateTime, parsedDateTime) Then
             Return parsedDateTime.ToString("yyyy-MM-dd HH:mm:ss")
         Else
             Return String.Empty

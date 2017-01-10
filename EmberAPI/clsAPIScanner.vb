@@ -18,10 +18,10 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
 Imports System.Windows.Forms
-Imports NLog
 
 Public Class Scanner
 
@@ -29,10 +29,10 @@ Public Class Scanner
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Public MoviePaths As New List(Of String)
-    Public SourceLastScan As New DateTime
-    Public TVEpisodePaths As New List(Of String)
-    Public TVShowPaths As New Hashtable
+    Public _MoviePaths As New List(Of String)
+    Public _SourceLastScan As New DateTime
+    Public _TVEpisodePaths As New List(Of String)
+    Public _TVShowPaths As New Hashtable
 
     Friend WithEvents bwPrelim As New System.ComponentModel.BackgroundWorker
 
@@ -43,6 +43,16 @@ Public Class Scanner
     Public Event ScannerProgressUpdate(ByVal eProgressValue As ProgressValue)
 
 #End Region 'Events
+
+#Region "Properties"
+
+    Public ReadOnly Property IsBusy() As Boolean
+        Get
+            Return bwPrelim.IsBusy
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Methods"
 
@@ -551,11 +561,6 @@ Public Class Scanner
             Next
         Next
     End Sub
-
-    Public Function IsBusy() As Boolean
-        Return bwPrelim.IsBusy
-    End Function
-
     ''' <summary>
     ''' Check if we should scan the directory.
     ''' </summary>
@@ -573,7 +578,7 @@ Public Class Scanner
             If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
                 Return False
             End If
-            For Each s As String In clsXMLAdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanarts|extrathumbs|video_ts|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+            For Each s As String In clsXMLAdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanart|extrathumbs|bdmv|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
                 If dInfo.Name.ToLower = s Then
                     logger.Info(String.Format("[Sanner] [IsValidDir] [NotValidDirIs] Path ""{0}"" has been skipped (path name is ""{1}"")", dInfo.FullName, s))
                     Return False
@@ -602,7 +607,7 @@ Public Class Scanner
         If tDBElement.NfoPathSpecified Then
             tDBElement.MainDetails = NFO.LoadFromNFO_Movie(tDBElement.NfoPath, tDBElement.IsSingle)
             If Not tDBElement.MainDetails.FileInfoSpecified AndAlso tDBElement.MainDetails.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
-                MediaInfo.UpdateMediaInfo(tDBElement)
+                MetaData.ScanMetaData(tDBElement)
             End If
         End If
 
@@ -760,7 +765,7 @@ Public Class Scanner
                 End If
 
                 If Not cEpisode.MainDetails.FileInfoSpecified AndAlso cEpisode.MainDetails.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
-                    MediaInfo.UpdateMediaInfo(cEpisode)
+                    MetaData.ScanMetaData(cEpisode)
                 End If
             Else
                 If isNew AndAlso cEpisode.TVShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
@@ -779,7 +784,7 @@ Public Class Scanner
 
                             'if we had info for it (based on title) and mediainfo scanning is enabled
                             If Master.eSettings.TVScraperMetaDataScan Then
-                                MediaInfo.UpdateMediaInfo(cEpisode)
+                                MetaData.ScanMetaData(cEpisode)
                             End If
                         End If
                     End If
@@ -818,7 +823,7 @@ Public Class Scanner
             If sEpisode.byDate Then
                 If cEpisode.MainDetails.Season = -1 Then cEpisode.MainDetails.Season = sEpisode.Season
                 If cEpisode.MainDetails.Episode = -1 AndAlso cEpisode.Ordering = Enums.EpisodeOrdering.DayOfYear Then
-                    Dim eDate As Date = DateTime.ParseExact(sEpisode.Aired, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
+                    Dim eDate As Date = Date.ParseExact(sEpisode.Aired, "yyyy-MM-dd", Globalization.CultureInfo.InvariantCulture)
                     cEpisode.MainDetails.Episode = eDate.DayOfYear
                 ElseIf cEpisode.MainDetails.Episode = -1 Then
                     cEpisode.MainDetails.Episode = sEpisode.Episode
@@ -912,7 +917,7 @@ Public Class Scanner
         Dim Result As Enums.ScannerEventType = Enums.ScannerEventType.None
 
         If tDBElement.EpisodesSpecified OrElse tDBElement.IDSpecified Then
-            If (Not TVShowPaths.ContainsKey(tDBElement.ShowPath.ToLower) AndAlso isNew) OrElse (tDBElement.IDSpecified AndAlso Not isNew) Then
+            If (Not _TVShowPaths.ContainsKey(tDBElement.ShowPath.ToLower) AndAlso isNew) OrElse (tDBElement.IDSpecified AndAlso Not isNew) Then
                 Result = If(isNew, Enums.ScannerEventType.Added_TVShow, Enums.ScannerEventType.Refresh_TVShow)
 
                 GetFolderContents_TVShow(tDBElement)
@@ -971,7 +976,7 @@ Public Class Scanner
                 Result = Enums.ScannerEventType.Refresh_TVShow
 
                 Dim newEpisodes As List(Of Database.DBElement) = tDBElement.Episodes
-                tDBElement = Master.DB.Load_TVShow(Convert.ToInt64(TVShowPaths.Item(tDBElement.ShowPath.ToLower)), True, False)
+                tDBElement = Master.DB.Load_TVShow(Convert.ToInt64(_TVShowPaths.Item(tDBElement.ShowPath.ToLower)), True, False)
                 tDBElement.Episodes = newEpisodes
             End If
 
@@ -1240,148 +1245,38 @@ Public Class Scanner
     ''' <param name="strPath">Full path of the directory.</param>
     ''' <param name="tDBSource">Structures.Source</param>
     Public Sub ScanForFiles_Movie(ByVal strPath As String, ByVal tDBSource As Database.DBSource)
-        Dim currMovieContainer As Database.DBElement
-        'Dim di As DirectoryInfo
-        Dim lFi As New List(Of FileInfo)
-        Dim fList As New List(Of String)
-        Dim SkipStack As Boolean = False
-        Dim vtsSingle As Boolean = False
-        Dim bdmvSingle As Boolean = False
-        Dim tFile As String = String.Empty
-        Dim autoCheck As Boolean = False
+        Dim nFileItemList As New FileItemList(strPath, Enums.ContentType.Movie)
 
+        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) _
+                                                                            Not f.bIsDirectory AndAlso
+                                                                            Not _MoviePaths.Contains(f.FullPath.ToLower)
+                                                                            )
 
+            If tDBSource.IsSingle AndAlso
+                Not nFileItem.bIsBDMV AndAlso
+                Not nFileItem.bIsVideoTS AndAlso
+                _MoviePaths.Where(Function(f) _
+                                      Not f.StartsWith("stack://") AndAlso
+                                      Directory.GetParent(f).FullName.ToLower = nFileItem.MainPath.FullName.ToLower).Count > 0 OrElse
+                                      tDBSource.IsSingle AndAlso nFileItem.MainPath.FullName.ToLower = tDBSource.Path.ToLower Then
+                Continue For
+            End If
 
-
-        Dim nFileItemList As New FileItemList(strPath)
-        nFileItemList.Stack()
-
-        For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not MoviePaths.Contains(f.FullPath.ToLower))
-            currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
-            currMovieContainer.FileItem = nFileItem
-            currMovieContainer.IsSingle = tDBSource.IsSingle
-            currMovieContainer.Language = tDBSource.Language
-            currMovieContainer.Source = tDBSource
-            Load_Movie(currMovieContainer, True)
-            bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.MainDetails.Title})
+            Dim nMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
+            nMovieContainer.FileItem = nFileItem
+            nMovieContainer.IsSingle = tDBSource.IsSingle
+            nMovieContainer.Language = tDBSource.Language
+            nMovieContainer.Source = tDBSource
+            Load_Movie(nMovieContainer, True)
+            _MoviePaths.Add(nFileItem.FullPath.ToLower)
+            bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_Movie, .ID = nMovieContainer.ID, .Message = nMovieContainer.MainDetails.Title})
         Next
 
-
-
-        'Try
-        '    If Directory.Exists(Path.Combine(strPath, "VIDEO_TS")) Then
-        '        di = New DirectoryInfo(Path.Combine(strPath, "VIDEO_TS"))
-        '        tSource.IsSingle = True
-        '    ElseIf Directory.Exists(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM"))) Then
-        '        di = New DirectoryInfo(Path.Combine(strPath, String.Concat("BDMV", Path.DirectorySeparatorChar, "STREAM")))
-        '        tSource.IsSingle = True
-        '    Else
-        '        di = New DirectoryInfo(strPath)
-        '        autoCheck = True
-        '    End If
-
-        '    Try
-        '        lFi.AddRange(di.GetFiles)
-        '    Catch ex As Exception
-        '        logger.Error(ex, New StackFrame().GetMethod().Name)
-        '    End Try
-
-        '    If lFi.Count > 0 Then
-
-        '        If Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
-        '            If lFi.Where(Function(s) s.Name.ToLower = "index.bdmv").Count > 0 Then
-        '                bdmvSingle = True
-        '                tFile = FileUtils.Common.GetLongestFromRip(strPath, True)
-        '                If bwPrelim.CancellationPending Then Return
-        '            End If
-        '        End If
-
-        '        If Not bdmvSingle AndAlso Master.eSettings.MovieRecognizeVTSExpertVTS AndAlso autoCheck Then
-        '            Dim hasIfo As Integer = 0
-        '            Dim hasVob As Integer = 0
-        '            Dim hasBup As Integer = 0
-        '            For Each lfile As FileInfo In lFi
-        '                If lfile.Extension.ToLower = ".ifo" Then hasIfo = 1
-        '                If lfile.Extension.ToLower = ".vob" Then hasVob = 1
-        '                If lfile.Extension.ToLower = ".bup" Then hasBup = 1
-        '                If lfile.Name.ToLower = "video_ts.ifo" Then
-        '                    'video_ts.vob takes precedence
-        '                    tFile = lfile.FullName
-        '                ElseIf String.IsNullOrEmpty(tFile) AndAlso lfile.Extension.ToLower = ".vob" Then
-        '                    'get any vob
-        '                    tFile = lfile.FullName
-        '                End If
-        '                vtsSingle = (hasIfo + hasVob + hasBup) > 1
-        '                If vtsSingle AndAlso Path.GetFileName(tFile).ToLower = "video_ts.ifo" Then Exit For
-        '                If bwPrelim.CancellationPending Then Return
-        '            Next
-        '        End If
-
-        '        If (vtsSingle OrElse bdmvSingle) AndAlso Not String.IsNullOrEmpty(tFile) Then
-        '            If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(tFile.ToLower)) Then
-        '                If Master.eSettings.FileSystemNoStackExts.Contains(Path.GetExtension(tFile).ToLower) Then
-        '                    MoviePaths.Add(tFile.ToLower)
-        '                Else
-        '                    MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(tFile).ToLower)
-        '                End If
-        '                currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
-        '                currMovieContainer.ActorThumbs = New List(Of String)
-        '                currMovieContainer.Filename = tFile
-        '                currMovieContainer.IsSingle = True
-        '                currMovieContainer.Language = tSource.Language
-        '                currMovieContainer.Source = tSource
-        '                currMovieContainer.Subtitles = New List(Of MediaContainers.Subtitle)
-        '                Load_Movie(currMovieContainer, True)
-        '                bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.MainDetails.Title})
-        '            End If
-
-        '        Else
-        '            Dim HasFile As Boolean = False
-        '            Dim tList As IOrderedEnumerable(Of FileInfo) = lFi.Where(Function(f) Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
-        '                     Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsXMLAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso ((Master.eSettings.MovieSkipStackedSizeCheck AndAlso
-        '                    FileUtils.Common.isStacked(f.FullName)) OrElse (Not Convert.ToInt32(Master.eSettings.MovieSkipLessThan) > 0 OrElse f.Length >= Master.eSettings.MovieSkipLessThan * 1048576))).OrderBy(Function(f) f.FullName)
-
-        '            If tList.Count > 1 AndAlso tSource.IsSingle Then
-        '                'check if we already have a movie from this folder
-        '                If MoviePaths.Where(Function(f) tList.Where(Function(l) FileUtils.Common.RemoveStackingMarkers(l.FullName).ToLower = f).Count > 0).Count > 0 Then
-        '                    HasFile = True
-        '                End If
-        '            End If
-
-        '            If Not HasFile Then
-        '                For Each lFile As FileInfo In tList
-
-        '                    If Not MoviePaths.Contains(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower) Then
-        '                        If Master.eSettings.FileSystemNoStackExts.Contains(lFile.Extension.ToLower) Then
-        '                            MoviePaths.Add(lFile.FullName.ToLower)
-        '                            SkipStack = True
-        '                        Else
-        '                            MoviePaths.Add(FileUtils.Common.RemoveStackingMarkers(lFile.FullName).ToLower)
-        '                        End If
-        '                        fList.Add(lFile.FullName)
-        '                    End If
-        '                    If tSource.IsSingle AndAlso Not SkipStack Then Exit For
-        '                    If bwPrelim.CancellationPending Then Return
-        '                Next
-        '            End If
-
-        '            For Each s As String In fList
-        '                currMovieContainer = New Database.DBElement(Enums.ContentType.Movie)
-        '                currMovieContainer.ActorThumbs = New List(Of String)
-        '                currMovieContainer.Filename = s
-        '                currMovieContainer.IsSingle = tSource.IsSingle
-        '                currMovieContainer.Language = tSource.Language
-        '                currMovieContainer.Source = tSource
-        '                currMovieContainer.Subtitles = New List(Of MediaContainers.Subtitle)
-        '                Load_Movie(currMovieContainer, True)
-        '                bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_Movie, .ID = currMovieContainer.ID, .Message = currMovieContainer.MainDetails.Title})
-        '            Next
-        '        End If
-
-        '    End If
-        'Catch ex As Exception
-        '    logger.Error(ex, New StackFrame().GetMethod().Name)
-        'End Try
+        If tDBSource.Recursive Then
+            For Each nFileItem In nFileItemList.FileItems.Where(Function(f) f.bIsDirectory)
+                ScanForFiles_Movie(nFileItem.FullPath, tDBSource)
+            Next
+        End If
     End Sub
 
     ''' <summary>
@@ -1394,10 +1289,13 @@ Public Class Scanner
 
         For Each lFile As FileInfo In di.GetFiles.OrderBy(Function(s) s.Name)
             Try
-                If Not TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso
+                If Not _TVEpisodePaths.Contains(lFile.FullName.ToLower) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) AndAlso
                     Not Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", clsXMLAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
                     (Not Convert.ToInt32(Master.eSettings.TVSkipLessThan) > 0 OrElse lFile.Length >= Master.eSettings.TVSkipLessThan * 1048576) Then
-                    tDBElement.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {.FileItem = New FileItem(lFile.FullName), .MainDetails = New MediaContainers.MainDetails})
+                    tDBElement.Episodes.Add(New Database.DBElement(Enums.ContentType.TVEpisode) With {
+                                            .FileItem = New FileItem(lFile.FullName),
+                                            .MainDetails = New MediaContainers.MainDetails
+                                            })
                 ElseIf Regex.IsMatch(lFile.Name, String.Concat("[^\w\s]\s?(", clsXMLAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso Master.eSettings.FileSystemValidExts.Contains(lFile.Extension.ToLower) Then
                     logger.Info(String.Format("[Sanner] [ScanForFiles_TV] File ""{0}"" has been ignored (ignore list)", lFile.FullName))
                 End If
@@ -1412,7 +1310,7 @@ Public Class Scanner
     ''' </summary>
     ''' <param name="tDBSource"></param>
     ''' <param name="strPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_Movie(ByVal tDBSource As Database.DBSource, ByVal doScan As Boolean, Optional ByVal strPath As String = "")
+    Public Sub ScanSourceDirectory_Movie(ByVal tDBSource As Database.DBSource, Optional ByVal strPath As String = "")
         Dim strScanPath As String = String.Empty
 
         If Not String.IsNullOrEmpty(strPath) Then
@@ -1422,41 +1320,22 @@ Public Class Scanner
         End If
 
         If Directory.Exists(strScanPath) Then
-            Dim strMoviePath As String = String.Empty
 
-            Dim dInfo As New DirectoryInfo(strScanPath)
-            Dim dList As IEnumerable(Of DirectoryInfo) = Nothing
+            ScanForFiles_Movie(strScanPath, tDBSource)
 
-            Try
-
-                'check if there are any movies in this directory
-                If doScan Then ScanForFiles_Movie(strScanPath, tDBSource)
-
-                If Master.eSettings.MovieScanOrderModify Then
-                    Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                Else
-                    Try
-                        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                End If
-
-                For Each inDir As DirectoryInfo In dList
-                    If bwPrelim.CancellationPending Then Return
-                    ScanForFiles_Movie(inDir.FullName, tDBSource)
-                    If tDBSource.Recursive Then
-                        ScanSourceDirectory_Movie(tDBSource, False, inDir.FullName)
-                    End If
-                Next
-
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
+            'If Master.eSettings.MovieScanOrderModify Then
+            '    Try
+            '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
+            '    Catch ex As Exception
+            '        logger.Error(ex, New StackFrame().GetMethod().Name)
+            '    End Try
+            'Else
+            '    Try
+            '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
+            '    Catch ex As Exception
+            '        logger.Error(ex, New StackFrame().GetMethod().Name)
+            '    End Try
+            'End If
         End If
     End Sub
 
@@ -1493,13 +1372,13 @@ Public Class Scanner
 
                 If Master.eSettings.TVScanOrderModify Then
                     Try
-                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
+                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                     Catch ex As Exception
                         logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
                 Else
                     Try
-                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
+                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
                     Catch ex As Exception
                         logger.Error(ex, New StackFrame().GetMethod().Name)
                     End Try
@@ -1528,12 +1407,12 @@ Public Class Scanner
 
                     If Master.eSettings.TVScanOrderModify Then
                         Try
-                            inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
+                            inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.LastWriteTime)
                         Catch
                         End Try
                     Else
                         Try
-                            inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
+                            inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
                         Catch
                         End Try
                     End If
@@ -1552,24 +1431,6 @@ Public Class Scanner
             End If
         End If
     End Sub
-
-    ''' <summary>
-    ''' Check if a path contains movies.
-    ''' </summary>
-    ''' <param name="inDir">DirectoryInfo object of directory to scan</param>
-    ''' <returns>True if directory contains movie files.</returns>
-    Public Function ScanSubDirectory_Movie(ByVal inDir As DirectoryInfo) As Boolean
-        Try
-
-            If inDir.GetFiles.Where(Function(s) Master.eSettings.FileSystemValidExts.Contains(s.Extension.ToLower) AndAlso
-                                                      Not s.Name.ToLower.Contains("-trailer") AndAlso Not s.Name.ToLower.Contains("[trailer") AndAlso
-                                                      Not s.Name.ToLower.Contains("sample")).OrderBy(Function(s) s.Name).Count > 0 Then Return True
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return False
-    End Function
 
     Private Sub ScanSubDirectory_TV(ByRef tShow As Database.DBElement, ByVal strPath As String)
         Dim inInfo As DirectoryInfo
@@ -1591,45 +1452,21 @@ Public Class Scanner
         bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceID = SourceID, .Folder = Folder})
     End Sub
 
-    ''' <summary>
-    ''' Check if there are movies in the subdirectorys of a path.
-    ''' </summary>
-    ''' <param name="MovieDir">DirectoryInfo object of directory to scan.</param>
-    ''' <returns>True if the path's subdirectories contain movie files, else false.</returns>
-    Public Function SubDirsHaveMovies(ByVal MovieDir As DirectoryInfo) As Boolean
-        Try
-            If Directory.Exists(MovieDir.FullName) Then
-
-                For Each inDir As DirectoryInfo In MovieDir.GetDirectories
-                    If IsValidDir(inDir, False) Then
-                        If ScanSubDirectory_Movie(inDir) Then Return True
-                        SubDirsHaveMovies(inDir)
-                    End If
-                Next
-
-            End If
-            Return False
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-            Return False
-        End Try
-    End Function
-
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Master.DB.ClearNew()
 
         If Args.Scan.SpecificFolder AndAlso Not String.IsNullOrEmpty(Args.Folder) AndAlso Directory.Exists(Args.Folder) Then
-
+            'check if Folder is inside of a movie source
             For Each eSource In Master.MovieSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    MoviePaths = Master.DB.GetAll_MoviePaths
+                    _MoviePaths = Master.DB.GetAll_MoviePaths
                     Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                         Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                            ScanSourceDirectory_Movie(eSource, True, Args.Folder)
+                            ScanSourceDirectory_Movie(eSource, Args.Folder)
                         End Using
                         SQLtransaction.Commit()
                     End Using
@@ -1637,14 +1474,14 @@ Public Class Scanner
                     Exit For
                 End If
             Next
-
+            'check if Folder is inside of a tv show source
             For Each eSource In Master.TVShowSources
                 Dim tSource As String = If(eSource.Path.EndsWith(Path.DirectorySeparatorChar), eSource.Path, String.Concat(eSource.Path, Path.DirectorySeparatorChar)).ToLower.Trim
                 Dim tFolder As String = If(Args.Folder.EndsWith(Path.DirectorySeparatorChar), Args.Folder, String.Concat(Args.Folder, Path.DirectorySeparatorChar)).ToLower.Trim
 
                 If tFolder.StartsWith(tSource) Then
-                    TVEpisodePaths = Master.DB.GetAll_TVEpisodePaths
-                    TVShowPaths = Master.DB.GetAll_TVShowPaths
+                    _TVEpisodePaths = Master.DB.GetAll_TVEpisodePaths
+                    _TVShowPaths = Master.DB.GetAll_TVShowPaths
 
                     If Args.Folder.ToLower = eSource.Path.ToLower Then
                         'Args.Folder is a tv show source folder -> scan the whole source
@@ -1652,9 +1489,9 @@ Public Class Scanner
                     Else
                         'Args.Folder is a tv show folder or a tv show subfolder -> get the tv show main path
                         Dim ShowID As Long = -1
-                        For Each hKey In TVShowPaths.Keys
+                        For Each hKey In _TVShowPaths.Keys
                             If String.Concat(Args.Folder.ToLower, Path.DirectorySeparatorChar).StartsWith(String.Concat(hKey.ToString.ToLower, Path.DirectorySeparatorChar)) Then
-                                ShowID = Convert.ToInt64(TVShowPaths.Item(hKey))
+                                ShowID = Convert.ToInt64(_TVShowPaths.Item(hKey))
                                 Exit For
                             End If
                         Next
@@ -1665,7 +1502,7 @@ Public Class Scanner
                             Dim inInfo As DirectoryInfo = New DirectoryInfo(currShowContainer.ShowPath)
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
                             Try
-                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
+                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(d, True)).OrderBy(Function(d) d.Name)
                             Catch
                             End Try
 
@@ -1688,7 +1525,7 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.Movies Then
-            MoviePaths = Master.DB.GetAll_MoviePaths
+            _MoviePaths = Master.DB.GetAll_MoviePaths
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1706,13 +1543,13 @@ Public Class Scanner
                             While SQLreader.Read
                                 Dim sSource As Database.DBSource = Master.DB.Load_Source_Movie(Convert.ToInt64(SQLreader("idSource")))
                                 Try
-                                    SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), DateTime.Now)
+                                    _SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), Date.Now)
                                 Catch ex As Exception
-                                    SourceLastScan = DateTime.Now
+                                    _SourceLastScan = Date.Now
                                 End Try
-                                If sSource.Recursive OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(sSource.Path) > SourceLastScan) Then
+                                If sSource.Recursive OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(sSource.Path) > _SourceLastScan) Then
                                     'save the scan time back to the db
-                                    parLastScan.Value = DateTime.Now
+                                    parLastScan.Value = Date.Now
                                     parID.Value = sSource.ID
                                     SQLUpdatecommand.ExecuteNonQuery()
                                     Try
@@ -1722,7 +1559,7 @@ Public Class Scanner
                                     Catch ex As Exception
                                         logger.Error(ex, New StackFrame().GetMethod().Name)
                                     End Try
-                                    ScanSourceDirectory_Movie(sSource, True)
+                                    ScanSourceDirectory_Movie(sSource)
                                 End If
                                 If bwPrelim.CancellationPending Then
                                     e.Cancel = True
@@ -1737,8 +1574,8 @@ Public Class Scanner
         End If
 
         If Not Args.Scan.SpecificFolder AndAlso Args.Scan.TV Then
-            TVEpisodePaths = Master.DB.GetAll_TVEpisodePaths
-            TVShowPaths = Master.DB.GetAll_TVShowPaths
+            _TVEpisodePaths = Master.DB.GetAll_TVEpisodePaths
+            _TVShowPaths = Master.DB.GetAll_TVShowPaths
 
             Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
                 Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
@@ -1756,12 +1593,12 @@ Public Class Scanner
                             While SQLreader.Read
                                 Dim sSource As Database.DBSource = Master.DB.Load_Source_TVShow(Convert.ToInt64(SQLreader("idSource")))
                                 Try
-                                    SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), DateTime.Now)
+                                    _SourceLastScan = If(sSource.LastScanSpecified, Convert.ToDateTime(sSource.LastScan), Date.Now)
                                 Catch ex As Exception
-                                    SourceLastScan = DateTime.Now
+                                    _SourceLastScan = Date.Now
                                 End Try
                                 'save the scan time back to the db
-                                parLastScan.Value = DateTime.Now
+                                parLastScan.Value = Date.Now
                                 parID.Value = sSource.ID
                                 SQLUpdatecommand.ExecuteNonQuery()
                                 ScanSourceDirectory_TV(sSource)
@@ -1778,10 +1615,16 @@ Public Class Scanner
         End If
 
         'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
-        If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
+        If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse
+            (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse
+            (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
             bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.CleaningDatabase, .Message = String.Empty})
             'remove any db entries that no longer exist
-            Master.DB.Clean(Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies, Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets, Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID)
+            Master.DB.Clean(
+                Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies,
+                Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets,
+                Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID
+                )
         End If
 
         e.Result = Args

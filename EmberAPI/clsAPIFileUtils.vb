@@ -303,6 +303,42 @@ Namespace FileUtils
             End If
         End Function
         ''' <summary>
+        ''' Check if we should scan the directory.
+        ''' </summary>
+        ''' <param name="dInfo">DirectoryInfo to check</param>
+        ''' <returns>True if directory is valid, false if not.</returns>
+        Public Shared Function IsValidDir(ByVal dInfo As DirectoryInfo, ByVal tContentType As Enums.ContentType) As Boolean
+            Try
+                For Each s As String In Master.ExcludedDirs
+                    If dInfo.FullName.ToLower = s.ToLower Then
+                        logger.Info(String.Format("[FileUtils] [IsValidDir] [ExcludeDirs] Path ""{0}"" has been skipped (path is in ""exclude directory"" list)", dInfo.FullName, s))
+                        Return False
+                    End If
+                Next
+                If (tContentType = Enums.ContentType.Movie AndAlso dInfo.Name.ToLower = "extras") OrElse
+                    If(dInfo.FullName.IndexOf("\") >= 0, dInfo.FullName.Remove(0, dInfo.FullName.IndexOf("\")).Contains(":"), False) Then
+                    Return False
+                End If
+                For Each s As String In clsXMLAdvancedSettings.GetSetting("NotValidDirIs", ".actors|extrafanart|extrathumbs|audio_ts|recycler|subs|subtitles|.trashes").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                    If dInfo.Name.ToLower = s Then
+                        logger.Info(String.Format("[FileUtils] [IsValidDir] [NotValidDirIs] Path ""{0}"" has been skipped (path name is ""{1}"")", dInfo.FullName, s))
+                        Return False
+                    End If
+                Next
+                For Each s As String In clsXMLAdvancedSettings.GetSetting("NotValidDirContains", "-trailer|[trailer|temporary files|(noscan)|$recycle.bin|lost+found|system volume information|sample").Split(New String() {"|"}, StringSplitOptions.RemoveEmptyEntries)
+                    If dInfo.Name.ToLower.Contains(s) Then
+                        logger.Info(String.Format("[FileUtils] [IsValidDir] [NotValidDirContains] Path ""{0}"" has been skipped (path contains ""{1}"")", dInfo.FullName, s))
+                        Return False
+                    End If
+                Next
+
+            Catch ex As Exception
+                logger.Error(String.Format("[FileUtils] [IsValidDir] Path ""{0}"" has been skipped ({1})", dInfo.Name, ex.Message))
+                Return False
+            End Try
+            Return True
+        End Function
+        ''' <summary>
         ''' Deermine whether the path provided contains a DVD image
         ''' </summary>
         ''' <param name="strPath">Path to be evaluated</param>
@@ -392,7 +428,7 @@ Namespace FileUtils
                     logger.Error(ex, New StackFrame().GetMethod().Name)
                 End Try
             Next
-            Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(DateTime.Now, "YYYYMMDD") & Format(DateTime.Now, "HHMMSS") & ".xml")
+            Dim destPath As String = Path.Combine(Functions.AppPath, "InstalledTasks_" & Format(Date.Now, "YYYYMMDD") & Format(Date.Now, "HHMMSS") & ".xml")
             Try
                 File.Move(fname, destPath)
             Catch ex As Exception
@@ -2481,8 +2517,7 @@ Namespace FileUtils
             Try
                 If Directory.Exists(strSourcePath) Then
                     'Get information about files in the directory
-                    Dim nFileItemList As New FileItemList(strSourcePath)
-                    nFileItemList.Stack()
+                    Dim nFileItemList As New FileItemList(strSourcePath, Enums.ContentType.Movie)
 
                     'For each valid file in the directory...
                     For Each nFileItem As FileItem In nFileItemList.FileItems.Where(Function(f) Not f.bIsDirectory AndAlso Not f.bIsBDMV AndAlso Not f.bIsVideoTS)

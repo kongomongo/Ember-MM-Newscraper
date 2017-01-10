@@ -18,12 +18,11 @@
 ' # along with Ember Media Manager.  If not, see <http://www.gnu.org/licenses/>. #
 ' ################################################################################
 
+Imports NLog
 Imports System.IO
 Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
-Imports NLog
-Imports System.Windows.Forms
 
 Public Class NFO
 
@@ -1469,7 +1468,7 @@ Public Class NFO
     ''' <summary>
     ''' Return the "best" or the "prefered language" audio stream of the videofile
     ''' </summary>
-    ''' <param name="miFIA"><c>MediaInfo.Fileinfo</c> The Mediafile-container of the videofile</param>
+    ''' <param name="tFileInfo"><c>MediaInfo.Fileinfo</c> The Mediafile-container of the videofile</param>
     ''' <returns>The best <c>MediaInfo.Audio</c> stream information of the videofile</returns>
     ''' <remarks>
     ''' This is used to determine which audio stream information should be displayed in Ember main view (icon display)
@@ -1477,145 +1476,120 @@ Public Class NFO
     ''' 
     ''' 2014/08/12 cocotus - Should work better: If there's more than one audiostream which highest channelcount, the one with highest bitrate or the DTSHD stream will be returned
     ''' </remarks>
-    Public Shared Function GetBestAudio(ByVal miFIA As MediaContainers.Fileinfo, ByVal ForTV As Boolean) As MediaContainers.Audio
-        Dim fiaOut As New MediaContainers.Audio
-        Try
-            Dim cmiFIA As New MediaContainers.Fileinfo
+    Public Shared Function GetBestAudio(ByVal tFileInfo As MediaContainers.Fileinfo, ByVal ForTV As Boolean) As MediaContainers.Audio
+        Dim nFileInfo As New MediaContainers.Audio
 
-            Dim getPrefLanguage As Boolean = False
-            Dim hasPrefLanguage As Boolean = False
-            Dim prefLanguage As String = String.Empty
-            Dim sinMostChannels As Single = 0
-            Dim sinChans As Single = 0
-            Dim sinMostBitrate As Single = 0
-            Dim sinBitrate As Single = 0
-            Dim sinCodec As String = String.Empty
-            fiaOut.Codec = String.Empty
-            fiaOut.Channels = String.Empty
-            fiaOut.Language = String.Empty
-            fiaOut.LongLanguage = String.Empty
-            fiaOut.Bitrate = String.Empty
+        Dim cmiFIA As New MediaContainers.Fileinfo
+
+        Dim getPrefLanguage As Boolean = False
+        Dim hasPrefLanguage As Boolean = False
+        Dim prefLanguage As String = String.Empty
+        Dim sinMostChannels As Single = 0
+        Dim sinChans As Single = 0
+        Dim sinMostBitrate As Single = 0
+        Dim sinBitrate As Single = 0
+        Dim sinCodec As String = String.Empty
+        nFileInfo.Codec = String.Empty
+        nFileInfo.Channels = String.Empty
+        nFileInfo.Language = String.Empty
+        nFileInfo.LongLanguage = String.Empty
+        nFileInfo.Bitrate = String.Empty
+
+        If ForTV Then
+            If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) Then
+                getPrefLanguage = True
+                prefLanguage = Master.eSettings.TVGeneralFlagLang.ToLower
+            End If
+        Else
+            If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) Then
+                getPrefLanguage = True
+                prefLanguage = Master.eSettings.MovieGeneralFlagLang.ToLower
+            End If
+        End If
+
+        If getPrefLanguage AndAlso tFileInfo.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = prefLanguage).Count > 0 Then
+            For Each Stream As MediaContainers.Audio In tFileInfo.StreamDetails.Audio
+                If Stream.LongLanguage.ToLower = prefLanguage Then
+                    cmiFIA.StreamDetails.Audio.Add(Stream)
+                End If
+            Next
+        Else
+            cmiFIA.StreamDetails.Audio.AddRange(tFileInfo.StreamDetails.Audio)
+        End If
+
+        For Each miAudio As MediaContainers.Audio In cmiFIA.StreamDetails.Audio
+            If Not String.IsNullOrEmpty(miAudio.Channels) Then
+                sinChans = NumUtils.ConvertToSingle(MediaInfo.ConvertAudioChannel(miAudio.Channels))
+                sinBitrate = 0
+                If Integer.TryParse(miAudio.Bitrate, 0) Then
+                    sinBitrate = CInt(miAudio.Bitrate)
+                End If
+                If sinChans >= sinMostChannels AndAlso (sinBitrate > sinMostBitrate OrElse miAudio.Codec.ToLower.Contains("dtshd") OrElse sinBitrate = 0) Then
+                    If Integer.TryParse(miAudio.Bitrate, 0) Then
+                        sinMostBitrate = CInt(miAudio.Bitrate)
+                    End If
+                    sinMostChannels = sinChans
+                    nFileInfo.Bitrate = miAudio.Bitrate
+                    nFileInfo.Channels = sinChans.ToString
+                    nFileInfo.Codec = miAudio.Codec
+                    nFileInfo.Language = miAudio.Language
+                    nFileInfo.LongLanguage = miAudio.LongLanguage
+                End If
+            End If
 
             If ForTV Then
-                If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) Then
-                    getPrefLanguage = True
-                    prefLanguage = Master.eSettings.TVGeneralFlagLang.ToLower
-                End If
+                If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.TVGeneralFlagLang.ToLower Then nFileInfo.HasPreferred = True
             Else
-                If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) Then
-                    getPrefLanguage = True
-                    prefLanguage = Master.eSettings.MovieGeneralFlagLang.ToLower
-                End If
+                If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.MovieGeneralFlagLang.ToLower Then nFileInfo.HasPreferred = True
             End If
+        Next
 
-            If getPrefLanguage AndAlso miFIA.StreamDetails.Audio.Where(Function(f) f.LongLanguage.ToLower = prefLanguage).Count > 0 Then
-                For Each Stream As MediaContainers.Audio In miFIA.StreamDetails.Audio
-                    If Stream.LongLanguage.ToLower = prefLanguage Then
-                        cmiFIA.StreamDetails.Audio.Add(Stream)
-                    End If
-                Next
-            Else
-                cmiFIA.StreamDetails.Audio.AddRange(miFIA.StreamDetails.Audio)
-            End If
-
-            For Each miAudio As MediaContainers.Audio In cmiFIA.StreamDetails.Audio
-                If Not String.IsNullOrEmpty(miAudio.Channels) Then
-                    sinChans = NumUtils.ConvertToSingle(MediaInfo.ConvertAudioChannel(miAudio.Channels))
-                    sinBitrate = 0
-                    If Integer.TryParse(miAudio.Bitrate, 0) Then
-                        sinBitrate = CInt(miAudio.Bitrate)
-                    End If
-                    If sinChans >= sinMostChannels AndAlso (sinBitrate > sinMostBitrate OrElse miAudio.Codec.ToLower.Contains("dtshd") OrElse sinBitrate = 0) Then
-                        If Integer.TryParse(miAudio.Bitrate, 0) Then
-                            sinMostBitrate = CInt(miAudio.Bitrate)
-                        End If
-                        sinMostChannels = sinChans
-                        fiaOut.Bitrate = miAudio.Bitrate
-                        fiaOut.Channels = sinChans.ToString
-                        fiaOut.Codec = miAudio.Codec
-                        fiaOut.Language = miAudio.Language
-                        fiaOut.LongLanguage = miAudio.LongLanguage
-                    End If
-                End If
-
-                If ForTV Then
-                    If Not String.IsNullOrEmpty(Master.eSettings.TVGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.TVGeneralFlagLang.ToLower Then fiaOut.HasPreferred = True
-                Else
-                    If Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralFlagLang) AndAlso miAudio.LongLanguage.ToLower = Master.eSettings.MovieGeneralFlagLang.ToLower Then fiaOut.HasPreferred = True
-                End If
-            Next
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return fiaOut
+        Return nFileInfo
     End Function
 
-    Public Shared Function GetBestVideo(ByVal miFIV As MediaContainers.Fileinfo) As MediaContainers.Video
-        '//
-        ' Get the highest values from file info
-        '\\
+    Public Shared Function GetBestVideo(ByVal tFileInfo As MediaContainers.Fileinfo) As MediaContainers.Video
+        Dim nFileInfo As New MediaContainers.Video
 
-        Dim fivOut As New MediaContainers.Video
-        Try
-            Dim iWidest As Integer = 0
-            Dim iWidth As Integer = 0
+        Dim iWidest As Integer = 0
+        Dim iWidth As Integer = 0
 
-            'set some defaults to make it easy on ourselves
-            fivOut.Width = String.Empty
-            fivOut.Height = String.Empty
-            fivOut.Aspect = String.Empty
-            fivOut.Codec = String.Empty
-            fivOut.Duration = String.Empty
-            fivOut.Scantype = String.Empty
-            fivOut.Language = String.Empty
-            'cocotus, 2013/02 Added support for new MediaInfo-fields
-            fivOut.Bitrate = String.Empty
-            fivOut.MultiViewCount = String.Empty
-            fivOut.MultiViewLayout = String.Empty
-            fivOut.Filesize = 0
-            'cocotus end
-
-            For Each miVideo As MediaContainers.Video In miFIV.StreamDetails.Video
-                If Not String.IsNullOrEmpty(miVideo.Width) Then
-                    If Integer.TryParse(miVideo.Width, 0) Then
-                        iWidth = Convert.ToInt32(miVideo.Width)
-                    Else
-                        logger.Warn("[GetBestVideo] Invalid width(not a number!) of videostream: " & miVideo.Width)
-                    End If
-                    If iWidth > iWidest Then
-                        iWidest = iWidth
-                        fivOut.Width = miVideo.Width
-                        fivOut.Height = miVideo.Height
-                        fivOut.Aspect = miVideo.Aspect
-                        fivOut.Codec = miVideo.Codec
-                        fivOut.Duration = miVideo.Duration
-                        fivOut.Scantype = miVideo.Scantype
-                        fivOut.Language = miVideo.Language
-
-                        'cocotus, 2013/02 Added support for new MediaInfo-fields
-
-                        'MultiViewCount (3D) handling, simply map field
-                        fivOut.MultiViewCount = miVideo.MultiViewCount
-
-                        'MultiViewLayout (3D) handling, simply map field
-                        fivOut.MultiViewLayout = miVideo.MultiViewLayout
-
-                        'FileSize handling, simply map field
-                        fivOut.Filesize = miVideo.Filesize
-
-                        'Bitrate handling, simply map field
-                        fivOut.Bitrate = miVideo.Bitrate
-                        'cocotus end
-
-                    End If
+        For Each miVideo As MediaContainers.Video In tFileInfo.StreamDetails.Video
+            If Not String.IsNullOrEmpty(miVideo.Width) Then
+                If Integer.TryParse(miVideo.Width, 0) Then
+                    iWidth = Convert.ToInt32(miVideo.Width)
+                Else
+                    logger.Warn("[GetBestVideo] Invalid width(not a number!) of videostream: " & miVideo.Width)
                 End If
-            Next
+                If iWidth > iWidest Then
+                    iWidest = iWidth
+                    nFileInfo.Width = miVideo.Width
+                    nFileInfo.Height = miVideo.Height
+                    nFileInfo.Aspect = miVideo.Aspect
+                    nFileInfo.Codec = miVideo.Codec
+                    nFileInfo.Duration = miVideo.Duration
+                    nFileInfo.Scantype = miVideo.Scantype
+                    nFileInfo.Language = miVideo.Language
 
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-        Return fivOut
+                    'cocotus, 2013/02 Added support for new MediaInfo-fields
+
+                    'MultiViewCount (3D) handling, simply map field
+                    nFileInfo.MultiViewCount = miVideo.MultiViewCount
+
+                    'MultiViewLayout (3D) handling, simply map field
+                    nFileInfo.MultiViewLayout = miVideo.MultiViewLayout
+
+                    'FileSize handling, simply map field
+                    nFileInfo.Filesize = miVideo.Filesize
+
+                    'Bitrate handling, simply map field
+                    nFileInfo.Bitrate = miVideo.Bitrate
+                    'cocotus end
+
+                End If
+            End If
+        Next
+
+        Return nFileInfo
     End Function
 
     Public Shared Function GetDimensionsFromVideo(ByVal fiRes As MediaContainers.Video) As String

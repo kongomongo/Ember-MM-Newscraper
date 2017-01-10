@@ -112,9 +112,9 @@ Public Class Localization
 #Region "Methods"
     ' ************************************************************************************************
     ' This are functions for country/Language codes under ISO639 Alpha-2 and Alpha-3(ie: Used by DVD/GoogleAPI)
-    Shared Function ISOGetLangByCode2(ByVal code As String) As String
-        If Not String.IsNullOrEmpty(code) AndAlso Not code = "00" AndAlso Not code.ToLower = "xx" Then
-            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = code))(0)
+    Shared Function ISOGetLangByCode2(ByVal strCode As String) As String
+        If Not String.IsNullOrEmpty(strCode) AndAlso Not strCode = "00" AndAlso Not strCode.ToLower = "xx" Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha2 = strCode))(0)
             If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Name) Then
                 Return tLang.Name
             Else
@@ -125,9 +125,9 @@ Public Class Localization
         End If
     End Function
 
-    Shared Function ISOGetLangByCode3(ByVal code As String) As String
-        If Not String.IsNullOrEmpty(code) AndAlso Not code = "00" AndAlso Not code.ToLower = "xx" Then
-            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = code))(0)
+    Shared Function ISOGetLangByCode3(ByVal strCode As String) As String
+        If Not String.IsNullOrEmpty(strCode) AndAlso Not strCode = "00" AndAlso Not strCode.ToLower = "xx" Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = strCode))(0)
             If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Name) Then
                 Return tLang.Name
             Else
@@ -138,9 +138,9 @@ Public Class Localization
         End If
     End Function
 
-    Public Shared Function ISOLangGetCode2ByLang(ByVal lang As String) As String
-        If Not String.IsNullOrEmpty(lang) Then
-            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0)
+    Public Shared Function ISOLangGetCode2ByLang(ByVal strLanguage As String) As String
+        If Not String.IsNullOrEmpty(strLanguage) Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = strLanguage))(0)
             If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Alpha2) Then
                 Return tLang.Alpha2
             Else
@@ -151,9 +151,9 @@ Public Class Localization
         End If
     End Function
 
-    Public Shared Function ISOLangGetCode2ByCode3(ByVal lang As String) As String
-        If Not String.IsNullOrEmpty(lang) Then
-            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = lang))(0)
+    Public Shared Function ISOLangGetCode2ByCode3(ByVal strLanguage As String) As String
+        If Not String.IsNullOrEmpty(strLanguage) Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Alpha3 = strLanguage))(0)
             If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Alpha3) Then
                 Return tLang.Alpha2
             Else
@@ -164,9 +164,9 @@ Public Class Localization
         End If
     End Function
 
-    Public Shared Function ISOLangGetCode3ByLang(ByVal lang As String) As String
-        If Not String.IsNullOrEmpty(lang) Then
-            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = lang))(0)
+    Public Shared Function ISOLangGetCode3ByLang(ByVal strLanguage As String) As String
+        If Not String.IsNullOrEmpty(strLanguage) Then
+            Dim tLang = (From x As LanguagesLanguage In _ISOLanguages.Language Where (x.Name = strLanguage))(0)
             If tLang IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLang.Alpha3) Then
                 Return tLang.Alpha3
             Else
@@ -207,13 +207,13 @@ Public Class Localization
         _disabled = "[Disabled]"
     End Sub
 
-    Public Function GetHelpString(ByVal ctrlName As String) As String
+    Public Function GetHelpString(ByVal strControlName As String) As String
         Dim aStr As String
-        Dim x1 As System.Collections.Generic.IEnumerable(Of HelpString)
+        Dim x1 As IEnumerable(Of HelpString)
 
-        x1 = From x As HelpString In htHelpStrings.string Where (x.control = ctrlName)
+        x1 = From x As HelpString In htHelpStrings.string Where (x.control = strControlName)
         If x1.Count = 0 Then
-            help_logger.Warn(String.Format("Missing language_help_string: {0}", ctrlName), New StackFrame().GetMethod().Name)
+            help_logger.Warn(String.Format("Missing language_help_string: {0}", strControlName), New StackFrame().GetMethod().Name)
             aStr = String.Empty
         Else
             aStr = x1(0).Value
@@ -222,18 +222,18 @@ Public Class Localization
         Return aStr
     End Function
 
-    Public Function GetString(ByVal ID As Integer, ByVal strDefault As String) As String
+    Public Function GetString(ByVal intID As Integer, ByVal strDefault As String) As String
         Dim tStr As String
-        Dim x1 As System.Collections.Generic.IEnumerable(Of LanguageString)
+        Dim x1 As IEnumerable(Of LanguageString)
 
         Dim Assembly = "*EmberAPP"
         htStrings = htArrayStrings.FirstOrDefault(Function(x) x.AssenblyName = Assembly).htStrings
         If htStrings Is Nothing Then
             tStr = strDefault
         Else
-            x1 = From x As LanguageString In htStrings.string Where (x.id = ID)
+            x1 = From x As LanguageString In htStrings.string Where (x.id = intID)
             If x1.Count = 0 Then
-                lang_logger.Warn(String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, ID, strDefault), New StackFrame().GetMethod().Name)
+                lang_logger.Warn(String.Format("Missing language_string: {0} - {1} : '{2}'", Assembly, intID, strDefault), New StackFrame().GetMethod().Name)
                 tStr = strDefault
             Else
                 If Not String.IsNullOrEmpty(x1(0).Value) Then
@@ -247,8 +247,8 @@ Public Class Localization
         Return tStr
     End Function
 
-    Public Sub LoadAllLanguage(ByVal language As String, Optional ByVal force As Boolean = False)
-        If force Then
+    Public Sub LoadAllLanguage(ByVal strLanguage As String, Optional ByVal bForce As Boolean = False)
+        If bForce Then
             _all = "All"
             _none = "[none]"
             _disabled = "[Disabled]"
@@ -257,7 +257,7 @@ Public Class Localization
             htArrayStrings.Clear()
             htStrings.string.Clear()
         End If
-        LoadLanguage(language)
+        LoadLanguage(strLanguage)
     End Sub
 
     Public Sub LoadHelpStrings(ByVal hPath As String)
@@ -270,15 +270,15 @@ Public Class Localization
         End If
     End Sub
 
-    Public Sub LoadLanguage(ByVal Language As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
+    Public Sub LoadLanguage(ByVal strLanguage As String, Optional ByVal rAssembly As String = "", Optional ByVal force As Boolean = False)
         Dim _old_all As String = _all
         Dim Assembly As String
         Dim lPath As String = String.Empty
         Dim lhPath As String = String.Empty
 
-        If Not String.IsNullOrEmpty(Language) Then
+        If Not String.IsNullOrEmpty(strLanguage) Then
             If rAssembly = String.Empty Then
-                Assembly = Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetCallingAssembly().Location)
+                Assembly = Path.GetFileNameWithoutExtension(Reflection.Assembly.GetCallingAssembly().Location)
             Else
                 Assembly = rAssembly
             End If
@@ -286,11 +286,11 @@ Public Class Localization
 
             If Assembly = "Ember Media Manager" OrElse Assembly = "EmberAPI" OrElse Assembly = "*EmberAPI" OrElse Assembly = "*EmberAPP" Then
                 Assembly = "*EmberAPP"
-                lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
-                lhPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, "-Help.xml")
+                lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, strLanguage, ".xml")
+                lhPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, strLanguage, "-Help.xml")
             Else
-                lPath = String.Concat(Master.AddonsPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, ".xml")
-                lhPath = String.Concat(Master.AddonsPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", Language, "-Help.xml")
+                lPath = String.Concat(Master.AddonsPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", strLanguage, ".xml")
+                lhPath = String.Concat(Master.AddonsPath, Path.DirectorySeparatorChar, "Langs", Path.DirectorySeparatorChar, Assembly, ".", strLanguage, "-Help.xml")
                 If Not File.Exists(lPath) Then 'Failback disabled, possible not need anymore
                     'lPath = String.Concat(Functions.AppPath, "Langs", Path.DirectorySeparatorChar, Language, ".xml")
                     File.WriteAllText(lPath, "<?xml version=""1.0"" encoding=""utf-8""?>" & vbCrLf &
@@ -325,8 +325,8 @@ Public Class Localization
                 End If
             End If
         Else
-            logger.Error("Cannot find {0}.xml." & Environment.NewLine & "Expected path: {1}", Language, lPath)
-            MessageBox.Show(String.Concat(String.Format("Cannot find {0}.xml.", Language), Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            logger.Error("Cannot find {0}.xml." & Environment.NewLine & "Expected path: {1}", strLanguage, lPath)
+            MessageBox.Show(String.Concat(String.Format("Cannot find {0}.xml.", strLanguage), Environment.NewLine, Environment.NewLine, "Expected path:", Environment.NewLine, lPath), "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
         End If
     End Sub
 

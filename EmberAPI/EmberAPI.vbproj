@@ -208,6 +208,7 @@
     <Compile Include="clsAPIXML.vb" />
     <Compile Include="clsAPIYouTube.vb" />
     <Compile Include="clsAPITrailers.vb" />
+    <Compile Include="clsAPIMetaData.vb" />
     <Compile Include="dlgMovieDataScraperPreview.Designer.vb">
       <DependentUpon>dlgMovieDataScraperPreview.vb</DependentUpon>
     </Compile>

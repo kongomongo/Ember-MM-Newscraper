@@ -897,7 +897,7 @@ Public Class Addon
                                 Dim _APIKodi As New Kodi.APIKodi(mHost)
                                 'connection test
                                 If Await Task.Run(Function() _APIKodi.TestConnectionToHost) Then
-                                    Await _APIKodi.VideoLibrary_Scan.ConfigureAwait(False)
+                                    Await _APIKodi.VideoLibrary_ScanState.ConfigureAwait(False)
                                     While Await _APIKodi.IsScanningVideo()
                                         Threading.Thread.Sleep(1000)
                                     End While
