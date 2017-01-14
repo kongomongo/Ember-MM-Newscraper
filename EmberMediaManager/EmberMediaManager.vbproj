@@ -398,6 +398,126 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Data.Designer.vb">
+      <DependentUpon>frmMovieSet_Data.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Data.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_General.Designer.vb">
+      <DependentUpon>frmMovieSet_General.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_General.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Image.Designer.vb">
+      <DependentUpon>frmMovieSet_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Source.Designer.vb">
+      <DependentUpon>frmMovieSet_Source.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Data.Designer.vb">
+      <DependentUpon>frmMovie_Data.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Data.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_General.Designer.vb">
+      <DependentUpon>frmMovie_General.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_General.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Image.Designer.vb">
+      <DependentUpon>frmMovie_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Search.Designer.vb">
+      <DependentUpon>frmMovie_Search.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Search.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Search.Designer.vb">
+      <DependentUpon>frmMovieSet_Search.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovieSet_Search.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Source.Designer.vb">
+      <DependentUpon>frmMovie_Source.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Theme.Designer.vb">
+      <DependentUpon>frmMovie_Theme.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Theme.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Trailer.Designer.vb">
+      <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Trailer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmOption_FileSystem.Designer.vb">
+      <DependentUpon>frmOption_FileSystem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmOption_FileSystem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmOption_General.Designer.vb">
+      <DependentUpon>frmOption_General.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmOption_General.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmOption_Proxy.Designer.vb">
+      <DependentUpon>frmOption_Proxy.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmOption_Proxy.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Data.Designer.vb">
+      <DependentUpon>frmTV_Data.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Data.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Image.Designer.vb">
+      <DependentUpon>frmTV_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Search.Designer.vb">
+      <DependentUpon>frmTV_Search.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Search.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Source.Designer.vb">
+      <DependentUpon>frmTV_Source.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Theme.Designer.vb">
+      <DependentUpon>frmTV_Theme.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmTV_Theme.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="XMLViewer\CharacterEncoder.vb" />
     <Compile Include="XMLViewer\XMLViewer.vb">
       <SubType>Component</SubType>
@@ -513,6 +633,15 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\frmMovie_Search.resx">
+      <DependentUpon>frmMovie_Search.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\frmMovieSet_Search.resx">
+      <DependentUpon>frmMovieSet_Search.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\frmTV_Search.resx">
+      <DependentUpon>frmTV_Search.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

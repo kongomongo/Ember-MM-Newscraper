@@ -265,33 +265,50 @@ Public Class dlgSettings
              .Panel = pnlMovieSources,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
+             .Name = "pnlMovieSearch",
+             .Title = Master.eLang.GetString(977, "Search"),
+             .ImageIndex = 12,
+             .Type = Enums.SettingsPanelType.Movie,
+             .Panel = frmMovie_Search.pnlMovieSearch,
+             .Order = 300})
+        AddHandler frmMovie_Search.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
+        AddHandler frmMovie_Search.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
+        AddHandler frmMovie_Search.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
+        AddHandler frmMovie_Search.NeedsDBUpdate_TV, AddressOf Handle_NeedsDBUpdate_TV
+        AddHandler frmMovie_Search.NeedsReload_Movie, AddressOf Handle_NeedsReload_Movie
+        AddHandler frmMovie_Search.NeedsReload_MovieSet, AddressOf Handle_NeedsReload_MovieSet
+        AddHandler frmMovie_Search.NeedsReload_TVEpisode, AddressOf Handle_NeedsReload_TVEpisode
+        AddHandler frmMovie_Search.NeedsReload_TVShow, AddressOf Handle_NeedsReload_TVShow
+        AddHandler frmMovie_Search.NeedsRestart, AddressOf Handle_NeedsRestart
+        AddHandler frmMovie_Search.SettingsChanged, AddressOf Handle_SettingsChanged
+        SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieScraper,
-             .Order = 300})
+             .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieMedia",
              .Title = Master.eLang.GetString(497, "Images"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieImages,
-             .Order = 400})
+             .Order = 500})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieTrailer",
              .Title = Master.eLang.GetString(1195, "Trailers"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieTrailers,
-             .Order = 500})
+             .Order = 600})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieTheme",
              .Title = Master.eLang.GetString(1285, "Themes"),
              .ImageIndex = 11,
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieThemes,
-             .Order = 600})
+             .Order = 700})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSets",
              .Title = Master.eLang.GetString(38, "General"),
@@ -307,19 +324,26 @@ Public Class dlgSettings
              .Panel = pnlMovieSetSources,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
+             .Name = "pnlMovieSetSearch",
+             .Title = Master.eLang.GetString(977, "Search"),
+             .ImageIndex = 12,
+             .Type = Enums.SettingsPanelType.MovieSet,
+             .Panel = frmMovieSet_Search.pnlMovieSetSearch,
+             .Order = 300})
+        SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
              .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetScraper,
-             .Order = 300})
+             .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetMedia",
              .Title = Master.eLang.GetString(497, "Images"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetImages,
-             .Order = 400})
+             .Order = 500})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlShows",
              .Title = Master.eLang.GetString(38, "General"),
@@ -335,26 +359,33 @@ Public Class dlgSettings
              .Panel = pnlTVSources,
              .Order = 200})
         SettingsPanels.Add(New Containers.SettingsPanel With {
+             .Name = "pnlTVSearch",
+             .Title = Master.eLang.GetString(977, "Search"),
+             .ImageIndex = 12,
+             .Type = Enums.SettingsPanelType.TV,
+             .Panel = frmTV_Search.pnlTVSearch,
+             .Order = 300})
+        SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVScraper,
-             .Order = 300})
+             .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVMedia",
              .Title = Master.eLang.GetString(497, "Images"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVImages,
-             .Order = 400})
+             .Order = 500})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVTheme",
              .Title = Master.eLang.GetString(1285, "Themes"),
              .ImageIndex = 11,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVThemes,
-             .Order = 500})
+             .Order = 600})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlGeneral",
              .Title = Master.eLang.GetString(38, "General"),
@@ -3007,6 +3038,7 @@ Public Class dlgSettings
             chkTVLockShowTitle.Checked = .TVLockShowTitle
             chkTVLockShowUserRating.Checked = .TVLockShowUserRating
             chkTVScanOrderModify.Checked = .TVScanOrderModify
+            chkTVScraperCastWithImg.Checked = .TVScraperShowCastWithImgOnly
             chkTVScraperCleanFields.Checked = .TVScraperCleanFields
             chkTVScraperEpisodeActors.Checked = .TVScraperEpisodeActors
             chkTVScraperEpisodeAired.Checked = .TVScraperEpisodeAired
@@ -3759,6 +3791,38 @@ Public Class dlgSettings
         End If
         ResumeLayout()
         SetApplyButton(True)
+    End Sub
+
+    Private Sub Handle_NeedsDBClean_Movie()
+        sResult.NeedsDBClean_Movie = True
+    End Sub
+
+    Private Sub Handle_NeedsDBClean_TV()
+        sResult.NeedsDBClean_TV = True
+    End Sub
+
+    Private Sub Handle_NeedsDBUpdate_Movie()
+        sResult.NeedsDBUpdate_Movie = True
+    End Sub
+
+    Private Sub Handle_NeedsDBUpdate_TV()
+        sResult.NeedsDBUpdate_TV = True
+    End Sub
+
+    Private Sub Handle_NeedsReload_Movie()
+        sResult.NeedsReload_Movie = True
+    End Sub
+
+    Private Sub Handle_NeedsReload_MovieSet()
+        sResult.NeedsReload_MovieSet = True
+    End Sub
+
+    Private Sub Handle_NeedsReload_TVEpisode()
+        sResult.NeedsReload_TVEpisode = True
+    End Sub
+
+    Private Sub Handle_NeedsReload_TVShow()
+        sResult.NeedsReload_TVShow = True
     End Sub
 
     Private Sub Handle_NeedsRestart()
@@ -5211,6 +5275,7 @@ Public Class dlgSettings
             .TVMetadataPerFileType.AddRange(TVMeta)
             .TVMultiPartMatching = txtTVSourcesRegexMultiPartMatching.Text
             .TVScanOrderModify = chkTVScanOrderModify.Checked
+            .TVScraperShowCastWithImgOnly = chkTVScraperCastWithImg.Checked
             .TVScraperCleanFields = chkTVScraperCleanFields.Checked
             .TVScraperDurationRuntimeFormat = txtTVScraperDurationRuntimeFormat.Text
             .TVScraperEpisodeActors = chkTVScraperEpisodeActors.Checked
@@ -6569,6 +6634,11 @@ Public Class dlgSettings
         Dim strSaveExtended As String = Master.eLang.GetString(1075, "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)")
         chkMovieScraperCollectionsExtendedInfo.Text = strSaveExtended
 
+        'Scrape Only Actors With Images
+        Dim strScraperCastWithImg As String = Master.eLang.GetString(510, "Scrape Only Actors With Images")
+        chkMovieScraperCastWithImg.Text = strScraperCastWithImg
+        chkTVScraperCastWithImg.Text = strScraperCastWithImg
+
         'Scraper Fields - Global
         Dim strScraperGlobal As String = Master.eLang.GetString(577, "Scraper Fields - Global")
         gbMovieScraperGlobalOpts.Text = strScraperGlobal
@@ -6788,7 +6858,6 @@ Public Class dlgSettings
         chkMovieScanOrderModify.Text = Master.eLang.GetString(796, "Scan in order of last write time")
         chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
-        chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
         chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
@@ -8422,7 +8491,7 @@ Public Class dlgSettings
         txtTVShowPosterHeight.TextChanged,
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged, chkMovieClearLogoPrefSizeOnly.CheckedChanged, chkMovieClearArtPrefSizeOnly.CheckedChanged, cbMovieClearLogoPrefSize.SelectedIndexChanged, cbMovieClearArtPrefSize.SelectedIndexChanged, chkMovieLandscapePrefSizeOnly.CheckedChanged, chkMovieDiscArtPrefSizeOnly.CheckedChanged, cbMovieLandscapePrefSize.SelectedIndexChanged, cbMovieDiscArtPrefSize.SelectedIndexChanged, chkTVShowLandscapePrefSizeOnly.CheckedChanged, chkTVShowClearLogoPrefSizeOnly.CheckedChanged, chkTVShowClearArtPrefSizeOnly.CheckedChanged, chkTVShowCharacterArtPrefSizeOnly.CheckedChanged, cbTVShowLandscapePrefSize.SelectedIndexChanged, cbTVShowClearLogoPrefSize.SelectedIndexChanged, cbTVShowClearArtPrefSize.SelectedIndexChanged, cbTVShowCharacterArtPrefSize.SelectedIndexChanged, cbTVShowBannerPrefSize.SelectedIndexChanged, cbTVSeasonBannerPrefSize.SelectedIndexChanged, cbTVAllSeasonsBannerPrefSize.SelectedIndexChanged, chkMovieSetDiscArtKeepExisting.CheckedChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged, chkMovieClearLogoPrefSizeOnly.CheckedChanged, chkMovieClearArtPrefSizeOnly.CheckedChanged, cbMovieClearLogoPrefSize.SelectedIndexChanged, cbMovieClearArtPrefSize.SelectedIndexChanged, chkMovieLandscapePrefSizeOnly.CheckedChanged, chkMovieDiscArtPrefSizeOnly.CheckedChanged, cbMovieLandscapePrefSize.SelectedIndexChanged, cbMovieDiscArtPrefSize.SelectedIndexChanged, chkTVShowLandscapePrefSizeOnly.CheckedChanged, chkTVShowClearLogoPrefSizeOnly.CheckedChanged, chkTVShowClearArtPrefSizeOnly.CheckedChanged, chkTVShowCharacterArtPrefSizeOnly.CheckedChanged, cbTVShowLandscapePrefSize.SelectedIndexChanged, cbTVShowClearLogoPrefSize.SelectedIndexChanged, cbTVShowClearArtPrefSize.SelectedIndexChanged, cbTVShowCharacterArtPrefSize.SelectedIndexChanged, cbTVShowBannerPrefSize.SelectedIndexChanged, cbTVSeasonBannerPrefSize.SelectedIndexChanged, cbTVAllSeasonsBannerPrefSize.SelectedIndexChanged, chkMovieSetDiscArtKeepExisting.CheckedChanged, chkTVScraperCastWithImg.CheckedChanged
 
         SetApplyButton(True)
     End Sub

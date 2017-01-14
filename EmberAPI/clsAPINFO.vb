@@ -86,7 +86,7 @@ Public Class NFO
 
                 If Master.eSettings.MovieScraperCastWithImgOnly Then
                     For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
-                        If String.IsNullOrEmpty(scrapedmovie.Actors(i).URLOriginal) Then
+                        If Not scrapedmovie.Actors(i).URLOriginalSpecified Then
                             scrapedmovie.Actors.RemoveAt(i)
                         End If
                     Next
@@ -525,13 +525,13 @@ Public Class NFO
             If (Not tDBElement.MainDetails.ActorsSpecified OrElse Not Master.eSettings.TVLockShowActors) AndAlso tDBElement.ScrapeOptions.bMainActors AndAlso
                 scrapedshow.ActorsSpecified AndAlso Master.eSettings.TVScraperShowActors AndAlso Not new_Actors Then
 
-                'If Master.eSettings.MovieScraperCastWithImgOnly Then
-                '    For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
-                '        If String.IsNullOrEmpty(scrapedmovie.Actors(i).ThumbURL) Then
-                '            scrapedmovie.Actors.RemoveAt(i)
-                '        End If
-                '    Next
-                'End If
+                If Master.eSettings.TVScraperShowCastWithImgOnly Then
+                    For i = scrapedshow.Actors.Count - 1 To 0 Step -1
+                        If Not scrapedshow.Actors(i).URLOriginalSpecified Then
+                            scrapedshow.Actors.RemoveAt(i)
+                        End If
+                    Next
+                End If
 
                 'If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
                 '    scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
@@ -1044,13 +1044,13 @@ Public Class NFO
             If (Not DBTVEpisode.MainDetails.ActorsSpecified OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeActors AndAlso
                 scrapedepisode.ActorsSpecified AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
 
-                'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
-                '    For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
-                '        If String.IsNullOrEmpty(scrapedepisode.Actors(i).ThumbURL) Then
-                '            scrapedepisode.Actors.RemoveAt(i)
-                '        End If
-                '    Next
-                'End If
+                If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
+                    For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
+                        If Not scrapedepisode.Actors(i).URLOriginalSpecified Then
+                            scrapedepisode.Actors.RemoveAt(i)
+                        End If
+                    Next
+                End If
 
                 'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
                 '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
@@ -1103,13 +1103,13 @@ Public Class NFO
             If (Not DBTVEpisode.MainDetails.GuestStarsSpecified OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeGuestStars AndAlso
                 scrapedepisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
 
-                'If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
-                '    For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
-                '        If String.IsNullOrEmpty(scrapedepisode.Actors(i).ThumbURL) Then
-                '            scrapedepisode.Actors.RemoveAt(i)
-                '        End If
-                '    Next
-                'End If
+                If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
+                    For i = scrapedepisode.GuestStars.Count - 1 To 0 Step -1
+                        If Not scrapedepisode.GuestStars(i).URLOriginalSpecified Then
+                            scrapedepisode.GuestStars.RemoveAt(i)
+                        End If
+                    Next
+                End If
 
                 'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
                 '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)

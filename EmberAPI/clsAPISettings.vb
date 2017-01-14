@@ -461,6 +461,7 @@ Public Class Settings
     Private _tvscrapercleanfields As Boolean
     Private _tvscraperdurationruntimeformat As String
     Private _tvscraperepisodeactors As Boolean
+    Private _tvscraperepisodecastwithimgonly As Boolean
     Private _tvscraperepisodeaired As Boolean
     Private _tvscraperepisodecredits As Boolean
     Private _tvscraperepisodedirector As Boolean
@@ -477,6 +478,7 @@ Public Class Settings
     Private _tvscraperseasonplot As Boolean
     Private _tvscraperseasontitle As Boolean
     Private _tvscrapershowactors As Boolean
+    Private _tvscrapershowcastwithimgonly As Boolean
     Private _tvscrapershowcert As Boolean
     Private _tvscrapershowcertformpaa As Boolean
     Private _tvscrapershowcertformpaafallback As Boolean
@@ -1162,6 +1164,24 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _moviescrapercastwithimgonly = value
+        End Set
+    End Property
+
+    Public Property TVScraperShowCastWithImgOnly() As Boolean
+        Get
+            Return _tvscrapershowcastwithimgonly
+        End Get
+        Set(ByVal value As Boolean)
+            _tvscrapershowcastwithimgonly = value
+        End Set
+    End Property
+
+    Public Property TVScraperEpisodeCastWithImgOnly() As Boolean
+        Get
+            Return _tvscraperepisodecastwithimgonly
+        End Get
+        Set(ByVal value As Boolean)
+            _tvscraperepisodecastwithimgonly = value
         End Set
     End Property
 
@@ -8551,6 +8571,7 @@ Public Class Settings
         TVScraperCleanFields = False
         TVScraperDurationRuntimeFormat = "<m>"
         TVScraperEpisodeActors = True
+        TVScraperEpisodeCastWithImgOnly = False
         TVScraperEpisodeAired = True
         TVScraperEpisodeCredits = True
         TVScraperEpisodeDirector = True
@@ -8567,6 +8588,7 @@ Public Class Settings
         TVScraperSeasonPlot = True
         TVScraperSeasonTitle = False
         TVScraperShowActors = True
+        TVScraperShowCastWithImgOnly = False
         TVScraperShowCert = False
         TVScraperShowCertForMPAA = False
         TVScraperShowCertForMPAAFallback = False

@@ -20,8 +20,6 @@
 
 Public Class Interfaces
 
-#Region "Nested Interfaces"
-
     Public Interface Addon
 
 #Region "Events"
@@ -50,6 +48,33 @@ Public Class Interfaces
         Function InjectSettingsPanel() As Containers.SettingsPanel
         Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstCommandLineParams As List(Of Object)) As AddonResult
         Sub SaveSetup(ByVal bDoDispose As Boolean)
+
+#End Region 'Methods
+
+    End Interface
+
+    Public Interface SettingsPanel
+
+#Region "Events"
+
+        Event NeedsDBClean_Movie()
+        Event NeedsDBClean_TV()
+        Event NeedsDBUpdate_Movie()
+        Event NeedsDBUpdate_TV()
+        Event NeedsReload_Movie()
+        Event NeedsReload_MovieSet()
+        Event NeedsReload_TVEpisode()
+        Event NeedsReload_TVShow()
+        Event NeedsRestart()
+        Event SettingsChanged()
+
+#End Region 'Events
+
+#Region "Methods"
+
+        Sub LoadSettings()
+
+        Sub SaveSettings()
 
 #End Region 'Methods
 
@@ -86,8 +111,6 @@ Public Class Interfaces
     '#End Region 'Methods
 
     '    End Interface
-
-#End Region 'Nested Interfaces
 
 #Region "Nested Types"
 
