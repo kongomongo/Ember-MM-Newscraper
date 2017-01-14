@@ -2078,8 +2078,8 @@ Namespace MediaContainers
         Private _order As Integer
         Private _role As String
         Private _thumb As Image
-        Private _tmdb As String
-        Private _tvdb As String
+        Private _tmdb As Integer
+        Private _tvdb As Integer
 
 #End Region 'Fields
 
@@ -2216,11 +2216,11 @@ Namespace MediaContainers
         End Property
 
         <XmlElement("tmdbid")>
-        Public Property TMDB() As String
+        Public Property TMDB() As Integer
             Get
                 Return _tmdb
             End Get
-            Set(ByVal Value As String)
+            Set(ByVal Value As Integer)
                 _tmdb = Value
             End Set
         End Property
@@ -2228,16 +2228,16 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TMDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tmdb)
+                Return Not _tmdb = -1
             End Get
         End Property
 
         <XmlElement("tvdbid")>
-        Public Property TVDB() As String
+        Public Property TVDB() As Integer
             Get
                 Return _tvdb
             End Get
-            Set(ByVal Value As String)
+            Set(ByVal Value As Integer)
                 _tvdb = Value
             End Set
         End Property
@@ -2245,7 +2245,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property TVDBSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_tvdb)
+                Return Not _tvdb = -1
             End Get
         End Property
 
@@ -2260,8 +2260,8 @@ Namespace MediaContainers
             _order = -1
             _role = String.Empty
             _thumb = New Image
-            _tmdb = String.Empty
-            _tvdb = String.Empty
+            _tmdb = -1
+            _tvdb = -1
         End Sub
 
 #End Region 'Methods

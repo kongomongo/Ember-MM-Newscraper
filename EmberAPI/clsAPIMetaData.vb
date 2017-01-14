@@ -53,7 +53,7 @@ Public Class MetaData
     End Function
 
     Private Shared Function CleanupFileInfo(ByVal tFileInfo As MediaContainers.Fileinfo) As MediaContainers.Fileinfo
-        If tFileInfo IsNot Nothing AndAlso tFileInfo.StreamDetailsSpecified Then
+        If tFileInfo.StreamDetailsSpecified Then
             If tFileInfo.StreamDetails.VideoSpecified Then
                 For i As Integer = 0 To tFileInfo.StreamDetails.Video.Count - 1
                     tFileInfo.StreamDetails.Video(i).StereoMode = ConvertVideoStereoMode(tFileInfo.StreamDetails.Video(i).MultiViewLayout)
@@ -265,7 +265,7 @@ Public Class MetaData
             If nFileInfo IsNot Nothing Then tDBElement.MainDetails.FileInfo = nFileInfo
         End If
 
-        tDBElement.MainDetails.FileInfo = CleanupFileInfo(nFileInfo)
+        tDBElement.MainDetails.FileInfo = CleanupFileInfo(tDBElement.MainDetails.FileInfo)
     End Sub
 
 #End Region 'Methods

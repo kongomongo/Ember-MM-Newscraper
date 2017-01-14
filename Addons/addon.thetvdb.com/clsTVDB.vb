@@ -219,11 +219,13 @@ Public Class Scraper
         If tScrapeOptions.bEpisodeActors Then
             If tTVShowInfo.Actors IsNot Nothing Then
                 For Each aCast As TVDB.Model.Actor In tTVShowInfo.Actors.Where(Function(f) f.Name IsNot Nothing AndAlso f.Role IsNot Nothing).OrderBy(Function(f) f.SortOrder)
-                    nEpisode.Actors.Add(New MediaContainers.Person With {.Name = aCast.Name,
-                                                                          .Order = aCast.SortOrder,
-                                                                          .Role = aCast.Role,
-                                                                          .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                                                          .TVDB = CStr(aCast.Id)})
+                    nEpisode.Actors.Add(New MediaContainers.Person With {
+                                        .Name = aCast.Name,
+                                        .Order = aCast.SortOrder,
+                                        .Role = aCast.Role,
+                                        .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
+                                        .TVDB = aCast.Id
+                                        })
                 Next
             End If
         End If
@@ -396,7 +398,7 @@ Public Class Scraper
                                     .Order = aCast.SortOrder,
                                     .Role = aCast.Role,
                                     .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ImagePath), String.Format("{0}/banners/{1}", _TVDBMirror.Address, aCast.ImagePath), String.Empty),
-                                    .TVDB = CStr(aCast.Id)
+                                    .TVDB = aCast.Id
                                     })
                     Next
                 End If

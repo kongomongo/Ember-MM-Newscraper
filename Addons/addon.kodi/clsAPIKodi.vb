@@ -324,8 +324,6 @@ Namespace Kodi
         ''' <param name="tDBElement"></param>
         ''' <returns></returns>
         Private Async Function GetMediaID(ByVal tDBElement As Database.DBElement) As Task(Of Integer)
-            Dim KodiID As Integer = -1
-
             Select Case tDBElement.ContentType
                 Case Enums.ContentType.Movie
                     Dim KodiMovie As Video.Details.Movie = Await SearchMovie(tDBElement).ConfigureAwait(False)

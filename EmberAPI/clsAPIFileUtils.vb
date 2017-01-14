@@ -1032,7 +1032,7 @@ Namespace FileUtils
 
             Dim strMainPath As String = tDBElement.FileItem.MainPath.FullName
             Dim strPath As String = tDBElement.FileItem.FirstStackedPath
-            Dim strFileName As String = Path.GetFileNameWithoutExtension(strPath)
+            Dim strFileName As String = Path.GetFileNameWithoutExtension(strPath) 'TODO: looks wrong
             Dim strStackedFilename As String = Path.GetFileNameWithoutExtension(tDBElement.FileItem.StackedFilename)
             Dim strFilePath As String = Path.Combine(Directory.GetParent(strPath).FullName, strFileName)
             Dim strStackedFilePath As String = Path.Combine(Directory.GetParent(strPath).FullName, strStackedFilename)
@@ -1973,56 +1973,84 @@ Namespace FileUtils
             Return FilenameList
         End Function
 
-        Public Shared Function TVEpisode(ByVal tDBElement As Database.DBElement, ByVal mType As Enums.ScrapeModifierType) As List(Of String)
+        Public Shared Function TVEpisode(ByVal tDBElement As Database.DBElement, ByVal mType As Enums.ScrapeModifierType, Optional ByVal bForced As Boolean = False) As List(Of String)
             Dim FilenameList As New List(Of String)
 
             If Not tDBElement.FilenameSpecified Then Return FilenameList
 
-            Dim fEpisodeFileName As String = Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath)
-            Dim fEpisodePath As String = Common.RemoveExtFromPath(tDBElement.FileItem.FirstStackedPath)
-            Dim fEpisodeParentPath As String = tDBElement.FileItem.MainPath.FullName
-            Dim sSeason As String = tDBElement.MainDetails.Season.ToString.PadLeft(2, Convert.ToChar("0"))
+            Dim strMainPath As String = tDBElement.FileItem.MainPath.FullName
+            Dim strFileName As String = Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath)
+            Dim strFileParentPath As String = Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName
+            Dim strFilePath As String = Common.RemoveExtFromPath(tDBElement.FileItem.FirstStackedPath)
+
+            Dim bIsBDMV As Boolean = tDBElement.FileItem.bIsBDMV
+            Dim bIsVideoTS As Boolean = tDBElement.FileItem.bIsVideoTS
+            Dim bIsVideoTSFile As Boolean = strFileName.ToLower = "video_ts"
 
             Select Case mType
                 Case Enums.ScrapeModifierType.EpisodeActorThumbs
                     With Master.eSettings
-                        If .TVUseFrodo AndAlso .TVEpisodeActorThumbsFrodo Then FilenameList.Add(Path.Combine(fEpisodeParentPath, ".actors", "!placeholder!.jpg"))
-                        If .TVUseExpert AndAlso .TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeActorThumbsExtExpert) Then
-                            FilenameList.Add(Path.Combine(fEpisodeParentPath, ".actors", "!placeholder!", .TVEpisodeActorThumbsExtExpert))
+                        If bIsVideoTS Then
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodeActorThumbsFrodo) Then FilenameList.Add(Path.Combine(strFileParentPath, ".actors", "!placeholder!.jpg"))
+                        ElseIf bIsBDMV Then
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodeActorThumbsFrodo) Then FilenameList.Add(Path.Combine(strFileParentPath, ".actors", "!placeholder!.jpg"))
+                        Else
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodeActorThumbsFrodo) Then FilenameList.Add(Path.Combine(strFileParentPath, ".actors", "!placeholder!.jpg"))
+                            If .TVUseExpert AndAlso .TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeActorThumbsExtExpert) Then
+                                FilenameList.Add(Path.Combine(strFileParentPath, ".actors", "!placeholder!", .TVEpisodeActorThumbsExtExpert))
+                            End If
                         End If
                     End With
 
                 Case Enums.ScrapeModifierType.EpisodeFanart
                     With Master.eSettings
-                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeFanartExpert) Then
-                            For Each a In .TVEpisodeFanartExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
-                            Next
+                        If bIsVideoTS Then
+                            'TODO
+                        ElseIf bIsBDMV Then
+                            'TODO
+                        Else
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeFanartExpert) Then
+                                For Each a In .TVEpisodeFanartExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                                Next
+                            End If
                         End If
                     End With
 
                 Case Enums.ScrapeModifierType.EpisodeNFO
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVEpisodeNFOBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseEden Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseFrodo AndAlso .TVEpisodeNFOFrodo Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseYAMJ AndAlso .TVEpisodeNFOYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".nfo"))
-                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeNFOExpert) Then
-                            For Each a In .TVEpisodeNFOExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
-                            Next
+                        If bIsVideoTS Then
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodeNFOFrodo) Then FilenameList.Add(String.Concat(strFilePath, ".nfo"))
+                        ElseIf bIsBDMV Then
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodeNFOFrodo) Then FilenameList.Add(String.Concat(strFilePath, ".nfo"))
+                        Else
+                            If bForced OrElse (.TVUseBoxee AndAlso .TVEpisodeNFOBoxee) Then FilenameList.Add(String.Concat(strFilePath, ".nfo"))
+                            If bForced OrElse (.TVUseEden) Then FilenameList.Add(String.Concat(strFilePath, ".nfo"))
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodeNFOFrodo) Then FilenameList.Add(String.Concat(strFilePath, ".nfo"))
+                            If bForced OrElse (.TVUseYAMJ AndAlso .TVEpisodeNFOYAMJ) Then FilenameList.Add(String.Concat(strFilePath, ".nfo"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodeNFOExpert) Then
+                                For Each a In .TVEpisodeNFOExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                                Next
+                            End If
                         End If
                     End With
 
                 Case Enums.ScrapeModifierType.EpisodePoster
                     With Master.eSettings
-                        If .TVUseBoxee AndAlso .TVEpisodePosterBoxee Then FilenameList.Add(String.Concat(fEpisodePath, ".tbn"))
-                        If .TVUseFrodo AndAlso .TVEpisodePosterFrodo Then FilenameList.Add(String.Concat(fEpisodePath, "-thumb.jpg"))
-                        If .TVUseYAMJ AndAlso .TVEpisodePosterYAMJ Then FilenameList.Add(String.Concat(fEpisodePath, ".videoimage.jpg"))
-                        If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodePosterExpert) Then
-                            For Each a In .TVEpisodePosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fEpisodeParentPath, a.Replace("<filename>", fEpisodeFileName)))
-                            Next
+                        If bIsVideoTS Then
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodePosterFrodo) Then FilenameList.Add(Path.Combine(strMainPath, "thumb.jpg"))
+                        ElseIf bIsBDMV Then
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodePosterFrodo) Then FilenameList.Add(Path.Combine(strMainPath, "thumb.jpg"))
+                        Else
+                            If bForced OrElse (.TVUseBoxee AndAlso .TVEpisodePosterBoxee) Then FilenameList.Add(String.Concat(strFilePath, ".tbn"))
+                            If bForced OrElse (.TVUseFrodo AndAlso .TVEpisodePosterFrodo) Then FilenameList.Add(String.Concat(strFilePath, "-thumb.jpg"))
+                            If bForced OrElse (.TVUseYAMJ AndAlso .TVEpisodePosterYAMJ) Then FilenameList.Add(String.Concat(strFilePath, ".videoimage.jpg"))
+                            If .TVUseExpert AndAlso Not String.IsNullOrEmpty(.TVEpisodePosterExpert) Then
+                                For Each a In .TVEpisodePosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(strFileParentPath, a.Replace("<filename>", strFileName)))
+                                Next
+                            End If
                         End If
                     End With
             End Select

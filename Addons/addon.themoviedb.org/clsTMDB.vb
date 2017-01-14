@@ -339,11 +339,11 @@ Public Class Scraper
             If Result.Credits IsNot Nothing AndAlso Result.Credits.Cast IsNot Nothing Then
                 For Each aCast As TMDbLib.Objects.Movies.Cast In Result.Credits.Cast
                     nMainDetails.Actors.Add(New MediaContainers.Person With {
-                                      .Name = aCast.Name,
-                                      .Role = aCast.Character,
-                                      .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                      .TMDB = CStr(aCast.Id)
-                                      })
+                                            .Name = aCast.Name,
+                                            .Role = aCast.Character,
+                                            .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
+                                            .TMDB = aCast.Id
+                                            })
                 Next
             End If
         End If
@@ -715,7 +715,7 @@ Public Class Scraper
                                           .Name = aCast.Name,
                                           .Role = aCast.Character,
                                           .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                          .TMDB = CStr(aCast.Id)
+                                          .TMDB = aCast.Id
                                           })
                 Next
             End If
@@ -759,7 +759,7 @@ Public Class Scraper
                                               .Name = aCast.Name,
                                               .Role = aCast.Character,
                                               .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                              .TMDB = CStr(aCast.Id)
+                                              .TMDB = aCast.Id
                                               })
                 Next
             End If
@@ -987,7 +987,7 @@ Public Class Scraper
                                        .Name = aCast.Name,
                                        .Role = aCast.Character,
                                        .URLOriginal = If(Not String.IsNullOrEmpty(aCast.ProfilePath), String.Concat(_TMDBApi.Config.Images.BaseUrl, "original", aCast.ProfilePath), String.Empty),
-                                       .TMDB = CStr(aCast.Id)
+                                       .TMDB = aCast.Id
                                        })
                 Next
             End If

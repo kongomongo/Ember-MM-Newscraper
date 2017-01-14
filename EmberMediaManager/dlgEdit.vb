@@ -1458,11 +1458,15 @@ Public Class dlgEdit
             End If
         End If
 
-        Dim pExt As String = Path.GetExtension(_tmpDBElement.FileItem.FirstStackedPath).ToLower
-        If _tmpDBElement.FileItem.bIsDiscImage OrElse _tmpDBElement.FileItem.bIsDiscStub OrElse _tmpDBElement.FileItem.bIsRAR OrElse pExt = ".cue" OrElse pExt = ".dat" Then
+        If _tmpDBElement.FileItemSpecified AndAlso
+            (_tmpDBElement.FileItem.bIsDiscImage OrElse
+            _tmpDBElement.FileItem.bIsDiscStub OrElse
+            _tmpDBElement.FileItem.bIsRAR OrElse
+            Path.GetExtension(_tmpDBElement.FileItem.FirstStackedPath).ToLower = ".cue" OrElse
+            Path.GetExtension(_tmpDBElement.FileItem.FirstStackedPath).ToLower = ".dat") Then
             tcEdit.TabPages.Remove(tpFrameExtraction)
         Else
-            If Not _tmpDBElement.FileItem.bIsDiscStub Then
+            If Not _tmpDBElement.FileItemSpecified OrElse Not _tmpDBElement.FileItem.bIsDiscStub Then
                 tcEdit.TabPages.Remove(tpMediaStub)
             End If
         End If
@@ -1486,7 +1490,7 @@ Public Class dlgEdit
         End If
 
         'DiscStub
-        If _tmpDBElement.FileItem.bIsDiscStub Then
+        If _tmpDBElement.FileItemSpecified AndAlso _tmpDBElement.FileItem.bIsDiscStub Then
             Dim DiscStub As New MediaStub.DiscStub
             DiscStub = MediaStub.LoadDiscStub(_tmpDBElement.FileItem.FirstStackedPath)
             txtMediaStubTitle.Text = DiscStub.Title
@@ -2120,7 +2124,7 @@ Public Class dlgEdit
             _tmpDBElement.MainDetails.Tags = clbTags.CheckedItems.Cast(Of Object).Select(Function(f) clbTags.GetItemText(f)).ToList
         End If
 
-        If _tmpDBElement.FileItem.bIsDiscStub Then
+        If _tmpDBElement.FileItemSpecified AndAlso _tmpDBElement.FileItem.bIsDiscStub Then
             Dim StubFile As String = _tmpDBElement.FileItem.FirstStackedPath
             Dim Title As String = txtMediaStubTitle.Text
             Dim Message As String = txtMediaStubMessage.Text
@@ -2199,10 +2203,21 @@ Public Class dlgEdit
         btnSetThemeScrape.Text = strScrape
         btnSetTrailerScrape.Text = strScrape
 
-        Dim mTitle As String = _tmpDBElement.MainDetails.Title
-        Dim sTitle As String = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(mTitle), String.Empty, String.Concat(" - ", mTitle)))
-        Text = sTitle
-        tsFilename.Text = _tmpDBElement.FileItem.FullPath
+        Dim strTitle As String = _tmpDBElement.MainDetails.Title
+        Select Case _tmpDBElement.ContentType
+            Case Enums.ContentType.Movie
+                Text = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(strTitle), String.Empty, String.Concat(" - ", strTitle)))
+                tsFilename.Text = _tmpDBElement.FileItem.FullPath
+            Case Enums.ContentType.MovieSet
+                Text = String.Concat(Master.eLang.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(strTitle), String.Empty, String.Concat(" - ", strTitle)))
+                tsFilename.Text = String.Empty
+            Case Enums.ContentType.TVEpisode
+                Text = String.Concat(Master.eLang.GetString(769, "Edit Season"), If(String.IsNullOrEmpty(strTitle), String.Empty, String.Concat(" - ", strTitle)))
+                tsFilename.Text = String.Empty
+            Case Enums.ContentType.TVSeason, Enums.ContentType.TVShow
+                Text = String.Concat(Master.eLang.GetString(663, "Edit Show"), If(String.IsNullOrEmpty(strTitle), String.Empty, String.Concat(" - ", strTitle)))
+                tsFilename.Text = _tmpDBElement.ShowPath
+        End Select
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         btnChange.Text = Master.eLang.GetString(32, "Change Movie")
