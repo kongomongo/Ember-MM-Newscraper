@@ -89,15 +89,6 @@ Public Class frmMovie_Image
 
 #End Region 'Handles
 
-#Region "Constructors"
-
-    Public Sub New()
-        InitializeComponent()
-        SetUp()
-    End Sub
-
-#End Region 'Constructors
-
 #Region "Methods"
 
     Private Sub LoadMovieBannerSizes()

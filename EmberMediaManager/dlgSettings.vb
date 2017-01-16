@@ -264,23 +264,23 @@ Public Class dlgSettings
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieSources,
              .Order = 200})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlMovieSearch",
-             .Title = Master.eLang.GetString(977, "Search"),
-             .ImageIndex = 12,
-             .Type = Enums.SettingsPanelType.Movie,
-             .Panel = frmMovie_Search.pnlMovieSearch,
-             .Order = 300})
-        AddHandler frmMovie_Search.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
-        AddHandler frmMovie_Search.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
-        AddHandler frmMovie_Search.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
-        AddHandler frmMovie_Search.NeedsDBUpdate_TV, AddressOf Handle_NeedsDBUpdate_TV
-        AddHandler frmMovie_Search.NeedsReload_Movie, AddressOf Handle_NeedsReload_Movie
-        AddHandler frmMovie_Search.NeedsReload_MovieSet, AddressOf Handle_NeedsReload_MovieSet
-        AddHandler frmMovie_Search.NeedsReload_TVEpisode, AddressOf Handle_NeedsReload_TVEpisode
-        AddHandler frmMovie_Search.NeedsReload_TVShow, AddressOf Handle_NeedsReload_TVShow
-        AddHandler frmMovie_Search.NeedsRestart, AddressOf Handle_NeedsRestart
-        AddHandler frmMovie_Search.SettingsChanged, AddressOf Handle_SettingsChanged
+        'SettingsPanels.Add(New Containers.SettingsPanel With {
+        '     .Name = "pnlMovieSearch",
+        '     .Title = Master.eLang.GetString(977, "Search"),
+        '     .ImageIndex = 12,
+        '     .Type = Enums.SettingsPanelType.Movie,
+        '     .Panel = frmMovie_Search.pnlSettings,
+        '     .Order = 300})
+        'AddHandler frmMovie_Search.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
+        'AddHandler frmMovie_Search.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
+        'AddHandler frmMovie_Search.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
+        'AddHandler frmMovie_Search.NeedsDBUpdate_TV, AddressOf Handle_NeedsDBUpdate_TV
+        'AddHandler frmMovie_Search.NeedsReload_Movie, AddressOf Handle_NeedsReload_Movie
+        'AddHandler frmMovie_Search.NeedsReload_MovieSet, AddressOf Handle_NeedsReload_MovieSet
+        'AddHandler frmMovie_Search.NeedsReload_TVEpisode, AddressOf Handle_NeedsReload_TVEpisode
+        'AddHandler frmMovie_Search.NeedsReload_TVShow, AddressOf Handle_NeedsReload_TVShow
+        'AddHandler frmMovie_Search.NeedsRestart, AddressOf Handle_NeedsRestart
+        'AddHandler frmMovie_Search.SettingsChanged, AddressOf Handle_SettingsChanged
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieData",
              .Title = Master.eLang.GetString(556, "Data"),
@@ -289,12 +289,22 @@ Public Class dlgSettings
              .Panel = pnlMovieScraper,
              .Order = 400})
         SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlMovieMedia",
+             .Name = "pnlMovie_Image",
              .Title = Master.eLang.GetString(497, "Images"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.Movie,
-             .Panel = pnlMovieImages,
+             .Panel = frmMovie_Image.pnlMovie_Image,
              .Order = 500})
+        AddHandler frmMovie_Image.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
+        AddHandler frmMovie_Image.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
+        AddHandler frmMovie_Image.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
+        AddHandler frmMovie_Image.NeedsDBUpdate_TV, AddressOf Handle_NeedsDBUpdate_TV
+        AddHandler frmMovie_Image.NeedsReload_Movie, AddressOf Handle_NeedsReload_Movie
+        AddHandler frmMovie_Image.NeedsReload_MovieSet, AddressOf Handle_NeedsReload_MovieSet
+        AddHandler frmMovie_Image.NeedsReload_TVEpisode, AddressOf Handle_NeedsReload_TVEpisode
+        AddHandler frmMovie_Image.NeedsReload_TVShow, AddressOf Handle_NeedsReload_TVShow
+        AddHandler frmMovie_Image.NeedsRestart, AddressOf Handle_NeedsRestart
+        AddHandler frmMovie_Image.SettingsChanged, AddressOf Handle_SettingsChanged
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieTrailer",
              .Title = Master.eLang.GetString(1195, "Trailers"),
@@ -323,13 +333,13 @@ Public Class dlgSettings
              .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetSources,
              .Order = 200})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlMovieSetSearch",
-             .Title = Master.eLang.GetString(977, "Search"),
-             .ImageIndex = 12,
-             .Type = Enums.SettingsPanelType.MovieSet,
-             .Panel = frmMovieSet_Search.pnlMovieSetSearch,
-             .Order = 300})
+        'SettingsPanels.Add(New Containers.SettingsPanel With {
+        '     .Name = "pnlMovieSetSearch",
+        '     .Title = Master.eLang.GetString(977, "Search"),
+        '     .ImageIndex = 12,
+        '     .Type = Enums.SettingsPanelType.MovieSet,
+        '     .Panel = frmMovieSet_Search.pnlMovieSetSearch,
+        '     .Order = 300})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetData",
              .Title = Master.eLang.GetString(556, "Data"),
@@ -358,13 +368,13 @@ Public Class dlgSettings
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVSources,
              .Order = 200})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlTVSearch",
-             .Title = Master.eLang.GetString(977, "Search"),
-             .ImageIndex = 12,
-             .Type = Enums.SettingsPanelType.TV,
-             .Panel = frmTV_Search.pnlTVSearch,
-             .Order = 300})
+        'SettingsPanels.Add(New Containers.SettingsPanel With {
+        '     .Name = "pnlTVSearch",
+        '     .Title = Master.eLang.GetString(977, "Search"),
+        '     .ImageIndex = 12,
+        '     .Type = Enums.SettingsPanelType.TV,
+        '     .Panel = frmTV_Search.pnlTVSearch,
+        '     .Order = 300})
         SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVData",
              .Title = Master.eLang.GetString(556, "Data"),
@@ -429,7 +439,21 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Sub RemoveScraperPanels()
+    Sub RemoveSettingsPanels()
+        'SettingsPanels
+        RemoveHandler frmMovie_Image.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
+        RemoveHandler frmMovie_Image.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
+        RemoveHandler frmMovie_Image.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
+        RemoveHandler frmMovie_Image.NeedsDBUpdate_TV, AddressOf Handle_NeedsDBUpdate_TV
+        RemoveHandler frmMovie_Image.NeedsReload_Movie, AddressOf Handle_NeedsReload_Movie
+        RemoveHandler frmMovie_Image.NeedsReload_MovieSet, AddressOf Handle_NeedsReload_MovieSet
+        RemoveHandler frmMovie_Image.NeedsReload_TVEpisode, AddressOf Handle_NeedsReload_TVEpisode
+        RemoveHandler frmMovie_Image.NeedsReload_TVShow, AddressOf Handle_NeedsReload_TVShow
+        RemoveHandler frmMovie_Image.NeedsRestart, AddressOf Handle_NeedsRestart
+        RemoveHandler frmMovie_Image.SettingsChanged, AddressOf Handle_SettingsChanged
+        frmMovie_Image.Dispose()
+
+        'AddonSettingsPanels
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons.OrderBy(Function(f) f.AssemblyName)
             RemoveHandler s.Addon.NeedsRestart, AddressOf Handle_NeedsRestart
             RemoveHandler s.Addon.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -710,7 +734,7 @@ Public Class dlgSettings
 
     Private Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel.Click
         If Not didApply Then sResult.DidCancel = True
-        RemoveScraperPanels()
+        RemoveSettingsPanels()
         Close()
     End Sub
 
@@ -938,7 +962,7 @@ Public Class dlgSettings
     Private Sub btnOK_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnOK.Click
         NoUpdate = True
         SaveSettings(False)
-        RemoveScraperPanels()
+        RemoveSettingsPanels()
         Close()
     End Sub
 
@@ -1983,30 +2007,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub chkMovieBannerResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieBannerResize.CheckedChanged
-        SetApplyButton(True)
-
-        txtMovieBannerWidth.Enabled = chkMovieBannerResize.Checked
-        txtMovieBannerHeight.Enabled = chkMovieBannerResize.Checked
-
-        If Not chkMovieBannerResize.Checked Then
-            txtMovieBannerWidth.Text = String.Empty
-            txtMovieBannerHeight.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub chkMovieExtrafanartsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrafanartsResize.CheckedChanged
-        SetApplyButton(True)
-
-        txtMovieExtrafanartsWidth.Enabled = chkMovieExtrafanartsResize.Checked
-        txtMovieExtrafanartsHeight.Enabled = chkMovieExtrafanartsResize.Checked
-
-        If Not chkMovieExtrafanartsResize.Checked Then
-            txtMovieExtrafanartsWidth.Text = String.Empty
-            txtMovieExtrafanartsHeight.Text = String.Empty
-        End If
-    End Sub
-
     Private Sub chkTVShowExtrafanartsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowExtrafanartsResize.CheckedChanged
         SetApplyButton(True)
 
@@ -2016,42 +2016,6 @@ Public Class dlgSettings
         If Not chkTVShowExtrafanartsResize.Checked Then
             txtTVShowExtrafanartsWidth.Text = String.Empty
             txtTVShowExtrafanartsHeight.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub chkMovieExtrathumbsResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrathumbsResize.CheckedChanged
-        SetApplyButton(True)
-
-        txtMovieExtrathumbsWidth.Enabled = chkMovieExtrathumbsResize.Checked
-        txtMovieExtrathumbsHeight.Enabled = chkMovieExtrathumbsResize.Checked
-
-        If Not chkMovieExtrathumbsResize.Checked Then
-            txtMovieExtrathumbsWidth.Text = String.Empty
-            txtMovieExtrathumbsHeight.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub chkMovieFanartResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieFanartResize.CheckedChanged
-        SetApplyButton(True)
-
-        txtMovieFanartWidth.Enabled = chkMovieFanartResize.Checked
-        txtMovieFanartHeight.Enabled = chkMovieFanartResize.Checked
-
-        If Not chkMovieFanartResize.Checked Then
-            txtMovieFanartWidth.Text = String.Empty
-            txtMovieFanartHeight.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub chkMoviePosterResize_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMoviePosterResize.CheckedChanged
-        SetApplyButton(True)
-
-        txtMoviePosterWidth.Enabled = chkMoviePosterResize.Checked
-        txtMoviePosterHeight.Enabled = chkMoviePosterResize.Checked
-
-        If Not chkMoviePosterResize.Checked Then
-            txtMoviePosterWidth.Text = String.Empty
-            txtMoviePosterHeight.Text = String.Empty
         End If
     End Sub
 
@@ -2678,6 +2642,10 @@ Public Class dlgSettings
     End Sub
 
     Private Sub FillSettings()
+        'SettingsPanels
+        frmMovie_Image.LoadSettings()
+
+
         With Master.eSettings
             btnMovieGeneralCustomMarker1.BackColor = Color.FromArgb(.MovieGeneralCustomMarker1Color)
             btnMovieGeneralCustomMarker2.BackColor = Color.FromArgb(.MovieGeneralCustomMarker2Color)
@@ -2690,18 +2658,9 @@ Public Class dlgSettings
             cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
             cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
             cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
-            cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
-            cbMovieClearArtPrefSize.SelectedValue = .MovieClearArtPrefSize
-            cbMovieClearLogoPrefSize.SelectedValue = .MovieClearLogoPrefSize
-            cbMovieDiscArtPrefSize.SelectedValue = .MovieDiscArtPrefSize
-            cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
-            cbMovieExtrathumbsPrefSize.SelectedValue = .MovieExtrathumbsPrefSize
-            cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
             cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieGeneralCustomScrapeButtonModifierType
             cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieGeneralCustomScrapeButtonScrapeType
-            cbMovieLandscapePrefSize.SelectedValue = .MovieLandscapePrefSize
             cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
-            cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
             cbMovieSetBannerPrefSize.SelectedValue = .MovieSetBannerPrefSize
             cbMovieSetClearArtPrefSize.SelectedValue = .MovieSetClearArtPrefSize
             cbMovieSetClearLogoPrefSize.SelectedValue = .MovieSetClearLogoPrefSize
@@ -2779,65 +2738,13 @@ Public Class dlgSettings
             chkGeneralDisplayImgDims.Checked = .GeneralShowImgDims
             chkGeneralDisplayImgNames.Checked = .GeneralShowImgNames
             chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
-            chkMovieActorThumbsKeepExisting.Checked = .MovieActorThumbsKeepExisting
             chkMovieSourcesBackdropsAuto.Checked = .MovieBackdropsAuto
-            chkMovieBannerKeepExisting.Checked = .MovieBannerKeepExisting
-            chkMovieBannerPrefSizeOnly.Checked = .MovieBannerPrefSizeOnly
-            chkMovieBannerResize.Checked = .MovieBannerResize
-            If .MovieBannerResize Then
-                txtMovieBannerHeight.Text = .MovieBannerHeight.ToString
-                txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
-            End If
             chkMovieCleanDB.Checked = .MovieCleanDB
-            chkMovieClearArtKeepExisting.Checked = .MovieClearArtKeepExisting
-            chkMovieClearArtPrefSizeOnly.Checked = .MovieClearArtPrefSizeOnly
-            chkMovieClearLogoKeepExisting.Checked = .MovieClearLogoKeepExisting
-            chkMovieClearLogoPrefSizeOnly.Checked = .MovieClearLogoPrefSizeOnly
             chkMovieClickScrape.Checked = .MovieClickScrape
             chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
-            chkMovieDiscArtKeepExisting.Checked = .MovieDiscArtKeepExisting
-            chkMovieDiscArtPrefSizeOnly.Checked = .MovieDiscArtPrefSizeOnly
             chkMovieDisplayYear.Checked = .MovieDisplayYear
-            chkMovieExtrafanartsKeepExisting.Checked = .MovieExtrafanartsKeepExisting
-            chkMovieExtrafanartsPrefSizeOnly.Checked = .MovieExtrafanartsPrefSizeOnly
-            chkMovieExtrafanartsPreselect.Checked = .MovieExtrafanartsPreselect
-            chkMovieExtrafanartsResize.Checked = .MovieExtrafanartsResize
-            If .MovieExtrafanartsResize Then
-                txtMovieExtrafanartsHeight.Text = .MovieExtrafanartsHeight.ToString
-                txtMovieExtrafanartsWidth.Text = .MovieExtrafanartsWidth.ToString
-            End If
-            chkMovieExtrathumbsCreatorAutoThumbs.Checked = .MovieExtrathumbsCreatorAutoThumbs
-            chkMovieExtrathumbsCreatorNoBlackBars.Checked = .MovieExtrathumbsCreatorNoBlackBars
-            chkMovieExtrathumbsCreatorNoSpoilers.Checked = .MovieExtrathumbsCreatorNoSpoilers
-            chkMovieExtrathumbsCreatorUseETasFA.Checked = .MovieExtrathumbsCreatorUseETasFA
-            chkMovieExtrathumbsKeepExisting.Checked = .MovieExtrathumbsKeepExisting
-            chkMovieExtrathumbsPrefSizeOnly.Checked = .MovieExtrathumbsPrefSizeOnly
-            chkMovieExtrathumbsPreselect.Checked = .MovieExtrathumbsPreselect
-            chkMovieExtrathumbsResize.Checked = .MovieExtrathumbsResize
-            If .MovieExtrathumbsResize Then
-                txtMovieExtrathumbsHeight.Text = .MovieExtrathumbsHeight.ToString
-                txtMovieExtrathumbsWidth.Text = .MovieExtrathumbsWidth.ToString
-            End If
-            chkMovieFanartKeepExisting.Checked = .MovieFanartKeepExisting
-            chkMovieFanartPrefSizeOnly.Checked = .MovieFanartPrefSizeOnly
-            chkMovieFanartResize.Checked = .MovieFanartResize
-            If .MovieFanartResize Then
-                txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
-                txtMovieFanartWidth.Text = .MovieFanartWidth.ToString
-            End If
             chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
             chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
-            chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
-            chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
-            chkMovieImagesForceLanguage.Checked = .MovieImagesForceLanguage
-            If .MovieImagesMediaLanguageOnly Then
-                chkMovieImagesMediaLanguageOnly.Checked = True
-                chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
-                chkMovieImagesGetEnglishImages.Checked = .MovieImagesGetEnglishImages
-            End If
-            chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
-            chkMovieLandscapeKeepExisting.Checked = .MovieLandscapeKeepExisting
-            chkMovieLandscapePrefSizeOnly.Checked = .MovieLandscapePrefSizeOnly
             chkMovieLockActors.Checked = .MovieLockActors
             chkMovieLockCert.Checked = .MovieLockCert
             chkMovieLockCountry.Checked = .MovieLockCountry
@@ -2863,13 +2770,6 @@ Public Class dlgSettings
             chkMovieLockUserRating.Checked = .MovieLockUserRating
             chkMovieLockCredits.Checked = .MovieLockCredits
             chkMovieLockYear.Checked = .MovieLockYear
-            chkMoviePosterKeepExisting.Checked = .MoviePosterKeepExisting
-            chkMoviePosterPrefSizeOnly.Checked = .MoviePosterPrefSizeOnly
-            chkMoviePosterResize.Checked = .MoviePosterResize
-            If .MoviePosterResize Then
-                txtMoviePosterHeight.Text = .MoviePosterHeight.ToString
-                txtMoviePosterWidth.Text = .MoviePosterWidth.ToString
-            End If
             chkMovieProperCase.Checked = .MovieProperCase
             chkMovieSetBannerKeepExisting.Checked = .MovieSetBannerKeepExisting
             chkMovieSetBannerPrefSizeOnly.Checked = .MovieSetBannerPrefSizeOnly
@@ -3161,8 +3061,6 @@ Public Class dlgSettings
             txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
             txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
             txtMovieSourcesBackdropsFolderPath.Text = .MovieBackdropsPath.ToString
-            txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
-            txtMovieExtrathumbsLimit.Text = .MovieExtrathumbsLimit.ToString
             txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name.ToString
             txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name.ToString
             txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name.ToString
@@ -3260,29 +3158,6 @@ Public Class dlgSettings
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            Try
-                cbMovieImagesForcedLanguage.Items.Clear()
-                cbMovieImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
-                If cbMovieImagesForcedLanguage.Items.Count > 0 Then
-                    If Not String.IsNullOrEmpty(.MovieImagesForcedLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .MovieImagesForcedLanguage)
-                        If tLanguage IsNot Nothing Then
-                            cbMovieImagesForcedLanguage.Text = tLanguage.Name
-                        Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieImagesForcedLanguage))
-                            If tLanguage IsNot Nothing Then
-                                cbMovieImagesForcedLanguage.Text = tLanguage.Name
-                            Else
-                                cbMovieImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
-                            End If
-                        End If
-                    Else
-                        cbMovieImagesForcedLanguage.Text = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = "en").Name
-                    End If
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
 
             Try
                 cbMovieSetImagesForcedLanguage.Items.Clear()
@@ -4084,9 +3959,6 @@ Public Class dlgSettings
         Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
         items.Add("1000x185", Enums.MovieBannerSize.HD185)
-        cbMovieBannerPrefSize.DataSource = items.ToList
-        cbMovieBannerPrefSize.DisplayMember = "Key"
-        cbMovieBannerPrefSize.ValueMember = "Value"
         cbMovieSetBannerPrefSize.DataSource = items.ToList
         cbMovieSetBannerPrefSize.DisplayMember = "Key"
         cbMovieSetBannerPrefSize.ValueMember = "Value"
@@ -4097,9 +3969,6 @@ Public Class dlgSettings
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearArtSize.Any)
         items.Add("1000x562", Enums.MovieClearArtSize.HD562)
         items.Add("500x281", Enums.MovieClearArtSize.SD281)
-        cbMovieClearArtPrefSize.DataSource = items.ToList
-        cbMovieClearArtPrefSize.DisplayMember = "Key"
-        cbMovieClearArtPrefSize.ValueMember = "Value"
         cbMovieSetClearArtPrefSize.DataSource = items.ToList
         cbMovieSetClearArtPrefSize.DisplayMember = "Key"
         cbMovieSetClearArtPrefSize.ValueMember = "Value"
@@ -4110,9 +3979,6 @@ Public Class dlgSettings
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearLogoSize.Any)
         items.Add("800x310", Enums.MovieClearLogoSize.HD310)
         items.Add("400x155", Enums.MovieClearLogoSize.SD155)
-        cbMovieClearLogoPrefSize.DataSource = items.ToList
-        cbMovieClearLogoPrefSize.DisplayMember = "Key"
-        cbMovieClearLogoPrefSize.ValueMember = "Value"
         cbMovieSetClearLogoPrefSize.DataSource = items.ToList
         cbMovieSetClearLogoPrefSize.DisplayMember = "Key"
         cbMovieSetClearLogoPrefSize.ValueMember = "Value"
@@ -4122,9 +3988,6 @@ Public Class dlgSettings
         Dim items As New Dictionary(Of String, Enums.MovieDiscArtSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieDiscArtSize.Any)
         items.Add("1000x1000", Enums.MovieDiscArtSize.HD1000)
-        cbMovieDiscArtPrefSize.DataSource = items.ToList
-        cbMovieDiscArtPrefSize.DisplayMember = "Key"
-        cbMovieDiscArtPrefSize.ValueMember = "Value"
         cbMovieSetDiscArtPrefSize.DataSource = items.ToList
         cbMovieSetDiscArtPrefSize.DisplayMember = "Key"
         cbMovieSetDiscArtPrefSize.ValueMember = "Value"
@@ -4138,15 +4001,6 @@ Public Class dlgSettings
         items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
         items.Add("1280x720", Enums.MovieFanartSize.HD720)
         items.Add("Thumb", Enums.MovieFanartSize.Thumb)
-        cbMovieExtrafanartsPrefSize.DataSource = items.ToList
-        cbMovieExtrafanartsPrefSize.DisplayMember = "Key"
-        cbMovieExtrafanartsPrefSize.ValueMember = "Value"
-        cbMovieExtrathumbsPrefSize.DataSource = items.ToList
-        cbMovieExtrathumbsPrefSize.DisplayMember = "Key"
-        cbMovieExtrathumbsPrefSize.ValueMember = "Value"
-        cbMovieFanartPrefSize.DataSource = items.ToList
-        cbMovieFanartPrefSize.DisplayMember = "Key"
-        cbMovieFanartPrefSize.ValueMember = "Value"
         cbMovieSetFanartPrefSize.DataSource = items.ToList
         cbMovieSetFanartPrefSize.DisplayMember = "Key"
         cbMovieSetFanartPrefSize.ValueMember = "Value"
@@ -4156,9 +4010,6 @@ Public Class dlgSettings
         Dim items As New Dictionary(Of String, Enums.MovieLandscapeSize)
         items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieLandscapeSize.Any)
         items.Add("1000x562", Enums.MovieLandscapeSize.HD562)
-        cbMovieLandscapePrefSize.DataSource = items.ToList
-        cbMovieLandscapePrefSize.DisplayMember = "Key"
-        cbMovieLandscapePrefSize.ValueMember = "Value"
         cbMovieSetLandscapePrefSize.DataSource = items.ToList
         cbMovieSetLandscapePrefSize.DisplayMember = "Key"
         cbMovieSetLandscapePrefSize.ValueMember = "Value"
@@ -4171,9 +4022,6 @@ Public Class dlgSettings
         items.Add("1400x2100", Enums.MoviePosterSize.HD2100)
         items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
         items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
-        cbMoviePosterPrefSize.DataSource = items.ToList
-        cbMoviePosterPrefSize.DisplayMember = "Key"
-        cbMoviePosterPrefSize.ValueMember = "Value"
         cbMovieSetPosterPrefSize.DataSource = items.ToList
         cbMovieSetPosterPrefSize.DisplayMember = "Key"
         cbMovieSetPosterPrefSize.ValueMember = "Value"
@@ -4911,7 +4759,6 @@ Public Class dlgSettings
             .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
             .GeneralTVEpisodeTheme = cbGeneralTVEpisodeTheme.Text
             .GeneralTVShowTheme = cbGeneralTVShowTheme.Text
-            .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             '.MovieActorThumbsQual = Me.tbMovieActorThumbsQual.value
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
             If Not String.IsNullOrEmpty(txtMovieSourcesBackdropsFolderPath.Text) Then
@@ -4919,51 +4766,10 @@ Public Class dlgSettings
             Else
                 .MovieBackdropsAuto = False
             End If
-            .MovieBannerHeight = If(Not String.IsNullOrEmpty(txtMovieBannerHeight.Text), Convert.ToInt32(txtMovieBannerHeight.Text), 0)
-            .MovieBannerKeepExisting = chkMovieBannerKeepExisting.Checked
-            .MovieBannerPrefSize = CType(cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
-            .MovieBannerPrefSizeOnly = chkMovieBannerPrefSizeOnly.Checked
-            .MovieBannerResize = chkMovieBannerResize.Checked
-            .MovieBannerWidth = If(Not String.IsNullOrEmpty(txtMovieBannerWidth.Text), Convert.ToInt32(txtMovieBannerWidth.Text), 0)
             .MovieCleanDB = chkMovieCleanDB.Checked
-            .MovieClearArtKeepExisting = chkMovieClearArtKeepExisting.Checked
-            .MovieClearArtPrefSize = CType(cbMovieClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearArtSize)).Value
-            .MovieClearArtPrefSizeOnly = chkMovieClearArtPrefSizeOnly.Checked
-            .MovieClearLogoKeepExisting = chkMovieClearLogoKeepExisting.Checked
-            .MovieClearLogoPrefSize = CType(cbMovieClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearLogoSize)).Value
-            .MovieClearLogoPrefSizeOnly = chkMovieClearLogoPrefSizeOnly.Checked
             .MovieClickScrape = chkMovieClickScrape.Checked
             .MovieClickScrapeAsk = chkMovieClickScrapeAsk.Checked
-            .MovieDiscArtKeepExisting = chkMovieDiscArtKeepExisting.Checked
-            .MovieDiscArtPrefSize = CType(cbMovieDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieDiscArtSize)).Value
-            .MovieDiscArtPrefSizeOnly = chkMovieDiscArtPrefSizeOnly.Checked
             .MovieDisplayYear = chkMovieDisplayYear.Checked
-            .MovieExtrafanartsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsHeight.Text), Convert.ToInt32(txtMovieExtrafanartsHeight.Text), 0)
-            .MovieExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsLimit.Text), Convert.ToInt32(txtMovieExtrafanartsLimit.Text), 0)
-            .MovieExtrafanartsKeepExisting = chkMovieExtrafanartsKeepExisting.Checked
-            .MovieExtrafanartsPrefSize = CType(cbMovieExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
-            .MovieExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefSizeOnly.Checked
-            .MovieExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
-            .MovieExtrafanartsResize = chkMovieExtrafanartsResize.Checked
-            .MovieExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
-            .MovieExtrathumbsCreatorAutoThumbs = chkMovieExtrathumbsCreatorAutoThumbs.Checked
-            .MovieExtrathumbsCreatorNoBlackBars = chkMovieExtrathumbsCreatorNoBlackBars.Checked
-            .MovieExtrathumbsCreatorNoSpoilers = chkMovieExtrathumbsCreatorNoSpoilers.Checked
-            .MovieExtrathumbsCreatorUseETasFA = chkMovieExtrathumbsCreatorUseETasFA.Checked
-            .MovieExtrathumbsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsHeight.Text), Convert.ToInt32(txtMovieExtrathumbsHeight.Text), 0)
-            .MovieExtrathumbsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsLimit.Text), Convert.ToInt32(txtMovieExtrathumbsLimit.Text), 0)
-            .MovieExtrathumbsKeepExisting = chkMovieExtrathumbsKeepExisting.Checked
-            .MovieExtrathumbsPrefSize = CType(cbMovieExtrathumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
-            .MovieExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefSizeOnly.Checked
-            .MovieExtrathumbsPreselect = chkMovieExtrathumbsPreselect.Checked
-            .MovieExtrathumbsResize = chkMovieExtrathumbsResize.Checked
-            .MovieExtrathumbsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsWidth.Text), Convert.ToInt32(txtMovieExtrathumbsWidth.Text), 0)
-            .MovieFanartHeight = If(Not String.IsNullOrEmpty(txtMovieFanartHeight.Text), Convert.ToInt32(txtMovieFanartHeight.Text), 0)
-            .MovieFanartKeepExisting = chkMovieFanartKeepExisting.Checked
-            .MovieFanartPrefSize = CType(cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
-            .MovieFanartPrefSizeOnly = chkMovieFanartPrefSizeOnly.Checked
-            .MovieFanartResize = chkMovieFanartResize.Checked
-            .MovieFanartWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
             .MovieFilterCustom.Clear()
             .MovieFilterCustom.AddRange(lstMovieFilters.Items.OfType(Of String).ToList)
             If .MovieFilterCustom.Count <= 0 Then .MovieFilterCustomIsEmpty = True
@@ -4986,24 +4792,11 @@ Public Class dlgSettings
             .MovieGeneralMarkNew = chkMovieGeneralMarkNew.Checked
             .MovieGeneralMediaListSorting.Clear()
             .MovieGeneralMediaListSorting.AddRange(MovieGeneralMediaListSorting)
-            .MovieImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
-            .MovieImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
-            If Not String.IsNullOrEmpty(cbMovieImagesForcedLanguage.Text) Then
-                .MovieImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieImagesForcedLanguage.Text).Abbrevation_MainLanguage
-            End If
-            .MovieImagesForceLanguage = chkMovieImagesForceLanguage.Checked
-            .MovieImagesGetBlankImages = chkMovieImagesGetBlankImages.Checked
-            .MovieImagesGetEnglishImages = chkMovieImagesGetEnglishImages.Checked
-            .MovieImagesMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
-            .MovieImagesNotSaveURLToNfo = chkMovieImagesNotSaveURLToNfo.Checked
             If Not String.IsNullOrEmpty(txtMovieIMDBURL.Text) Then
                 .MovieIMDBURL = txtMovieIMDBURL.Text.Replace("http://", String.Empty).Trim
             Else
                 .MovieIMDBURL = "akas.imdb.com"
             End If
-            .MovieLandscapeKeepExisting = chkMovieLandscapeKeepExisting.Checked
-            .MovieLandscapePrefSize = CType(cbMovieLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieLandscapeSize)).Value
-            .MovieLandscapePrefSizeOnly = chkMovieLandscapePrefSizeOnly.Checked
             .MovieLevTolerance = If(Not String.IsNullOrEmpty(txtMovieLevTolerance.Text), Convert.ToInt32(txtMovieLevTolerance.Text), 0)
             .MovieLockActors = chkMovieLockActors.Checked
             .MovieLockCert = chkMovieLockCert.Checked
@@ -5032,12 +4825,6 @@ Public Class dlgSettings
             .MovieLockYear = chkMovieLockYear.Checked
             .MovieMetadataPerFileType.Clear()
             .MovieMetadataPerFileType.AddRange(MovieMeta)
-            .MoviePosterHeight = If(Not String.IsNullOrEmpty(txtMoviePosterHeight.Text), Convert.ToInt32(txtMoviePosterHeight.Text), 0)
-            .MoviePosterKeepExisting = chkMoviePosterKeepExisting.Checked
-            .MoviePosterPrefSize = CType(cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
-            .MoviePosterPrefSizeOnly = chkMoviePosterPrefSizeOnly.Checked
-            .MoviePosterResize = chkMoviePosterResize.Checked
-            .MoviePosterWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
             .MovieProperCase = chkMovieProperCase.Checked
             .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(txtMovieSetBannerHeight.Text), Convert.ToInt32(txtMovieSetBannerHeight.Text), 0)
             .MovieSetBannerKeepExisting = chkMovieSetBannerKeepExisting.Checked
@@ -5784,6 +5571,9 @@ Public Class dlgSettings
 
         End With
 
+        'SettingsPanels
+        frmMovie_Image.SaveSettings()
+
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons
             Try
                 s.Addon.SaveSetup(Not bIsApply)
@@ -5809,7 +5599,6 @@ Public Class dlgSettings
         chkMovieActorThumbsExpertVTS.Text = strActorThumbs
         chkTVEpisodeActorThumbsExpert.Text = strActorThumbs
         chkTVShowActorThumbsExpert.Text = strActorThumbs
-        gbMovieImagesActorThumbsOpts.Text = strActorThumbs
         lblMovieSourcesFilenamingKodiDefaultsActorThumbs.Text = strActorThumbs
         lblTVSourcesFilenamingKodiDefaultsActorThumbs.Text = strActorThumbs
 
@@ -5837,13 +5626,11 @@ Public Class dlgSettings
 
         'Also Get Blank Images
         Dim strAlsoGetBlankImages As String = Master.eLang.GetString(1207, "Also Get Blank Images")
-        chkMovieImagesGetBlankImages.Text = strAlsoGetBlankImages
         chkMovieSetImagesGetBlankImages.Text = strAlsoGetBlankImages
         chkTVImagesGetBlankImages.Text = strAlsoGetBlankImages
 
         'Also Get English Images
         Dim strAlsoGetEnglishImages As String = Master.eLang.GetString(737, "Also Get English Images")
-        chkMovieImagesGetEnglishImages.Text = strAlsoGetEnglishImages
         chkMovieSetImagesGetEnglishImages.Text = strAlsoGetEnglishImages
         chkTVImagesGetEnglishImages.Text = strAlsoGetEnglishImages
 
@@ -5855,11 +5642,6 @@ Public Class dlgSettings
 
         'Automatically Resize:
         Dim strAutomaticallyResize As String = Master.eLang.GetString(481, "Automatically Resize:")
-        chkMoviePosterResize.Text = strAutomaticallyResize
-        chkMovieBannerResize.Text = strAutomaticallyResize
-        chkMovieExtrafanartsResize.Text = strAutomaticallyResize
-        chkMovieExtrathumbsResize.Text = strAutomaticallyResize
-        chkMovieFanartResize.Text = strAutomaticallyResize
         chkMovieSetBannerResize.Text = strAutomaticallyResize
         chkMovieSetFanartResize.Text = strAutomaticallyResize
         chkMovieSetPosterResize.Text = strAutomaticallyResize
@@ -5878,7 +5660,6 @@ Public Class dlgSettings
 
         'Banner
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
-        gbMovieImagesBannerOpts.Text = strBanner
         gbMovieSetImagesBannerOpts.Text = strBanner
         gbTVImagesAllSeasonsBannerOpts.Text = strBanner
         gbTVImagesSeasonBannerOpts.Text = strBanner
@@ -5922,7 +5703,6 @@ Public Class dlgSettings
 
         'ClearArt
         Dim strClearArt As String = Master.eLang.GetString(1096, "ClearArt")
-        gbMovieImagesClearArtOpts.Text = strClearArt
         gbMovieSetImagesClearArtOpts.Text = strClearArt
         gbTVImagesShowClearArtOpts.Text = strClearArt
         lblMovieSetSourcesFilenamingExpertParentClearArt.Text = strClearArt
@@ -5941,7 +5721,6 @@ Public Class dlgSettings
 
         'ClearLogo
         Dim strClearLogo As String = Master.eLang.GetString(1097, "ClearLogo")
-        gbMovieImagesClearLogoOpts.Text = strClearLogo
         gbMovieSetImagesClearLogoOpts.Text = strClearLogo
         gbTVImagesShowClearLogoOpts.Text = strClearLogo
         lblMovieSetSourcesClearLogoExpertParent.Text = strClearLogo
@@ -6018,7 +5797,6 @@ Public Class dlgSettings
 
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
-        gbMovieImagesDiscArtOpts.Text = strDiscArt
         gbMovieSetImagesDiscArtOpts.Text = strDiscArt
         lblMovieSetSourcesFilenamingExpertParentDiscArt.Text = strDiscArt
         lblMovieSetSourcesFilenamingExpertSingleDiscArt.Text = strDiscArt
@@ -6037,13 +5815,11 @@ Public Class dlgSettings
 
         'Display "Image Select" dialog while single scraping
         Dim strDisplayImgDialog As String = Master.eLang.GetString(499, "Display ""Image Select"" dialog while single scraping")
-        chkMovieImagesDisplayImageSelect.Text = strDisplayImgDialog
         chkMovieSetImagesDisplayImageSelect.Text = strDisplayImgDialog
         chkTVImagesDisplayImageSelect.Text = strDisplayImgDialog
 
         'Do not save URLs to NFO"
         Dim strNotSaveURLToNfo As String = Master.eLang.GetString(498, "Do not save URLs to NFO")
-        chkMovieImagesNotSaveURLToNfo.Text = strNotSaveURLToNfo
         chkTVImagesNotSaveURLToNfo.Text = strNotSaveURLToNfo
 
         'Duration Format
@@ -6084,7 +5860,6 @@ Public Class dlgSettings
 
         'Enable Image Caching
         Dim strEnableImageCaching As String = Master.eLang.GetString(249, "Enable Image Caching")
-        chkMovieImagesCacheEnabled.Text = strEnableImageCaching
         chkMovieSetImagesCacheEnabled.Text = strEnableImageCaching
         chkTVImagesCacheEnabled.Text = strEnableImageCaching
 
@@ -6144,7 +5919,6 @@ Public Class dlgSettings
         chkMovieExtrafanartsExpertSingle.Text = strExtrafanarts
         chkMovieExtrafanartsExpertVTS.Text = strExtrafanarts
         chkTVShowExtrafanartsExpert.Text = strExtrafanarts
-        gbMovieImagesExtrafanartsOpts.Text = strExtrafanarts
         gbTVImagesShowExtrafanartsOpts.Text = strExtrafanarts
         lblMovieSourcesFilenamingKodiDefaultsExtrafanarts.Text = strExtrafanarts
         lblTVSourcesFilenamingKodiDefaultsExtrafanarts.Text = strExtrafanarts
@@ -6154,12 +5928,10 @@ Public Class dlgSettings
         chkMovieExtrathumbsExpertBDMV.Text = strExtrathumbs
         chkMovieExtrathumbsExpertSingle.Text = strExtrathumbs
         chkMovieExtrathumbsExpertVTS.Text = strExtrathumbs
-        gbMovieImagesExtrathumbsOpts.Text = strExtrathumbs
         lblMovieSourcesFilenamingKodiDefaultsExtrathumbs.Text = strExtrathumbs
 
         'Fanart
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")
-        gbMovieImagesFanartOpts.Text = strFanart
         gbMovieSetImagesFanartOpts.Text = strFanart
         gbTVImagesAllSeasonsFanartOpts.Text = strFanart
         gbTVImagesEpisodeFanartOpts.Text = strFanart
@@ -6197,7 +5969,6 @@ Public Class dlgSettings
 
         'Force Language
         Dim strForceLanguage As String = Master.eLang.GetString(1034, "Force Language")
-        chkMovieImagesForceLanguage.Text = strForceLanguage
         chkMovieSetImagesForceLanguage.Text = strForceLanguage
         chkTVImagesForceLanguage.Text = strForceLanguage
 
@@ -6220,22 +5991,11 @@ Public Class dlgSettings
 
         'Images
         Dim strImages As String = Master.eLang.GetString(497, "Images")
-        gbMovieImagesOpts.Text = strImages
         gbMovieSetImagesOpts.Text = strImages
         gbTVImagesOpts.Text = strImages
 
         'Keep existing
         Dim strKeepExisting As String = Master.eLang.GetString(971, "Keep existing")
-        chkMovieActorThumbsKeepExisting.Text = strKeepExisting
-        chkMovieBannerKeepExisting.Text = strKeepExisting
-        chkMovieClearArtKeepExisting.Text = strKeepExisting
-        chkMovieClearLogoKeepExisting.Text = strKeepExisting
-        chkMovieDiscArtKeepExisting.Text = strKeepExisting
-        chkMovieExtrafanartsKeepExisting.Text = strKeepExisting
-        chkMovieExtrathumbsKeepExisting.Text = strKeepExisting
-        chkMovieFanartKeepExisting.Text = strKeepExisting
-        chkMovieLandscapeKeepExisting.Text = strKeepExisting
-        chkMoviePosterKeepExisting.Text = strKeepExisting
         chkMovieSetBannerKeepExisting.Text = strKeepExisting
         chkMovieSetClearArtKeepExisting.Text = strKeepExisting
         chkMovieSetClearLogoKeepExisting.Text = strKeepExisting
@@ -6267,7 +6027,6 @@ Public Class dlgSettings
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
-        gbMovieImagesLandscapeOpts.Text = strLandscape
         gbMovieSetImagesLandscapeOpts.Text = strLandscape
         gbTVImagesAllSeasonsLandscapeOpts.Text = strLandscape
         gbTVImagesSeasonLandscapeOpts.Text = strLandscape
@@ -6303,8 +6062,6 @@ Public Class dlgSettings
 
         'Limit
         Dim strLimit As String = Master.eLang.GetString(578, "Limit")
-        lblMovieExtrafanartsLimit.Text = String.Concat(strLimit, ":")
-        lblMovieExtrathumbsLimit.Text = String.Concat(strLimit, ":")
         lblMovieScraperGlobalHeaderLimit.Text = strLimit
         lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
         lblTVShowExtrafanartsLimit.Text = String.Concat(strLimit, ":")
@@ -6325,11 +6082,6 @@ Public Class dlgSettings
 
         'Max Height:
         Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height:")
-        lblMovieBannerHeight.Text = strMaxHeight
-        lblMovieExtrafanartsHeight.Text = strMaxHeight
-        lblMovieExtrathumbsHeight.Text = strMaxHeight
-        lblMovieFanartHeight.Text = strMaxHeight
-        lblMoviePosterHeight.Text = strMaxHeight
         lblMovieSetBannerHeight.Text = strMaxHeight
         lblMovieSetFanartHeight.Text = strMaxHeight
         lblMovieSetPosterHeight.Text = strMaxHeight
@@ -6348,11 +6100,6 @@ Public Class dlgSettings
 
         'Max Height:
         Dim strMaxWidth As String = Master.eLang.GetString(479, "Max Width:")
-        lblMovieBannerWidth.Text = strMaxWidth
-        lblMovieExtrafanartsWidth.Text = strMaxWidth
-        lblMovieExtrathumbsWidth.Text = strMaxWidth
-        lblMovieFanartWidth.Text = strMaxWidth
-        lblMoviePosterWidth.Text = strMaxWidth
         lblMovieSetBannerWidth.Text = strMaxWidth
         lblMovieSetFanartWidth.Text = strMaxWidth
         lblMovieSetPosterWidth.Text = strMaxWidth
@@ -6428,15 +6175,6 @@ Public Class dlgSettings
 
         'Only
         Dim strOnly As String = Master.eLang.GetString(145, "Only")
-        chkMovieBannerPrefSizeOnly.Text = strOnly
-        chkMovieClearArtPrefSizeOnly.Text = strOnly
-        chkMovieClearLogoPrefSizeOnly.Text = strOnly
-        chkMovieDiscArtPrefSizeOnly.Text = strOnly
-        chkMovieExtrafanartsPrefSizeOnly.Text = strOnly
-        chkMovieExtrathumbsPrefSizeOnly.Text = strOnly
-        chkMovieFanartPrefSizeOnly.Text = strOnly
-        chkMovieDiscArtPrefSizeOnly.Text = strOnly
-        chkMoviePosterPrefSizeOnly.Text = strOnly
         chkMovieSetBannerPrefSizeOnly.Text = strOnly
         chkMovieSetClearArtPrefSizeOnly.Text = strOnly
         chkMovieSetClearLogoPrefSizeOnly.Text = strOnly
@@ -6465,7 +6203,6 @@ Public Class dlgSettings
 
         'Only Get Images for the Media Language
         Dim strOnlyImgMediaLang As String = Master.eLang.GetString(736, "Only Get Images for the Media Language")
-        chkMovieImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
         chkMovieSetImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
         chkTVImagesMediaLanguageOnly.Text = strOnlyImgMediaLang
 
@@ -6528,7 +6265,6 @@ Public Class dlgSettings
 
         'Poster
         Dim strPoster As String = Master.eLang.GetString(148, "Poster")
-        gbMovieImagesPosterOpts.Text = strPoster
         gbMovieSetImagesPosterOpts.Text = strPoster
         gbTVImagesAllSeasonsPosterOpts.Text = strPoster
         gbTVImagesEpisodePosterOpts.Text = strPoster
@@ -6555,21 +6291,11 @@ Public Class dlgSettings
 
         'Preferred Language
         Dim strPreferredLanguage As String = Master.eLang.GetString(741, "Preferred Language")
-        gbMovieImagesLanguageOpts.Text = strPreferredLanguage
         gbMovieSetImagesLanguageOpts.Text = strPreferredLanguage
         gbTVImagesLanguageOpts.Text = strPreferredLanguage
 
         'Preferred Size:
         Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
-        lblMovieBannerSize.Text = strPreferredSize
-        lblMovieClearArtSize.Text = strPreferredSize
-        lblMovieClearLogoSize.Text = strPreferredSize
-        lblMovieDiscArtSize.Text = strPreferredSize
-        lblMovieExtrafanartsSize.Text = strPreferredSize
-        lblMovieExtrathumbsSize.Text = strPreferredSize
-        lblMovieFanartSize.Text = strPreferredSize
-        lblMovieLandscapeSize.Text = strPreferredSize
-        lblMoviePosterSize.Text = strPreferredSize
         lblMovieSetBannerSize.Text = strPreferredSize
         lblMovieSetClearArtSize.Text = strPreferredSize
         lblMovieSetClearLogoSize.Text = strPreferredSize
@@ -6604,8 +6330,6 @@ Public Class dlgSettings
 
         'Preselect in "Image Select" dialog
         Dim strPreselectInImageSelectDialog As String = Master.eLang.GetString(1023, "Preselect in ""Image Select"" dialog")
-        chkMovieExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
-        chkMovieExtrathumbsPreselect.Text = strPreselectInImageSelectDialog
         chkTVShowExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
 
         'Recusive
@@ -6846,10 +6570,6 @@ Public Class dlgSettings
         chkMovieSourcesBackdropsAuto.Text = Master.eLang.GetString(521, "Automatically Save Fanart To Backdrops Folder")
         chkMovieCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         chkMovieDisplayYear.Text = Master.eLang.GetString(464, "Display Year in List Title")
-        chkMovieExtrathumbsCreatorAutoThumbs.Text = Master.eLang.GetString(1475, "Create thumbs instead of using fanarts")
-        chkMovieExtrathumbsCreatorNoBlackBars.Text = Master.eLang.GetString(1474, "Remove Black Bars")
-        chkMovieExtrathumbsCreatorNoSpoilers.Text = Master.eLang.GetString(1473, "No Spoilers")
-        chkMovieExtrathumbsCreatorUseETasFA.Text = Master.eLang.GetString(1476, "Only create thumbs if no fanart found")
         chkMovieGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
         chkMovieGeneralMarkNew.Text = Master.eLang.GetString(459, "Mark New Movies")
         chkMovieLevTolerance.Text = Master.eLang.GetString(462, "Check Title Match Confidence")
@@ -6900,8 +6620,6 @@ Public Class dlgSettings
         gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
         gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         gbMovieSourcesBackdropsFolderOpts.Text = Master.eLang.GetString(520, "Backdrops Folder")
-        gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
-        gbMovieImagesExtrathumbsCreatorOpts.Text = Master.eLang.GetString(1477, "Create Thumbnails")
         gbMovieGeneralFiltersOpts.Text = Master.eLang.GetString(451, "Folder/File Name Filters")
         gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
@@ -7085,14 +6803,6 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieBannerHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieBannerWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieBannerWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
     Private Sub txtMovieSetBannerHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetBannerHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -7113,38 +6823,6 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieExtrafanartsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrafanartsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrafanartsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrafanartsWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrathumbsHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrathumbsLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieExtrathumbsWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieExtrathumbsWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMovieFanartWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieFanartWidth.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
     Private Sub txtMovieSetFanartHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieSetFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -7157,14 +6835,6 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
     Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMoviePosterHeight_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMoviePosterHeight.KeyPress
-        e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub txtMoviePosterWidth_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMoviePosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
@@ -7799,24 +7469,6 @@ Public Class dlgSettings
         e.Handled = (e.KeyCode = Keys.Enter)
     End Sub
 
-    Private Sub chkMovieImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesForceLanguage.CheckedChanged
-        SetApplyButton(True)
-
-        cbMovieImagesForcedLanguage.Enabled = chkMovieImagesForceLanguage.Checked
-    End Sub
-
-    Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesMediaLanguageOnly.CheckedChanged
-        SetApplyButton(True)
-
-        chkMovieImagesGetBlankImages.Enabled = chkMovieImagesMediaLanguageOnly.Checked
-        chkMovieImagesGetEnglishImages.Enabled = chkMovieImagesMediaLanguageOnly.Checked
-
-        If Not chkMovieImagesMediaLanguageOnly.Checked Then
-            chkMovieImagesGetBlankImages.Checked = False
-            chkMovieImagesGetEnglishImages.Checked = False
-        End If
-    End Sub
-
     Private Sub chkMovieSetImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieSetImagesForceLanguage.CheckedChanged
         SetApplyButton(True)
 
@@ -7904,18 +7556,6 @@ Public Class dlgSettings
             End If
         End If
     End Sub
-    Private Sub chkMovieExtrathumbsCreatorAutoThumbs_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrathumbsCreatorAutoThumbs.CheckedChanged
-        If chkMovieExtrathumbsCreatorAutoThumbs.Checked = True Then
-            chkMovieExtrathumbsCreatorUseETasFA.Checked = False
-        End If
-        SetApplyButton(True)
-    End Sub
-    Private Sub chkMovieExtrathumbsCreatorUseETasFA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieExtrathumbsCreatorUseETasFA.CheckedChanged
-        If chkMovieExtrathumbsCreatorUseETasFA.Checked = True Then
-            chkMovieExtrathumbsCreatorAutoThumbs.Checked = False
-        End If
-        SetApplyButton(True)
-    End Sub
 
     Private Sub rbMovieGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieGeneralCustomScrapeButtonDisabled.CheckedChanged
         If rbMovieGeneralCustomScrapeButtonDisabled.Checked Then
@@ -7983,16 +7623,10 @@ Public Class dlgSettings
         cbGeneralMovieTheme.SelectedIndexChanged,
         cbGeneralTVEpisodeTheme.SelectedIndexChanged,
         cbGeneralTVShowTheme.SelectedIndexChanged,
-        cbMovieBannerPrefSize.SelectedIndexChanged,
-        cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
-        cbMovieExtrathumbsPrefSize.SelectedIndexChanged,
-        cbMovieFanartPrefSize.SelectedIndexChanged,
         cbMovieGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         cbMovieGeneralLang.SelectedIndexChanged,
-        cbMovieImagesForcedLanguage.SelectedIndexChanged,
         cbMovieLanguageOverlay.SelectedIndexChanged,
-        cbMoviePosterPrefSize.SelectedIndexChanged,
         cbMovieScraperCertLang.SelectedIndexChanged,
         cbMovieSetBannerPrefSize.SelectedIndexChanged,
         cbMovieSetFanartPrefSize.SelectedIndexChanged,
@@ -8048,65 +7682,10 @@ Public Class dlgSettings
         chkGeneralImagesGlassOverlay.CheckedChanged,
         chkGeneralOverwriteNfo.CheckedChanged,
         chkGeneralSourceFromFolder.CheckedChanged,
-        chkMovieActorThumbsEden.CheckedChanged,
-        chkMovieActorThumbsExpertBDMV.CheckedChanged,
-        chkMovieActorThumbsExpertMulti.CheckedChanged,
-        chkMovieActorThumbsExpertSingle.CheckedChanged,
-        chkMovieActorThumbsExpertVTS.CheckedChanged,
-        chkMovieActorThumbsFrodo.CheckedChanged,
-        chkMovieActorThumbsKeepExisting.CheckedChanged,
-        chkMovieBannerAD.CheckedChanged,
-        chkMovieBannerExtended.CheckedChanged,
-        chkMovieBannerKeepExisting.CheckedChanged,
-        chkMovieBannerNMJ.CheckedChanged,
-        chkMovieBannerPrefSizeOnly.CheckedChanged,
-        chkMovieBannerYAMJ.CheckedChanged,
         chkMovieCleanDB.CheckedChanged,
-        chkMovieClearArtAD.CheckedChanged,
-        chkMovieClearArtExtended.CheckedChanged,
-        chkMovieClearArtKeepExisting.CheckedChanged,
-        chkMovieClearLogoAD.CheckedChanged,
-        chkMovieClearLogoExtended.CheckedChanged,
-        chkMovieClearLogoKeepExisting.CheckedChanged,
         chkMovieClickScrapeAsk.CheckedChanged,
-        chkMovieDiscArtAD.CheckedChanged,
-        chkMovieDiscArtExtended.CheckedChanged,
-        chkMovieDiscArtKeepExisting.CheckedChanged,
-        chkMovieExtrafanartsEden.CheckedChanged,
-        chkMovieExtrafanartsExpertBDMV.CheckedChanged,
-        chkMovieExtrafanartsExpertSingle.CheckedChanged,
-        chkMovieExtrafanartsExpertVTS.CheckedChanged,
-        chkMovieExtrafanartsFrodo.CheckedChanged,
-        chkMovieExtrafanartsKeepExisting.CheckedChanged,
-        chkMovieExtrafanartsPrefSizeOnly.CheckedChanged,
-        chkMovieExtrafanartsPreselect.CheckedChanged,
-        chkMovieExtrathumbsCreatorNoBlackBars.CheckedChanged,
-        chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged,
-        chkMovieExtrathumbsEden.CheckedChanged,
-        chkMovieExtrathumbsExpertBDMV.CheckedChanged,
-        chkMovieExtrathumbsExpertSingle.CheckedChanged,
-        chkMovieExtrathumbsExpertVTS.CheckedChanged,
-        chkMovieExtrathumbsFrodo.CheckedChanged,
-        chkMovieExtrathumbsKeepExisting.CheckedChanged,
-        chkMovieExtrathumbsPrefSizeOnly.CheckedChanged,
-        chkMovieExtrathumbsPreselect.CheckedChanged,
-        chkMovieFanartBoxee.CheckedChanged,
-        chkMovieFanartEden.CheckedChanged,
-        chkMovieFanartFrodo.CheckedChanged,
-        chkMovieFanartKeepExisting.CheckedChanged,
-        chkMovieFanartNMJ.CheckedChanged,
-        chkMovieFanartPrefSizeOnly.CheckedChanged,
-        chkMovieFanartYAMJ.CheckedChanged,
         chkMovieGeneralIgnoreLastScan.CheckedChanged,
         chkMovieGeneralMarkNew.CheckedChanged,
-        chkMovieImagesCacheEnabled.CheckedChanged,
-        chkMovieImagesDisplayImageSelect.CheckedChanged,
-        chkMovieImagesGetBlankImages.CheckedChanged,
-        chkMovieImagesGetEnglishImages.CheckedChanged,
-        chkMovieImagesNotSaveURLToNfo.CheckedChanged,
-        chkMovieLandscapeAD.CheckedChanged,
-        chkMovieLandscapeExtended.CheckedChanged,
-        chkMovieLandscapeKeepExisting.CheckedChanged,
         chkMovieLockActors.CheckedChanged,
         chkMovieLockCert.CheckedChanged,
         chkMovieLockCollectionID.CheckedChanged,
@@ -8132,19 +7711,6 @@ Public Class dlgSettings
         chkMovieLockTrailer.CheckedChanged,
         chkMovieLockUserRating.CheckedChanged,
         chkMovieLockYear.CheckedChanged,
-        chkMovieNFOBoxee.CheckedChanged,
-        chkMovieNFOEden.CheckedChanged,
-        chkMovieNFOFrodo.CheckedChanged,
-        chkMovieNFONMJ.CheckedChanged,
-        chkMovieNFOYAMJ.CheckedChanged,
-        chkMoviePosterBoxee.CheckedChanged,
-        chkMoviePosterEden.CheckedChanged,
-        chkMoviePosterFrodo.CheckedChanged,
-        chkMoviePosterKeepExisting.CheckedChanged,
-        chkMoviePosterNMJ.CheckedChanged,
-        chkMoviePosterPrefSizeOnly.CheckedChanged,
-        chkMoviePosterYAMJ.CheckedChanged,
-        chkMovieRecognizeVTSExpertVTS.CheckedChanged,
         chkMovieScanOrderModify.CheckedChanged,
         chkMovieScraperCastWithImg.CheckedChanged,
         chkMovieScraperCertFSK.CheckedChanged,
@@ -8210,18 +7776,8 @@ Public Class dlgSettings
         chkMovieSetScraperPlot.CheckedChanged,
         chkMovieSetScraperTitle.CheckedChanged,
         chkMovieSortBeforeScan.CheckedChanged,
-        chkMovieSourcesBackdropsAuto.CheckedChanged,
         chkMovieThemeKeepExisting.CheckedChanged,
-        chkMovieTrailerEden.CheckedChanged,
-        chkMovieTrailerFrodo.CheckedChanged,
         chkMovieTrailerKeepExisting.CheckedChanged,
-        chkMovieTrailerNMJ.CheckedChanged,
-        chkMovieTrailerYAMJ.CheckedChanged,
-        chkMovieUnstackExpertMulti.CheckedChanged,
-        chkMovieUnstackExpertSingle.CheckedChanged,
-        chkMovieUseBaseDirectoryExpertBDMV.CheckedChanged,
-        chkMovieUseBaseDirectoryExpertVTS.CheckedChanged,
-        chkMovieXBMCProtectVTSBDMV.CheckedChanged,
         chkTVAllSeasonsBannerKeepExisting.CheckedChanged,
         chkTVAllSeasonsBannerPrefSizeOnly.CheckedChanged,
         chkTVAllSeasonsFanartKeepExisting.CheckedChanged,
@@ -8362,59 +7918,11 @@ Public Class dlgSettings
         tcFileSystemCleaner.SelectedIndexChanged,
         txtGeneralImageFilterFanartMatchRate.TextChanged,
         txtGeneralImageFilterPosterMatchRate.TextChanged,
-        txtMovieActorThumbsExtExpertBDMV.TextChanged,
-        txtMovieActorThumbsExtExpertMulti.TextChanged,
-        txtMovieActorThumbsExtExpertSingle.TextChanged,
-        txtMovieActorThumbsExtExpertVTS.TextChanged,
-        txtMovieBannerExpertBDMV.TextChanged,
-        txtMovieBannerExpertMulti.TextChanged,
-        txtMovieBannerExpertSingle.TextChanged,
-        txtMovieBannerExpertVTS.TextChanged,
-        txtMovieBannerHeight.TextChanged,
-        txtMovieBannerWidth.TextChanged,
-        txtMovieClearArtExpertBDMV.TextChanged,
-        txtMovieClearArtExpertMulti.TextChanged,
-        txtMovieClearArtExpertSingle.TextChanged,
-        txtMovieClearArtExpertVTS.TextChanged,
-        txtMovieClearLogoExpertBDMV.TextChanged,
-        txtMovieClearLogoExpertMulti.TextChanged,
-        txtMovieClearLogoExpertSingle.TextChanged,
-        txtMovieClearLogoExpertVTS.TextChanged,
-        txtMovieDiscArtExpertBDMV.TextChanged,
-        txtMovieDiscArtExpertMulti.TextChanged,
-        txtMovieDiscArtExpertSingle.TextChanged,
-        txtMovieDiscArtExpertVTS.TextChanged,
-        txtMovieExtrafanartsHeight.TextChanged,
-        txtMovieExtrafanartsLimit.TextChanged,
-        txtMovieExtrafanartsWidth.TextChanged,
-        txtMovieExtrathumbsHeight.TextChanged,
-        txtMovieExtrathumbsLimit.TextChanged,
-        txtMovieExtrathumbsWidth.TextChanged,
-        txtMovieFanartExpertBDMV.TextChanged,
-        txtMovieFanartExpertMulti.TextChanged,
-        txtMovieFanartExpertSingle.TextChanged,
-        txtMovieFanartExpertVTS.TextChanged,
-        txtMovieFanartHeight.TextChanged,
-        txtMovieFanartWidth.TextChanged,
         txtMovieGeneralCustomMarker1.TextChanged,
         txtMovieGeneralCustomMarker2.TextChanged,
         txtMovieGeneralCustomMarker3.TextChanged,
         txtMovieGeneralCustomMarker4.TextChanged,
-        txtMovieLandscapeExpertBDMV.TextChanged,
-        txtMovieLandscapeExpertMulti.TextChanged,
-        txtMovieLandscapeExpertSingle.TextChanged,
-        txtMovieLandscapeExpertVTS.TextChanged,
         txtMovieLevTolerance.TextChanged,
-        txtMovieNFOExpertBDMV.TextChanged,
-        txtMovieNFOExpertMulti.TextChanged,
-        txtMovieNFOExpertSingle.TextChanged,
-        txtMovieNFOExpertVTS.TextChanged,
-        txtMoviePosterExpertBDMV.TextChanged,
-        txtMoviePosterExpertMulti.TextChanged,
-        txtMoviePosterExpertSingle.TextChanged,
-        txtMoviePosterExpertVTS.TextChanged,
-        txtMoviePosterHeight.TextChanged,
-        txtMoviePosterWidth.TextChanged,
         txtMovieScraperCastLimit.TextChanged,
         txtMovieScraperDurationRuntimeFormat.TextChanged,
         txtMovieScraperGenreLimit.TextChanged,
@@ -8444,13 +7952,6 @@ Public Class dlgSettings
         txtMovieSetPosterExpertSingle.TextChanged,
         txtMovieSetPosterHeight.TextChanged,
         txtMovieSetPosterWidth.TextChanged,
-        txtMovieThemeTvTunesCustomPath.TextChanged,
-        txtMovieThemeTvTunesSubDir.TextChanged,
-        txtMovieTrailerExpertBDMV.TextChanged,
-        txtMovieTrailerExpertMulti.TextChanged,
-        txtMovieTrailerExpertSingle.TextChanged,
-        txtMovieTrailerExpertVTS.TextChanged,
-        txtMovieYAMJWatchedFolder.TextChanged,
         txtProxyDomain.TextChanged,
         txtProxyPassword.TextChanged,
         txtProxyPort.TextChanged,
@@ -8491,7 +7992,7 @@ Public Class dlgSettings
         txtTVShowPosterHeight.TextChanged,
         txtTVShowPosterWidth.TextChanged,
         txtTVShowThemeTvTunesCustomPath.TextChanged,
-        txtTVShowThemeTvTunesSubDir.TextChanged, chkMovieClearLogoPrefSizeOnly.CheckedChanged, chkMovieClearArtPrefSizeOnly.CheckedChanged, cbMovieClearLogoPrefSize.SelectedIndexChanged, cbMovieClearArtPrefSize.SelectedIndexChanged, chkMovieLandscapePrefSizeOnly.CheckedChanged, chkMovieDiscArtPrefSizeOnly.CheckedChanged, cbMovieLandscapePrefSize.SelectedIndexChanged, cbMovieDiscArtPrefSize.SelectedIndexChanged, chkTVShowLandscapePrefSizeOnly.CheckedChanged, chkTVShowClearLogoPrefSizeOnly.CheckedChanged, chkTVShowClearArtPrefSizeOnly.CheckedChanged, chkTVShowCharacterArtPrefSizeOnly.CheckedChanged, cbTVShowLandscapePrefSize.SelectedIndexChanged, cbTVShowClearLogoPrefSize.SelectedIndexChanged, cbTVShowClearArtPrefSize.SelectedIndexChanged, cbTVShowCharacterArtPrefSize.SelectedIndexChanged, cbTVShowBannerPrefSize.SelectedIndexChanged, cbTVSeasonBannerPrefSize.SelectedIndexChanged, cbTVAllSeasonsBannerPrefSize.SelectedIndexChanged, chkMovieSetDiscArtKeepExisting.CheckedChanged, chkTVScraperCastWithImg.CheckedChanged
+        txtTVShowThemeTvTunesSubDir.TextChanged, chkTVShowLandscapePrefSizeOnly.CheckedChanged, chkTVShowClearLogoPrefSizeOnly.CheckedChanged, chkTVShowClearArtPrefSizeOnly.CheckedChanged, chkTVShowCharacterArtPrefSizeOnly.CheckedChanged, cbTVShowLandscapePrefSize.SelectedIndexChanged, cbTVShowClearLogoPrefSize.SelectedIndexChanged, cbTVShowClearArtPrefSize.SelectedIndexChanged, cbTVShowCharacterArtPrefSize.SelectedIndexChanged, cbTVShowBannerPrefSize.SelectedIndexChanged, cbTVSeasonBannerPrefSize.SelectedIndexChanged, cbTVAllSeasonsBannerPrefSize.SelectedIndexChanged, chkMovieSetDiscArtKeepExisting.CheckedChanged, chkTVScraperCastWithImg.CheckedChanged, txtMovieYAMJWatchedFolder.TextChanged, txtMovieTrailerExpertVTS.TextChanged, txtMovieTrailerExpertSingle.TextChanged, txtMovieTrailerExpertMulti.TextChanged, txtMovieTrailerExpertBDMV.TextChanged, txtMovieThemeTvTunesSubDir.TextChanged, txtMovieThemeTvTunesCustomPath.TextChanged, txtMoviePosterExpertVTS.TextChanged, txtMoviePosterExpertSingle.TextChanged, txtMoviePosterExpertMulti.TextChanged, txtMoviePosterExpertBDMV.TextChanged, txtMovieNFOExpertVTS.TextChanged, txtMovieNFOExpertSingle.TextChanged, txtMovieNFOExpertMulti.TextChanged, txtMovieNFOExpertBDMV.TextChanged, txtMovieLandscapeExpertVTS.TextChanged, txtMovieLandscapeExpertSingle.TextChanged, txtMovieLandscapeExpertMulti.TextChanged, txtMovieLandscapeExpertBDMV.TextChanged, txtMovieFanartExpertVTS.TextChanged, txtMovieFanartExpertSingle.TextChanged, txtMovieFanartExpertMulti.TextChanged, txtMovieFanartExpertBDMV.TextChanged, txtMovieDiscArtExpertVTS.TextChanged, txtMovieDiscArtExpertSingle.TextChanged, txtMovieDiscArtExpertMulti.TextChanged, txtMovieDiscArtExpertBDMV.TextChanged, txtMovieClearLogoExpertVTS.TextChanged, txtMovieClearLogoExpertSingle.TextChanged, txtMovieClearLogoExpertMulti.TextChanged, txtMovieClearLogoExpertBDMV.TextChanged, txtMovieClearArtExpertVTS.TextChanged, txtMovieClearArtExpertSingle.TextChanged, txtMovieClearArtExpertMulti.TextChanged, txtMovieClearArtExpertBDMV.TextChanged, txtMovieBannerExpertVTS.TextChanged, txtMovieBannerExpertSingle.TextChanged, txtMovieBannerExpertMulti.TextChanged, txtMovieBannerExpertBDMV.TextChanged, txtMovieActorThumbsExtExpertVTS.TextChanged, txtMovieActorThumbsExtExpertSingle.TextChanged, txtMovieActorThumbsExtExpertMulti.TextChanged, txtMovieActorThumbsExtExpertBDMV.TextChanged, chkMovieXBMCProtectVTSBDMV.CheckedChanged, chkMovieUseBaseDirectoryExpertVTS.CheckedChanged, chkMovieUseBaseDirectoryExpertBDMV.CheckedChanged, chkMovieUnstackExpertSingle.CheckedChanged, chkMovieUnstackExpertMulti.CheckedChanged, chkMovieTrailerYAMJ.CheckedChanged, chkMovieTrailerNMJ.CheckedChanged, chkMovieTrailerFrodo.CheckedChanged, chkMovieTrailerEden.CheckedChanged, chkMovieSourcesBackdropsAuto.CheckedChanged, chkMovieRecognizeVTSExpertVTS.CheckedChanged, chkMoviePosterYAMJ.CheckedChanged, chkMoviePosterNMJ.CheckedChanged, chkMoviePosterFrodo.CheckedChanged, chkMoviePosterEden.CheckedChanged, chkMoviePosterBoxee.CheckedChanged, chkMovieNFOYAMJ.CheckedChanged, chkMovieNFONMJ.CheckedChanged, chkMovieNFOFrodo.CheckedChanged, chkMovieNFOEden.CheckedChanged, chkMovieNFOBoxee.CheckedChanged, chkMovieLandscapeExtended.CheckedChanged, chkMovieLandscapeAD.CheckedChanged, chkMovieFanartYAMJ.CheckedChanged, chkMovieFanartNMJ.CheckedChanged, chkMovieFanartFrodo.CheckedChanged, chkMovieFanartEden.CheckedChanged, chkMovieFanartBoxee.CheckedChanged, chkMovieExtrathumbsFrodo.CheckedChanged, chkMovieExtrathumbsExpertVTS.CheckedChanged, chkMovieExtrathumbsExpertSingle.CheckedChanged, chkMovieExtrathumbsExpertBDMV.CheckedChanged, chkMovieExtrathumbsEden.CheckedChanged, chkMovieExtrafanartsFrodo.CheckedChanged, chkMovieExtrafanartsExpertVTS.CheckedChanged, chkMovieExtrafanartsExpertSingle.CheckedChanged, chkMovieExtrafanartsExpertBDMV.CheckedChanged, chkMovieExtrafanartsEden.CheckedChanged, chkMovieDiscArtExtended.CheckedChanged, chkMovieDiscArtAD.CheckedChanged, chkMovieClearLogoExtended.CheckedChanged, chkMovieClearLogoAD.CheckedChanged, chkMovieClearArtExtended.CheckedChanged, chkMovieClearArtAD.CheckedChanged, chkMovieBannerYAMJ.CheckedChanged, chkMovieBannerNMJ.CheckedChanged, chkMovieBannerExtended.CheckedChanged, chkMovieBannerAD.CheckedChanged, chkMovieActorThumbsFrodo.CheckedChanged, chkMovieActorThumbsExpertVTS.CheckedChanged, chkMovieActorThumbsExpertSingle.CheckedChanged, chkMovieActorThumbsExpertMulti.CheckedChanged, chkMovieActorThumbsExpertBDMV.CheckedChanged, chkMovieActorThumbsEden.CheckedChanged
 
         SetApplyButton(True)
     End Sub

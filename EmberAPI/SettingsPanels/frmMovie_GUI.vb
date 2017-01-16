@@ -20,7 +20,7 @@
 
 Imports EmberAPI
 
-Public Class frmMovieSet_General
+Public Class frmMovie_GUI
     Implements Interfaces.SettingsPanel
 
 #Region "Events"

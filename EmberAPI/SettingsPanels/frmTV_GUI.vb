@@ -20,7 +20,7 @@
 
 Imports EmberAPI
 
-Public Class frmOption_General
+Public Class frmTV_GUI
     Implements Interfaces.SettingsPanel
 
 #Region "Events"
