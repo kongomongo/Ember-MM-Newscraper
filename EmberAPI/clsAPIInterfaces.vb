@@ -70,11 +70,17 @@ Public Class Interfaces
 
 #End Region 'Events
 
+#Region "Properties"
+
+        ReadOnly Property Order() As Integer
+
+#End Region 'Properties
+
 #Region "Methods"
 
-        Sub LoadSettings()
+        Function InjectSettingsPanel() As Containers.SettingsPanel
 
-        Sub SaveSettings()
+        Sub SaveSetup(ByVal bDoDispose As Boolean)
 
 #End Region 'Methods
 

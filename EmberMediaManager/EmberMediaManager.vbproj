@@ -398,10 +398,28 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SettingsPanels\frmMovie_FileNaming.Designer.vb">
+      <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SettingsPanels\frmMovie_Image.Designer.vb">
       <DependentUpon>frmMovie_Image.vb</DependentUpon>
     </Compile>
     <Compile Include="SettingsPanels\frmMovie_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Theme.Designer.vb">
+      <DependentUpon>frmMovie_Theme.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Theme.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Trailer.Designer.vb">
+      <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPanels\frmMovie_Trailer.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="XMLViewer\CharacterEncoder.vb" />
@@ -520,8 +538,17 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\frmMovie_FileNaming.resx">
+      <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SettingsPanels\frmMovie_Image.resx">
       <DependentUpon>frmMovie_Image.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\frmMovie_Theme.resx">
+      <DependentUpon>frmMovie_Theme.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanels\frmMovie_Trailer.resx">
+      <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,26 @@ Imports EmberAPI
 Public Class frmMovie_Theme
     Implements Interfaces.SettingsPanel
 
+#Region "Fields"
+
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
+    Dim _intImageIndex As Integer = 11
+    Dim _intOrder As Integer = 800
+    Dim _strName As String = "Movie_Theme"
+    Dim _strTitle As String = Master.eLang.GetString(1285, "Themes")
+
+#End Region 'Fields
+
+#Region "Properties"
+
+    Public ReadOnly Property Order() As Integer Implements Interfaces.SettingsPanel.Order
+        Get
+            Return _intOrder
+        End Get
+    End Property
+
+#End Region 'Properties
+
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.SettingsPanel.NeedsDBClean_Movie
@@ -82,14 +102,62 @@ Public Class frmMovie_Theme
 
 #End Region 'Handles
 
-#Region "Methods"
+#Region "Constructors"
 
-    Public Sub LoadSettings() Implements Interfaces.SettingsPanel.LoadSettings
-
+    Public Sub New()
+        InitializeComponent()
+        SetUp()
     End Sub
 
-    Public Sub SaveSettings() Implements Interfaces.SettingsPanel.SaveSettings
+#End Region 'Constructors
 
+#Region "Interface Methodes"
+
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.SettingsPanel.InjectSettingsPanel
+        LoadSettings()
+
+        Dim nSettingsPanel As New Containers.SettingsPanel With {
+            .ImageIndex = _intImageIndex,
+            .Name = _strName,
+            .Order = _intOrder,
+            .Panel = pnlSettings,
+            .Prefix = _strName,
+            .Title = _strTitle,
+            .Type = _ePanelType
+        }
+
+        Return nSettingsPanel
+    End Function
+
+    Public Sub LoadSettings()
+        With Master.eSettings
+            chkMovieThemeKeepExisting.Checked = .MovieThemeKeepExisting
+        End With
+    End Sub
+
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.SettingsPanel.SaveSetup
+        With Master.eSettings
+            .MovieThemeKeepExisting = chkMovieThemeKeepExisting.Checked
+        End With
+
+        If bDoDispose Then
+            Dispose()
+        End If
+    End Sub
+
+#End Region 'Interface Methodes
+
+#Region "Methods"
+
+    Private Sub EnableApplyButton() Handles _
+        chkMovieThemeKeepExisting.CheckedChanged
+
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub SetUp()
+        chkMovieThemeKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
+        gbMovieThemeOpts.Text = Master.eLang.GetString(1285, "Themes")
     End Sub
 
 #End Region 'Methods

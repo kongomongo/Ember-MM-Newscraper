@@ -28,6 +28,12 @@ Public Class frmMovie_Image
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger
 
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
+    Dim _intImageIndex As Integer = 6
+    Dim _intOrder As Integer = 600
+    Dim _strName As String = "Movie_Image"
+    Dim _strTitle As String = Master.eLang.GetString(497, "Images")
+
 #End Region 'Fields
 
 #Region "Events"
@@ -44,6 +50,16 @@ Public Class frmMovie_Image
     Public Event SettingsChanged() Implements Interfaces.SettingsPanel.SettingsChanged
 
 #End Region 'Events
+
+#Region "Properties"
+
+    Public ReadOnly Property Order() As Integer Implements Interfaces.SettingsPanel.Order
+        Get
+            Return _intOrder
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Handles"
 
@@ -98,87 +114,25 @@ Public Class frmMovie_Image
 
 #End Region 'Constructors
 
-#Region "Methods"
+#Region "Interface Methodes"
 
-    Private Sub LoadMovieBannerSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
-        items.Add("1000x185", Enums.MovieBannerSize.HD185)
-        cbMovieBannerPrefSize.DataSource = items.ToList
-        cbMovieBannerPrefSize.DisplayMember = "Key"
-        cbMovieBannerPrefSize.ValueMember = "Value"
-    End Sub
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.SettingsPanel.InjectSettingsPanel
+        LoadSettings()
 
-    Private Sub LoadMovieClearArtSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieClearArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearArtSize.Any)
-        items.Add("1000x562", Enums.MovieClearArtSize.HD562)
-        items.Add("500x281", Enums.MovieClearArtSize.SD281)
-        cbMovieClearArtPrefSize.DataSource = items.ToList
-        cbMovieClearArtPrefSize.DisplayMember = "Key"
-        cbMovieClearArtPrefSize.ValueMember = "Value"
-    End Sub
+        Dim nSettingsPanel As New Containers.SettingsPanel With {
+            .ImageIndex = _intImageIndex,
+            .Name = _strName,
+            .Order = _intOrder,
+            .Panel = pnlSettings,
+            .Prefix = _strName,
+            .Title = _strTitle,
+            .Type = _ePanelType
+        }
 
-    Private Sub LoadMovieClearLogoSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieClearLogoSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearLogoSize.Any)
-        items.Add("800x310", Enums.MovieClearLogoSize.HD310)
-        items.Add("400x155", Enums.MovieClearLogoSize.SD155)
-        cbMovieClearLogoPrefSize.DataSource = items.ToList
-        cbMovieClearLogoPrefSize.DisplayMember = "Key"
-        cbMovieClearLogoPrefSize.ValueMember = "Value"
-    End Sub
+        Return nSettingsPanel
+    End Function
 
-    Private Sub LoadMovieDiscArtSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieDiscArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieDiscArtSize.Any)
-        items.Add("1000x1000", Enums.MovieDiscArtSize.HD1000)
-        cbMovieDiscArtPrefSize.DataSource = items.ToList
-        cbMovieDiscArtPrefSize.DisplayMember = "Key"
-        cbMovieDiscArtPrefSize.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadMovieFanartSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
-        items.Add("3840x2160", Enums.MovieFanartSize.UHD2160)
-        items.Add("2560x1440", Enums.MovieFanartSize.QHD1440)
-        items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
-        items.Add("1280x720", Enums.MovieFanartSize.HD720)
-        items.Add("Thumb", Enums.MovieFanartSize.Thumb)
-        cbMovieExtrafanartsPrefSize.DataSource = items.ToList
-        cbMovieExtrafanartsPrefSize.DisplayMember = "Key"
-        cbMovieExtrafanartsPrefSize.ValueMember = "Value"
-        cbMovieExtrathumbsPrefSize.DataSource = items.ToList
-        cbMovieExtrathumbsPrefSize.DisplayMember = "Key"
-        cbMovieExtrathumbsPrefSize.ValueMember = "Value"
-        cbMovieFanartPrefSize.DataSource = items.ToList
-        cbMovieFanartPrefSize.DisplayMember = "Key"
-        cbMovieFanartPrefSize.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadMovieLandscapeSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieLandscapeSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieLandscapeSize.Any)
-        items.Add("1000x562", Enums.MovieLandscapeSize.HD562)
-        cbMovieLandscapePrefSize.DataSource = items.ToList
-        cbMovieLandscapePrefSize.DisplayMember = "Key"
-        cbMovieLandscapePrefSize.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadMoviePosterSizes()
-        Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
-        items.Add("2000x3000", Enums.MoviePosterSize.HD3000)
-        items.Add("1400x2100", Enums.MoviePosterSize.HD2100)
-        items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
-        items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
-        cbMoviePosterPrefSize.DataSource = items.ToList
-        cbMoviePosterPrefSize.DisplayMember = "Key"
-        cbMoviePosterPrefSize.ValueMember = "Value"
-    End Sub
-
-    Public Sub LoadSettings() Implements Interfaces.SettingsPanel.LoadSettings
+    Public Sub LoadSettings()
         With Master.eSettings
             cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
             cbMovieClearArtPrefSize.SelectedValue = .MovieClearArtPrefSize
@@ -277,7 +231,7 @@ Public Class frmMovie_Image
         End With
     End Sub
 
-    Public Sub SaveSettings() Implements Interfaces.SettingsPanel.SaveSettings
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.SettingsPanel.SaveSetup
         With Master.eSettings
             .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             .MovieBannerHeight = If(Not String.IsNullOrEmpty(txtMovieBannerHeight.Text), Convert.ToInt32(txtMovieBannerHeight.Text), 0)
@@ -340,8 +294,93 @@ Public Class frmMovie_Image
             .MoviePosterPrefSizeOnly = chkMoviePosterPrefSizeOnly.Checked
             .MoviePosterResize = chkMoviePosterResize.Checked
             .MoviePosterWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
-
         End With
+
+        If bDoDispose Then
+            Dispose()
+        End If
+    End Sub
+
+#End Region 'Interface Methodes
+
+#Region "Methods"
+
+    Private Sub LoadMovieBannerSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
+        items.Add("1000x185", Enums.MovieBannerSize.HD185)
+        cbMovieBannerPrefSize.DataSource = items.ToList
+        cbMovieBannerPrefSize.DisplayMember = "Key"
+        cbMovieBannerPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieClearArtSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieClearArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearArtSize.Any)
+        items.Add("1000x562", Enums.MovieClearArtSize.HD562)
+        items.Add("500x281", Enums.MovieClearArtSize.SD281)
+        cbMovieClearArtPrefSize.DataSource = items.ToList
+        cbMovieClearArtPrefSize.DisplayMember = "Key"
+        cbMovieClearArtPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieClearLogoSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieClearLogoSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearLogoSize.Any)
+        items.Add("800x310", Enums.MovieClearLogoSize.HD310)
+        items.Add("400x155", Enums.MovieClearLogoSize.SD155)
+        cbMovieClearLogoPrefSize.DataSource = items.ToList
+        cbMovieClearLogoPrefSize.DisplayMember = "Key"
+        cbMovieClearLogoPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieDiscArtSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieDiscArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieDiscArtSize.Any)
+        items.Add("1000x1000", Enums.MovieDiscArtSize.HD1000)
+        cbMovieDiscArtPrefSize.DataSource = items.ToList
+        cbMovieDiscArtPrefSize.DisplayMember = "Key"
+        cbMovieDiscArtPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieFanartSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
+        items.Add("3840x2160", Enums.MovieFanartSize.UHD2160)
+        items.Add("2560x1440", Enums.MovieFanartSize.QHD1440)
+        items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
+        items.Add("1280x720", Enums.MovieFanartSize.HD720)
+        items.Add("Thumb", Enums.MovieFanartSize.Thumb)
+        cbMovieExtrafanartsPrefSize.DataSource = items.ToList
+        cbMovieExtrafanartsPrefSize.DisplayMember = "Key"
+        cbMovieExtrafanartsPrefSize.ValueMember = "Value"
+        cbMovieExtrathumbsPrefSize.DataSource = items.ToList
+        cbMovieExtrathumbsPrefSize.DisplayMember = "Key"
+        cbMovieExtrathumbsPrefSize.ValueMember = "Value"
+        cbMovieFanartPrefSize.DataSource = items.ToList
+        cbMovieFanartPrefSize.DisplayMember = "Key"
+        cbMovieFanartPrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMovieLandscapeSizes()
+        Dim items As New Dictionary(Of String, Enums.MovieLandscapeSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieLandscapeSize.Any)
+        items.Add("1000x562", Enums.MovieLandscapeSize.HD562)
+        cbMovieLandscapePrefSize.DataSource = items.ToList
+        cbMovieLandscapePrefSize.DisplayMember = "Key"
+        cbMovieLandscapePrefSize.ValueMember = "Value"
+    End Sub
+
+    Private Sub LoadMoviePosterSizes()
+        Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
+        items.Add("2000x3000", Enums.MoviePosterSize.HD3000)
+        items.Add("1400x2100", Enums.MoviePosterSize.HD2100)
+        items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
+        items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
+        cbMoviePosterPrefSize.DataSource = items.ToList
+        cbMoviePosterPrefSize.DisplayMember = "Key"
+        cbMoviePosterPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub SetUp()
@@ -452,11 +491,64 @@ Public Class frmMovie_Image
         gbMovieImagesExtrathumbsCreatorOpts.Text = Master.eLang.GetString(1477, "Create Thumbnails")
     End Sub
 
-    Private Sub EnableApplyButton(sender As Object, e As EventArgs) Handles txtMoviePosterWidth.TextChanged, txtMoviePosterHeight.TextChanged, txtMovieFanartWidth.TextChanged, txtMovieFanartHeight.TextChanged, txtMovieExtrathumbsWidth.TextChanged, txtMovieExtrathumbsLimit.TextChanged, txtMovieExtrathumbsHeight.TextChanged, txtMovieExtrafanartsWidth.TextChanged, txtMovieExtrafanartsLimit.TextChanged, txtMovieExtrafanartsHeight.TextChanged, txtMovieBannerWidth.TextChanged, txtMovieBannerHeight.TextChanged, chkMoviePosterPrefSizeOnly.CheckedChanged, chkMoviePosterKeepExisting.CheckedChanged, chkMovieLandscapePrefSizeOnly.CheckedChanged, chkMovieLandscapeKeepExisting.CheckedChanged, chkMovieImagesNotSaveURLToNfo.CheckedChanged, chkMovieImagesGetEnglishImages.CheckedChanged, chkMovieImagesGetBlankImages.CheckedChanged, chkMovieImagesDisplayImageSelect.CheckedChanged, chkMovieImagesCacheEnabled.CheckedChanged, chkMovieFanartPrefSizeOnly.CheckedChanged, chkMovieFanartKeepExisting.CheckedChanged, chkMovieExtrathumbsPreselect.CheckedChanged, chkMovieExtrathumbsPrefSizeOnly.CheckedChanged, chkMovieExtrathumbsKeepExisting.CheckedChanged, chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged, chkMovieExtrathumbsCreatorNoBlackBars.CheckedChanged, chkMovieExtrafanartsPreselect.CheckedChanged, chkMovieExtrafanartsPrefSizeOnly.CheckedChanged, chkMovieExtrafanartsKeepExisting.CheckedChanged, chkMovieDiscArtPrefSizeOnly.CheckedChanged, chkMovieDiscArtKeepExisting.CheckedChanged, chkMovieClearLogoPrefSizeOnly.CheckedChanged, chkMovieClearLogoKeepExisting.CheckedChanged, chkMovieClearArtPrefSizeOnly.CheckedChanged, chkMovieClearArtKeepExisting.CheckedChanged, chkMovieBannerPrefSizeOnly.CheckedChanged, chkMovieBannerKeepExisting.CheckedChanged, chkMovieActorThumbsKeepExisting.CheckedChanged, cbMoviePosterPrefSize.SelectedIndexChanged, cbMovieLandscapePrefSize.SelectedIndexChanged, cbMovieImagesForcedLanguage.SelectedIndexChanged, cbMovieFanartPrefSize.SelectedIndexChanged, cbMovieExtrathumbsPrefSize.SelectedIndexChanged, cbMovieExtrafanartsPrefSize.SelectedIndexChanged, cbMovieDiscArtPrefSize.SelectedIndexChanged, cbMovieClearLogoPrefSize.SelectedIndexChanged, cbMovieClearArtPrefSize.SelectedIndexChanged, cbMovieBannerPrefSize.SelectedIndexChanged
+    Private Sub EnableApplyButton() Handles _
+        cbMovieBannerPrefSize.SelectedIndexChanged,
+        cbMovieClearArtPrefSize.SelectedIndexChanged,
+        cbMovieClearLogoPrefSize.SelectedIndexChanged,
+        cbMovieDiscArtPrefSize.SelectedIndexChanged,
+        cbMovieExtrafanartsPrefSize.SelectedIndexChanged,
+        cbMovieExtrathumbsPrefSize.SelectedIndexChanged,
+        cbMovieFanartPrefSize.SelectedIndexChanged,
+        cbMovieImagesForcedLanguage.SelectedIndexChanged,
+        cbMovieLandscapePrefSize.SelectedIndexChanged,
+        cbMoviePosterPrefSize.SelectedIndexChanged,
+        chkMovieActorThumbsKeepExisting.CheckedChanged,
+        chkMovieBannerKeepExisting.CheckedChanged,
+        chkMovieBannerPrefSizeOnly.CheckedChanged,
+        chkMovieClearArtKeepExisting.CheckedChanged,
+        chkMovieClearArtPrefSizeOnly.CheckedChanged,
+        chkMovieClearLogoKeepExisting.CheckedChanged,
+        chkMovieClearLogoPrefSizeOnly.CheckedChanged,
+        chkMovieDiscArtKeepExisting.CheckedChanged,
+        chkMovieDiscArtPrefSizeOnly.CheckedChanged,
+        chkMovieExtrafanartsKeepExisting.CheckedChanged,
+        chkMovieExtrafanartsPrefSizeOnly.CheckedChanged,
+        chkMovieExtrafanartsPreselect.CheckedChanged,
+        chkMovieExtrathumbsCreatorNoBlackBars.CheckedChanged,
+        chkMovieExtrathumbsCreatorNoSpoilers.CheckedChanged,
+        chkMovieExtrathumbsKeepExisting.CheckedChanged,
+        chkMovieExtrathumbsPrefSizeOnly.CheckedChanged,
+        chkMovieExtrathumbsPreselect.CheckedChanged,
+        chkMovieFanartKeepExisting.CheckedChanged,
+        chkMovieFanartPrefSizeOnly.CheckedChanged,
+        chkMovieImagesCacheEnabled.CheckedChanged,
+        chkMovieImagesDisplayImageSelect.CheckedChanged,
+        chkMovieImagesGetBlankImages.CheckedChanged,
+        chkMovieImagesGetEnglishImages.CheckedChanged,
+        chkMovieImagesNotSaveURLToNfo.CheckedChanged,
+        chkMovieLandscapeKeepExisting.CheckedChanged,
+        chkMovieLandscapePrefSizeOnly.CheckedChanged,
+        chkMoviePosterKeepExisting.CheckedChanged,
+        chkMoviePosterPrefSizeOnly.CheckedChanged,
+        txtMovieBannerHeight.TextChanged,
+        txtMovieBannerWidth.TextChanged,
+        txtMovieExtrafanartsHeight.TextChanged,
+        txtMovieExtrafanartsLimit.TextChanged,
+        txtMovieExtrafanartsWidth.TextChanged,
+        txtMovieExtrathumbsHeight.TextChanged,
+        txtMovieExtrathumbsLimit.TextChanged,
+        txtMovieExtrathumbsWidth.TextChanged,
+        txtMovieFanartHeight.TextChanged,
+        txtMovieFanartWidth.TextChanged,
+        txtMoviePosterHeight.TextChanged,
+        txtMoviePosterWidth.TextChanged
+
         Handle_SettingsChanged()
     End Sub
 
     Private Sub chkMovieBannerResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieBannerResize.CheckedChanged
+        EnableApplyButton()
+
         txtMovieBannerWidth.Enabled = chkMovieBannerResize.Checked
         txtMovieBannerHeight.Enabled = chkMovieBannerResize.Checked
 
@@ -475,18 +567,24 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieExtrathumbsCreatorAutoThumbs_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieExtrathumbsCreatorAutoThumbs.CheckedChanged
+        EnableApplyButton()
+
         If chkMovieExtrathumbsCreatorAutoThumbs.Checked = True Then
             chkMovieExtrathumbsCreatorUseETasFA.Checked = False
         End If
     End Sub
 
     Private Sub chkMovieExtrathumbsCreatorUseETasFA_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieExtrathumbsCreatorUseETasFA.CheckedChanged
+        EnableApplyButton()
+
         If chkMovieExtrathumbsCreatorUseETasFA.Checked = True Then
             chkMovieExtrathumbsCreatorAutoThumbs.Checked = False
         End If
     End Sub
 
     Private Sub chkMovieExtrathumbsResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieExtrathumbsResize.CheckedChanged
+        EnableApplyButton()
+
         txtMovieExtrathumbsWidth.Enabled = chkMovieExtrathumbsResize.Checked
         txtMovieExtrathumbsHeight.Enabled = chkMovieExtrathumbsResize.Checked
 
@@ -509,6 +607,8 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieExtrafanartsResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieExtrafanartsResize.CheckedChanged
+        EnableApplyButton()
+
         txtMovieExtrafanartsWidth.Enabled = chkMovieExtrafanartsResize.Checked
         txtMovieExtrafanartsHeight.Enabled = chkMovieExtrafanartsResize.Checked
 
@@ -531,6 +631,8 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieImagesMediaLanguageOnly_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesMediaLanguageOnly.CheckedChanged
+        EnableApplyButton()
+
         chkMovieImagesGetBlankImages.Enabled = chkMovieImagesMediaLanguageOnly.Checked
         chkMovieImagesGetEnglishImages.Enabled = chkMovieImagesMediaLanguageOnly.Checked
 
@@ -541,10 +643,14 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieImagesForceLanguage_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieImagesForceLanguage.CheckedChanged
+        EnableApplyButton()
+
         cbMovieImagesForcedLanguage.Enabled = chkMovieImagesForceLanguage.Checked
     End Sub
 
     Private Sub chkMoviePosterResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMoviePosterResize.CheckedChanged
+        EnableApplyButton()
+
         txtMoviePosterWidth.Enabled = chkMoviePosterResize.Checked
         txtMoviePosterHeight.Enabled = chkMoviePosterResize.Checked
 
@@ -563,6 +669,8 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub chkMovieFanartResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieFanartResize.CheckedChanged
+        EnableApplyButton()
+
         txtMovieFanartWidth.Enabled = chkMovieFanartResize.Checked
         txtMovieFanartHeight.Enabled = chkMovieFanartResize.Checked
 

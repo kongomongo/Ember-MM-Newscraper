@@ -22,8 +22,8 @@ Partial Class frmMovie_Image
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Me.pnlMovie_Image = New System.Windows.Forms.Panel()
-        Me.tblMovie_Image = New System.Windows.Forms.TableLayoutPanel()
+        Me.pnlSettings = New System.Windows.Forms.Panel()
+        Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieImagesOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieImagesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieImagesNotSaveURLToNfo = New System.Windows.Forms.CheckBox()
@@ -130,8 +130,8 @@ Partial Class frmMovie_Image
         Me.chkMovieImagesMediaLanguageOnly = New System.Windows.Forms.CheckBox()
         Me.cbMovieImagesForcedLanguage = New System.Windows.Forms.ComboBox()
         Me.chkMovieImagesForceLanguage = New System.Windows.Forms.CheckBox()
-        Me.pnlMovie_Image.SuspendLayout()
-        Me.tblMovie_Image.SuspendLayout()
+        Me.pnlSettings.SuspendLayout()
+        Me.tblSettings.SuspendLayout()
         Me.gbMovieImagesOpts.SuspendLayout()
         Me.tblMovieImagesOpts.SuspendLayout()
         Me.gbMovieImagesLandscapeOpts.SuspendLayout()
@@ -160,61 +160,61 @@ Partial Class frmMovie_Image
         Me.tblMovieImagesLanguageOpts.SuspendLayout()
         Me.SuspendLayout()
         '
-        'pnlMovie_Image
+        'pnlSettings
         '
-        Me.pnlMovie_Image.AutoSize = True
-        Me.pnlMovie_Image.BackColor = System.Drawing.Color.White
-        Me.pnlMovie_Image.Controls.Add(Me.tblMovie_Image)
-        Me.pnlMovie_Image.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pnlMovie_Image.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.pnlMovie_Image.Location = New System.Drawing.Point(0, 0)
-        Me.pnlMovie_Image.Name = "pnlMovie_Image"
-        Me.pnlMovie_Image.Size = New System.Drawing.Size(830, 746)
-        Me.pnlMovie_Image.TabIndex = 12
-        Me.pnlMovie_Image.Visible = False
+        Me.pnlSettings.AutoSize = True
+        Me.pnlSettings.BackColor = System.Drawing.Color.White
+        Me.pnlSettings.Controls.Add(Me.tblSettings)
+        Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
+        Me.pnlSettings.Name = "pnlSettings"
+        Me.pnlSettings.Size = New System.Drawing.Size(830, 746)
+        Me.pnlSettings.TabIndex = 12
+        Me.pnlSettings.Visible = False
         '
-        'tblMovie_Image
+        'tblSettings
         '
-        Me.tblMovie_Image.AutoScroll = True
-        Me.tblMovie_Image.AutoSize = True
-        Me.tblMovie_Image.ColumnCount = 5
-        Me.tblMovie_Image.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovie_Image.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovie_Image.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovie_Image.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovie_Image.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesOpts, 0, 0)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesLandscapeOpts, 3, 7)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesDiscArtOpts, 3, 6)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesClearLogoOpts, 3, 4)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesClearArtOpts, 3, 3)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesActorThumbsOpts, 3, 2)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesPosterOpts, 0, 1)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesBannerOpts, 1, 1)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesExtrathumbsOpts, 1, 2)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesExtrafanartsOpts, 0, 2)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesFanartOpts, 3, 1)
-        Me.tblMovie_Image.Controls.Add(Me.gbMovieImagesLanguageOpts, 2, 0)
-        Me.tblMovie_Image.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMovie_Image.Location = New System.Drawing.Point(0, 0)
-        Me.tblMovie_Image.Name = "tblMovie_Image"
-        Me.tblMovie_Image.RowCount = 9
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovie_Image.Size = New System.Drawing.Size(830, 746)
-        Me.tblMovie_Image.TabIndex = 17
+        Me.tblSettings.AutoScroll = True
+        Me.tblSettings.AutoSize = True
+        Me.tblSettings.ColumnCount = 5
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesOpts, 0, 0)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesLandscapeOpts, 3, 7)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesDiscArtOpts, 3, 6)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesClearLogoOpts, 3, 4)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesClearArtOpts, 3, 3)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesActorThumbsOpts, 3, 2)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesPosterOpts, 0, 1)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesBannerOpts, 1, 1)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesExtrathumbsOpts, 1, 2)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesExtrafanartsOpts, 0, 2)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesFanartOpts, 3, 1)
+        Me.tblSettings.Controls.Add(Me.gbMovieImagesLanguageOpts, 2, 0)
+        Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSettings.Location = New System.Drawing.Point(0, 0)
+        Me.tblSettings.Name = "tblSettings"
+        Me.tblSettings.RowCount = 9
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(830, 746)
+        Me.tblSettings.TabIndex = 17
         '
         'gbMovieImagesOpts
         '
         Me.gbMovieImagesOpts.AutoSize = True
-        Me.tblMovie_Image.SetColumnSpan(Me.gbMovieImagesOpts, 2)
+        Me.tblSettings.SetColumnSpan(Me.gbMovieImagesOpts, 2)
         Me.gbMovieImagesOpts.Controls.Add(Me.tblMovieImagesOpts)
         Me.gbMovieImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -452,7 +452,7 @@ Partial Class frmMovie_Image
         Me.gbMovieImagesClearLogoOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieImagesClearLogoOpts.Location = New System.Drawing.Point(522, 421)
         Me.gbMovieImagesClearLogoOpts.Name = "gbMovieImagesClearLogoOpts"
-        Me.tblMovie_Image.SetRowSpan(Me.gbMovieImagesClearLogoOpts, 2)
+        Me.tblSettings.SetRowSpan(Me.gbMovieImagesClearLogoOpts, 2)
         Me.gbMovieImagesClearLogoOpts.Size = New System.Drawing.Size(245, 91)
         Me.gbMovieImagesClearLogoOpts.TabIndex = 15
         Me.gbMovieImagesClearLogoOpts.TabStop = False
@@ -800,7 +800,7 @@ Partial Class frmMovie_Image
         'gbMovieImagesBannerOpts
         '
         Me.gbMovieImagesBannerOpts.AutoSize = True
-        Me.tblMovie_Image.SetColumnSpan(Me.gbMovieImagesBannerOpts, 2)
+        Me.tblSettings.SetColumnSpan(Me.gbMovieImagesBannerOpts, 2)
         Me.gbMovieImagesBannerOpts.Controls.Add(Me.tblMovieImagesBannerOpts)
         Me.gbMovieImagesBannerOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesBannerOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
@@ -952,13 +952,13 @@ Partial Class frmMovie_Image
         'gbMovieImagesExtrathumbsOpts
         '
         Me.gbMovieImagesExtrathumbsOpts.AutoSize = True
-        Me.tblMovie_Image.SetColumnSpan(Me.gbMovieImagesExtrathumbsOpts, 2)
+        Me.tblSettings.SetColumnSpan(Me.gbMovieImagesExtrathumbsOpts, 2)
         Me.gbMovieImagesExtrathumbsOpts.Controls.Add(Me.tblMovieImagesExtrathumbsOpts)
         Me.gbMovieImagesExtrathumbsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesExtrathumbsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieImagesExtrathumbsOpts.Location = New System.Drawing.Point(254, 274)
         Me.gbMovieImagesExtrathumbsOpts.Name = "gbMovieImagesExtrathumbsOpts"
-        Me.tblMovie_Image.SetRowSpan(Me.gbMovieImagesExtrathumbsOpts, 5)
+        Me.tblSettings.SetRowSpan(Me.gbMovieImagesExtrathumbsOpts, 5)
         Me.gbMovieImagesExtrathumbsOpts.Size = New System.Drawing.Size(262, 335)
         Me.gbMovieImagesExtrathumbsOpts.TabIndex = 12
         Me.gbMovieImagesExtrathumbsOpts.TabStop = False
@@ -1234,7 +1234,7 @@ Partial Class frmMovie_Image
         Me.gbMovieImagesExtrafanartsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieImagesExtrafanartsOpts.Location = New System.Drawing.Point(3, 274)
         Me.gbMovieImagesExtrafanartsOpts.Name = "gbMovieImagesExtrafanartsOpts"
-        Me.tblMovie_Image.SetRowSpan(Me.gbMovieImagesExtrafanartsOpts, 5)
+        Me.tblSettings.SetRowSpan(Me.gbMovieImagesExtrafanartsOpts, 5)
         Me.gbMovieImagesExtrafanartsOpts.Size = New System.Drawing.Size(245, 335)
         Me.gbMovieImagesExtrafanartsOpts.TabIndex = 13
         Me.gbMovieImagesExtrafanartsOpts.TabStop = False
@@ -1569,7 +1569,7 @@ Partial Class frmMovie_Image
         'gbMovieImagesLanguageOpts
         '
         Me.gbMovieImagesLanguageOpts.AutoSize = True
-        Me.tblMovie_Image.SetColumnSpan(Me.gbMovieImagesLanguageOpts, 2)
+        Me.tblSettings.SetColumnSpan(Me.gbMovieImagesLanguageOpts, 2)
         Me.gbMovieImagesLanguageOpts.Controls.Add(Me.tblMovieImagesLanguageOpts)
         Me.gbMovieImagesLanguageOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieImagesLanguageOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1672,13 +1672,13 @@ Partial Class frmMovie_Image
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(830, 746)
-        Me.Controls.Add(Me.pnlMovie_Image)
+        Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmMovie_Image"
         Me.Text = "frmMovie_Images"
-        Me.pnlMovie_Image.ResumeLayout(False)
-        Me.pnlMovie_Image.PerformLayout()
-        Me.tblMovie_Image.ResumeLayout(False)
-        Me.tblMovie_Image.PerformLayout()
+        Me.pnlSettings.ResumeLayout(False)
+        Me.pnlSettings.PerformLayout()
+        Me.tblSettings.ResumeLayout(False)
+        Me.tblSettings.PerformLayout()
         Me.gbMovieImagesOpts.ResumeLayout(False)
         Me.gbMovieImagesOpts.PerformLayout()
         Me.tblMovieImagesOpts.ResumeLayout(False)
@@ -1736,8 +1736,8 @@ Partial Class frmMovie_Image
 
     End Sub
 
-    Friend WithEvents pnlMovie_Image As Windows.Forms.Panel
-    Friend WithEvents tblMovie_Image As Windows.Forms.TableLayoutPanel
+    Friend WithEvents pnlSettings As Windows.Forms.Panel
+    Friend WithEvents tblSettings As Windows.Forms.TableLayoutPanel
     Friend WithEvents gbMovieImagesOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieImagesOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMovieImagesNotSaveURLToNfo As Windows.Forms.CheckBox

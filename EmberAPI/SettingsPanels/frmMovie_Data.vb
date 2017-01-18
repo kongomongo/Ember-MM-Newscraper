@@ -23,6 +23,16 @@ Imports EmberAPI
 Public Class frmMovie_Data
     Implements Interfaces.SettingsPanel
 
+#Region "Fields"
+
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
+    Dim _intImageIndex As Integer = -1
+    Dim _intOrder As Integer = -1
+    Dim _strName As String = ""
+    Dim _strTitle As String = ""
+
+#End Region 'Fields
+
 #Region "Events"
 
     Public Event NeedsDBClean_Movie() Implements Interfaces.SettingsPanel.NeedsDBClean_Movie
@@ -37,6 +47,16 @@ Public Class frmMovie_Data
     Public Event SettingsChanged() Implements Interfaces.SettingsPanel.SettingsChanged
 
 #End Region 'Events
+
+#Region "Properties"
+
+    Public ReadOnly Property Order() As Integer Implements Interfaces.SettingsPanel.Order
+        Get
+            Return _intOrder
+        End Get
+    End Property
+
+#End Region 'Properties
 
 #Region "Handles"
 
@@ -82,13 +102,59 @@ Public Class frmMovie_Data
 
 #End Region 'Handles
 
-#Region "Methods"
+#Region "Constructors"
 
-    Public Sub LoadSettings() Implements Interfaces.SettingsPanel.LoadSettings
-
+    Public Sub New()
+        InitializeComponent()
+        SetUp()
     End Sub
 
-    Public Sub SaveSettings() Implements Interfaces.SettingsPanel.SaveSettings
+#End Region 'Constructors 
+
+#Region "Interface Methodes"
+
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.SettingsPanel.InjectSettingsPanel
+        LoadSettings()
+
+        Dim nSettingsPanel As New Containers.SettingsPanel With {
+            .ImageIndex = _intImageIndex,
+            .Name = _strName,
+            .Order = _intOrder,
+            .Panel = pnlSettings,
+            .Prefix = _strName,
+            .Title = _strTitle,
+            .Type = _ePanelType
+        }
+
+        Return nSettingsPanel
+    End Function
+
+    Public Sub LoadSettings()
+        With Master.eSettings
+
+        End With
+    End Sub
+
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.SettingsPanel.SaveSetup
+        With Master.eSettings
+
+        End With
+
+        If bDoDispose Then
+            Dispose()
+        End If
+    End Sub
+
+#End Region 'Interface Methodes
+
+#Region "Methods"
+
+    Private Sub EnableApplyButton()
+
+        Handle_SettingsChanged()
+    End Sub
+
+    Private Sub SetUp()
 
     End Sub
 
