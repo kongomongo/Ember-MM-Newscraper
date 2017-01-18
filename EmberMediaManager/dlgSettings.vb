@@ -21,10 +21,9 @@
 ' # Dialog size: 1230; 900
 ' # Move the panels (pnl*) from 900;900 to 0;0 to edit. Move it back after editing.
 
-Imports System.IO
 Imports EmberAPI
-Imports System.Net
 Imports NLog
+Imports System.IO
 
 Public Class dlgSettings
 
@@ -43,8 +42,8 @@ Public Class dlgSettings
     Private TVGeneralSeasonListSorting As New List(Of Settings.ListSorting)
     Private TVGeneralShowListSorting As New List(Of Settings.ListSorting)
     Private NoUpdate As Boolean = True
-    Private SettingsPanels As New List(Of Containers.SettingsPanel)
-    Private lstSettingsPanels As New List(Of Interfaces.SettingsPanel)
+    Private _SettingsPanels As New List(Of Containers.SettingsPanel)
+    Private _lstMasterSettingsPanels As New List(Of Interfaces.MasterSettingsPanel)
     Private TVShowMatching As New List(Of Settings.regexp)
     Private sResult As New Structures.SettingsResult
     'Private tLangList As New List(Of Containers.TVLanguage)
@@ -250,14 +249,14 @@ Public Class dlgSettings
 
     Private Sub AddSettingsPanels()
 
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovies",
              .Title = Master.eLang.GetString(38, "General"),
              .ImageIndex = 2,
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieGeneral,
              .Order = 100})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlSources",
              .Title = Master.eLang.GetString(555, "Files and Sources"),
              .ImageIndex = 5,
@@ -271,21 +270,21 @@ Public Class dlgSettings
         '     .Type = Enums.SettingsPanelType.Movie,
         '     .Panel = frmMovie_Search.pnlSettings,
         '     .Order = 400}) 
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
              .Type = Enums.SettingsPanelType.Movie,
              .Panel = pnlMovieScraper,
              .Order = 500})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSets",
              .Title = Master.eLang.GetString(38, "General"),
              .ImageIndex = 2,
              .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetGeneral,
              .Order = 100})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetSources",
              .Title = Master.eLang.GetString(555, "Files and Sources"),
              .ImageIndex = 5,
@@ -299,28 +298,28 @@ Public Class dlgSettings
         '     .Type = Enums.SettingsPanelType.MovieSet,
         '     .Panel = frmMovieSet_Search.pnlMovieSetSearch,
         '     .Order = 300})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
              .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetScraper,
              .Order = 400})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlMovieSetMedia",
              .Title = Master.eLang.GetString(497, "Images"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.MovieSet,
              .Panel = pnlMovieSetImages,
              .Order = 500})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlShows",
              .Title = Master.eLang.GetString(38, "General"),
              .ImageIndex = 7,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVGeneral,
              .Order = 100})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVSources",
              .Title = Master.eLang.GetString(555, "Files and Sources"),
              .ImageIndex = 5,
@@ -334,58 +333,52 @@ Public Class dlgSettings
         '     .Type = Enums.SettingsPanelType.TV,
         '     .Panel = frmTV_Search.pnlTVSearch,
         '     .Order = 300})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVScraper,
              .Order = 400})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVMedia",
              .Title = Master.eLang.GetString(497, "Images"),
              .ImageIndex = 6,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVImages,
              .Order = 500})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVTheme",
              .Title = Master.eLang.GetString(1285, "Themes"),
              .ImageIndex = 11,
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVThemes,
              .Order = 600})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlGeneral",
              .Title = Master.eLang.GetString(38, "General"),
              .ImageIndex = 0,
              .Type = Enums.SettingsPanelType.Options,
              .Panel = pnlGeneral,
              .Order = 100})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
+        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlExtensions",
              .Title = Master.eLang.GetString(553, "File System"),
              .ImageIndex = 4,
              .Type = Enums.SettingsPanelType.Options,
              .Panel = pnlFileSystem,
              .Order = 200})
-        SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlProxy",
-             .Title = Master.eLang.GetString(421, "Connection"),
-             .ImageIndex = 1,
-             .Type = Enums.SettingsPanelType.Options,
-             .Panel = pnlProxy,
-             .Order = 300})
 
-        lstSettingsPanels.Add(frmMovie_FileNaming)
-        lstSettingsPanels.Add(frmMovie_Image)
-        lstSettingsPanels.Add(frmMovie_Theme)
-        lstSettingsPanels.Add(frmMovie_Trailer)
+        _lstMasterSettingsPanels.Add(frmMovie_FileNaming)
+        _lstMasterSettingsPanels.Add(frmMovie_Image)
+        _lstMasterSettingsPanels.Add(frmMovie_Theme)
+        _lstMasterSettingsPanels.Add(frmMovie_Trailer)
+        _lstMasterSettingsPanels.Add(frmOption_Proxy)
 
-        For Each s As Interfaces.SettingsPanel In lstSettingsPanels.OrderBy(Function(f) f.Order)
+        For Each s As Interfaces.MasterSettingsPanel In _lstMasterSettingsPanels.OrderBy(Function(f) f.Order)
             Dim nPanel As Containers.SettingsPanel = s.InjectSettingsPanel
             If nPanel IsNot Nothing Then
-                SettingsPanels.Add(nPanel)
+                _SettingsPanels.Add(nPanel)
                 AddHandler s.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
                 AddHandler s.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
                 AddHandler s.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
@@ -411,7 +404,7 @@ Public Class dlgSettings
                 ElseIf nPanel.ImageIndex = -1 Then
                     nPanel.ImageIndex = 9
                 End If
-                SettingsPanels.Add(nPanel)
+                _SettingsPanels.Add(nPanel)
                 AddHandler s.Addon.NeedsRestart, AddressOf Handle_NeedsRestart
                 AddHandler s.Addon.SettingsChanged, AddressOf Handle_SettingsChanged
                 AddHandler s.Addon.StateChanged, AddressOf Handle_StateChanged
@@ -422,7 +415,7 @@ Public Class dlgSettings
 
     Sub RemoveSettingsPanels()
         'SettingsPanels
-        For Each s As Interfaces.SettingsPanel In lstSettingsPanels.OrderBy(Function(f) f.Order)
+        For Each s As Interfaces.MasterSettingsPanel In _lstMasterSettingsPanels.OrderBy(Function(f) f.Order)
             RemoveHandler s.NeedsDBClean_Movie, AddressOf Handle_NeedsDBClean_Movie
             RemoveHandler s.NeedsDBClean_TV, AddressOf Handle_NeedsDBClean_TV
             RemoveHandler s.NeedsDBUpdate_Movie, AddressOf Handle_NeedsDBUpdate_Movie
@@ -1782,35 +1775,6 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub chkProxyCredsEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyCredsEnable.CheckedChanged
-        SetApplyButton(True)
-        txtProxyUsername.Enabled = chkProxyCredsEnable.Checked
-        txtProxyPassword.Enabled = chkProxyCredsEnable.Checked
-        txtProxyDomain.Enabled = chkProxyCredsEnable.Checked
-
-        If Not chkProxyCredsEnable.Checked Then
-            txtProxyUsername.Text = String.Empty
-            txtProxyPassword.Text = String.Empty
-            txtProxyDomain.Text = String.Empty
-        End If
-    End Sub
-
-    Private Sub chkProxyEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyEnable.CheckedChanged
-        SetApplyButton(True)
-        txtProxyURI.Enabled = chkProxyEnable.Checked
-        txtProxyPort.Enabled = chkProxyEnable.Checked
-        gbProxyCredsOpts.Enabled = chkProxyEnable.Checked
-
-        If Not chkProxyEnable.Checked Then
-            txtProxyURI.Text = String.Empty
-            txtProxyPort.Text = String.Empty
-            chkProxyCredsEnable.Checked = False
-            txtProxyUsername.Text = String.Empty
-            txtProxyPassword.Text = String.Empty
-            txtProxyDomain.Text = String.Empty
-        End If
-    End Sub
-
     Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         SetApplyButton(True)
         sResult.NeedsReload_TVEpisode = True
@@ -2328,10 +2292,10 @@ Public Class dlgSettings
         tvSettingsList.Nodes.Clear()
         RemoveCurrPanel()
 
-        For Each pPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(s) s.Type = ePanelType AndAlso String.IsNullOrEmpty(s.Parent)).OrderBy(Function(s) s.Order)
+        For Each pPanel As Containers.SettingsPanel In _SettingsPanels.Where(Function(s) s.Type = ePanelType AndAlso String.IsNullOrEmpty(s.Parent)).OrderBy(Function(s) s.Order)
             pNode = New TreeNode(pPanel.Title, pPanel.ImageIndex, pPanel.ImageIndex)
             pNode.Name = pPanel.Name
-            For Each cPanel As Containers.SettingsPanel In SettingsPanels.Where(Function(p) p.Type = ePanelType AndAlso p.Parent = pNode.Name).OrderBy(Function(s) s.Order)
+            For Each cPanel As Containers.SettingsPanel In _SettingsPanels.Where(Function(p) p.Type = ePanelType AndAlso p.Parent = pNode.Name).OrderBy(Function(s) s.Order)
                 cNode = New TreeNode(cPanel.Title, cPanel.ImageIndex, cPanel.ImageIndex)
                 cNode.Name = cPanel.Name
                 pNode.Nodes.Add(cNode)
@@ -2951,19 +2915,6 @@ Public Class dlgSettings
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
-                chkProxyEnable.Checked = True
-                txtProxyURI.Text = .ProxyURI
-                txtProxyPort.Text = .ProxyPort.ToString
-
-                If Not String.IsNullOrEmpty(.ProxyCredentials.UserName) Then
-                    chkProxyCredsEnable.Checked = True
-                    txtProxyUsername.Text = .ProxyCredentials.UserName
-                    txtProxyPassword.Text = .ProxyCredentials.Password
-                    txtProxyDomain.Text = .ProxyCredentials.Domain
-                End If
-            End If
-
             chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
             chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
             chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
@@ -3144,7 +3095,7 @@ Public Class dlgSettings
     Private Sub frmSettings_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Functions.PNLDoubleBuffer(pnlSettingsMain)
         SetUp()
-        SettingsPanels.Clear()
+        _SettingsPanels.Clear()
         AddSettingsPanels()
         AddAddonSettingsPanels()
         AddButtons()
@@ -3205,7 +3156,7 @@ Public Class dlgSettings
         End If
         Dim nSettingsPanel As Containers.SettingsPanel
         SuspendLayout()
-        nSettingsPanel = SettingsPanels.FirstOrDefault(Function(s) s.Name = strAssemblyName)
+        nSettingsPanel = _SettingsPanels.FirstOrDefault(Function(s) s.Name = strAssemblyName)
 
         If nSettingsPanel IsNot Nothing Then
             nSettingsPanel.ImageIndex = If(bEnabled, 9, 10)
@@ -4746,21 +4697,6 @@ Public Class dlgSettings
 
             SaveMovieSetScraperTitleRenamer()
 
-            If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPort.Text) Then
-                .ProxyURI = txtProxyURI.Text
-                .ProxyPort = Convert.ToInt32(txtProxyPort.Text)
-
-                If Not String.IsNullOrEmpty(txtProxyUsername.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPassword.Text) Then
-                    .ProxyCredentials.UserName = txtProxyUsername.Text
-                    .ProxyCredentials.Password = txtProxyPassword.Text
-                    .ProxyCredentials.Domain = txtProxyDomain.Text
-                Else
-                    .ProxyCredentials = New NetworkCredential
-                End If
-            Else
-                .ProxyURI = String.Empty
-                .ProxyPort = -1
-            End If
 
 
             '***************************************************
@@ -4923,33 +4859,10 @@ Public Class dlgSettings
             .TVShowLandscapeExpert = txtTVShowLandscapeExpert.Text
             .TVShowNFOExpert = txtTVShowNFOExpert.Text
             .TVShowPosterExpert = txtTVShowPosterExpert.Text
-
-
-            'Default to Frodo for movies
-            If Not (.MovieUseBoxee OrElse .MovieUseEden OrElse .MovieUseExpert OrElse .MovieUseFrodo OrElse .MovieUseNMJ OrElse .MovieUseYAMJ) Then
-                .MovieUseFrodo = True
-                .MovieActorThumbsFrodo = True
-                .MovieExtrafanartsFrodo = True
-                .MovieExtrathumbsFrodo = True
-                .MovieFanartFrodo = True
-                .MovieNFOFrodo = True
-                .MoviePosterFrodo = True
-                .MovieTrailerFrodo = True
-                .MovieUseExtended = True
-                .MovieBannerExtended = True
-                .MovieClearArtExtended = True
-                .MovieClearLogoExtended = True
-                .MovieDiscArtExtended = True
-                .MovieLandscapeExtended = True
-            End If
-
-            'Default to Frodo for tvshows
-            'TODO
-
         End With
 
         'SettingsPanels 
-        For Each s As Interfaces.SettingsPanel In lstSettingsPanels.OrderBy(Function(f) f.Order)
+        For Each s As Interfaces.MasterSettingsPanel In _lstMasterSettingsPanels.OrderBy(Function(f) f.Order)
             Try
                 s.SaveSetup(Not bIsApply)
             Catch ex As Exception
@@ -5860,8 +5773,6 @@ Public Class dlgSettings
         chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")
         chkMovieSkipStackedSizeCheck.Text = Master.eLang.GetString(538, "Skip Size Check of Stacked Files")
         chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
-        chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
-        chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
         chkTVDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         chkTVDisplayStatus.Text = Master.eLang.GetString(126, "Display Status in List Title")
         chkTVEpisodeNoFilter.Text = Master.eLang.GetString(734, "Build Episode Title Instead of Filtering")
@@ -5887,8 +5798,6 @@ Public Class dlgSettings
         gbMovieGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
-        gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
-        gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
         gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         gbTVEpisodeFilterOpts.Text = Master.eLang.GetString(671, "Episode Folder/File Name Filters")
         gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
@@ -5918,11 +5827,6 @@ Public Class dlgSettings
         lblMovieScraperMPAANotRated.Text = String.Concat(Master.eLang.GetString(832, "MPAA value if no rating is available"), ":")
         lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
-        lblProxyDomain.Text = Master.eLang.GetString(678, "Domain:")
-        lblProxyPassword.Text = Master.eLang.GetString(426, "Password:")
-        lblProxyPort.Text = Master.eLang.GetString(675, "Proxy Port:")
-        lblProxyURI.Text = Master.eLang.GetString(674, "Proxy URL:")
-        lblProxyUsername.Text = Master.eLang.GetString(425, "Username:")
         lblSettingsTopDetails.Text = Master.eLang.GetString(518, "Configure Ember's appearance and operation.")
         lblTVScraperGlobalGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
         lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
@@ -5984,7 +5888,7 @@ Public Class dlgSettings
 
         RemoveCurrPanel()
 
-        _currpanel = SettingsPanels.FirstOrDefault(Function(p) p.Name = tvSettingsList.SelectedNode.Name).Panel
+        _currpanel = _SettingsPanels.FirstOrDefault(Function(p) p.Name = tvSettingsList.SelectedNode.Name).Panel
         _currpanel.Location = New Point(0, 0)
         _currpanel.Dock = DockStyle.Fill
         pnlSettingsMain.Controls.Add(_currpanel)
@@ -6091,7 +5995,7 @@ Public Class dlgSettings
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtProxyPort.KeyPress
+    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
@@ -7052,10 +6956,6 @@ Public Class dlgSettings
         txtMovieSetPosterExpertSingle.TextChanged,
         txtMovieSetPosterHeight.TextChanged,
         txtMovieSetPosterWidth.TextChanged,
-        txtProxyDomain.TextChanged,
-        txtProxyPassword.TextChanged,
-        txtProxyPort.TextChanged,
-        txtProxyUsername.TextChanged,
         txtTVAllSeasonsBannerHeight.TextChanged,
         txtTVAllSeasonsBannerWidth.TextChanged,
         txtTVAllSeasonsFanartHeight.TextChanged,

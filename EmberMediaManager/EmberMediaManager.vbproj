@@ -398,28 +398,34 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_FileNaming.Designer.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.Designer.vb">
       <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_FileNaming.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_FileNaming.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_Image.Designer.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_Image.Designer.vb">
       <DependentUpon>frmMovie_Image.vb</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_Image.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_Image.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_Theme.Designer.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_Theme.Designer.vb">
       <DependentUpon>frmMovie_Theme.vb</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_Theme.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_Theme.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_Trailer.Designer.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_Trailer.Designer.vb">
       <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPanels\frmMovie_Trailer.vb">
+    <Compile Include="MasterSettingsPanels\frmMovie_Trailer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_Proxy.Designer.vb">
+      <DependentUpon>frmOption_Proxy.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_Proxy.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="XMLViewer\CharacterEncoder.vb" />
@@ -538,17 +544,20 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPanels\frmMovie_FileNaming.resx">
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_FileNaming.resx">
       <DependentUpon>frmMovie_FileNaming.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPanels\frmMovie_Image.resx">
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Image.resx">
       <DependentUpon>frmMovie_Image.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPanels\frmMovie_Theme.resx">
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Theme.resx">
       <DependentUpon>frmMovie_Theme.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SettingsPanels\frmMovie_Trailer.resx">
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Trailer.resx">
       <DependentUpon>frmMovie_Trailer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_Proxy.resx">
+      <DependentUpon>frmOption_Proxy.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

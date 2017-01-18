@@ -22,7 +22,7 @@ Imports EmberAPI
 Imports System.IO
 
 Public Class frmMovie_FileNaming
-    Implements Interfaces.SettingsPanel
+    Implements Interfaces.MasterSettingsPanel
 
 #Region "Fields"
 
@@ -36,22 +36,22 @@ Public Class frmMovie_FileNaming
 
 #Region "Events"
 
-    Public Event NeedsDBClean_Movie() Implements Interfaces.SettingsPanel.NeedsDBClean_Movie
-    Public Event NeedsDBClean_TV() Implements Interfaces.SettingsPanel.NeedsDBClean_TV
-    Public Event NeedsDBUpdate_Movie() Implements Interfaces.SettingsPanel.NeedsDBUpdate_Movie
-    Public Event NeedsDBUpdate_TV() Implements Interfaces.SettingsPanel.NeedsDBUpdate_TV
-    Public Event NeedsReload_Movie() Implements Interfaces.SettingsPanel.NeedsReload_Movie
-    Public Event NeedsReload_MovieSet() Implements Interfaces.SettingsPanel.NeedsReload_MovieSet
-    Public Event NeedsReload_TVEpisode() Implements Interfaces.SettingsPanel.NeedsReload_TVEpisode
-    Public Event NeedsReload_TVShow() Implements Interfaces.SettingsPanel.NeedsReload_TVShow
-    Public Event NeedsRestart() Implements Interfaces.SettingsPanel.NeedsRestart
-    Public Event SettingsChanged() Implements Interfaces.SettingsPanel.SettingsChanged
+    Public Event NeedsDBClean_Movie() Implements Interfaces.MasterSettingsPanel.NeedsDBClean_Movie
+    Public Event NeedsDBClean_TV() Implements Interfaces.MasterSettingsPanel.NeedsDBClean_TV
+    Public Event NeedsDBUpdate_Movie() Implements Interfaces.MasterSettingsPanel.NeedsDBUpdate_Movie
+    Public Event NeedsDBUpdate_TV() Implements Interfaces.MasterSettingsPanel.NeedsDBUpdate_TV
+    Public Event NeedsReload_Movie() Implements Interfaces.MasterSettingsPanel.NeedsReload_Movie
+    Public Event NeedsReload_MovieSet() Implements Interfaces.MasterSettingsPanel.NeedsReload_MovieSet
+    Public Event NeedsReload_TVEpisode() Implements Interfaces.MasterSettingsPanel.NeedsReload_TVEpisode
+    Public Event NeedsReload_TVShow() Implements Interfaces.MasterSettingsPanel.NeedsReload_TVShow
+    Public Event NeedsRestart() Implements Interfaces.MasterSettingsPanel.NeedsRestart
+    Public Event SettingsChanged() Implements Interfaces.MasterSettingsPanel.SettingsChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public ReadOnly Property Order() As Integer Implements Interfaces.SettingsPanel.Order
+    Public ReadOnly Property Order() As Integer Implements Interfaces.MasterSettingsPanel.Order
         Get
             Return 700
         End Get
@@ -114,7 +114,7 @@ Public Class frmMovie_FileNaming
 
 #Region "Interface Methodes"
 
-    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.SettingsPanel.InjectSettingsPanel
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
 
         Dim nSettingsPanel As New Containers.SettingsPanel With {
@@ -277,7 +277,7 @@ Public Class frmMovie_FileNaming
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.SettingsPanel.SaveSetup
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
             If Not String.IsNullOrEmpty(txtMovieSourcesBackdropsFolderPath.Text) Then

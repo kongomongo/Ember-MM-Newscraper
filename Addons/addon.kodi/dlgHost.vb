@@ -120,8 +120,8 @@ Public Class dlgHost
         lblCustomRemotePath.Text = String.Concat(Master.eLang.GetString(1074, "Add Custom Kodi Source"), ":")
         lblHostLabel.Text = String.Concat(Master.eLang.GetString(232, "Name"), ":")
         lblHostIP.Text = String.Concat(Master.eLang.GetString(1430, "Kodi IP"), ":")
-        lblHostPassword.Text = Master.eLang.GetString(426, "Password:")
-        lblHostUsername.Text = Master.eLang.GetString(425, "Username:")
+        lblHostPassword.Text = String.Concat(Master.eLang.GetString(426, "Password"), ":")
+        lblHostUsername.Text = String.Concat(Master.eLang.GetString(425, "Username"), ":")
         lblHostWebserverPort.Text = String.Concat(Master.eLang.GetString(1431, "Kodi Port"), ":")
 
         colHostEmberSource.HeaderText = Master.eLang.GetString(1432, "Ember Source")

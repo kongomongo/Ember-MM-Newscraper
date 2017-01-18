@@ -53,7 +53,7 @@ Public Class Interfaces
 
     End Interface
 
-    Public Interface SettingsPanel
+    Public Interface MasterSettingsPanel
 
 #Region "Events"
 

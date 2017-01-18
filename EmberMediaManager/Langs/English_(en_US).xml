@@ -423,8 +423,8 @@
   <string id="422">Version</string>
   <string id="423">Author</string>
   <string id="424">Collections</string>
-  <string id="425">Username:</string>
-  <string id="426">Password:</string>
+  <string id="425">Username</string>
+  <string id="426">Password</string>
   <string id="427">Install</string>
   <string id="428">Removes</string>
   <string id="429">Miscellaneous</string>
@@ -672,11 +672,11 @@
   <string id="671">Episode Folder/File Name Filters</string>
   <string id="672">Proxy</string>
   <string id="673">Enable Proxy</string>
-  <string id="674">Proxy URL:</string>
-  <string id="675">Proxy Port:</string>
+  <string id="674">Proxy URL</string>
+  <string id="675">Proxy Port</string>
   <string id="676">Credentials</string>
   <string id="677">Enable Credentials</string>
-  <string id="678">Domain:</string>
+  <string id="678">Domain</string>
   <string id="679">TV Rating Region</string>
   <string id="680">Shows</string>
   <string id="681">Seasons</string>

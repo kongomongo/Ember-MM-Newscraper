@@ -19,17 +19,18 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports System.Net
 
-Public Class frmMovie_Data
+Public Class frmOption_Proxy
     Implements Interfaces.MasterSettingsPanel
 
 #Region "Fields"
 
-    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
-    Dim _intImageIndex As Integer = -1
-    Dim _intOrder As Integer = -1
-    Dim _strName As String = ""
-    Dim _strTitle As String = ""
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Options
+    Dim _intImageIndex As Integer = 1
+    Dim _intOrder As Integer = 300
+    Dim _strName As String = "Option_Proxy"
+    Dim _strTitle As String = Master.eLang.GetString(421, "Connection")
 
 #End Region 'Fields
 
@@ -131,13 +132,38 @@ Public Class frmMovie_Data
 
     Public Sub LoadSettings()
         With Master.eSettings
+            If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
+                chkProxyEnable.Checked = True
+                txtProxyURI.Text = .ProxyURI
+                txtProxyPort.Text = .ProxyPort.ToString
 
+                If Not String.IsNullOrEmpty(.ProxyCredentials.UserName) Then
+                    chkProxyCredsEnable.Checked = True
+                    txtProxyUsername.Text = .ProxyCredentials.UserName
+                    txtProxyPassword.Text = .ProxyCredentials.Password
+                    txtProxyDomain.Text = .ProxyCredentials.Domain
+                End If
+            End If
         End With
     End Sub
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
+            If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPort.Text) Then
+                .ProxyURI = txtProxyURI.Text
+                .ProxyPort = Convert.ToInt32(txtProxyPort.Text)
 
+                If Not String.IsNullOrEmpty(txtProxyUsername.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPassword.Text) Then
+                    .ProxyCredentials.UserName = txtProxyUsername.Text
+                    .ProxyCredentials.Password = txtProxyPassword.Text
+                    .ProxyCredentials.Domain = txtProxyDomain.Text
+                Else
+                    .ProxyCredentials = New NetworkCredential
+                End If
+            Else
+                .ProxyURI = String.Empty
+                .ProxyPort = -1
+            End If
         End With
 
         If bDoDispose Then
@@ -149,13 +175,57 @@ Public Class frmMovie_Data
 
 #Region "Methods"
 
-    Private Sub EnableApplyButton()
+    Private Sub chkProxyCredsEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyCredsEnable.CheckedChanged
+        EnableApplyButton()
+
+        txtProxyDomain.Enabled = chkProxyCredsEnable.Checked
+        txtProxyPassword.Enabled = chkProxyCredsEnable.Checked
+        txtProxyUsername.Enabled = chkProxyCredsEnable.Checked
+
+        If Not chkProxyCredsEnable.Checked Then
+            txtProxyDomain.Text = String.Empty
+            txtProxyPassword.Text = String.Empty
+            txtProxyUsername.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub chkProxyEnable_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkProxyEnable.CheckedChanged
+        EnableApplyButton()
+
+        gbProxyCredsOpts.Enabled = chkProxyEnable.Checked
+        txtProxyPort.Enabled = chkProxyEnable.Checked
+        txtProxyURI.Enabled = chkProxyEnable.Checked
+
+        If Not chkProxyEnable.Checked Then
+            chkProxyCredsEnable.Checked = False
+            txtProxyDomain.Text = String.Empty
+            txtProxyPassword.Text = String.Empty
+            txtProxyPort.Text = String.Empty
+            txtProxyURI.Text = String.Empty
+            txtProxyUsername.Text = String.Empty
+        End If
+    End Sub
+
+    Private Sub EnableApplyButton() Handles _
+             txtProxyDomain.TextChanged,
+             txtProxyPassword.TextChanged,
+             txtProxyPort.TextChanged,
+             txtProxyURI.TextChanged,
+             txtProxyUsername.TextChanged
 
         Handle_SettingsChanged()
     End Sub
 
     Private Sub SetUp()
-
+        chkProxyCredsEnable.Text = Master.eLang.GetString(677, "Enable Credentials")
+        chkProxyEnable.Text = Master.eLang.GetString(673, "Enable Proxy")
+        gbProxyCredsOpts.Text = Master.eLang.GetString(676, "Credentials")
+        gbProxyOpts.Text = Master.eLang.GetString(672, "Proxy")
+        lblProxyDomain.Text = String.Concat(Master.eLang.GetString(678, "Domain"), ":")
+        lblProxyPassword.Text = String.Concat(Master.eLang.GetString(426, "Password"), ":")
+        lblProxyPort.Text = String.Concat(Master.eLang.GetString(675, "Proxy Port"), ":")
+        lblProxyURI.Text = String.Concat(Master.eLang.GetString(674, "Proxy URL"), ":")
+        lblProxyUsername.Text = String.Concat(Master.eLang.GetString(425, "Username"), ":")
     End Sub
 
 #End Region 'Methods
