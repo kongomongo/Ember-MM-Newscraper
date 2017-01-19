@@ -25,11 +25,21 @@ Partial Class frmSettingsPanel
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.tbllSettingsMain = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbWatchList = New System.Windows.Forms.GroupBox()
+        Me.tblWatchList = New System.Windows.Forms.TableLayoutPanel()
+        Me.dgvWatchList = New System.Windows.Forms.DataGridView()
+        Me.colID = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colTitle = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colURL = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.pnlSettingsMain.SuspendLayout()
+        Me.tbllSettingsMain.SuspendLayout()
+        Me.gbWatchList.SuspendLayout()
+        Me.tblWatchList.SuspendLayout()
+        CType(Me.dgvWatchList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsTop.SuspendLayout()
         Me.tblSettingsTop.SuspendLayout()
         Me.SuspendLayout()
@@ -61,16 +71,78 @@ Partial Class frmSettingsPanel
         Me.tbllSettingsMain.AutoScroll = True
         Me.tbllSettingsMain.AutoSize = True
         Me.tbllSettingsMain.ColumnCount = 2
-        Me.tbllSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tbllSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tbllSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tbllSettingsMain.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tbllSettingsMain.Controls.Add(Me.gbWatchList, 0, 0)
         Me.tbllSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tbllSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.tbllSettingsMain.Name = "tbllSettingsMain"
         Me.tbllSettingsMain.RowCount = 2
-        Me.tbllSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tbllSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
+        Me.tbllSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tbllSettingsMain.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tbllSettingsMain.Size = New System.Drawing.Size(695, 493)
         Me.tbllSettingsMain.TabIndex = 1
+        '
+        'gbWatchList
+        '
+        Me.gbWatchList.AutoSize = True
+        Me.gbWatchList.Controls.Add(Me.tblWatchList)
+        Me.gbWatchList.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbWatchList.Location = New System.Drawing.Point(3, 3)
+        Me.gbWatchList.Name = "gbWatchList"
+        Me.gbWatchList.Size = New System.Drawing.Size(612, 227)
+        Me.gbWatchList.TabIndex = 0
+        Me.gbWatchList.TabStop = False
+        Me.gbWatchList.Text = "WatchList"
+        '
+        'tblWatchList
+        '
+        Me.tblWatchList.AutoSize = True
+        Me.tblWatchList.ColumnCount = 2
+        Me.tblWatchList.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblWatchList.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblWatchList.Controls.Add(Me.dgvWatchList, 0, 0)
+        Me.tblWatchList.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblWatchList.Location = New System.Drawing.Point(3, 18)
+        Me.tblWatchList.Name = "tblWatchList"
+        Me.tblWatchList.RowCount = 2
+        Me.tblWatchList.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblWatchList.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblWatchList.Size = New System.Drawing.Size(606, 206)
+        Me.tblWatchList.TabIndex = 0
+        '
+        'dgvWatchList
+        '
+        Me.dgvWatchList.AllowUserToAddRows = False
+        Me.dgvWatchList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvWatchList.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colID, Me.colTitle, Me.colURL})
+        Me.dgvWatchList.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvWatchList.Location = New System.Drawing.Point(3, 3)
+        Me.dgvWatchList.Name = "dgvWatchList"
+        Me.dgvWatchList.Size = New System.Drawing.Size(600, 200)
+        Me.dgvWatchList.TabIndex = 0
+        '
+        'colID
+        '
+        Me.colID.HeaderText = "ID"
+        Me.colID.Name = "colID"
+        Me.colID.ReadOnly = True
+        Me.colID.Width = 50
+        '
+        'colTitle
+        '
+        Me.colTitle.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells
+        Me.colTitle.HeaderText = "Title"
+        Me.colTitle.MinimumWidth = 100
+        Me.colTitle.Name = "colTitle"
+        Me.colTitle.ReadOnly = True
+        '
+        'colURL
+        '
+        Me.colURL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
+        Me.colURL.HeaderText = "URL"
+        Me.colURL.MinimumWidth = 100
+        Me.colURL.Name = "colURL"
         '
         'pnlSettingsTop
         '
@@ -130,6 +202,12 @@ Partial Class frmSettingsPanel
         Me.pnlSettings.PerformLayout()
         Me.pnlSettingsMain.ResumeLayout(False)
         Me.pnlSettingsMain.PerformLayout()
+        Me.tbllSettingsMain.ResumeLayout(False)
+        Me.tbllSettingsMain.PerformLayout()
+        Me.gbWatchList.ResumeLayout(False)
+        Me.gbWatchList.PerformLayout()
+        Me.tblWatchList.ResumeLayout(False)
+        CType(Me.dgvWatchList, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsTop.ResumeLayout(False)
         Me.pnlSettingsTop.PerformLayout()
         Me.tblSettingsTop.ResumeLayout(False)
@@ -144,4 +222,10 @@ Partial Class frmSettingsPanel
     Friend WithEvents pnlSettingsMain As System.Windows.Forms.Panel
     Friend WithEvents tblSettingsTop As System.Windows.Forms.TableLayoutPanel
     Friend WithEvents tbllSettingsMain As System.Windows.Forms.TableLayoutPanel
+    Friend WithEvents gbWatchList As GroupBox
+    Friend WithEvents tblWatchList As TableLayoutPanel
+    Friend WithEvents dgvWatchList As DataGridView
+    Friend WithEvents colID As DataGridViewTextBoxColumn
+    Friend WithEvents colTitle As DataGridViewTextBoxColumn
+    Friend WithEvents colURL As DataGridViewTextBoxColumn
 End Class

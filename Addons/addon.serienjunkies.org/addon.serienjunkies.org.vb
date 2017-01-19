@@ -115,24 +115,44 @@ Public Class Addon
         LoadSettings()
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
             Dim nDBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), False, False, False)
-            If nDBElement.IsOnline OrElse FileUtils.Common.CheckOnlineStatus(nDBElement, True) Then
-                Using dAddTVShow As New dlgAdd_TVShow(nDBElement.MainDetails.Title)
-                    Select Case dAddTVShow.ShowDialog()
-                        Case DialogResult.OK
-                            _addonsettings.WatchList.Add(New AddonSettings.WatchItem With {
-                                                         .ID = nDBElement.ID,
-                                                         .Title = nDBElement.MainDetails.Title,
-                                                         .URL = dAddTVShow.txtURL.Text.Trim})
-                        Case DialogResult.Ignore
-                            Continue For
-                        Case Else
-                            Exit For
-                    End Select
-                End Using
+            Dim strTitle As String = nDBElement.MainDetails.Title
+            Dim strURL As String = String.Empty
+            Dim nWatchItem As AddonSettings.WatchItem = _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = nDBElement.ID)
+            If nWatchItem IsNot Nothing Then
+                strURL = nWatchItem.URL
             End If
+            Using dAddTVShow As New dlgAddTVShow(strTitle, strURL)
+                Select Case dAddTVShow.ShowDialog()
+                    Case DialogResult.OK
+                        strURL = dAddTVShow.txtURL.Text.Trim
+                        If Not String.IsNullOrEmpty(strURL) AndAlso Not strURL.EndsWith("/") Then
+                            strURL = String.Concat(strURL, "/")
+                        End If
+                        If nWatchItem Is Nothing Then
+                            _addonsettings.WatchList.Add(New AddonSettings.WatchItem With {
+                                                             .ID = nDBElement.ID,
+                                                             .Title = nDBElement.MainDetails.Title,
+                                                             .URL = strURL})
+                        Else
+                            nWatchItem.URL = strURL
+                        End If
+                    Case DialogResult.Ignore
+                        Continue For
+                    Case Else
+                        Exit For
+                End Select
+            End Using
         Next
         SaveSettings()
         Cursor.Current = Cursors.Default
+    End Sub
+    Private Sub cmnuTVShow_RemoveFromWatchlist_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow_RemoveFromWatchlist.Click
+        For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
+            Dim nWatchedItem As AddonSettings.WatchItem = _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = Convert.ToInt64(sRow.Cells("idShow").Value))
+            If nWatchedItem IsNot Nothing Then
+                clsAPISerienjunkies.ParseMainPage(nWatchedItem.URL)
+            End If
+        Next
     End Sub
 
     Public Sub Disable()
@@ -215,6 +235,10 @@ Public Class Addon
         _settingspanel = New frmSettingsPanel
         _settingspanel.chkEnabled.Checked = _enabled
 
+        For Each nWatchItem In _addonsettings.WatchList
+            _settingspanel.dgvWatchList.Rows.Add(New Object() {nWatchItem.ID, nWatchItem.Title, nWatchItem.URL})
+        Next
+
         nSettingsPanel.ImageIndex = If(_enabled, 9, 10)
         nSettingsPanel.Name = _shortname
         nSettingsPanel.Panel = _settingspanel.pnlSettings
@@ -230,21 +254,22 @@ Public Class Addon
     Public Sub LoadSettings()
         _addonsettings = New AddonSettings
 
-        Dim eTVShows As List(Of AdvancedSettingsComplexSettingsTableItem) = _settings.GetComplexSetting("WatchList")
-        If eTVShows IsNot Nothing Then
-            For Each sett In eTVShows
+        Dim nWatchList As List(Of AdvancedSettingsComplexSettingsTableItem) = _settings.GetComplexSetting("WatchList")
+        If nWatchList IsNot Nothing Then
+            For Each nWatchItem In nWatchList
                 Dim lngID As Long = -1
-                If Long.TryParse(sett.Name, lngID) Then
+                If Long.TryParse(nWatchItem.Name, lngID) Then
                     Dim nDBElement As Database.DBElement = Master.DB.Load_TVShow(lngID, False, False, False)
                     If nDBElement IsNot Nothing Then
                         _addonsettings.WatchList.Add(New AddonSettings.WatchItem With {
                                                      .ID = nDBElement.ID,
                                                      .Title = nDBElement.MainDetails.Title,
-                                                     .URL = sett.Value
+                                                     .URL = nWatchItem.Value
                                                      })
                     End If
                 End If
             Next
+            _addonsettings.WatchList = _addonsettings.WatchList.OrderBy(Function(f) f.Title).ToList
         End If
     End Sub
 
@@ -254,6 +279,18 @@ Public Class Addon
 
     Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
+
+        _addonsettings.WatchList.Clear()
+        For Each r As DataGridViewRow In _settingspanel.dgvWatchList.Rows
+            If Not String.IsNullOrEmpty(r.Cells(2).Value.ToString) AndAlso _addonsettings.WatchList.Find(Function(f) f.ID = CLng(r.Cells(0).Value)) Is Nothing Then
+                _addonsettings.WatchList.Add(New AddonSettings.WatchItem With {
+                                             .ID = CLng(r.Cells(0).Value),
+                                             .Title = r.Cells(1).Value.ToString,
+                                             .URL = r.Cells(2).Value.ToString
+                                             })
+            End If
+        Next
+
         SaveSettings()
         If bDoDispose Then
             RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
@@ -266,7 +303,7 @@ Public Class Addon
         _settings = New XMLAddonSettings
 
         Dim nWatchList As New List(Of AdvancedSettingsComplexSettingsTableItem)
-        For Each nWatchItem As AddonSettings.WatchItem In _addonsettings.WatchList
+        For Each nWatchItem As AddonSettings.WatchItem In _addonsettings.WatchList.OrderBy(Function(f) f.Title)
             nWatchList.Add(New AdvancedSettingsComplexSettingsTableItem With {
                            .Name = CStr(nWatchItem.ID),
                            .Value = nWatchItem.URL

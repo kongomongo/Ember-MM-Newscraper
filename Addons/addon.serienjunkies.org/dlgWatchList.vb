@@ -20,28 +20,6 @@
 
 Imports EmberAPI
 
-Public Class dlgAdd_TVShow
-
-#Region "Constructors"
-
-    Public Sub New(ByVal strTitle As String)
-        ' This call is required by the designer.
-        InitializeComponent()
-        Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
-        Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
-        StartPosition = FormStartPosition.Manual
-        SetUp()
-        txtTVShowTitle.Text = strTitle
-    End Sub
-
-#End Region 'Constructors
-
-#Region "Methodes"
-
-    Private Sub SetUp()
-
-    End Sub
-
-#End Region 'Methodes
+Public Class dlgWatchList
 
 End Class

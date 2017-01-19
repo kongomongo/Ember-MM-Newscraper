@@ -48,12 +48,20 @@ Public Class frmSettingsPanel
 
 #Region "Methods"
 
-    Sub SetUp()
-        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
-    End Sub
-
     Private Sub chkEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkEnabled.CheckedChanged
         RaiseEvent StateChanged(chkEnabled.Checked)
+    End Sub
+
+    Private Sub dgvWatchList_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) Handles dgvWatchList.CellEndEdit
+        If e.ColumnIndex = 2 AndAlso
+            Not String.IsNullOrEmpty(dgvWatchList.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString) AndAlso
+            Not dgvWatchList.Rows(e.RowIndex).Cells(e.ColumnIndex).Value.ToString.EndsWith("/") Then
+            dgvWatchList.Rows(e.RowIndex).Cells(e.ColumnIndex).Value = String.Concat(dgvWatchList.Rows(e.RowIndex).Cells(e.ColumnIndex).Value, "/")
+        End If
+    End Sub
+
+    Sub SetUp()
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
     End Sub
 
 #End Region 'Methods

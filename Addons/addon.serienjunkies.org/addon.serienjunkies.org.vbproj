@@ -105,6 +105,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -120,12 +121,13 @@
   <ItemGroup>
     <Compile Include="addon.serienjunkies.org.vb" />
     <Compile Include="clsAPISerienjunkies.vb" />
-    <Compile Include="dlgAdd_TVShow.Designer.vb">
-      <DependentUpon>dlgAdd_TVShow.vb</DependentUpon>
+    <Compile Include="dlgAddTVShow.Designer.vb">
+      <DependentUpon>dlgAddTVShow.vb</DependentUpon>
     </Compile>
-    <Compile Include="dlgAdd_TVShow.vb">
+    <Compile Include="dlgAddTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="dlgWatchList.vb" />
     <Compile Include="frmSettingsPanel.Designer.vb">
       <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>
@@ -149,8 +151,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="dlgAdd_TVShow.resx">
-      <DependentUpon>dlgAdd_TVShow.vb</DependentUpon>
+    <EmbeddedResource Include="dlgAddTVShow.resx">
+      <DependentUpon>dlgAddTVShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsPanel.resx">
       <DependentUpon>frmSettingsPanel.vb</DependentUpon>

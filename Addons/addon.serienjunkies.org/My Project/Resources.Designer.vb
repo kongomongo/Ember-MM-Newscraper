@@ -91,7 +91,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.serienjunkies.org/serie/ ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://serienjunkies.org/serie/ ähnelt.
         '''</summary>
         Friend ReadOnly Property urlDefaultOverview() As String
             Get
@@ -100,7 +100,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Sucht eine lokalisierte Zeichenfolge, die http://www.serienjunkies.org ähnelt.
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://serienjunkies.org ähnelt.
         '''</summary>
         Friend ReadOnly Property urlWebsite() As String
             Get

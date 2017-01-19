@@ -40,7 +40,7 @@ Public Class frmSettingsPanel
 
             dgvByFile.Rows.Clear()
             For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MediaSourcesByExtension:"))
-                Dim i As Integer = dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
+                dgvByFile.Rows.Add(New Object() {sett.Name.Substring(24), sett.Value})
             Next
             SetByFileStatus(False)
             chkMapByFile.Checked = clsXMLAdvancedSettings.GetBooleanSetting("MediaSourcesByExtension", False, "*EmberAPP")
@@ -54,7 +54,7 @@ Public Class frmSettingsPanel
         Dim sources As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("MovieSources", "*EmberAPP")
         If sources IsNot Nothing Then
             For Each sett In sources
-                Dim i As Integer = dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
+                dgvSources.Rows.Add(New Object() {sett.Name, sett.Value})
             Next
         End If
         dgvSources.ClearSelection()
@@ -102,11 +102,11 @@ Public Class frmSettingsPanel
         btnRemoveByFile.Text = Master.eLang.GetString(30, "Remove")
         btnSetDefaults.Text = Master.eLang.GetString(713, "Defaults")
         Label1.Text = Master.eLang.GetString(602, "Sources")
-        Me.dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
-        Me.dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
-        Me.chkMapByFile.Text = Master.eLang.GetString(765, "Map Media Source by File Extension")
-        Me.dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
-        Me.dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
+        dgvSources.Columns(0).HeaderText = Master.eLang.GetString(763, "Search String")
+        dgvSources.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
+        chkMapByFile.Text = Master.eLang.GetString(765, "Map Media Source by File Extension")
+        dgvByFile.Columns(0).HeaderText = Master.eLang.GetString(775, "File Extension")
+        dgvByFile.Columns(1).HeaderText = Master.eLang.GetString(764, "Source Name")
     End Sub
 
     Public Sub SaveChanges()
