@@ -268,6 +268,28 @@ Namespace FileUtils
             Return String.Concat(strDescription, "|", String.Join(";", lstValidExtensions.ToArray))
         End Function
 
+        Public Shared Function GetTotalLengt(ByRef tFileItem As FileItem) As Long
+            If tFileItem IsNot Nothing AndAlso Not tFileItem.bIsDirectory AndAlso tFileItem.bIsOnline Then
+                Try
+                    Dim lngTotalLength As Long = 0
+                    If tFileItem.bIsBDMV OrElse tFileItem.bIsVideoTS Then 'TODO: cleanup result from trailers and other files
+                        For Each nFile In Directory.GetFiles(tFileItem.MainPath.FullName, "*.*", SearchOption.AllDirectories)
+                            lngTotalLength += New FileInfo(nFile).Length
+                        Next
+                        Return lngTotalLength
+                    Else
+                        For Each nFile In tFileItem.PathList
+                            lngTotalLength += New FileInfo(nFile).Length
+                        Next
+                        Return lngTotalLength
+                    End If
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End If
+            Return -1
+        End Function
+
         ''' <summary>
         ''' Determine whether the path provided contains a Blu-Ray image
         ''' </summary>
@@ -555,7 +577,7 @@ Namespace FileUtils
         ''' ' that can be raised when accessing the FileInfo.Length property.
         ''' ' In this particular case, it is safe to swallow the exception.
         ''' </remarks>
-        Private Shared Function GetFileLength(fi As FileInfo) As Long
+        Private Shared Function GetFileLength(ByVal fi As FileInfo) As Long
             Dim retval As Long
             Try
                 retval = fi.Length

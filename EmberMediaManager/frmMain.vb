@@ -9409,7 +9409,7 @@ Public Class frmMain
         lblTitle.Text = If(Not currTV.FilenameSpecified, String.Concat(currTV.MainDetails.Title, " ", Master.eLang.GetString(689, "[MISSING]")), currTV.MainDetails.Title)
         txtPlot.Text = currTV.MainDetails.Plot
         lblDirectors.Text = String.Join(" / ", currTV.MainDetails.Directors.ToArray)
-        txtFilePath.Text = currTV.FileItem.FullPath
+        txtFilePath.Text = If(currTV.FileItemSpecified, currTV.FileItem.FullPath, String.Empty)
         lblRuntime.Text = String.Format(Master.eLang.GetString(647, "Aired: {0}"), If(currTV.MainDetails.AiredSpecified, Date.Parse(currTV.MainDetails.Aired).ToShortDateString, "?"))
 
         Try

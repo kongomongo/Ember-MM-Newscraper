@@ -149,6 +149,15 @@ Public Class FileItem
             Return Path.GetFileName(FileUtils.Stacking.GetStackedPath(FullPath))
         End Get
     End Property
+    ''' <summary>
+    ''' Total size, in bytes, of the current FileItem
+    ''' </summary>
+    ''' <returns></returns>
+    Public ReadOnly Property TotalSize() As Long
+        Get
+            Return FileUtils.Common.GetTotalLengt(Me)
+        End Get
+    End Property
 
     'Public ReadOnly Property StackedPath() As String
     '    Get
@@ -214,7 +223,9 @@ Public Class FileItem
 
     Private Function IsOnline() As Boolean
         If Not bIsDirectory Then
-            If Not String.IsNullOrEmpty(GetFirstStackedPath) Then
+            If IsStack() Then
+                Return File.Exists(GetFirstStackedPath)
+            Else
                 Return File.Exists(_strpath)
             End If
         Else

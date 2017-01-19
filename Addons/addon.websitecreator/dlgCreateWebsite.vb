@@ -23,7 +23,7 @@ Imports NLog
 Imports System.IO
 Imports System.Text.RegularExpressions
 
-Public Class dlgExportMovies
+Public Class dlgCreateWebsite
 
 #Region "Fields"
 
@@ -31,6 +31,8 @@ Public Class dlgExportMovies
 
     Friend WithEvents bwCreateTemplate As New System.ComponentModel.BackgroundWorker
     Friend WithEvents bwLoadInfo As New System.ComponentModel.BackgroundWorker
+
+    Private _AddonSettings As Addon.AddonSettings
 
     Private bCancelled As Boolean
     Private bExportMissingEpisodes As Boolean
@@ -49,12 +51,13 @@ Public Class dlgExportMovies
 
 #Region "Methods"
 
-    Public Sub New()
+    Public Sub New(ByVal tAddonSettings As Addon.AddonSettings)
         ' This call is required by the designer.
         InitializeComponent()
         Left = Master.AppPos.Left + (Master.AppPos.Width - Width) \ 2
         Top = Master.AppPos.Top + (Master.AppPos.Height - Height) \ 2
         StartPosition = FormStartPosition.Manual
+        _AddonSettings = tAddonSettings
         If Not Directory.Exists(Path.Combine(Master.SettingsPath, "Templates")) Then
             Directory.CreateDirectory(Path.Combine(Master.SettingsPath, "Templates"))
         End If
@@ -185,7 +188,7 @@ Public Class dlgExportMovies
     End Sub
 
     Private Sub bwCreateTemplate_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCreateTemplate.DoWork
-        Dim MExporter As New MediaExporter
+        Dim MExporter As New clsAPIWebsiteCreator
         Dim strTempIndexFile As String = MExporter.CreateTemplate(strTemplatePath, lstMovieList, lstTVShowList, String.Empty, AddressOf ShowProgressCreateTemplate)
         e.Result = strTempIndexFile
     End Sub
@@ -252,7 +255,7 @@ Public Class dlgExportMovies
             ' copy all the files of the current directory
             Dim ChildFile As FileInfo
             For Each ChildFile In SourceDir.GetFiles()
-                If (ChildFile.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden OrElse Path.GetExtension(ChildFile.FullName) = ".html" Then Continue For
+                If (ChildFile.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then Continue For
                 If Overwrite Then
                     ChildFile.CopyTo(Path.Combine(DestDir.FullName, ChildFile.Name), True)
                 Else
@@ -298,8 +301,8 @@ Public Class dlgExportMovies
     Private Sub dlgExportMovies_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         SetUp()
 
-        bExportMissingEpisodes = AdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
-        txtExportPath.Text = AdvancedSettings.GetSetting("ExportPath", String.Empty)
+        bExportMissingEpisodes = _AddonSettings.ExportMissingEpisodes
+        txtExportPath.Text = _AddonSettings.ExportPath
 
         Dim items As New Dictionary(Of String, String)
 
@@ -314,7 +317,7 @@ Public Class dlgExportMovies
         End If
 
         'loading Ember default templates
-        Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Modules", "Templates"))
+        Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Addons", "Templates"))
         If diDefault.Exists Then
             For Each i As DirectoryInfo In diDefault.GetDirectories
                 If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden Then
@@ -409,7 +412,7 @@ Public Class dlgExportMovies
     End Function
 
     Private Sub SetUp()
-        Text = Master.eLang.GetString(328, "Export Movies")
+        Text = Master.eLang.GetString(335, "Website Creator")
         btnBuild.Text = Master.eLang.GetString(1004, "Generate HTML...")
         btnClose.Text = Master.eLang.GetString(19, "Close")
         btnSave.Text = Master.eLang.GetString(273, "Save")
@@ -465,9 +468,5 @@ Public Class dlgExportMovies
     End Sub
 
 #End Region 'Methods
-
-#Region "Nested Types"
-
-#End Region 'Nested Types
 
 End Class

@@ -25,7 +25,7 @@ Imports System.Text
 Imports System.Text.RegularExpressions
 Imports System.Xml.Serialization
 
-Public Class MediaExporter
+Public Class clsAPIWebsiteCreator
 
 #Region "Fields"
 
@@ -513,65 +513,6 @@ Public Class MediaExporter
         Return nInfo
     End Function
 
-    Private Function GetFileSize(ByVal fPath As String) As String
-        Dim fSize As Long = 0
-
-        If Not String.IsNullOrEmpty(fPath) Then
-            If FileUtils.Common.isStacked(fPath) OrElse FileUtils.Common.isVideoTS(fPath) OrElse FileUtils.Common.isBDRip(fPath) Then
-                Try
-                    Dim sExt As String = Path.GetExtension(fPath).ToLower
-                    Dim oFile As String = FileUtils.Common.RemoveStackingMarkers(fPath)
-                    Dim sFile As New List(Of String)
-                    Dim bIsVTS As Boolean = False
-
-                    If sExt = ".ifo" OrElse sExt = ".bup" OrElse sExt = ".vob" Then
-                        bIsVTS = True
-                    End If
-
-                    If bIsVTS Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "VTS*.VOB"))
-                        Catch
-                        End Try
-                    ElseIf sExt = ".m2ts" Then
-                        Try
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, "*.m2ts"))
-                        Catch
-                        End Try
-                    Else
-                        Try
-                            Dim strName As String = Path.GetFileNameWithoutExtension(FileUtils.Common.RemoveStackingMarkers(fPath))
-                            sFile.AddRange(Directory.GetFiles(Directory.GetParent(fPath).FullName, String.Concat(strName, "*")))
-                        Catch
-                        End Try
-                    End If
-
-                    For Each tFile As String In sFile
-                        fSize += New FileInfo(tFile).Length
-                    Next
-                Catch ex As Exception
-                End Try
-            Else
-                fSize = New FileInfo(fPath).Length
-            End If
-
-            Select Case fSize
-                Case 0 To 1023
-                    Return fSize & " Bytes"
-                Case 1024 To 1048575
-                    Return String.Concat((fSize / 1024).ToString("###0.00"), " KB")
-                Case 1048576 To 1043741824
-                    Return String.Concat((fSize / 1024 ^ 2).ToString("###0.00"), " MB")
-                Case Is > 1043741824
-                    Return String.Concat((fSize / 1024 ^ 3).ToString("###0.00"), " GB")
-            End Select
-        Else
-            Return String.Empty
-        End If
-
-        Return String.Empty
-    End Function
-
     Private Shared Sub CopyDirectory(ByVal SourcePath As String, ByVal DestPath As String, Optional ByVal Overwrite As Boolean = False)
         Dim SourceDir As DirectoryInfo = New DirectoryInfo(SourcePath)
         Dim DestDir As DirectoryInfo = New DirectoryInfo(DestPath)
@@ -705,11 +646,11 @@ Public Class MediaExporter
 
         'Special Strings
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
-        strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.Filename)))
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.Filename)))
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tMovie.Filename)))
+        strRow = strRow.Replace("<$DIRNAME>", StringUtils.HtmlEncode(Path.GetDirectoryName(tMovie.FileItem.FirstStackedPath)))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tMovie.FileItem.FirstStackedPath)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(StringUtils.ConvertFileLengthToString(tMovie.FileItem.TotalSize)))
         strRow = strRow.Replace("<$NOW>", Date.Now.ToLongDateString) 'Save Build Date. might be useful info!
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.Filename))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tMovie.FileItem.FirstStackedPath))
 
         'Images
         With tMovie.ImagesContainer
@@ -761,10 +702,11 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$TAGLINE>", StringUtils.HtmlEncode(tMovie.MainDetails.Tagline))
         strRow = strRow.Replace("<$TAGS>", If(tMovie.MainDetails.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tMovie.MainDetails.Tags.ToArray))), String.Empty))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
-        strRow = strRow.Replace("<$TMDBCOLID>", StringUtils.HtmlEncode(tMovie.MainDetails.TMDBColID))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tMovie.MainDetails.TMDB))
+        strRow = strRow.Replace("<$TMDBCOLID>", StringUtils.HtmlEncode(CStr(tMovie.MainDetails.TMDBColID)))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tMovie.MainDetails.TMDB)))
         strRow = strRow.Replace("<$TOP250>", StringUtils.HtmlEncode(tMovie.MainDetails.Top250.ToString))
         strRow = strRow.Replace("<$TRAILER>", StringUtils.HtmlEncode(tMovie.MainDetails.Trailer))
+        strRow = strRow.Replace("<$USERRATING>", StringUtils.HtmlEncode(CStr(tMovie.MainDetails.UserRating)))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tMovie.MainDetails.VideoSource))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tMovie.MainDetails.VotesSpecified, Double.Parse(tMovie.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
         strRow = strRow.Replace("<$YEAR>", tMovie.MainDetails.Year)
@@ -835,10 +777,10 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$COUNT>", _iCounter_Global.ToString)
         strRow = strRow.Replace("<$COUNT_TVSEASON>", _iCounter_TVSeason.ToString)
         strRow = strRow.Replace("<$COUNT_TVEPISODE>", _iCounter_TVEpisode.ToString)
-        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(Path.GetFileName(tEpisode.Filename)))
-        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(GetFileSize(tEpisode.Filename)))
-        strRow = strRow.Replace("<$MISSING>", If(tEpisode.FilenameID = -1, "true", "false"))
-        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(tEpisode.Filename))
+        strRow = strRow.Replace("<$FILENAME>", StringUtils.HtmlEncode(If(tEpisode.FileItemSpecified, Path.GetFileName(tEpisode.FileItem.FirstStackedPath), String.Empty)))
+        strRow = strRow.Replace("<$FILESIZE>", StringUtils.HtmlEncode(If(tEpisode.FileItemSpecified, StringUtils.ConvertFileLengthToString(tEpisode.FileItem.TotalSize), String.Empty)))
+        strRow = strRow.Replace("<$MISSING>", If(tEpisode.FileIDSpecified, "false", "true"))
+        strRow = strRow.Replace("<$PATH>", StringUtils.HtmlEncode(If(tEpisode.FileItemSpecified, tEpisode.FileItem.FirstStackedPath, String.Empty)))
 
         'Images
         With tEpisode.ImagesContainer
@@ -873,8 +815,9 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$RUNTIME>", StringUtils.HtmlEncode(tEpisode.MainDetails.Runtime))
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tEpisode.MainDetails.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tEpisode.MainDetails.TVDB))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.TMDB)))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.TVDB)))
+        strRow = strRow.Replace("<$USERRATING>", StringUtils.HtmlEncode(CStr(tEpisode.MainDetails.UserRating)))
         strRow = strRow.Replace("<$VIDEOSOURCE>", StringUtils.HtmlEncode(tEpisode.MainDetails.VideoSource))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tEpisode.MainDetails.VotesSpecified, Double.Parse(tEpisode.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
@@ -946,8 +889,8 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$PLOT>", StringUtils.HtmlEncode(tSeason.MainDetails.Plot))
         strRow = strRow.Replace("<$SEASON>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.Season)))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(tSeason.MainDetails.Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tSeason.MainDetails.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(tSeason.MainDetails.TVDB))
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.TMDB)))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(CStr(tSeason.MainDetails.TVDB)))
 
         Return strRow
     End Function
@@ -1012,8 +955,9 @@ Public Class MediaExporter
         strRow = strRow.Replace("<$STUDIOS>", StringUtils.HtmlEncode(String.Join(" / ", tShow.MainDetails.Studios.ToArray)))
         strRow = strRow.Replace("<$TAGS>", If(tShow.MainDetails.TagsSpecified, StringUtils.HtmlEncode((String.Join(" / ", tShow.MainDetails.Tags.ToArray))), String.Empty))
         strRow = strRow.Replace("<$TITLE>", StringUtils.HtmlEncode(Title))
-        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(tShow.MainDetails.TMDB))
-        strRow = strRow.Replace("<$TVDBID>", tShow.MainDetails.TVDB)
+        strRow = strRow.Replace("<$TMDBID>", StringUtils.HtmlEncode(CStr(tShow.MainDetails.TMDB)))
+        strRow = strRow.Replace("<$TVDBID>", StringUtils.HtmlEncode(CStr(tShow.MainDetails.TVDB)))
+        strRow = strRow.Replace("<$USERRATING>", StringUtils.HtmlEncode(CStr(tShow.MainDetails.UserRating)))
         strRow = strRow.Replace("<$VOTES>", StringUtils.HtmlEncode(If(tShow.MainDetails.VotesSpecified, Double.Parse(tShow.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture), String.Empty)))
 
         Return strRow

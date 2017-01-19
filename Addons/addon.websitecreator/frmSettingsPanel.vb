@@ -24,35 +24,39 @@ Public Class frmSettingsPanel
 
 #Region "Events"
 
-    Public Event ModuleEnabledChanged(ByVal State As Boolean)
-    Public Event ModuleSettingsChanged()
+    Public Event SettingsChanged()
+    Public Event StateChanged(ByVal bEnabled As Boolean)
 
 #End Region 'Events
 
-#Region "Methods"
-
-    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbEnabled.CheckedChanged
-        RaiseEvent ModuleEnabledChanged(cbEnabled.Checked)
-    End Sub
+#Region "Constructors"
 
     Public Sub New()
         InitializeComponent()
         SetUp()
     End Sub
 
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Private Sub cbEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkEnabled.CheckedChanged
+        RaiseEvent StateChanged(chkEnabled.Checked)
+    End Sub
+
     Private Sub SetUp()
-        cbEnabled.Text = Master.eLang.GetString(774, "Enabled")
+        chkEnabled.Text = Master.eLang.GetString(774, "Enabled")
         chkExportMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         gbGeneralOpts.Text = Master.eLang.GetString(38, "General Settings")
         txtExportPath.Text = Master.eLang.GetString(995, "Export Path")
     End Sub
 
     Private Sub txtExportPath_TextChanged(sender As Object, e As EventArgs) Handles txtExportPath.TextChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub chkExportMissingEpisodes_CheckedChanged(sender As Object, e As EventArgs) Handles chkExportMissingEpisodes.CheckedChanged
-        RaiseEvent ModuleSettingsChanged()
+        RaiseEvent SettingsChanged()
     End Sub
 
     Private Sub btnExportPath_Click(sender As Object, e As EventArgs) Handles btnExportPath.Click

@@ -221,6 +221,21 @@ Public Class StringUtils
         Return strResult
     End Function
 
+    Public Shared Function ConvertFileLengthToString(ByVal lngTotalSize As Long) As String
+        Select Case lngTotalSize
+            Case 1 To 1023
+                Return lngTotalSize & " Bytes"
+            Case 1024 To 1048575
+                Return String.Concat((lngTotalSize / 1024).ToString("###0.00"), " KB")
+            Case 1048576 To 1043741824
+                Return String.Concat((lngTotalSize / 1024 ^ 2).ToString("###0.00"), " MB")
+            Case Is > 1043741824
+                Return String.Concat((lngTotalSize / 1024 ^ 3).ToString("###0.00"), " GB")
+            Case Else
+                Return ("not available")
+        End Select
+    End Function
+
     Public Shared Function ConvertFromKodiTrailerFormatToYouTubeURL(ByVal strURL As String) As String
         If String.IsNullOrEmpty(strURL) Then Return String.Empty
         Return strURL.Replace("plugin://plugin.video.youtube/?action=play_video&videoid=", "http://www.youtube.com/watch?v=")

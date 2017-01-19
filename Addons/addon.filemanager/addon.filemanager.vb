@@ -42,8 +42,8 @@ Public Class Addon
     Private _shortname As String = "FileManager"
     Private _settingspanel As frmSettingsPanel
 
-    Private _settings As New XMLAddonSettings
     Private _addonsettings As New AddonSettings
+    Private _settings As New XMLAddonSettings
 
     Private withErrors As Boolean
     Private cmnuMediaCustomList As New List(Of ToolStripMenuItem)
@@ -112,7 +112,7 @@ Public Class Addon
 
     Public ReadOnly Property Version() As String Implements Interfaces.Addon.Version
         Get
-            Return Diagnostics.FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -128,7 +128,7 @@ Public Class Addon
         End If
     End Sub
 
-    Sub DirectoryCopy(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
+    Private Sub DirectoryCopy(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
         Using dCopy As New dlgCopyFiles
             dCopy.Show()
             dCopy.prbStatus.Style = ProgressBarStyle.Marquee
@@ -152,7 +152,7 @@ Public Class Addon
         End If
     End Sub
 
-    Sub DirectoryMove(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
+    Private Sub DirectoryMove(ByVal src As String, ByVal dst As String, Optional ByVal title As String = "")
         Using dCopy As New dlgCopyFiles
             dCopy.Show()
             dCopy.prbStatus.Style = ProgressBarStyle.Marquee
@@ -168,7 +168,7 @@ Public Class Addon
         End Using
     End Sub
 
-    Sub Disable()
+    Private Sub Disable()
         RemoveToolsStripItem_Movies(cmnuMedia_Movies)
         RemoveToolsStripItem_Movies(cmnuSep_Movies)
         RemoveToolsStripItem_Shows(cmnuMedia_Shows)

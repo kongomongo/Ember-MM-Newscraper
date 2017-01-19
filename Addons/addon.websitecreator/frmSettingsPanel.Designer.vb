@@ -24,7 +24,7 @@ Partial Class frmSettingsPanel
     Private Sub InitializeComponent()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
-        Me.cbEnabled = New System.Windows.Forms.CheckBox()
+        Me.chkEnabled = New System.Windows.Forms.CheckBox()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.pnlSettingsMain = New System.Windows.Forms.Panel()
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
@@ -60,7 +60,7 @@ Partial Class frmSettingsPanel
         Me.tblSettingsTop.ColumnCount = 2
         Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettingsTop.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettingsTop.Controls.Add(Me.cbEnabled, 0, 0)
+        Me.tblSettingsTop.Controls.Add(Me.chkEnabled, 0, 0)
         Me.tblSettingsTop.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettingsTop.Location = New System.Drawing.Point(0, 0)
         Me.tblSettingsTop.Name = "tblSettingsTop"
@@ -71,15 +71,15 @@ Partial Class frmSettingsPanel
         Me.tblSettingsTop.Size = New System.Drawing.Size(388, 23)
         Me.tblSettingsTop.TabIndex = 15
         '
-        'cbEnabled
+        'chkEnabled
         '
-        Me.cbEnabled.AutoSize = True
-        Me.cbEnabled.Location = New System.Drawing.Point(8, 3)
-        Me.cbEnabled.Name = "cbEnabled"
-        Me.cbEnabled.Size = New System.Drawing.Size(68, 17)
-        Me.cbEnabled.TabIndex = 0
-        Me.cbEnabled.Text = "Enabled"
-        Me.cbEnabled.UseVisualStyleBackColor = True
+        Me.chkEnabled.AutoSize = True
+        Me.chkEnabled.Location = New System.Drawing.Point(8, 3)
+        Me.chkEnabled.Name = "chkEnabled"
+        Me.chkEnabled.Size = New System.Drawing.Size(68, 17)
+        Me.chkEnabled.TabIndex = 0
+        Me.chkEnabled.Text = "Enabled"
+        Me.chkEnabled.UseVisualStyleBackColor = True
         '
         'pnlSettings
         '
@@ -191,15 +191,15 @@ Partial Class frmSettingsPanel
         Me.btnExportPath.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnExportPath.UseVisualStyleBackColor = True
         '
-        'txt_exportmoviepath
+        'txtExportPath
         '
         Me.txtExportPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.txtExportPath.Location = New System.Drawing.Point(75, 3)
-        Me.txtExportPath.Name = "txt_exportmoviepath"
+        Me.txtExportPath.Name = "txtExportPath"
         Me.txtExportPath.Size = New System.Drawing.Size(230, 22)
         Me.txtExportPath.TabIndex = 13
         '
-        'frmSettingsHolder
+        'frmSettingsPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -211,7 +211,7 @@ Partial Class frmSettingsPanel
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSettingsHolder"
+        Me.Name = "frmSettingsPanel"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "frmSettingsHolder"
@@ -234,7 +234,7 @@ Partial Class frmSettingsPanel
 
     End Sub
     Friend WithEvents pnlSettingsTop As System.Windows.Forms.Panel
-    Friend WithEvents cbEnabled As System.Windows.Forms.CheckBox
+    Friend WithEvents chkEnabled As System.Windows.Forms.CheckBox
     Friend WithEvents pnlSettings As System.Windows.Forms.Panel
     Friend WithEvents lblGeneralPath As System.Windows.Forms.Label
     Friend WithEvents btnExportPath As System.Windows.Forms.Button

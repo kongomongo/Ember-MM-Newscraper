@@ -19,47 +19,48 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports NLog
 Imports System.IO
 
-Public Class MovieExporterModule
-    Implements Interfaces.GenericModule
+Public Class Addon
+    Implements Interfaces.Addon
 
 #Region "Delegates"
+
     Public Delegate Sub Delegate_AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
     Public Delegate Sub Delegate_RemoveToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
 
-#End Region 'Fields
+#End Region 'Delegates
 
 #Region "Fields"
 
-    Private WithEvents mnuMainToolsExporter As New ToolStripMenuItem
-    Private WithEvents cmnuTrayToolsExporter As New ToolStripMenuItem
-    Private _AssemblyName As String = String.Empty
+    Shared logger As Logger = LogManager.GetCurrentClassLogger()
+
+    Private _assemblyname As String
     Private _enabled As Boolean = False
-    Private _Name As String = "MovieListExporter"
-    Private _setup As frmSettingsPanel
-    Private MySettings As New _MySettings
+    Private _shortname As String = "WebsiteCreator"
+
+    Private _addonsettings As New AddonSettings
+    Private _settings As New XMLAddonSettings
+    Private _settingspanel As frmSettingsPanel
+
+    Private WithEvents mnuMainToolsWebCreator As New ToolStripMenuItem
+    Private WithEvents cmnuTrayToolsWebCreator As New ToolStripMenuItem
 
 #End Region 'Fields
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.GenericModule.GenericEvent
-    Public Event ModuleSettingsChanged() Implements Interfaces.GenericModule.ModuleSettingsChanged
-    Public Event SetupNeedsRestart() Implements Interfaces.GenericModule.SetupNeedsRestart
-    Public Event ModuleEnabledChanged(ByVal Name As String, ByVal State As Boolean, ByVal diffOrder As Integer) Implements Interfaces.GenericModule.ModuleSetupChanged
+    Public Event GenericEvent(ByVal eType As Enums.AddonEventType, ByRef _params As List(Of Object)) Implements Interfaces.Addon.GenericEvent
+    Public Event NeedsRestart() Implements Interfaces.Addon.NeedsRestart
+    Public Event SettingsChanged() Implements Interfaces.Addon.SettingsChanged
+    Public Event StateChanged(ByVal strName As String, ByVal bEnabled As Boolean) Implements Interfaces.Addon.StateChanged
 
 #End Region 'Events
 
 #Region "Properties"
 
-    Public ReadOnly Property ModuleType() As List(Of Enums.AddonEventType) Implements Interfaces.GenericModule.ModuleType
-        Get
-            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {Enums.AddonEventType.Generic, Enums.AddonEventType.CommandLine})
-        End Get
-    End Property
-
-    Property Enabled() As Boolean Implements Interfaces.GenericModule.Enabled
+    Public Property Enabled() As Boolean Implements Interfaces.Addon.Enabled
         Get
             Return _enabled
         End Get
@@ -74,21 +75,35 @@ Public Class MovieExporterModule
         End Set
     End Property
 
-    ReadOnly Property IsBusy() As Boolean Implements Interfaces.GenericModule.IsBusy
+    Public ReadOnly Property Capabilities_AddonEventTypes() As List(Of Enums.AddonEventType) Implements Interfaces.Addon.Capabilities_AddonEventTypes
+        Get
+            Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
+                                                     Enums.AddonEventType.CommandLine
+                                                     })
+        End Get
+    End Property
+
+    Public ReadOnly Property Capabilities_ScraperCapatibilities() As List(Of Enums.ScraperCapatibility) Implements Interfaces.Addon.Capabilities_ScraperCapatibilities
+        Get
+            Return New List(Of Enums.ScraperCapatibility)
+        End Get
+    End Property
+
+    Public ReadOnly Property IsBusy() As Boolean Implements Interfaces.Addon.IsBusy
         Get
             Return False
         End Get
     End Property
 
-    ReadOnly Property ModuleName() As String Implements Interfaces.GenericModule.ModuleName
+    Public ReadOnly Property Shortname() As String Implements Interfaces.Addon.Shortname
         Get
-            Return _Name
+            Return _shortname
         End Get
     End Property
 
-    ReadOnly Property ModuleVersion() As String Implements Interfaces.GenericModule.ModuleVersion
+    Public ReadOnly Property Version() As String Implements Interfaces.Addon.Version
         Get
-            Return FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
+            Return FileVersionInfo.GetVersionInfo(Reflection.Assembly.GetExecutingAssembly.Location).FileVersion.ToString
         End Get
     End Property
 
@@ -96,17 +111,56 @@ Public Class MovieExporterModule
 
 #Region "Methods"
 
-    Public Function RunGeneric(ByVal mType As Enums.AddonEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult_old Implements Interfaces.GenericModule.RunGeneric
-        Select Case mType
+    Private Sub Handle_SettingsChanged()
+        RaiseEvent SettingsChanged()
+    End Sub
+
+    Private Sub Handle_StateChanged(ByVal bEnabled As Boolean)
+        RaiseEvent StateChanged(_shortname, bEnabled)
+    End Sub
+
+    Public Sub Init(ByVal strAssemblyName As String) Implements Interfaces.Addon.Init
+        _assemblyname = strAssemblyName
+        LoadSettings()
+    End Sub
+
+    Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.Addon.InjectSettingsPanel
+        LoadSettings()
+        Dim nSettingsPanel As New Containers.SettingsPanel
+        _settingspanel = New frmSettingsPanel
+        _settingspanel.chkEnabled.Checked = _enabled
+        _settingspanel.chkExportMissingEpisodes.Checked = _addonsettings.ExportMissingEpisodes
+        _settingspanel.txtExportPath.Text = _addonsettings.ExportPath
+
+        nSettingsPanel.ImageIndex = If(_enabled, 9, 10)
+        nSettingsPanel.Name = _shortname
+        nSettingsPanel.Panel = _settingspanel.pnlSettings
+        nSettingsPanel.Prefix = "WebsiteCreator_"
+        nSettingsPanel.Title = Master.eLang.GetString(335, "Website Creator")
+        nSettingsPanel.Type = Enums.SettingsPanelType.Addon
+
+        AddHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        AddHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        Return nSettingsPanel
+    End Function
+
+    Public Sub LoadSettings()
+        _addonsettings.DefaultTemplate = _settings.GetStringSetting("DefaultTemplate", "template")
+        _addonsettings.ExportPath = _settings.GetStringSetting("ExportPath", String.Empty)
+        _addonsettings.ExportMissingEpisodes = _settings.GetBooleanSetting("ExportMissingEpisodes", False)
+    End Sub
+
+    Public Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstParams As List(Of Object)) As Interfaces.AddonResult Implements Interfaces.Addon.Run
+        Select Case eAddonEventType
             Case Enums.AddonEventType.CommandLine
                 Dim strTemplatePath As String = String.Empty
-                Dim BuildPath As String = String.Empty
+                Dim strBuildPath As String = String.Empty
 
-                If _params IsNot Nothing Then
-                    For Each tParameter In _params
+                If lstParams IsNot Nothing Then
+                    For Each tParameter In lstParams
                         'check if tParameter is a path or template name
                         If Not String.IsNullOrEmpty(Path.GetPathRoot(tParameter.ToString)) Then
-                            BuildPath = tParameter.ToString
+                            strBuildPath = tParameter.ToString
                         Else
                             'search in Ember custom templates
                             Dim diCustom As DirectoryInfo = New DirectoryInfo(Path.Combine(Master.SettingsPath, "Templates"))
@@ -120,7 +174,7 @@ Public Class MovieExporterModule
 
                             If String.IsNullOrEmpty(strTemplatePath) Then
                                 'search in Ember default templates
-                                Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Modules", "Templates"))
+                                Dim diDefault As DirectoryInfo = New DirectoryInfo(Path.Combine(Functions.AppPath, "Addons", "Templates"))
                                 If diDefault.Exists Then
                                     For Each i As DirectoryInfo In diDefault.GetDirectories
                                         If Not (i.Attributes And FileAttributes.Hidden) = FileAttributes.Hidden AndAlso i.Name = tParameter.ToString Then
@@ -133,41 +187,41 @@ Public Class MovieExporterModule
                     Next
                 End If
 
-                If String.IsNullOrEmpty(BuildPath) Then
-                    BuildPath = MySettings.ExportPath
+                If String.IsNullOrEmpty(strBuildPath) Then
+                    strBuildPath = _addonsettings.ExportPath
                 End If
 
                 If String.IsNullOrEmpty(strTemplatePath) Then
-                    strTemplatePath = MySettings.DefaultTemplate
+                    strTemplatePath = _addonsettings.DefaultTemplate
                 End If
 
-                Dim MovieList As New List(Of Database.DBElement)
+                Dim lstMovieList As New List(Of Database.DBElement)
                 ' Load nfo movies using path from DB
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLNewcommand.CommandText = String.Concat("SELECT idMovie FROM movielist ORDER BY SortedTitle COLLATE NOCASE;")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLreader.Read()
-                            MovieList.Add(Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie"))))
+                            lstMovieList.Add(Master.DB.Load_Movie(Convert.ToInt32(SQLreader("idMovie"))))
                         End While
                     End Using
                 End Using
 
-                Dim TVShowList As New List(Of Database.DBElement)
+                Dim lstTVShowList As New List(Of Database.DBElement)
                 ' Load nfo tv shows using path from DB
                 Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
                     SQLNewcommand.CommandText = String.Concat("SELECT idShow FROM tvshowlist ORDER BY SortedTitle COLLATE NOCASE;")
                     Using SQLreader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
                         While SQLreader.Read()
-                            TVShowList.Add(Master.DB.Load_TVShow(Convert.ToInt32(SQLreader("idShow")), True, True, MySettings.ExportMissingEpisodes))
+                            lstTVShowList.Add(Master.DB.Load_TVShow(Convert.ToInt32(SQLreader("idShow")), True, True, _addonsettings.ExportMissingEpisodes))
                         End While
                     End Using
                 End Using
 
-                Dim MExporter As New MediaExporter
-                MExporter.CreateTemplate(strTemplatePath, MovieList, TVShowList, BuildPath, Nothing)
+                Dim nWebsiteCreator As New clsAPIWebsiteCreator
+                nWebsiteCreator.CreateTemplate(strTemplatePath, lstMovieList, lstTVShowList, strBuildPath, Nothing)
         End Select
 
-        Return New Interfaces.ModuleResult_old With {.breakChain = False}
+        Return New Interfaces.AddonResult
     End Function
 
     Sub Disable()
@@ -175,11 +229,11 @@ Public Class MovieExporterModule
 
         'mnuMainTools
         tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, mnuMainToolsExporter)
+        RemoveToolsStripItem(tsi, mnuMainToolsWebCreator)
 
         'cmnuTrayTools
         tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        RemoveToolsStripItem(tsi, cmnuTrayToolsExporter)
+        RemoveToolsStripItem(tsi, cmnuTrayToolsWebCreator)
     End Sub
 
     Public Sub RemoveToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
@@ -194,16 +248,16 @@ Public Class MovieExporterModule
         Dim tsi As New ToolStripMenuItem
 
         'mnuMainTools
-        mnuMainToolsExporter.Image = New Bitmap(My.Resources.icon)
-        mnuMainToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
+        mnuMainToolsWebCreator.Image = New Bitmap(My.Resources.icon)
+        mnuMainToolsWebCreator.Text = Master.eLang.GetString(335, "Website Creator")
         tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.MainMenu.Items("mnuMainTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, mnuMainToolsExporter)
+        AddToolsStripItem(tsi, mnuMainToolsWebCreator)
 
         'cmnuTrayTools
-        cmnuTrayToolsExporter.Image = New Bitmap(My.Resources.icon)
-        cmnuTrayToolsExporter.Text = Master.eLang.GetString(336, "Export Movie List")
+        cmnuTrayToolsWebCreator.Image = New Bitmap(My.Resources.icon)
+        cmnuTrayToolsWebCreator.Text = Master.eLang.GetString(335, "Website Creator")
         tsi = DirectCast(AddonsManager.Instance.RuntimeObjects.TrayMenu.Items("cmnuTrayTools"), ToolStripMenuItem)
-        AddToolsStripItem(tsi, cmnuTrayToolsExporter)
+        AddToolsStripItem(tsi, cmnuTrayToolsWebCreator)
     End Sub
 
     Public Sub AddToolsStripItem(control As ToolStripMenuItem, value As ToolStripItem)
@@ -214,91 +268,50 @@ Public Class MovieExporterModule
         End If
     End Sub
 
-    Private Sub Handle_ModuleEnabledChanged(ByVal State As Boolean)
-        RaiseEvent ModuleEnabledChanged(_Name, State, 0)
-    End Sub
-
-    Private Sub Handle_ModuleSettingsChanged()
-        RaiseEvent ModuleSettingsChanged()
-    End Sub
-
-    Sub Init(ByVal sAssemblyName As String, ByVal sExecutable As String) Implements Interfaces.GenericModule.Init
-        _AssemblyName = sAssemblyName
-        LoadSettings()
-    End Sub
-
-    Function InjectSetup() As Containers.SettingsPanel Implements Interfaces.GenericModule.InjectSetup
-        _setup = New frmSettingsPanel
-        _setup.cbEnabled.Checked = _enabled
-        Dim SPanel As New Containers.SettingsPanel
-
-        _setup.txtExportPath.Text = MySettings.ExportPath
-        _setup.chkExportMissingEpisodes.Checked = MySettings.ExportMissingEpisodes
-
-        SPanel.Name = _Name
-        SPanel.Text = Master.eLang.GetString(335, "Movie List Exporter")
-        SPanel.Prefix = "Exporter_"
-        SPanel.Type = Enums.SettingsPanelType.Addon
-        SPanel.ImageIndex = If(_enabled, 9, 10)
-        SPanel.Order = 100
-        SPanel.Panel = _setup.pnlSettings
-        AddHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-        AddHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-        Return SPanel
-    End Function
-
-    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsExporter.Click, cmnuTrayToolsExporter.Click
+    Private Sub MyMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuMainToolsWebCreator.Click, cmnuTrayToolsWebCreator.Click
         RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", False}))
-
-        Using dExportMovies As New dlgExportMovies
+        LoadSettings()
+        Using dExportMovies As New dlgCreateWebsite(_addonsettings)
             dExportMovies.ShowDialog()
         End Using
 
         RaiseEvent GenericEvent(Enums.AddonEventType.Generic, New List(Of Object)(New Object() {"controlsenabled", True}))
     End Sub
 
-    Sub LoadSettings()
-        MySettings.DefaultTemplate = AdvancedSettings.GetSetting("DefaultTemplate", "template")
-        MySettings.ExportPath = AdvancedSettings.GetSetting("ExportPath", String.Empty)
-        MySettings.ExportMissingEpisodes = AdvancedSettings.GetBooleanSetting("ExportMissingEpisodes", False)
+    Public Sub SaveSettings()
+        _settings.SetBooleanSetting("ExportMissingEpisodes", _addonsettings.ExportMissingEpisodes)
+        _settings.SetStringSetting("DefaultTemplate", _addonsettings.DefaultTemplate)
+        _settings.SetStringSetting("ExportPath", _addonsettings.ExportPath)
+        _settings.Save()
     End Sub
 
-    Sub SaveSetup(ByVal DoDispose As Boolean) Implements Interfaces.GenericModule.SaveSetup
-        Enabled = _setup.cbEnabled.Checked
-        MySettings.ExportPath = _setup.txtExportPath.Text
-        MySettings.ExportMissingEpisodes = _setup.chkExportMissingEpisodes.Checked
+    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+        Enabled = _settingspanel.chkEnabled.Checked
+        _addonsettings.DefaultTemplate = _settingspanel.txtExportPath.Text
+        _addonsettings.ExportMissingEpisodes = _settingspanel.chkExportMissingEpisodes.Checked
         SaveSettings()
-        If DoDispose Then
-            RemoveHandler _setup.ModuleEnabledChanged, AddressOf Handle_ModuleEnabledChanged
-            RemoveHandler _setup.ModuleSettingsChanged, AddressOf Handle_ModuleSettingsChanged
-            _setup.Dispose()
+        If bDoDispose Then
+            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+            _settingspanel.Dispose()
         End If
     End Sub
-
-    Sub SaveSettings()
-        Using settings = New AdvancedSettings()
-            settings.SetSetting("DefaultTemplate", MySettings.DefaultTemplate)
-            settings.SetSetting("ExportPath", MySettings.ExportPath)
-            settings.SetBooleanSetting("ExportMissingEpisodes", MySettings.ExportMissingEpisodes)
-        End Using
-    End Sub
-
 
 #End Region 'Methods
 
 #Region "Nested Types"
 
-    Structure _MySettings
+    Public Class AddonSettings
 
 #Region "Fields"
 
-        Dim DefaultTemplate As String
-        Dim ExportPath As String
-        Dim ExportMissingEpisodes As Boolean
+        Public DefaultTemplate As String = String.Empty
+        Public ExportPath As String = String.Empty
+        Public ExportMissingEpisodes As Boolean
 
 #End Region 'Fields
 
-    End Structure
+    End Class
 
 #End Region 'Nested Types
 

@@ -748,7 +748,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property RatingSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_rating) AndAlso Not String.IsNullOrEmpty(_votes)
+                Return Not String.IsNullOrEmpty(_rating.Trim) AndAlso Not String.IsNullOrEmpty(_votes.Trim)
             End Get
         End Property
 
@@ -765,7 +765,7 @@ Namespace MediaContainers
         <XmlIgnore()>
         Public ReadOnly Property VotesSpecified() As Boolean
             Get
-                Return Not String.IsNullOrEmpty(_votes) AndAlso Not String.IsNullOrEmpty(_rating)
+                Return Not String.IsNullOrEmpty(_votes.Trim) AndAlso Not String.IsNullOrEmpty(_rating.Trim)
             End Get
         End Property
 

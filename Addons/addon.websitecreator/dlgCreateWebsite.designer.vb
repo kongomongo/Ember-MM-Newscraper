@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated> _
-Partial Class dlgExportMovies
+Partial Class dlgCreateWebsite
     Inherits System.Windows.Forms.Form
 
 #Region "Fields"
@@ -34,7 +34,7 @@ Partial Class dlgExportMovies
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough>
     Private Sub InitializeComponent()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgExportMovies))
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(dlgCreateWebsite))
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnClose = New System.Windows.Forms.Button()
         Me.btnBuild = New System.Windows.Forms.Button()
@@ -43,6 +43,10 @@ Partial Class dlgExportMovies
         Me.pnlMain = New System.Windows.Forms.Panel()
         Me.wbPreview = New System.Windows.Forms.WebBrowser()
         Me.ssStatus = New System.Windows.Forms.StatusStrip()
+        Me.tslblFile = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblSpring = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tslblStatus = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.tspbStatus = New System.Windows.Forms.ToolStripProgressBar()
         Me.pnlBottom = New System.Windows.Forms.Panel()
         Me.tblBottom = New System.Windows.Forms.TableLayoutPanel()
         Me.lblList_Movies = New System.Windows.Forms.Label()
@@ -52,10 +56,6 @@ Partial Class dlgExportMovies
         Me.lblExportPath = New System.Windows.Forms.Label()
         Me.txtExportPath = New System.Windows.Forms.TextBox()
         Me.btnExportPath = New System.Windows.Forms.Button()
-        Me.tspbStatus = New System.Windows.Forms.ToolStripProgressBar()
-        Me.tslblFile = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.tslblSpring = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.tslblStatus = New System.Windows.Forms.ToolStripStatusLabel()
         Me.pnlMain.SuspendLayout()
         Me.ssStatus.SuspendLayout()
         Me.pnlBottom.SuspendLayout()
@@ -146,6 +146,38 @@ Partial Class dlgExportMovies
         Me.ssStatus.Name = "ssStatus"
         Me.ssStatus.Size = New System.Drawing.Size(1084, 22)
         Me.ssStatus.TabIndex = 5
+        '
+        'tslblFile
+        '
+        Me.tslblFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.tslblFile.Name = "tslblFile"
+        Me.tslblFile.Size = New System.Drawing.Size(25, 17)
+        Me.tslblFile.Text = "File"
+        Me.tslblFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.tslblFile.Visible = False
+        '
+        'tslblSpring
+        '
+        Me.tslblSpring.Name = "tslblSpring"
+        Me.tslblSpring.Size = New System.Drawing.Size(1069, 17)
+        Me.tslblSpring.Spring = True
+        '
+        'tslblStatus
+        '
+        Me.tslblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.tslblStatus.Name = "tslblStatus"
+        Me.tslblStatus.Size = New System.Drawing.Size(50, 17)
+        Me.tslblStatus.Text = "Loading"
+        Me.tslblStatus.Visible = False
+        '
+        'tspbStatus
+        '
+        Me.tspbStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.tspbStatus.AutoSize = False
+        Me.tspbStatus.Name = "tspbStatus"
+        Me.tspbStatus.Size = New System.Drawing.Size(150, 16)
+        Me.tspbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
+        Me.tspbStatus.Visible = False
         '
         'pnlBottom
         '
@@ -271,39 +303,7 @@ Partial Class dlgExportMovies
         Me.btnExportPath.TextAlign = System.Drawing.ContentAlignment.TopCenter
         Me.btnExportPath.UseVisualStyleBackColor = True
         '
-        'tspbStatus
-        '
-        Me.tspbStatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.tspbStatus.AutoSize = False
-        Me.tspbStatus.Name = "tspbStatus"
-        Me.tspbStatus.Size = New System.Drawing.Size(150, 16)
-        Me.tspbStatus.Style = System.Windows.Forms.ProgressBarStyle.Marquee
-        Me.tspbStatus.Visible = False
-        '
-        'tslblFile
-        '
-        Me.tslblFile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.tslblFile.Name = "tslblFile"
-        Me.tslblFile.Size = New System.Drawing.Size(25, 17)
-        Me.tslblFile.Text = "File"
-        Me.tslblFile.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.tslblFile.Visible = False
-        '
-        'tslblSpring
-        '
-        Me.tslblSpring.Name = "tslblSpring"
-        Me.tslblSpring.Size = New System.Drawing.Size(1069, 17)
-        Me.tslblSpring.Spring = True
-        '
-        'tslblStatus
-        '
-        Me.tslblStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.tslblStatus.Name = "tslblStatus"
-        Me.tslblStatus.Size = New System.Drawing.Size(50, 17)
-        Me.tslblStatus.Text = "Loading"
-        Me.tslblStatus.Visible = False
-        '
-        'dlgExportMovies
+        'dlgCreateWebsite
         '
         Me.AcceptButton = Me.btnSave
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -316,8 +316,8 @@ Partial Class dlgExportMovies
         Me.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MinimizeBox = False
-        Me.Name = "dlgExportMovies"
-        Me.Text = "Export Movies"
+        Me.Name = "dlgCreateWebsite"
+        Me.Text = "Website Creator"
         Me.pnlMain.ResumeLayout(False)
         Me.ssStatus.ResumeLayout(False)
         Me.ssStatus.PerformLayout()
