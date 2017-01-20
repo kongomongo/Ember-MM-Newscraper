@@ -21,6 +21,7 @@
 Imports EmberAPI
 Imports NLog
 Imports System.Text.RegularExpressions
+Imports System.Web
 
 Public Class clsAPISerienjunkies
 
@@ -29,13 +30,13 @@ Public Class clsAPISerienjunkies
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private Const strNotFound As String = "<title>Page not found</title>"
+    Private Const Regex_DownloadLink As String = "<a href=""(?<URL>.*?)"".*?\| (?<HOSTER>.*?)<"
+    Private Const Regex_Episode As String = "<p><strong>(?<RELEASE>.*?)<(?<LINKS>.*)<\/p>"
+    Private Const Regex_InSeasonGroups As String = "<p><strong>.*?<\/p>"                        'Description or Episode/Seasonpack
+    Private Const Regex_NextPage As String = "<a href=""(?<NEXTPAGE>.*?)"" class=""next"""
     Private Const Regex_PagesArea As String = "wp-paginate.*?class=""next"""
-    Private Const Regex_NextPage As String = ""
-    Private Const Regex_SeasonGroup As String = "<h2>(?!bookmark|staffeln|feeds).*?<\/div>"
     Private Const Regex_Season As String = "(?<DESCRIPTION>staffel|season) (?<SEASON>\d+)"
-    Private Const Regex_Format As String = "<p><strong>Dauer:<\/strong> (?<DURATION>\d*\:\d*).*?<strong>Größe:<\/strong> (?<SIZE>.*?) \| <strong>Sprache:<\/strong> (?<LANGUAGE>.*?) \| <strong>Format:<\/strong> (?<FORMAT>.*?) \| <strong>Uploader:<\/strong> (?<UPLOADER>.*?)<\/p>(?<EPISODES>.*)<\/p>"
-    Private Const Regex_Episode As String = "<p><strong>(?<DESCRIPTION>.*?)<(?<LINKS>.*?<\/p>)"
-    Private Const Regex_Link As String = "<a href=""(?<URL>.*?)"".*?\| (?<HOSTER>.*?)<"
+    Private Const Regex_SeasonGroups As String = "<h2>(?!bookmark|staffeln|feeds).*?<\/div>"    'Seasons grouped in German or English
 
 #End Region 'Fields
 
@@ -43,82 +44,96 @@ Public Class clsAPISerienjunkies
 
     Public Shared Function ParseMainPage(ByVal strURL As String) As TVShowContainer
         Dim nTVShowContainer As New TVShowContainer
+        Dim strCurrPageURL As String = strURL
+        While Not String.IsNullOrEmpty(strCurrPageURL)
+            Dim HTML As String
+            Dim intHTTP As New HTTP
+            HTML = intHTTP.DownloadData(strCurrPageURL)
+            intHTTP.Dispose()
+            intHTTP = Nothing
 
-        Dim HTML As String
-        Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(strURL)
-        intHTTP.Dispose()
-        intHTTP = Nothing
-
-        If Not HTML.Contains(strNotFound) Then
-            Dim mcSeasons As MatchCollection = Regex.Matches(HTML, Regex_SeasonGroup, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
-            If mcSeasons.Count > 0 Then
-                For Each nMatch As Match In mcSeasons
-                    Dim regSeason As Match = Regex.Match(nMatch.Value, Regex_Season, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
-                    If regSeason.Success Then
-                        nTVShowContainer.Seasons.Add(New SeasonGroup With {
-                                                     .FormatList = ParseFormats(nMatch),
-                                                     .Language = If(regSeason.Groups("DESCRIPTION").Value.ToLower = "staffel", "German", "English"),
-                                                     .SeasonNumber = CInt(regSeason.Groups("SEASON").Value),
-                                                     .Description = String.Concat(regSeason.Groups("DESCRIPTION").Value, " ", regSeason.Groups("SEASON").Value)
+            If Not String.IsNullOrEmpty(HTML) AndAlso Not HTML.Contains(strNotFound) Then
+                Dim mcSeasons As MatchCollection = Regex.Matches(HTML, Regex_SeasonGroups, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
+                If mcSeasons.Count > 0 Then
+                    For Each nMatch As Match In mcSeasons
+                        Dim regSeason As Match = Regex.Match(nMatch.Value, Regex_Season, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
+                        If regSeason.Success Then
+                            nTVShowContainer.SeasonList.Add(New Season With {
+                                                     .EpisodeList = ParseInSeasonGroups(nMatch.Value.Trim),
+                                                     .Language = GetLanguageFromString(regSeason.Groups("DESCRIPTION").Value.Trim),
+                                                     .SeasonNumber = CInt(regSeason.Groups("SEASON").Value.Trim),
+                                                     .Description = HttpUtility.HtmlDecode(regSeason.Groups(0).Value.Trim)
                                                      })
-                    End If
-                Next
+                        End If
+                    Next
+                End If
+            Else
+                logger.Error(String.Concat("Page not found: ", strCurrPageURL))
             End If
-        Else
-            logger.Error(String.Concat("Page not found: ", strURL))
-        End If
+
+            strCurrPageURL = String.Empty
+            Dim mPagesArea = Regex.Match(HTML, Regex_PagesArea, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
+            If mPagesArea.Success Then
+                Dim mNextPage = Regex.Match(mPagesArea.Value, Regex_NextPage, RegexOptions.IgnoreCase Or RegexOptions.RightToLeft, TimeSpan.FromSeconds(2))
+                If mNextPage.Success Then
+                    strCurrPageURL = mNextPage.Groups("NEXTPAGE").Value
+                End If
+            End If
+        End While
 
         Return nTVShowContainer
     End Function
 
-    Private Shared Function ParseFormats(ByVal mSeason As Match) As List(Of Format)
-        Dim nFormats As New List(Of Format)
-
-        Dim mcFormats As MatchCollection = Regex.Matches(mSeason.Value, Regex_Format, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
-        If mcFormats.Count > 0 Then
-            For Each nFormat As Match In mcFormats
-                nFormats.Add(New Format With {
-                             .Codec = nFormat.Groups("FORMAT").Value.Trim,
-                             .Duration = nFormat.Groups("DURATION").Value.Trim,
-                             .Language = nFormat.Groups("LANGUAGE").Value.Trim,
-                             .Episodes = ParseEpisodes(nFormat.Groups("EPISODES").Value),
-                             .Size = nFormat.Groups("SIZE").Value.Trim,
-                             .Uploader = nFormat.Groups("UPLOADER").Value.Trim
-                             })
-            Next
-        End If
-
-        Return nFormats
-    End Function
-
-    Private Shared Function ParseEpisodes(ByVal strEpisodes As String) As List(Of Episode)
+    Private Shared Function ParseInSeasonGroups(ByVal mSeason As String) As List(Of Episode)
         Dim nEpisodes As New List(Of Episode)
 
-        Dim mcEpisodes As MatchCollection = Regex.Matches(strEpisodes, Regex_Episode, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
-        If mcEpisodes.Count > 0 Then
-            For Each mEpisodeMatch As Match In mcEpisodes
-                nEpisodes.Add(New Episode With {
-                              .Description = mEpisodeMatch.Groups("DESCRIPTION").Value,
-                              .EpisodeNumber = GetEpisodeNumberFromDescription(mEpisodeMatch.Groups("DESCRIPTION").Value),
-                              .Links = ParseDownloadLinks(mEpisodeMatch.Groups("LINKS").Value),
-                              .SeasonNumber = GetSeasonNumberFromDescription(mEpisodeMatch.Groups("DESCRIPTION").Value)
-                              })
+        Dim mcInSeasonGroups As MatchCollection = Regex.Matches(mSeason, Regex_InSeasonGroups, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
+        If mcInSeasonGroups.Count > 0 Then
+            Dim eLanguage As Language = Language.None
+            Dim strCodec As String = String.Empty
+            Dim strDuration As String = String.Empty
+            Dim strSize As String = String.Empty
+            Dim strUploader As String = String.Empty
+
+            For Each nPart As Match In mcInSeasonGroups
+                If nPart.Value.ToLower.Contains("format:") OrElse
+                    nPart.Value.ToLower.Contains("dauer:") OrElse
+                    nPart.Value.ToLower.Contains("sprache:") OrElse
+                    nPart.Value.ToLower.Contains("uploader:") Then
+                    eLanguage = GetLanguageFromString(Regex.Match(nPart.Value.Trim, "Sprache:<\/strong> (.*?) \|", RegexOptions.IgnoreCase Or RegexOptions.Singleline).Groups(1).Value.Trim)
+                    strCodec = Regex.Match(nPart.Value.Trim, "Format:<\/strong> (.*?) \|", RegexOptions.IgnoreCase Or RegexOptions.Singleline).Groups(1).Value.Trim
+                    strDuration = Regex.Match(nPart.Value.Trim, "Dauer:<\/strong> (\d*\:\d*)", RegexOptions.IgnoreCase Or RegexOptions.Singleline).Groups(1).Value.Trim
+                    strSize = Regex.Match(nPart.Value.Trim, "Größe:<\/strong> (.*?) \|", RegexOptions.IgnoreCase Or RegexOptions.Singleline).Groups(1).Value.Trim
+                    strUploader = Regex.Match(nPart.Value.Trim, "Uploader:<\/strong> (.*?)<", RegexOptions.IgnoreCase Or RegexOptions.Singleline).Groups(1).Value.Trim
+                Else
+                    Dim mEpisode As Match = Regex.Match(nPart.Value.Trim, Regex_Episode, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
+                    nEpisodes.Add(New Episode With {
+                                  .Codec = HttpUtility.HtmlDecode(strCodec),
+                                  .Description = HttpUtility.HtmlDecode(mEpisode.Groups("RELEASE").Value.Trim),
+                                  .Duration = HttpUtility.HtmlDecode(strDuration),
+                                  .EpisodeNumber = GetEpisodeNumberFromDescription(mEpisode.Groups("RELEASE").Value.Trim),
+                                  .Language = eLanguage,
+                                  .LinkList = ParseDownloadLinks(mEpisode.Groups("LINKS").Value.Trim),
+                                  .SeasonNumber = GetSeasonNumberFromDescription(mEpisode.Groups("RELEASE").Value.Trim),
+                                  .Size = HttpUtility.HtmlDecode(strSize),
+                                  .Uploader = HttpUtility.HtmlDecode(strUploader)
+                                  })
+                End If
             Next
         End If
 
         Return nEpisodes
     End Function
 
-    Private Shared Function ParseDownloadLinks(ByVal strLinks As String) As List(Of DownloadLink)
-        Dim nDownloadLinks As New List(Of DownloadLink)
+    Private Shared Function ParseDownloadLinks(ByVal strLinks As String) As List(Of Link)
+        Dim nDownloadLinks As New List(Of Link)
 
-        Dim mcLinks As MatchCollection = Regex.Matches(strLinks, Regex_Link, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
+        Dim mcLinks As MatchCollection = Regex.Matches(strLinks, Regex_DownloadLink, RegexOptions.IgnoreCase Or RegexOptions.Singleline, TimeSpan.FromSeconds(2))
         If mcLinks.Count > 0 Then
             For Each mLink As Match In mcLinks
-                nDownloadLinks.Add(New DownloadLink With {
-                                   .Hoster = mLink.Groups("HOSTER").Value,
-                                   .URL = mLink.Groups("URL").Value
+                nDownloadLinks.Add(New Link With {
+                                   .Hoster = HttpUtility.HtmlDecode(mLink.Groups("HOSTER").Value.Trim),
+                                   .URL = HttpUtility.HtmlDecode(mLink.Groups("URL").Value.Trim)
                                    })
             Next
         End If
@@ -135,6 +150,21 @@ Public Class clsAPISerienjunkies
             End If
         End If
         Return -1
+    End Function
+
+    Private Shared Function GetLanguageFromString(ByVal strString As String) As Language
+        Select Case True
+            Case strString.Contains("weitere sprachen")
+                Return Language.MultiLanguage
+            Case strString.Contains("deutsch") AndAlso strString.Contains("englisch")
+                Return Language.DualLanguage
+            Case strString.ToLower.Contains("deutsch")
+                Return Language.German
+            Case strString.ToLower.Contains("englisch")
+                Return Language.English
+            Case Else
+                Return Language.None
+        End Select
     End Function
 
     Private Shared Function GetSeasonNumberFromDescription(ByVal strDescription As String) As Integer
@@ -154,36 +184,45 @@ Public Class clsAPISerienjunkies
 #Region "Nested Types"
 
     Public Class TVShowContainer
-        Public Seasons As New List(Of SeasonGroup)
+        Public SeasonList As New List(Of Season)
     End Class
 
-    Public Class SeasonGroup
+    Public Class Season
         Public Description As String = String.Empty
-        Public FormatList As New List(Of Format)
-        Public Language As String = String.Empty
+        Public EpisodeList As New List(Of Episode)
+        Public Language As Language = Language.None
         Public SeasonNumber As Integer = -1
-    End Class
-
-    Public Class Format
-        Public Codec As String = String.Empty
-        Public Duration As String = String.Empty
-        Public Language As String = String.Empty
-        Public Size As String = String.Empty
-        Public Uploader As String = String.Empty
-        Public Episodes As List(Of Episode)
     End Class
 
     Public Class Episode
-        Public EpisodeNumber As Integer = -1
-        Public SeasonNumber As Integer = -1
+        Public Codec As String = String.Empty
         Public Description As String = String.Empty
-        Public Links As New List(Of DownloadLink)
+        Public Duration As String = String.Empty
+        Public EpisodeNumber As Integer = -1
+        Public Language As Language = Language.None
+        Public LinkList As New List(Of Link)
+        Public SeasonNumber As Integer = -1
+        Public Size As String = String.Empty
+        Public Uploader As String = String.Empty
+        Public ReadOnly Property IsSeasonPack As Boolean
+            Get
+                Return EpisodeNumber = -1 AndAlso Not SeasonNumber = -1
+            End Get
+        End Property
     End Class
 
-    Public Class DownloadLink
+    Public Class Link
         Public Hoster As String = String.Empty
         Public URL As String = String.Empty
     End Class
+
+    Public Enum Language
+        None
+        DualLanguage
+        English
+        German
+        MultiLanguage
+    End Enum
 
 #End Region 'Nested Types
 
