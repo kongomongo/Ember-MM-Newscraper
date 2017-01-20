@@ -29,6 +29,8 @@ Public Class clsAPISerienjunkies
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
     Private Const strNotFound As String = "<title>Page not found</title>"
+    Private Const Regex_PagesArea As String = "wp-paginate.*?class=""next"""
+    Private Const Regex_NextPage As String = ""
     Private Const Regex_SeasonGroup As String = "<h2>(?!bookmark|staffeln|feeds).*?<\/div>"
     Private Const Regex_Season As String = "(?<DESCRIPTION>staffel|season) (?<SEASON>\d+)"
     Private Const Regex_Format As String = "<p><strong>Dauer:<\/strong> (?<DURATION>\d*\:\d*).*?<strong>Größe:<\/strong> (?<SIZE>.*?) \| <strong>Sprache:<\/strong> (?<LANGUAGE>.*?) \| <strong>Format:<\/strong> (?<FORMAT>.*?) \| <strong>Uploader:<\/strong> (?<UPLOADER>.*?)<\/p>(?<EPISODES>.*)<\/p>"

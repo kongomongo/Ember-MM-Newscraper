@@ -127,7 +127,6 @@
     <Compile Include="dlgAddTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgWatchList.vb" />
     <Compile Include="frmSettingsPanel.Designer.vb">
       <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>
