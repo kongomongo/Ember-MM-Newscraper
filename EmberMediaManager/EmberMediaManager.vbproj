@@ -841,6 +841,7 @@
     <None Include="Resources\hasSet.png" />
     <None Include="Resources\ad.png" />
     <None Include="Resources\heart.png" />
+    <None Include="Resources\menuEdit.png" />
     <Content Include="Resources\movieset-Default.xml" />
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />
