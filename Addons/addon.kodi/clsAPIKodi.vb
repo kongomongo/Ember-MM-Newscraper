@@ -1291,7 +1291,7 @@ Namespace Kodi
                     End If
 
                     'integer or 0
-                    Dim mPlaycount As Integer = If(mDBElement.MainDetails.PlayCountSpecified, CType(mDBElement.MainDetails.PlayCount, Integer), 0)
+                    Dim mPlaycount As Integer = If(mDBElement.MainDetails.PlayCountSpecified, mDBElement.MainDetails.PlayCount, 0)
                     Dim mRating As Double = If(mDBElement.MainDetails.RatingSpecified, CType(Double.Parse(mDBElement.MainDetails.Rating, Globalization.CultureInfo.InvariantCulture).ToString("N1", Globalization.CultureInfo.CurrentCulture), Double), 0)
                     Dim mRuntime As Integer = 0
                     If mDBElement.MainDetails.RuntimeSpecified AndAlso Integer.TryParse(mDBElement.MainDetails.Runtime, 0) Then

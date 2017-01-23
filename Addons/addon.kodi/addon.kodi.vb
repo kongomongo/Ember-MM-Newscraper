@@ -1200,7 +1200,7 @@ Public Class Addon
         'Task Manager
         lblTaskManagerStatus.Text = "No Pending Tasks"
         lblTaskManagerTitle.Text = "Kodi Interface Task Manager"
-        Dim ts As ToolStrip = DirectCast(AddonsManager.Instance.RuntimeObjects.MainToolStrip, ToolStrip)
+        Dim ts As ToolStrip = AddonsManager.Instance.RuntimeObjects.MainToolStrip
         AddToolStripItem(ts, tssTaskManager1)
         AddToolStripItem(ts, tssTaskManager2)
         AddToolStripItem(ts, tspTaskManager)
@@ -1255,7 +1255,7 @@ Public Class Addon
         RemoveToolStripItem_MovieSets(cmnuKodi_MovieSets)
 
         'Task Manager
-        Dim ts As ToolStrip = DirectCast(AddonsManager.Instance.RuntimeObjects.MainToolStrip, ToolStrip)
+        Dim ts As ToolStrip = AddonsManager.Instance.RuntimeObjects.MainToolStrip
         ts.Items.Remove(lblTaskManagerStatus)
         ts.Items.Remove(lblTaskManagerTitle)
         ts.Items.Remove(tspTaskManager)
