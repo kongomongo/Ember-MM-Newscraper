@@ -49,7 +49,7 @@ Public Class dlgAddTVShow
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        Functions.Launch(String.Concat(My.Resources.urlDefaultOverview, HttpUtility.UrlEncode(txtTitle.Text).Replace("+", "-").ToLower, "/"))
+        txtURL.Text = clsAPISerienjunkies.SearchTVShow(txtTitle.Text.Trim)
         txtURL.Focus()
     End Sub
 

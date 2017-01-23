@@ -41,9 +41,10 @@ Public Class Addon
     Private _settings As New XMLAddonSettings
     Private _settingspanel As frmSettingsPanel
 
-    Private cmnuTVShow As New ToolStripMenuItem
-    Private cmnuTVShowSeparator As New ToolStripSeparator
+    Private WithEvents cmnuTVShow As New ToolStripMenuItem
     Private WithEvents cmnuTVShow_AddToWatchlist As New ToolStripMenuItem
+    Private WithEvents cmnuTVShow_SearchNewEpisodes As New ToolStripMenuItem
+    Private WithEvents cmnuTVShow_EditWatchlistEntry As New ToolStripMenuItem
     Private WithEvents cmnuTVShow_RemoveFromWatchlist As New ToolStripMenuItem
     Private WithEvents cmnuTrayToolsSerienjunkies As New ToolStripMenuItem
     Private WithEvents mnuMainToolsSerienjunkies As New ToolStripMenuItem
@@ -110,11 +111,33 @@ Public Class Addon
 
 #Region "Methods"
 
-    Private Sub cmnuTVShow_AddToWatchlist_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow_AddToWatchlist.Click
+    Private Sub cmnuTVShow_DropDownOpening(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow.DropDownOpening
+        If AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count = 1 Then
+            Dim lngID As Long = CLng(AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows(0).Cells("idShow").Value)
+            If _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = lngID) IsNot Nothing Then
+                cmnuTVShow_AddToWatchlist.Enabled = False
+                cmnuTVShow_EditWatchlistEntry.Enabled = True
+                cmnuTVShow_RemoveFromWatchlist.Enabled = True
+                cmnuTVShow_SearchNewEpisodes.Enabled = True
+            Else
+                cmnuTVShow_AddToWatchlist.Enabled = True
+                cmnuTVShow_EditWatchlistEntry.Enabled = False
+                cmnuTVShow_RemoveFromWatchlist.Enabled = False
+                cmnuTVShow_SearchNewEpisodes.Enabled = False
+            End If
+        ElseIf AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows.Count > 1 Then
+            cmnuTVShow_AddToWatchlist.Enabled = True
+            cmnuTVShow_EditWatchlistEntry.Enabled = False
+            cmnuTVShow_RemoveFromWatchlist.Enabled = True
+            cmnuTVShow_SearchNewEpisodes.Enabled = True
+        End If
+    End Sub
+
+    Private Sub cmnuTVShow_AddToWatchlist_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow_AddToWatchlist.Click, cmnuTVShow_EditWatchlistEntry.Click
         Cursor.Current = Cursors.WaitCursor
         LoadSettings()
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
-            Dim nDBElement As Database.DBElement = Master.DB.Load_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), False, False, False)
+            Dim nDBElement As Database.DBElement = Master.DB.Load_TVShow(CLng(sRow.Cells("idShow").Value), False, False, False)
             Dim strTitle As String = nDBElement.MainDetails.Title
             Dim strURL As String = String.Empty
             Dim nWatchItem As AddonSettings.WatchItem = _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = nDBElement.ID)
@@ -146,13 +169,57 @@ Public Class Addon
         SaveSettings()
         Cursor.Current = Cursors.Default
     End Sub
+
     Private Sub cmnuTVShow_RemoveFromWatchlist_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow_RemoveFromWatchlist.Click
+        Cursor.Current = Cursors.WaitCursor
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
-            Dim nWatchedItem As AddonSettings.WatchItem = _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = Convert.ToInt64(sRow.Cells("idShow").Value))
+            For i = _addonsettings.WatchList.Count - 1 To 0 Step -1
+                If _addonsettings.WatchList(i).ID = CLng(sRow.Cells("idShow").Value) Then
+                    _addonsettings.WatchList.RemoveAt(i)
+                End If
+            Next
+        Next
+        SaveSettings()
+        Cursor.Current = Cursors.Default
+    End Sub
+
+    Private Sub cmnuTVShow_SearchNewEpisodes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow_SearchNewEpisodes.Click
+        Cursor.Current = Cursors.WaitCursor
+        Dim nEpisodeList As New List(Of clsAPISerienjunkies.TVShowContainer)
+        For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
+            Dim nWatchedItem As AddonSettings.WatchItem = _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = CLng(sRow.Cells("idShow").Value))
             If nWatchedItem IsNot Nothing Then
-                clsAPISerienjunkies.ParseMainPage(nWatchedItem.URL)
+                nEpisodeList.Add(clsAPISerienjunkies.ParseMainPage(nWatchedItem))
             End If
         Next
+        Cursor.Current = Cursors.Default
+        If nEpisodeList.Count > 0 Then
+            Dim dlgSearchResults As New dlgSearchResults(_addonsettings, nEpisodeList)
+            dlgSearchResults.ShowDialog()
+            _addonsettings.SearchResultsHeight = dlgSearchResults.Height
+            _addonsettings.SearchResultsSplitterDistance = dlgSearchResults.scSearchResults.SplitterDistance
+            _addonsettings.SearchResultsWidth = dlgSearchResults.Width
+            _addonsettings.SearchResultsWindowState = dlgSearchResults.WindowState
+            SaveSettings()
+        End If
+    End Sub
+
+    Private Sub mnuMainToolsSerienjunkies_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsSerienjunkies.Click, cmnuTrayToolsSerienjunkies.Click
+        Cursor.Current = Cursors.WaitCursor
+        Dim nEpisodeList As New List(Of clsAPISerienjunkies.TVShowContainer)
+        For Each nWatchedItem As AddonSettings.WatchItem In _addonsettings.WatchList
+            nEpisodeList.Add(clsAPISerienjunkies.ParseMainPage(nWatchedItem))
+        Next
+        Cursor.Current = Cursors.Default
+        If nEpisodeList.Count > 0 Then
+            Dim dlgSearchResults As New dlgSearchResults(_addonsettings, nEpisodeList)
+            dlgSearchResults.ShowDialog()
+            _addonsettings.SearchResultsHeight = dlgSearchResults.Height
+            _addonsettings.SearchResultsSplitterDistance = dlgSearchResults.scSearchResults.SplitterDistance
+            _addonsettings.SearchResultsWidth = dlgSearchResults.Width
+            _addonsettings.SearchResultsWindowState = dlgSearchResults.WindowState
+            SaveSettings()
+        End If
     End Sub
 
     Public Sub Disable()
@@ -171,7 +238,6 @@ Public Class Addon
         'ToolStripItem_TVEpisodes_Remove(cmnuRenamer_Episodes)
 
         'cmnuShows
-        ToolStripItem_TVShows_Remove(cmnuTVShowSeparator)
         ToolStripItem_TVShows_Remove(cmnuTVShow)
     End Sub
 
@@ -205,14 +271,25 @@ Public Class Addon
         'cmnuShows
         cmnuTVShow.Image = New Bitmap(My.Resources.logo)
         cmnuTVShow.Text = "Serienjunkies.org"
+        'Search for new episodes
+        'cmnuTVShow_SearchNewEpisodes.Image = New Bitmap(My.Resources.menuAdd)
+        cmnuTVShow_SearchNewEpisodes.Text = "Search for new Episodes"
+        cmnuTVShow.DropDownItems.Add(cmnuTVShow_SearchNewEpisodes)
+        'Separator
+        cmnuTVShow.DropDownItems.Add(New ToolStripSeparator)
+        'Add to WatchList
         cmnuTVShow_AddToWatchlist.Image = New Bitmap(My.Resources.menuAdd)
         cmnuTVShow_AddToWatchlist.Text = "Add to Watchlist"
+        cmnuTVShow.DropDownItems.Add(cmnuTVShow_AddToWatchlist)
+        'Edit WatchList entry
+        cmnuTVShow_EditWatchlistEntry.Image = New Bitmap(My.Resources.menuEdit)
+        cmnuTVShow.DropDownItems.Add(cmnuTVShow_EditWatchlistEntry)
+        cmnuTVShow_EditWatchlistEntry.Text = "Edit Watchlist Entry"
+        'Remove from WatchList
         cmnuTVShow_RemoveFromWatchlist.Image = New Bitmap(My.Resources.menuRemove)
         cmnuTVShow_RemoveFromWatchlist.Text = "Remove from Watchlist"
-        cmnuTVShow.DropDownItems.Add(cmnuTVShow_AddToWatchlist)
         cmnuTVShow.DropDownItems.Add(cmnuTVShow_RemoveFromWatchlist)
 
-        ToolStripItem_TVShows_Set(cmnuTVShowSeparator)
         ToolStripItem_TVShows_Set(cmnuTVShow)
     End Sub
 
@@ -253,6 +330,10 @@ Public Class Addon
 
     Public Sub LoadSettings()
         _addonsettings = New AddonSettings
+        _addonsettings.SearchResultsHeight = _settings.GetIntegerSetting("SearchResultsHeight", 600)
+        _addonsettings.SearchResultsSplitterDistance = _settings.GetIntegerSetting("SearchResultsSplitterDistance", 200)
+        _addonsettings.SearchResultsWidth = _settings.GetIntegerSetting("SearchResultsWidth", 800)
+        _addonsettings.SearchResultsWindowState = _settings.GetIntegerSetting("SearchResultsWindowState", 0)
 
         Dim nWatchList As List(Of AdvancedSettingsComplexSettingsTableItem) = _settings.GetComplexSetting("WatchList")
         If nWatchList IsNot Nothing Then
@@ -301,6 +382,10 @@ Public Class Addon
 
     Public Sub SaveSettings()
         _settings = New XMLAddonSettings
+        _settings.SetIntegerSetting("SearchResultsHeight", _addonsettings.SearchResultsHeight)
+        _settings.SetIntegerSetting("SearchResultsSplitterDistance", _addonsettings.SearchResultsSplitterDistance)
+        _settings.SetIntegerSetting("SearchResultsWidth", _addonsettings.SearchResultsWidth)
+        _settings.SetIntegerSetting("SearchResultsWindowState", _addonsettings.SearchResultsWindowState)
 
         Dim nWatchList As New List(Of AdvancedSettingsComplexSettingsTableItem)
         For Each nWatchItem As AddonSettings.WatchItem In _addonsettings.WatchList.OrderBy(Function(f) f.Title)
@@ -348,6 +433,10 @@ Public Class Addon
 #Region "Fields"
 
         Public WatchList As New List(Of WatchItem)
+        Public SearchResultsHeight As Integer
+        Public SearchResultsSplitterDistance As Integer
+        Public SearchResultsWidth As Integer
+        Public SearchResultsWindowState As Integer
 
 #End Region 'Fields
 

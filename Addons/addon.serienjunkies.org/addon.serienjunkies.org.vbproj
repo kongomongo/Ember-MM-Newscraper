@@ -104,6 +104,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -125,6 +126,12 @@
       <DependentUpon>dlgAddTVShow.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgAddTVShow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dlgSearchResults.Designer.vb">
+      <DependentUpon>dlgSearchResults.vb</DependentUpon>
+    </Compile>
+    <Compile Include="dlgSearchResults.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmSettingsPanel.Designer.vb">
@@ -152,6 +159,9 @@
   <ItemGroup>
     <EmbeddedResource Include="dlgAddTVShow.resx">
       <DependentUpon>dlgAddTVShow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dlgSearchResults.resx">
+      <DependentUpon>dlgSearchResults.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSettingsPanel.resx">
       <DependentUpon>frmSettingsPanel.vb</DependentUpon>
@@ -192,6 +202,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\menuRemove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\menuEdit.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
