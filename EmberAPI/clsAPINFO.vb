@@ -394,12 +394,7 @@ Public Class NFO
 
         'set ListTitle at the end of merging
         If tDBElement.MainDetails.TitleSpecified Then
-            Dim tTitle As String = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
-            If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.Year) Then
-                tDBElement.ListTitle = String.Format("{0} ({1})", tTitle, tDBElement.MainDetails.Year)
-            Else
-                tDBElement.ListTitle = tTitle
-            End If
+            tDBElement.ListTitle = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
         Else
             tDBElement.ListTitle = StringUtils.FilterTitleFromPath_Movie(tDBElement.FileItem, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
         End If

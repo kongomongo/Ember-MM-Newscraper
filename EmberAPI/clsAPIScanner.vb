@@ -609,12 +609,7 @@ Public Class Scanner
         End If
 
         'ListTitle
-        Dim tTitle As String = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
-        If Master.eSettings.MovieDisplayYear AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.Year) Then
-            tDBElement.ListTitle = String.Format("{0} ({1})", tTitle, tDBElement.MainDetails.Year)
-        Else
-            tDBElement.ListTitle = tTitle
-        End If
+        tDBElement.ListTitle = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
 
         If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainWatchedFile)
@@ -922,12 +917,7 @@ Public Class Scanner
                 End If
 
                 'ListTitle
-                Dim tTitle As String = StringUtils.SortTokens_TV(tDBElement.MainDetails.Title)
-                If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.Status) Then
-                    tDBElement.ListTitle = String.Format("{0} ({1})", tTitle, tDBElement.MainDetails.Status)
-                Else
-                    tDBElement.ListTitle = tTitle
-                End If
+                tDBElement.ListTitle = StringUtils.SortTokens_TV(tDBElement.MainDetails.Title)
 
                 If tDBElement.ListTitleSpecified Then
                     'search local actor thumb for each actor in NFO

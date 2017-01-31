@@ -21,6 +21,7 @@
 Imports EmberAPI
 Imports NLog
 Imports System.IO
+Imports System.Web
 
 Public Class Scraper
 
@@ -37,9 +38,9 @@ Public Class Scraper
 
 #Region "Methods"
 
-    Public Sub New(ByVal Settings As Addon.AddonSettings)
+    Public Sub New(ByVal tSettings As Addon.AddonSettings)
         Try
-            _SpecialSettings = Settings
+            _SpecialSettings = tSettings
 
             If Not Directory.Exists(Path.Combine(Master.TempPath, "Shows")) Then Directory.CreateDirectory(Path.Combine(Master.TempPath, "Shows"))
             _TVDBApi = New TVDB.Web.WebInterface(_SpecialSettings.APIKey, Path.Combine(Master.TempPath, "Shows"))
@@ -67,11 +68,11 @@ Public Class Scraper
     ''' <summary>
     ''' Workaround to fix the theTVDB bug
     ''' </summary>
-    ''' <param name="iTVDB"></param>
+    ''' <param name="intTVDB"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Async Function GetFullSeriesById(ByVal iTVDB As Integer) As Task(Of TVDB.Model.SeriesDetails)
-        Return Await _TVDBApi.GetFullSeriesById(iTVDB, _SpecialSettings.Language, _TVDBMirror)
+    Private Async Function GetFullSeriesById(ByVal intTVDB As Integer) As Task(Of TVDB.Model.SeriesDetails)
+        Return Await _TVDBApi.GetFullSeriesById(intTVDB, _SpecialSettings.Language, _TVDBMirror)
     End Function
 
     Public Function GetImage_TVEpisode(ByRef tEpisodeDetails As TVDB.Model.Episode, ByVal tScrapeModifiers As Structures.ScrapeModifiers) As MediaContainers.SearchResultsContainer
@@ -95,11 +96,11 @@ Public Class Scraper
         Return nImageContainer
     End Function
 
-    Public Function GetInfo_TVEpisode(ByVal iShowTVDB As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
+    Public Function GetInfo_TVEpisode(ByVal intShowTVDB As Integer, ByVal iSeason As Integer, ByVal iEpisode As Integer, ByVal tEpisodeOrdering As Enums.EpisodeOrdering, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
         Dim nAddonResult As New Interfaces.AddonResult
 
         Try
-            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(iShowTVDB))
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(intShowTVDB))
             If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If
@@ -123,18 +124,18 @@ Public Class Scraper
                 Return Nothing
             End If
         Catch ex As Exception
-            logger.Error(String.Concat("TVDB Scraper: Can't get informations for TV Show with ID: ", iShowTVDB))
+            logger.Error(String.Concat("TVDB Scraper: Can't get informations for TV Show with ID: ", intShowTVDB))
             Return Nothing
         End Try
 
         Return nAddonResult
     End Function
 
-    Public Function GetInfo_TVEpisode(ByVal iShowTVDB As Integer, ByVal strAired As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
+    Public Function GetInfo_TVEpisode(ByVal intShowTVDB As Integer, ByVal strAired As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
         Dim nAddonResult As New Interfaces.AddonResult
 
         Try
-            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(iShowTVDB))
+            Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(intShowTVDB))
             If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
                 Return Nothing
             End If
@@ -364,20 +365,13 @@ Public Class Scraper
 
         Return -1
     End Function
-    ''' <summary>
-    ''' 
-    ''' </summary>
-    ''' <param name="iTVDB">TVDB ID</param>
-    ''' <param name="bGetPoster"></param>
-    ''' <param name="tScrapeOptions"></param>
-    ''' <returns></returns>
-    ''' <remarks></remarks>
-    Public Function Scrape_TVShow(ByVal iTVDB As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions, ByVal bGetPoster As Boolean) As Interfaces.AddonResult
-        If iTVDB = -1 Then Return Nothing
+
+    Public Function Scrape_TVShow(ByVal intTVDB As Integer, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions, ByVal bGetPoster As Boolean) As Interfaces.AddonResult
+        If intTVDB = -1 Then Return Nothing
 
         Dim nAddonResult As New Interfaces.AddonResult
 
-        Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(iTVDB))
+        Dim APIResult As Task(Of TVDB.Model.SeriesDetails) = Task.Run(Function() GetFullSeriesById(intTVDB))
         If APIResult Is Nothing OrElse APIResult.Result Is Nothing Then
             Return Nothing
         End If
@@ -609,7 +603,7 @@ Public Class Scraper
         Dim nSearchResults As New List(Of MediaContainers.MainDetails)
 
         Try
-            nResult = _TVDBApi.GetSeriesByName(strTitle, _SpecialSettings.Language, _TVDBMirror).Result
+            nResult = _TVDBApi.GetSeriesByName(HttpUtility.UrlEncode(strTitle), _SpecialSettings.Language, _TVDBMirror).Result
             If nResult Is Nothing Then
                 Return Nothing
             End If

@@ -128,7 +128,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="clsVideobuster.vb" />
+    <Compile Include="clsAPIVideobuster.vb" />
     <Compile Include="addon.videobuster.de.vb" />
   </ItemGroup>
   <ItemGroup>

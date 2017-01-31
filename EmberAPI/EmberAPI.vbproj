@@ -175,6 +175,7 @@
     <Compile Include="clsAPIDiscImage.vb" />
     <Compile Include="clsAPIFFmpeg.vb" />
     <Compile Include="clsAPIFileItem.vb" />
+    <Compile Include="clsAPITemp.vb" />
     <Compile Include="clsAPIWindowsFormsUtils.vb">
       <SubType>Component</SubType>
     </Compile>

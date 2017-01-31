@@ -1900,11 +1900,7 @@ Public Class dlgEditTVShow
         tmpDBElement.MainDetails.Votes = txtVotes.Text.Trim
 
         If Not String.IsNullOrEmpty(txtTitle.Text) Then
-            If Master.eSettings.TVDisplayStatus AndAlso Not String.IsNullOrEmpty(txtStatus.Text.Trim) Then
-                tmpDBElement.ListTitle = String.Format("{0} ({1})", StringUtils.SortTokens_TV(txtTitle.Text.Trim), txtStatus.Text.Trim)
-            Else
-                tmpDBElement.ListTitle = StringUtils.SortTokens_TV(txtTitle.Text.Trim)
-            End If
+            tmpDBElement.ListTitle = StringUtils.SortTokens_TV(txtTitle.Text.Trim)
         End If
 
         tmpDBElement.MainDetails.MPAA = txtMPAA.Text.Trim

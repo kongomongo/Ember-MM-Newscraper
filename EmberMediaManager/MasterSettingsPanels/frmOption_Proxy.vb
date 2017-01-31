@@ -112,7 +112,11 @@ Public Class frmOption_Proxy
 
 #End Region 'Constructors 
 
-#Region "Interface Methodes"
+#Region "Interface Methods"
+
+    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+        Dispose()
+    End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
@@ -147,7 +151,7 @@ Public Class frmOption_Proxy
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
             If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPort.Text) Then
                 .ProxyURI = txtProxyURI.Text
@@ -165,13 +169,9 @@ Public Class frmOption_Proxy
                 .ProxyPort = -1
             End If
         End With
-
-        If bDoDispose Then
-            Dispose()
-        End If
     End Sub
 
-#End Region 'Interface Methodes
+#End Region 'Interface Methods
 
 #Region "Methods"
 

@@ -69,5 +69,14 @@ Namespace My.Resources
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://akas.imdb.com ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlIMDB() As String
+            Get
+                Return ResourceManager.GetString("urlIMDB", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

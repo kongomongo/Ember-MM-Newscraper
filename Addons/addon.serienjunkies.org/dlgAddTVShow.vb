@@ -38,7 +38,7 @@ Public Class dlgAddTVShow
 
 #End Region 'Constructors
 
-#Region "Methodes"
+#Region "Methods"
 
     Private Sub dlgAddTVShow_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         txtURL.Focus()
@@ -49,7 +49,7 @@ Public Class dlgAddTVShow
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        txtURL.Text = clsAPISerienjunkies.SearchTVShow(txtTitle.Text.Trim)
+        txtURL.Text = Parser.SearchTVShow(txtTitle.Text.Trim)
         txtURL.Focus()
     End Sub
 
@@ -73,6 +73,6 @@ Public Class dlgAddTVShow
         btnOpenURL.Enabled = Not String.IsNullOrEmpty(txtURL.Text.Trim)
     End Sub
 
-#End Region 'Methodes
+#End Region 'Method s
 
 End Class

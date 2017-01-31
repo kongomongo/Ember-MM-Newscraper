@@ -185,11 +185,11 @@ Public Class Addon
 
     Private Sub cmnuTVShow_SearchNewEpisodes_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmnuTVShow_SearchNewEpisodes.Click
         Cursor.Current = Cursors.WaitCursor
-        Dim nEpisodeList As New List(Of clsAPISerienjunkies.TVShowContainer)
+        Dim nEpisodeList As New List(Of Parser.TVShowContainer)
         For Each sRow As DataGridViewRow In AddonsManager.Instance.RuntimeObjects.MediaListTVShows.SelectedRows
             Dim nWatchedItem As AddonSettings.WatchItem = _addonsettings.WatchList.FirstOrDefault(Function(f) f.ID = CLng(sRow.Cells("idShow").Value))
             If nWatchedItem IsNot Nothing Then
-                nEpisodeList.Add(clsAPISerienjunkies.ParseMainPage(nWatchedItem))
+                nEpisodeList.Add(Parser.ParseMainPage(nWatchedItem))
             End If
         Next
         Cursor.Current = Cursors.Default
@@ -206,9 +206,9 @@ Public Class Addon
 
     Private Sub mnuMainToolsSerienjunkies_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuMainToolsSerienjunkies.Click, cmnuTrayToolsSerienjunkies.Click
         Cursor.Current = Cursors.WaitCursor
-        Dim nEpisodeList As New List(Of clsAPISerienjunkies.TVShowContainer)
+        Dim nEpisodeList As New List(Of Parser.TVShowContainer)
         For Each nWatchedItem As AddonSettings.WatchItem In _addonsettings.WatchList
-            nEpisodeList.Add(clsAPISerienjunkies.ParseMainPage(nWatchedItem))
+            nEpisodeList.Add(Parser.ParseMainPage(nWatchedItem))
         Next
         Cursor.Current = Cursors.Default
         If nEpisodeList.Count > 0 Then

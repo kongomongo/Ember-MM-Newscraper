@@ -68,13 +68,13 @@ Public Class Scraper
 
             Dim HTML As String
             Dim intHTTP As New HTTP
-            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strIMDB, "/combined"))
+            HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strIMDB, "/combined"))
             intHTTP.Dispose()
             intHTTP = Nothing
 
             Dim PlotHtml As String
             intHTTP = New HTTP
-            PlotHtml = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strIMDB, "/plotsummary"))
+            PlotHtml = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strIMDB, "/plotsummary"))
             intHTTP.Dispose()
             intHTTP = Nothing
 
@@ -433,7 +433,7 @@ mPlot:          'Plot
 
         Dim HTML As String
         Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strIMDBID, "/combined"))
+        HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strIMDBID, "/combined"))
         intHTTP.Dispose()
         intHTTP = Nothing
 
@@ -489,7 +489,7 @@ mPlot:          'Plot
         If FilteredOptions.bEpisodeCredits Then
             Dim strFullCreditsHTML As String
             intHTTP = New HTTP
-            strFullCreditsHTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strIMDBID, "/fullcredits"))
+            strFullCreditsHTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strIMDBID, "/fullcredits"))
             intHTTP.Dispose()
             intHTTP = Nothing
 
@@ -541,7 +541,7 @@ mPlot:          'Plot
         If FilteredOptions.bEpisodePlot Then
             Dim PlotHtml As String
             intHTTP = New HTTP
-            PlotHtml = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strIMDBID, "/plotsummary"))
+            PlotHtml = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strIMDBID, "/plotsummary"))
             intHTTP.Dispose()
             intHTTP = Nothing
 
@@ -590,7 +590,7 @@ mPlot:          'Plot
 
         Dim HTML As String
         Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strTVShowIMDBID, "/episodes?season=", iSeasonNumber))
+        HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strTVShowIMDBID, "/episodes?season=", iSeasonNumber))
         intHTTP.Dispose()
         intHTTP = Nothing
 
@@ -623,7 +623,7 @@ mPlot:          'Plot
         If ScrapeModifiers.withEpisodes Then
             Dim HTML As String
             Dim intHTTP As New HTTP
-            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strTVShowIMDBID, "/episodes?season=", iSeasonNumber))
+            HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strTVShowIMDBID, "/episodes?season=", iSeasonNumber))
             intHTTP.Dispose()
             intHTTP = Nothing
 
@@ -664,7 +664,7 @@ mPlot:          'Plot
 
             Dim HTML As String
             Dim intHTTP As New HTTP
-            HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/combined"))
+            HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strID, "/combined"))
             intHTTP.Dispose()
             intHTTP = Nothing
 
@@ -784,7 +784,7 @@ mPlot:          'Plot
             If FilteredOptions.bMainPlot Then
                 Dim PlotHtml As String
                 intHTTP = New HTTP
-                PlotHtml = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/plotsummary"))
+                PlotHtml = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strID, "/plotsummary"))
                 intHTTP.Dispose()
                 intHTTP = Nothing
 
@@ -956,7 +956,7 @@ mPlot:          'Plot
 
         Dim HTML As String
         Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/title/", strID, "/releaseinfo#akas"))
+        HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/title/", strID, "/releaseinfo#akas"))
         intHTTP.Dispose()
         intHTTP = Nothing
 
@@ -1005,24 +1005,24 @@ mPlot:          'Plot
         Dim rUri As String = String.Empty
 
         Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
-        HTMLe = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
+        HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft"))
+        HTMLe = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&exact=true&ref_=fn_tt_ex"))
         rUri = intHTTP.ResponseUri
 
         If _AddonSettings.SearchTvTitles Then
-            HTMLt = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
+            HTMLt = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=tv_movie"))
         End If
         If _AddonSettings.SearchVideoTitles Then
-            HTMLv = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=video"))
+            HTMLv = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=video"))
         End If
         If _AddonSettings.SearchShortTitles Then
-            HTMLs = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=short"))
+            HTMLs = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/search/title?title=", HttpUtility.UrlEncode(sMovie), "&title_type=short"))
         End If
         If _AddonSettings.SearchPartialTitles Then
-            HTMLm = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
+            HTMLm = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_ft"))
         End If
         If _AddonSettings.SearchPopularTitles Then
-            HTMLp = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
+            HTMLp = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/find?q=", HttpUtility.UrlEncode(sMovie), "&s=tt&ttype=ft&ref_=fn_tt_pop"))
         End If
         intHTTP.Dispose()
         intHTTP = Nothing
@@ -1150,7 +1150,7 @@ mPlot:          'Plot
         Dim rUri As String = String.Empty
 
         Dim intHTTP As New HTTP
-        HTML = intHTTP.DownloadData(String.Concat("http://", Master.eSettings.MovieIMDBURL, "/search/title?title=", HttpUtility.UrlEncode(sShow), "&title_type=tv_series"))
+        HTML = intHTTP.DownloadData(String.Concat(My.Resources.urlIMDB, "/search/title?title=", HttpUtility.UrlEncode(sShow), "&title_type=tv_series"))
         rUri = intHTTP.ResponseUri
 
         intHTTP.Dispose()

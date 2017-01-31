@@ -66,7 +66,7 @@ Public Class frmSettingsPanel
 #Region "Methods"
 
     Private Sub btnGetAllStations_Click(sender As Object, e As EventArgs) Handles btnGetAllStations.Click
-        Dim nResult = clsFernsehserienDE.GetAllStations
+        Dim nResult = clsAPIFernsehserien.GetAllStations
         If nResult.Count > 0 Then
             _stations = nResult
         Else

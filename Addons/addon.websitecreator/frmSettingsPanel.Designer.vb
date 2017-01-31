@@ -126,6 +126,7 @@ Partial Class frmSettingsPanel
         Me.gbGeneralOpts.AutoSize = True
         Me.gbGeneralOpts.Controls.Add(Me.tblGeneralOpts)
         Me.gbGeneralOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbGeneralOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbGeneralOpts.Name = "gbGeneralOpts"
         Me.gbGeneralOpts.Size = New System.Drawing.Size(338, 72)
@@ -172,6 +173,7 @@ Partial Class frmSettingsPanel
         '
         Me.lblGeneralPath.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblGeneralPath.AutoSize = True
+        Me.lblGeneralPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblGeneralPath.Location = New System.Drawing.Point(3, 7)
         Me.lblGeneralPath.Name = "lblGeneralPath"
         Me.lblGeneralPath.Size = New System.Drawing.Size(66, 13)
@@ -182,6 +184,7 @@ Partial Class frmSettingsPanel
         'btnExportPath
         '
         Me.btnExportPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnExportPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnExportPath.Location = New System.Drawing.Point(308, 3)
         Me.btnExportPath.Margin = New System.Windows.Forms.Padding(0)
         Me.btnExportPath.Name = "btnExportPath"
@@ -194,6 +197,7 @@ Partial Class frmSettingsPanel
         'txtExportPath
         '
         Me.txtExportPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtExportPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtExportPath.Location = New System.Drawing.Point(75, 3)
         Me.txtExportPath.Name = "txtExportPath"
         Me.txtExportPath.Size = New System.Drawing.Size(230, 22)

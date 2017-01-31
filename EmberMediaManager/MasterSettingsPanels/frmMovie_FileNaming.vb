@@ -27,7 +27,7 @@ Public Class frmMovie_FileNaming
 #Region "Fields"
 
     Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
-    Dim _intImageIndex As Integer = 5
+    Dim _intImageIndex As Integer = 3
     Dim _intOrder As Integer = 300
     Dim _strName As String = "Movie_FileNaming"
     Dim _strTitle As String = Master.eLang.GetString(471, "File Naming")
@@ -53,7 +53,7 @@ Public Class frmMovie_FileNaming
 
     Public ReadOnly Property Order() As Integer Implements Interfaces.MasterSettingsPanel.Order
         Get
-            Return 700
+            Return _intOrder
         End Get
     End Property
 
@@ -113,6 +113,10 @@ Public Class frmMovie_FileNaming
 #End Region 'Constructors
 
 #Region "Interface Methodes"
+
+    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+        Dispose()
+    End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
@@ -277,7 +281,7 @@ Public Class frmMovie_FileNaming
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
             .MovieBackdropsPath = txtMovieSourcesBackdropsFolderPath.Text
             If Not String.IsNullOrEmpty(txtMovieSourcesBackdropsFolderPath.Text) Then

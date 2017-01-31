@@ -28,7 +28,7 @@ Public Class dlgSearchResults
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Private _WatchedList As List(Of clsAPISerienjunkies.TVShowContainer)
+    Private _WatchedList As List(Of Parser.TVShowContainer)
     Private _bsTVShows As New BindingSource
     Private _bsSearchResults As New BindingSource
     Private _bRunOnce As Boolean = True
@@ -39,7 +39,7 @@ Public Class dlgSearchResults
 
 #Region "Constructors"
 
-    Public Sub New(ByVal tAddonSettings As Addon.AddonSettings, ByVal tWatchedList As List(Of clsAPISerienjunkies.TVShowContainer))
+    Public Sub New(ByVal tAddonSettings As Addon.AddonSettings, ByVal tWatchedList As List(Of Parser.TVShowContainer))
         ' This call is required by the designer.
         InitializeComponent()
         scSearchResults.SplitterDistance = tAddonSettings.SearchResultsSplitterDistance
@@ -109,7 +109,7 @@ Public Class dlgSearchResults
         dtTVShows.Columns.Add("ID", GetType(Long))
         dtTVShows.Columns.Add("Title", GetType(String))
 
-        For Each nTVShow As clsAPISerienjunkies.TVShowContainer In _WatchedList
+        For Each nTVShow As Parser.TVShowContainer In _WatchedList
             If Not nTVShow.ID = -1 Then
                 dtTVShows.Rows.Add(nTVShow.ID, nTVShow.Title)
             End If
@@ -131,7 +131,7 @@ Public Class dlgSearchResults
         dtSearchResults.Columns.Add("EP Description", GetType(String))
         dtSearchResults.Columns.Add("Mirrors", GetType(String))
 
-        For Each nTVShow As clsAPISerienjunkies.TVShowContainer In _WatchedList.Where(Function(f) f.ID = lngID)
+        For Each nTVShow As Parser.TVShowContainer In _WatchedList.Where(Function(f) f.ID = lngID)
             Dim intID As Integer = 0
             For Each nEpisode In nTVShow.EpisodeList
                 Dim strMirrors As String = CreateLinks(nEpisode.MirrorList)
@@ -159,7 +159,7 @@ Public Class dlgSearchResults
         Return dtSearchResults
     End Function
 
-    Private Function CreateLinks(ByVal tLinkList As List(Of clsAPISerienjunkies.Mirror)) As String
+    Private Function CreateLinks(ByVal tLinkList As List(Of Parser.Mirror)) As String
         Dim strHosters As String = String.Empty
 
         Dim lstHoster As New List(Of String)

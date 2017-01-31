@@ -26,8 +26,8 @@ Public Class frmMovie_Trailer
 #Region "Fields"
 
     Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
-    Dim _intImageIndex As Integer = 2
-    Dim _intOrder As Integer = 700
+    Dim _intImageIndex As Integer = 8
+    Dim _intOrder As Integer = 600
     Dim _strName As String = "Movie_Trailer"
     Dim _strTitle As String = Master.eLang.GetString(1195, "Trailers")
 
@@ -111,7 +111,11 @@ Public Class frmMovie_Trailer
 
 #End Region 'Constructors
 
-#Region "Interface Methodes"
+#Region "Interface Methods"
+
+    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+        Dispose()
+    End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
@@ -138,20 +142,16 @@ Public Class frmMovie_Trailer
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
             .MovieTrailerDefaultSearch = txtMovieTrailerDefaultSearch.Text
             .MovieTrailerKeepExisting = chkMovieTrailerKeepExisting.Checked
             .MovieTrailerMinVideoQual = CType(cbMovieTrailerMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
             .MovieTrailerPrefVideoQual = CType(cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
         End With
-
-        If bDoDispose Then
-            Dispose()
-        End If
     End Sub
 
-#End Region 'Interface Methodes
+#End Region 'Interface Methods
 
 #Region "Methods"
 

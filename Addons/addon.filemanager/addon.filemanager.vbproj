@@ -151,7 +151,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsTeraCopy.vb" />
+    <Compile Include="clsAPITeraCopy.vb" />
     <Compile Include="dlgCopyFiles.Designer.vb">
       <DependentUpon>dlgCopyFiles.vb</DependentUpon>
     </Compile>

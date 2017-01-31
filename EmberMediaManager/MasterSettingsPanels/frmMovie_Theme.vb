@@ -27,7 +27,7 @@ Public Class frmMovie_Theme
 
     Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
     Dim _intImageIndex As Integer = 11
-    Dim _intOrder As Integer = 800
+    Dim _intOrder As Integer = 700
     Dim _strName As String = "Movie_Theme"
     Dim _strTitle As String = Master.eLang.GetString(1285, "Themes")
 
@@ -111,7 +111,11 @@ Public Class frmMovie_Theme
 
 #End Region 'Constructors
 
-#Region "Interface Methodes"
+#Region "Interface Methods"
+
+    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+        Dispose()
+    End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
@@ -135,17 +139,13 @@ Public Class frmMovie_Theme
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
             .MovieThemeKeepExisting = chkMovieThemeKeepExisting.Checked
         End With
-
-        If bDoDispose Then
-            Dispose()
-        End If
     End Sub
 
-#End Region 'Interface Methodes
+#End Region 'Interface Methods
 
 #Region "Methods"
 

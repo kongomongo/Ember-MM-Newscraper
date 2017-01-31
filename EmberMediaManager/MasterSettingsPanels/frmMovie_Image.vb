@@ -30,7 +30,7 @@ Public Class frmMovie_Image
 
     Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movie
     Dim _intImageIndex As Integer = 6
-    Dim _intOrder As Integer = 600
+    Dim _intOrder As Integer = 500
     Dim _strName As String = "Movie_Image"
     Dim _strTitle As String = Master.eLang.GetString(497, "Images")
 
@@ -114,7 +114,11 @@ Public Class frmMovie_Image
 
 #End Region 'Constructors
 
-#Region "Interface Methodes"
+#Region "Interface Methods"
+
+    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+        Dispose()
+    End Sub
 
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
@@ -231,7 +235,7 @@ Public Class frmMovie_Image
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
             .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
             .MovieBannerHeight = If(Not String.IsNullOrEmpty(txtMovieBannerHeight.Text), Convert.ToInt32(txtMovieBannerHeight.Text), 0)
@@ -295,13 +299,9 @@ Public Class frmMovie_Image
             .MoviePosterResize = chkMoviePosterResize.Checked
             .MoviePosterWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
         End With
-
-        If bDoDispose Then
-            Dispose()
-        End If
     End Sub
 
-#End Region 'Interface Methodes
+#End Region 'Interface Methods
 
 #Region "Methods"
 

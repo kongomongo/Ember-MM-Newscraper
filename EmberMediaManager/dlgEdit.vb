@@ -2042,7 +2042,7 @@ Public Class dlgEdit
 
         _tmpDBElement.IsMark = chkMarked.Checked
 
-        _tmpDBElement.ListTitle = StringUtils.ListTitle_Movie(txtTitle.Text, txtYear.Text)
+        _tmpDBElement.ListTitle = StringUtils.SortTokens_Movie(txtTitle.Text)
         _tmpDBElement.MainDetails.Certifications = lbCertifications.Items.Cast(Of Object).Select(Function(f) lbCertifications.GetItemText(f)).ToList
         _tmpDBElement.MainDetails.Countries = lbCountries.Items.Cast(Of Object).Select(Function(f) lbCountries.GetItemText(f)).ToList
         _tmpDBElement.MainDetails.Credits = lbCreditsCreators.Items.Cast(Of Object).Select(Function(f) lbCreditsCreators.GetItemText(f)).ToList

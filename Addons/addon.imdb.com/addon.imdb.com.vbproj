@@ -136,7 +136,7 @@
     <Import Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsIMDB.vb" />
+    <Compile Include="clsAPIIMDB.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

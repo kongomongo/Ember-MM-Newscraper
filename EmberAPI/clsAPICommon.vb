@@ -653,6 +653,7 @@ Public Class Enums
         MovieSetSortTokens = 15
         TVSortTokens = 16
     End Enum
+
     Public Enum DiscType As Integer
         BluRay = 0
         DVD = 1
@@ -930,33 +931,33 @@ Public Class Enums
     End Enum
 
     Public Enum SettingsPanelType As Integer
-        Core = 0
-        Addon = 1
-        Movie = 2
-        MovieData = 3
-        MovieFileSource = 4
-        MovieGeneral = 5
-        MovieImage = 6
-        MovieSearch = 7
-        MovieSet = 8
-        MovieSetData = 9
-        MovieSetFileSource = 10
-        MovieSetGeneral = 11
-        MovieSetImage = 12
-        MovieSetSearch = 13
-        MovieTheme = 14
-        MovieTrailer = 15
-        Options = 16
-        OptionsConnection = 17
-        OptionsFileSystem = 18
-        OptionsGeneral = 19
-        TV = 20
-        TVData = 21
-        TVFileSource = 22
-        TVGeneral = 23
-        TVImage = 24
-        TVSearch = 25
-        TVTheme = 26
+        Core
+        Addon
+        Movie
+        MovieData
+        MovieFileNaming
+        MovieGUI
+        MovieImage
+        MovieSource
+        MovieSet
+        MovieSetData
+        MovieSetFileNaming
+        MovieSetSource
+        MovieSetGUI
+        MovieSetImage
+        MovieTheme
+        MovieTrailer
+        Options
+        OptionsConnection
+        OptionsFileSystem
+        OptionsGeneral
+        TV
+        TVData
+        TVFileNaming
+        TVSource
+        TVGUI
+        TVImage
+        TVTheme
     End Enum
 
     Public Enum SortMethod_MovieSet As Integer

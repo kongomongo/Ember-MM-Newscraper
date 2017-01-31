@@ -23,7 +23,7 @@ Imports NLog
 Imports System.Text.RegularExpressions
 Imports System.Web
 
-Public Class clsFernsehserienDE
+Public Class clsAPIFernsehserien
 
 #Region "Fields"
 

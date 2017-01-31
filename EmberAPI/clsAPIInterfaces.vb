@@ -80,7 +80,9 @@ Public Class Interfaces
 
         Function InjectSettingsPanel() As Containers.SettingsPanel
 
-        Sub SaveSetup(ByVal bDoDispose As Boolean)
+        Sub DoDispose()
+
+        Sub SaveSetup()
 
 #End Region 'Methods
 

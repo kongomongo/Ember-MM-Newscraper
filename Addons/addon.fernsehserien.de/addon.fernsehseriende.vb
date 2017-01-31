@@ -151,7 +151,7 @@ Public Class Addon
 
         LoadSettings()
 
-        Dim nScraper As New clsFernsehserienDE(_addonsettings)
+        Dim nScraper As New clsAPIFernsehserien(_addonsettings)
 
         Select Case eAddonEventType
             Case Enums.AddonEventType.BeforeScraping_TVEpisode

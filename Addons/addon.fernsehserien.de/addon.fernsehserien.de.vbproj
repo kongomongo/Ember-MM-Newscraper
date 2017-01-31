@@ -98,7 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="addon.fernsehseriende.vb" />
-    <Compile Include="clsFernsehserienDE.vb" />
+    <Compile Include="clsAPIFernsehserien.vb" />
     <Compile Include="frmSettingsPanel.Designer.vb">
       <DependentUpon>frmSettingsPanel.vb</DependentUpon>
     </Compile>

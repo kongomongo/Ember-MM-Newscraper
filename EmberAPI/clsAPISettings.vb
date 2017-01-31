@@ -125,10 +125,10 @@ Public Class Settings
     Private _movieclearlogoprefsizeonly As Boolean
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
+    Private _moviedatascrapersettings As List(Of ScraperSettings)
     Private _moviediscartkeepexisting As Boolean
     Private _moviediscartprefsize As Enums.MovieDiscArtSize
     Private _moviediscartprefsizeonly As Boolean
-    Private _moviedisplayyear As Boolean
     Private _movieextrafanartsheight As Integer
     Private _movieextrafanartskeepexisting As Boolean
     Private _movieextrafanartslimit As Integer
@@ -181,7 +181,6 @@ Public Class Settings
     Private _movieimagesgetenglishimages As Boolean
     Private _movieimagesmedialanguageonly As Boolean
     Private _movieimagesnotsaveurltonfo As Boolean
-    Private _movieimdburl As String
     Private _movielandscapekeepexisting As Boolean
     Private _movielandscapeprefsize As Enums.MovieLandscapeSize
     Private _movielandscapeprefsizeonly As Boolean
@@ -385,7 +384,6 @@ Public Class Settings
     Private _tvallseasonsposterwidth As Integer
     Private _tvcleandb As Boolean
     Private _tvdisplaymissingepisodes As Boolean
-    Private _tvdisplaystatus As Boolean
     Private _tvepisodeactorthumbskeepexisting As Boolean
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartkeepexisting As Boolean
@@ -1140,15 +1138,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieIMDBURL() As String
-        Get
-            Return _movieimdburl
-        End Get
-        Set(ByVal value As String)
-            _movieimdburl = value
-        End Set
-    End Property
-
     Public Property MovieBackdropsPath() As String
         Get
             Return _moviebackdropspath
@@ -1374,15 +1363,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVDisplayStatus() As Boolean
-        Get
-            Return _tvdisplaystatus
-        End Get
-        Set(ByVal value As Boolean)
-            _tvdisplaystatus = value
-        End Set
-    End Property
-
     Public Property MovieImagesCacheEnabled() As Boolean
         Get
             Return _movieimagescacheenabled
@@ -1434,15 +1414,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _tvimagesdisplayimageselect = value
-        End Set
-    End Property
-
-    Public Property MovieDisplayYear() As Boolean
-        Get
-            Return _moviedisplayyear
-        End Get
-        Set(ByVal value As Boolean)
-            _moviedisplayyear = value
         End Set
     End Property
 
@@ -3590,6 +3561,15 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _movieclearlogoprefsizeonly = value
+        End Set
+    End Property
+
+    Public Property MovieDataScraperSettings() As List(Of ScraperSettings)
+        Get
+            Return _moviedatascrapersettings
+        End Get
+        Set(ByVal value As List(Of ScraperSettings))
+            _moviedatascrapersettings = value
         End Set
     End Property
 
@@ -8233,10 +8213,10 @@ Public Class Settings
         MovieClearLogoPrefSizeOnly = False
         MovieClickScrape = False
         MovieClickScrapeAsk = False
+        MovieDataScraperSettings = New List(Of ScraperSettings)
         MovieDiscArtKeepExisting = False
         MovieDiscArtPrefSize = Enums.MovieDiscArtSize.Any
         MovieDiscArtPrefSizeOnly = False
-        MovieDisplayYear = False
         MovieExtrafanartsHeight = 0
         MovieExtrafanartsLimit = 4
         MovieExtrafanartsKeepExisting = False
@@ -8289,7 +8269,6 @@ Public Class Settings
         MovieImagesGetEnglishImages = False
         MovieImagesMediaLanguageOnly = False
         MovieImagesNotSaveURLToNfo = False
-        MovieIMDBURL = String.Empty
         MovieLandscapeKeepExisting = False
         MovieLandscapePrefSize = Enums.MovieLandscapeSize.Any
         MovieLandscapePrefSizeOnly = False
@@ -8494,7 +8473,6 @@ Public Class Settings
         TVAllSeasonsPosterWidth = 0
         TVCleanDB = False
         TVDisplayMissingEpisodes = True
-        TVDisplayStatus = False
         TVEpisodeActorThumbsExtExpert = ".jpg"
         TVEpisodeActorThumbsKeepExisting = False
         TVEpisodeFanartHeight = 0
@@ -9666,6 +9644,152 @@ Public Class Settings
             _defaultSeason = -1
             _id = -1
             _regexp = String.Empty
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ScraperSettings
+
+#Region "Fields"
+
+        Private _name As String
+        Private _scraperitems As New List(Of ScraperItem)
+        Private _type As Enums.SettingsPanelType
+
+#End Region'Fields
+
+#Region "Properties"
+
+        Public Property Name() As String
+            Get
+                Return _name
+            End Get
+            Set(ByVal value As String)
+                _name = value
+            End Set
+        End Property
+
+        Public Property ScraperItems() As List(Of ScraperItem)
+            Get
+                Return _scraperitems
+            End Get
+            Set(ByVal value As List(Of ScraperItem))
+                _scraperitems = value
+            End Set
+        End Property
+
+        Public Property Type() As Enums.SettingsPanelType
+            Get
+                Return _type
+            End Get
+            Set(ByVal value As Enums.SettingsPanelType)
+                _type = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New(ByVal strName As String, ByVal eType As Enums.SettingsPanelType)
+            Clear()
+            _name = strName
+            _type = eType
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _name = String.Empty
+            _scraperitems.Clear()
+            _type = Nothing
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ScraperItem
+
+#Region "Fields"
+
+        Private _assemblyname As String
+        Private _capatibility As Enums.ScraperCapatibility
+        Private _enabled As Boolean
+        Private _order As Integer
+
+#End Region'Fields
+
+#Region "Properties"
+
+        Public Property AssemblyName() As String
+            Get
+                Return _assemblyname
+            End Get
+            Set(ByVal value As String)
+                _assemblyname = value
+            End Set
+        End Property
+
+        Public Property Capatibility() As Enums.ScraperCapatibility
+            Get
+                Return _capatibility
+            End Get
+            Set(ByVal value As Enums.ScraperCapatibility)
+                _capatibility = value
+            End Set
+        End Property
+
+        Public Property Enabled() As Boolean
+            Get
+                Return _enabled
+            End Get
+            Set(ByVal value As Boolean)
+                _enabled = value
+            End Set
+        End Property
+
+        Public Property Order() As Integer
+            Get
+                Return _order
+            End Get
+            Set(ByVal value As Integer)
+                _order = value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New(ByVal strAssemblyName As String,
+                       ByVal eCapatibility As Enums.ScraperCapatibility,
+                       ByVal bEnabled As Boolean,
+                       ByVal intOrder As Integer)
+            Clear()
+            _assemblyname = strAssemblyName
+            _capatibility = eCapatibility
+            _enabled = bEnabled
+            If intOrder = -1 Then
+                _order = 999
+            Else
+                _order = intOrder
+            End If
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub Clear()
+            _assemblyname = String.Empty
+            _capatibility = Nothing
+            _enabled = False
+            _order = 999
         End Sub
 
 #End Region 'Methods

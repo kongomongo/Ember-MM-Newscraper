@@ -107,6 +107,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TVDB, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\TheTVDBApi.1.2.0.0\lib\TVDB.dll</HintPath>
@@ -143,7 +144,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="clsTVDB.vb" />
+    <Compile Include="clsAPITVDB.vb" />
     <Compile Include="addon.thetvdb.com.vb" />
   </ItemGroup>
   <ItemGroup>
