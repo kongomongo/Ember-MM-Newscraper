@@ -94,6 +94,10 @@ Public Class Addon
 
 #Region "Methods"
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        Return
+    End Sub
+
     Private Sub Handle_NeedsRestart()
         RaiseEvent NeedsRestart()
     End Sub
@@ -149,7 +153,7 @@ Public Class Addon
         Return nModuleResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Return
     End Sub
 

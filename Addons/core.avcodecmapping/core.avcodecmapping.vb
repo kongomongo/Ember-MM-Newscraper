@@ -87,8 +87,9 @@ Public Class Core
 
 #Region "Methods"
 
-    Private Sub Handle_NeedsRestart()
-        RaiseEvent NeedsRestart()
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        _settingspanel.Dispose()
     End Sub
 
     Private Sub Handle_SettingsChanged()
@@ -119,12 +120,8 @@ Public Class Core
         Return New Interfaces.AddonResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         If Not _settingspanel Is Nothing Then _settingspanel.SaveChanges()
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
 #End Region 'Methods

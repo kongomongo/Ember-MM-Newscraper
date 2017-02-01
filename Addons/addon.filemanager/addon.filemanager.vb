@@ -120,6 +120,12 @@ Public Class Addon
 
 #Region "Methods"
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Private Sub bwCopyDirectory_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwCopyDirectory.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         If Not Args.src = Args.dst Then
@@ -477,7 +483,7 @@ Public Class Addon
         _settings.Save()
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
         _addonsettings.TeraCopy = _settingspanel.chkTeraCopyEnable.Checked
         _addonsettings.TeraCopyPath = _settingspanel.txtTeraCopyPath.Text
@@ -505,11 +511,6 @@ Public Class Addon
         PopulateFolders(cmnuMediaMove_Shows, Enums.ContentType.TVShow)
         PopulateFolders(cmnuMediaCopy_Movies, Enums.ContentType.Movie)
         PopulateFolders(cmnuMediaCopy_Shows, Enums.ContentType.TVShow)
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
     Public Sub SetToolsStripItemVisibility(control As ToolStripItem, value As Boolean)

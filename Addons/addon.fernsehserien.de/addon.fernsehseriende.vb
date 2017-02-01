@@ -94,6 +94,13 @@ Public Class Addon
 
 #Region "Methods"
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Private Sub Handle_NeedsRestart()
         RaiseEvent NeedsRestart()
     End Sub
@@ -183,19 +190,13 @@ Public Class Addon
         _settings.Save()
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
         _addonsettings.RegexFilename = _settingspanel.txtRegexFilename.Text
         _addonsettings.Stations = _settingspanel.Stations
         _addonsettings.TimeOffset = If(Integer.TryParse(_settingspanel.txtTimeOffset.Text.Trim, 0), CInt(_settingspanel.txtTimeOffset.Text.Trim), 5)
 
         SaveSettings()
-        If bDoDispose Then
-            RemoveHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
 #End Region 'Methods

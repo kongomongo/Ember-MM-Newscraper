@@ -241,6 +241,12 @@ Public Class Addon
         ToolStripItem_TVShows_Remove(cmnuTVShow)
     End Sub
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Public Sub Enable()
         Dim tsi As New ToolStripMenuItem
 
@@ -358,7 +364,7 @@ Public Class Addon
         Return New Interfaces.AddonResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
 
         _addonsettings.WatchList.Clear()
@@ -373,11 +379,6 @@ Public Class Addon
         Next
 
         SaveSettings()
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
     Public Sub SaveSettings()

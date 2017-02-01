@@ -396,6 +396,7 @@ Public Class dlgSettings
             RemoveHandler s.Addon.NeedsRestart, AddressOf Handle_NeedsRestart
             RemoveHandler s.Addon.SettingsChanged, AddressOf Handle_SettingsChanged
             RemoveHandler s.Addon.StateChanged, AddressOf Handle_StateChanged
+            s.Addon.DoDispose()
         Next
     End Sub
 
@@ -3913,7 +3914,7 @@ Public Class dlgSettings
         'AddonSettingsPanels
         For Each s As AddonsManager.AddonClass In AddonsManager.Instance.Addons
             Try
-                s.Addon.SaveSetup(Not bIsApply)
+                s.Addon.SaveSetup()
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try

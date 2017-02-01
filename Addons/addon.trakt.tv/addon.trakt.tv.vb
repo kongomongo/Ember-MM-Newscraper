@@ -151,6 +151,12 @@ Public Class Addon
         ToolStripItem_Remove(tsi, cmnuTrayToolsTrakt)
     End Sub
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Public Sub Enable()
         _TraktAPI = New clsAPITrakt(_AddonSettings)
         If _TraktAPI.NewTokenCreated Then
@@ -313,7 +319,7 @@ Public Class Addon
         Return New Interfaces.AddonResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
         _AddonSettings.GetProgress_TVShow = _settingspanel.chkGetShowProgress.Checked
         _AddonSettings.GetWatchedState = _settingspanel.chkGetWatchedState.Checked
@@ -325,12 +331,6 @@ Public Class Addon
         _AddonSettings.GetWatchedStateScraperSingle_TVEpisode = _settingspanel.chkGetWatchedStateScraperSingle_TVEpisode.Checked
 
         SaveSettings()
-
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
     Public Sub SaveSettings()

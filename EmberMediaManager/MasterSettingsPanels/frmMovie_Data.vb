@@ -238,7 +238,29 @@ Public Class frmMovie_Data
             MovieMeta.AddRange(.MovieMetadataPerFileType)
             LoadMovieMetadata()
 
+            clsAPITemp.ConvertToScraperGridView(dgvActors)
+            clsAPITemp.ConvertToScraperGridView(dgvCertifications)
+            clsAPITemp.ConvertToScraperGridView(dgvCollectionID)
+            clsAPITemp.ConvertToScraperGridView(dgvCollections)
+            clsAPITemp.ConvertToScraperGridView(dgvCoutries)
+            clsAPITemp.ConvertToScraperGridView(dgvCredits)
+            clsAPITemp.ConvertToScraperGridView(dgvDirectors)
+            clsAPITemp.ConvertToScraperGridView(dgvGenres)
+            clsAPITemp.ConvertToScraperGridView(dgvMPAA)
+            clsAPITemp.ConvertToScraperGridView(dgvOriginalTitle)
+            clsAPITemp.ConvertToScraperGridView(dgvOutline)
+            clsAPITemp.ConvertToScraperGridView(dgvPlot)
+            clsAPITemp.ConvertToScraperGridView(dgvRating)
+            clsAPITemp.ConvertToScraperGridView(dgvReleaseDate)
+            clsAPITemp.ConvertToScraperGridView(dgvRuntime)
+            clsAPITemp.ConvertToScraperGridView(dgvStudios)
+            clsAPITemp.ConvertToScraperGridView(dgvTagline)
+            clsAPITemp.ConvertToScraperGridView(dgvTags)
             clsAPITemp.ConvertToScraperGridView(dgvTitle)
+            clsAPITemp.ConvertToScraperGridView(dgvTop250)
+            clsAPITemp.ConvertToScraperGridView(dgvTrailer)
+            clsAPITemp.ConvertToScraperGridView(dgvUserRating)
+            clsAPITemp.ConvertToScraperGridView(dgvYear)
         End With
     End Sub
 
@@ -347,7 +369,7 @@ Public Class frmMovie_Data
 
 #Region "Methods"
 
-    Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
             Dim fi As New MediaContainers.Fileinfo
             For Each x As Settings.MetadataPerType In MovieMeta
@@ -369,7 +391,7 @@ Public Class frmMovie_Data
         End Using
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnMovieScraperDefFIExtAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtAdd.Click
         If Not txtMovieScraperDefFIExt.Text.StartsWith(".") Then txtMovieScraperDefFIExt.Text = String.Concat(".", txtMovieScraperDefFIExt.Text)
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
             Dim fi As New MediaContainers.Fileinfo
@@ -388,11 +410,11 @@ Public Class frmMovie_Data
         End Using
     End Sub
 
-    Private Sub btnMovieScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnMovieScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtRemove.Click
         RemoveMovieMetaData()
     End Sub
 
-    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperStudio.CheckedChanged
         EnableApplyButton()
         chkMovieScraperStudioWithImg.Enabled = chkMovieScraperStudio.Checked
         txtMovieScraperStudioLimit.Enabled = chkMovieScraperStudio.Checked
@@ -401,7 +423,7 @@ Public Class frmMovie_Data
             txtMovieScraperStudioLimit.Text = "0"
         End If
     End Sub
-    Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperCast_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCast.CheckedChanged
         EnableApplyButton()
 
         chkMovieScraperCastWithImg.Enabled = chkMovieScraperCast.Checked
@@ -413,7 +435,7 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub chkMovieScraperCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCert.CheckedChanged
         EnableApplyButton()
 
         If Not chkMovieScraperCert.Checked Then
@@ -434,7 +456,7 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperCertForMPAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCertForMPAA.CheckedChanged
         EnableApplyButton()
 
         If Not chkMovieScraperCertForMPAA.Checked Then
@@ -446,7 +468,7 @@ Public Class frmMovie_Data
     End Sub
 
 
-    Private Sub chkMovieScraperGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperGenre_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperGenre.CheckedChanged
         EnableApplyButton()
 
         txtMovieScraperGenreLimit.Enabled = chkMovieScraperGenre.Checked
@@ -454,7 +476,7 @@ Public Class frmMovie_Data
         If Not chkMovieScraperGenre.Checked Then txtMovieScraperGenreLimit.Text = "0"
     End Sub
 
-    Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperPlotForOutline_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperPlotForOutline.CheckedChanged
         EnableApplyButton()
 
         txtMovieScraperOutlineLimit.Enabled = chkMovieScraperPlotForOutline.Checked
@@ -466,7 +488,7 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperPlot_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperPlot.CheckedChanged
         EnableApplyButton()
 
         chkMovieScraperPlotForOutline.Enabled = chkMovieScraperPlot.Checked
@@ -476,7 +498,7 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperCollectionID_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperCollectionID.CheckedChanged
         EnableApplyButton()
 
         chkMovieScraperCollectionsAuto.Enabled = chkMovieScraperCollectionID.Checked
@@ -485,7 +507,7 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperUseMDDuration.CheckedChanged
         txtMovieScraperDurationRuntimeFormat.Enabled = chkMovieScraperUseMDDuration.Checked
         EnableApplyButton()
     End Sub
@@ -502,7 +524,7 @@ Public Class frmMovie_Data
         Next
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
                 Dim fi As New MediaContainers.Fileinfo
@@ -526,11 +548,11 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub lstMovieScraperDefFIExt_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieScraperDefFIExt.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieMetaData()
     End Sub
 
-    Private Sub lstMovieScraperDefFIExt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub lstMovieScraperDefFIExt_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.SelectedIndexChanged
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             btnMovieScraperDefFIExtEdit.Enabled = True
             btnMovieScraperDefFIExtRemove.Enabled = True
@@ -620,11 +642,11 @@ Public Class frmMovie_Data
         lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
     End Sub
 
-    Private Sub txtMovieScraperCastLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
+    Private Sub txtMovieScraperCastLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperCastLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub txtMovieScraperDefFIExt_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtMovieScraperDefFIExt.TextChanged
         btnMovieScraperDefFIExtAdd.Enabled = Not String.IsNullOrEmpty(txtMovieScraperDefFIExt.Text) AndAlso Not lstMovieScraperDefFIExt.Items.Contains(If(txtMovieScraperDefFIExt.Text.StartsWith("."), txtMovieScraperDefFIExt.Text, String.Concat(".", txtMovieScraperDefFIExt.Text)))
         If btnMovieScraperDefFIExtAdd.Enabled Then
             btnMovieScraperDefFIExtEdit.Enabled = False
@@ -632,16 +654,12 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
+    Private Sub txtMovieScraperGenreLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperGenreLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
+    Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub btnTitle_Click(sender As Object, e As EventArgs) Handles btnTitle.Click
-        dgvTitle.ColumnHeadersVisible = Not dgvTitle.ColumnHeadersVisible
     End Sub
 
 #End Region 'Methods

@@ -234,6 +234,12 @@ Public Class Core
         ToolStripItem_TVShows_Remove(cmnuRenamer_Shows)
     End Sub
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Public Sub Enable()
         Dim tsi As New ToolStripMenuItem
 
@@ -416,7 +422,7 @@ Public Class Core
         Return New Interfaces.AddonResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
         _AddonSettings.FoldersPattern_Movies = _settingspanel.txtFolderPatternMovies.Text
         _AddonSettings.FoldersPattern_Seasons = _settingspanel.txtFolderPatternSeasons.Text
@@ -431,11 +437,6 @@ Public Class Core
         _AddonSettings.RenameSingle_Shows = _settingspanel.chkRenameSingleShows.Checked
         _AddonSettings.RenameUpdate_Episodes = _settingspanel.chkRenameUpdateEpisodes.Checked
         SaveSettings()
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
     Public Sub SaveSettings()

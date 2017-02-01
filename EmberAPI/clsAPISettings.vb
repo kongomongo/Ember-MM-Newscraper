@@ -9693,10 +9693,8 @@ Public Class Settings
 
 #Region "Constructors"
 
-        Public Sub New(ByVal strName As String, ByVal eType As Enums.SettingsPanelType)
+        Public Sub New()
             Clear()
-            _name = strName
-            _type = eType
         End Sub
 
 #End Region 'Constructors
@@ -9766,19 +9764,8 @@ Public Class Settings
 
 #Region "Constructors"
 
-        Public Sub New(ByVal strAssemblyName As String,
-                       ByVal eCapatibility As Enums.ScraperCapatibility,
-                       ByVal bEnabled As Boolean,
-                       ByVal intOrder As Integer)
+        Public Sub New()
             Clear()
-            _assemblyname = strAssemblyName
-            _capatibility = eCapatibility
-            _enabled = bEnabled
-            If intOrder = -1 Then
-                _order = 999
-            Else
-                _order = intOrder
-            End If
         End Sub
 
 #End Region 'Constructors

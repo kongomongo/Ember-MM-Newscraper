@@ -956,7 +956,7 @@ Public Class FileFolderRenamer
         ShowFile.IsSingle = _DBElement.Source.IsSingle
 
         'ListTitle
-        If _DBElement.ListTitle IsNot Nothing Then
+        If _DBElement.ListTitleSpecified Then
             ShowFile.ListTitle = _DBElement.ListTitle
         End If
 

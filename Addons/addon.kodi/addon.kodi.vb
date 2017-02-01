@@ -167,6 +167,12 @@ Public Class Addon
 #End Region 'Properties
 
 #Region "Methods"
+
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
     ''' <summary>
     ''' Implementation of Realtime Sync, triggered outside of this module i.e after finishing edits of a movie (=Enums.ModuleEventType.Sync_Movie)
     ''' </summary>
@@ -1311,7 +1317,7 @@ Public Class Addon
         Return nSettingsPanel
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
         _addonsettings.SendNotifications = _settingspanel.chkNotification.Checked
         _addonsettings.GetWatchedState = _settingspanel.chkGetWatchedState.Checked AndAlso _settingspanel.cbGetWatchedStateHost.SelectedItem IsNot Nothing
@@ -1326,11 +1332,6 @@ Public Class Addon
         SaveSettings()
 
         If Enabled Then PopulateMenus()
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
     Sub SaveSettings()

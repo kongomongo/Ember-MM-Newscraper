@@ -111,6 +111,12 @@ Public Class Addon
 
 #Region "Methods"
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Private Sub Handle_SettingsChanged()
         RaiseEvent SettingsChanged()
     End Sub
@@ -285,16 +291,11 @@ Public Class Addon
         _settings.Save()
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Enabled = _settingspanel.chkEnabled.Checked
         _addonsettings.DefaultTemplate = _settingspanel.txtExportPath.Text
         _addonsettings.ExportMissingEpisodes = _settingspanel.chkExportMissingEpisodes.Checked
         SaveSettings()
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            RemoveHandler _settingspanel.StateChanged, AddressOf Handle_StateChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
 #End Region 'Methods

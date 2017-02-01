@@ -44,10 +44,11 @@ Public Class Interfaces
 
 #Region "Methods"
 
+        Sub DoDispose()
         Sub Init(ByVal strAssemblyName As String)
         Function InjectSettingsPanel() As Containers.SettingsPanel
         Function Run(ByRef tDBElement As Database.DBElement, ByVal eAddonEventType As Enums.AddonEventType, ByVal lstCommandLineParams As List(Of Object)) As AddonResult
-        Sub SaveSetup(ByVal bDoDispose As Boolean)
+        Sub SaveSetup()
 
 #End Region 'Methods
 
@@ -78,10 +79,8 @@ Public Class Interfaces
 
 #Region "Methods"
 
-        Function InjectSettingsPanel() As Containers.SettingsPanel
-
         Sub DoDispose()
-
+        Function InjectSettingsPanel() As Containers.SettingsPanel
         Sub SaveSetup()
 
 #End Region 'Methods

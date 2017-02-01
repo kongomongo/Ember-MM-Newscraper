@@ -106,6 +106,10 @@ Public Class Core
         End If
     End Sub
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        Return
+    End Sub
+
     Private Sub Enable()
         Dim tsi As New ToolStripMenuItem
 
@@ -153,7 +157,7 @@ Public Class Core
         Return New Interfaces.AddonResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         Return
     End Sub
 

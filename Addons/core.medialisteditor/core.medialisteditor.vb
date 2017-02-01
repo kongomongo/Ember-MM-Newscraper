@@ -94,6 +94,12 @@ Public Class Core
 
 #Region "Methods"
 
+    Public Sub DoDispose() Implements Interfaces.Addon.DoDispose
+        RemoveHandler _settingspanel.NeedsRestart, AddressOf Handle_NeedsRestart
+        RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
+        _settingspanel.Dispose()
+    End Sub
+
     Private Sub Enable()
         Dim CustomTabs As List(Of AdvancedSettingsComplexSettingsTableItem) = clsXMLAdvancedSettings.GetComplexSetting("CustomTabs", "*EmberAPP")
         If CustomTabs IsNot Nothing Then
@@ -155,13 +161,8 @@ Public Class Core
         Return New Interfaces.AddonResult
     End Function
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.Addon.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.Addon.SaveSetup
         If Not _settingspanel Is Nothing Then _settingspanel.SaveChanges()
-
-        If bDoDispose Then
-            RemoveHandler _settingspanel.SettingsChanged, AddressOf Handle_SettingsChanged
-            _settingspanel.Dispose()
-        End If
     End Sub
 
     Public Sub TabPageAdd(cTabs As List(Of TabPage), tabc As System.Windows.Forms.TabControl)
