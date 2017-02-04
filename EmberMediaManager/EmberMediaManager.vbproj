@@ -869,6 +869,7 @@
     <None Include="Resources\ad.png" />
     <None Include="Resources\heart.png" />
     <None Include="Resources\menuEdit.png" />
+    <None Include="Resources\copy.png" />
     <Content Include="Resources\movieset-Default.xml" />
     <Content Include="Resources\msaa.png" />
     <None Include="Resources\starempty.png" />
@@ -877,6 +878,7 @@
     <None Include="Resources\noposter.jpg" />
     <None Include="Resources\tvtunes.png" />
     <None Include="Resources\preview.png" />
+    <None Include="Resources\save.png" />
     <Content Include="Resources\tvdb.png" />
     <Content Include="Themes\movie-BlackBeauty.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

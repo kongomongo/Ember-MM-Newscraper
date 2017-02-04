@@ -35,7 +35,8 @@ Public Class frmMovie_Data
     Dim _strName As String = "Movie_Data"
     Dim _strTitle As String = Master.eLang.GetString(556, "Data")
 
-    Private MovieMeta As New List(Of Settings.MetadataPerType)
+    Private _lstMovieMeta As New List(Of Settings.MetadataPerType)
+    Private _bDGVWidthCalculated As Boolean
 
 #End Region 'Fields
 
@@ -235,32 +236,8 @@ Public Class frmMovie_Data
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            MovieMeta.AddRange(.MovieMetadataPerFileType)
+            _lstMovieMeta.AddRange(.MovieMetadataPerFileType)
             LoadMovieMetadata()
-
-            clsAPITemp.ConvertToScraperGridView(dgvActors)
-            clsAPITemp.ConvertToScraperGridView(dgvCertifications)
-            clsAPITemp.ConvertToScraperGridView(dgvCollectionID)
-            clsAPITemp.ConvertToScraperGridView(dgvCollections)
-            clsAPITemp.ConvertToScraperGridView(dgvCoutries)
-            clsAPITemp.ConvertToScraperGridView(dgvCredits)
-            clsAPITemp.ConvertToScraperGridView(dgvDirectors)
-            clsAPITemp.ConvertToScraperGridView(dgvGenres)
-            clsAPITemp.ConvertToScraperGridView(dgvMPAA)
-            clsAPITemp.ConvertToScraperGridView(dgvOriginalTitle)
-            clsAPITemp.ConvertToScraperGridView(dgvOutline)
-            clsAPITemp.ConvertToScraperGridView(dgvPlot)
-            clsAPITemp.ConvertToScraperGridView(dgvRating)
-            clsAPITemp.ConvertToScraperGridView(dgvReleaseDate)
-            clsAPITemp.ConvertToScraperGridView(dgvRuntime)
-            clsAPITemp.ConvertToScraperGridView(dgvStudios)
-            clsAPITemp.ConvertToScraperGridView(dgvTagline)
-            clsAPITemp.ConvertToScraperGridView(dgvTags)
-            clsAPITemp.ConvertToScraperGridView(dgvTitle)
-            clsAPITemp.ConvertToScraperGridView(dgvTop250)
-            clsAPITemp.ConvertToScraperGridView(dgvTrailer)
-            clsAPITemp.ConvertToScraperGridView(dgvUserRating)
-            clsAPITemp.ConvertToScraperGridView(dgvYear)
         End With
     End Sub
 
@@ -292,7 +269,7 @@ Public Class frmMovie_Data
             .MovieLockCredits = chkMovieLockCredits.Checked
             .MovieLockYear = chkMovieLockYear.Checked
             .MovieMetadataPerFileType.Clear()
-            .MovieMetadataPerFileType.AddRange(MovieMeta)
+            .MovieMetadataPerFileType.AddRange(_lstMovieMeta)
             .MovieScraperCast = chkMovieScraperCast.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperCastLimit.Text) Then
                 .MovieScraperCastLimit = Convert.ToInt32(txtMovieScraperCastLimit.Text)
@@ -372,16 +349,16 @@ Public Class frmMovie_Data
     Private Sub btnMovieScraperDefFIExtEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieScraperDefFIExtEdit.Click
         Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
             Dim fi As New MediaContainers.Fileinfo
-            For Each x As Settings.MetadataPerType In MovieMeta
+            For Each x As Settings.MetadataPerType In _lstMovieMeta
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                     fi = dEditMeta.ShowDialog(x.MetaData, False)
                     If Not fi Is Nothing Then
-                        MovieMeta.Remove(x)
+                        _lstMovieMeta.Remove(x)
                         Dim m As New Settings.MetadataPerType
                         m.FileType = x.FileType
                         m.MetaData = New MediaContainers.Fileinfo
                         m.MetaData = fi
-                        MovieMeta.Add(m)
+                        _lstMovieMeta.Add(m)
                         LoadMovieMetadata()
                         EnableApplyButton()
                     End If
@@ -401,7 +378,7 @@ Public Class frmMovie_Data
                 m.FileType = txtMovieScraperDefFIExt.Text
                 m.MetaData = New MediaContainers.Fileinfo
                 m.MetaData = fi
-                MovieMeta.Add(m)
+                _lstMovieMeta.Add(m)
                 LoadMovieMetadata()
                 EnableApplyButton()
                 txtMovieScraperDefFIExt.Text = String.Empty
@@ -519,25 +496,29 @@ Public Class frmMovie_Data
 
     Private Sub LoadMovieMetadata()
         lstMovieScraperDefFIExt.Items.Clear()
-        For Each x As Settings.MetadataPerType In MovieMeta
+        For Each x As Settings.MetadataPerType In _lstMovieMeta
             lstMovieScraperDefFIExt.Items.Add(x.FileType)
         Next
+    End Sub
+
+    Private Sub LoadScraperSettings(ByVal strName As String)
+
     End Sub
 
     Private Sub lstMovieScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstMovieScraperDefFIExt.DoubleClick
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.Movie), False)
                 Dim fi As New MediaContainers.Fileinfo
-                For Each x As Settings.MetadataPerType In MovieMeta
+                For Each x As Settings.MetadataPerType In _lstMovieMeta
                     If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
                         fi = dEditMeta.ShowDialog(x.MetaData, False)
                         If Not fi Is Nothing Then
-                            MovieMeta.Remove(x)
+                            _lstMovieMeta.Remove(x)
                             Dim m As New Settings.MetadataPerType
                             m.FileType = x.FileType
                             m.MetaData = New MediaContainers.Fileinfo
                             m.MetaData = fi
-                            MovieMeta.Add(m)
+                            _lstMovieMeta.Add(m)
                             LoadMovieMetadata()
                             EnableApplyButton()
                         End If
@@ -565,9 +546,9 @@ Public Class frmMovie_Data
 
     Private Sub RemoveMovieMetaData()
         If lstMovieScraperDefFIExt.SelectedItems.Count > 0 Then
-            For Each x As Settings.MetadataPerType In MovieMeta
+            For Each x As Settings.MetadataPerType In _lstMovieMeta
                 If x.FileType = lstMovieScraperDefFIExt.SelectedItems(0).ToString Then
-                    MovieMeta.Remove(x)
+                    _lstMovieMeta.Remove(x)
                     LoadMovieMetadata()
                     EnableApplyButton()
                     Exit For
@@ -604,7 +585,7 @@ Public Class frmMovie_Data
         lblMovieScraperGlobalRuntime.Text = Master.eLang.GetString(396, "Runtime")
         chkMovieScraperCollectionsExtendedInfo.Text = Master.eLang.GetString(1075, "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)")
         chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
-        gbMovieScraperGlobalOpts.Text = Master.eLang.GetString(577, "Scraper Fields - Global")
+        gbScraperSettings.Text = Master.eLang.GetString(577, "Scraper Fields - Global")
         lblMovieScraperGlobalStudios.Text = Master.eLang.GetString(226, "Studios")
         lblMovieScraperGlobalTagline.Text = Master.eLang.GetString(397, "Tagline")
         lblMovieScraperGlobalTitle.Text = Master.eLang.GetString(21, "Title")
@@ -640,6 +621,32 @@ Public Class frmMovie_Data
         Dim strLimit As String = Master.eLang.GetString(578, "Limit")
         lblMovieScraperGlobalHeaderLimit.Text = strLimit
         lblMovieScraperOutlineLimit.Text = String.Concat(strLimit, ":")
+
+        clsAPITemp.ConvertToScraperGridView(dgvActors, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Actors)))
+        clsAPITemp.ConvertToScraperGridView(dgvCertifications, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Certifications)))
+        clsAPITemp.ConvertToScraperGridView(dgvCollectionID, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_CollectionID)))
+        clsAPITemp.ConvertToScraperGridView(dgvCoutries, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Countries)))
+        clsAPITemp.ConvertToScraperGridView(dgvCredits, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Writers)))
+        clsAPITemp.ConvertToScraperGridView(dgvDirectors, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Directors)))
+        clsAPITemp.ConvertToScraperGridView(dgvGenres, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Genres)))
+        clsAPITemp.ConvertToScraperGridView(dgvMPAA, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_MPAA)))
+        clsAPITemp.ConvertToScraperGridView(dgvOriginalTitle, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_OriginalTitle)))
+        clsAPITemp.ConvertToScraperGridView(dgvOutline, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Outline)))
+        clsAPITemp.ConvertToScraperGridView(dgvPlot, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Plot)))
+        clsAPITemp.ConvertToScraperGridView(dgvRating, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Rating)))
+        clsAPITemp.ConvertToScraperGridView(dgvReleaseDate, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_ReleaseDate)))
+        clsAPITemp.ConvertToScraperGridView(dgvRuntime, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Runtime)))
+        clsAPITemp.ConvertToScraperGridView(dgvStudios, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Studios)))
+        clsAPITemp.ConvertToScraperGridView(dgvTagline, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Tagline)))
+        clsAPITemp.ConvertToScraperGridView(dgvTags, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Tags)))
+        clsAPITemp.ConvertToScraperGridView(dgvTitle, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Title)))
+        clsAPITemp.ConvertToScraperGridView(dgvTop250, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Top250)))
+        clsAPITemp.ConvertToScraperGridView(dgvTrailer, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Trailer)))
+        clsAPITemp.ConvertToScraperGridView(dgvUserRating, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_UserRating)))
+        clsAPITemp.ConvertToScraperGridView(dgvYear, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Data_Year)))
+
+        clsAPITemp.ConvertToSearchEngineGridView(dgvSearchAdditional, Master.SearchEngineList.FindAll(Function(f) f.SearchMovie))
+        clsAPITemp.ConvertToSearchEngineGridView(dgvSearchInitial, Master.SearchEngineList.FindAll(Function(f) f.SearchMovie))
     End Sub
 
     Private Sub txtMovieScraperCastLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperCastLimit.KeyPress
@@ -660,6 +667,33 @@ Public Class frmMovie_Data
 
     Private Sub txtMovieScraperOutlineLimit_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtMovieScraperOutlineLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
+    Private Sub cbSelectSetting_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSelectSetting.SelectedIndexChanged
+        LoadScraperSettings("Default")
+    End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub pnlSettings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _bDGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            tblMovieScraperGlobalOpts.SuspendLayout()
+            For i As Integer = 0 To tblMovieScraperGlobalOpts.Controls.Count - 1
+                Dim nType As Type = tblMovieScraperGlobalOpts.Controls(i).GetType
+                If nType.Name = "DataGridView" Then
+                    Dim nDataGridView As DataGridView = CType(tblMovieScraperGlobalOpts.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            tblMovieScraperGlobalOpts.ResumeLayout()
+            _bDGVWidthCalculated = True
+        End If
     End Sub
 
 #End Region 'Methods
