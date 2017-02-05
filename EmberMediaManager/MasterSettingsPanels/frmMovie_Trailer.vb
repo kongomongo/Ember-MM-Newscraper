@@ -31,6 +31,8 @@ Public Class frmMovie_Trailer
     Dim _strName As String = "Movie_Trailer"
     Dim _strTitle As String = Master.eLang.GetString(1195, "Trailers")
 
+    Private _bDGVWidthCalculated As Boolean
+
 #End Region 'Fields
 
 #Region "Events"
@@ -202,8 +204,33 @@ Public Class frmMovie_Trailer
 
         chkMovieTrailerKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
         lblMovieTrailerDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
-        lblMovieTrailerMinQual.Text = Master.eLang.GetString(1027, "Minimum Quality:")
-        lblMovieTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality:")
+        lblMovieTrailerMinQual.Text = Master.eLang.GetString(1027, "Minimum Quality")
+        lblMovieTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality")
+
+        clsAPITemp.ConvertToScraperGridView(dgvTrailer, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Trailer)))
+    End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub pnlSettings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _bDGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            tblTrailer.SuspendLayout()
+            For i As Integer = 0 To tblTrailer.Controls.Count - 1
+                Dim nType As Type = tblTrailer.Controls(i).GetType
+                If nType.Name = "DataGridView" Then
+                    Dim nDataGridView As DataGridView = CType(tblTrailer.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            tblTrailer.ResumeLayout()
+            _bDGVWidthCalculated = True
+        End If
     End Sub
 
 #End Region 'Methods

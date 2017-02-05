@@ -172,7 +172,6 @@ Public Class frmMovie_Data
             chkMovieScraperCert.Checked = .MovieScraperCert
             chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
             chkMovieScraperCertForMPAAFallback.Checked = .MovieScraperCertForMPAAFallback
-            chkMovieScraperCertFSK.Checked = .MovieScraperCertFSK
             chkMovieScraperCertOnlyValue.Checked = .MovieScraperCertOnlyValue
             chkMovieScraperCleanFields.Checked = .MovieScraperCleanFields
             chkMovieScraperCleanPlotOutline.Checked = .MovieScraperCleanPlotOutline
@@ -280,7 +279,6 @@ Public Class frmMovie_Data
             .MovieScraperCert = chkMovieScraperCert.Checked
             .MovieScraperCertForMPAA = chkMovieScraperCertForMPAA.Checked
             .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
-            .MovieScraperCertFSK = chkMovieScraperCertFSK.Checked
             .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
             If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
@@ -420,15 +418,12 @@ Public Class frmMovie_Data
             cbMovieScraperCertLang.SelectedIndex = 0
             chkMovieScraperCertForMPAA.Enabled = False
             chkMovieScraperCertForMPAA.Checked = False
-            chkMovieScraperCertFSK.Enabled = False
-            chkMovieScraperCertFSK.Checked = False
             chkMovieScraperCertOnlyValue.Enabled = False
             chkMovieScraperCertOnlyValue.Checked = False
         Else
             cbMovieScraperCertLang.Enabled = True
             cbMovieScraperCertLang.SelectedIndex = 0
             chkMovieScraperCertForMPAA.Enabled = True
-            chkMovieScraperCertFSK.Enabled = True
             chkMovieScraperCertOnlyValue.Enabled = True
         End If
     End Sub
@@ -592,7 +587,6 @@ Public Class frmMovie_Data
         lblMovieScraperGlobalTop250.Text = Master.eLang.GetString(591, "Top 250")
         lblMovieScraperGlobalTrailer.Text = Master.eLang.GetString(151, "Trailer")
         chkMovieScraperCertForMPAA.Text = Master.eLang.GetString(511, "Use Certification for MPAA")
-        chkMovieScraperCertFSK.Text = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
         lblMovieScraperGlobalUserRating.Text = Master.eLang.GetString(1464, "User Rating")
         lblMovieScraperGlobalCredits.Text = Master.eLang.GetString(394, "Writers")
         lblMovieScraperGlobalYear.Text = Master.eLang.GetString(278, "Year")

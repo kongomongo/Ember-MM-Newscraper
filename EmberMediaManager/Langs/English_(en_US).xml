@@ -477,10 +477,10 @@
   <string id="476">On Error</string>
   <string id="477">On New Movie Added</string>
   <string id="478">Quality:</string>
-  <string id="479">Max Width:</string>
-  <string id="480">Max Height:</string>
-  <string id="481">Automatically Resize:</string>
-  <string id="482">Preferred Size:</string>
+  <string id="479">Max Width</string>
+  <string id="480">Max Height</string>
+  <string id="481"></string>
+  <string id="482">Preferred Size</string>
   <string id="483">Overwrite Existing</string>
   <string id="484">Loading Settings...</string>
   <string id="485">On Movie Scraped</string>
@@ -509,7 +509,7 @@
   <string id="508">Guest Stars</string>
   <string id="509">Source directory does not exist or could not be found: </string>
   <string id="510">Scrape Only Actors With Images</string>
-  <string id="511">Use Certification for MPAA (XBMC)</string>
+  <string id="511">Use Certification for MPAA</string>
   <string id="512">Scrape Full Cast</string>
   <string id="513">Scrape Full Crew</string>
   <string id="514">Use Certification Language:</string>
@@ -798,7 +798,7 @@
   <string id="797">Default Episode Ordering</string>
   <string id="798">Searching IMDB...</string>
   <string id="799">The ID you entered is not a valid IMDB ID.</string>
-  <string id="800">Preferred Quality:</string>
+  <string id="800">Preferred Quality</string>
   <string id="801">TVDB Mirror</string>
   <string id="802">Addons</string>
   <string id="803">Next, let's tell Ember Media Manager where to locate all your TV Shows. You can add as many sources as you wish.</string>
@@ -880,7 +880,7 @@
   <string id="879">Single Folder</string>
   <string id="880">Parent Folder</string>
   <string id="881">Added</string>
-  <string id="882">Use MPAA as Fallback for FSK Rating</string>
+  <string id="882"></string>
   <string id="883">Episode Scraped</string>
   <string id="884"></string>
   <string id="885">Change Watched Status</string>
@@ -1116,7 +1116,7 @@
   <string id="1024">Removed</string>
   <string id="1025">All Seasons Banner</string>
   <string id="1026">All Seasons Fanart</string>
-  <string id="1027">Minimum Quality:</string>
+  <string id="1027">Minimum Quality</string>
   <string id="1028">Select the folder where you wish to store your tv themes...</string>
   <string id="1029">Select the folder where you wish to store your watched files...</string>
   <string id="1030">Select the folder where you wish to store your movie sets images...</string>

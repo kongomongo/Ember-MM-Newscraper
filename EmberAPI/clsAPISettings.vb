@@ -114,7 +114,6 @@ Public Class Settings
     Private _moviebannerkeepexisting As Boolean
     Private _moviebannerprefsize As Enums.MovieBannerSize
     Private _moviebannerprefsizeonly As Boolean
-    Private _moviebannerresize As Boolean
     Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
     Private _movieclearartkeepexisting As Boolean
@@ -135,7 +134,6 @@ Public Class Settings
     Private _movieextrafanartsprefsize As Enums.MovieFanartSize
     Private _movieextrafanartsprefsizeonly As Boolean
     Private _movieextrafanartspreselect As Boolean
-    Private _movieextrafanartsresize As Boolean
     Private _movieextrafanartswidth As Integer
     Private _movieextrathumbscreatorautothumbs As Boolean
     Private _movieextrathumbscreatornoblackbars As Boolean
@@ -147,13 +145,11 @@ Public Class Settings
     Private _movieextrathumbsprefsize As Enums.MovieFanartSize
     Private _movieextrathumbsprefsizeonly As Boolean
     Private _movieextrathumbspreselect As Boolean
-    Private _movieextrathumbsresize As Boolean
     Private _movieextrathumbswidth As Integer
     Private _moviefanartheight As Integer
     Private _moviefanartkeepexisting As Boolean
     Private _moviefanartprefsize As Enums.MovieFanartSize
     Private _moviefanartprefsizeonly As Boolean
-    Private _moviefanartresize As Boolean
     Private _moviefanartwidth As Integer
     Private _moviefiltercustom As List(Of String)
     Private _moviefiltercustomisempty As Boolean
@@ -228,7 +224,6 @@ Public Class Settings
     Private _movieposterkeepexisting As Boolean
     Private _movieposterprefsize As Enums.MoviePosterSize
     Private _movieposterprefsizeonly As Boolean
-    Private _movieposterresize As Boolean
     Private _movieposterwidth As Integer
     Private _moviepropercase As Boolean
     Private _moviescanordermodify As Boolean
@@ -238,7 +233,6 @@ Public Class Settings
     Private _moviescrapercert As Boolean
     Private _moviescrapercertformpaa As Boolean
     Private _moviescrapercertformpaafallback As Boolean
-    Private _moviescrapercertfsk As Boolean
     Private _moviescrapercertlang As String
     Private _moviescrapercertonlyvalue As Boolean
     Private _moviescrapercleanfields As Boolean
@@ -2406,15 +2400,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieScraperCertFSK() As Boolean
-        Get
-            Return _moviescrapercertfsk
-        End Get
-        Set(ByVal value As Boolean)
-            _moviescrapercertfsk = value
-        End Set
-    End Property
-
     Public Property TVScraperShowCertFSK() As Boolean
         Get
             Return _tvscrapershowcertfsk
@@ -3843,15 +3828,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerResize() As Boolean
-        Get
-            Return _moviebannerresize
-        End Get
-        Set(ByVal value As Boolean)
-            _moviebannerresize = value
-        End Set
-    End Property
-
     Public Property MovieTrailerKeepExisting() As Boolean
         Get
             Return _movietrailerkeepexisting
@@ -4399,42 +4375,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _tvshowextrafanartsresize = value
-        End Set
-    End Property
-
-    Public Property MovieExtrafanartsResize() As Boolean
-        Get
-            Return _movieextrafanartsresize
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrafanartsresize = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsResize() As Boolean
-        Get
-            Return _movieextrathumbsresize
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbsresize = value
-        End Set
-    End Property
-
-    Public Property MovieFanartResize() As Boolean
-        Get
-            Return _moviefanartresize
-        End Get
-        Set(ByVal value As Boolean)
-            _moviefanartresize = value
-        End Set
-    End Property
-
-    Public Property MoviePosterResize() As Boolean
-        Get
-            Return _movieposterresize
-        End Get
-        Set(ByVal value As Boolean)
-            _movieposterresize = value
         End Set
     End Property
 
@@ -8011,6 +7951,41 @@ Public Class Settings
         End Set
     End Property
 
+    <XmlIgnore()>
+    Public ReadOnly Property MovieBannerResize() As Boolean
+        Get
+            Return _moviebannerheight > 0 OrElse _moviebannerwidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property MovieExtrafanartsResize() As Boolean
+        Get
+            Return _movieextrafanartsheight > 0 OrElse _movieextrafanartswidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property MovieExtrathumbsResize() As Boolean
+        Get
+            Return _movieextrathumbsheight > 0 OrElse _movieextrathumbswidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property MovieFanartResize() As Boolean
+        Get
+            Return _moviefanartheight > 0 OrElse _moviefanartwidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property MoviePosterResize() As Boolean
+        Get
+            Return _movieposterheight > 0 OrElse _movieposterwidth > 0
+        End Get
+    End Property
+
 #End Region 'Properties
 
 #Region "Constructors"
@@ -8202,7 +8177,6 @@ Public Class Settings
         MovieBannerKeepExisting = False
         MovieBannerPrefSizeOnly = False
         MovieBannerPrefSize = Enums.MovieBannerSize.Any
-        MovieBannerResize = False
         MovieBannerWidth = 0
         MovieCleanDB = False
         MovieClearArtKeepExisting = False
@@ -8223,7 +8197,6 @@ Public Class Settings
         MovieExtrafanartsPrefSizeOnly = False
         MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any
         MovieExtrafanartsPreselect = True
-        MovieExtrafanartsResize = False
         MovieExtrafanartsWidth = 0
         MovieExtrathumbsCreatorAutoThumbs = False
         MovieExtrathumbsCreatorNoBlackBars = False
@@ -8235,13 +8208,11 @@ Public Class Settings
         MovieExtrathumbsPrefSizeOnly = False
         MovieExtrathumbsPrefSize = 0
         MovieExtrathumbsPreselect = True
-        MovieExtrathumbsResize = False
         MovieExtrathumbsWidth = 0
         MovieFanartHeight = 0
         MovieFanartKeepExisting = False
         MovieFanartPrefSizeOnly = False
         MovieFanartPrefSize = Enums.MovieFanartSize.Any
-        MovieFanartResize = False
         MovieFanartWidth = 0
         MovieFilterCustom = New List(Of String)
         MovieFilterCustomIsEmpty = False
@@ -8316,7 +8287,6 @@ Public Class Settings
         MoviePosterKeepExisting = False
         MoviePosterPrefSizeOnly = False
         MoviePosterPrefSize = Enums.MoviePosterSize.Any
-        MoviePosterResize = False
         MoviePosterWidth = 0
         MovieProperCase = True
         MovieScanOrderModify = False
@@ -8362,7 +8332,6 @@ Public Class Settings
         MovieScraperUseDetailView = False
         MovieScraperUseMDDuration = True
         MovieScraperUserRating = True
-        MovieScraperCertFSK = False
         MovieScraperCredits = True
         MovieScraperXBMCTrailerFormat = False
         MovieScraperYear = True

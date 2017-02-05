@@ -34,6 +34,8 @@ Public Class frmMovie_Image
     Dim _strName As String = "Movie_Image"
     Dim _strTitle As String = Master.eLang.GetString(497, "Images")
 
+    Private _bDGVWidthCalculated As Boolean
+
 #End Region 'Fields
 
 #Region "Events"
@@ -150,11 +152,8 @@ Public Class frmMovie_Image
             chkMovieActorThumbsKeepExisting.Checked = .MovieActorThumbsKeepExisting
             chkMovieBannerKeepExisting.Checked = .MovieBannerKeepExisting
             chkMovieBannerPrefSizeOnly.Checked = .MovieBannerPrefSizeOnly
-            chkMovieBannerResize.Checked = .MovieBannerResize
-            If .MovieBannerResize Then
-                txtMovieBannerHeight.Text = .MovieBannerHeight.ToString
-                txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
-            End If
+            txtMovieBannerHeight.Text = .MovieBannerHeight.ToString
+            txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
             chkMovieClearArtKeepExisting.Checked = .MovieClearArtKeepExisting
             chkMovieClearArtPrefSizeOnly.Checked = .MovieClearArtPrefSizeOnly
             chkMovieClearLogoKeepExisting.Checked = .MovieClearLogoKeepExisting
@@ -164,11 +163,8 @@ Public Class frmMovie_Image
             chkMovieExtrafanartsKeepExisting.Checked = .MovieExtrafanartsKeepExisting
             chkMovieExtrafanartsPrefSizeOnly.Checked = .MovieExtrafanartsPrefSizeOnly
             chkMovieExtrafanartsPreselect.Checked = .MovieExtrafanartsPreselect
-            chkMovieExtrafanartsResize.Checked = .MovieExtrafanartsResize
-            If .MovieExtrafanartsResize Then
-                txtMovieExtrafanartsHeight.Text = .MovieExtrafanartsHeight.ToString
-                txtMovieExtrafanartsWidth.Text = .MovieExtrafanartsWidth.ToString
-            End If
+            txtMovieExtrafanartsHeight.Text = .MovieExtrafanartsHeight.ToString
+            txtMovieExtrafanartsWidth.Text = .MovieExtrafanartsWidth.ToString
             chkMovieExtrathumbsCreatorAutoThumbs.Checked = .MovieExtrathumbsCreatorAutoThumbs
             chkMovieExtrathumbsCreatorNoBlackBars.Checked = .MovieExtrathumbsCreatorNoBlackBars
             chkMovieExtrathumbsCreatorNoSpoilers.Checked = .MovieExtrathumbsCreatorNoSpoilers
@@ -176,18 +172,12 @@ Public Class frmMovie_Image
             chkMovieExtrathumbsKeepExisting.Checked = .MovieExtrathumbsKeepExisting
             chkMovieExtrathumbsPrefSizeOnly.Checked = .MovieExtrathumbsPrefSizeOnly
             chkMovieExtrathumbsPreselect.Checked = .MovieExtrathumbsPreselect
-            chkMovieExtrathumbsResize.Checked = .MovieExtrathumbsResize
-            If .MovieExtrathumbsResize Then
-                txtMovieExtrathumbsHeight.Text = .MovieExtrathumbsHeight.ToString
-                txtMovieExtrathumbsWidth.Text = .MovieExtrathumbsWidth.ToString
-            End If
+            txtMovieExtrathumbsHeight.Text = .MovieExtrathumbsHeight.ToString
+            txtMovieExtrathumbsWidth.Text = .MovieExtrathumbsWidth.ToString
             chkMovieFanartKeepExisting.Checked = .MovieFanartKeepExisting
             chkMovieFanartPrefSizeOnly.Checked = .MovieFanartPrefSizeOnly
-            chkMovieFanartResize.Checked = .MovieFanartResize
-            If .MovieFanartResize Then
-                txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
-                txtMovieFanartWidth.Text = .MovieFanartWidth.ToString
-            End If
+            txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
+            txtMovieFanartWidth.Text = .MovieFanartWidth.ToString
             chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
             chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
             chkMovieImagesForceLanguage.Checked = .MovieImagesForceLanguage
@@ -201,11 +191,8 @@ Public Class frmMovie_Image
             chkMovieLandscapePrefSizeOnly.Checked = .MovieLandscapePrefSizeOnly
             chkMoviePosterKeepExisting.Checked = .MoviePosterKeepExisting
             chkMoviePosterPrefSizeOnly.Checked = .MoviePosterPrefSizeOnly
-            chkMoviePosterResize.Checked = .MoviePosterResize
-            If .MoviePosterResize Then
-                txtMoviePosterHeight.Text = .MoviePosterHeight.ToString
-                txtMoviePosterWidth.Text = .MoviePosterWidth.ToString
-            End If
+            txtMoviePosterHeight.Text = .MoviePosterHeight.ToString
+            txtMoviePosterWidth.Text = .MoviePosterWidth.ToString
             txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
             txtMovieExtrathumbsLimit.Text = .MovieExtrathumbsLimit.ToString
 
@@ -242,7 +229,6 @@ Public Class frmMovie_Image
             .MovieBannerKeepExisting = chkMovieBannerKeepExisting.Checked
             .MovieBannerPrefSize = CType(cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
             .MovieBannerPrefSizeOnly = chkMovieBannerPrefSizeOnly.Checked
-            .MovieBannerResize = chkMovieBannerResize.Checked
             .MovieBannerWidth = If(Not String.IsNullOrEmpty(txtMovieBannerWidth.Text), Convert.ToInt32(txtMovieBannerWidth.Text), 0)
             .MovieClearArtKeepExisting = chkMovieClearArtKeepExisting.Checked
             .MovieClearArtPrefSize = CType(cbMovieClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearArtSize)).Value
@@ -259,7 +245,6 @@ Public Class frmMovie_Image
             .MovieExtrafanartsPrefSize = CType(cbMovieExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefSizeOnly.Checked
             .MovieExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
-            .MovieExtrafanartsResize = chkMovieExtrafanartsResize.Checked
             .MovieExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
             .MovieExtrathumbsCreatorAutoThumbs = chkMovieExtrathumbsCreatorAutoThumbs.Checked
             .MovieExtrathumbsCreatorNoBlackBars = chkMovieExtrathumbsCreatorNoBlackBars.Checked
@@ -271,13 +256,11 @@ Public Class frmMovie_Image
             .MovieExtrathumbsPrefSize = CType(cbMovieExtrathumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefSizeOnly.Checked
             .MovieExtrathumbsPreselect = chkMovieExtrathumbsPreselect.Checked
-            .MovieExtrathumbsResize = chkMovieExtrathumbsResize.Checked
             .MovieExtrathumbsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsWidth.Text), Convert.ToInt32(txtMovieExtrathumbsWidth.Text), 0)
             .MovieFanartHeight = If(Not String.IsNullOrEmpty(txtMovieFanartHeight.Text), Convert.ToInt32(txtMovieFanartHeight.Text), 0)
             .MovieFanartKeepExisting = chkMovieFanartKeepExisting.Checked
             .MovieFanartPrefSize = CType(cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
             .MovieFanartPrefSizeOnly = chkMovieFanartPrefSizeOnly.Checked
-            .MovieFanartResize = chkMovieFanartResize.Checked
             .MovieFanartWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
             .MovieImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
             .MovieImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
@@ -296,7 +279,6 @@ Public Class frmMovie_Image
             .MoviePosterKeepExisting = chkMoviePosterKeepExisting.Checked
             .MoviePosterPrefSize = CType(cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
             .MoviePosterPrefSizeOnly = chkMoviePosterPrefSizeOnly.Checked
-            .MoviePosterResize = chkMoviePosterResize.Checked
             .MoviePosterWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
         End With
     End Sub
@@ -392,103 +374,52 @@ Public Class frmMovie_Image
         LoadMovieLandscapeSizes()
         LoadMoviePosterSizes()
 
-        'Automatically Resize:
-        Dim strAutomaticallyResize As String = Master.eLang.GetString(481, "Automatically Resize:")
-        chkMoviePosterResize.Text = strAutomaticallyResize
-        chkMovieBannerResize.Text = strAutomaticallyResize
-        chkMovieExtrafanartsResize.Text = strAutomaticallyResize
-        chkMovieExtrathumbsResize.Text = strAutomaticallyResize
-        chkMovieFanartResize.Text = strAutomaticallyResize
-
-        'Keep existing
-        Dim strKeepExisting As String = Master.eLang.GetString(971, "Keep existing")
-        chkMovieActorThumbsKeepExisting.Text = strKeepExisting
-        chkMovieBannerKeepExisting.Text = strKeepExisting
-        chkMovieClearArtKeepExisting.Text = strKeepExisting
-        chkMovieClearLogoKeepExisting.Text = strKeepExisting
-        chkMovieDiscArtKeepExisting.Text = strKeepExisting
-        chkMovieExtrafanartsKeepExisting.Text = strKeepExisting
-        chkMovieExtrathumbsKeepExisting.Text = strKeepExisting
-        chkMovieFanartKeepExisting.Text = strKeepExisting
-        chkMovieLandscapeKeepExisting.Text = strKeepExisting
-        chkMoviePosterKeepExisting.Text = strKeepExisting
-
-        'Limit
-        Dim strLimit As String = Master.eLang.GetString(578, "Limit")
-        lblMovieExtrafanartsLimit.Text = String.Concat(strLimit, ":")
-        lblMovieExtrathumbsLimit.Text = String.Concat(strLimit, ":")
-
-        'Max Height:
-        Dim strMaxHeight As String = Master.eLang.GetString(480, "Max Height:")
-        lblMovieBannerHeight.Text = strMaxHeight
-        lblMovieExtrafanartsHeight.Text = strMaxHeight
-        lblMovieExtrathumbsHeight.Text = strMaxHeight
-        lblMovieFanartHeight.Text = strMaxHeight
-        lblMoviePosterHeight.Text = strMaxHeight
-
-        'Max Height:
-        Dim strMaxWidth As String = Master.eLang.GetString(479, "Max Width:")
-        lblMovieBannerWidth.Text = strMaxWidth
-        lblMovieExtrafanartsWidth.Text = strMaxWidth
-        lblMovieExtrathumbsWidth.Text = strMaxWidth
-        lblMovieFanartWidth.Text = strMaxWidth
-        lblMoviePosterWidth.Text = strMaxWidth
-
-        'Only
-        Dim strOnly As String = Master.eLang.GetString(145, "Only")
-        chkMovieBannerPrefSizeOnly.Text = strOnly
-        chkMovieClearArtPrefSizeOnly.Text = strOnly
-        chkMovieClearLogoPrefSizeOnly.Text = strOnly
-        chkMovieDiscArtPrefSizeOnly.Text = strOnly
-        chkMovieExtrafanartsPrefSizeOnly.Text = strOnly
-        chkMovieExtrathumbsPrefSizeOnly.Text = strOnly
-        chkMovieFanartPrefSizeOnly.Text = strOnly
-        chkMovieDiscArtPrefSizeOnly.Text = strOnly
-        chkMoviePosterPrefSizeOnly.Text = strOnly
-
-        'Preferred Size:
-        Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
-        lblMovieBannerSize.Text = strPreferredSize
-        lblMovieClearArtSize.Text = strPreferredSize
-        lblMovieClearLogoSize.Text = strPreferredSize
-        lblMovieDiscArtSize.Text = strPreferredSize
-        lblMovieExtrafanartsSize.Text = strPreferredSize
-        lblMovieExtrathumbsSize.Text = strPreferredSize
-        lblMovieFanartSize.Text = strPreferredSize
-        lblMovieLandscapeSize.Text = strPreferredSize
-        lblMoviePosterSize.Text = strPreferredSize
-
         'Preselect in "Image Select" dialog
         Dim strPreselectInImageSelectDialog As String = Master.eLang.GetString(1023, "Preselect in ""Image Select"" dialog")
         chkMovieExtrafanartsPreselect.Text = strPreselectInImageSelectDialog
         chkMovieExtrathumbsPreselect.Text = strPreselectInImageSelectDialog
 
-        'Others
-        gbMovieImagesBannerOpts.Text = Master.eLang.GetString(838, "Banner")
-        gbMovieImagesClearArtOpts.Text = Master.eLang.GetString(1096, "ClearArt")
-        gbMovieImagesClearLogoOpts.Text = Master.eLang.GetString(1097, "ClearLogo")
-        gbMovieImagesDiscArtOpts.Text = Master.eLang.GetString(1098, "DiscArt")
+        lblKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
+        lblLimit.Text = Master.eLang.GetString(578, "Limit")
+        lblHeight.Text = Master.eLang.GetString(480, "Max Height")
+        lblWidth.Text = Master.eLang.GetString(479, "Max Width")
+        lblOnly.Text = Master.eLang.GetString(145, "Only")
+        lblPreferredSize.Text = Master.eLang.GetString(482, "Preferred Size")
+        lblBanner.Text = Master.eLang.GetString(838, "Banner")
+        lblClearArt.Text = Master.eLang.GetString(1096, "ClearArt")
+        lblClearLogo.Text = Master.eLang.GetString(1097, "ClearLogo")
+        lblDiscArt.Text = Master.eLang.GetString(1098, "DiscArt")
         chkMovieImagesDisplayImageSelect.Text = Master.eLang.GetString(499, "Display ""Image Select"" dialog while single scraping")
-        gbMovieImagesActorThumbsOpts.Text = Master.eLang.GetString(991, "Actor Thumbs")
+        lblActorThumbs.Text = Master.eLang.GetString(991, "Actor Thumbs")
         chkMovieImagesGetBlankImages.Text = Master.eLang.GetString(1207, "Also Get Blank Images")
         chkMovieImagesGetEnglishImages.Text = Master.eLang.GetString(737, "Also Get English Images")
         chkMovieImagesNotSaveURLToNfo.Text = Master.eLang.GetString(498, "Do not save URLs to NFO")
         chkMovieImagesCacheEnabled.Text = Master.eLang.GetString(249, "Enable Image Caching")
-        gbMovieImagesExtrafanartsOpts.Text = Master.eLang.GetString(992, "Extrafanarts")
-        gbMovieImagesExtrathumbsOpts.Text = Master.eLang.GetString(153, "Extrathumbs")
-        gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
+        lblExtrafanarts.Text = Master.eLang.GetString(992, "Extrafanarts")
+        lblExtrathumbs.Text = Master.eLang.GetString(153, "Extrathumbs")
+        lblFanart.Text = Master.eLang.GetString(149, "Fanart")
         chkMovieImagesForceLanguage.Text = Master.eLang.GetString(1034, "Force Language")
         gbMovieImagesOpts.Text = Master.eLang.GetString(497, "Images")
-        gbMovieImagesLandscapeOpts.Text = Master.eLang.GetString(1059, "Landscape")
+        lblLandscape.Text = Master.eLang.GetString(1059, "Landscape")
         chkMovieImagesMediaLanguageOnly.Text = Master.eLang.GetString(736, "Only Get Images for the Media Language")
-        gbMovieImagesPosterOpts.Text = Master.eLang.GetString(148, "Poster")
+        lblPoster.Text = Master.eLang.GetString(148, "Poster")
         gbMovieImagesLanguageOpts.Text = Master.eLang.GetString(741, "Preferred Language")
         chkMovieExtrathumbsCreatorAutoThumbs.Text = Master.eLang.GetString(1475, "Create thumbs instead of using fanarts")
         chkMovieExtrathumbsCreatorNoBlackBars.Text = Master.eLang.GetString(1474, "Remove Black Bars")
         chkMovieExtrathumbsCreatorNoSpoilers.Text = Master.eLang.GetString(1473, "No Spoilers")
         chkMovieExtrathumbsCreatorUseETasFA.Text = Master.eLang.GetString(1476, "Only create thumbs if no fanart found")
-        gbMovieImagesFanartOpts.Text = Master.eLang.GetString(149, "Fanart")
+        lblFanart.Text = Master.eLang.GetString(149, "Fanart")
         gbMovieImagesExtrathumbsCreatorOpts.Text = Master.eLang.GetString(1477, "Create Thumbnails")
+
+        clsAPITemp.ConvertToScraperGridView(dgvBanner, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Banner)))
+        clsAPITemp.ConvertToScraperGridView(dgvClearArt, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_ClearArt)))
+        clsAPITemp.ConvertToScraperGridView(dgvClearLogo, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_ClearLogo)))
+        clsAPITemp.ConvertToScraperGridView(dgvDiscArt, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_DiscArt)))
+        clsAPITemp.ConvertToScraperGridView(dgvExtrafanarts, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart)))
+        clsAPITemp.ConvertToScraperGridView(dgvExtrathumbs, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart)))
+        clsAPITemp.ConvertToScraperGridView(dgvFanart, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Fanart)))
+        clsAPITemp.ConvertToScraperGridView(dgvLandscape, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Landscape)))
+        clsAPITemp.ConvertToScraperGridView(dgvPoster, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Image_Poster)))
     End Sub
 
     Private Sub EnableApplyButton() Handles _
@@ -546,18 +477,6 @@ Public Class frmMovie_Image
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub chkMovieBannerResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieBannerResize.CheckedChanged
-        EnableApplyButton()
-
-        txtMovieBannerWidth.Enabled = chkMovieBannerResize.Checked
-        txtMovieBannerHeight.Enabled = chkMovieBannerResize.Checked
-
-        If Not chkMovieBannerResize.Checked Then
-            txtMovieBannerWidth.Text = String.Empty
-            txtMovieBannerHeight.Text = String.Empty
-        End If
-    End Sub
-
     Private Sub txtMovieBannerWidth_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMovieBannerWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -582,18 +501,6 @@ Public Class frmMovie_Image
         End If
     End Sub
 
-    Private Sub chkMovieExtrathumbsResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieExtrathumbsResize.CheckedChanged
-        EnableApplyButton()
-
-        txtMovieExtrathumbsWidth.Enabled = chkMovieExtrathumbsResize.Checked
-        txtMovieExtrathumbsHeight.Enabled = chkMovieExtrathumbsResize.Checked
-
-        If Not chkMovieExtrathumbsResize.Checked Then
-            txtMovieExtrathumbsWidth.Text = String.Empty
-            txtMovieExtrathumbsHeight.Text = String.Empty
-        End If
-    End Sub
-
     Private Sub txtMovieExtrathumbsHeight_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrathumbsHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -604,18 +511,6 @@ Public Class frmMovie_Image
 
     Private Sub txtMovieExtrathumbsLimit_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrathumbsLimit.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
-    End Sub
-
-    Private Sub chkMovieExtrafanartsResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieExtrafanartsResize.CheckedChanged
-        EnableApplyButton()
-
-        txtMovieExtrafanartsWidth.Enabled = chkMovieExtrafanartsResize.Checked
-        txtMovieExtrafanartsHeight.Enabled = chkMovieExtrafanartsResize.Checked
-
-        If Not chkMovieExtrafanartsResize.Checked Then
-            txtMovieExtrafanartsWidth.Text = String.Empty
-            txtMovieExtrafanartsHeight.Text = String.Empty
-        End If
     End Sub
 
     Private Sub txtMovieExtrafanartsHeight_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMovieExtrafanartsHeight.KeyPress
@@ -648,18 +543,6 @@ Public Class frmMovie_Image
         cbMovieImagesForcedLanguage.Enabled = chkMovieImagesForceLanguage.Checked
     End Sub
 
-    Private Sub chkMoviePosterResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMoviePosterResize.CheckedChanged
-        EnableApplyButton()
-
-        txtMoviePosterWidth.Enabled = chkMoviePosterResize.Checked
-        txtMoviePosterHeight.Enabled = chkMoviePosterResize.Checked
-
-        If Not chkMoviePosterResize.Checked Then
-            txtMoviePosterWidth.Text = String.Empty
-            txtMoviePosterHeight.Text = String.Empty
-        End If
-    End Sub
-
     Private Sub txtMoviePosterWidth_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMoviePosterWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
@@ -668,24 +551,35 @@ Public Class frmMovie_Image
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub chkMovieFanartResize_CheckedChanged(sender As Object, e As EventArgs) Handles chkMovieFanartResize.CheckedChanged
-        EnableApplyButton()
-
-        txtMovieFanartWidth.Enabled = chkMovieFanartResize.Checked
-        txtMovieFanartHeight.Enabled = chkMovieFanartResize.Checked
-
-        If Not chkMovieFanartResize.Checked Then
-            txtMovieFanartWidth.Text = String.Empty
-            txtMovieFanartHeight.Text = String.Empty
-        End If
-    End Sub
-
     Private Sub txtMovieFanartWidth_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartWidth.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
     Private Sub txtMovieFanartHeight_KeyPress(sender As Object, e As Windows.Forms.KeyPressEventArgs) Handles txtMovieFanartHeight.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub pnlSettings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _bDGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            TableLayoutPanel1.SuspendLayout()
+            For i As Integer = 0 To TableLayoutPanel1.Controls.Count - 1
+                Dim nType As Type = TableLayoutPanel1.Controls(i).GetType
+                If nType.Name = "DataGridView" Then
+                    Dim nDataGridView As DataGridView = CType(TableLayoutPanel1.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            TableLayoutPanel1.ResumeLayout()
+            _bDGVWidthCalculated = True
+        End If
     End Sub
 
 #End Region 'Methods

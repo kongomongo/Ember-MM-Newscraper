@@ -4473,7 +4473,7 @@ Public Class dlgSettings
         gbTVImagesLanguageOpts.Text = strPreferredLanguage
 
         'Preferred Size:
-        Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size:")
+        Dim strPreferredSize As String = Master.eLang.GetString(482, "Preferred Size")
         lblMovieSetBannerSize.Text = strPreferredSize
         lblMovieSetClearArtSize.Text = strPreferredSize
         lblMovieSetClearLogoSize.Text = strPreferredSize
@@ -4624,10 +4624,6 @@ Public Class dlgSettings
         'Use Certification for MPAA
         Dim strUseCertForMPAA As String = Master.eLang.GetString(511, "Use Certification for MPAA")
         chkTVScraperShowCertForMPAA.Text = strUseCertForMPAA
-
-        'Use MPAA as Fallback for FSK Rating
-        Dim strUseMPAAAsFallbackForFSK As String = Master.eLang.GetString(882, "Use MPAA as Fallback for FSK Rating")
-        chkTVScraperShowCertFSK.Text = strUseMPAAAsFallbackForFSK
 
         Dim strUserRating As String = Master.eLang.GetString(1464, "User Rating")
         lblTVScraperGlobalUserRating.Text = strUserRating
