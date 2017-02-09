@@ -383,6 +383,24 @@
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_Data.Designer.vb">
+      <DependentUpon>frmMovieSet_Data.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_Data.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_FileNaming.Designer.vb">
+      <DependentUpon>frmMovieSet_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_Image.Designer.vb">
+      <DependentUpon>frmMovieSet_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_Data.Designer.vb">
       <DependentUpon>frmMovie_Data.vb</DependentUpon>
     </Compile>
@@ -399,6 +417,18 @@
       <DependentUpon>frmMovie_Source.vb</DependentUpon>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_GUI.Designer.vb">
+      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Image.Designer.vb">
+      <DependentUpon>frmTV_Image.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Image.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -556,6 +586,15 @@
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieSet_Data.resx">
+      <DependentUpon>frmMovieSet_Data.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieSet_FileNaming.resx">
+      <DependentUpon>frmMovieSet_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieSet_Image.resx">
+      <DependentUpon>frmMovieSet_Image.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Data.resx">
       <DependentUpon>frmMovie_Data.vb</DependentUpon>
     </EmbeddedResource>
@@ -564,6 +603,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Source.resx">
       <DependentUpon>frmMovie_Source.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
+      <DependentUpon>frmOption_GUI.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Image.resx">
+      <DependentUpon>frmTV_Image.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -879,6 +924,7 @@
     <None Include="Resources\tvtunes.png" />
     <None Include="Resources\preview.png" />
     <None Include="Resources\save.png" />
+    <None Include="Resources\msaa1.png" />
     <Content Include="Resources\tvdb.png" />
     <Content Include="Themes\movie-BlackBeauty.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

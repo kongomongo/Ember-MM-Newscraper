@@ -26,13 +26,13 @@ Partial Class frmMovie_Trailer
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.gbMovieTrailerOpts = New System.Windows.Forms.GroupBox()
         Me.tblTrailer = New System.Windows.Forms.TableLayoutPanel()
-        Me.lblMovieTrailerMinQual = New System.Windows.Forms.Label()
-        Me.cbMovieTrailerPrefVideoQual = New System.Windows.Forms.ComboBox()
-        Me.cbMovieTrailerMinVideoQual = New System.Windows.Forms.ComboBox()
-        Me.lblMovieTrailerPrefQual = New System.Windows.Forms.Label()
-        Me.lblMovieTrailerDefaultSearch = New System.Windows.Forms.Label()
-        Me.chkMovieTrailerKeepExisting = New System.Windows.Forms.CheckBox()
-        Me.txtMovieTrailerDefaultSearch = New System.Windows.Forms.TextBox()
+        Me.lblMinQual = New System.Windows.Forms.Label()
+        Me.cbPrefVideoQual = New System.Windows.Forms.ComboBox()
+        Me.cbMinVideoQual = New System.Windows.Forms.ComboBox()
+        Me.lblPrefQual = New System.Windows.Forms.Label()
+        Me.lblDefaultSearch = New System.Windows.Forms.Label()
+        Me.chkKeepExisting = New System.Windows.Forms.CheckBox()
+        Me.txtDefaultSearch = New System.Windows.Forms.TextBox()
         Me.dgvTrailer = New System.Windows.Forms.DataGridView()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
@@ -90,13 +90,13 @@ Partial Class frmMovie_Trailer
         Me.tblTrailer.ColumnCount = 2
         Me.tblTrailer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTrailer.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTrailer.Controls.Add(Me.lblMovieTrailerMinQual, 0, 2)
-        Me.tblTrailer.Controls.Add(Me.cbMovieTrailerPrefVideoQual, 1, 1)
-        Me.tblTrailer.Controls.Add(Me.cbMovieTrailerMinVideoQual, 1, 2)
-        Me.tblTrailer.Controls.Add(Me.lblMovieTrailerPrefQual, 0, 1)
-        Me.tblTrailer.Controls.Add(Me.lblMovieTrailerDefaultSearch, 0, 3)
-        Me.tblTrailer.Controls.Add(Me.chkMovieTrailerKeepExisting, 0, 0)
-        Me.tblTrailer.Controls.Add(Me.txtMovieTrailerDefaultSearch, 1, 3)
+        Me.tblTrailer.Controls.Add(Me.lblMinQual, 0, 2)
+        Me.tblTrailer.Controls.Add(Me.cbPrefVideoQual, 1, 1)
+        Me.tblTrailer.Controls.Add(Me.cbMinVideoQual, 1, 2)
+        Me.tblTrailer.Controls.Add(Me.lblPrefQual, 0, 1)
+        Me.tblTrailer.Controls.Add(Me.lblDefaultSearch, 0, 3)
+        Me.tblTrailer.Controls.Add(Me.chkKeepExisting, 0, 0)
+        Me.tblTrailer.Controls.Add(Me.txtDefaultSearch, 1, 3)
         Me.tblTrailer.Controls.Add(Me.dgvTrailer, 1, 4)
         Me.tblTrailer.Controls.Add(Me.Label1, 0, 4)
         Me.tblTrailer.Dock = System.Windows.Forms.DockStyle.Fill
@@ -112,86 +112,86 @@ Partial Class frmMovie_Trailer
         Me.tblTrailer.Size = New System.Drawing.Size(351, 128)
         Me.tblTrailer.TabIndex = 2
         '
-        'lblMovieTrailerMinQual
+        'lblMinQual
         '
-        Me.lblMovieTrailerMinQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieTrailerMinQual.AutoSize = True
-        Me.lblMovieTrailerMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMovieTrailerMinQual.Location = New System.Drawing.Point(3, 57)
-        Me.lblMovieTrailerMinQual.Name = "lblMovieTrailerMinQual"
-        Me.lblMovieTrailerMinQual.Size = New System.Drawing.Size(97, 13)
-        Me.lblMovieTrailerMinQual.TabIndex = 8
-        Me.lblMovieTrailerMinQual.Text = "Minimum Quality:"
+        Me.lblMinQual.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMinQual.AutoSize = True
+        Me.lblMinQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMinQual.Location = New System.Drawing.Point(3, 57)
+        Me.lblMinQual.Name = "lblMinQual"
+        Me.lblMinQual.Size = New System.Drawing.Size(97, 13)
+        Me.lblMinQual.TabIndex = 8
+        Me.lblMinQual.Text = "Minimum Quality:"
         '
-        'cbMovieTrailerPrefVideoQual
+        'cbPrefVideoQual
         '
-        Me.cbMovieTrailerPrefVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbMovieTrailerPrefVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerPrefVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieTrailerPrefVideoQual.FormattingEnabled = True
-        Me.cbMovieTrailerPrefVideoQual.Location = New System.Drawing.Point(148, 26)
-        Me.cbMovieTrailerPrefVideoQual.Name = "cbMovieTrailerPrefVideoQual"
-        Me.cbMovieTrailerPrefVideoQual.Size = New System.Drawing.Size(200, 21)
-        Me.cbMovieTrailerPrefVideoQual.TabIndex = 7
+        Me.cbPrefVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbPrefVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbPrefVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbPrefVideoQual.FormattingEnabled = True
+        Me.cbPrefVideoQual.Location = New System.Drawing.Point(148, 26)
+        Me.cbPrefVideoQual.Name = "cbPrefVideoQual"
+        Me.cbPrefVideoQual.Size = New System.Drawing.Size(200, 21)
+        Me.cbPrefVideoQual.TabIndex = 7
         '
-        'cbMovieTrailerMinVideoQual
+        'cbMinVideoQual
         '
-        Me.cbMovieTrailerMinVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbMovieTrailerMinVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbMovieTrailerMinVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbMovieTrailerMinVideoQual.FormattingEnabled = True
-        Me.cbMovieTrailerMinVideoQual.Location = New System.Drawing.Point(148, 53)
-        Me.cbMovieTrailerMinVideoQual.Name = "cbMovieTrailerMinVideoQual"
-        Me.cbMovieTrailerMinVideoQual.Size = New System.Drawing.Size(200, 21)
-        Me.cbMovieTrailerMinVideoQual.TabIndex = 9
+        Me.cbMinVideoQual.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbMinVideoQual.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbMinVideoQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbMinVideoQual.FormattingEnabled = True
+        Me.cbMinVideoQual.Location = New System.Drawing.Point(148, 53)
+        Me.cbMinVideoQual.Name = "cbMinVideoQual"
+        Me.cbMinVideoQual.Size = New System.Drawing.Size(200, 21)
+        Me.cbMinVideoQual.TabIndex = 9
         '
-        'lblMovieTrailerPrefQual
+        'lblPrefQual
         '
-        Me.lblMovieTrailerPrefQual.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieTrailerPrefQual.AutoSize = True
-        Me.lblMovieTrailerPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMovieTrailerPrefQual.Location = New System.Drawing.Point(3, 30)
-        Me.lblMovieTrailerPrefQual.Name = "lblMovieTrailerPrefQual"
-        Me.lblMovieTrailerPrefQual.Size = New System.Drawing.Size(96, 13)
-        Me.lblMovieTrailerPrefQual.TabIndex = 6
-        Me.lblMovieTrailerPrefQual.Text = "Preferred Quality:"
+        Me.lblPrefQual.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblPrefQual.AutoSize = True
+        Me.lblPrefQual.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblPrefQual.Location = New System.Drawing.Point(3, 30)
+        Me.lblPrefQual.Name = "lblPrefQual"
+        Me.lblPrefQual.Size = New System.Drawing.Size(96, 13)
+        Me.lblPrefQual.TabIndex = 6
+        Me.lblPrefQual.Text = "Preferred Quality:"
         '
-        'lblMovieTrailerDefaultSearch
+        'lblDefaultSearch
         '
-        Me.lblMovieTrailerDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblMovieTrailerDefaultSearch.AutoSize = True
-        Me.lblMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMovieTrailerDefaultSearch.Location = New System.Drawing.Point(3, 84)
-        Me.lblMovieTrailerDefaultSearch.Name = "lblMovieTrailerDefaultSearch"
-        Me.lblMovieTrailerDefaultSearch.Size = New System.Drawing.Size(139, 13)
-        Me.lblMovieTrailerDefaultSearch.TabIndex = 11
-        Me.lblMovieTrailerDefaultSearch.Text = "Default Search Parameter:"
+        Me.lblDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblDefaultSearch.AutoSize = True
+        Me.lblDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDefaultSearch.Location = New System.Drawing.Point(3, 84)
+        Me.lblDefaultSearch.Name = "lblDefaultSearch"
+        Me.lblDefaultSearch.Size = New System.Drawing.Size(139, 13)
+        Me.lblDefaultSearch.TabIndex = 11
+        Me.lblDefaultSearch.Text = "Default Search Parameter:"
         '
-        'chkMovieTrailerKeepExisting
+        'chkKeepExisting
         '
-        Me.chkMovieTrailerKeepExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieTrailerKeepExisting.AutoSize = True
-        Me.chkMovieTrailerKeepExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieTrailerKeepExisting.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieTrailerKeepExisting.Name = "chkMovieTrailerKeepExisting"
-        Me.chkMovieTrailerKeepExisting.Size = New System.Drawing.Size(94, 17)
-        Me.chkMovieTrailerKeepExisting.TabIndex = 4
-        Me.chkMovieTrailerKeepExisting.Text = "Keep existing"
-        Me.chkMovieTrailerKeepExisting.UseVisualStyleBackColor = True
+        Me.chkKeepExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkKeepExisting.AutoSize = True
+        Me.chkKeepExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkKeepExisting.Location = New System.Drawing.Point(3, 3)
+        Me.chkKeepExisting.Name = "chkKeepExisting"
+        Me.chkKeepExisting.Size = New System.Drawing.Size(94, 17)
+        Me.chkKeepExisting.TabIndex = 4
+        Me.chkKeepExisting.Text = "Keep existing"
+        Me.chkKeepExisting.UseVisualStyleBackColor = True
         '
-        'txtMovieTrailerDefaultSearch
+        'txtDefaultSearch
         '
-        Me.txtMovieTrailerDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieTrailerDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.txtMovieTrailerDefaultSearch.Location = New System.Drawing.Point(148, 80)
-        Me.txtMovieTrailerDefaultSearch.Name = "txtMovieTrailerDefaultSearch"
-        Me.txtMovieTrailerDefaultSearch.Size = New System.Drawing.Size(200, 22)
-        Me.txtMovieTrailerDefaultSearch.TabIndex = 10
+        Me.txtDefaultSearch.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtDefaultSearch.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.txtDefaultSearch.Location = New System.Drawing.Point(148, 80)
+        Me.txtDefaultSearch.Name = "txtDefaultSearch"
+        Me.txtDefaultSearch.Size = New System.Drawing.Size(200, 22)
+        Me.txtDefaultSearch.TabIndex = 10
         '
         'dgvTrailer
         '
-        Me.dgvTrailer.Location = New System.Drawing.Point(145, 105)
-        Me.dgvTrailer.Margin = New System.Windows.Forms.Padding(0)
+        Me.dgvTrailer.Location = New System.Drawing.Point(148, 105)
+        Me.dgvTrailer.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.dgvTrailer.Name = "dgvTrailer"
         Me.dgvTrailer.Size = New System.Drawing.Size(100, 23)
         Me.dgvTrailer.TabIndex = 71
@@ -233,13 +233,13 @@ Partial Class frmMovie_Trailer
     Friend WithEvents tblSettings As Windows.Forms.TableLayoutPanel
     Friend WithEvents gbMovieTrailerOpts As Windows.Forms.GroupBox
     Friend WithEvents tblTrailer As Windows.Forms.TableLayoutPanel
-    Friend WithEvents txtMovieTrailerDefaultSearch As Windows.Forms.TextBox
-    Friend WithEvents lblMovieTrailerDefaultSearch As Windows.Forms.Label
-    Friend WithEvents chkMovieTrailerKeepExisting As Windows.Forms.CheckBox
-    Friend WithEvents cbMovieTrailerMinVideoQual As Windows.Forms.ComboBox
-    Friend WithEvents lblMovieTrailerMinQual As Windows.Forms.Label
-    Friend WithEvents lblMovieTrailerPrefQual As Windows.Forms.Label
-    Friend WithEvents cbMovieTrailerPrefVideoQual As Windows.Forms.ComboBox
+    Friend WithEvents txtDefaultSearch As Windows.Forms.TextBox
+    Friend WithEvents lblDefaultSearch As Windows.Forms.Label
+    Friend WithEvents chkKeepExisting As Windows.Forms.CheckBox
+    Friend WithEvents cbMinVideoQual As Windows.Forms.ComboBox
+    Friend WithEvents lblMinQual As Windows.Forms.Label
+    Friend WithEvents lblPrefQual As Windows.Forms.Label
+    Friend WithEvents cbPrefVideoQual As Windows.Forms.ComboBox
     Friend WithEvents dgvTrailer As DataGridView
     Friend WithEvents Label1 As Label
 End Class

@@ -245,7 +245,6 @@ Public Class Scraper
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
                             .Scraper = "Fanart.tv",
                             .ShortLang = image.Lang,
-                            .TVBannerType = Enums.TVBannerType.Any,
                             .URLOriginal = image.Url,
                             .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
@@ -372,7 +371,6 @@ Public Class Scraper
                             .LongLang = If(String.IsNullOrEmpty(image.Lang), String.Empty, Localization.ISOGetLangByCode2(image.Lang)),
                             .Scraper = "Fanart.tv",
                             .ShortLang = image.Lang,
-                            .TVBannerType = Enums.TVBannerType.Any,
                             .URLOriginal = image.Url,
                             .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
@@ -391,7 +389,6 @@ Public Class Scraper
                             .Scraper = "Fanart.tv",
                             .Season = If(image.Season = "all", 999, CInt(image.Season)),
                             .ShortLang = image.Lang,
-                            .TVBannerType = Enums.TVBannerType.Any,
                             .URLOriginal = image.Url,
                             .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}
@@ -410,7 +407,6 @@ Public Class Scraper
                             .Scraper = "Fanart.tv",
                             .Season = If(Image.Season = "all", 999, CInt(Image.Season)),
                             .ShortLang = Image.Lang,
-                            .TVBannerType = Enums.TVBannerType.Any,
                             .URLOriginal = Image.Url,
                             .URLThumb = Image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "500"}
@@ -429,7 +425,6 @@ Public Class Scraper
                             .Scraper = "Fanart.tv",
                             .Season = If(image.Season = "all", 999, CInt(image.Season)),
                             .ShortLang = image.Lang,
-                            .TVBannerType = Enums.TVBannerType.Any,
                             .URLOriginal = image.Url,
                             .URLThumb = image.Url.Replace("/fanart/", "/preview/"),
                             .Width = "1000"}

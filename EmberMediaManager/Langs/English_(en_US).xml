@@ -486,7 +486,7 @@
   <string id="485">On Movie Scraped</string>
   <string id="486">On New Episode Added</string>
   <string id="487">Notifications</string>
-  <string id="488">Global Scraper Fields</string>
+  <string id="488"></string>
   <string id="489">Display Language Flags</string>
   <string id="490">Movie List Sorting</string>
   <string id="491">MovieSet List Sorting</string>
@@ -516,7 +516,7 @@
   <string id="515">Duration Format</string>
   <string id="516">Use Duration for Runtime</string>
   <string id="517">Scan Meta Data</string>
-  <string id="518">Configure Ember's appearance and operation.</string>
+  <string id="518"></string>
   <string id="519">Movie (Folder Name)</string>
   <string id="520">Backdrops Folder</string>
   <string id="521">Automatically Save Fanart To Backdrops Folder</string>
@@ -575,7 +575,7 @@
   <string id="574">Scraping Trailers</string>
   <string id="575">Generating Extrathumbs:</string>
   <string id="576">Verifying Movie Details:</string>
-  <string id="577">Scraper Fields - Global</string>
+  <string id="577"></string>
   <string id="578">Limit</string>
   <string id="579">File Source:</string>
   <string id="580">Display only movies from the selected video source.</string>
@@ -728,7 +728,7 @@
   <string id="727">Episode</string>
   <string id="728">Aired</string>
   <string id="729">Credits</string>
-  <string id="730">Preferred Type:</string>
+  <string id="730"></string>
   <string id="731">Refreshing Show</string>
   <string id="732">&lt;h&gt;=Hours{0}&lt;m&gt;=Minutes{0}&lt;s&gt;=Seconds</string>
   <string id="733">Display Missing Episodes</string>
@@ -789,7 +789,7 @@
   <string id="788">Fanart.tv</string>
   <string id="789">Fanart.tv Personal API Key</string>
   <string id="790">These settings are specific to this module.{0}Please refer to the global settings for more options.</string>
-  <string id="791">Scraper Fields - Scraper specific</string>
+  <string id="791"></string>
   <string id="792">Adding Date</string>
   <string id="793">&amp;Versions...</string>
   <string id="794">Search Results</string>

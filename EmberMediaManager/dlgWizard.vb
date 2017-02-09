@@ -379,20 +379,13 @@ Public Class dlgWizard
 
     Private Sub chkMovieSetUseExpert_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMovieSetUseExpert.CheckedChanged
         btnMovieSetPathExpertSingleBrowse.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetBannerExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetBannerExpertSingle.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetClearArtExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetClearArtExpertSingle.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetClearLogoExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetClearLogoExpertSingle.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetFanartExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetFanartExpertSingle.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetLandscapeExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetLandscapeExpertSingle.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetNFOExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetNFOExpertSingle.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetPathExpertSingle.Enabled = chkMovieSetUseExpert.Checked
-        txtMovieSetPosterExpertParent.Enabled = chkMovieSetUseExpert.Checked
         txtMovieSetPosterExpertSingle.Enabled = chkMovieSetUseExpert.Checked
     End Sub
 
@@ -837,15 +830,6 @@ Public Class dlgWizard
             txtMovieSetPathExpertSingle.Text = .MovieSetPathExpertSingle
             txtMovieSetPosterExpertSingle.Text = .MovieSetPosterExpertSingle
 
-            '***************** Expert Parent ******************
-            txtMovieSetBannerExpertParent.Text = .MovieSetBannerExpertParent
-            txtMovieSetClearArtExpertParent.Text = .MovieSetClearArtExpertParent
-            txtMovieSetClearLogoExpertParent.Text = .MovieSetClearLogoExpertParent
-            txtMovieSetFanartExpertParent.Text = .MovieSetFanartExpertParent
-            txtMovieSetLandscapeExpertParent.Text = .MovieSetLandscapeExpertParent
-            txtMovieSetNFOExpertParent.Text = .MovieSetNFOExpertParent
-            txtMovieSetPosterExpertParent.Text = .MovieSetPosterExpertParent
-
 
             '***************************************************
             '****************** TV Show Part *******************
@@ -1229,15 +1213,6 @@ Public Class dlgWizard
             .MovieSetNFOExpertSingle = txtMovieSetNFOExpertSingle.Text
             .MovieSetPathExpertSingle = txtMovieSetPathExpertSingle.Text
             .MovieSetPosterExpertSingle = txtMovieSetPosterExpertSingle.Text
-
-            '***************** Expert Parent ******************
-            .MovieSetBannerExpertParent = txtMovieSetBannerExpertParent.Text
-            .MovieSetClearArtExpertParent = txtMovieSetClearArtExpertParent.Text
-            .MovieSetClearLogoExpertParent = txtMovieSetClearLogoExpertParent.Text
-            .MovieSetFanartExpertParent = txtMovieSetFanartExpertParent.Text
-            .MovieSetLandscapeExpertParent = txtMovieSetLandscapeExpertParent.Text
-            .MovieSetNFOExpertParent = txtMovieSetNFOExpertParent.Text
-            .MovieSetPosterExpertParent = txtMovieSetPosterExpertParent.Text
 
 
             '***************************************************

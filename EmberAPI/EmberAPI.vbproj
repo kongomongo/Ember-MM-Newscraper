@@ -291,6 +291,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\..\Desktop\msaa.png">
+      <Link>Resources\msaa.png</Link>
+    </None>
     <None Include="DB\MyVideosDBSQL_v2_Patch.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -531,7 +534,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
     <Folder Include="SettingsPanels\" />
     <Folder Include="Settings\" />
   </ItemGroup>

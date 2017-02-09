@@ -127,6 +127,7 @@ Partial Class frmSettingsPanel
         'pbAPIKeyInfo
         '
         Me.pbAPIKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbAPIKeyInfo.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbAPIKeyInfo.Image = CType(resources.GetObject("pbAPIKeyInfo.Image"), System.Drawing.Image)
         Me.pbAPIKeyInfo.Location = New System.Drawing.Point(325, 6)
         Me.pbAPIKeyInfo.Name = "pbAPIKeyInfo"
@@ -391,8 +392,9 @@ Partial Class frmSettingsPanel
         '
         'pbLogo
         '
+        Me.pbLogo.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbLogo.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.pbLogo.Image = My.Resources.Resources.logo_powered_by_rectangle_blue
+        Me.pbLogo.Image = Global.addon.themoviedb.org.My.Resources.Resources.logo_powered_by_rectangle_blue
         Me.pbLogo.Location = New System.Drawing.Point(3, 300)
         Me.pbLogo.Name = "pbLogo"
         Me.pbLogo.Size = New System.Drawing.Size(350, 50)

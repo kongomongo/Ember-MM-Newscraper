@@ -16,7 +16,6 @@ Public Class clsAPITemp
         tDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         tDataGridView.ColumnHeadersVisible = False
         tDataGridView.Height = 23
-        tDataGridView.Margin = New Padding(0)
         tDataGridView.MultiSelect = False
         tDataGridView.RowHeadersVisible = False
         tDataGridView.ScrollBars = ScrollBars.None

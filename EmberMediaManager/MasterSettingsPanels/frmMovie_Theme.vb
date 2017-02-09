@@ -31,6 +31,8 @@ Public Class frmMovie_Theme
     Dim _strName As String = "Movie_Theme"
     Dim _strTitle As String = Master.eLang.GetString(1285, "Themes")
 
+    Private _bDGVWidthCalculated As Boolean
+
 #End Region 'Fields
 
 #Region "Properties"
@@ -135,13 +137,13 @@ Public Class frmMovie_Theme
 
     Public Sub LoadSettings()
         With Master.eSettings
-            chkMovieThemeKeepExisting.Checked = .MovieThemeKeepExisting
+            chkKeepExisting.Checked = .MovieThemeKeepExisting
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
-            .MovieThemeKeepExisting = chkMovieThemeKeepExisting.Checked
+            .MovieThemeKeepExisting = chkKeepExisting.Checked
         End With
     End Sub
 
@@ -150,14 +152,41 @@ Public Class frmMovie_Theme
 #Region "Methods"
 
     Private Sub EnableApplyButton() Handles _
-        chkMovieThemeKeepExisting.CheckedChanged
+        chkKeepExisting.CheckedChanged,
+        txtDefaultSearch.TextChanged
 
         Handle_SettingsChanged()
     End Sub
 
     Private Sub SetUp()
-        chkMovieThemeKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
+        chkKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
         gbMovieThemeOpts.Text = Master.eLang.GetString(1285, "Themes")
+        lblDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
+
+        clsAPITemp.ConvertToScraperGridView(dgvTheme, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Theme)))
+    End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub pnlSettings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _bDGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            tblTheme.SuspendLayout()
+            For i As Integer = 0 To tblTheme.Controls.Count - 1
+                Dim nType As Type = tblTheme.Controls(i).GetType
+                If nType.Name = "DataGridView" Then
+                    Dim nDataGridView As DataGridView = CType(tblTheme.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            tblTheme.ResumeLayout()
+            _bDGVWidthCalculated = True
+        End If
     End Sub
 
 #End Region 'Methods

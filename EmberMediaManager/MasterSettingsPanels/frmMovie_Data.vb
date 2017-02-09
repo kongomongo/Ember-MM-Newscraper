@@ -580,7 +580,6 @@ Public Class frmMovie_Data
         lblMovieScraperGlobalRuntime.Text = Master.eLang.GetString(396, "Runtime")
         chkMovieScraperCollectionsExtendedInfo.Text = Master.eLang.GetString(1075, "Save extended Collection information to NFO (Kodi 16.0 ""Jarvis"" and newer)")
         chkMovieScraperCastWithImg.Text = Master.eLang.GetString(510, "Scrape Only Actors With Images")
-        gbScraperSettings.Text = Master.eLang.GetString(577, "Scraper Fields - Global")
         lblMovieScraperGlobalStudios.Text = Master.eLang.GetString(226, "Studios")
         lblMovieScraperGlobalTagline.Text = Master.eLang.GetString(397, "Tagline")
         lblMovieScraperGlobalTitle.Text = Master.eLang.GetString(21, "Title")

@@ -522,7 +522,7 @@ Partial Class frmMovie_Data
         Me.cbMovieScraperCertLang.FormattingEnabled = True
         Me.cbMovieScraperCertLang.IntegralHeight = False
         Me.cbMovieScraperCertLang.Items.AddRange(New Object() {"Argentina", "Australia", "Belgium", "Brazil", "Canada", "Finland", "France", "Germany", "Hong Kong", "Hungary", "Iceland", "Ireland", "Netherlands", "New Zealand", "Peru", "Poland", "Portugal", "Serbia", "Singapore", "South Korea", "Spain", "Sweden", "Switzerland", "Turkey", "UK", "USA"})
-        Me.cbMovieScraperCertLang.Location = New System.Drawing.Point(164, 339)
+        Me.cbMovieScraperCertLang.Location = New System.Drawing.Point(164, 340)
         Me.cbMovieScraperCertLang.Margin = New System.Windows.Forms.Padding(3, 0, 3, 0)
         Me.cbMovieScraperCertLang.Name = "cbMovieScraperCertLang"
         Me.cbMovieScraperCertLang.Size = New System.Drawing.Size(70, 21)

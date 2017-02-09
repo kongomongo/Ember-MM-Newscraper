@@ -137,19 +137,19 @@ Public Class frmMovie_Trailer
 
     Public Sub LoadSettings()
         With Master.eSettings
-            cbMovieTrailerMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
-            cbMovieTrailerPrefVideoQual.SelectedValue = .MovieTrailerPrefVideoQual
-            chkMovieTrailerKeepExisting.Checked = .MovieTrailerKeepExisting
-            txtMovieTrailerDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
+            cbMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
+            cbPrefVideoQual.SelectedValue = .MovieTrailerPrefVideoQual
+            chkKeepExisting.Checked = .MovieTrailerKeepExisting
+            txtDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
-            .MovieTrailerDefaultSearch = txtMovieTrailerDefaultSearch.Text
-            .MovieTrailerKeepExisting = chkMovieTrailerKeepExisting.Checked
-            .MovieTrailerMinVideoQual = CType(cbMovieTrailerMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
-            .MovieTrailerPrefVideoQual = CType(cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
+            .MovieTrailerDefaultSearch = txtDefaultSearch.Text
+            .MovieTrailerKeepExisting = chkKeepExisting.Checked
+            .MovieTrailerMinVideoQual = CType(cbMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
+            .MovieTrailerPrefVideoQual = CType(cbPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
         End With
     End Sub
 
@@ -160,18 +160,18 @@ Public Class frmMovie_Trailer
     Private Sub cbMovieTrailerPrefVideoQual_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
         EnableApplyButton()
 
-        If CType(cbMovieTrailerPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value = Enums.TrailerVideoQuality.Any Then
-            cbMovieTrailerMinVideoQual.Enabled = False
+        If CType(cbPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value = Enums.TrailerVideoQuality.Any Then
+            cbMinVideoQual.Enabled = False
         Else
-            cbMovieTrailerMinVideoQual.Enabled = True
+            cbMinVideoQual.Enabled = True
         End If
     End Sub
 
     Private Sub EnableApplyButton() Handles _
-        cbMovieTrailerMinVideoQual.SelectedValueChanged,
-        cbMovieTrailerPrefVideoQual.SelectedValueChanged,
-        chkMovieTrailerKeepExisting.CheckedChanged,
-        txtMovieTrailerDefaultSearch.TextChanged
+        cbMinVideoQual.SelectedValueChanged,
+        cbPrefVideoQual.SelectedValueChanged,
+        chkKeepExisting.CheckedChanged,
+        txtDefaultSearch.TextChanged
 
         Handle_SettingsChanged()
     End Sub
@@ -191,21 +191,21 @@ Public Class frmMovie_Trailer
         items.Add("240p", Enums.TrailerVideoQuality.SQ240p)
         items.Add("144p", Enums.TrailerVideoQuality.SQ144p)
         items.Add("144p 15fps", Enums.TrailerVideoQuality.SQ144p15fps)
-        cbMovieTrailerMinVideoQual.DataSource = items.ToList
-        cbMovieTrailerMinVideoQual.DisplayMember = "Key"
-        cbMovieTrailerMinVideoQual.ValueMember = "Value"
-        cbMovieTrailerPrefVideoQual.DataSource = items.ToList
-        cbMovieTrailerPrefVideoQual.DisplayMember = "Key"
-        cbMovieTrailerPrefVideoQual.ValueMember = "Value"
+        cbMinVideoQual.DataSource = items.ToList
+        cbMinVideoQual.DisplayMember = "Key"
+        cbMinVideoQual.ValueMember = "Value"
+        cbPrefVideoQual.DataSource = items.ToList
+        cbPrefVideoQual.DisplayMember = "Key"
+        cbPrefVideoQual.ValueMember = "Value"
     End Sub
 
     Private Sub SetUp()
         LoadMovieTrailerQualities()
 
-        chkMovieTrailerKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
-        lblMovieTrailerDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
-        lblMovieTrailerMinQual.Text = Master.eLang.GetString(1027, "Minimum Quality")
-        lblMovieTrailerPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality")
+        chkKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
+        lblDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
+        lblMinQual.Text = Master.eLang.GetString(1027, "Minimum Quality")
+        lblPrefQual.Text = Master.eLang.GetString(800, "Preferred Quality")
 
         clsAPITemp.ConvertToScraperGridView(dgvTrailer, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movie_Trailer)))
     End Sub

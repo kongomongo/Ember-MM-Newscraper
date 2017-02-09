@@ -25,8 +25,9 @@ Partial Class frmSettingsPanel
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmSettingsPanel))
         Me.gbGlobal = New System.Windows.Forms.GroupBox()
         Me.tblScraperOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.pbAPIKeyInfo = New System.Windows.Forms.PictureBox()
+        Me.txtAPIKey = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.lblAPIKey = New System.Windows.Forms.Label()
+        Me.pbAPIKeyInfo = New System.Windows.Forms.PictureBox()
         Me.pnlSettingsTop = New System.Windows.Forms.Panel()
         Me.tblSettingsTop = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettings = New System.Windows.Forms.Panel()
@@ -34,7 +35,6 @@ Partial Class frmSettingsPanel
         Me.tblSettingsMain = New System.Windows.Forms.TableLayoutPanel()
         Me.pnlSettingsBottom = New System.Windows.Forms.Panel()
         Me.tblSettingsBottom = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtAPIKey = New EmberAPI.FormUtils.TextBox_with_Watermark()
         Me.gbGlobal.SuspendLayout()
         Me.tblScraperOpts.SuspendLayout()
         CType(Me.pbAPIKeyInfo, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -78,15 +78,15 @@ Partial Class frmSettingsPanel
         Me.tblScraperOpts.Size = New System.Drawing.Size(341, 28)
         Me.tblScraperOpts.TabIndex = 98
         '
-        'pbAPIKeyInfo
+        'txtAPIKey
         '
-        Me.pbAPIKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.pbAPIKeyInfo.Image = CType(resources.GetObject("pbAPIKeyInfo.Image"), System.Drawing.Image)
-        Me.pbAPIKeyInfo.Location = New System.Drawing.Point(322, 6)
-        Me.pbAPIKeyInfo.Name = "pbAPIKeyInfo"
-        Me.pbAPIKeyInfo.Size = New System.Drawing.Size(16, 16)
-        Me.pbAPIKeyInfo.TabIndex = 5
-        Me.pbAPIKeyInfo.TabStop = False
+        Me.txtAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.txtAPIKey.Location = New System.Drawing.Point(86, 3)
+        Me.txtAPIKey.Name = "txtAPIKey"
+        Me.txtAPIKey.Size = New System.Drawing.Size(230, 22)
+        Me.txtAPIKey.TabIndex = 6
+        Me.txtAPIKey.WatermarkColor = System.Drawing.Color.Gray
+        Me.txtAPIKey.WatermarkText = "Ember Media Manager Embedded API Key"
         '
         'lblAPIKey
         '
@@ -98,6 +98,17 @@ Partial Class frmSettingsPanel
         Me.lblAPIKey.Size = New System.Drawing.Size(77, 13)
         Me.lblAPIKey.TabIndex = 0
         Me.lblAPIKey.Text = "TVDB Api Key:"
+        '
+        'pbAPIKeyInfo
+        '
+        Me.pbAPIKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbAPIKeyInfo.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbAPIKeyInfo.Image = CType(resources.GetObject("pbAPIKeyInfo.Image"), System.Drawing.Image)
+        Me.pbAPIKeyInfo.Location = New System.Drawing.Point(322, 6)
+        Me.pbAPIKeyInfo.Name = "pbAPIKeyInfo"
+        Me.pbAPIKeyInfo.Size = New System.Drawing.Size(16, 16)
+        Me.pbAPIKeyInfo.TabIndex = 5
+        Me.pbAPIKeyInfo.TabStop = False
         '
         'pnlSettingsTop
         '
@@ -191,16 +202,6 @@ Partial Class frmSettingsPanel
         Me.tblSettingsBottom.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettingsBottom.Size = New System.Drawing.Size(523, 0)
         Me.tblSettingsBottom.TabIndex = 0
-        '
-        'txtAPIKey
-        '
-        Me.txtAPIKey.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtAPIKey.Location = New System.Drawing.Point(86, 3)
-        Me.txtAPIKey.Name = "txtAPIKey"
-        Me.txtAPIKey.Size = New System.Drawing.Size(230, 22)
-        Me.txtAPIKey.TabIndex = 6
-        Me.txtAPIKey.WatermarkColor = System.Drawing.Color.Gray
-        Me.txtAPIKey.WatermarkText = "Ember Media Manager Embedded API Key"
         '
         'frmSettingsPanel
         '

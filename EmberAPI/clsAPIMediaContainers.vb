@@ -3299,7 +3299,6 @@ Namespace MediaContainers
         Private _season As Integer
         Private _shortlang As String
         Private _tvbannersize As Enums.TVBannerSize
-        Private _tvbannertype As Enums.TVBannerType
         Private _tvcharacterartsize As Enums.TVCharacterArtSize
         Private _tvclearartsize As Enums.TVClearArtSize
         Private _tvclearlogosize As Enums.TVClearLogoSize
@@ -3526,15 +3525,6 @@ Namespace MediaContainers
             End Get
         End Property
 
-        Public Property TVBannerType() As Enums.TVBannerType
-            Get
-                Return _tvbannertype
-            End Get
-            Set(ByVal value As Enums.TVBannerType)
-                _tvbannertype = value
-            End Set
-        End Property
-
         Public ReadOnly Property TVCharacterArtSize() As Enums.TVCharacterArtSize
             Get
                 Return _tvcharacterartsize
@@ -3657,7 +3647,6 @@ Namespace MediaContainers
             _season = -1
             _shortlang = String.Empty
             _tvbannersize = Enums.TVBannerSize.Any
-            _tvbannertype = Enums.TVBannerType.Any
             _tvcharacterartsize = Enums.TVCharacterArtSize.Any
             _tvclearartsize = Enums.TVClearArtSize.Any
             _tvclearlogosize = Enums.TVClearLogoSize.Any

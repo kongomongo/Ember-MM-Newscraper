@@ -59,5 +59,14 @@ Namespace My.Resources
                 resourceCulture = value
             End Set
         End Property
+        
+        '''<summary>
+        '''  Sucht eine lokalisierte Zeichenfolge, die http://codesector.com/teracopy ähnelt.
+        '''</summary>
+        Friend ReadOnly Property urlTeraCopy() As String
+            Get
+                Return ResourceManager.GetString("urlTeraCopy", resourceCulture)
+            End Get
+        End Property
     End Module
 End Namespace

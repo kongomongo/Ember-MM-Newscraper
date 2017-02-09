@@ -989,13 +989,6 @@ Public Class Enums
         Any = 99
     End Enum
 
-    Public Enum TVBannerType As Integer
-        Blank = 0       'will leave the title and show logo off the banner
-        Graphical = 1   'will show the series name in the show's official font or will display the actual logo for the show
-        Text = 2        'will show the series name as plain text in an Arial font
-        Any = 99
-    End Enum
-
     Public Enum TVCharacterArtSize As Integer
         HD512 = 0
         Any = 99

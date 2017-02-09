@@ -127,11 +127,11 @@ Public Class frmSettingsPanel
 
     Private Sub lblTeraCopyLink_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lblTeraCopyLink.LinkClicked
         If Master.isWindows Then
-            Process.Start("https://codesector.com/teracopy")
+            Process.Start(My.Resources.urlTeraCopy)
         Else
             Using Explorer As New Process
                 Explorer.StartInfo.FileName = "xdg-open"
-                Explorer.StartInfo.Arguments = "https://codesector.com/teracopy"
+                Explorer.StartInfo.Arguments = My.Resources.urlTeraCopy
                 Explorer.Start()
             End Using
         End If

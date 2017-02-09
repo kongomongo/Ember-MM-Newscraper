@@ -228,6 +228,10 @@ Public Class frmOption_Proxy
         lblProxyUsername.Text = String.Concat(Master.eLang.GetString(425, "Username"), ":")
     End Sub
 
+    Private Sub txtProxyPort_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtProxyPort.KeyPress
+        e.Handled = StringUtils.NumericOnly(e.KeyChar)
+    End Sub
+
 #End Region 'Methods
 
 End Class

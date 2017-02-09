@@ -158,6 +158,7 @@ Partial Class frmSettingsPanel
         'pbApiKeyInfo
         '
         Me.pbApiKeyInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.pbApiKeyInfo.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbApiKeyInfo.Image = CType(resources.GetObject("pbApiKeyInfo.Image"), System.Drawing.Image)
         Me.pbApiKeyInfo.Location = New System.Drawing.Point(386, 6)
         Me.pbApiKeyInfo.Name = "pbApiKeyInfo"
@@ -219,7 +220,7 @@ Partial Class frmSettingsPanel
         Me.tblSettingsTop.Size = New System.Drawing.Size(453, 0)
         Me.tblSettingsTop.TabIndex = 99
         '
-        'frmSettingsHolder_TV
+        'frmSettingsPanel
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
@@ -231,7 +232,7 @@ Partial Class frmSettingsPanel
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.Name = "frmSettingsHolder_TV"
+        Me.Name = "frmSettingsPanel"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Scraper Setup"

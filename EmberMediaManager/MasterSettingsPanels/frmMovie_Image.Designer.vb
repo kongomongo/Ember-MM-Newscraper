@@ -94,8 +94,6 @@ Partial Class frmMovie_Image
         Me.cbMoviePosterPrefSize = New System.Windows.Forms.ComboBox()
         Me.lblKeepExisting = New System.Windows.Forms.Label()
         Me.cbMovieExtrathumbsPrefSize = New System.Windows.Forms.ComboBox()
-        Me.lblWidth = New System.Windows.Forms.Label()
-        Me.lblHeight = New System.Windows.Forms.Label()
         Me.lblActorThumbs = New System.Windows.Forms.Label()
         Me.lblBanner = New System.Windows.Forms.Label()
         Me.lblClearArt = New System.Windows.Forms.Label()
@@ -116,6 +114,8 @@ Partial Class frmMovie_Image
         Me.dgvFanart = New System.Windows.Forms.DataGridView()
         Me.dgvLandscape = New System.Windows.Forms.DataGridView()
         Me.dgvPoster = New System.Windows.Forms.DataGridView()
+        Me.lblWidth = New System.Windows.Forms.Label()
+        Me.lblHeight = New System.Windows.Forms.Label()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.gbMovieImagesOpts.SuspendLayout()
@@ -150,7 +150,7 @@ Partial Class frmMovie_Image
         Me.pnlSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(1039, 746)
+        Me.pnlSettings.Size = New System.Drawing.Size(717, 578)
         Me.pnlSettings.TabIndex = 12
         Me.pnlSettings.Visible = False
         '
@@ -183,7 +183,7 @@ Partial Class frmMovie_Image
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblSettings.Size = New System.Drawing.Size(1039, 746)
+        Me.tblSettings.Size = New System.Drawing.Size(717, 578)
         Me.tblSettings.TabIndex = 17
         '
         'gbMovieImagesOpts
@@ -1134,28 +1134,6 @@ Partial Class frmMovie_Image
         Me.cbMovieExtrathumbsPrefSize.Size = New System.Drawing.Size(80, 21)
         Me.cbMovieExtrathumbsPrefSize.TabIndex = 1
         '
-        'lblWidth
-        '
-        Me.lblWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblWidth.AutoSize = True
-        Me.lblWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblWidth.Location = New System.Drawing.Point(331, 3)
-        Me.lblWidth.Name = "lblWidth"
-        Me.lblWidth.Size = New System.Drawing.Size(65, 13)
-        Me.lblWidth.TabIndex = 0
-        Me.lblWidth.Text = "Max Width"
-        '
-        'lblHeight
-        '
-        Me.lblHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblHeight.AutoSize = True
-        Me.lblHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblHeight.Location = New System.Drawing.Point(402, 3)
-        Me.lblHeight.Name = "lblHeight"
-        Me.lblHeight.Size = New System.Drawing.Size(68, 13)
-        Me.lblHeight.TabIndex = 0
-        Me.lblHeight.Text = "Max Height"
-        '
         'lblActorThumbs
         '
         Me.lblActorThumbs.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -1349,11 +1327,33 @@ Partial Class frmMovie_Image
         Me.dgvPoster.Size = New System.Drawing.Size(100, 23)
         Me.dgvPoster.TabIndex = 71
         '
+        'lblWidth
+        '
+        Me.lblWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblWidth.AutoSize = True
+        Me.lblWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblWidth.Location = New System.Drawing.Point(331, 3)
+        Me.lblWidth.Name = "lblWidth"
+        Me.lblWidth.Size = New System.Drawing.Size(65, 13)
+        Me.lblWidth.TabIndex = 0
+        Me.lblWidth.Text = "Max Width"
+        '
+        'lblHeight
+        '
+        Me.lblHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblHeight.AutoSize = True
+        Me.lblHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblHeight.Location = New System.Drawing.Point(402, 3)
+        Me.lblHeight.Name = "lblHeight"
+        Me.lblHeight.Size = New System.Drawing.Size(68, 13)
+        Me.lblHeight.TabIndex = 0
+        Me.lblHeight.Text = "Max Height"
+        '
         'frmMovie_Image
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1039, 746)
+        Me.ClientSize = New System.Drawing.Size(717, 578)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmMovie_Image"
         Me.Text = "frmMovie_Images"
