@@ -373,7 +373,7 @@ Namespace Kodi
                         Return WatchedState
                     Else
                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | Nothing to sync", _currenthost.Label, mDBElement.MainDetails.Title))
-                        Return Nothing
+                        Return New WatchedState With {.AlreadyInSync = True}
                     End If
                 Else
                     logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_Movie: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.MainDetails.Title))
@@ -414,7 +414,7 @@ Namespace Kodi
                         Return WatchedState
                     Else
                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | Nothing to sync", _currenthost.Label, mDBElement.MainDetails.Title))
-                        Return Nothing
+                        Return New WatchedState With {.AlreadyInSync = True}
                     End If
                 Else
                     logger.Error(String.Format("[APIKodi] [{0}] GetPlaycount_TVEpisode: ""{1}"" | NOT found on host! Abort!", _currenthost.Label, mDBElement.MainDetails.Title))
@@ -1378,6 +1378,11 @@ Namespace Kodi
 
             Dim bIsNew As Boolean = False
 
+            If mDBElement.MainDetails.Season = 999 Then
+                logger.Info(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: ""{1}: Season {2}"" | Skip syncing process (* All Seasons entry can't be synced)", _currenthost.Label, mDBElement.ShowPath, mDBElement.MainDetails.Season))
+                Return True
+            End If
+
             Try
                 logger.Trace(String.Format("[APIKodi] [{0}] UpdateInfo_TVSeason: ""{1}: Season {2}"" | Start syncing process...", _currenthost.Label, mDBElement.ShowPath, mDBElement.MainDetails.Season))
 
@@ -2180,12 +2185,23 @@ Namespace Kodi
 
 #Region "Fields"
 
+            Private _alreadyinsync As Boolean
             Private _lastplayed As String
             Private _playcount As Integer
 
 #End Region 'Fields
 
 #Region "Properties"
+
+            Public Property AlreadyInSync() As Boolean
+                Get
+                    Return _alreadyinsync
+                End Get
+                Set(ByVal value As Boolean)
+                    _alreadyinsync = value
+                End Set
+            End Property
+
             Public Property LastPlayed() As String
                 Get
                     Return _lastplayed
@@ -2217,6 +2233,7 @@ Namespace Kodi
 #Region "Methods"
 
             Public Sub Clear()
+                _alreadyinsync = False
                 _lastplayed = String.Empty
                 _playcount = 0
             End Sub

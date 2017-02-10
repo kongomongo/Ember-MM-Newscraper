@@ -319,8 +319,10 @@ Public Class Addon
                                         'run task
                                         Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                         If Result IsNot Nothing Then
-                                            mDBElement.MainDetails.LastPlayed = Result.LastPlayed
-                                            mDBElement.MainDetails.PlayCount = Result.PlayCount
+                                            If Not Result.AlreadyInSync Then
+                                                mDBElement.MainDetails.LastPlayed = Result.LastPlayed
+                                                mDBElement.MainDetails.PlayCount = Result.PlayCount
+                                            End If
                                             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -358,8 +360,10 @@ Public Class Addon
                                         'run task
                                         Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                         If Result IsNot Nothing Then
-                                            mDBElement.MainDetails.LastPlayed = Result.LastPlayed
-                                            mDBElement.MainDetails.PlayCount = Result.PlayCount
+                                            If Not Result.AlreadyInSync Then
+                                                mDBElement.MainDetails.LastPlayed = Result.LastPlayed
+                                                mDBElement.MainDetails.PlayCount = Result.PlayCount
+                                            End If
                                             Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                         Else
                                             logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", mDBElement.MainDetails.Title))
@@ -398,8 +402,10 @@ Public Class Addon
                                                 'run task
                                                 Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
                                                 If Result IsNot Nothing Then
-                                                    tEpisode.MainDetails.LastPlayed = Result.LastPlayed
-                                                    tEpisode.MainDetails.PlayCount = Result.PlayCount
+                                                    If Not Result.AlreadyInSync Then
+                                                        tEpisode.MainDetails.LastPlayed = Result.LastPlayed
+                                                        tEpisode.MainDetails.PlayCount = Result.PlayCount
+                                                    End If
                                                     Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                 Else
                                                     logger.Warn(String.Concat("[KodiInterface] [", mHost.Label, "] [GenericRunCallBack] | Sync Failed:  ", tEpisode.MainDetails.Title))
@@ -811,10 +817,12 @@ Public Class Addon
                                                     'run task
                                                     Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_Movie(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                                     If Result IsNot Nothing Then
-                                                        mDBElement.MainDetails.LastPlayed = Result.LastPlayed
-                                                        mDBElement.MainDetails.PlayCount = Result.PlayCount
-                                                        Master.DB.Save_Movie(mDBElement, False, True, False, True, False)
-                                                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        If Not Result.AlreadyInSync Then
+                                                            mDBElement.MainDetails.LastPlayed = Result.LastPlayed
+                                                            mDBElement.MainDetails.PlayCount = Result.PlayCount
+                                                            Master.DB.Save_Movie(mDBElement, False, True, False, True, False)
+                                                            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        End If
                                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                     End If
                                                 Else
@@ -834,10 +842,12 @@ Public Class Addon
                                                     'run task
                                                     Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(mDBElement, GenericSubEventProgressAsync, GenericEventProcess))
                                                     If Result IsNot Nothing Then
-                                                        mDBElement.MainDetails.LastPlayed = Result.LastPlayed
-                                                        mDBElement.MainDetails.PlayCount = Result.PlayCount
-                                                        Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
-                                                        RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        If Not Result.AlreadyInSync Then
+                                                            mDBElement.MainDetails.LastPlayed = Result.LastPlayed
+                                                            mDBElement.MainDetails.PlayCount = Result.PlayCount
+                                                            Master.DB.Save_TVEpisode(mDBElement, False, True, False, False, True)
+                                                            RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {mDBElement.ID}))
+                                                        End If
                                                         Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                     End If
                                                 Else
@@ -859,10 +869,12 @@ Public Class Addon
                                                             'run task
                                                             Dim Result = Await Task.Run(Function() _APIKodi.GetPlaycount_TVEpisode(tEpisode, GenericSubEventProgressAsync, GenericEventProcess))
                                                             If Result IsNot Nothing Then
-                                                                tEpisode.MainDetails.LastPlayed = Result.LastPlayed
-                                                                tEpisode.MainDetails.PlayCount = Result.PlayCount
-                                                                Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
-                                                                RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
+                                                                If Not Result.AlreadyInSync Then
+                                                                    tEpisode.MainDetails.LastPlayed = Result.LastPlayed
+                                                                    tEpisode.MainDetails.PlayCount = Result.PlayCount
+                                                                    Master.DB.Save_TVEpisode(tEpisode, False, True, False, False, True)
+                                                                    RaiseEvent GenericEvent(Enums.AddonEventType.AfterEdit_TVEpisode, New List(Of Object)(New Object() {tEpisode.ID}))
+                                                                End If
                                                                 Notifications.Show(New Notifications.Notification(Enums.NotificationType.Info, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", tEpisode.MainDetails.Title), New Bitmap(My.Resources.logo)))
                                                             End If
                                                         Else
