@@ -112,58 +112,71 @@ Public Class CommandLine
                         logger.Warn("[CommandLine] No path or invalid path specified for command ""-scanfolder""")
                     End If
                 Case "-scrapemovies"
+                    Dim nContentType As Enums.ContentType = Enums.ContentType.Movie
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         i += 1
                         Dim ScrapeType As String = Args(i)
                         Select Case ScrapeType
                             Case "allask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "allauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "allskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.AllSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
@@ -171,58 +184,71 @@ Public Class CommandLine
                         logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
                     End If
                 Case "-scrapemoviesets"
+                    Dim nContentType As Enums.ContentType = Enums.ContentType.MovieSet
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         i += 1
                         Dim ScrapeType As String = Args(i)
                         Select Case ScrapeType
                             Case "allask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "allauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "allskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.AllSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemoviesets", Enums.ScrapeType.NewAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapemovies", Enums.ScrapeType.NewSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemoviesets""")
                         End Select
@@ -230,58 +256,71 @@ Public Class CommandLine
                         logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemoviesets""")
                     End If
                 Case "-scrapetvshows"
+                    Dim nContentType As Enums.ContentType = Enums.ContentType.TVShow
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         i += 1
                         Dim ScrapeType As String = Args(i)
                         Select Case ScrapeType
                             Case "allask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "allauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "allskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.AllSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "markedskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MarkedSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "missingskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.MissingSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newask"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAsk, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAsk, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newauto"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAuto, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewAuto, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case "newskip"
                                 Dim CustomScrapeModifiers As New Structures.ScrapeModifiers
-                                i = SetScraperMod(Args, i, CustomScrapeModifiers)
-                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewSkip, CustomScrapeModifiers}))
+                                Dim CustomScrapeOptions As New Structures.ScrapeOptions
+                                i = SetScraperModAndOpt(Args, i, CustomScrapeModifiers, CustomScrapeOptions, nContentType)
+                                RaiseEvent TaskEvent(Enums.AddonEventType.CommandLine, New List(Of Object)(New Object() {"scrapetvshows", Enums.ScrapeType.NewSkip, CustomScrapeModifiers, CustomScrapeOptions}))
                             Case Else
                                 logger.Warn("[CommandLine] Invalid ScrapeType specified for command ""-scrapemovies""")
                         End Select
@@ -365,120 +404,214 @@ Public Class CommandLine
         Return iEndPos
     End Function
 
-    Private Function SetScraperMod(ByVal Args() As String, ByVal iStartPos As Integer, ByRef ScrapeModifiers As Structures.ScrapeModifiers) As Integer
+    Private Function SetScraperModAndOpt(ByVal Args() As String,
+                                         ByVal iStartPos As Integer,
+                                         ByRef tScrapeModifiers As Structures.ScrapeModifiers,
+                                         ByRef tScrapeOptions As Structures.ScrapeOptions,
+                                         ByVal tContentType As Enums.ContentType) As Integer
         Dim iEndPos As Integer = iStartPos
 
         For i As Integer = iStartPos + 1 To Args.Count - 1
             Select Case Args(i).ToLower
+                'ScrapeModifiers
                 Case "all"
-                    ScrapeModifiers.AllSeasonsBanner = True
-                    ScrapeModifiers.AllSeasonsFanart = True
-                    ScrapeModifiers.AllSeasonsLandscape = True
-                    ScrapeModifiers.AllSeasonsPoster = True
-                    ScrapeModifiers.EpisodeActorThumbs = True
-                    ScrapeModifiers.EpisodeFanart = True
-                    ScrapeModifiers.EpisodeMeta = True
-                    ScrapeModifiers.EpisodeNFO = True
-                    ScrapeModifiers.EpisodePoster = True
-                    ScrapeModifiers.MainActorthumbs = True
-                    ScrapeModifiers.MainBanner = True
-                    ScrapeModifiers.MainCharacterArt = True
-                    ScrapeModifiers.MainClearArt = True
-                    ScrapeModifiers.MainClearLogo = True
-                    ScrapeModifiers.MainDiscArt = True
-                    ScrapeModifiers.MainExtrafanarts = True
-                    ScrapeModifiers.MainExtrathumbs = True
-                    ScrapeModifiers.MainFanart = True
-                    ScrapeModifiers.MainLandscape = True
-                    ScrapeModifiers.MainMeta = True
-                    ScrapeModifiers.MainNFO = True
-                    ScrapeModifiers.MainPoster = True
-                    ScrapeModifiers.MainSubtitles = True
-                    ScrapeModifiers.MainTheme = True
-                    ScrapeModifiers.MainTrailer = True
-                    ScrapeModifiers.SeasonBanner = True
-                    ScrapeModifiers.SeasonFanart = True
-                    ScrapeModifiers.SeasonLandscape = True
-                    ScrapeModifiers.SeasonNFO = True
-                    ScrapeModifiers.SeasonPoster = True
-                    ScrapeModifiers.withEpisodes = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.AllSeasonsBanner = True
+                    tScrapeModifiers.AllSeasonsFanart = True
+                    tScrapeModifiers.AllSeasonsLandscape = True
+                    tScrapeModifiers.AllSeasonsPoster = True
+                    tScrapeModifiers.EpisodeActorThumbs = True
+                    tScrapeModifiers.EpisodeFanart = True
+                    tScrapeModifiers.EpisodeMeta = True
+                    tScrapeModifiers.EpisodeNFO = True
+                    tScrapeModifiers.EpisodePoster = True
+                    tScrapeModifiers.MainActorthumbs = True
+                    tScrapeModifiers.MainBanner = True
+                    tScrapeModifiers.MainCharacterArt = True
+                    tScrapeModifiers.MainClearArt = True
+                    tScrapeModifiers.MainClearLogo = True
+                    tScrapeModifiers.MainDiscArt = True
+                    tScrapeModifiers.MainExtrafanarts = True
+                    tScrapeModifiers.MainExtrathumbs = True
+                    tScrapeModifiers.MainFanart = True
+                    tScrapeModifiers.MainLandscape = True
+                    tScrapeModifiers.MainMeta = True
+                    tScrapeModifiers.MainNFO = True
+                    tScrapeModifiers.MainPoster = True
+                    tScrapeModifiers.MainSubtitles = True
+                    tScrapeModifiers.MainTheme = True
+                    tScrapeModifiers.MainTrailer = True
+                    tScrapeModifiers.SeasonBanner = True
+                    tScrapeModifiers.SeasonFanart = True
+                    tScrapeModifiers.SeasonLandscape = True
+                    tScrapeModifiers.SeasonNFO = True
+                    tScrapeModifiers.SeasonPoster = True
+                    tScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.withSeasons = True
+                    tScrapeOptions = Functions.ScrapeOptionsAllEnabled
                 Case "episodeall"
-                    ScrapeModifiers.EpisodeActorThumbs = True
-                    ScrapeModifiers.EpisodeFanart = True
-                    ScrapeModifiers.EpisodeMeta = True
-                    ScrapeModifiers.EpisodeNFO = True
-                    ScrapeModifiers.EpisodePoster = True
-                    ScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.EpisodeActorThumbs = True
+                    tScrapeModifiers.EpisodeFanart = True
+                    tScrapeModifiers.EpisodeMeta = True
+                    tScrapeModifiers.EpisodeNFO = True
+                    tScrapeModifiers.EpisodePoster = True
+                    tScrapeModifiers.withEpisodes = True
+                    tScrapeOptions = Functions.ScrapeOptionsAllEnabled
                 Case "episodeactorthumbs"
-                    ScrapeModifiers.EpisodeActorThumbs = True
-                    ScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.EpisodeActorThumbs = True
+                    tScrapeModifiers.withEpisodes = True
                 Case "episodefanart"
-                    ScrapeModifiers.EpisodeFanart = True
-                    ScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.EpisodeFanart = True
+                    tScrapeModifiers.withEpisodes = True
                 Case "episodemeta"
-                    ScrapeModifiers.EpisodeMeta = True
-                    ScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.EpisodeMeta = True
+                    tScrapeModifiers.withEpisodes = True
                 Case "episodenfo"
-                    ScrapeModifiers.EpisodeNFO = True
-                    ScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.EpisodeNFO = True
+                    tScrapeModifiers.withEpisodes = True
                 Case "episodeposter"
-                    ScrapeModifiers.EpisodePoster = True
-                    ScrapeModifiers.withEpisodes = True
+                    tScrapeModifiers.EpisodePoster = True
+                    tScrapeModifiers.withEpisodes = True
                 Case "actorthumbs"
-                    ScrapeModifiers.MainActorthumbs = True
+                    tScrapeModifiers.MainActorthumbs = True
                 Case "banner"
-                    ScrapeModifiers.MainBanner = True
+                    tScrapeModifiers.MainBanner = True
                 Case "characterart"
-                    ScrapeModifiers.MainCharacterArt = True
+                    tScrapeModifiers.MainCharacterArt = True
                 Case "clearart"
-                    ScrapeModifiers.MainClearArt = True
+                    tScrapeModifiers.MainClearArt = True
                 Case "clearlogo"
-                    ScrapeModifiers.MainClearLogo = True
+                    tScrapeModifiers.MainClearLogo = True
                 Case "discart"
-                    ScrapeModifiers.MainDiscArt = True
+                    tScrapeModifiers.MainDiscArt = True
                 Case "extrafanarts"
-                    ScrapeModifiers.MainExtrafanarts = True
+                    tScrapeModifiers.MainExtrafanarts = True
                 Case "extrathumbs"
-                    ScrapeModifiers.MainExtrathumbs = True
+                    tScrapeModifiers.MainExtrathumbs = True
                 Case "fanart"
-                    ScrapeModifiers.MainFanart = True
+                    tScrapeModifiers.MainFanart = True
                 Case "landscape"
-                    ScrapeModifiers.MainLandscape = True
+                    tScrapeModifiers.MainLandscape = True
                 Case "meta"
-                    ScrapeModifiers.MainMeta = True
+                    tScrapeModifiers.MainMeta = True
                 Case "nfo"
-                    ScrapeModifiers.MainNFO = True
+                    tScrapeModifiers.MainNFO = True
+                    tScrapeOptions = Functions.ScrapeOptionsAllEnabled
                 Case "poster"
-                    ScrapeModifiers.MainPoster = True
+                    tScrapeModifiers.MainPoster = True
                 Case "subtitles"
-                    ScrapeModifiers.MainSubtitles = True
+                    tScrapeModifiers.MainSubtitles = True
                 Case "theme"
-                    ScrapeModifiers.MainTheme = True
+                    tScrapeModifiers.MainTheme = True
                 Case "trailer"
-                    ScrapeModifiers.MainTrailer = True
+                    tScrapeModifiers.MainTrailer = True
                 Case "seasonall"
-                    ScrapeModifiers.SeasonBanner = True
-                    ScrapeModifiers.SeasonFanart = True
-                    ScrapeModifiers.SeasonLandscape = True
-                    ScrapeModifiers.SeasonNFO = True
-                    ScrapeModifiers.SeasonPoster = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.SeasonBanner = True
+                    tScrapeModifiers.SeasonFanart = True
+                    tScrapeModifiers.SeasonLandscape = True
+                    tScrapeModifiers.SeasonNFO = True
+                    tScrapeModifiers.SeasonPoster = True
+                    tScrapeModifiers.withSeasons = True
+                    tScrapeOptions = Functions.ScrapeOptionsAllEnabled
                 Case "seasonbanner"
-                    ScrapeModifiers.SeasonBanner = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.SeasonBanner = True
+                    tScrapeModifiers.withSeasons = True
                 Case "seasonfanart"
-                    ScrapeModifiers.SeasonFanart = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.SeasonFanart = True
+                    tScrapeModifiers.withSeasons = True
                 Case "seasonlandscape"
-                    ScrapeModifiers.SeasonLandscape = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.SeasonLandscape = True
+                    tScrapeModifiers.withSeasons = True
                 Case "seasonnfo"
-                    ScrapeModifiers.SeasonNFO = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.SeasonNFO = True
+                    tScrapeModifiers.withSeasons = True
                 Case "seasonposter"
-                    ScrapeModifiers.SeasonPoster = True
-                    ScrapeModifiers.withSeasons = True
+                    tScrapeModifiers.SeasonPoster = True
+                    tScrapeModifiers.withSeasons = True
+
+                'ScrapeOptions
+                'TVEpisode specific
+                Case "episodeactors"
+                    tScrapeOptions.bEpisodeActors = True
+                Case "episodeaired"
+                    tScrapeOptions.bEpisodeAired = True
+                Case "episodecredits"
+                    tScrapeOptions.bEpisodeCredits = True
+                Case "episodedirectors"
+                    tScrapeOptions.bEpisodeDirectors = True
+                Case "episodegueststars"
+                    tScrapeOptions.bEpisodeGuestStars = True
+                Case "episodeplot"
+                    tScrapeOptions.bEpisodePlot = True
+                Case "episoderating"
+                    tScrapeOptions.bEpisodeRating = True
+                Case "episoderuntime"
+                    tScrapeOptions.bEpisodeRuntime = True
+                Case "episodetitle"
+                    tScrapeOptions.bEpisodeTitle = True
+                Case "episodeuserrating"
+                    tScrapeOptions.bEpisodeUserRating = True
+
+                'MainDetails
+                Case "actors"
+                    tScrapeOptions.bMainActors = True
+                Case "certifications"
+                    tScrapeOptions.bMainCertifications = True
+                    tScrapeOptions.bMainMPAA = True
+                Case "collectionid"
+                    tScrapeOptions.bMainCollectionID = True
+                Case "countries"
+                    tScrapeOptions.bMainCountries = True
+                Case "creators"
+                    tScrapeOptions.bMainCreators = True
+                Case "directors"
+                    tScrapeOptions.bMainDirectors = True
+                Case "episodeguide"
+                    tScrapeOptions.bMainEpisodeGuide = True
+                Case "genres"
+                    tScrapeOptions.bMainGenres = True
+                Case "mpaa"
+                    tScrapeOptions.bMainMPAA = True
+                    tScrapeOptions.bMainCertifications = True
+                Case "originaltitle"
+                    tScrapeOptions.bMainOriginalTitle = True
+                Case "outline"
+                    tScrapeOptions.bMainOutline = True
+                Case "plot"
+                    tScrapeOptions.bMainPlot = True
+                Case "premiered"
+                    tScrapeOptions.bMainPremiered = True
+                Case "rating"
+                    tScrapeOptions.bMainRating = True
+                Case "release"
+                    tScrapeOptions.bMainRelease = True
+                Case "runtime"
+                    tScrapeOptions.bMainRuntime = True
+                Case "status"
+                    tScrapeOptions.bMainStatus = True
+                Case "tagline"
+                    tScrapeOptions.bMainTagline = True
+                Case "title"
+                    tScrapeOptions.bMainTitle = True
+                Case "top250"
+                    tScrapeOptions.bMainTop250 = True
+                Case "trailer"
+                    tScrapeOptions.bMainTrailer = True
+                Case "rating"
+                    tScrapeOptions.bMainUserRating = True
+                Case "writers"
+                    tScrapeOptions.bMainWriters = True
+                Case "year"
+                    tScrapeOptions.bMainYear = True
+
+                'Season specified
+                Case "seasonaired"
+                    tScrapeOptions.bSeasonAired = True
+                Case "seasonplot"
+                    tScrapeOptions.bSeasonPlot = True
+                Case "seasontitle"
+                    tScrapeOptions.bSeasonTitle = True
+
+                    'go back
                 Case Else
                     Return i - 1
             End Select
