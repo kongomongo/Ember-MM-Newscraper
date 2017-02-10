@@ -4165,87 +4165,56 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuSeasonRemoveFromDisk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
-        Try
+        Dim lstTVSeasonID As New List(Of Long)
 
-            Dim SeasonsToDelete As New Dictionary(Of Long, Long)
-            Dim ShowId As Long = -1
-            Dim SeasonNum As Integer = -1
+        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
+            If Not lstTVSeasonID.Contains(lngID) Then lstTVSeasonID.Add(lngID)
+        Next
 
-            For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-                ShowId = Convert.ToInt64(sRow.Cells("idShow").Value)
-                SeasonNum = Convert.ToInt32(sRow.Cells("Season").Value)
-                'seasonnum first... showid can't be key or else only one season will be deleted
-                If Not SeasonsToDelete.ContainsKey(SeasonNum) Then
-                    SeasonsToDelete.Add(SeasonNum, ShowId)
+        If lstTVSeasonID.Count > 0 Then
+            Using dlg As New dlgDeleteConfirm
+                If dlg.ShowDialog(lstTVSeasonID, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                    FillListTVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
+                    SetTVCount()
                 End If
-            Next
-
-            If SeasonsToDelete.Count > 0 Then
-                Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(SeasonsToDelete, Enums.ContentType.TVSeason) = DialogResult.OK Then
-                        FillListTVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
-                        SetTVCount()
-                    End If
-                End Using
-            End If
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+            End Using
+        End If
     End Sub
 
     Private Sub cmnuEpisodeRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDisk.Click
-        Try
+        Dim lstTVEpisodeID As New List(Of Long)
 
-            Dim EpsToDelete As New Dictionary(Of Long, Long)
-            Dim EpId As Long = -1
+        For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idEpisode").Value)
+            If Not lstTVEpisodeID.Contains(lngID) Then lstTVEpisodeID.Add(lngID)
+        Next
 
-            For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-                EpId = Convert.ToInt64(sRow.Cells("idEpisode").Value)
-                If Not EpsToDelete.ContainsKey(EpId) Then
-                    EpsToDelete.Add(EpId, 0)
+        If lstTVEpisodeID.Count > 0 Then
+            Using dlg As New dlgDeleteConfirm
+                If dlg.ShowDialog(lstTVEpisodeID, Enums.ContentType.TVEpisode) = DialogResult.OK Then
+                    FillListTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
+                    SetTVCount()
                 End If
-            Next
-
-            If EpsToDelete.Count > 0 Then
-                Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(EpsToDelete, Enums.ContentType.TVEpisode) = DialogResult.OK Then
-                        FillListTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
-                        SetTVCount()
-                    End If
-                End Using
-            End If
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-
+            End Using
+        End If
     End Sub
 
     Private Sub cmnuShowRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDisk.Click
-        Try
+        Dim lstTVShowID As New List(Of Long)
 
-            Dim ShowsToDelete As New Dictionary(Of Long, Long)
-            Dim ShowId As Long = -1
+        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
+            If Not lstTVShowID.Contains(lngID) Then lstTVShowID.Add(lngID)
+        Next
 
-            For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-                ShowId = Convert.ToInt64(sRow.Cells("idShow").Value)
-                If Not ShowsToDelete.ContainsKey(ShowId) Then
-                    ShowsToDelete.Add(ShowId, 0)
+        If lstTVShowID.Count > 0 Then
+            Using dlg As New dlgDeleteConfirm
+                If dlg.ShowDialog(lstTVShowID, Enums.ContentType.TVShow) = DialogResult.OK Then
+                    FillList(False, False, True)
                 End If
-            Next
-
-            If ShowsToDelete.Count > 0 Then
-                Using dlg As New dlgDeleteConfirm
-                    If dlg.ShowDialog(ShowsToDelete, Enums.ContentType.TVShow) = DialogResult.OK Then
-                        FillList(False, False, True)
-                    End If
-                End Using
-            End If
-
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
+            End Using
+        End If
     End Sub
 
     Private Sub cmnuEpisodeEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeEdit.Click
@@ -5466,19 +5435,16 @@ Public Class frmMain
 
 
     Private Sub cmnuMovieRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisk.Click
-        Dim MoviesToDelete As New Dictionary(Of Long, Long)
-        Dim MovieId As Int64 = -1
+        Dim lstMovieID As New List(Of Long)
 
         For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-            MovieId = Convert.ToInt64(sRow.Cells("idMovie").Value)
-            If Not MoviesToDelete.ContainsKey(MovieId) Then
-                MoviesToDelete.Add(MovieId, 0)
-            End If
+            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
+            If Not lstMovieID.Contains(lngID) Then lstMovieID.Add(lngID)
         Next
 
-        If MoviesToDelete.Count > 0 Then
+        If lstMovieID.Count > 0 Then
             Using dlg As New dlgDeleteConfirm
-                If dlg.ShowDialog(MoviesToDelete, Enums.ContentType.Movie) = DialogResult.OK Then
+                If dlg.ShowDialog(lstMovieID, Enums.ContentType.Movie) = DialogResult.OK Then
                     FillList(True, True, False)
                 End If
             End Using

@@ -273,13 +273,6 @@ Public Class dlgSettings
              .Panel = pnlTVScraper,
              .Order = 400})
         _SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlTVTheme",
-             .Title = Master.eLang.GetString(1285, "Themes"),
-             .ImageIndex = 11,
-             .Type = Enums.SettingsPanelType.TV,
-             .Panel = pnlTVThemes,
-             .Order = 600})
-        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlExtensions",
              .Title = Master.eLang.GetString(553, "File System"),
              .ImageIndex = 4,
@@ -300,6 +293,7 @@ Public Class dlgSettings
         _lstMasterSettingsPanels.Add(frmOption_GUI)
         _lstMasterSettingsPanels.Add(frmOption_Proxy)
         _lstMasterSettingsPanels.Add(frmTV_Image)
+        _lstMasterSettingsPanels.Add(frmTV_Theme)
 
         For Each s As Interfaces.MasterSettingsPanel In _lstMasterSettingsPanels.OrderBy(Function(f) f.Order)
             Dim nPanel As Containers.SettingsPanel = s.InjectSettingsPanel
@@ -1589,7 +1583,6 @@ Public Class dlgSettings
             chkTVScraperUseMDDuration.Checked = .TVScraperUseMDDuration
             chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
             chkTVShowProperCase.Checked = .TVShowProperCase
-            chkTVShowThemeKeepExisting.Checked = .TVShowThemeKeepExisting
             lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
             lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
             If .MovieSetGeneralCustomScrapeButtonEnabled Then
@@ -2540,7 +2533,6 @@ Public Class dlgSettings
             .TVShowProperCase = chkTVShowProperCase.Checked
             .TVShowMatching.Clear()
             .TVShowMatching.AddRange(TVShowMatching)
-            .TVShowThemeKeepExisting = chkTVShowThemeKeepExisting.Checked
             If Not String.IsNullOrEmpty(txtTVSkipLessThan.Text) AndAlso Integer.TryParse(txtTVSkipLessThan.Text, 0) Then
                 .TVSkipLessThan = Convert.ToInt32(txtTVSkipLessThan.Text)
             Else
@@ -2947,10 +2939,6 @@ Public Class dlgSettings
         colTVGeneralEpisodeListSortingHide.Text = strHide
         colTVGeneralSeasonListSortingHide.Text = strHide
         colTVGeneralShowListSortingHide.Text = strHide
-
-        'Keep existing
-        Dim strKeepExisting As String = Master.eLang.GetString(971, "Keep existing")
-        chkTVShowThemeKeepExisting.Text = strKeepExisting
 
         'Landscape
         Dim strLandscape As String = Master.eLang.GetString(1059, "Landscape")
@@ -3724,7 +3712,6 @@ Public Class dlgSettings
         chkTVShowPosterBoxee.CheckedChanged,
         chkTVShowPosterFrodo.CheckedChanged,
         chkTVShowPosterYAMJ.CheckedChanged,
-        chkTVShowThemeKeepExisting.CheckedChanged,
         tcFileSystemCleaner.SelectedIndexChanged,
         txtTVScraperDurationRuntimeFormat.TextChanged,
         txtTVShowActorThumbsExtExpert.TextChanged,

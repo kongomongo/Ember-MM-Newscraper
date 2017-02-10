@@ -275,12 +275,15 @@ Public Class Addon
                     End If
 
                     If MessageBox.Show(String.Format(If(doMove, strMove, strCopy),
-                                            MediaToWork.Count, dstPath), If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
+                                                     MediaToWork.Count, dstPath),
+                                       If(doMove, Master.eLang.GetString(910, "Move"), Master.eLang.GetString(911, "Copy")),
+                                       MessageBoxButtons.YesNo,
+                                       MessageBoxIcon.Question) = DialogResult.Yes Then
                         If ContentType = Enums.ContentType.Movie Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each movieID As Long In MediaToWork
                                 Dim mMovie As Database.DBElement = Master.DB.Load_Movie(movieID)
-                                ItemsToWork = FileDelete.GetItemsToDelete(False, mMovie)
+                                ItemsToWork = FileUtils.Common.GetAllItemsOfDBElement(mMovie)
                                 If ItemsToWork.Count = 1 AndAlso Directory.Exists(ItemsToWork(0).ToString) Then
                                     If _addonsettings.TeraCopy Then
                                         mTeraCopy.Sources.Add(ItemsToWork(0).ToString)
@@ -295,7 +298,7 @@ Public Class Addon
                                     End If
                                 End If
                             Next
-                            If Not _addonsettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.Movies = True})
+                            If Not _addonsettings.TeraCopy AndAlso doMove Then AddonsManager.Instance.RuntimeObjects.InvokeLoadMedia(New Structures.ScanOrClean With {.SpecificFolder = True}, strFolder:=dstPath)
                         ElseIf ContentType = Enums.ContentType.TVShow Then
                             Dim FileDelete As New FileUtils.Delete
                             For Each tShowID As Long In MediaToWork
@@ -389,8 +392,8 @@ Public Class Addon
                                          })
             Next
         End If
-        _addonsettings.TeraCopy = clsXMLAdvancedSettings.GetBooleanSetting("TeraCopy", False)
-        _addonsettings.TeraCopyPath = clsXMLAdvancedSettings.GetSetting("TeraCopyPath", String.Empty)
+        _addonsettings.TeraCopy = _settings.GetBooleanSetting("TeraCopy", False)
+        _addonsettings.TeraCopyPath = _settings.GetStringSetting("TeraCopyPath", String.Empty)
     End Sub
 
     Sub PopulateFolders(ByVal tMenuItem As ToolStripMenuItem, ByVal tContentType As Enums.ContentType)

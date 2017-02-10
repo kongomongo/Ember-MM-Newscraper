@@ -555,11 +555,6 @@ Partial Class dlgSettings
         Me.lblHelp = New System.Windows.Forms.Label()
         Me.pnlSettingsHelp = New System.Windows.Forms.Panel()
         Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
-        Me.pnlTVThemes = New System.Windows.Forms.Panel()
-        Me.tblTVThemes = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbTVThemeOpts = New System.Windows.Forms.GroupBox()
-        Me.tblTVThemeOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkTVShowThemeKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cdColor = New System.Windows.Forms.ColorDialog()
         Me.pnlMovieSetGeneral = New System.Windows.Forms.Panel()
         Me.tblMovieSetGeneral = New System.Windows.Forms.TableLayoutPanel()
@@ -970,10 +965,6 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.SuspendLayout()
         CType(Me.pbSettingsHelpLogo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlSettingsHelp.SuspendLayout()
-        Me.pnlTVThemes.SuspendLayout()
-        Me.tblTVThemes.SuspendLayout()
-        Me.gbTVThemeOpts.SuspendLayout()
-        Me.tblTVThemeOpts.SuspendLayout()
         Me.pnlMovieSetGeneral.SuspendLayout()
         Me.tblMovieSetGeneral.SuspendLayout()
         Me.gbMovieSetGeneralCustomScrapeButton.SuspendLayout()
@@ -8290,76 +8281,6 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.Size = New System.Drawing.Size(766, 68)
         Me.pnlSettingsHelp.TabIndex = 8
         '
-        'pnlTVThemes
-        '
-        Me.pnlTVThemes.AutoSize = True
-        Me.pnlTVThemes.BackColor = System.Drawing.Color.White
-        Me.pnlTVThemes.Controls.Add(Me.tblTVThemes)
-        Me.pnlTVThemes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.pnlTVThemes.Location = New System.Drawing.Point(900, 900)
-        Me.pnlTVThemes.Name = "pnlTVThemes"
-        Me.pnlTVThemes.Size = New System.Drawing.Size(162, 73)
-        Me.pnlTVThemes.TabIndex = 23
-        Me.pnlTVThemes.Visible = False
-        '
-        'tblTVThemes
-        '
-        Me.tblTVThemes.AutoScroll = True
-        Me.tblTVThemes.AutoSize = True
-        Me.tblTVThemes.ColumnCount = 2
-        Me.tblTVThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVThemes.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVThemes.Controls.Add(Me.gbTVThemeOpts, 0, 0)
-        Me.tblTVThemes.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVThemes.Location = New System.Drawing.Point(0, 0)
-        Me.tblTVThemes.Name = "tblTVThemes"
-        Me.tblTVThemes.RowCount = 2
-        Me.tblTVThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVThemes.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVThemes.Size = New System.Drawing.Size(162, 73)
-        Me.tblTVThemes.TabIndex = 4
-        '
-        'gbTVThemeOpts
-        '
-        Me.gbTVThemeOpts.AutoSize = True
-        Me.gbTVThemeOpts.Controls.Add(Me.tblTVThemeOpts)
-        Me.gbTVThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVThemeOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbTVThemeOpts.Name = "gbTVThemeOpts"
-        Me.gbTVThemeOpts.Size = New System.Drawing.Size(106, 44)
-        Me.gbTVThemeOpts.TabIndex = 2
-        Me.gbTVThemeOpts.TabStop = False
-        Me.gbTVThemeOpts.Text = "Themes"
-        '
-        'tblTVThemeOpts
-        '
-        Me.tblTVThemeOpts.AutoSize = True
-        Me.tblTVThemeOpts.ColumnCount = 2
-        Me.tblTVThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVThemeOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVThemeOpts.Controls.Add(Me.chkTVShowThemeKeepExisting, 0, 0)
-        Me.tblTVThemeOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVThemeOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblTVThemeOpts.Name = "tblTVThemeOpts"
-        Me.tblTVThemeOpts.RowCount = 2
-        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVThemeOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVThemeOpts.Size = New System.Drawing.Size(100, 23)
-        Me.tblTVThemeOpts.TabIndex = 3
-        '
-        'chkTVShowThemeKeepExisting
-        '
-        Me.chkTVShowThemeKeepExisting.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVShowThemeKeepExisting.AutoSize = True
-        Me.chkTVShowThemeKeepExisting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVShowThemeKeepExisting.Location = New System.Drawing.Point(3, 3)
-        Me.chkTVShowThemeKeepExisting.Name = "chkTVShowThemeKeepExisting"
-        Me.chkTVShowThemeKeepExisting.Size = New System.Drawing.Size(94, 17)
-        Me.chkTVShowThemeKeepExisting.TabIndex = 4
-        Me.chkTVShowThemeKeepExisting.Text = "Keep existing"
-        Me.chkTVShowThemeKeepExisting.UseVisualStyleBackColor = True
-        '
         'pnlMovieSetGeneral
         '
         Me.pnlMovieSetGeneral.AutoSize = True
@@ -14359,7 +14280,6 @@ Partial Class dlgSettings
         Me.ClientSize = New System.Drawing.Size(1214, 941)
         Me.Controls.Add(Me.pnlTVGeneral)
         Me.Controls.Add(Me.pnlTVSources)
-        Me.Controls.Add(Me.pnlTVThemes)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlFileSystem)
         Me.Controls.Add(Me.pnlMovieSetGeneral)
@@ -14583,14 +14503,6 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.ResumeLayout(False)
         CType(Me.pbSettingsHelpLogo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlSettingsHelp.ResumeLayout(False)
-        Me.pnlTVThemes.ResumeLayout(False)
-        Me.pnlTVThemes.PerformLayout()
-        Me.tblTVThemes.ResumeLayout(False)
-        Me.tblTVThemes.PerformLayout()
-        Me.gbTVThemeOpts.ResumeLayout(False)
-        Me.gbTVThemeOpts.PerformLayout()
-        Me.tblTVThemeOpts.ResumeLayout(False)
-        Me.tblTVThemeOpts.PerformLayout()
         Me.pnlMovieSetGeneral.ResumeLayout(False)
         Me.pnlMovieSetGeneral.PerformLayout()
         Me.tblMovieSetGeneral.ResumeLayout(False)
@@ -14832,7 +14744,6 @@ Partial Class dlgSettings
     Friend WithEvents chkTVUseYAMJ As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVLockShowStatus As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVScraperShowStatus As System.Windows.Forms.CheckBox
-    Friend WithEvents pnlTVThemes As System.Windows.Forms.Panel
     Friend WithEvents gbFileSystemValidThemeExts As System.Windows.Forms.GroupBox
     Friend WithEvents btnFileSystemValidThemeExtsReset As System.Windows.Forms.Button
     Friend WithEvents btnFileSystemValidThemeExtsRemove As System.Windows.Forms.Button
@@ -15148,10 +15059,6 @@ Partial Class dlgSettings
     Friend WithEvents chkTVShowLandscapeExtended As System.Windows.Forms.CheckBox
     Friend WithEvents lblTVSourcesFilenamingKodiExtendedCharacterArt As System.Windows.Forms.Label
     Friend WithEvents chkTVShowCharacterArtExtended As System.Windows.Forms.CheckBox
-    Friend WithEvents tblTVThemes As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbTVThemeOpts As System.Windows.Forms.GroupBox
-    Friend WithEvents tblTVThemeOpts As System.Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkTVShowThemeKeepExisting As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVScraperCleanFields As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVGeneralClickScrape As System.Windows.Forms.CheckBox
     Friend WithEvents chkTVGeneralClickScrapeAsk As System.Windows.Forms.CheckBox

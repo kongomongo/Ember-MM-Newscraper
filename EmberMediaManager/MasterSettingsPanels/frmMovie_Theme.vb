@@ -138,11 +138,13 @@ Public Class frmMovie_Theme
     Public Sub LoadSettings()
         With Master.eSettings
             chkKeepExisting.Checked = .MovieThemeKeepExisting
+            txtDefaultSearch.Text = .MovieThemeDefaultSearch
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
+            .MovieThemeDefaultSearch = txtDefaultSearch.Text.Trim
             .MovieThemeKeepExisting = chkKeepExisting.Checked
         End With
     End Sub

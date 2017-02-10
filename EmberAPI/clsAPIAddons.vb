@@ -1276,7 +1276,7 @@ Public Class AddonsManager
 
 #Region "Delegates"
 
-        Delegate Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long)
+        Delegate Sub LoadMedia(ByVal Scan As Structures.ScanOrClean, ByVal SourceID As Long, ByVal strFolder As String)
 
         'all runtime object including Function (delegate) that need to be exposed to Modules
         Delegate Sub OpenImageViewer(ByVal _Image As Image)
@@ -1513,9 +1513,9 @@ Public Class AddonsManager
             _OpenImageViewer = IV
         End Sub
 
-        Public Sub InvokeLoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceID As Long = -1)
-            'Invoked from Modules
-            _LoadMedia.Invoke(Scan, SourceID)
+        Public Sub InvokeLoadMedia(ByVal Scan As Structures.ScanOrClean, Optional ByVal SourceID As Long = -1, Optional strFolder As String = "")
+            'Invoked from Addons
+            _LoadMedia.Invoke(Scan, SourceID, strFolder)
         End Sub
 
         Public Sub InvokeOpenImageViewer(ByRef _image As Image)

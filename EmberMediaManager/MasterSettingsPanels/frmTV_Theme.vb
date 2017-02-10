@@ -19,6 +19,7 @@
 ' ################################################################################
 
 Imports EmberAPI
+Imports System.Windows.Forms
 
 Public Class frmTV_Theme
     Implements Interfaces.MasterSettingsPanel
@@ -26,10 +27,12 @@ Public Class frmTV_Theme
 #Region "Fields"
 
     Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.TV
-    Dim _intImageIndex As Integer = -1
-    Dim _intOrder As Integer = -1
-    Dim _strName As String = ""
-    Dim _strTitle As String = ""
+    Dim _intImageIndex As Integer = 11
+    Dim _intOrder As Integer = 700
+    Dim _strName As String = "TV_Theme"
+    Dim _strTitle As String = Master.eLang.GetString(1285, "Themes")
+
+    Private _bDGVWidthCalculated As Boolean
 
 #End Region 'Fields
 
@@ -113,6 +116,10 @@ Public Class frmTV_Theme
 
 #Region "Interface Methodes"
 
+    Public Sub DoDispose() Implements Interfaces.MasterSettingsPanel.DoDispose
+        Dispose()
+    End Sub
+
     Public Function InjectSettingsPanel() As Containers.SettingsPanel Implements Interfaces.MasterSettingsPanel.InjectSettingsPanel
         LoadSettings()
 
@@ -131,31 +138,58 @@ Public Class frmTV_Theme
 
     Public Sub LoadSettings()
         With Master.eSettings
-
+            chkKeepExisting.Checked = .TVShowThemeKeepExisting
+            txtDefaultSearch.Text = .TVShowThemeDefaultSearch
         End With
     End Sub
 
-    Public Sub SaveSetup(ByVal bDoDispose As Boolean) Implements Interfaces.MasterSettingsPanel.SaveSetup
+    Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
         With Master.eSettings
-
+            .TVShowThemeDefaultSearch = txtDefaultSearch.Text.Trim
+            .TVShowThemeKeepExisting = chkKeepExisting.Checked
         End With
-
-        If bDoDispose Then
-            Dispose()
-        End If
     End Sub
 
 #End Region 'Interface Methodes
 
 #Region "Methods"
 
-    Private Sub EnableApplyButton()
+    Private Sub EnableApplyButton() Handles _
+            chkKeepExisting.CheckedChanged,
+            txtDefaultSearch.TextChanged
 
         Handle_SettingsChanged()
     End Sub
 
     Private Sub SetUp()
+        chkKeepExisting.Text = Master.eLang.GetString(971, "Keep existing")
+        gbMovieThemeOpts.Text = Master.eLang.GetString(1285, "Themes")
+        lblDefaultSearch.Text = Master.eLang.GetString(1172, "Default Search Parameter:")
 
+        clsAPITemp.ConvertToScraperGridView(dgvTheme, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.TVShow_Theme)))
+    End Sub
+    ''' <summary>
+    ''' Workaround to autosize the DGV based on column widths without change the row hights
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    Private Sub pnlSettings_VisibleChanged(sender As Object, e As EventArgs) Handles pnlSettings.VisibleChanged
+        If Not _bDGVWidthCalculated AndAlso CType(sender, Panel).Visible Then
+            tblTheme.SuspendLayout()
+            For i As Integer = 0 To tblTheme.Controls.Count - 1
+                Dim nType As Type = tblTheme.Controls(i).GetType
+                If nType.Name = "DataGridView" Then
+                    Dim nDataGridView As DataGridView = CType(tblTheme.Controls(i), DataGridView)
+                    Dim intWidth As Integer = 0
+                    For Each nColumn As DataGridViewColumn In nDataGridView.Columns
+                        intWidth += nColumn.Width
+                    Next
+                    nDataGridView.Width = intWidth + 1
+                End If
+            Next
+            tblTheme.ResumeLayout()
+            _bDGVWidthCalculated = True
+        End If
     End Sub
 
 #End Region 'Methods

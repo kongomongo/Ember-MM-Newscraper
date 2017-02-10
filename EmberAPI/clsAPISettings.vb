@@ -334,6 +334,7 @@ Public Class Settings
     Private _moviesortbeforescan As Boolean
     Private _moviesorttokens As List(Of String)
     Private _moviesorttokensisempty As Boolean
+    Private _moviethemedefaultsearch As String
     Private _moviethemekeepexisting As Boolean
     Private _movietrailerdefaultsearch As String
     Private _movietrailerkeepexisting As Boolean
@@ -557,6 +558,7 @@ Public Class Settings
     Private _tvshowposterprefsizeonly As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
+    Private _tvshowthemedefaultsearch As String
     Private _tvshowthemekeepexisting As Boolean
     Private _tvskiplessthan As Integer
     Private _tvsorttokens As List(Of String)
@@ -3784,12 +3786,30 @@ Public Class Settings
         End Set
     End Property
 
+    Public Property MovieThemeDefaultSearch() As String
+        Get
+            Return _moviethemedefaultsearch
+        End Get
+        Set(ByVal value As String)
+            _moviethemedefaultsearch = value
+        End Set
+    End Property
+
     Public Property MovieThemeKeepExisting() As Boolean
         Get
             Return _moviethemekeepexisting
         End Get
         Set(ByVal value As Boolean)
             _moviethemekeepexisting = value
+        End Set
+    End Property
+
+    Public Property TVShowThemeDefaultSearch() As String
+        Get
+            Return _tvshowthemedefaultsearch
+        End Get
+        Set(ByVal value As String)
+            _tvshowthemedefaultsearch = value
         End Set
     End Property
 
@@ -8471,6 +8491,7 @@ Public Class Settings
         TVShowPosterPrefSizeOnly = False
         TVShowPosterWidth = 0
         TVShowProperCase = True
+        TVShowThemeDefaultSearch = String.Empty
         TVShowThemeKeepExisting = False
         TVSkipLessThan = 0
         TVSortTokens = New List(Of String)
@@ -9197,9 +9218,9 @@ Public Class Settings
 
     Public Function MissingItemsAnyEnabled_TVSeason() As Boolean
         Return _
-            TVSeasonMissingBanner OrElse 
-            TVSeasonMissingFanart OrElse 
-            TVSeasonMissingLandscape OrElse 
+            TVSeasonMissingBanner OrElse
+            TVSeasonMissingFanart OrElse
+            TVSeasonMissingLandscape OrElse
             TVSeasonMissingPoster
     End Function
 

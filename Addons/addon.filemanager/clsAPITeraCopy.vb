@@ -76,7 +76,7 @@ Namespace TeraCopy
 
                         Dim BatchListPath As String = Path.Combine(Master.TempPath, "batchlist.txt")
 
-                        Using sw As StreamWriter = New StreamWriter(BatchListPath, False, System.Text.Encoding.Unicode)
+                        Using sw As StreamWriter = New StreamWriter(BatchListPath, False, Text.Encoding.Unicode)
                             For Each Movie As String In _sources
                                 sw.Write(Movie.ToString & Environment.NewLine)
                             Next

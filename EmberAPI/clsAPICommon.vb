@@ -1526,24 +1526,6 @@ Public Class Functions
         End If
     End Function
     ''' <summary>
-    ''' Determine whether the supplied path is already defined as a TV Show season subdirectory
-    ''' </summary>
-    ''' <param name="sPath">The path to look for</param>
-    ''' <returns><c>True</c> if the supplied path is found in the list of configured TV Show season directories, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function IsSeasonDirectory(ByVal sPath As String) As Boolean
-        'TODO Warning - Potential for false positives and false negatives as paths can be defined in different ways to arrive at the same destination
-        Dim SeasonFolderPattern As New List(Of String)
-        SeasonFolderPattern.Add("(?<season>specials?)$")
-        SeasonFolderPattern.Add("^(s(eason)?)?[\W_]*(?<season>[0-9]+)$")
-        SeasonFolderPattern.Add("[^\w]s(eason)?[\W_]*(?<season>[0-9]+)")
-        For Each pattern In SeasonFolderPattern
-            If Regex.IsMatch(FileUtils.Common.GetDirectory(sPath), pattern, RegexOptions.IgnoreCase) Then Return True
-        Next
-        'no matches
-        Return False
-    End Function
-    ''' <summary>
     ''' Convert a List(of T) to a string of separated values
     ''' </summary>
     ''' <param name="source">List(of T)</param>
@@ -1647,6 +1629,49 @@ Public Class Functions
         FilteredOptions.bSeasonPlot = Options.bSeasonPlot AndAlso Options2.bSeasonPlot
         FilteredOptions.bSeasonTitle = Options.bSeasonTitle AndAlso Options2.bSeasonTitle
         Return FilteredOptions
+    End Function
+
+    Public Shared Function ScrapeOptionsAllEnabled() As Structures.ScrapeOptions
+        Dim nScrapeOptions As New Structures.ScrapeOptions
+        nScrapeOptions.bEpisodeActors = True
+        nScrapeOptions.bEpisodeAired = True
+        nScrapeOptions.bEpisodeCredits = True
+        nScrapeOptions.bEpisodeDirectors = True
+        nScrapeOptions.bEpisodeGuestStars = True
+        nScrapeOptions.bEpisodePlot = True
+        nScrapeOptions.bEpisodeRating = True
+        nScrapeOptions.bEpisodeRuntime = True
+        nScrapeOptions.bEpisodeTitle = True
+        nScrapeOptions.bEpisodeUserRating = True
+        nScrapeOptions.bMainActors = True
+        nScrapeOptions.bMainCertifications = True
+        nScrapeOptions.bMainCollectionID = True
+        nScrapeOptions.bMainCountries = True
+        nScrapeOptions.bMainCreators = True
+        nScrapeOptions.bMainDirectors = True
+        nScrapeOptions.bMainEpisodeGuide = True
+        nScrapeOptions.bMainGenres = True
+        nScrapeOptions.bMainMPAA = True
+        nScrapeOptions.bMainOriginalTitle = True
+        nScrapeOptions.bMainOutline = True
+        nScrapeOptions.bMainPlot = True
+        nScrapeOptions.bMainPremiered = True
+        nScrapeOptions.bMainRating = True
+        nScrapeOptions.bMainRelease = True
+        nScrapeOptions.bMainRuntime = True
+        nScrapeOptions.bMainStatus = True
+        nScrapeOptions.bMainStudios = True
+        nScrapeOptions.bMainTagline = True
+        nScrapeOptions.bMainTitle = True
+        nScrapeOptions.bMainTop250 = True
+        nScrapeOptions.bMainTrailer = True
+        nScrapeOptions.bMainUserRating = True
+        nScrapeOptions.bMainWriters = True
+        nScrapeOptions.bMainYear = True
+        nScrapeOptions.bSeasonAired = True
+        nScrapeOptions.bSeasonPlot = True
+        nScrapeOptions.bSeasonTitle = True
+        Return nScrapeOptions
     End Function
 
     Public Shared Function ScrapeModifiersAndAlso(ByVal Options As Structures.ScrapeModifiers, ByVal Options2 As Structures.ScrapeModifiers) As Structures.ScrapeModifiers

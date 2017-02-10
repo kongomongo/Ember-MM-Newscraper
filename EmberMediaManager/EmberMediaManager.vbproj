@@ -431,6 +431,12 @@
     <Compile Include="MasterSettingsPanels\frmTV_Image.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Theme.Designer.vb">
+      <DependentUpon>frmTV_Theme.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Theme.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -609,6 +615,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_Image.resx">
       <DependentUpon>frmTV_Image.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Theme.resx">
+      <DependentUpon>frmTV_Theme.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
