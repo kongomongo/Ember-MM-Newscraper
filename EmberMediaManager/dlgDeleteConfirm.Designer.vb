@@ -75,11 +75,10 @@ Partial Class dlgDeleteConfirm
         '
         Me.ilFiles.ImageStream = CType(resources.GetObject("ilFiles.ImageStream"), System.Windows.Forms.ImageListStreamer)
         Me.ilFiles.TransparentColor = System.Drawing.Color.Transparent
-        Me.ilFiles.Images.SetKeyName(0, "FILE")
-        Me.ilFiles.Images.SetKeyName(1, "RECORD")
-        Me.ilFiles.Images.SetKeyName(2, "MOVIE")
-        Me.ilFiles.Images.SetKeyName(3, "FOLDER")
-        Me.ilFiles.Images.SetKeyName(4, "MEDIA")
+        Me.ilFiles.Images.SetKeyName(0, "DBE")
+        Me.ilFiles.Images.SetKeyName(1, "FILE")
+        Me.ilFiles.Images.SetKeyName(2, "FOLDER")
+        Me.ilFiles.Images.SetKeyName(3, "VIDEO")
         '
         'btnToggleAllFiles
         '

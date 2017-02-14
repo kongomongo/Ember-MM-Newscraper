@@ -492,19 +492,22 @@ Public Class Database
                     End If
                     Using SQLReader As SQLiteDataReader = SQLcommand.ExecuteReader()
                         While SQLReader.Read
-                            If Not File.Exists(SQLReader("MoviePath").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) OrElse
+                            If Not File.Exists(SQLReader("MoviePath").ToString) OrElse
+                                Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("MoviePath").ToString).ToLower) OrElse
                                 Master.ExcludedDirs.Exists(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.ToLower)) Then
                                 MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                 Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
                             ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
                                 fInfo = New FileInfo(SQLReader("MoviePath").ToString)
-                                If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse Not FileUtils.Common.isStacked(fInfo.FullName)) AndAlso fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
+                                If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse
+                                    Not FileUtils.Common.isStacked(fInfo.FullName)) AndAlso
+                                    fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
                                     MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                     Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
                                 End If
                             Else
                                 tSource = SourceList.OrderByDescending(Function(s) s.Path).FirstOrDefault(Function(s) s.ID = Convert.ToInt64(SQLReader("idSource")))
-                                If tSource IsNot Nothing Then
+                                If tSource IsNot Nothing AndAlso FileUtils.Common.CheckOnlineStatus(tSource, True) Then
                                     If Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).Name.ToLower = "bdmv" Then
                                         tPath = Directory.GetParent(Directory.GetParent(SQLReader("MoviePath").ToString).FullName).FullName
                                     Else
@@ -558,7 +561,7 @@ Public Class Database
                         While SQLReader.Read
                             If Not File.Exists(SQLReader("strFilename").ToString) OrElse Not Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(SQLReader("strFilename").ToString).ToLower) OrElse
                                 Master.ExcludedDirs.Exists(Function(s) SQLReader("strFilename").ToString.ToLower.StartsWith(s.ToLower)) Then
-                                Master.DB.Delete_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), False, False, True)
+                                Master.DB.Delete_TVEpisode(Convert.ToInt64(SQLReader("idEpisode")), True, False)
                             End If
                         End While
                     End Using
@@ -922,7 +925,7 @@ Public Class Database
             Using SQLreader As SQLiteDataReader = SQLCommand.ExecuteReader()
                 While SQLreader.Read
                     If lstValidEpisodes.Where(Function(f) f.ID = Convert.ToInt64(SQLreader("idEpisode"))).Count = 0 Then
-                        Delete_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), True, False, True)
+                        Delete_TVEpisode(Convert.ToInt64(SQLreader("idEpisode")), True, True)
                     End If
                 End While
             End Using
@@ -1126,7 +1129,7 @@ Public Class Database
     ''' <param name="lngTVEpisodeID">ID of the episode to remove, as stored in the database.</param>
     ''' <param name="bBatchMode">Is this function already part of a transaction?</param>
     ''' <returns><c>True</c> if has been removed, <c>False</c> if has been changed to missing</returns>
-    Public Function Delete_TVEpisode(ByVal lngTVEpisodeID As Long, ByVal bForce As Boolean, ByVal bDoCleanSeasons As Boolean, ByVal bBatchMode As Boolean) As Boolean
+    Public Function Delete_TVEpisode(ByVal lngTVEpisodeID As Long, ByVal bBatchMode As Boolean, ByVal bForce As Boolean) As Boolean
         Dim SQLtransaction As SQLiteTransaction = Nothing
         Dim doesExist As Boolean = False
         Dim bHasRemoved As Boolean = False
@@ -1156,8 +1159,6 @@ Public Class Database
                         If bForce OrElse doesExist Then
                             SQLECommand.CommandText = String.Concat("DELETE FROM episode WHERE idEpisode = ", lngTVEpisodeID, ";")
                             SQLECommand.ExecuteNonQuery()
-
-                            If bDoCleanSeasons Then Master.DB.Delete_Empty_TVSeasons(Convert.ToInt64(SQLReader("idShow")), True)
                             bHasRemoved = True
                         ElseIf Not Convert.ToInt64(SQLReader("idFile")) = -1 Then 'already marked as missing, no need for another query
                             'check if there is another episode that use the same idFile
@@ -1210,7 +1211,7 @@ Public Class Database
                         SQLCommand.CommandText = String.Concat("SELECT idEpisode FROM episode WHERE idFile = ", SQLPReader("idFile"), ";")
                         Using SQLReader As SQLiteDataReader = SQLCommand.ExecuteReader
                             While SQLReader.Read
-                                Delete_TVEpisode(CInt(SQLReader("idEpisode")), bForce, False, bBatchMode)
+                                Delete_TVEpisode(CInt(SQLReader("idEpisode")), bBatchMode, bForce)
                             End While
                         End Using
                     End Using

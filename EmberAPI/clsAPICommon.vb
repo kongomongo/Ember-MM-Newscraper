@@ -1581,6 +1581,46 @@ Public Class Functions
             Return mStream.ToArray
         End Using
     End Function
+
+    Public Shared Function ScrapeModifiersAndAlso(ByVal Options As Structures.ScrapeModifiers, ByVal Options2 As Structures.ScrapeModifiers) As Structures.ScrapeModifiers
+        Dim FilteredModifiers As New Structures.ScrapeModifiers
+        FilteredModifiers.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
+        FilteredModifiers.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
+        FilteredModifiers.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
+        FilteredModifiers.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
+        FilteredModifiers.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
+        FilteredModifiers.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
+        FilteredModifiers.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
+        FilteredModifiers.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
+        FilteredModifiers.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
+        FilteredModifiers.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
+        FilteredModifiers.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
+        FilteredModifiers.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
+        FilteredModifiers.MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs
+        FilteredModifiers.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
+        FilteredModifiers.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
+        FilteredModifiers.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
+        FilteredModifiers.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
+        FilteredModifiers.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
+        FilteredModifiers.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
+        FilteredModifiers.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
+        FilteredModifiers.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
+        FilteredModifiers.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
+        FilteredModifiers.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
+        FilteredModifiers.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
+        FilteredModifiers.MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles
+        FilteredModifiers.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
+        FilteredModifiers.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
+        FilteredModifiers.MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile
+        FilteredModifiers.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
+        FilteredModifiers.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
+        FilteredModifiers.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
+        FilteredModifiers.SeasonNFO = Options.SeasonNFO AndAlso Options2.SeasonNFO
+        FilteredModifiers.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
+        FilteredModifiers.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
+        FilteredModifiers.withSeasons = Options.withSeasons AndAlso Options2.withSeasons
+        Return FilteredModifiers
+    End Function
     ''' <summary>
     ''' Determine the Structures.MovieScrapeOptions options that are in common between the two parameters
     ''' </summary>
@@ -1672,46 +1712,6 @@ Public Class Functions
         nScrapeOptions.bSeasonPlot = True
         nScrapeOptions.bSeasonTitle = True
         Return nScrapeOptions
-    End Function
-
-    Public Shared Function ScrapeModifiersAndAlso(ByVal Options As Structures.ScrapeModifiers, ByVal Options2 As Structures.ScrapeModifiers) As Structures.ScrapeModifiers
-        Dim FilteredModifiers As New Structures.ScrapeModifiers
-        FilteredModifiers.AllSeasonsBanner = Options.AllSeasonsBanner AndAlso Options2.AllSeasonsBanner
-        FilteredModifiers.AllSeasonsFanart = Options.AllSeasonsFanart AndAlso Options2.AllSeasonsFanart
-        FilteredModifiers.AllSeasonsLandscape = Options.AllSeasonsLandscape AndAlso Options2.AllSeasonsLandscape
-        FilteredModifiers.AllSeasonsPoster = Options.AllSeasonsPoster AndAlso Options2.AllSeasonsPoster
-        FilteredModifiers.DoSearch = Options.DoSearch AndAlso Options2.DoSearch
-        FilteredModifiers.EpisodeActorThumbs = Options.EpisodeActorThumbs AndAlso Options2.EpisodeActorThumbs
-        FilteredModifiers.EpisodeFanart = Options.EpisodeFanart AndAlso Options2.EpisodeFanart
-        FilteredModifiers.EpisodeMeta = Options.EpisodeMeta AndAlso Options2.EpisodeMeta
-        FilteredModifiers.EpisodeNFO = Options.EpisodeNFO AndAlso Options2.EpisodeNFO
-        FilteredModifiers.EpisodePoster = Options.EpisodePoster AndAlso Options2.EpisodePoster
-        FilteredModifiers.EpisodeSubtitles = Options.EpisodeSubtitles AndAlso Options2.EpisodeSubtitles
-        FilteredModifiers.EpisodeWatchedFile = Options.EpisodeWatchedFile AndAlso Options2.EpisodeWatchedFile
-        FilteredModifiers.MainActorthumbs = Options.MainActorthumbs AndAlso Options2.MainActorthumbs
-        FilteredModifiers.MainBanner = Options.MainBanner AndAlso Options2.MainBanner
-        FilteredModifiers.MainCharacterArt = Options.MainCharacterArt AndAlso Options2.MainCharacterArt
-        FilteredModifiers.MainClearArt = Options.MainClearArt AndAlso Options2.MainClearArt
-        FilteredModifiers.MainClearLogo = Options.MainClearLogo AndAlso Options2.MainClearLogo
-        FilteredModifiers.MainDiscArt = Options.MainDiscArt AndAlso Options2.MainDiscArt
-        FilteredModifiers.MainExtrafanarts = Options.MainExtrafanarts AndAlso Options2.MainExtrafanarts
-        FilteredModifiers.MainExtrathumbs = Options.MainExtrathumbs AndAlso Options2.MainExtrathumbs
-        FilteredModifiers.MainFanart = Options.MainFanart AndAlso Options2.MainFanart
-        FilteredModifiers.MainLandscape = Options.MainLandscape AndAlso Options2.MainLandscape
-        FilteredModifiers.MainNFO = Options.MainNFO AndAlso Options2.MainNFO
-        FilteredModifiers.MainPoster = Options.MainPoster AndAlso Options2.MainPoster
-        FilteredModifiers.MainSubtitles = Options.MainSubtitles AndAlso Options2.MainSubtitles
-        FilteredModifiers.MainTheme = Options.MainTheme AndAlso Options2.MainTheme
-        FilteredModifiers.MainTrailer = Options.MainTrailer AndAlso Options2.MainTrailer
-        FilteredModifiers.MainWatchedFile = Options.MainWatchedFile AndAlso Options2.MainWatchedFile
-        FilteredModifiers.SeasonBanner = Options.SeasonBanner AndAlso Options2.SeasonBanner
-        FilteredModifiers.SeasonFanart = Options.SeasonFanart AndAlso Options2.SeasonFanart
-        FilteredModifiers.SeasonLandscape = Options.SeasonLandscape AndAlso Options2.SeasonLandscape
-        FilteredModifiers.SeasonNFO = Options.SeasonNFO AndAlso Options2.SeasonNFO
-        FilteredModifiers.SeasonPoster = Options.SeasonPoster AndAlso Options2.SeasonPoster
-        FilteredModifiers.withEpisodes = Options.withEpisodes AndAlso Options2.withEpisodes
-        FilteredModifiers.withSeasons = Options.withSeasons AndAlso Options2.withSeasons
-        Return FilteredModifiers
     End Function
 
     Public Shared Sub SetScrapeModifiers(ByRef ScrapeModifiers As Structures.ScrapeModifiers, ByVal MType As Enums.ScrapeModifierType, ByVal MValue As Boolean)

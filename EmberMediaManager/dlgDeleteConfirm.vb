@@ -49,11 +49,11 @@ Public Class dlgDeleteConfirm
         Return MyBase.ShowDialog
     End Function
 
-    Private Sub AddFileNode(ByVal tParentNode As TreeNode, ByVal tFileInfo As FileInfo)
+    Private Sub AddFileNode(ByVal tParentNode As TreeNode, ByVal tFileInfo As FileInfo, ByVal bIsVideoFile As Boolean)
         Dim NewNode As TreeNode = tParentNode.Nodes.Add(tFileInfo.FullName, tFileInfo.Name)
         NewNode.Tag = tFileInfo.FullName
-        NewNode.ImageKey = "FILE"
-        NewNode.SelectedImageKey = "FILE"
+        NewNode.ImageKey = If(bIsVideoFile, "VIDEO", "FILE")
+        NewNode.SelectedImageKey = If(bIsVideoFile, "VIDEO", "FILE")
     End Sub
 
     Private Sub AddFolderNode(ByVal tParentNode As TreeNode, ByVal tDirectoryInfo As DirectoryInfo)
@@ -71,16 +71,34 @@ Public Class dlgDeleteConfirm
 
         'populate all the files in the folder
         For Each nFileItem As FileInfo In tDirectoryInfo.GetFiles()
-            AddFileNode(NewNode, nFileItem)
+            AddFileNode(NewNode, nFileItem, False)
         Next
     End Sub
 
-    Private Sub btnToggleAllFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnToggleAllFiles.Click
-        ToggleAllNodes()
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        DialogResult = DialogResult.Cancel
     End Sub
 
-    Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        DialogResult = DialogResult.Cancel
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        If DeleteSelectedItems() Then
+            DialogResult = DialogResult.OK
+        Else
+            DialogResult = DialogResult.Cancel
+        End If
+    End Sub
+
+    Private Sub btnToggleAllFiles_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnToggleAllFiles.Click
+        Dim Checked As Boolean?
+        With tvFiles
+            If .Nodes.Count = 0 Then Return
+            For Each node As TreeNode In .Nodes
+                If Not Checked.HasValue Then
+                    'this is the first node of this type, set toggle status based on this
+                    Checked = Not node.Checked
+                End If
+                node.Checked = Checked.Value
+            Next
+        End With
     End Sub
 
     Private Function DeleteSelectedItems() As Boolean
@@ -93,26 +111,32 @@ Public Class dlgDeleteConfirm
             For Each nMainNode As TreeNode In tvFiles.Nodes
                 If nMainNode.Nodes.Count > 0 Then
                     Dim nDeleteResults = DeleteSelectedSubItems(nMainNode.Nodes)
-                    If nDeleteResults.bRemoved AndAlso nMainNode.Checked Then
+                    If (nDeleteResults.bHasRemoved OrElse nMainNode.Checked) AndAlso Not _ContentType = Enums.ContentType.TVSeason Then
                         Select Case _ContentType
                             Case Enums.ContentType.Movie
                                 Master.DB.Delete_Movie(Convert.ToInt64(nMainNode.Tag), True)
+                            Case Enums.ContentType.MovieSet
+                                Master.DB.Delete_MovieSet(Convert.ToInt64(nMainNode.Tag), True)
+                            Case Enums.ContentType.TVEpisode
+                                Master.DB.Delete_TVEpisode(Convert.ToInt64(nMainNode.Tag), True, False)
                             Case Enums.ContentType.TVShow
                                 Master.DB.Delete_TVShow(Convert.ToInt64(nMainNode.Tag), True)
-                            Case Enums.ContentType.TVSeason
-                                tPair = DirectCast(nMainNode.Tag, KeyValuePair(Of Long, Long))
-                            Case Enums.ContentType.TVEpisode
-                                Master.DB.Delete_TVEpisode(Convert.ToInt64(nMainNode.Tag), False, True, True)
                         End Select
                     ElseIf nDeleteResults.bNeedsReload Then
                         'TODO: Reload
+                        Select Case _ContentType
+                            Case Enums.ContentType.Movie
+                            Case Enums.ContentType.MovieSet
+                            Case Enums.ContentType.TVEpisode
+                            Case Enums.ContentType.TVSeason
+                            Case Enums.ContentType.TVShow
+                        End Select
                     End If
                 End If
             Next
-
-            If _ContentType = Enums.ContentType.TVSeason OrElse _ContentType = Enums.ContentType.TVEpisode Then Master.DB.Delete_Empty_TVSeasons(-1, True)
             SQLtransaction.Commit()
         End Using
+
         Return result
     End Function
 
@@ -134,11 +158,18 @@ Public Class dlgDeleteConfirm
                             nFileInfo.Delete()
                             nResults.bNeedsReload = True
                         End If
+
+                    Case "VIDEO"
+                        Dim nFileInfo As New FileInfo(nSubNode.Tag.ToString)
+                        If nFileInfo.Exists Then
+                            nFileInfo.Delete()
+                            nResults.bHasRemoved = True
+                        End If
                 End Select
             ElseIf nSubNode.Nodes.Count > 0 Then
                 Dim nSubResults = DeleteSelectedSubItems(nSubNode.Nodes)
                 If nSubResults.bNeedsReload Then nResults.bNeedsReload = True
-                If nSubResults.bRemoved Then nResults.bRemoved = True
+                If nSubResults.bHasRemoved Then nResults.bHasRemoved = True
             End If
         Next
         Return nResults
@@ -148,14 +179,6 @@ Public Class dlgDeleteConfirm
         SetUp()
     End Sub
 
-    Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
-        If DeleteSelectedItems() Then
-            DialogResult = DialogResult.OK
-        Else
-            DialogResult = DialogResult.Cancel
-        End If
-    End Sub
-
     Private Sub Populate_FileList(ByVal lstIDs As List(Of Long))
         Dim bHadError As Boolean = False
         Dim lstItems As New List(Of FileSystemInfo)
@@ -163,6 +186,8 @@ Public Class dlgDeleteConfirm
 
         With tvFiles
             Select Case _ContentType
+
+                'MOVIE
                 Case Enums.ContentType.Movie
                     For Each lngMovieID As Long In lstIDs
                         bHadError = False
@@ -170,25 +195,25 @@ Public Class dlgDeleteConfirm
                         Dim nMovie As Database.DBElement = Master.DB.Load_Movie(lngMovieID)
 
                         ItemParentNode = .Nodes.Add(nMovie.ID.ToString, nMovie.ListTitle)
-                        ItemParentNode.ImageKey = "MOVIE"
-                        ItemParentNode.SelectedImageKey = "MOVIE"
+                        ItemParentNode.ImageKey = "DBE"
+                        ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nMovie.ID
 
                         'get all associated files
                         lstItems = FileUtils.Common.GetAllItemsOfDBElement(nMovie)
 
-                        For Each fileItem As FileSystemInfo In lstItems
-                            If Not ItemParentNode.Nodes.ContainsKey(fileItem.FullName) Then
-                                If TypeOf fileItem Is DirectoryInfo Then
+                        For Each nItem As FileSystemInfo In lstItems
+                            If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
+                                If TypeOf nItem Is DirectoryInfo Then
                                     Try
-                                        AddFolderNode(ItemParentNode, DirectCast(fileItem, DirectoryInfo))
+                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
                                     Catch
                                         bHadError = True
                                         Exit For
                                     End Try
                                 Else
                                     Try
-                                        AddFileNode(ItemParentNode, DirectCast(fileItem, FileInfo))
+                                        AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), nMovie.FileItem.PathList.Contains(nItem.FullName))
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -200,32 +225,33 @@ Public Class dlgDeleteConfirm
                         If bHadError Then .Nodes.Remove(ItemParentNode)
                     Next
 
-                Case Enums.ContentType.TVShow
-                    For Each lngTVShowID As Long In lstIDs
+                    'MovieSet
+                Case Enums.ContentType.MovieSet
+                    For Each lngMovieID As Long In lstIDs
                         bHadError = False
 
-                        Dim nTVShow As Database.DBElement = Master.DB.Load_TVShow(lngTVShowID, False, False)
+                        Dim nMovieSet As Database.DBElement = Master.DB.Load_MovieSet(lngMovieID)
 
-                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, nTVShow.ListTitle)
-                        ItemParentNode.ImageKey = "MOVIE"
-                        ItemParentNode.SelectedImageKey = "MOVIE"
-                        ItemParentNode.Tag = nTVShow.ID
+                        ItemParentNode = .Nodes.Add(nMovieSet.ID.ToString, nMovieSet.ListTitle)
+                        ItemParentNode.ImageKey = "DBE"
+                        ItemParentNode.SelectedImageKey = "DBE"
+                        ItemParentNode.Tag = nMovieSet.ID
 
                         'get all associated files
-                        lstItems = FileUtils.Common.GetAllItemsOfDBElement(nTVShow)
+                        lstItems = FileUtils.Common.GetAllItemsOfDBElement(nMovieSet)
 
-                        For Each fileItem As FileSystemInfo In lstItems
-                            If Not ItemParentNode.Nodes.ContainsKey(fileItem.FullName) Then
-                                If TypeOf fileItem Is DirectoryInfo Then
+                        For Each nItem As FileSystemInfo In lstItems
+                            If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
+                                If TypeOf nItem Is DirectoryInfo Then
                                     Try
-                                        AddFolderNode(ItemParentNode, DirectCast(fileItem, DirectoryInfo))
+                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
                                     Catch
                                         bHadError = True
                                         Exit For
                                     End Try
                                 Else
                                     Try
-                                        AddFileNode(ItemParentNode, DirectCast(fileItem, FileInfo))
+                                        AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), False)
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -234,13 +260,49 @@ Public Class dlgDeleteConfirm
                             End If
                         Next
 
-                        'Try
-                        '    AddFolderNode(ItemParentNode, New DirectoryInfo(nTVShow.ShowPath))
-                        'Catch
-                        '    .Nodes.Remove(ItemParentNode)
-                        'End Try
+                        If bHadError Then .Nodes.Remove(ItemParentNode)
                     Next
 
+
+                    'TVEpisode
+                Case Enums.ContentType.TVEpisode
+                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                        For Each lngTVEpisodeID As Long In lstIDs
+                            bHadError = False
+
+                            Dim nTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(lngTVEpisodeID, True)
+
+                            ItemParentNode = .Nodes.Add(nTVEpisode.ID.ToString, String.Format("{0} - {1}", nTVEpisode.TVShowDetails.Title, nTVEpisode.MainDetails.Title))
+                            ItemParentNode.ImageKey = "DBE"
+                            ItemParentNode.SelectedImageKey = "DBE"
+                            ItemParentNode.Tag = lngTVEpisodeID
+
+                            'get all associated files
+                            lstItems = FileUtils.Common.GetAllItemsOfDBElement(nTVEpisode)
+
+                            For Each nItem As FileSystemInfo In lstItems
+                                If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
+                                    If TypeOf nItem Is DirectoryInfo Then
+                                        Try
+                                            AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
+                                        Catch
+                                            bHadError = True
+                                            Exit For
+                                        End Try
+                                    Else
+                                        Try
+                                            AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), nTVEpisode.FileItem.PathList.Contains(nItem.FullName))
+                                        Catch
+                                            bHadError = True
+                                            Exit For
+                                        End Try
+                                    End If
+                                End If
+                            Next
+                        Next
+                    End Using
+
+                    'TVSeason
                 Case Enums.ContentType.TVSeason
                     For Each lngTVSeasonID As Long In lstIDs
                         bHadError = False
@@ -250,8 +312,8 @@ Public Class dlgDeleteConfirm
                         ItemParentNode = .Nodes.Add(nTVSeason.ID.ToString, String.Format("{0} - {1}",
                                                                                          nTVSeason.TVShowDetails.Title,
                                                                                          StringUtils.FormatSeasonText(nTVSeason.MainDetails.Season)))
-                        ItemParentNode.ImageKey = "MOVIE"
-                        ItemParentNode.SelectedImageKey = "MOVIE"
+                        ItemParentNode.ImageKey = "DBE"
+                        ItemParentNode.SelectedImageKey = "DBE"
                         ItemParentNode.Tag = nTVSeason.ID
 
                         'get all associated files
@@ -268,7 +330,7 @@ Public Class dlgDeleteConfirm
                                     End Try
                                 Else
                                     Try
-                                        AddFileNode(ItemParentNode, DirectCast(fileItem, FileInfo))
+                                        AddFileNode(ItemParentNode, DirectCast(fileItem, FileInfo), False)
                                     Catch
                                         bHadError = True
                                         Exit For
@@ -329,42 +391,47 @@ Public Class dlgDeleteConfirm
                         'End Using
                     Next
 
-                Case Enums.ContentType.TVEpisode
-                    Using SQLCommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        For Each lngTVEpisodeID As Long In lstIDs
-                            bHadError = False
+                    'TVShow
+                Case Enums.ContentType.TVShow
+                    For Each lngTVShowID As Long In lstIDs
+                        bHadError = False
 
-                            Dim nTVEpisode As Database.DBElement = Master.DB.Load_TVEpisode(lngTVEpisodeID, True)
+                        Dim nTVShow As Database.DBElement = Master.DB.Load_TVShow(lngTVShowID, False, False)
 
-                            ItemParentNode = .Nodes.Add(nTVEpisode.ID.ToString, String.Format("{0} - {1}", nTVEpisode.TVShowDetails.Title, nTVEpisode.MainDetails.Title))
-                            ItemParentNode.ImageKey = "MOVIE"
-                            ItemParentNode.SelectedImageKey = "MOVIE"
-                            ItemParentNode.Tag = lngTVEpisodeID
+                        ItemParentNode = .Nodes.Add(nTVShow.ID.ToString, nTVShow.ListTitle)
+                        ItemParentNode.ImageKey = "DBE"
+                        ItemParentNode.SelectedImageKey = "DBE"
+                        ItemParentNode.Tag = nTVShow.ID
 
-                            'get all associated files
-                            lstItems = FileUtils.Common.GetAllItemsOfDBElement(nTVEpisode)
+                        'get all associated files
+                        lstItems = FileUtils.Common.GetAllItemsOfDBElement(nTVShow)
 
-                            For Each fileItem As FileSystemInfo In lstItems
-                                If Not ItemParentNode.Nodes.ContainsKey(fileItem.FullName) Then
-                                    If TypeOf fileItem Is DirectoryInfo Then
-                                        Try
-                                            AddFolderNode(ItemParentNode, DirectCast(fileItem, DirectoryInfo))
-                                        Catch
-                                            bHadError = True
-                                            Exit For
-                                        End Try
-                                    Else
-                                        Try
-                                            AddFileNode(ItemParentNode, DirectCast(fileItem, FileInfo))
-                                        Catch
-                                            bHadError = True
-                                            Exit For
-                                        End Try
-                                    End If
+                        For Each nItem As FileSystemInfo In lstItems
+                            If Not ItemParentNode.Nodes.ContainsKey(nItem.FullName) Then
+                                If TypeOf nItem Is DirectoryInfo Then
+                                    Try
+                                        AddFolderNode(ItemParentNode, DirectCast(nItem, DirectoryInfo))
+                                    Catch
+                                        bHadError = True
+                                        Exit For
+                                    End Try
+                                Else
+                                    Try
+                                        AddFileNode(ItemParentNode, DirectCast(nItem, FileInfo), False)
+                                    Catch
+                                        bHadError = True
+                                        Exit For
+                                    End Try
                                 End If
-                            Next
+                            End If
                         Next
-                    End Using
+
+                        'Try
+                        '    AddFolderNode(ItemParentNode, New DirectoryInfo(nTVShow.ShowPath))
+                        'Catch
+                        '    .Nodes.Remove(ItemParentNode)
+                        'End Try
+                    Next
             End Select
 
             'check all the nodes
@@ -383,21 +450,7 @@ Public Class dlgDeleteConfirm
         tsslSelectedNode.Text = String.Empty
     End Sub
 
-    Private Sub ToggleAllNodes()
-        Dim Checked As Boolean?
-        With tvFiles
-            If .Nodes.Count = 0 Then Return
-            For Each node As TreeNode In .Nodes
-                If Not Checked.HasValue Then
-                    'this is the first node of this type, set toggle status based on this
-                    Checked = Not node.Checked
-                End If
-                node.Checked = Checked.Value
-            Next
-        End With
-    End Sub
-
-    Private Sub tvwFiles_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFiles.AfterCheck
+    Private Sub tvFiles_AfterCheck(ByVal sender As Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFiles.AfterCheck
         If e.Node.Parent Is Nothing Then
             'this is a movie node
             If _PropogatingUp Then Return
@@ -444,11 +497,11 @@ Public Class dlgDeleteConfirm
         End If
     End Sub
 
-    Private Sub tvwFiles_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFiles.AfterSelect
+    Private Sub tvFiles_AfterSelect(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles tvFiles.AfterSelect
         Select Case e.Node.ImageKey
-            Case "MOVIE", "RECORD"
+            Case "DBE"
                 tsslSelectedNode.Text = e.Node.Text
-            Case "FILE", "FOLDER"
+            Case "FILE", "FOLDER", "VIDEO"
                 tsslSelectedNode.Text = e.Node.Tag.ToString
         End Select
     End Sub
@@ -459,7 +512,7 @@ Public Class dlgDeleteConfirm
 
     Private Structure DeleteResults
         Dim bNeedsReload As Boolean
-        Dim bRemoved As Boolean
+        Dim bHasRemoved As Boolean
     End Structure
 
 #End Region 'Nested Types

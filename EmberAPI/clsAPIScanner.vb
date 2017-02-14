@@ -878,7 +878,7 @@ Public Class Scanner
 
         If Not isNew Then
             For Each eEpisode As EpisodeItem In EpisodesToRemoveList
-                Master.DB.Delete_TVEpisode(eEpisode.idEpisode, False, False, Batchmode)
+                Master.DB.Delete_TVEpisode(eEpisode.idEpisode, Batchmode, False)
             Next
         End If
 
@@ -1297,122 +1297,126 @@ Public Class Scanner
     ''' <param name="tDBSource"></param>
     ''' <param name="strPath">Specific Path to scan</param>
     Public Sub ScanSourceDirectory_Movie(ByVal tDBSource As Database.DBSource, Optional ByVal strPath As String = "")
-        Dim strScanPath As String = String.Empty
+        If FileUtils.Common.CheckOnlineStatus(tDBSource, True) Then
+            Dim strScanPath As String = String.Empty
 
-        If Not String.IsNullOrEmpty(strPath) Then
-            strScanPath = strPath
-        Else
-            strScanPath = tDBSource.Path
-        End If
+            If Not String.IsNullOrEmpty(strPath) Then
+                strScanPath = strPath
+            Else
+                strScanPath = tDBSource.Path
+            End If
 
-        If Directory.Exists(strScanPath) Then
+            If Directory.Exists(strScanPath) Then
 
-            ScanForFiles_Movie(strScanPath, tDBSource)
+                ScanForFiles_Movie(strScanPath, tDBSource)
 
-            'If Master.eSettings.MovieScanOrderModify Then
-            '    Try
-            '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
-            '    Catch ex As Exception
-            '        logger.Error(ex, New StackFrame().GetMethod().Name)
-            '    End Try
-            'Else
-            '    Try
-            '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
-            '    Catch ex As Exception
-            '        logger.Error(ex, New StackFrame().GetMethod().Name)
-            '    End Try
-            'End If
+                'If Master.eSettings.MovieScanOrderModify Then
+                '    Try
+                '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.LastWriteTime)
+                '    Catch ex As Exception
+                '        logger.Error(ex, New StackFrame().GetMethod().Name)
+                '    End Try
+                'Else
+                '    Try
+                '        dList = dInfo.GetDirectories.Where(Function(s) (Master.eSettings.MovieGeneralIgnoreLastScan OrElse tDBSource.Recursive OrElse s.LastWriteTime > _SourceLastScan) AndAlso IsValidDir(s, False)).OrderBy(Function(d) d.Name)
+                '    Catch ex As Exception
+                '        logger.Error(ex, New StackFrame().GetMethod().Name)
+                '    End Try
+                'End If
+            End If
         End If
     End Sub
 
     ''' <summary>
     ''' Get all directories in the parent directory
     ''' </summary>
-    ''' <param name="sSource"></param>
-    ''' <param name="sPath">Specific Path to scan</param>
-    Public Sub ScanSourceDirectory_TV(ByVal sSource As Database.DBSource, Optional ByVal sPath As String = "")
-        Dim ScanPath As String = String.Empty
+    ''' <param name="tDBSource"></param>
+    ''' <param name="strPath">Specific Path to scan</param>
+    Public Sub ScanSourceDirectory_TV(ByVal tDBSource As Database.DBSource, Optional ByVal strPath As String = "")
+        If FileUtils.Common.CheckOnlineStatus(tDBSource, True) Then
+            Dim ScanPath As String = String.Empty
 
-        If Not String.IsNullOrEmpty(sPath) Then
-            ScanPath = sPath
-        Else
-            ScanPath = sSource.Path
-        End If
-
-        If Directory.Exists(ScanPath) Then
-
-
-            Dim dInfo As New DirectoryInfo(ScanPath)
-            Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
-
-            'tv show folder as a source
-            If sSource.IsSingle Then
-                Dim currShowContainer As New Database.DBElement(Enums.ContentType.TVShow)
-                currShowContainer.EpisodeSorting = sSource.EpisodeSorting
-                currShowContainer.Language = sSource.Language
-                currShowContainer.Ordering = sSource.Ordering
-                currShowContainer.ShowPath = dInfo.FullName
-                currShowContainer.Source = sSource
-                ScanForFiles_TV(currShowContainer, dInfo.FullName)
-
-                If Master.eSettings.TVScanOrderModify Then
-                    Try
-                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                Else
-                    Try
-                        inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
-                    Catch ex As Exception
-                        logger.Error(ex, New StackFrame().GetMethod().Name)
-                    End Try
-                End If
-
-                For Each sDirs As DirectoryInfo In inList
-                    ScanForFiles_TV(currShowContainer, sDirs.FullName)
-                    'ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
-                Next
-
-                Dim Result = Load_TVShow(currShowContainer, True, True, True)
-                If Not Result = Enums.ScannerEventType.None Then
-                    bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.MainDetails.Title})
-                End If
+            If Not String.IsNullOrEmpty(strPath) Then
+                ScanPath = strPath
             Else
-                For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
+                ScanPath = tDBSource.Path
+            End If
+
+            If Directory.Exists(ScanPath) Then
+
+
+                Dim dInfo As New DirectoryInfo(ScanPath)
+                Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
+
+                'tv show folder as a source
+                If tDBSource.IsSingle Then
                     Dim currShowContainer As New Database.DBElement(Enums.ContentType.TVShow)
-                    currShowContainer.EpisodeSorting = sSource.EpisodeSorting
-                    currShowContainer.Language = sSource.Language
-                    currShowContainer.Ordering = sSource.Ordering
-                    currShowContainer.ShowPath = inDir.FullName
-                    currShowContainer.Source = sSource
-                    ScanForFiles_TV(currShowContainer, inDir.FullName)
+                    currShowContainer.EpisodeSorting = tDBSource.EpisodeSorting
+                    currShowContainer.Language = tDBSource.Language
+                    currShowContainer.Ordering = tDBSource.Ordering
+                    currShowContainer.ShowPath = dInfo.FullName
+                    currShowContainer.Source = tDBSource
+                    ScanForFiles_TV(currShowContainer, dInfo.FullName)
 
-                    'inInfo = New DirectoryInfo(inDir.FullName)
+                    If Master.eSettings.TVScanOrderModify Then
+                        Try
+                            inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime)
+                        Catch ex As Exception
+                            logger.Error(ex, New StackFrame().GetMethod().Name)
+                        End Try
+                    Else
+                        Try
+                            inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
+                        Catch ex As Exception
+                            logger.Error(ex, New StackFrame().GetMethod().Name)
+                        End Try
+                    End If
 
-                    'If Master.eSettings.TVScanOrderModify Then
-                    '    Try
-                    '        inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime)
-                    '    Catch
-                    '    End Try
-                    'Else
-                    '    Try
-                    '        inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
-                    '    Catch
-                    '    End Try
-                    'End If
-
-                    'For Each sDirs As DirectoryInfo In inList
-                    '    ScanForFiles_TV(currShowContainer, sDirs.FullName)
-                    '    'ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
-                    'Next
+                    For Each sDirs As DirectoryInfo In inList
+                        ScanForFiles_TV(currShowContainer, sDirs.FullName)
+                        'ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
+                    Next
 
                     Dim Result = Load_TVShow(currShowContainer, True, True, True)
                     If Not Result = Enums.ScannerEventType.None Then
                         bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.MainDetails.Title})
                     End If
-                Next
+                Else
+                    For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
+                        Dim currShowContainer As New Database.DBElement(Enums.ContentType.TVShow)
+                        currShowContainer.EpisodeSorting = tDBSource.EpisodeSorting
+                        currShowContainer.Language = tDBSource.Language
+                        currShowContainer.Ordering = tDBSource.Ordering
+                        currShowContainer.ShowPath = inDir.FullName
+                        currShowContainer.Source = tDBSource
+                        ScanForFiles_TV(currShowContainer, inDir.FullName)
 
+                        'inInfo = New DirectoryInfo(inDir.FullName)
+
+                        'If Master.eSettings.TVScanOrderModify Then
+                        '    Try
+                        '        inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime)
+                        '    Catch
+                        '    End Try
+                        'Else
+                        '    Try
+                        '        inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
+                        '    Catch
+                        '    End Try
+                        'End If
+
+                        'For Each sDirs As DirectoryInfo In inList
+                        '    ScanForFiles_TV(currShowContainer, sDirs.FullName)
+                        '    'ScanSubDirectory_TV(currShowContainer, sDirs.FullName)
+                        'Next
+
+                        Dim Result = Load_TVShow(currShowContainer, True, True, True)
+                        If Not Result = Enums.ScannerEventType.None Then
+                            bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.MainDetails.Title})
+                        End If
+                    Next
+
+                End If
             End If
         End If
     End Sub

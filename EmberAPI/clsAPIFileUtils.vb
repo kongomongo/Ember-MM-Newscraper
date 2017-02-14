@@ -203,44 +203,65 @@ Namespace FileUtils
                                     Case Enums.ContentType.Movie
                                         For Each nFileItem In .PathList
                                             lstItems.Add(New FileInfo(nFileItem))
-                                            Dim lstFiles As New List(Of String)
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainBanner))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainCharacterArt))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainClearArt))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainClearLogo))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainDiscArt))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainFanart))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainLandscape))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainNFO))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainPoster))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTheme))
-                                            lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTrailer))
-                                            lstFiles = lstFiles.Distinct().ToList()  'remove double entries
-                                            lstFiles.Sort()
-                                            For Each nFile In lstFiles
-                                                Dim nFileinfo As New FileInfo(nFile)
-                                                If nFileinfo.Exists Then lstItems.Add(nFileinfo)
-                                            Next
+                                        Next
+                                        Dim lstFiles As New List(Of String)
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainBanner))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainClearArt))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainClearLogo))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainDiscArt))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainFanart))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainLandscape))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainNFO))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainPoster))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainSubtitle))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTheme))
+                                        lstFiles.AddRange(GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTrailer))
+                                        lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                                        lstFiles.Sort()
+                                        For Each nFile In lstFiles
+                                            Dim nFileinfo As New FileInfo(nFile)
+                                            If nFileinfo.Exists Then lstItems.Add(nFileinfo)
                                         Next
 
                                     Case Enums.ContentType.TVEpisode
                                         For Each nFileItem In .PathList
                                             lstItems.Add(New FileInfo(nFileItem))
-                                            Dim lstFiles As New List(Of String)
-                                            lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeFanart))
-                                            lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeNFO))
-                                            lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodePoster))
-                                            lstFiles = lstFiles.Distinct().ToList()  'remove double entries
-                                            lstFiles.Sort()
-                                            For Each nFile In lstFiles
-                                                Dim nFileinfo As New FileInfo(nFile)
-                                                If nFileinfo.Exists Then lstItems.Add(nFileinfo)
-                                            Next
+                                        Next
+                                        Dim lstFiles As New List(Of String)
+                                        lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeFanart))
+                                        lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeNFO))
+                                        lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodePoster))
+                                        lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeSubtitle))
+                                        lstFiles.AddRange(GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeWatchedFile))
+                                        lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                                        lstFiles.Sort()
+                                        For Each nFile In lstFiles
+                                            Dim nFileinfo As New FileInfo(nFile)
+                                            If nFileinfo.Exists Then lstItems.Add(nFileinfo)
                                         Next
                                 End Select
                             End If
                         End With
                     End If
+
+
+                Case Enums.ContentType.MovieSet
+                    Dim lstFiles As New List(Of String)
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainBanner))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainClearArt))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainClearLogo))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainDiscArt))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainFanart))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainLandscape))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainNFO))
+                    lstFiles.AddRange(GetFilenameList.MovieSet(tDBElement, Enums.ScrapeModifierType.MainPoster))
+                    lstFiles = lstFiles.Distinct().ToList()  'remove double entries
+                    lstFiles.Sort()
+                    For Each nFile In lstFiles
+                        Dim nFileinfo As New FileInfo(nFile)
+                        If nFileinfo.Exists Then lstItems.Add(nFileinfo)
+                    Next
+
                 Case Enums.ContentType.TVSeason
                     For Each nEpisode In tDBElement.Episodes
                         lstItems.AddRange(GetAllItemsOfDBElement(nEpisode))
@@ -742,12 +763,13 @@ Namespace FileUtils
                 Case Enums.ContentType.Movie, Enums.ContentType.TVEpisode
                     While Not File.Exists(tDBElement.FileItem.FirstStackedPath)
                         If showMessage Then
-                            If MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".",
-                                                             Environment.NewLine,
-                                                             Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
-                                                             Environment.NewLine,
-                                                             Environment.NewLine,
-                                                             tDBElement.FileItem.FirstStackedPath),
+                            If MessageBox.Show(String.Concat(
+                                               Master.eLang.GetString(587, "This file is no longer available"), ".",
+                                               Environment.NewLine,
+                                               Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                               Environment.NewLine,
+                                               Environment.NewLine,
+                                               tDBElement.FileItem.FirstStackedPath),
                                                String.Empty,
                                                MessageBoxButtons.RetryCancel,
                                                MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
@@ -761,12 +783,13 @@ Namespace FileUtils
                 Case Enums.ContentType.TVShow, Enums.ContentType.TVSeason
                     While Not Directory.Exists(tDBElement.ShowPath)
                         If showMessage Then
-                            If MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".",
-                                                             Environment.NewLine,
-                                                             Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
-                                                             Environment.NewLine,
-                                                             Environment.NewLine,
-                                                             tDBElement.ShowPath),
+                            If MessageBox.Show(String.Concat(
+                                               Master.eLang.GetString(719, "This path is no longer available"), ".",
+                                               Environment.NewLine,
+                                               Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                               Environment.NewLine,
+                                               Environment.NewLine,
+                                               tDBElement.ShowPath),
                                                String.Empty,
                                                MessageBoxButtons.RetryCancel,
                                                MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
@@ -779,6 +802,26 @@ Namespace FileUtils
                 Case Else
                     Return False
             End Select
+        End Function
+
+        Public Shared Function CheckOnlineStatus(ByRef tDBSource As Database.DBSource, ByVal showMessage As Boolean) As Boolean
+            While Not Directory.Exists(tDBSource.Path)
+                If showMessage Then
+                    If MessageBox.Show(String.Concat(
+                                       Master.eLang.GetString(719, "This path is no longer available"), ".",
+                                       Environment.NewLine,
+                                       Master.eLang.GetString(630, "Reconnect the source and press Retry"), ".",
+                                       Environment.NewLine,
+                                       Environment.NewLine,
+                                       tDBSource.Path),
+                                       String.Empty,
+                                       MessageBoxButtons.RetryCancel,
+                                       MessageBoxIcon.Warning) = Windows.Forms.DialogResult.Cancel Then Return False
+                Else
+                    Return False
+                End If
+            End While
+            Return True
         End Function
 
         ''' <summary>

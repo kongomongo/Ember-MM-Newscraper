@@ -4164,22 +4164,40 @@ Public Class frmMain
         End If
     End Sub
 
-    Private Sub cmnuSeasonRemoveFromDisk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
-        Dim lstTVSeasonID As New List(Of Long)
+    Private Sub cmnuEpisodeRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDB.Click
+        Dim lItemsToRemove As New Dictionary(Of Long, Boolean)
+        Dim SeasonsList As New List(Of Integer)
+        ClearInfo()
 
-        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
-            If Not lstTVSeasonID.Contains(lngID) Then lstTVSeasonID.Add(lngID)
+        For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
+            If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idEpisode").Value), Convert.ToInt64(sRow.Cells("idFile").Value) = -1)
         Next
 
-        If lstTVSeasonID.Count > 0 Then
-            Using dlg As New dlgDeleteConfirm
-                If dlg.ShowDialog(lstTVSeasonID, Enums.ContentType.TVSeason) = DialogResult.OK Then
-                    FillListTVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
-                    SetTVCount()
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Dim idShow As Integer = CInt(dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
+            For Each tID As KeyValuePair(Of Long, Boolean) In lItemsToRemove
+                If tID.Value Then
+                    Master.DB.Delete_TVEpisode(tID.Key, True, True) 'remove the "missing episode" from DB
+                    RemoveRow_TVEpisode(tID.Key)
+                Else
+                    If Master.DB.Delete_TVEpisode(tID.Key, True, False) Then
+                        RemoveRow_TVEpisode(tID.Key)
+                    Else
+                        RefreshRow_TVEpisode(tID.Key) 'set the episode as "missing episode"
+                    End If
                 End If
-            End Using
-        End If
+            Next
+
+            For Each iSeason In SeasonsList
+                RefreshRow_TVSeason(idShow, iSeason)
+            Next
+            RefreshRow_TVShow(idShow)
+
+            SQLtransaction.Commit()
+        End Using
+
+        SetTVCount()
     End Sub
 
     Private Sub cmnuEpisodeRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDisk.Click
@@ -4194,6 +4212,47 @@ Public Class frmMain
             Using dlg As New dlgDeleteConfirm
                 If dlg.ShowDialog(lstTVEpisodeID, Enums.ContentType.TVEpisode) = DialogResult.OK Then
                     FillListTVEpisodes(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value), Convert.ToInt32(dgvTVSeasons.Item("Season", currRow_TVSeason).Value))
+                    SetTVCount()
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
+        ClearInfo()
+
+        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSeason").Value))
+        Next
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            Dim idShow As Integer = CInt(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
+            For Each tID As Long In lItemsToRemove
+                If Not tID = 999 Then
+                    Master.DB.Delete_TVSeason(tID, True)
+                    RemoveRow_TVSeason(tID)
+                End If
+            Next
+            Reload_TVShow(idShow, True, True, False) 'TODO: check if needed
+            SQLtransaction.Commit()
+        End Using
+
+        SetTVCount()
+    End Sub
+
+    Private Sub cmnuSeasonRemoveFromDisk_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDisk.Click
+        Dim lstTVSeasonID As New List(Of Long)
+
+        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
+            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idSeason").Value)
+            If Not lstTVSeasonID.Contains(lngID) Then lstTVSeasonID.Add(lngID)
+        Next
+
+        If lstTVSeasonID.Count > 0 Then
+            Using dlg As New dlgDeleteConfirm
+                If dlg.ShowDialog(lstTVSeasonID, Enums.ContentType.TVSeason) = DialogResult.OK Then
+                    FillListTVSeasons(Convert.ToInt64(dgvTVSeasons.Item("idShow", currRow_TVSeason).Value))
                     SetTVCount()
                 End If
             End Using
@@ -4215,6 +4274,25 @@ Public Class frmMain
                 End If
             End Using
         End If
+    End Sub
+
+    Private Sub cmnuShowRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
+        ClearInfo()
+
+        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idShow").Value))
+        Next
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each tID As Long In lItemsToRemove
+                Master.DB.Delete_TVShow(tID, True)
+                RemoveRow_TVShow(tID)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        SetTVCount()
     End Sub
 
     Private Sub cmnuEpisodeEdit_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeEdit.Click
@@ -4956,25 +5034,6 @@ Public Class frmMain
         If doFill Then FillList(False, True, False)
     End Sub
 
-    Private Sub cmnuMovieSetRemove_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemove.Click
-        Dim lItemsToRemove As New List(Of Long)
-        ClearInfo()
-
-        For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
-            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSet").Value))
-        Next
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each tID As Long In lItemsToRemove
-                Master.DB.Delete_MovieSet(tID, True)
-                RemoveRow_MovieSet(tID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        FillList(True, False, False)
-    End Sub
-
     Private Sub cmnuEpisodeReload_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeReload.Click
         dgvTVShows.Cursor = Cursors.WaitCursor
         dgvTVSeasons.Cursor = Cursors.WaitCursor
@@ -5186,84 +5245,6 @@ Public Class frmMain
         If doFill Then FillList(False, False, True)
     End Sub
 
-    Private Sub cmnuSeasonRemoveFromDB_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmnuSeasonRemoveFromDB.Click
-        Dim lItemsToRemove As New List(Of Long)
-        ClearInfo()
-
-        For Each sRow As DataGridViewRow In dgvTVSeasons.SelectedRows
-            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSeason").Value))
-        Next
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Dim idShow As Integer = CInt(dgvTVSeasons.SelectedRows(0).Cells("idShow").Value)
-            For Each tID As Long In lItemsToRemove
-                If Not tID = 999 Then
-                    Master.DB.Delete_TVSeason(tID, True)
-                    RemoveRow_TVSeason(tID)
-                End If
-            Next
-            Reload_TVShow(idShow, True, True, False) 'TODO: check if needed
-            SQLtransaction.Commit()
-        End Using
-
-        SetTVCount()
-    End Sub
-
-    Private Sub cmnuEpisodeRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeRemoveFromDB.Click
-        Dim lItemsToRemove As New Dictionary(Of Long, Boolean)
-        Dim SeasonsList As New List(Of Integer)
-        ClearInfo()
-
-        For Each sRow As DataGridViewRow In dgvTVEpisodes.SelectedRows
-            If Not SeasonsList.Contains(CInt(sRow.Cells("Season").Value)) Then SeasonsList.Add(CInt(sRow.Cells("Season").Value))
-            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idEpisode").Value), Convert.ToInt64(sRow.Cells("idFile").Value) = -1)
-        Next
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            Dim idShow As Integer = CInt(dgvTVEpisodes.SelectedRows(0).Cells("idShow").Value)
-            For Each tID As KeyValuePair(Of Long, Boolean) In lItemsToRemove
-                If tID.Value Then
-                    Master.DB.Delete_TVEpisode(tID.Key, True, False, True) 'remove the "missing episode" from DB
-                    RemoveRow_TVEpisode(tID.Key)
-                Else
-                    If Master.DB.Delete_TVEpisode(tID.Key, False, False, True) Then 'set the episode as "missing episode"
-                        RemoveRow_TVEpisode(tID.Key)
-                    Else
-                        RefreshRow_TVEpisode(tID.Key)
-                    End If
-                End If
-            Next
-
-            For Each iSeason In SeasonsList
-                RefreshRow_TVSeason(idShow, iSeason)
-            Next
-            RefreshRow_TVShow(idShow)
-
-            SQLtransaction.Commit()
-        End Using
-
-        SetTVCount()
-    End Sub
-
-    Private Sub cmnuShowRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuShowRemoveFromDB.Click
-        Dim lItemsToRemove As New List(Of Long)
-        ClearInfo()
-
-        For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
-            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idShow").Value))
-        Next
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each tID As Long In lItemsToRemove
-                Master.DB.Delete_TVShow(tID, True)
-                RemoveRow_TVShow(tID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        SetTVCount()
-    End Sub
-
     Private Sub cmnuEpisodeRescrape_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeScrape.Click
         If dgvTVEpisodes.SelectedRows.Count = 1 Then
             Dim ScrapeModifiers As New Structures.ScrapeModifiers
@@ -5433,6 +5414,25 @@ Public Class frmMain
         Next
     End Sub
 
+    Private Sub cmnuMovieRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
+        ClearInfo()
+
+        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idMovie").Value))
+        Next
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each tID As Long In lItemsToRemove
+                Master.DB.Delete_Movie(tID, True)
+                RemoveRow_Movie(tID)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        FillList(False, True, False)
+    End Sub
+
 
     Private Sub cmnuMovieRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDisk.Click
         Dim lstMovieID As New List(Of Long)
@@ -5445,6 +5445,43 @@ Public Class frmMain
         If lstMovieID.Count > 0 Then
             Using dlg As New dlgDeleteConfirm
                 If dlg.ShowDialog(lstMovieID, Enums.ContentType.Movie) = DialogResult.OK Then
+                    FillList(True, True, False)
+                End If
+            End Using
+        End If
+    End Sub
+
+    Private Sub cmnuMovieSetRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemoveFromDB.Click
+        Dim lItemsToRemove As New List(Of Long)
+        ClearInfo()
+
+        For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idSet").Value))
+        Next
+
+        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
+            For Each tID As Long In lItemsToRemove
+                Master.DB.Delete_MovieSet(tID, True)
+                RemoveRow_MovieSet(tID)
+            Next
+            SQLtransaction.Commit()
+        End Using
+
+        FillList(True, False, False)
+    End Sub
+
+
+    Private Sub cmnuMovieSetRemoveFromDisk_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetRemoveFromDisk.Click
+        Dim lstMovieSetID As New List(Of Long)
+
+        For Each sRow As DataGridViewRow In dgvMovieSets.SelectedRows
+            Dim lngID As Long = Convert.ToInt64(sRow.Cells("idSet").Value)
+            If Not lstMovieSetID.Contains(lngID) Then lstMovieSetID.Add(lngID)
+        Next
+
+        If lstMovieSetID.Count > 0 Then
+            Using dlg As New dlgDeleteConfirm
+                If dlg.ShowDialog(lstMovieSetID, Enums.ContentType.MovieSet) = DialogResult.OK Then
                     FillList(True, True, False)
                 End If
             End Using
@@ -15160,25 +15197,6 @@ Public Class frmMain
         End If
     End Function
 
-    Private Sub cmnuMovieRemoveFromDB_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieRemoveFromDB.Click
-        Dim lItemsToRemove As New List(Of Long)
-        ClearInfo()
-
-        For Each sRow As DataGridViewRow In dgvMovies.SelectedRows
-            lItemsToRemove.Add(Convert.ToInt64(sRow.Cells("idMovie").Value))
-        Next
-
-        Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-            For Each tID As Long In lItemsToRemove
-                Master.DB.Delete_Movie(tID, True)
-                RemoveRow_Movie(tID)
-            Next
-            SQLtransaction.Commit()
-        End Using
-
-        FillList(False, True, False)
-    End Sub
-
     Private Sub ResizeMoviesList()
         If Not Master.isWindows Then
             If dgvMovies.ColumnCount > 0 Then
@@ -16855,11 +16873,13 @@ Public Class frmMain
         cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
         cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
         cmnuMovieRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
-        cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete Movie")
+        cmnuMovieRemoveFromDisk.Text = Master.eLang.GetString(34, "Delete MovieSet")
         cmnuMovieScrape.Text = Master.eLang.GetString(163, "(Re)Scrape Movie")
         cmnuMovieScrapeSelected.Text = Master.eLang.GetString(31, "(Re)Scrape Selected Movies")
         cmnuMovieSetEdit.Text = Master.eLang.GetString(207, "Edit MovieSet")
         cmnuMovieSetNew.Text = Master.eLang.GetString(208, "Add New MovieSet")
+        cmnuMovieSetRemoveFromDB.Text = Master.eLang.GetString(646, "Remove From Database")
+        cmnuMovieSetRemoveFromDisk.Text = Master.eLang.GetString(126, "Delete MovieSet")
         cmnuMovieSetScrape.Text = Master.eLang.GetString(1233, "(Re)Scrape MovieSet")
         cmnuMovieTitle.Text = Master.eLang.GetString(21, "Title")
         cmnuSeasonRemoveFromDB.Text = Master.eLang.GetString(646, "Remove from Database")
