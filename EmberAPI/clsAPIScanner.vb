@@ -816,9 +816,12 @@ Public Class Scanner
 
                 If Not cEpisode.MainDetails.TitleSpecified Then
                     'nothing usable in the title after filters have runs
-                    cEpisode.MainDetails.Title = String.Format("{0} S{1}E{2}{3}", cEpisode.TVShowDetails.Title, cEpisode.MainDetails.Season.ToString.PadLeft(2, Convert.ToChar("0")),
-                                                       cEpisode.MainDetails.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
-                                                       If(cEpisode.MainDetails.SubEpisodeSpecified, String.Concat(".", cEpisode.MainDetails.SubEpisode), String.Empty))
+                    cEpisode.MainDetails.Title = String.Format("{0} S{1}E{2}{3}",
+                                                               cEpisode.TVShowDetails.Title,
+                                                               cEpisode.MainDetails.Season.ToString.PadLeft(2, Convert.ToChar("0")),
+                                                               cEpisode.MainDetails.Episode.ToString.PadLeft(2, Convert.ToChar("0")),
+                                                               If(cEpisode.MainDetails.SubEpisodeSpecified, String.Concat(".", cEpisode.MainDetails.SubEpisode), String.Empty)
+                                                               )
                 End If
             End If
 
@@ -1239,7 +1242,11 @@ Public Class Scanner
             nMovieContainer.Source = tDBSource
             Load_Movie(nMovieContainer, True)
             _MoviePaths.Add(nFileItem.FullPath.ToLower)
-            bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.Added_Movie, .ID = nMovieContainer.ID, .Message = nMovieContainer.MainDetails.Title})
+            bwPrelim.ReportProgress(-1, New ProgressValue With {
+                                    .EventType = Enums.ScannerEventType.Added_Movie,
+                                    .ID = nMovieContainer.ID,
+                                    .Message = nMovieContainer.MainDetails.Title
+                                    })
         Next
 
         If tDBSource.Recursive Then
@@ -1360,13 +1367,19 @@ Public Class Scanner
 
                     If Master.eSettings.TVScanOrderModify Then
                         Try
-                            inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime)
+                            inList = dInfo.GetDirectories.Where(Function(d) _
+                                                                    (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
+                                                                    FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime
+                                                                    )
                         Catch ex As Exception
                             logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
                     Else
                         Try
-                            inList = dInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
+                            inList = dInfo.GetDirectories.Where(Function(d) _
+                                                                    (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
+                                                                    FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name
+                                                                    )
                         Catch ex As Exception
                             logger.Error(ex, New StackFrame().GetMethod().Name)
                         End Try
@@ -1379,7 +1392,11 @@ Public Class Scanner
 
                     Dim Result = Load_TVShow(currShowContainer, True, True, True)
                     If Not Result = Enums.ScannerEventType.None Then
-                        bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.MainDetails.Title})
+                        bwPrelim.ReportProgress(-1, New ProgressValue With {
+                                                .EventType = Result,
+                                                .ID = currShowContainer.ID,
+                                                .Message = currShowContainer.MainDetails.Title
+                                                })
                     End If
                 Else
                     For Each inDir As DirectoryInfo In dInfo.GetDirectories.Where(Function(d) FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
@@ -1412,7 +1429,11 @@ Public Class Scanner
 
                         Dim Result = Load_TVShow(currShowContainer, True, True, True)
                         If Not Result = Enums.ScannerEventType.None Then
-                            bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.MainDetails.Title})
+                            bwPrelim.ReportProgress(-1, New ProgressValue With {
+                                                    .EventType = Result,
+                                                    .ID = currShowContainer.ID,
+                                                    .Message = currShowContainer.MainDetails.Title
+                                                    })
                         End If
                     Next
 
@@ -1438,7 +1459,11 @@ Public Class Scanner
         bwPrelim = New System.ComponentModel.BackgroundWorker
         bwPrelim.WorkerReportsProgress = True
         bwPrelim.WorkerSupportsCancellation = True
-        bwPrelim.RunWorkerAsync(New Arguments With {.Scan = Scan, .SourceID = SourceID, .Folder = Folder})
+        bwPrelim.RunWorkerAsync(New Arguments With {
+                                .Folder = Folder,
+                                .Scan = Scan,
+                                .SourceID = SourceID
+                                })
     End Sub
 
     Private Sub bwPrelim_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwPrelim.DoWork
@@ -1491,7 +1516,10 @@ Public Class Scanner
                             Dim inInfo As DirectoryInfo = New DirectoryInfo(currShowContainer.ShowPath)
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
                             Try
-                                inList = inInfo.GetDirectories.Where(Function(d) (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name)
+                                inList = inInfo.GetDirectories.Where(Function(d) _
+                                                                         (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
+                                                                         FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name
+                                                                         )
                             Catch
                             End Try
 
@@ -1503,7 +1531,11 @@ Public Class Scanner
 
                             Dim Result = Load_TVShow(currShowContainer, True, True, True)
                             If Not Result = Enums.ScannerEventType.None Then
-                                bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Result, .ID = currShowContainer.ID, .Message = currShowContainer.MainDetails.Title})
+                                bwPrelim.ReportProgress(-1, New ProgressValue With {
+                                                        .EventType = Result,
+                                                        .ID = currShowContainer.ID,
+                                                        .Message = currShowContainer.MainDetails.Title
+                                                        })
                             End If
                         End If
                     End If
