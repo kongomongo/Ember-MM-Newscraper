@@ -353,12 +353,6 @@
     <Compile Include="dlgTVChangeEp.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgTVRegExProfiles.Designer.vb">
-      <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgTVRegExProfiles.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgSourceTVShow.Designer.vb">
       <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
     </Compile>
@@ -425,10 +419,22 @@
     <Compile Include="MasterSettingsPanels\frmOption_GUI.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_FileNaming.Designer.vb">
+      <DependentUpon>frmTV_FileNaming.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_FileNaming.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MasterSettingsPanels\frmTV_Image.Designer.vb">
       <DependentUpon>frmTV_Image.vb</DependentUpon>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmTV_Image.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Source.Designer.vb">
+      <DependentUpon>frmTV_Source.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_Source.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmTV_Theme.Designer.vb">
@@ -576,9 +582,6 @@
       <DependentUpon>dlgTVChangeEp.vb</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgTVRegExProfiles.resx">
-      <DependentUpon>dlgTVRegExProfiles.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgSourceTVShow.resx">
       <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
     </EmbeddedResource>
@@ -613,8 +616,14 @@
     <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
       <DependentUpon>frmOption_GUI.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_FileNaming.resx">
+      <DependentUpon>frmTV_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_Image.resx">
       <DependentUpon>frmTV_Image.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_Source.resx">
+      <DependentUpon>frmTV_Source.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_Theme.resx">
       <DependentUpon>frmTV_Theme.vb</DependentUpon>

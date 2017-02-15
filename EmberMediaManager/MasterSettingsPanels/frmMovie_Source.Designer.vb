@@ -39,19 +39,6 @@ Partial Class frmMovie_Source
         Me.txtMovieLevTolerance = New System.Windows.Forms.TextBox()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
-        Me.lvMovieSources = New System.Windows.Forms.ListView()
-        Me.colMovieSourcesID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesLanguage = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesRecur = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesFolder = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colMovieSourcesGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.btnMovieSourceAdd = New System.Windows.Forms.Button()
-        Me.btnMovieSourceEdit = New System.Windows.Forms.Button()
-        Me.btnMovieSourceRemove = New System.Windows.Forms.Button()
         Me.gbMovieSourcesMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesMiscOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieCleanDB = New System.Windows.Forms.CheckBox()
@@ -64,6 +51,19 @@ Partial Class frmMovie_Source
         Me.chkMovieSkipStackedSizeCheck = New System.Windows.Forms.CheckBox()
         Me.gbSources = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesDefaultsOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.lvMovieSources = New System.Windows.Forms.ListView()
+        Me.colMovieSourcesID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesPath = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesLanguage = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesRecur = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesFolder = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesSingle = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesExclude = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colMovieSourcesGetYear = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnMovieSourceRemove = New System.Windows.Forms.Button()
+        Me.btnMovieSourceEdit = New System.Windows.Forms.Button()
+        Me.btnMovieSourceAdd = New System.Windows.Forms.Button()
         Me.lblMovieSourcesDefaultsLanguage = New System.Windows.Forms.Label()
         Me.cbMovieGeneralLang = New System.Windows.Forms.ComboBox()
         Me.gbMovieGeneralFiltersOpts.SuspendLayout()
@@ -285,104 +285,6 @@ Partial Class frmMovie_Source
         Me.tblSettings.Size = New System.Drawing.Size(870, 459)
         Me.tblSettings.TabIndex = 9
         '
-        'lvMovieSources
-        '
-        Me.lvMovieSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieSourcesID, Me.colMovieSourcesName, Me.colMovieSourcesPath, Me.colMovieSourcesLanguage, Me.colMovieSourcesRecur, Me.colMovieSourcesFolder, Me.colMovieSourcesSingle, Me.colMovieSourcesExclude, Me.colMovieSourcesGetYear})
-        Me.tblMovieSourcesDefaultsOpts.SetColumnSpan(Me.lvMovieSources, 2)
-        Me.lvMovieSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lvMovieSources.FullRowSelect = True
-        Me.lvMovieSources.HideSelection = False
-        Me.lvMovieSources.Location = New System.Drawing.Point(3, 30)
-        Me.lvMovieSources.Name = "lvMovieSources"
-        Me.tblMovieSourcesDefaultsOpts.SetRowSpan(Me.lvMovieSources, 3)
-        Me.lvMovieSources.Size = New System.Drawing.Size(721, 150)
-        Me.lvMovieSources.Sorting = System.Windows.Forms.SortOrder.Ascending
-        Me.lvMovieSources.TabIndex = 0
-        Me.lvMovieSources.UseCompatibleStateImageBehavior = False
-        Me.lvMovieSources.View = System.Windows.Forms.View.Details
-        '
-        'colMovieSourcesID
-        '
-        Me.colMovieSourcesID.Text = "ID"
-        Me.colMovieSourcesID.Width = 0
-        '
-        'colMovieSourcesName
-        '
-        Me.colMovieSourcesName.Text = "Name"
-        Me.colMovieSourcesName.Width = 100
-        '
-        'colMovieSourcesPath
-        '
-        Me.colMovieSourcesPath.Text = "Path"
-        Me.colMovieSourcesPath.Width = 130
-        '
-        'colMovieSourcesLanguage
-        '
-        Me.colMovieSourcesLanguage.Text = "Language"
-        Me.colMovieSourcesLanguage.Width = 80
-        '
-        'colMovieSourcesRecur
-        '
-        Me.colMovieSourcesRecur.Text = "Recursive"
-        '
-        'colMovieSourcesFolder
-        '
-        Me.colMovieSourcesFolder.Text = "Use Folder Name"
-        Me.colMovieSourcesFolder.Width = 110
-        '
-        'colMovieSourcesSingle
-        '
-        Me.colMovieSourcesSingle.Text = "Single Video"
-        Me.colMovieSourcesSingle.Width = 90
-        '
-        'colMovieSourcesExclude
-        '
-        Me.colMovieSourcesExclude.Text = "Exclude"
-        '
-        'colMovieSourcesGetYear
-        '
-        Me.colMovieSourcesGetYear.Text = "Get Year"
-        '
-        'btnMovieSourceAdd
-        '
-        Me.btnMovieSourceAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnMovieSourceAdd.Image = CType(resources.GetObject("btnMovieSourceAdd.Image"), System.Drawing.Image)
-        Me.btnMovieSourceAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSourceAdd.Location = New System.Drawing.Point(730, 30)
-        Me.btnMovieSourceAdd.Name = "btnMovieSourceAdd"
-        Me.btnMovieSourceAdd.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieSourceAdd.TabIndex = 1
-        Me.btnMovieSourceAdd.Text = "Add Source"
-        Me.btnMovieSourceAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieSourceAdd.UseVisualStyleBackColor = True
-        '
-        'btnMovieSourceEdit
-        '
-        Me.btnMovieSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnMovieSourceEdit.Image = CType(resources.GetObject("btnMovieSourceEdit.Image"), System.Drawing.Image)
-        Me.btnMovieSourceEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSourceEdit.Location = New System.Drawing.Point(730, 59)
-        Me.btnMovieSourceEdit.Name = "btnMovieSourceEdit"
-        Me.btnMovieSourceEdit.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieSourceEdit.TabIndex = 2
-        Me.btnMovieSourceEdit.Text = "Edit Source"
-        Me.btnMovieSourceEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieSourceEdit.UseVisualStyleBackColor = True
-        '
-        'btnMovieSourceRemove
-        '
-        Me.btnMovieSourceRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMovieSourceRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnMovieSourceRemove.Image = CType(resources.GetObject("btnMovieSourceRemove.Image"), System.Drawing.Image)
-        Me.btnMovieSourceRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnMovieSourceRemove.Location = New System.Drawing.Point(730, 157)
-        Me.btnMovieSourceRemove.Name = "btnMovieSourceRemove"
-        Me.btnMovieSourceRemove.Size = New System.Drawing.Size(104, 23)
-        Me.btnMovieSourceRemove.TabIndex = 3
-        Me.btnMovieSourceRemove.Text = "Remove"
-        Me.btnMovieSourceRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnMovieSourceRemove.UseVisualStyleBackColor = True
-        '
         'gbMovieSourcesMiscOpts
         '
         Me.gbMovieSourcesMiscOpts.AutoSize = True
@@ -568,6 +470,104 @@ Partial Class frmMovie_Source
         Me.tblMovieSourcesDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesDefaultsOpts.Size = New System.Drawing.Size(837, 183)
         Me.tblMovieSourcesDefaultsOpts.TabIndex = 0
+        '
+        'lvMovieSources
+        '
+        Me.lvMovieSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colMovieSourcesID, Me.colMovieSourcesName, Me.colMovieSourcesPath, Me.colMovieSourcesLanguage, Me.colMovieSourcesRecur, Me.colMovieSourcesFolder, Me.colMovieSourcesSingle, Me.colMovieSourcesExclude, Me.colMovieSourcesGetYear})
+        Me.tblMovieSourcesDefaultsOpts.SetColumnSpan(Me.lvMovieSources, 2)
+        Me.lvMovieSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvMovieSources.FullRowSelect = True
+        Me.lvMovieSources.HideSelection = False
+        Me.lvMovieSources.Location = New System.Drawing.Point(3, 30)
+        Me.lvMovieSources.Name = "lvMovieSources"
+        Me.tblMovieSourcesDefaultsOpts.SetRowSpan(Me.lvMovieSources, 3)
+        Me.lvMovieSources.Size = New System.Drawing.Size(721, 150)
+        Me.lvMovieSources.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.lvMovieSources.TabIndex = 0
+        Me.lvMovieSources.UseCompatibleStateImageBehavior = False
+        Me.lvMovieSources.View = System.Windows.Forms.View.Details
+        '
+        'colMovieSourcesID
+        '
+        Me.colMovieSourcesID.Text = "ID"
+        Me.colMovieSourcesID.Width = 0
+        '
+        'colMovieSourcesName
+        '
+        Me.colMovieSourcesName.Text = "Name"
+        Me.colMovieSourcesName.Width = 100
+        '
+        'colMovieSourcesPath
+        '
+        Me.colMovieSourcesPath.Text = "Path"
+        Me.colMovieSourcesPath.Width = 130
+        '
+        'colMovieSourcesLanguage
+        '
+        Me.colMovieSourcesLanguage.Text = "Language"
+        Me.colMovieSourcesLanguage.Width = 80
+        '
+        'colMovieSourcesRecur
+        '
+        Me.colMovieSourcesRecur.Text = "Recursive"
+        '
+        'colMovieSourcesFolder
+        '
+        Me.colMovieSourcesFolder.Text = "Use Folder Name"
+        Me.colMovieSourcesFolder.Width = 110
+        '
+        'colMovieSourcesSingle
+        '
+        Me.colMovieSourcesSingle.Text = "Single Video"
+        Me.colMovieSourcesSingle.Width = 90
+        '
+        'colMovieSourcesExclude
+        '
+        Me.colMovieSourcesExclude.Text = "Exclude"
+        '
+        'colMovieSourcesGetYear
+        '
+        Me.colMovieSourcesGetYear.Text = "Get Year"
+        '
+        'btnMovieSourceRemove
+        '
+        Me.btnMovieSourceRemove.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnMovieSourceRemove.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMovieSourceRemove.Image = CType(resources.GetObject("btnMovieSourceRemove.Image"), System.Drawing.Image)
+        Me.btnMovieSourceRemove.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieSourceRemove.Location = New System.Drawing.Point(730, 157)
+        Me.btnMovieSourceRemove.Name = "btnMovieSourceRemove"
+        Me.btnMovieSourceRemove.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieSourceRemove.TabIndex = 3
+        Me.btnMovieSourceRemove.Text = "Remove"
+        Me.btnMovieSourceRemove.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieSourceRemove.UseVisualStyleBackColor = True
+        '
+        'btnMovieSourceEdit
+        '
+        Me.btnMovieSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMovieSourceEdit.Image = CType(resources.GetObject("btnMovieSourceEdit.Image"), System.Drawing.Image)
+        Me.btnMovieSourceEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieSourceEdit.Location = New System.Drawing.Point(730, 59)
+        Me.btnMovieSourceEdit.Name = "btnMovieSourceEdit"
+        Me.btnMovieSourceEdit.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieSourceEdit.TabIndex = 2
+        Me.btnMovieSourceEdit.Text = "Edit Source"
+        Me.btnMovieSourceEdit.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieSourceEdit.UseVisualStyleBackColor = True
+        '
+        'btnMovieSourceAdd
+        '
+        Me.btnMovieSourceAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMovieSourceAdd.Image = CType(resources.GetObject("btnMovieSourceAdd.Image"), System.Drawing.Image)
+        Me.btnMovieSourceAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.btnMovieSourceAdd.Location = New System.Drawing.Point(730, 30)
+        Me.btnMovieSourceAdd.Name = "btnMovieSourceAdd"
+        Me.btnMovieSourceAdd.Size = New System.Drawing.Size(104, 23)
+        Me.btnMovieSourceAdd.TabIndex = 1
+        Me.btnMovieSourceAdd.Text = "Add Source"
+        Me.btnMovieSourceAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.btnMovieSourceAdd.UseVisualStyleBackColor = True
         '
         'lblMovieSourcesDefaultsLanguage
         '
