@@ -158,25 +158,25 @@ Public Class Scanner
         'banner
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainBanner, bForced)
             tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Banner.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
         Next
 
         'clearart
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainClearArt, bForced)
             tDBElement.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.ClearArt.LocalFilePathSpecified Then Exit For
         Next
 
         'clearlogo
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainClearLogo, bForced)
             tDBElement.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified Then Exit For
         Next
 
         'discart
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainDiscArt, bForced)
             tDBElement.ImagesContainer.DiscArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.DiscArt.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.DiscArt.LocalFilePathSpecified Then Exit For
         Next
 
         'extrafanarts
@@ -198,25 +198,25 @@ Public Class Scanner
         'fanart
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainFanart, bForced)
             tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
         Next
 
         'landscape
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainLandscape, bForced)
             tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
         Next
 
         'nfo
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainNFO, bForced)
             tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.NfoPath) Then Exit For
+            If tDBElement.NfoPathSpecified Then Exit For
         Next
 
         'poster
         For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainPoster, bForced)
             tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
         Next
 
         'subtitles (external)
@@ -234,8 +234,9 @@ Public Class Scanner
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTheme, bForced)
                 For Each t As String In Master.eSettings.FileSystemValidThemeExts
                     tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                    If Not String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath) Then Exit For
+                    If tDBElement.Theme.LocalFilePathSpecified Then Exit For
                 Next
+                If tDBElement.Theme.LocalFilePathSpecified Then Exit For
             Next
         End If
 
@@ -244,8 +245,9 @@ Public Class Scanner
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTrailer, bForced)
                 For Each t As String In Master.eSettings.FileSystemValidExts
                     tDBElement.Trailer.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                    If Not String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath) Then Exit For
+                    If tDBElement.Trailer.LocalFilePathSpecified Then Exit For
                 Next
+                If tDBElement.Trailer.LocalFilePathSpecified Then Exit For
             Next
         End If
     End Sub
@@ -370,19 +372,19 @@ Public Class Scanner
         'episode fanart
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeFanart)
             tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
         Next
 
         'episode poster
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodePoster)
             tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
         Next
 
         'episode NFO
         For Each a In FileUtils.GetFilenameList.TVEpisode(tDBElement, Enums.ScrapeModifierType.EpisodeNFO)
             tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.NfoPath) Then Exit For
+            If tDBElement.NfoPathSpecified Then Exit For
         Next
 
         'subtitles (external)
@@ -428,12 +430,12 @@ Public Class Scanner
         If iSeason = 999 Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.AllSeasonsBanner)
                 tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Banner.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ScrapeModifierType.SeasonBanner)
                 tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Banner.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
             Next
         End If
 
@@ -441,12 +443,12 @@ Public Class Scanner
         If iSeason = 999 Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.AllSeasonsFanart)
                 tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ScrapeModifierType.SeasonFanart)
                 tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
             Next
         End If
 
@@ -454,12 +456,12 @@ Public Class Scanner
         If iSeason = 999 Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.AllSeasonsLandscape)
                 tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ScrapeModifierType.SeasonLandscape)
                 tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
             Next
         End If
 
@@ -467,12 +469,12 @@ Public Class Scanner
         If iSeason = 999 Then 'all-seasons
             For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.AllSeasonsPoster)
                 tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
             Next
         Else
             For Each a In FileUtils.GetFilenameList.TVSeason(tDBElement, Enums.ScrapeModifierType.SeasonPoster)
                 tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-                If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
+                If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
             Next
         End If
     End Sub
@@ -516,25 +518,25 @@ Public Class Scanner
         'show banner
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainBanner)
             tDBElement.ImagesContainer.Banner.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Banner.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Banner.LocalFilePathSpecified Then Exit For
         Next
 
         'show characterart
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainCharacterArt)
             tDBElement.ImagesContainer.CharacterArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.CharacterArt.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.CharacterArt.LocalFilePathSpecified Then Exit For
         Next
 
         'show clearart
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainClearArt)
             tDBElement.ImagesContainer.ClearArt.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.ClearArt.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.ClearArt.LocalFilePathSpecified Then Exit For
         Next
 
         'show clearlogo
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainClearLogo)
             tDBElement.ImagesContainer.ClearLogo.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.ClearLogo.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.ClearLogo.LocalFilePathSpecified Then Exit For
         Next
 
         'show extrafanarts
@@ -548,33 +550,34 @@ Public Class Scanner
         'show fanart
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainFanart)
             tDBElement.ImagesContainer.Fanart.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Fanart.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Fanart.LocalFilePathSpecified Then Exit For
         Next
 
         'show landscape
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainLandscape)
             tDBElement.ImagesContainer.Landscape.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Landscape.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Landscape.LocalFilePathSpecified Then Exit For
         Next
 
         'show NFO
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainNFO)
             tDBElement.NfoPath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.NfoPath) Then Exit For
+            If tDBElement.NfoPathSpecified Then Exit For
         Next
 
         'show poster
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainPoster)
             tDBElement.ImagesContainer.Poster.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = a.ToLower)
-            If Not String.IsNullOrEmpty(tDBElement.ImagesContainer.Poster.LocalFilePath) Then Exit For
+            If tDBElement.ImagesContainer.Poster.LocalFilePathSpecified Then Exit For
         Next
 
         'show theme
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainTheme)
             For Each t As String In Master.eSettings.FileSystemValidThemeExts
                 tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
-                If Not String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath) Then Exit For
+                If tDBElement.Theme.LocalFilePathSpecified Then Exit For
             Next
+            If tDBElement.Theme.LocalFilePathSpecified Then Exit For
         Next
     End Sub
 
