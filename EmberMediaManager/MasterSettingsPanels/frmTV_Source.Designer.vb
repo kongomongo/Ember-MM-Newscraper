@@ -43,10 +43,6 @@ Partial Class frmTV_Source
         Me.chkTVGeneralIgnoreLastScan = New System.Windows.Forms.CheckBox()
         Me.lblTVSkipLessThan = New System.Windows.Forms.Label()
         Me.txtTVSkipLessThan = New System.Windows.Forms.TextBox()
-        Me.tcTVSources = New System.Windows.Forms.TabControl()
-        Me.tpTVSourcesGeneral = New System.Windows.Forms.TabPage()
-        Me.tblTVSourcesGeneral = New System.Windows.Forms.TableLayoutPanel()
-        Me.tpTVSourcesRegex = New System.Windows.Forms.TabPage()
         Me.tblTVSourcesRegex = New System.Windows.Forms.TableLayoutPanel()
         Me.gbTVSourcesRegexMultiPartMatching = New System.Windows.Forms.GroupBox()
         Me.tblTVSourcesRegexMultiPartMatching = New System.Windows.Forms.TableLayoutPanel()
@@ -109,9 +105,6 @@ Partial Class frmTV_Source
         Me.tblTVShowFilterOpts.SuspendLayout()
         Me.gbTVSourcesMiscOpts.SuspendLayout()
         Me.tblTVSourcesMiscOpts.SuspendLayout()
-        Me.tcTVSources.SuspendLayout()
-        Me.tpTVSourcesGeneral.SuspendLayout()
-        Me.tpTVSourcesRegex.SuspendLayout()
         Me.tblTVSourcesRegex.SuspendLayout()
         Me.gbTVSourcesRegexMultiPartMatching.SuspendLayout()
         Me.tblTVSourcesRegexMultiPartMatching.SuspendLayout()
@@ -132,7 +125,7 @@ Partial Class frmTV_Source
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(622, 595)
+        Me.pnlSettings.Size = New System.Drawing.Size(996, 678)
         Me.pnlSettings.TabIndex = 0
         '
         'tblSettings
@@ -140,15 +133,15 @@ Partial Class frmTV_Source
         Me.tblSettings.AutoScroll = True
         Me.tblSettings.AutoSize = True
         Me.tblSettings.ColumnCount = 4
-        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
-        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.0!))
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.Controls.Add(Me.gbTVShowFilterOpts, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbTVSourcesMiscOpts, 2, 1)
-        Me.tblSettings.Controls.Add(Me.tcTVSources, 0, 2)
         Me.tblSettings.Controls.Add(Me.gbSources, 0, 0)
         Me.tblSettings.Controls.Add(Me.gbTVEpisodeFilterOpts, 1, 1)
+        Me.tblSettings.Controls.Add(Me.tblTVSourcesRegex, 0, 2)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
@@ -157,17 +150,18 @@ Partial Class frmTV_Source
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(622, 595)
+        Me.tblSettings.Size = New System.Drawing.Size(996, 678)
         Me.tblSettings.TabIndex = 2
         '
         'gbTVShowFilterOpts
         '
         Me.gbTVShowFilterOpts.AutoSize = True
         Me.gbTVShowFilterOpts.Controls.Add(Me.tblTVShowFilterOpts)
+        Me.gbTVShowFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVShowFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbTVShowFilterOpts.Location = New System.Drawing.Point(3, 238)
         Me.gbTVShowFilterOpts.Name = "gbTVShowFilterOpts"
-        Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(216, 180)
+        Me.gbTVShowFilterOpts.Size = New System.Drawing.Size(326, 203)
         Me.gbTVShowFilterOpts.TabIndex = 5
         Me.gbTVShowFilterOpts.TabStop = False
         Me.gbTVShowFilterOpts.Text = "Show Folder/File Name Filters"
@@ -198,7 +192,7 @@ Partial Class frmTV_Source
         Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVShowFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVShowFilterOpts.Size = New System.Drawing.Size(210, 159)
+        Me.tblTVShowFilterOpts.Size = New System.Drawing.Size(320, 182)
         Me.tblTVShowFilterOpts.TabIndex = 5
         '
         'btnTVShowFilterRemove
@@ -289,10 +283,11 @@ Partial Class frmTV_Source
         '
         Me.gbTVSourcesMiscOpts.AutoSize = True
         Me.gbTVSourcesMiscOpts.Controls.Add(Me.tblTVSourcesMiscOpts)
+        Me.gbTVSourcesMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVSourcesMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(447, 238)
+        Me.gbTVSourcesMiscOpts.Location = New System.Drawing.Point(667, 238)
         Me.gbTVSourcesMiscOpts.Name = "gbTVSourcesMiscOpts"
-        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(216, 118)
+        Me.gbTVSourcesMiscOpts.Size = New System.Drawing.Size(262, 203)
         Me.gbTVSourcesMiscOpts.TabIndex = 4
         Me.gbTVSourcesMiscOpts.TabStop = False
         Me.gbTVSourcesMiscOpts.Text = "Miscellaneous Options"
@@ -320,7 +315,7 @@ Partial Class frmTV_Source
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(210, 97)
+        Me.tblTVSourcesMiscOpts.Size = New System.Drawing.Size(256, 182)
         Me.tblTVSourcesMiscOpts.TabIndex = 7
         '
         'chkTVCleanDB
@@ -399,77 +394,23 @@ Partial Class frmTV_Source
         Me.txtTVSkipLessThan.Size = New System.Drawing.Size(51, 22)
         Me.txtTVSkipLessThan.TabIndex = 0
         '
-        'tcTVSources
-        '
-        Me.tcTVSources.Controls.Add(Me.tpTVSourcesGeneral)
-        Me.tcTVSources.Controls.Add(Me.tpTVSourcesRegex)
-        Me.tcTVSources.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tcTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.tcTVSources.Location = New System.Drawing.Point(3, 447)
-        Me.tcTVSources.Name = "tcTVSources"
-        Me.tcTVSources.SelectedIndex = 0
-        Me.tcTVSources.Size = New System.Drawing.Size(216, 500)
-        Me.tcTVSources.TabIndex = 0
-        '
-        'tpTVSourcesGeneral
-        '
-        Me.tpTVSourcesGeneral.Controls.Add(Me.tblTVSourcesGeneral)
-        Me.tpTVSourcesGeneral.Location = New System.Drawing.Point(4, 22)
-        Me.tpTVSourcesGeneral.Name = "tpTVSourcesGeneral"
-        Me.tpTVSourcesGeneral.Size = New System.Drawing.Size(208, 474)
-        Me.tpTVSourcesGeneral.TabIndex = 0
-        Me.tpTVSourcesGeneral.Text = "General"
-        Me.tpTVSourcesGeneral.UseVisualStyleBackColor = True
-        '
-        'tblTVSourcesGeneral
-        '
-        Me.tblTVSourcesGeneral.AutoSize = True
-        Me.tblTVSourcesGeneral.ColumnCount = 4
-        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesGeneral.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVSourcesGeneral.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVSourcesGeneral.Location = New System.Drawing.Point(0, 0)
-        Me.tblTVSourcesGeneral.Name = "tblTVSourcesGeneral"
-        Me.tblTVSourcesGeneral.RowCount = 7
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesGeneral.Size = New System.Drawing.Size(208, 474)
-        Me.tblTVSourcesGeneral.TabIndex = 7
-        '
-        'tpTVSourcesRegex
-        '
-        Me.tpTVSourcesRegex.Controls.Add(Me.tblTVSourcesRegex)
-        Me.tpTVSourcesRegex.Location = New System.Drawing.Point(4, 22)
-        Me.tpTVSourcesRegex.Name = "tpTVSourcesRegex"
-        Me.tpTVSourcesRegex.Size = New System.Drawing.Size(208, 474)
-        Me.tpTVSourcesRegex.TabIndex = 1
-        Me.tpTVSourcesRegex.Text = "Regex"
-        Me.tpTVSourcesRegex.UseVisualStyleBackColor = True
-        '
         'tblTVSourcesRegex
         '
         Me.tblTVSourcesRegex.AutoSize = True
-        Me.tblTVSourcesRegex.ColumnCount = 2
+        Me.tblTVSourcesRegex.ColumnCount = 1
+        Me.tblSettings.SetColumnSpan(Me.tblTVSourcesRegex, 3)
         Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVSourcesRegex.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesRegex.Controls.Add(Me.gbTVSourcesRegexMultiPartMatching, 0, 1)
         Me.tblTVSourcesRegex.Controls.Add(Me.gbTVSourcesRegexTVShowMatching, 0, 0)
         Me.tblTVSourcesRegex.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVSourcesRegex.Location = New System.Drawing.Point(0, 0)
+        Me.tblTVSourcesRegex.Location = New System.Drawing.Point(3, 447)
         Me.tblTVSourcesRegex.Name = "tblTVSourcesRegex"
         Me.tblTVSourcesRegex.RowCount = 3
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegex.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegex.Size = New System.Drawing.Size(208, 474)
+        Me.tblTVSourcesRegex.Size = New System.Drawing.Size(926, 430)
         Me.tblTVSourcesRegex.TabIndex = 9
         '
         'gbTVSourcesRegexMultiPartMatching
@@ -480,7 +421,7 @@ Partial Class frmTV_Source
         Me.gbTVSourcesRegexMultiPartMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesRegexMultiPartMatching.Location = New System.Drawing.Point(3, 377)
         Me.gbTVSourcesRegexMultiPartMatching.Name = "gbTVSourcesRegexMultiPartMatching"
-        Me.gbTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(812, 50)
+        Me.gbTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(920, 50)
         Me.gbTVSourcesRegexMultiPartMatching.TabIndex = 8
         Me.gbTVSourcesRegexMultiPartMatching.TabStop = False
         Me.gbTVSourcesRegexMultiPartMatching.Text = "TV Show Multi Part Matching"
@@ -499,7 +440,7 @@ Partial Class frmTV_Source
         Me.tblTVSourcesRegexMultiPartMatching.RowCount = 2
         Me.tblTVSourcesRegexMultiPartMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegexMultiPartMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(806, 29)
+        Me.tblTVSourcesRegexMultiPartMatching.Size = New System.Drawing.Size(914, 29)
         Me.tblTVSourcesRegexMultiPartMatching.TabIndex = 0
         '
         'txtTVSourcesRegexMultiPartMatching
@@ -515,7 +456,7 @@ Partial Class frmTV_Source
         '
         Me.btnTVSourcesRegexMultiPartMatchingReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnTVSourcesRegexMultiPartMatchingReset.Image = CType(resources.GetObject("btnTVSourcesRegexMultiPartMatchingReset.Image"), System.Drawing.Image)
-        Me.btnTVSourcesRegexMultiPartMatchingReset.Location = New System.Drawing.Point(780, 3)
+        Me.btnTVSourcesRegexMultiPartMatchingReset.Location = New System.Drawing.Point(888, 3)
         Me.btnTVSourcesRegexMultiPartMatchingReset.Name = "btnTVSourcesRegexMultiPartMatchingReset"
         Me.btnTVSourcesRegexMultiPartMatchingReset.Size = New System.Drawing.Size(23, 23)
         Me.btnTVSourcesRegexMultiPartMatchingReset.TabIndex = 3
@@ -529,7 +470,7 @@ Partial Class frmTV_Source
         Me.gbTVSourcesRegexTVShowMatching.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesRegexTVShowMatching.Location = New System.Drawing.Point(3, 3)
         Me.gbTVSourcesRegexTVShowMatching.Name = "gbTVSourcesRegexTVShowMatching"
-        Me.gbTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(812, 368)
+        Me.gbTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(920, 368)
         Me.gbTVSourcesRegexTVShowMatching.TabIndex = 7
         Me.gbTVSourcesRegexTVShowMatching.TabStop = False
         Me.gbTVSourcesRegexTVShowMatching.Text = "TV Show Matching"
@@ -569,7 +510,7 @@ Partial Class frmTV_Source
         Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesRegexTVShowMatching.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(806, 347)
+        Me.tblTVSourcesRegexTVShowMatching.Size = New System.Drawing.Size(914, 347)
         Me.tblTVSourcesRegexTVShowMatching.TabIndex = 8
         '
         'lvTVSourcesRegexTVShowMatching
@@ -802,13 +743,13 @@ Partial Class frmTV_Source
         'gbSources
         '
         Me.gbSources.AutoSize = True
-        Me.tblSettings.SetColumnSpan(Me.gbSources, 2)
+        Me.tblSettings.SetColumnSpan(Me.gbSources, 3)
         Me.gbSources.Controls.Add(Me.tblSources)
         Me.gbSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbSources.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSources.Location = New System.Drawing.Point(3, 3)
         Me.gbSources.Name = "gbSources"
-        Me.gbSources.Size = New System.Drawing.Size(438, 229)
+        Me.gbSources.Size = New System.Drawing.Size(926, 229)
         Me.gbSources.TabIndex = 1
         Me.gbSources.TabStop = False
         Me.gbSources.Text = "Sources"
@@ -816,10 +757,9 @@ Partial Class frmTV_Source
         'tblSources
         '
         Me.tblSources.AutoSize = True
-        Me.tblSources.ColumnCount = 4
+        Me.tblSources.ColumnCount = 3
         Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
         Me.tblSources.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSources.Controls.Add(Me.lvTVSources, 0, 2)
         Me.tblSources.Controls.Add(Me.btnRemTVSource, 2, 4)
@@ -839,20 +779,21 @@ Partial Class frmTV_Source
         Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSources.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSources.Size = New System.Drawing.Size(432, 210)
+        Me.tblSources.Size = New System.Drawing.Size(920, 210)
         Me.tblSources.TabIndex = 0
         '
         'lvTVSources
         '
         Me.lvTVSources.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVSourcesID, Me.colTVSourcesName, Me.colTVSourcesPath, Me.colTVSourcesLanguage, Me.colTVSourcesOrdering, Me.colTVSourcesExclude, Me.colTVSourcesSorting, Me.colTVSourcesSingle})
         Me.tblSources.SetColumnSpan(Me.lvTVSources, 2)
+        Me.lvTVSources.Dock = System.Windows.Forms.DockStyle.Fill
         Me.lvTVSources.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.lvTVSources.FullRowSelect = True
         Me.lvTVSources.HideSelection = False
         Me.lvTVSources.Location = New System.Drawing.Point(3, 57)
         Me.lvTVSources.Name = "lvTVSources"
         Me.tblSources.SetRowSpan(Me.lvTVSources, 3)
-        Me.lvTVSources.Size = New System.Drawing.Size(721, 150)
+        Me.lvTVSources.Size = New System.Drawing.Size(804, 150)
         Me.lvTVSources.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.lvTVSources.TabIndex = 0
         Me.lvTVSources.UseCompatibleStateImageBehavior = False
@@ -900,7 +841,7 @@ Partial Class frmTV_Source
         Me.btnRemTVSource.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnRemTVSource.Image = CType(resources.GetObject("btnRemTVSource.Image"), System.Drawing.Image)
         Me.btnRemTVSource.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnRemTVSource.Location = New System.Drawing.Point(730, 184)
+        Me.btnRemTVSource.Location = New System.Drawing.Point(813, 184)
         Me.btnRemTVSource.Name = "btnRemTVSource"
         Me.btnRemTVSource.Size = New System.Drawing.Size(104, 23)
         Me.btnRemTVSource.TabIndex = 3
@@ -924,7 +865,7 @@ Partial Class frmTV_Source
         Me.btnTVSourceEdit.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnTVSourceEdit.Image = CType(resources.GetObject("btnTVSourceEdit.Image"), System.Drawing.Image)
         Me.btnTVSourceEdit.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTVSourceEdit.Location = New System.Drawing.Point(730, 86)
+        Me.btnTVSourceEdit.Location = New System.Drawing.Point(813, 86)
         Me.btnTVSourceEdit.Name = "btnTVSourceEdit"
         Me.btnTVSourceEdit.Size = New System.Drawing.Size(104, 23)
         Me.btnTVSourceEdit.TabIndex = 2
@@ -947,7 +888,7 @@ Partial Class frmTV_Source
         Me.btnTVSourceAdd.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.btnTVSourceAdd.Image = CType(resources.GetObject("btnTVSourceAdd.Image"), System.Drawing.Image)
         Me.btnTVSourceAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.btnTVSourceAdd.Location = New System.Drawing.Point(730, 57)
+        Me.btnTVSourceAdd.Location = New System.Drawing.Point(813, 57)
         Me.btnTVSourceAdd.Name = "btnTVSourceAdd"
         Me.btnTVSourceAdd.Size = New System.Drawing.Size(104, 23)
         Me.btnTVSourceAdd.TabIndex = 1
@@ -983,10 +924,11 @@ Partial Class frmTV_Source
         '
         Me.gbTVEpisodeFilterOpts.AutoSize = True
         Me.gbTVEpisodeFilterOpts.Controls.Add(Me.tblTVEpisodeFilterOpts)
+        Me.gbTVEpisodeFilterOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVEpisodeFilterOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(225, 238)
+        Me.gbTVEpisodeFilterOpts.Location = New System.Drawing.Point(335, 238)
         Me.gbTVEpisodeFilterOpts.Name = "gbTVEpisodeFilterOpts"
-        Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(216, 203)
+        Me.gbTVEpisodeFilterOpts.Size = New System.Drawing.Size(326, 203)
         Me.gbTVEpisodeFilterOpts.TabIndex = 6
         Me.gbTVEpisodeFilterOpts.TabStop = False
         Me.gbTVEpisodeFilterOpts.Text = "Episode Folder/File Name Filters"
@@ -1019,7 +961,7 @@ Partial Class frmTV_Source
         Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVEpisodeFilterOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVEpisodeFilterOpts.Size = New System.Drawing.Size(210, 182)
+        Me.tblTVEpisodeFilterOpts.Size = New System.Drawing.Size(320, 182)
         Me.tblTVEpisodeFilterOpts.TabIndex = 5
         '
         'btnTVEpisodeFilterRemove
@@ -1125,7 +1067,7 @@ Partial Class frmTV_Source
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(622, 595)
+        Me.ClientSize = New System.Drawing.Size(996, 678)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmTV_Source"
         Me.Text = "frmTV_Source"
@@ -1141,11 +1083,6 @@ Partial Class frmTV_Source
         Me.gbTVSourcesMiscOpts.PerformLayout()
         Me.tblTVSourcesMiscOpts.ResumeLayout(False)
         Me.tblTVSourcesMiscOpts.PerformLayout()
-        Me.tcTVSources.ResumeLayout(False)
-        Me.tpTVSourcesGeneral.ResumeLayout(False)
-        Me.tpTVSourcesGeneral.PerformLayout()
-        Me.tpTVSourcesRegex.ResumeLayout(False)
-        Me.tpTVSourcesRegex.PerformLayout()
         Me.tblTVSourcesRegex.ResumeLayout(False)
         Me.tblTVSourcesRegex.PerformLayout()
         Me.gbTVSourcesRegexMultiPartMatching.ResumeLayout(False)
@@ -1173,9 +1110,6 @@ Partial Class frmTV_Source
 
     Friend WithEvents pnlSettings As Windows.Forms.Panel
     Friend WithEvents tblSettings As Windows.Forms.TableLayoutPanel
-    Friend WithEvents tcTVSources As Windows.Forms.TabControl
-    Friend WithEvents tpTVSourcesGeneral As Windows.Forms.TabPage
-    Friend WithEvents tblTVSourcesGeneral As Windows.Forms.TableLayoutPanel
     Friend WithEvents lvTVSources As Windows.Forms.ListView
     Friend WithEvents colTVSourcesID As Windows.Forms.ColumnHeader
     Friend WithEvents colTVSourcesName As Windows.Forms.ColumnHeader
@@ -1200,7 +1134,6 @@ Partial Class frmTV_Source
     Friend WithEvents lblTVSourcesDefaultsOrdering As Windows.Forms.Label
     Friend WithEvents cbTVScraperOptionsOrdering As Windows.Forms.ComboBox
     Friend WithEvents lblTVSourcesDefaultsLanguage As Windows.Forms.Label
-    Friend WithEvents tpTVSourcesRegex As Windows.Forms.TabPage
     Friend WithEvents tblTVSourcesRegex As Windows.Forms.TableLayoutPanel
     Friend WithEvents gbTVSourcesRegexMultiPartMatching As Windows.Forms.GroupBox
     Friend WithEvents tblTVSourcesRegexMultiPartMatching As Windows.Forms.TableLayoutPanel

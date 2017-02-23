@@ -947,7 +947,7 @@ Partial Class dlgSettings
         '
         Me.btnOK.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnOK.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnOK.Location = New System.Drawing.Point(1569, 41)
+        Me.btnOK.Location = New System.Drawing.Point(1129, 41)
         Me.btnOK.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(75, 23)
@@ -960,7 +960,7 @@ Partial Class dlgSettings
         Me.btnApply.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnApply.Enabled = False
         Me.btnApply.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnApply.Location = New System.Drawing.Point(1408, 41)
+        Me.btnApply.Location = New System.Drawing.Point(968, 41)
         Me.btnApply.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnApply.Name = "btnApply"
         Me.btnApply.Size = New System.Drawing.Size(74, 23)
@@ -973,7 +973,7 @@ Partial Class dlgSettings
         Me.btnCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(1488, 41)
+        Me.btnCancel.Location = New System.Drawing.Point(1048, 41)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(3, 3, 3, 10)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(74, 23)
@@ -1012,7 +1012,7 @@ Partial Class dlgSettings
         Me.tvSettingsList.SelectedImageIndex = 0
         Me.tvSettingsList.ShowLines = False
         Me.tvSettingsList.ShowPlusMinus = False
-        Me.tvSettingsList.Size = New System.Drawing.Size(242, 1006)
+        Me.tvSettingsList.Size = New System.Drawing.Size(242, 694)
         Me.tvSettingsList.TabIndex = 7
         '
         'pnlFileSystem
@@ -1496,7 +1496,7 @@ Partial Class dlgSettings
         Me.pnlSettingsCurrent.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsCurrent.Location = New System.Drawing.Point(5, 3)
         Me.pnlSettingsCurrent.Name = "pnlSettingsCurrent"
-        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1644, 27)
+        Me.pnlSettingsCurrent.Size = New System.Drawing.Size(1204, 27)
         Me.pnlSettingsCurrent.TabIndex = 5
         '
         'pbSettingsCurrent
@@ -3994,7 +3994,7 @@ Partial Class dlgSettings
         Me.tsSettingsTopMenu.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow
         Me.tsSettingsTopMenu.Location = New System.Drawing.Point(0, 0)
         Me.tsSettingsTopMenu.Name = "tsSettingsTopMenu"
-        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1654, 25)
+        Me.tsSettingsTopMenu.Size = New System.Drawing.Size(1214, 25)
         Me.tsSettingsTopMenu.Stretch = True
         Me.tsSettingsTopMenu.TabIndex = 4
         Me.tsSettingsTopMenu.Text = "ToolStrip1"
@@ -4006,7 +4006,7 @@ Partial Class dlgSettings
         Me.pnlSettingsMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettingsMain.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettingsMain.Name = "pnlSettingsMain"
-        Me.pnlSettingsMain.Size = New System.Drawing.Size(1398, 1006)
+        Me.pnlSettingsMain.Size = New System.Drawing.Size(958, 694)
         Me.pnlSettingsMain.TabIndex = 9
         '
         'gbSettingsHelp
@@ -4018,7 +4018,7 @@ Partial Class dlgSettings
         Me.gbSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbSettingsHelp.Location = New System.Drawing.Point(0, 0)
         Me.gbSettingsHelp.Name = "gbSettingsHelp"
-        Me.gbSettingsHelp.Size = New System.Drawing.Size(1116, 66)
+        Me.gbSettingsHelp.Size = New System.Drawing.Size(764, 66)
         Me.gbSettingsHelp.TabIndex = 0
         Me.gbSettingsHelp.TabStop = False
         Me.gbSettingsHelp.Text = "     Help"
@@ -4038,7 +4038,7 @@ Partial Class dlgSettings
         Me.lblHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblHelp.Location = New System.Drawing.Point(3, 18)
         Me.lblHelp.Name = "lblHelp"
-        Me.lblHelp.Size = New System.Drawing.Size(1110, 45)
+        Me.lblHelp.Size = New System.Drawing.Size(758, 45)
         Me.lblHelp.TabIndex = 0
         '
         'pnlSettingsHelp
@@ -4050,7 +4050,7 @@ Partial Class dlgSettings
         Me.pnlSettingsHelp.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.pnlSettingsHelp.Location = New System.Drawing.Point(3, 3)
         Me.pnlSettingsHelp.Name = "pnlSettingsHelp"
-        Me.pnlSettingsHelp.Size = New System.Drawing.Size(1118, 68)
+        Me.pnlSettingsHelp.Size = New System.Drawing.Size(766, 68)
         Me.pnlSettingsHelp.TabIndex = 8
         '
         'pnlMovieSetGeneral
@@ -4513,7 +4513,7 @@ Partial Class dlgSettings
         'scSettings.Panel2
         '
         Me.scSettings.Panel2.Controls.Add(Me.scSettingsBody)
-        Me.scSettings.Size = New System.Drawing.Size(1654, 1173)
+        Me.scSettings.Size = New System.Drawing.Size(1214, 861)
         Me.scSettings.SplitterDistance = 85
         Me.scSettings.TabIndex = 28
         '
@@ -4528,7 +4528,7 @@ Partial Class dlgSettings
         Me.tblSettingsCurrent.Padding = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.tblSettingsCurrent.RowCount = 1
         Me.tblSettingsCurrent.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.0!))
-        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1654, 33)
+        Me.tblSettingsCurrent.Size = New System.Drawing.Size(1214, 33)
         Me.tblSettingsCurrent.TabIndex = 6
         '
         'scSettingsBody
@@ -4548,8 +4548,8 @@ Partial Class dlgSettings
         '
         Me.scSettingsBody.Panel2.Controls.Add(Me.tblSettingsFooter)
         Me.scSettingsBody.Panel2.Padding = New System.Windows.Forms.Padding(2, 0, 5, 0)
-        Me.scSettingsBody.Size = New System.Drawing.Size(1654, 1084)
-        Me.scSettingsBody.SplitterDistance = 1006
+        Me.scSettingsBody.Size = New System.Drawing.Size(1214, 772)
+        Me.scSettingsBody.SplitterDistance = 694
         Me.scSettingsBody.TabIndex = 99
         '
         'scSettingsMain
@@ -4568,7 +4568,7 @@ Partial Class dlgSettings
         '
         Me.scSettingsMain.Panel2.Controls.Add(Me.pnlSettingsMain)
         Me.scSettingsMain.Panel2.Padding = New System.Windows.Forms.Padding(0, 0, 5, 0)
-        Me.scSettingsMain.Size = New System.Drawing.Size(1654, 1006)
+        Me.scSettingsMain.Size = New System.Drawing.Size(1214, 694)
         Me.scSettingsMain.SplitterDistance = 247
         Me.scSettingsMain.TabIndex = 0
         '
@@ -4589,7 +4589,7 @@ Partial Class dlgSettings
         Me.tblSettingsFooter.Name = "tblSettingsFooter"
         Me.tblSettingsFooter.RowCount = 1
         Me.tblSettingsFooter.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100.0!))
-        Me.tblSettingsFooter.Size = New System.Drawing.Size(1647, 74)
+        Me.tblSettingsFooter.Size = New System.Drawing.Size(1207, 74)
         Me.tblSettingsFooter.TabIndex = 0
         '
         'TableLayoutPanel14
@@ -10105,7 +10105,7 @@ Partial Class dlgSettings
         Me.AcceptButton = Me.btnOK
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi
-        Me.ClientSize = New System.Drawing.Size(1654, 1173)
+        Me.ClientSize = New System.Drawing.Size(1214, 861)
         Me.Controls.Add(Me.pnlTVGeneral)
         Me.Controls.Add(Me.pnlTVScraper)
         Me.Controls.Add(Me.pnlFileSystem)
