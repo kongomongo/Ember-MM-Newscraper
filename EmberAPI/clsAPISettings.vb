@@ -7997,9 +7997,9 @@ Public Class Settings
         GeneralFilterPanelIsRaisedMovie = False
         GeneralFilterPanelIsRaisedMovieSet = False
         GeneralFilterPanelIsRaisedTVShow = False
-        GeneralImageFilter = True
-        GeneralImageFilterAutoscraper = True
-        GeneralImageFilterFanart = True
+        GeneralImageFilter = False
+        GeneralImageFilterAutoscraper = False
+        GeneralImageFilterFanart = False
         GeneralImageFilterFanartMatchTolerance = 4
         GeneralImageFilterImagedialog = False
         GeneralImageFilterPoster = False
@@ -8071,7 +8071,7 @@ Public Class Settings
         MovieExtrathumbsLimit = 4
         MovieExtrathumbsKeepExisting = False
         MovieExtrathumbsPrefSizeOnly = False
-        MovieExtrathumbsPrefSize = 0
+        MovieExtrathumbsPrefSize = Enums.MovieFanartSize.Any
         MovieExtrathumbsPreselect = True
         MovieExtrathumbsWidth = 0
         MovieFanartHeight = 0
@@ -8262,7 +8262,8 @@ Public Class Settings
         MovieSetSortTokens = New List(Of String)
         MovieSortTokensIsEmpty = False
         MovieSetSortTokensIsEmpty = False
-        MovieThemeTvTunesEnable = True
+        MovieThemeTvTunesEnable = False
+        MovieThemeDefaultSearch = "theme"
         MovieThemeKeepExisting = False
         MovieTrailerDefaultSearch = "trailer"
         MovieTrailerKeepExisting = False
@@ -8491,7 +8492,7 @@ Public Class Settings
         TVShowPosterPrefSizeOnly = False
         TVShowPosterWidth = 0
         TVShowProperCase = True
-        TVShowThemeDefaultSearch = String.Empty
+        TVShowThemeDefaultSearch = "theme"
         TVShowThemeKeepExisting = False
         TVSkipLessThan = 0
         TVSortTokens = New List(Of String)

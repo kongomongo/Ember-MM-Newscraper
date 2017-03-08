@@ -36,9 +36,6 @@ Public Class dlgSettings
     Private dHelp As New Dictionary(Of String, String)
     Private didApply As Boolean = False
     Private MovieSetGeneralMediaListSorting As New List(Of Settings.ListSorting)
-    Private TVGeneralEpisodeListSorting As New List(Of Settings.ListSorting)
-    Private TVGeneralSeasonListSorting As New List(Of Settings.ListSorting)
-    Private TVGeneralShowListSorting As New List(Of Settings.ListSorting)
     Private NoUpdate As Boolean = True
     Private _SettingsPanels As New List(Of Containers.SettingsPanel)
     Private _lstMasterSettingsPanels As New List(Of Interfaces.MasterSettingsPanel)
@@ -251,13 +248,6 @@ Public Class dlgSettings
              .Panel = pnlMovieSetGeneral,
              .Order = 100})
         _SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlShows",
-             .Title = Master.eLang.GetString(38, "General"),
-             .ImageIndex = 7,
-             .Type = Enums.SettingsPanelType.TV,
-             .Panel = pnlTVGeneral,
-             .Order = 100})
-        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
@@ -285,6 +275,7 @@ Public Class dlgSettings
         _lstMasterSettingsPanels.Add(frmOption_GUI)
         _lstMasterSettingsPanels.Add(frmOption_Proxy)
         _lstMasterSettingsPanels.Add(frmTV_FileNaming)
+        _lstMasterSettingsPanels.Add(frmTV_GUI)
         _lstMasterSettingsPanels.Add(frmTV_Image)
         _lstMasterSettingsPanels.Add(frmTV_Source)
         _lstMasterSettingsPanels.Add(frmTV_Theme)
@@ -499,18 +490,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnTVSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
-            If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
-                lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                sResult.NeedsReload_TVShow = True
-                SetApplyButton(True)
-                txtTVSortToken.Text = String.Empty
-                txtTVSortToken.Focus()
-            End If
-        End If
-    End Sub
-
     Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemCleanerWhitelist.Text) Then
             If Not txtFileSystemCleanerWhitelist.Text.Substring(0, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
@@ -618,96 +597,6 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralEpisodeListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingUp.Click
-        Try
-            If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralEpisodeListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVGeneralEpisodeListSorting.SuspendLayout()
-                    Dim iIndex As Integer = TVGeneralEpisodeListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVGeneralEpisodeListSorting.SelectedIndices(0)
-                    TVGeneralEpisodeListSorting.Remove(selItem)
-                    TVGeneralEpisodeListSorting.Insert(iIndex - 1, selItem)
-
-                    RenumberTVEpisodeGeneralMediaListSorting()
-                    LoadTVGeneralEpisodeListSorting()
-
-                    If Not selIndex - 3 < 0 Then
-                        lvTVGeneralEpisodeListSorting.TopItem = lvTVGeneralEpisodeListSorting.Items(selIndex - 3)
-                    End If
-                    lvTVGeneralEpisodeListSorting.Items(selIndex - 1).Selected = True
-                    lvTVGeneralEpisodeListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvTVGeneralEpisodeListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnTVGeneralSeasonListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingUp.Click
-        Try
-            If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralSeasonListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVGeneralSeasonListSorting.SuspendLayout()
-                    Dim iIndex As Integer = TVGeneralSeasonListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVGeneralSeasonListSorting.SelectedIndices(0)
-                    TVGeneralSeasonListSorting.Remove(selItem)
-                    TVGeneralSeasonListSorting.Insert(iIndex - 1, selItem)
-
-                    RenumberTVSeasonGeneralMediaListSorting()
-                    LoadTVGeneralSeasonListSorting()
-
-                    If Not selIndex - 3 < 0 Then
-                        lvTVGeneralSeasonListSorting.TopItem = lvTVGeneralSeasonListSorting.Items(selIndex - 3)
-                    End If
-                    lvTVGeneralSeasonListSorting.Items(selIndex - 1).Selected = True
-                    lvTVGeneralSeasonListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvTVGeneralSeasonListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnTVGeneralShowListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingUp.Click
-        Try
-            If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralShowListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVGeneralShowListSorting.SuspendLayout()
-                    Dim iIndex As Integer = TVGeneralShowListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVGeneralShowListSorting.SelectedIndices(0)
-                    TVGeneralShowListSorting.Remove(selItem)
-                    TVGeneralShowListSorting.Insert(iIndex - 1, selItem)
-
-                    RenumberTVShowGeneralMediaListSorting()
-                    LoadTVGeneralShowListSorting()
-
-                    If Not selIndex - 3 < 0 Then
-                        lvTVGeneralShowListSorting.TopItem = lvTVGeneralShowListSorting.Items(selIndex - 3)
-                    End If
-                    lvTVGeneralShowListSorting.Items(selIndex - 1).Selected = True
-                    lvTVGeneralShowListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvTVGeneralShowListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
     Private Sub btnMovieSetGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingDown.Click
         Try
             If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieSetGeneralMediaListSorting.Items.Count - 1) Then
@@ -738,96 +627,6 @@ Public Class dlgSettings
         End Try
     End Sub
 
-    Private Sub btnTVGeneralEpisodeListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingDown.Click
-        Try
-            If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems(0).Index < (lvTVGeneralEpisodeListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVGeneralEpisodeListSorting.SuspendLayout()
-                    Dim iIndex As Integer = TVGeneralEpisodeListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVGeneralEpisodeListSorting.SelectedIndices(0)
-                    TVGeneralEpisodeListSorting.Remove(selItem)
-                    TVGeneralEpisodeListSorting.Insert(iIndex + 1, selItem)
-
-                    RenumberTVEpisodeGeneralMediaListSorting()
-                    LoadTVGeneralEpisodeListSorting()
-
-                    If Not selIndex - 2 < 0 Then
-                        lvTVGeneralEpisodeListSorting.TopItem = lvTVGeneralEpisodeListSorting.Items(selIndex - 2)
-                    End If
-                    lvTVGeneralEpisodeListSorting.Items(selIndex + 1).Selected = True
-                    lvTVGeneralEpisodeListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvTVGeneralEpisodeListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnTVGeneralSeasonListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingDown.Click
-        Try
-            If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems(0).Index < (lvTVGeneralSeasonListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVGeneralSeasonListSorting.SuspendLayout()
-                    Dim iIndex As Integer = TVGeneralSeasonListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVGeneralSeasonListSorting.SelectedIndices(0)
-                    TVGeneralSeasonListSorting.Remove(selItem)
-                    TVGeneralSeasonListSorting.Insert(iIndex + 1, selItem)
-
-                    RenumberTVSeasonGeneralMediaListSorting()
-                    LoadTVGeneralSeasonListSorting()
-
-                    If Not selIndex - 2 < 0 Then
-                        lvTVGeneralSeasonListSorting.TopItem = lvTVGeneralSeasonListSorting.Items(selIndex - 2)
-                    End If
-                    lvTVGeneralSeasonListSorting.Items(selIndex + 1).Selected = True
-                    lvTVGeneralSeasonListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvTVGeneralSeasonListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnTVGeneralShowListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingDown.Click
-        Try
-            If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems(0).Index < (lvTVGeneralShowListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvTVGeneralShowListSorting.SuspendLayout()
-                    Dim iIndex As Integer = TVGeneralShowListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvTVGeneralShowListSorting.SelectedIndices(0)
-                    TVGeneralShowListSorting.Remove(selItem)
-                    TVGeneralShowListSorting.Insert(iIndex + 1, selItem)
-
-                    RenumberTVShowGeneralMediaListSorting()
-                    LoadTVGeneralShowListSorting()
-
-                    If Not selIndex - 2 < 0 Then
-                        lvTVGeneralShowListSorting.TopItem = lvTVGeneralShowListSorting.Items(selIndex - 2)
-                    End If
-                    lvTVGeneralShowListSorting.Items(selIndex + 1).Selected = True
-                    lvTVGeneralShowListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvTVGeneralShowListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
     Private Sub lvMovieSetGeneralMediaListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvMovieSetGeneralMediaListSorting.MouseDoubleClick
         If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 Then
             Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
@@ -847,72 +646,6 @@ Public Class dlgSettings
 
             SetApplyButton(True)
             lvMovieSetGeneralMediaListSorting.Focus()
-        End If
-    End Sub
-
-    Private Sub lvTVGeneralEpisodeListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralEpisodeListSorting.MouseDoubleClick
-        If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvTVGeneralEpisodeListSorting.SuspendLayout()
-                selItem.Hide = Not selItem.Hide
-                Dim topIndex As Integer = lvTVGeneralEpisodeListSorting.TopItem.Index
-                Dim selIndex As Integer = lvTVGeneralEpisodeListSorting.SelectedIndices(0)
-
-                LoadTVGeneralEpisodeListSorting()
-
-                lvTVGeneralEpisodeListSorting.TopItem = lvTVGeneralEpisodeListSorting.Items(topIndex)
-                lvTVGeneralEpisodeListSorting.Items(selIndex).Selected = True
-                lvTVGeneralEpisodeListSorting.ResumeLayout()
-            End If
-
-            SetApplyButton(True)
-            lvTVGeneralEpisodeListSorting.Focus()
-        End If
-    End Sub
-
-    Private Sub lvTVGeneralSeasonListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralSeasonListSorting.MouseDoubleClick
-        If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvTVGeneralSeasonListSorting.SuspendLayout()
-                selItem.Hide = Not selItem.Hide
-                Dim topIndex As Integer = lvTVGeneralSeasonListSorting.TopItem.Index
-                Dim selIndex As Integer = lvTVGeneralSeasonListSorting.SelectedIndices(0)
-
-                LoadTVGeneralSeasonListSorting()
-
-                lvTVGeneralSeasonListSorting.TopItem = lvTVGeneralSeasonListSorting.Items(topIndex)
-                lvTVGeneralSeasonListSorting.Items(selIndex).Selected = True
-                lvTVGeneralSeasonListSorting.ResumeLayout()
-            End If
-
-            SetApplyButton(True)
-            lvTVGeneralSeasonListSorting.Focus()
-        End If
-    End Sub
-
-    Private Sub lvTVGeneralShowListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralShowListSorting.MouseDoubleClick
-        If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvTVGeneralShowListSorting.SuspendLayout()
-                selItem.Hide = Not selItem.Hide
-                Dim topIndex As Integer = lvTVGeneralShowListSorting.TopItem.Index
-                Dim selIndex As Integer = lvTVGeneralShowListSorting.SelectedIndices(0)
-
-                LoadTVGeneralShowListSorting()
-
-                lvTVGeneralShowListSorting.TopItem = lvTVGeneralShowListSorting.Items(topIndex)
-                lvTVGeneralShowListSorting.Items(selIndex).Selected = True
-                lvTVGeneralShowListSorting.ResumeLayout()
-            End If
-
-            SetApplyButton(True)
-            lvTVGeneralShowListSorting.Focus()
         End If
     End Sub
 
@@ -948,30 +681,6 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVEpisodeGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVEpisodeListSorting, True)
-        TVGeneralEpisodeListSorting.Clear()
-        TVGeneralEpisodeListSorting.AddRange(Master.eSettings.TVGeneralEpisodeListSorting)
-        LoadTVGeneralEpisodeListSorting()
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub btnTVSeasonGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSeasonListSorting, True)
-        TVGeneralSeasonListSorting.Clear()
-        TVGeneralSeasonListSorting.AddRange(Master.eSettings.TVGeneralSeasonListSorting)
-        LoadTVGeneralSeasonListSorting()
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub btnTVGeneralShowListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowListSorting, True)
-        TVGeneralShowListSorting.Clear()
-        TVGeneralShowListSorting.AddRange(Master.eSettings.TVGeneralShowListSorting)
-        LoadTVGeneralShowListSorting()
-        SetApplyButton(True)
-    End Sub
-
     Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
         RemoveFileSystemValidExts()
     End Sub
@@ -999,17 +708,6 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub btnTVSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenRemove.Click
-        RemoveTVSortToken()
-    End Sub
-
-    Private Sub btnTVSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSortTokens, True)
-        RefreshTVSortTokens()
-        sResult.NeedsReload_TVShow = True
-        SetApplyButton(True)
-    End Sub
-
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
         RemoveTVMetaData()
     End Sub
@@ -1021,11 +719,6 @@ Public Class dlgSettings
             End While
             SetApplyButton(True)
         End If
-    End Sub
-
-    Private Sub chkTVGeneralClickScrape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVGeneralClickScrape.CheckedChanged
-        chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
-        SetApplyButton(True)
     End Sub
 
     Private Sub chkTVScraperShowCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowCert.CheckedChanged
@@ -1066,16 +759,6 @@ Public Class dlgSettings
             chkTVScraperUseSRuntimeForEp.Checked = False
         End If
         SetApplyButton(True)
-    End Sub
-
-    Private Sub chkTVScraperMetaDataScan_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperMetaDataScan.CheckedChanged
-        SetApplyButton(True)
-
-        cbTVLanguageOverlay.Enabled = chkTVScraperMetaDataScan.Checked
-
-        If Not chkTVScraperMetaDataScan.Checked Then
-            cbTVLanguageOverlay.SelectedIndex = 0
-        End If
     End Sub
 
     Private Sub chkTVScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperUseMDDuration.CheckedChanged
@@ -1120,9 +803,6 @@ Public Class dlgSettings
         With Master.eSettings
             cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieSetGeneralCustomScrapeButtonModifierType
             cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieSetGeneralCustomScrapeButtonScrapeType
-            cbTVGeneralCustomScrapeButtonModifierType.SelectedValue = .TVGeneralCustomScrapeButtonModifierType
-            cbTVGeneralCustomScrapeButtonScrapeType.SelectedValue = .TVGeneralCustomScrapeButtonScrapeType
-            cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
             chkCleanDotFanartJPG.Checked = .CleanDotFanartJPG
             chkCleanExtrathumbs.Checked = .CleanExtrathumbs
             chkCleanFanartJPG.Checked = .CleanFanartJPG
@@ -1140,11 +820,6 @@ Public Class dlgSettings
             chkMovieSetClickScrape.Checked = .MovieSetClickScrape
             chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
             chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
-            chkTVDisplayMissingEpisodes.Checked = .TVDisplayMissingEpisodes
-            chkTVGeneralClickScrape.Checked = .TVGeneralClickScrape
-            chkTVGeneralClickScrapeAsk.Checked = .TVGeneralClickScrapeask
-            chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
-            chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
             chkTVLockEpisodeLanguageA.Checked = .TVLockEpisodeLanguageA
             chkTVLockEpisodeLanguageV.Checked = .TVLockEpisodeLanguageV
             chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
@@ -1212,26 +887,12 @@ Public Class dlgSettings
             Else
                 rbMovieSetGeneralCustomScrapeButtonDisabled.Checked = True
             End If
-            If .TVGeneralCustomScrapeButtonEnabled Then
-                rbTVGeneralCustomScrapeButtonEnabled.Checked = True
-            Else
-                rbTVGeneralCustomScrapeButtonDisabled.Checked = True
-            End If
             tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
             txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
 
             MovieSetGeneralMediaListSorting.AddRange(.MovieSetGeneralMediaListSorting)
             LoadMovieSetGeneralMediaListSorting()
-
-            TVGeneralEpisodeListSorting.AddRange(.TVGeneralEpisodeListSorting)
-            LoadTVGeneralEpisodeListSorting()
-
-            TVGeneralSeasonListSorting.AddRange(.TVGeneralSeasonListSorting)
-            LoadTVGeneralSeasonListSorting()
-
-            TVGeneralShowListSorting.AddRange(.TVGeneralShowListSorting)
-            LoadTVGeneralShowListSorting()
 
             TVMeta.AddRange(.TVMetadataPerFileType)
             LoadTVMetadata()
@@ -1260,11 +921,9 @@ Public Class dlgSettings
 
 
             chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
-            chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
             txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
 
             RefreshMovieSetSortTokens()
-            RefreshTVSortTokens()
             RefreshFileSystemExcludeDirs()
             RefreshFileSystemValidExts()
             RefreshFileSystemValidSubtitlesExts()
@@ -1303,7 +962,6 @@ Public Class dlgSettings
             pnlSettingsCurrent.BackgroundImage = iBackground
         End Using
 
-        LoadLangs()
         FillSettings()
         sResult.NeedsDBClean_Movie = False
         sResult.NeedsDBClean_TV = False
@@ -1390,11 +1048,6 @@ Public Class dlgSettings
         lblHelp.Text = String.Empty
     End Sub
 
-    Private Sub LoadLangs()
-        cbTVLanguageOverlay.Items.Add(Master.eLang.Disabled)
-        cbTVLanguageOverlay.Items.AddRange(Localization.ISOLangGetLanguagesList.ToArray)
-    End Sub
-
     Private Sub LoadMovieSetGeneralMediaListSorting()
         Dim lvItem As ListViewItem
         lvMovieSetGeneralMediaListSorting.Items.Clear()
@@ -1404,42 +1057,6 @@ Public Class dlgSettings
             lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
             lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
             lvMovieSetGeneralMediaListSorting.Items.Add(lvItem)
-        Next
-    End Sub
-
-    Private Sub LoadTVGeneralEpisodeListSorting()
-        Dim lvItem As ListViewItem
-        lvTVGeneralEpisodeListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In TVGeneralEpisodeListSorting.OrderBy(Function(f) f.DisplayIndex)
-            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-            lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
-            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvTVGeneralEpisodeListSorting.Items.Add(lvItem)
-        Next
-    End Sub
-
-    Private Sub LoadTVGeneralSeasonListSorting()
-        Dim lvItem As ListViewItem
-        lvTVGeneralSeasonListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In TVGeneralSeasonListSorting.OrderBy(Function(f) f.DisplayIndex)
-            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-            lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
-            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvTVGeneralSeasonListSorting.Items.Add(lvItem)
-        Next
-    End Sub
-
-    Private Sub LoadTVGeneralShowListSorting()
-        Dim lvItem As ListViewItem
-        lvTVGeneralShowListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In TVGeneralShowListSorting.OrderBy(Function(f) f.DisplayIndex)
-            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-            lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
-            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvTVGeneralShowListSorting.Items.Add(lvItem)
         Next
     End Sub
 
@@ -1457,25 +1074,6 @@ Public Class dlgSettings
         cbMovieSetGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
         cbMovieSetGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
         cbMovieSetGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadCustomScraperButtonModifierTypes_TV()
-        Dim items As New Dictionary(Of String, Enums.ScrapeModifierType)
-        items.Add(Master.eLang.GetString(70, "All Items"), Enums.ScrapeModifierType.All)
-        items.Add(Master.eLang.GetString(973, "Actor Thumbs Only"), Enums.ScrapeModifierType.MainActorThumbs)
-        items.Add(Master.eLang.GetString(1060, "Banner Only"), Enums.ScrapeModifierType.MainBanner)
-        items.Add(Master.eLang.GetString(1121, "CharacterArt Only"), Enums.ScrapeModifierType.MainCharacterArt)
-        items.Add(Master.eLang.GetString(1122, "ClearArt Only"), Enums.ScrapeModifierType.MainClearArt)
-        items.Add(Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ScrapeModifierType.MainClearLogo)
-        items.Add(Master.eLang.GetString(975, "Extrafanarts Only"), Enums.ScrapeModifierType.MainExtrafanarts)
-        items.Add(Master.eLang.GetString(73, "Fanart Only"), Enums.ScrapeModifierType.MainFanart)
-        items.Add(Master.eLang.GetString(1061, "Landscape Only"), Enums.ScrapeModifierType.MainLandscape)
-        items.Add(Master.eLang.GetString(71, "NFO Only"), Enums.ScrapeModifierType.MainNFO)
-        items.Add(Master.eLang.GetString(72, "Poster Only"), Enums.ScrapeModifierType.MainPoster)
-        items.Add(Master.eLang.GetString(1125, "Theme Only"), Enums.ScrapeModifierType.MainTheme)
-        cbTVGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
-        cbTVGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
-        cbTVGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
     End Sub
 
     Private Sub LoadCustomScraperButtonScrapeTypes()
@@ -1508,9 +1106,6 @@ Public Class dlgSettings
         cbMovieSetGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
         cbMovieSetGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
         cbMovieSetGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
-        cbTVGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
-        cbTVGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
-        cbTVGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
     End Sub
 
     Private Sub LoadTVMetadata()
@@ -1538,10 +1133,6 @@ Public Class dlgSettings
 
     Private Sub lstMovieSetSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSetSortTokens.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveMovieSetSortToken()
-    End Sub
-
-    Private Sub lsttvSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveTVSortToken()
     End Sub
 
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
@@ -1592,11 +1183,6 @@ Public Class dlgSettings
     Private Sub RefreshMovieSetSortTokens()
         lstMovieSetSortTokens.Items.Clear()
         lstMovieSetSortTokens.Items.AddRange(Master.eSettings.MovieSetSortTokens.ToArray)
-    End Sub
-
-    Private Sub RefreshTVSortTokens()
-        lstTVSortTokens.Items.Clear()
-        lstTVSortTokens.Items.AddRange(Master.eSettings.TVSortTokens.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemExcludeDirs()
@@ -1679,16 +1265,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub RemoveTVSortToken()
-        If lstTVSortTokens.Items.Count > 0 AndAlso lstTVSortTokens.SelectedItems.Count > 0 Then
-            While lstTVSortTokens.SelectedItems.Count > 0
-                lstTVSortTokens.Items.Remove(lstTVSortTokens.SelectedItems(0))
-            End While
-            sResult.NeedsReload_TVShow = True
-            SetApplyButton(True)
-        End If
-    End Sub
-
     Private Sub RemoveTVMetaData()
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             For Each x As Settings.MetadataPerType In TVMeta
@@ -1705,24 +1281,6 @@ Public Class dlgSettings
     Private Sub RenumberMovieSetGeneralMediaListSorting()
         For i As Integer = 0 To MovieSetGeneralMediaListSorting.Count - 1
             MovieSetGeneralMediaListSorting(i).DisplayIndex = i
-        Next
-    End Sub
-
-    Private Sub RenumberTVEpisodeGeneralMediaListSorting()
-        For i As Integer = 0 To TVGeneralEpisodeListSorting.Count - 1
-            TVGeneralEpisodeListSorting(i).DisplayIndex = i
-        Next
-    End Sub
-
-    Private Sub RenumberTVSeasonGeneralMediaListSorting()
-        For i As Integer = 0 To TVGeneralSeasonListSorting.Count - 1
-            TVGeneralSeasonListSorting(i).DisplayIndex = i
-        Next
-    End Sub
-
-    Private Sub RenumberTVShowGeneralMediaListSorting()
-        For i As Integer = 0 To TVGeneralShowListSorting.Count - 1
-            TVGeneralShowListSorting(i).DisplayIndex = i
         Next
     End Sub
 
@@ -1747,22 +1305,6 @@ Public Class dlgSettings
             .MovieSetSortTokens.Clear()
             .MovieSetSortTokens.AddRange(lstMovieSetSortTokens.Items.OfType(Of String).ToList)
             If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
-            .TVDisplayMissingEpisodes = chkTVDisplayMissingEpisodes.Checked
-            .TVEpisodeFilterCustom.Clear()
-            .TVGeneralEpisodeListSorting.Clear()
-            .TVGeneralEpisodeListSorting.AddRange(TVGeneralEpisodeListSorting)
-            .TVGeneralFlagLang = If(cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbTVLanguageOverlay.Text)
-            .TVGeneralClickScrape = chkTVGeneralClickScrape.Checked
-            .TVGeneralClickScrapeask = chkTVGeneralClickScrapeAsk.Checked
-            .TVGeneralCustomScrapeButtonEnabled = rbTVGeneralCustomScrapeButtonEnabled.Checked
-            .TVGeneralCustomScrapeButtonModifierType = CType(cbTVGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
-            .TVGeneralCustomScrapeButtonScrapeType = CType(cbTVGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
-            .TVGeneralMarkNewEpisodes = chkTVGeneralMarkNewEpisodes.Checked
-            .TVGeneralMarkNewShows = chkTVGeneralMarkNewShows.Checked
-            .TVGeneralSeasonListSorting.Clear()
-            .TVGeneralSeasonListSorting.AddRange(TVGeneralSeasonListSorting)
-            .TVGeneralShowListSorting.Clear()
-            .TVGeneralShowListSorting.AddRange(TVGeneralShowListSorting)
             .TVLockEpisodeLanguageA = chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = chkTVLockEpisodePlot.Checked
@@ -1834,9 +1376,6 @@ Public Class dlgSettings
             .TVScraperUseDisplaySeasonEpisode = chkTVScraperUseDisplaySeasonEpisode.Checked
             .TVScraperUseMDDuration = chkTVScraperUseMDDuration.Checked
             .TVScraperUseSRuntimeForEp = chkTVScraperUseSRuntimeForEp.Checked
-            .TVSortTokens.Clear()
-            .TVSortTokens.AddRange(lstTVSortTokens.Items.OfType(Of String).ToList)
-            If .TVSortTokens.Count <= 0 Then .TVSortTokensIsEmpty = True
 
             If tcFileSystemCleaner.SelectedTab.Name = "tpFileSystemCleanerExpert" Then
                 .FileSystemExpertCleaner = True
@@ -1928,7 +1467,6 @@ Public Class dlgSettings
         'Ask On Click Scrape
         Dim strAskOnClickScrape As String = Master.eLang.GetString(852, "Ask On Click Scrape")
         chkMovieSetClickScrapeAsk.Text = strAskOnClickScrape
-        chkTVGeneralClickScrapeAsk.Text = strAskOnClickScrape
 
         'Certifications
         Dim strCertifications As String = Master.eLang.GetString(56, "Certifications")
@@ -1942,9 +1480,6 @@ Public Class dlgSettings
         'Column
         Dim strColumn As String = Master.eLang.GetString(1331, "Column")
         colMovieSetGeneralMediaListSortingLabel.Text = strColumn
-        colTVGeneralEpisodeListSortingLabel.Text = strColumn
-        colTVGeneralSeasonListSortingLabel.Text = strColumn
-        colTVGeneralShowListSortingLabel.Text = strColumn
 
         'Creators
         Dim strCreators As String = Master.eLang.GetString(744, "Creators")
@@ -1961,10 +1496,6 @@ Public Class dlgSettings
         'DiscArt
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
 
-        'Display best Audio Stream with the following Language
-        Dim strDisplayLanguageBestAudio As String = String.Concat(Master.eLang.GetString(436, "Display best Audio Stream with the following Language"), ":")
-        lblTVLanguageOverlay.Text = strDisplayLanguageBestAudio
-
         'Duration Format
         Dim strDurationFormat As String = Master.eLang.GetString(515, "Duration Format")
         gbTVScraperDurationFormatOpts.Text = strDurationFormat
@@ -1976,14 +1507,6 @@ Public Class dlgSettings
         'Enabled Click Scrape
         Dim strEnabledClickScrape As String = Master.eLang.GetString(849, "Enable Click Scrape")
         chkMovieSetClickScrape.Text = strEnabledClickScrape
-        chkTVGeneralClickScrape.Text = strEnabledClickScrape
-
-        'Episode #
-        Dim strEpisodeNR As String = Master.eLang.GetString(660, "Episode #")
-
-        'Episode List Sorting
-        Dim strEpisodeListSorting As String = Master.eLang.GetString(494, "Episode List Sorting")
-        gbTVGeneralEpisodeListSorting.Text = strEpisodeListSorting
 
         'Episode Guide URL
         Dim strEpisodeGuideURL As String = Master.eLang.GetString(723, "Episode Guide URL")
@@ -2004,9 +1527,6 @@ Public Class dlgSettings
         'Hide
         Dim strHide As String = Master.eLang.GetString(465, "Hide")
         colMovieSetGeneralMediaListSortingHide.Text = strHide
-        colTVGeneralEpisodeListSortingHide.Text = strHide
-        colTVGeneralSeasonListSortingHide.Text = strHide
-        colTVGeneralShowListSortingHide.Text = strHide
 
         'Language (Audio)
         Dim strLanguageAudio As String = Master.eLang.GetString(431, "Language (Audio)")
@@ -2022,10 +1542,6 @@ Public Class dlgSettings
         lblTVScraperGlobalHeaderSeasonsLock.Text = strLock
         lblTVScraperGlobalHeaderShowsLock.Text = strLock
 
-        'Main Window
-        Dim strMainWindow As String = Master.eLang.GetString(1152, "Main Window")
-        gbTVGeneralMainWindowOpts.Text = strMainWindow
-
         'Meta Data
         Dim strMetaData As String = Master.eLang.GetString(59, "Meta Data")
         gbTVScraperMetaDataOpts.Text = strMetaData
@@ -2033,7 +1549,6 @@ Public Class dlgSettings
         'Miscellaneous
         Dim strMiscellaneous As String = Master.eLang.GetString(429, "Miscellaneous")
         gbMovieSetGeneralMiscOpts.Text = strMiscellaneous
-        gbTVGeneralMiscOpts.Text = strMiscellaneous
         gbTVScraperMiscOpts.Text = strMiscellaneous
 
         'Missing
@@ -2082,17 +1597,10 @@ Public Class dlgSettings
         Dim strScraperCastWithImg As String = Master.eLang.GetString(510, "Scrape Only Actors With Images")
         chkTVScraperCastWithImg.Text = strScraperCastWithImg
 
-        'Season List Sorting
-        Dim strSeasonListSorting As String = Master.eLang.GetString(493, "Season List Sorting")
-        gbTVGeneralSeasonListSortingOpts.Text = strSeasonListSorting
-
         'Seasons
         Dim strSeasons As String = Master.eLang.GetString(681, "Seasons")
         lblTVScraperGlobalHeaderSeasons.Text = strSeasons
 
-        'Show List Sorting
-        Dim strShowListSorting As String = Master.eLang.GetString(492, "Show List Sorting")
-        gbTVGeneralShowListSortingOpts.Text = strShowListSorting
 
         'Shows
         Dim strShows As String = Master.eLang.GetString(680, "Shows")
@@ -2101,7 +1609,6 @@ Public Class dlgSettings
         'Sort Tokens to Ignore
         Dim strSortTokens As String = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         gbMovieSetGeneralMediaListSortTokensOpts.Text = strSortTokens
-        gbTVGeneralMediaListSortTokensOpts.Text = strSortTokens
 
         'Status
         Dim strStatus As String = Master.eLang.GetString(215, "Status")
@@ -2147,10 +1654,6 @@ Public Class dlgSettings
         btnOK.Text = Master.eLang.GetString(179, "OK")
         chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
-        chkTVDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
-        chkTVDisplayStatus.Text = Master.eLang.GetString(126, "Display Status in List Title")
-        chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
-        chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
         chkTVScraperEpisodeGuestStarsToActors.Text = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
         chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
@@ -2161,7 +1664,6 @@ Public Class dlgSettings
         gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
         gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
-        gbTVGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
         lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
         lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
@@ -2175,7 +1677,6 @@ Public Class dlgSettings
         gbTVScraperDefFIExtOpts.Text = gbTVScraperDefFIExtOpts.Text
 
         LoadCustomScraperButtonModifierTypes_MovieSet()
-        LoadCustomScraperButtonModifierTypes_TV()
         LoadCustomScraperButtonScrapeTypes()
     End Sub
 
@@ -2253,32 +1754,9 @@ Public Class dlgSettings
         SetApplyButton(True)
     End Sub
 
-    Private Sub rbTVGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbTVGeneralCustomScrapeButtonDisabled.CheckedChanged
-        If rbTVGeneralCustomScrapeButtonDisabled.Checked Then
-            cbTVGeneralCustomScrapeButtonModifierType.Enabled = False
-            cbTVGeneralCustomScrapeButtonScrapeType.Enabled = False
-            txtTVGeneralCustomScrapeButtonModifierType.Enabled = False
-            txtTVGeneralCustomScrapeButtonScrapeType.Enabled = False
-        End If
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub rbTVGeneralCustomScrapeButtonEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbTVGeneralCustomScrapeButtonEnabled.CheckedChanged
-        If rbTVGeneralCustomScrapeButtonEnabled.Checked Then
-            cbTVGeneralCustomScrapeButtonModifierType.Enabled = True
-            cbTVGeneralCustomScrapeButtonScrapeType.Enabled = True
-            txtTVGeneralCustomScrapeButtonModifierType.Enabled = True
-            txtTVGeneralCustomScrapeButtonScrapeType.Enabled = True
-        End If
-        SetApplyButton(True)
-    End Sub
-
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
         cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
         cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
-        cbTVGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
-        cbTVGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
-        cbTVLanguageOverlay.SelectedIndexChanged,
         chkCleanDotFanartJPG.CheckedChanged,
         chkCleanExtrathumbs.CheckedChanged,
         chkCleanFanartJPG.CheckedChanged,
@@ -2295,10 +1773,6 @@ Public Class dlgSettings
         chkFileSystemCleanerWhitelist.CheckedChanged,
         chkMovieSetClickScrapeAsk.CheckedChanged,
         chkMovieSetGeneralMarkNew.CheckedChanged,
-        chkTVDisplayMissingEpisodes.CheckedChanged,
-        chkTVGeneralClickScrapeAsk.CheckedChanged,
-        chkTVGeneralMarkNewEpisodes.CheckedChanged,
-        chkTVGeneralMarkNewShows.CheckedChanged,
         chkTVLockEpisodeLanguageA.CheckedChanged,
         chkTVLockEpisodeLanguageV.CheckedChanged,
         chkTVLockEpisodePlot.CheckedChanged,

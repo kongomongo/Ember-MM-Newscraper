@@ -300,9 +300,10 @@ Partial Class frmTV_FileNaming
         Me.gbTVSourcesFilenamingOpts.AutoSize = True
         Me.gbTVSourcesFilenamingOpts.Controls.Add(Me.tcTVSourcesFileNaming)
         Me.gbTVSourcesFilenamingOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVSourcesFilenamingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbTVSourcesFilenamingOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVSourcesFilenamingOpts.Name = "gbTVSourcesFilenamingOpts"
-        Me.gbTVSourcesFilenamingOpts.Size = New System.Drawing.Size(532, 377)
+        Me.gbTVSourcesFilenamingOpts.Size = New System.Drawing.Size(532, 379)
         Me.gbTVSourcesFilenamingOpts.TabIndex = 7
         Me.gbTVSourcesFilenamingOpts.TabStop = False
         Me.gbTVSourcesFilenamingOpts.Text = "File Naming"

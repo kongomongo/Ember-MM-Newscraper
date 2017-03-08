@@ -192,11 +192,11 @@ CREATE TABLE episode (
         VideoSource     text,
         HasSub          bool NOT NULL DEFAULT 0,
         SubEpisode      integer,
-        iLastPlayed     integer,
-        strIMDB         text,
-        strTMDB         text,
-        strTVDB         text,
-        iUserRating		integer NOT NULL DEFAULT 0
+        LastPlayed     integer,
+        IMDB         text,
+        TMDB         text,
+        TVDB         text,
+        UserRating		integer NOT NULL DEFAULT 0
         );
 
         CREATE TRIGGER delete_episode
@@ -329,9 +329,9 @@ CREATE TABLE movie (
         MarkCustom3     bool NOT NULL DEFAULT 0,
         MarkCustom4     bool NOT NULL DEFAULT 0,
         HasSet          bool NOT NULL DEFAULT 0,
-        iLastPlayed     integer,
+        LastPlayed     integer,
         Language        text,
-        iUserRating		integer NOT NULL DEFAULT 0
+        UserRating		integer NOT NULL DEFAULT 0
         );
 
         CREATE TRIGGER delete_movie
@@ -374,10 +374,10 @@ CREATE TABLE seasons (
         Lock           bool NOT NULL DEFAULT 0,
         Mark           bool NOT NULL DEFAULT 0,
         "New"          bool NOT NULL DEFAULT 0,
-		strTVDB        text,
-		strTMDB        text,
-		strAired       text,
-		strPlot        text
+		TVDB        text,
+		TMDB        text,
+		Aired       text,
+		Plot        text
         );
 
         CREATE UNIQUE INDEX ix_seasons
@@ -469,10 +469,10 @@ CREATE TABLE tvshow (
 		Votes				text,
 		EpisodeSorting		integer NOT NULL DEFAULT 0,
 		SortTitle			text,
-		strIMDB				text,
-		strTMDB				text,
-		strOriginalTitle	text,
-		iUserRating			integer NOT NULL DEFAULT 0
+		IMDB				text,
+		TMDB				text,
+		OriginalTitle	text,
+		UserRating			integer NOT NULL DEFAULT 0
 		);
 
         CREATE UNIQUE INDEX UniqueTVShowPath

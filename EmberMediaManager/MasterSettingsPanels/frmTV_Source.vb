@@ -150,6 +150,8 @@ Public Class frmTV_Source
             chkTVEpisodeNoFilter.Checked = .TVEpisodeNoFilter
             chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
             chkTVShowProperCase.Checked = .TVShowProperCase
+            chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
+            chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
 
             Try
                 cbTVGeneralLang.Items.Clear()
@@ -200,6 +202,7 @@ Public Class frmTV_Source
             End If
             .TVShowMatching.Clear()
             .TVShowMatching.AddRange(TVShowMatching)
+            .TVEpisodeFilterCustom.Clear()
             .TVEpisodeFilterCustom.AddRange(lstTVEpisodeFilter.Items.OfType(Of String).ToList)
             If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
             .TVEpisodeNoFilter = chkTVEpisodeNoFilter.Checked
@@ -208,6 +211,8 @@ Public Class frmTV_Source
             .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
             If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
             .TVShowProperCase = chkTVShowProperCase.Checked
+            .TVGeneralMarkNewEpisodes = chkTVGeneralMarkNewEpisodes.Checked
+            .TVGeneralMarkNewShows = chkTVGeneralMarkNewShows.Checked
         End With
     End Sub
 
@@ -215,15 +220,15 @@ Public Class frmTV_Source
 
 #Region "Methods"
 
-    Private Sub lstTVEpisodeFilter_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub lstTVEpisodeFilter_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVEpisodeFilter.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVEpisodeFilter()
     End Sub
 
-    Private Sub lstTVShowFilter_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub lstTVShowFilter_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVShowFilter.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVShowFilter()
     End Sub
 
-    Private Sub btnTVEpisodeFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVEpisodeFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterAdd.Click
         If Not String.IsNullOrEmpty(txtTVEpisodeFilter.Text) Then
             lstTVEpisodeFilter.Items.Add(txtTVEpisodeFilter.Text)
             txtTVEpisodeFilter.Text = String.Empty
@@ -234,7 +239,7 @@ Public Class frmTV_Source
         txtTVEpisodeFilter.Focus()
     End Sub
 
-    Private Sub btnTVShowFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVShowFilterAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterAdd.Click
         If Not String.IsNullOrEmpty(txtTVShowFilter.Text) Then
             lstTVShowFilter.Items.Add(txtTVShowFilter.Text)
             txtTVShowFilter.Text = String.Empty
@@ -245,7 +250,7 @@ Public Class frmTV_Source
         txtTVShowFilter.Focus()
     End Sub
 
-    Private Sub btnTVEpisodeFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVEpisodeFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterDown.Click
         Try
             If lstTVEpisodeFilter.Items.Count > 0 AndAlso lstTVEpisodeFilter.SelectedItem IsNot Nothing AndAlso lstTVEpisodeFilter.SelectedIndex < (lstTVEpisodeFilter.Items.Count - 1) Then
                 Dim iIndex As Integer = lstTVEpisodeFilter.SelectedIndices(0)
@@ -261,7 +266,7 @@ Public Class frmTV_Source
         End Try
     End Sub
 
-    Private Sub btnTVShowFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVShowFilterDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterDown.Click
         Try
             If lstTVShowFilter.Items.Count > 0 AndAlso lstTVShowFilter.SelectedItem IsNot Nothing AndAlso lstTVShowFilter.SelectedIndex < (lstTVShowFilter.Items.Count - 1) Then
                 Dim iIndex As Integer = lstTVShowFilter.SelectedIndices(0)
@@ -277,17 +282,17 @@ Public Class frmTV_Source
         End Try
     End Sub
 
-    Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVEpisodeProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodeProperCase.CheckedChanged
         EnableApplyButton()
         Handle_NeedsReload_TVEpisode()
     End Sub
 
-    Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVShowProperCase_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowProperCase.CheckedChanged
         EnableApplyButton()
         Handle_NeedsReload_TVShow()
     End Sub
 
-    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVEpisodeNoFilter_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVEpisodeNoFilter.CheckedChanged
         EnableApplyButton()
 
         chkTVEpisodeProperCase.Enabled = Not chkTVEpisodeNoFilter.Checked
@@ -299,7 +304,7 @@ Public Class frmTV_Source
         btnTVEpisodeFilterRemove.Enabled = Not chkTVEpisodeNoFilter.Checked
     End Sub
 
-    Private Sub btnTVShowFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVShowFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterUp.Click
         Try
             If lstTVShowFilter.Items.Count > 0 AndAlso lstTVShowFilter.SelectedItem IsNot Nothing AndAlso lstTVShowFilter.SelectedIndex > 0 Then
                 Dim iIndex As Integer = lstTVShowFilter.SelectedIndices(0)
@@ -315,7 +320,7 @@ Public Class frmTV_Source
         End Try
     End Sub
 
-    Private Sub btnTVEpisodeFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVEpisodeFilterUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterUp.Click
         Try
             If lstTVEpisodeFilter.Items.Count > 0 AndAlso lstTVEpisodeFilter.SelectedItem IsNot Nothing AndAlso lstTVEpisodeFilter.SelectedIndex > 0 Then
                 Dim iIndex As Integer = lstTVEpisodeFilter.SelectedIndices(0)
@@ -331,16 +336,16 @@ Public Class frmTV_Source
         End Try
     End Sub
 
-    Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnRemTVSource_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRemTVSource.Click
         RemoveTVSource()
         Master.DB.Load_Sources_TVShow()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingRemove.Click
         RemoveTVShowMatching()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
         If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowMatching, True)
             TVShowMatching.Clear()
@@ -350,7 +355,7 @@ Public Class frmTV_Source
         End If
     End Sub
 
-    Private Sub btnTVSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourceAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceAdd.Click
         Using dSource As New dlgSourceTVShow
             If dSource.ShowDialog = DialogResult.OK Then
                 RefreshTVSources()
@@ -360,11 +365,11 @@ Public Class frmTV_Source
         End Using
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingClear_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingClear.Click
         ClearTVShowMatching()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingAdd.Click
         If String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
             Dim lID = (From lRegex As Settings.regexp In TVShowMatching Select lRegex.ID).Max
             TVShowMatching.Add(New Settings.regexp With {.ID = Convert.ToInt32(lID) + 1,
@@ -385,11 +390,11 @@ Public Class frmTV_Source
         LoadTVShowMatching()
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingEdit.Click
         If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
     End Sub
 
-    Private Sub btnTVSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourceEdit_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourceEdit.Click
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
@@ -401,7 +406,7 @@ Public Class frmTV_Source
         End If
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingUp.Click
         Try
             If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Not lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index = 0 Then
                 Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
@@ -428,7 +433,7 @@ Public Class frmTV_Source
         End Try
     End Sub
 
-    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ShowFilters, True)
             RefreshTVShowFilters()
@@ -436,15 +441,15 @@ Public Class frmTV_Source
         End If
     End Sub
 
-    Private Sub btnTVShowFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVShowFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterRemove.Click
         RemoveTVShowFilter()
     End Sub
 
-    Private Sub btnTVEpisodeFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVEpisodeFilterRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterRemove.Click
         RemoveTVEpisodeFilter()
     End Sub
 
-    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.EpFilters, True)
             RefreshTVEpisodeFilters()
@@ -452,7 +457,7 @@ Public Class frmTV_Source
         End If
     End Sub
 
-    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingDown.Click
         Try
             If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index < (lvTVSourcesRegexTVShowMatching.Items.Count - 1) Then
                 Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
@@ -479,7 +484,7 @@ Public Class frmTV_Source
         End Try
     End Sub
 
-    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub btnTVSourcesRegexMultiPartMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexMultiPartMatchingReset.Click
         txtTVSourcesRegexMultiPartMatching.Text = "^[-_ex]+([0-9]+(?:(?:[a-i]|\.[1-9])(?![0-9]))?)"
         EnableApplyButton()
     End Sub
@@ -536,23 +541,23 @@ Public Class frmTV_Source
         cbTVScraperOptionsOrdering.ValueMember = "Value"
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub lvTVSourcesRegexTVShowMatching_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSourcesRegexTVShowMatching.DoubleClick
         If lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 Then EditTVShowMatching(lvTVSourcesRegexTVShowMatching.SelectedItems(0))
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub lvTVSourcesRegexTVShowMatching_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvTVSourcesRegexTVShowMatching.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVShowMatching()
     End Sub
 
-    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub lvTVSourcesRegexTVShowMatching_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSourcesRegexTVShowMatching.SelectedIndexChanged
         If Not String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then ClearTVShowMatching()
     End Sub
 
-    Private Sub lvTVSources_ColumnClick(ByVal sender As Object, ByVal e As System.Windows.Forms.ColumnClickEventArgs)
+    Private Sub lvTVSources_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles lvTVSources.ColumnClick
         lvTVSources.ListViewItemSorter = New ListViewItemComparer(e.Column)
     End Sub
 
-    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub lvTVSources_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvTVSources.DoubleClick
         If lvTVSources.SelectedItems.Count > 0 Then
             Using dTVSource As New dlgSourceTVShow
                 If dTVSource.ShowDialog(Convert.ToInt32(lvTVSources.SelectedItems(0).Text)) = DialogResult.OK Then
@@ -564,7 +569,7 @@ Public Class frmTV_Source
         End If
     End Sub
 
-    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs)
+    Private Sub lvTVSources_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lvTVSources.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveTVSource()
     End Sub
 
@@ -682,8 +687,6 @@ Public Class frmTV_Source
         lblTVSourcesRegexTVShowMatchingByDate.Text = Master.eLang.GetString(698, "by Date")
         lblTVSourcesRegexTVShowMatchingRegex.Text = Master.eLang.GetString(699, "Regex")
         lblTVSourcesRegexTVShowMatchingDefaultSeason.Text = Master.eLang.GetString(695, "Default Season")
-        tpTVSourcesGeneral.Text = Master.eLang.GetString(38, "General")
-        tpTVSourcesRegex.Text = Master.eLang.GetString(699, "Regex")
         btnTVSourceAdd.Text = Master.eLang.GetString(407, "Add Source")
         chkTVCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
         chkTVGeneralIgnoreLastScan.Text = Master.eLang.GetString(669, "Ignore last scan time when updating library")
@@ -695,25 +698,27 @@ Public Class frmTV_Source
         gbTVShowFilterOpts.Text = Master.eLang.GetString(670, "Show Folder/File Name Filters")
         chkTVEpisodeProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
         chkTVShowProperCase.Text = Master.eLang.GetString(452, "Convert Names to Proper Case")
+        chkTVGeneralMarkNewEpisodes.Text = Master.eLang.GetString(621, "Mark New Episodes")
+        chkTVGeneralMarkNewShows.Text = Master.eLang.GetString(549, "Mark New Shows")
 
         LoadTVScraperOptionsOrdering()
 
         lvTVSources.ListViewItemSorter = New ListViewItemComparer(1)
     End Sub
 
-    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub txtTVSourcesRegexTVShowMatchingRegex_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSourcesRegexTVShowMatchingRegex.TextChanged
         ValidateTVShowMatching()
     End Sub
 
-    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub txtTVSourcesRegexTVShowMatchingDefaultSeason_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSourcesRegexTVShowMatchingDefaultSeason.TextChanged
         ValidateTVShowMatching()
     End Sub
 
-    Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs)
+    Private Sub txtTVSkipLessThan_KeyPress(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles txtTVSkipLessThan.KeyPress
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub
 
-    Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub txtTVSkipLessThan_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtTVSkipLessThan.TextChanged
         EnableApplyButton()
         Handle_NeedsDBClean_TV()
         Handle_NeedsDBUpdate_TV()

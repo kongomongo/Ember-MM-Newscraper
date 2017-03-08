@@ -425,6 +425,12 @@
     <Compile Include="MasterSettingsPanels\frmTV_FileNaming.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_GUI.Designer.vb">
+      <DependentUpon>frmTV_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmTV_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MasterSettingsPanels\frmTV_Image.Designer.vb">
       <DependentUpon>frmTV_Image.vb</DependentUpon>
     </Compile>
@@ -618,6 +624,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_FileNaming.resx">
       <DependentUpon>frmTV_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmTV_GUI.resx">
+      <DependentUpon>frmTV_GUI.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmTV_Image.resx">
       <DependentUpon>frmTV_Image.vb</DependentUpon>
