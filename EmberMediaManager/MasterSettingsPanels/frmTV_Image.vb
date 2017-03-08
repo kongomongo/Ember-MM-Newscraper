@@ -320,7 +320,7 @@ Public Class frmTV_Image
             .TVShowBannerPrefSizeOnly = chkTVShowBannerPrefSizeOnly.Checked
             .TVShowBannerWidth = If(Not String.IsNullOrEmpty(txtTVShowBannerWidth.Text), Convert.ToInt32(txtTVShowBannerWidth.Text), 0)
             .TVShowCharacterArtKeepExisting = chkTVShowCharacterArtKeepExisting.Checked
-            .TVShowCharacterArtPrefSize = CType(cbTVShowCharacterArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVCharacterArtSize)).Value
+            .TVShowCharacterArtPrefSize = CType(cbTVShowCharacterArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.CharacterArtSize)).Value
             .TVShowCharacterArtPrefSizeOnly = chkTVShowCharacterArtPrefSizeOnly.Checked
             .TVShowClearArtKeepExisting = chkTVShowClearArtKeepExisting.Checked
             .TVShowClearArtPrefSize = CType(cbTVShowClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVClearArtSize)).Value
@@ -396,9 +396,9 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub LoadCharacterArtSizes()
-        Dim items As New Dictionary(Of String, Enums.TVCharacterArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVCharacterArtSize.Any)
-        items.Add("512x512", Enums.TVCharacterArtSize.HD512)
+        Dim items As New Dictionary(Of String, Enums.CharacterArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.CharacterArtSize.Any)
+        items.Add("512x512", Enums.CharacterArtSize.HD512)
         cbTVShowCharacterArtPrefSize.DataSource = items.ToList
         cbTVShowCharacterArtPrefSize.DisplayMember = "Key"
         cbTVShowCharacterArtPrefSize.ValueMember = "Value"

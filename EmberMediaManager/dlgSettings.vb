@@ -35,7 +35,6 @@ Public Class dlgSettings
     Private _currbutton As New ButtonTag
     Private dHelp As New Dictionary(Of String, String)
     Private didApply As Boolean = False
-    Private MovieSetGeneralMediaListSorting As New List(Of Settings.ListSorting)
     Private NoUpdate As Boolean = True
     Private _SettingsPanels As New List(Of Containers.SettingsPanel)
     Private _lstMasterSettingsPanels As New List(Of Interfaces.MasterSettingsPanel)
@@ -241,13 +240,6 @@ Public Class dlgSettings
     Private Sub AddSettingsPanels()
 
         _SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlMovieSets",
-             .Title = Master.eLang.GetString(38, "General"),
-             .ImageIndex = 2,
-             .Type = Enums.SettingsPanelType.MovieSet,
-             .Panel = pnlMovieSetGeneral,
-             .Order = 100})
-        _SettingsPanels.Add(New Containers.SettingsPanel With {
              .Name = "pnlTVData",
              .Title = Master.eLang.GetString(556, "Data"),
              .ImageIndex = 3,
@@ -271,6 +263,7 @@ Public Class dlgSettings
         _lstMasterSettingsPanels.Add(frmMovie_Source)
         _lstMasterSettingsPanels.Add(frmMovieSet_Data)
         _lstMasterSettingsPanels.Add(frmMovieSet_FileNaming)
+        _lstMasterSettingsPanels.Add(frmMovieSet_GUI)
         _lstMasterSettingsPanels.Add(frmMovieSet_Image)
         _lstMasterSettingsPanels.Add(frmOption_GUI)
         _lstMasterSettingsPanels.Add(frmOption_Proxy)
@@ -478,18 +471,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnMovieSetSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtMovieSetSortToken.Text) Then
-            If Not lstMovieSetSortTokens.Items.Contains(txtMovieSetSortToken.Text) Then
-                lstMovieSetSortTokens.Items.Add(txtMovieSetSortToken.Text)
-                sResult.NeedsReload_MovieSet = True
-                SetApplyButton(True)
-                txtMovieSetSortToken.Text = String.Empty
-                txtMovieSetSortToken.Focus()
-            End If
-        End If
-    End Sub
-
     Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
         If Not String.IsNullOrEmpty(txtFileSystemCleanerWhitelist.Text) Then
             If Not txtFileSystemCleanerWhitelist.Text.Substring(0, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
@@ -567,88 +548,6 @@ Public Class dlgSettings
         Close()
     End Sub
 
-    Private Sub btnMovieSetGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingUp.Click
-        Try
-            If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvMovieSetGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieSetGeneralMediaListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
-                    MovieSetGeneralMediaListSorting.Remove(selItem)
-                    MovieSetGeneralMediaListSorting.Insert(iIndex - 1, selItem)
-
-                    RenumberMovieSetGeneralMediaListSorting()
-                    LoadMovieSetGeneralMediaListSorting()
-
-                    If Not selIndex - 3 < 0 Then
-                        lvMovieSetGeneralMediaListSorting.TopItem = lvMovieSetGeneralMediaListSorting.Items(selIndex - 3)
-                    End If
-                    lvMovieSetGeneralMediaListSorting.Items(selIndex - 1).Selected = True
-                    lvMovieSetGeneralMediaListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvMovieSetGeneralMediaListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub btnMovieSetGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingDown.Click
-        Try
-            If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieSetGeneralMediaListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
-
-                If selItem IsNot Nothing Then
-                    lvMovieSetGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieSetGeneralMediaListSorting.IndexOf(selItem)
-                    Dim selIndex As Integer = lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
-                    MovieSetGeneralMediaListSorting.Remove(selItem)
-                    MovieSetGeneralMediaListSorting.Insert(iIndex + 1, selItem)
-
-                    RenumberMovieSetGeneralMediaListSorting()
-                    LoadMovieSetGeneralMediaListSorting()
-
-                    If Not selIndex - 2 < 0 Then
-                        lvMovieSetGeneralMediaListSorting.TopItem = lvMovieSetGeneralMediaListSorting.Items(selIndex - 2)
-                    End If
-                    lvMovieSetGeneralMediaListSorting.Items(selIndex + 1).Selected = True
-                    lvMovieSetGeneralMediaListSorting.ResumeLayout()
-                End If
-
-                SetApplyButton(True)
-                lvMovieSetGeneralMediaListSorting.Focus()
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
-    Private Sub lvMovieSetGeneralMediaListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvMovieSetGeneralMediaListSorting.MouseDoubleClick
-        If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
-
-            If selItem IsNot Nothing Then
-                lvMovieSetGeneralMediaListSorting.SuspendLayout()
-                selItem.Hide = Not selItem.Hide
-                Dim topIndex As Integer = lvMovieSetGeneralMediaListSorting.TopItem.Index
-                Dim selIndex As Integer = lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
-
-                LoadMovieSetGeneralMediaListSorting()
-
-                lvMovieSetGeneralMediaListSorting.TopItem = lvMovieSetGeneralMediaListSorting.Items(topIndex)
-                lvMovieSetGeneralMediaListSorting.Items(selIndex).Selected = True
-                lvMovieSetGeneralMediaListSorting.ResumeLayout()
-            End If
-
-            SetApplyButton(True)
-            lvMovieSetGeneralMediaListSorting.Focus()
-        End If
-    End Sub
-
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
             Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidExts, True)
@@ -673,14 +572,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetListSorting, True)
-        MovieSetGeneralMediaListSorting.Clear()
-        MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
-        LoadMovieSetGeneralMediaListSorting()
-        SetApplyButton(True)
-    End Sub
-
     Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
         RemoveFileSystemValidExts()
     End Sub
@@ -695,17 +586,6 @@ Public Class dlgSettings
 
     Private Sub btnFileSystemNoStackExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemNoStackExtsRemove.Click
         RemoveFileSystemNoStackExts()
-    End Sub
-
-    Private Sub btnMovieSetSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenRemove.Click
-        RemoveMovieSetSortToken()
-    End Sub
-
-    Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSetSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetSortTokens, True)
-        RefreshMovieSetSortTokens()
-        sResult.NeedsReload_MovieSet = True
-        SetApplyButton(True)
     End Sub
 
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
@@ -801,8 +681,6 @@ Public Class dlgSettings
 
 
         With Master.eSettings
-            cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieSetGeneralCustomScrapeButtonModifierType
-            cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieSetGeneralCustomScrapeButtonScrapeType
             chkCleanDotFanartJPG.Checked = .CleanDotFanartJPG
             chkCleanExtrathumbs.Checked = .CleanExtrathumbs
             chkCleanFanartJPG.Checked = .CleanFanartJPG
@@ -817,9 +695,6 @@ Public Class dlgSettings
             chkCleanPosterJPG.Checked = .CleanPosterJPG
             chkCleanPosterTBN.Checked = .CleanPosterTBN
             chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
-            chkMovieSetClickScrape.Checked = .MovieSetClickScrape
-            chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
-            chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
             chkTVLockEpisodeLanguageA.Checked = .TVLockEpisodeLanguageA
             chkTVLockEpisodeLanguageV.Checked = .TVLockEpisodeLanguageV
             chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
@@ -882,17 +757,10 @@ Public Class dlgSettings
             chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
             lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
             lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
-            If .MovieSetGeneralCustomScrapeButtonEnabled Then
-                rbMovieSetGeneralCustomScrapeButtonEnabled.Checked = True
-            Else
-                rbMovieSetGeneralCustomScrapeButtonDisabled.Checked = True
-            End If
             tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
             txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
             txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
 
-            MovieSetGeneralMediaListSorting.AddRange(.MovieSetGeneralMediaListSorting)
-            LoadMovieSetGeneralMediaListSorting()
 
             TVMeta.AddRange(.TVMetadataPerFileType)
             LoadTVMetadata()
@@ -920,10 +788,8 @@ Public Class dlgSettings
             End Try
 
 
-            chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
             txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
 
-            RefreshMovieSetSortTokens()
             RefreshFileSystemExcludeDirs()
             RefreshFileSystemValidExts()
             RefreshFileSystemValidSubtitlesExts()
@@ -1048,66 +914,6 @@ Public Class dlgSettings
         lblHelp.Text = String.Empty
     End Sub
 
-    Private Sub LoadMovieSetGeneralMediaListSorting()
-        Dim lvItem As ListViewItem
-        lvMovieSetGeneralMediaListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In MovieSetGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
-            lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
-            lvItem.SubItems.Add(rColumn.Column)
-            lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
-            lvItem.SubItems.Add(If(rColumn.Hide, Master.eLang.GetString(300, "Yes"), Master.eLang.GetString(720, "No")))
-            lvMovieSetGeneralMediaListSorting.Items.Add(lvItem)
-        Next
-    End Sub
-
-    Private Sub LoadCustomScraperButtonModifierTypes_MovieSet()
-        Dim items As New Dictionary(Of String, Enums.ScrapeModifierType)
-        items.Add(Master.eLang.GetString(70, "All Items"), Enums.ScrapeModifierType.All)
-        items.Add(Master.eLang.GetString(1060, "Banner Only"), Enums.ScrapeModifierType.MainBanner)
-        items.Add(Master.eLang.GetString(1122, "ClearArt Only"), Enums.ScrapeModifierType.MainClearArt)
-        items.Add(Master.eLang.GetString(1123, "ClearLogo Only"), Enums.ScrapeModifierType.MainClearLogo)
-        items.Add(Master.eLang.GetString(1124, "DiscArt Only"), Enums.ScrapeModifierType.MainDiscArt)
-        items.Add(Master.eLang.GetString(73, "Fanart Only"), Enums.ScrapeModifierType.MainFanart)
-        items.Add(Master.eLang.GetString(1061, "Landscape Only"), Enums.ScrapeModifierType.MainLandscape)
-        items.Add(Master.eLang.GetString(71, "NFO Only"), Enums.ScrapeModifierType.MainNFO)
-        items.Add(Master.eLang.GetString(72, "Poster Only"), Enums.ScrapeModifierType.MainPoster)
-        cbMovieSetGeneralCustomScrapeButtonModifierType.DataSource = items.ToList
-        cbMovieSetGeneralCustomScrapeButtonModifierType.DisplayMember = "Key"
-        cbMovieSetGeneralCustomScrapeButtonModifierType.ValueMember = "Value"
-    End Sub
-
-    Private Sub LoadCustomScraperButtonScrapeTypes()
-        Dim strAll As String = Master.eLang.GetString(68, "All")
-        Dim strFilter As String = Master.eLang.GetString(624, "Current Filter")
-        Dim strMarked As String = Master.eLang.GetString(48, "Marked")
-        Dim strMissing As String = Master.eLang.GetString(40, "Missing Items")
-        Dim strNew As String = Master.eLang.GetString(47, "New")
-
-        Dim strAsk As String = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
-        Dim strAuto As String = Master.eLang.GetString(69, "Automatic (Force Best Match)")
-        Dim strSkip As String = Master.eLang.GetString(1041, "Skip (Skip If More Than One Match)")
-
-        Dim items As New Dictionary(Of String, Enums.ScrapeType)
-        items.Add(String.Concat(strAll, " - ", strAuto), Enums.ScrapeType.AllAuto)
-        items.Add(String.Concat(strAll, " - ", strAsk), Enums.ScrapeType.AllAsk)
-        items.Add(String.Concat(strAll, " - ", strSkip), Enums.ScrapeType.AllSkip)
-        items.Add(String.Concat(strMissing, " - ", strAuto), Enums.ScrapeType.MissingAuto)
-        items.Add(String.Concat(strMissing, " - ", strAsk), Enums.ScrapeType.MissingAsk)
-        items.Add(String.Concat(strMissing, " - ", strSkip), Enums.ScrapeType.MissingSkip)
-        items.Add(String.Concat(strNew, " - ", strAuto), Enums.ScrapeType.NewAuto)
-        items.Add(String.Concat(strNew, " - ", strAsk), Enums.ScrapeType.NewAsk)
-        items.Add(String.Concat(strNew, " - ", strSkip), Enums.ScrapeType.NewSkip)
-        items.Add(String.Concat(strMarked, " - ", strAuto), Enums.ScrapeType.MarkedAuto)
-        items.Add(String.Concat(strMarked, " - ", strAsk), Enums.ScrapeType.MarkedAsk)
-        items.Add(String.Concat(strMarked, " - ", strSkip), Enums.ScrapeType.MarkedSkip)
-        items.Add(String.Concat(strFilter, " - ", strAuto), Enums.ScrapeType.FilterAuto)
-        items.Add(String.Concat(strFilter, " - ", strAsk), Enums.ScrapeType.FilterAsk)
-        items.Add(String.Concat(strFilter, " - ", strSkip), Enums.ScrapeType.FilterSkip)
-        cbMovieSetGeneralCustomScrapeButtonScrapeType.DataSource = items.ToList
-        cbMovieSetGeneralCustomScrapeButtonScrapeType.DisplayMember = "Key"
-        cbMovieSetGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
-    End Sub
-
     Private Sub LoadTVMetadata()
         lstTVScraperDefFIExt.Items.Clear()
         For Each x As Settings.MetadataPerType In TVMeta
@@ -1129,10 +935,6 @@ Public Class dlgSettings
 
     Private Sub lstFileSystemNoStackExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemNoStackExts.KeyDown
         If e.KeyCode = Keys.Delete Then RemoveFileSystemNoStackExts()
-    End Sub
-
-    Private Sub lstMovieSetSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSetSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveMovieSetSortToken()
     End Sub
 
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
@@ -1178,11 +980,6 @@ Public Class dlgSettings
         For Each sKey As String In dHelp.Keys
             dHelp.Item(sKey) = Master.eLang.GetHelpString(sKey)
         Next
-    End Sub
-
-    Private Sub RefreshMovieSetSortTokens()
-        lstMovieSetSortTokens.Items.Clear()
-        lstMovieSetSortTokens.Items.AddRange(Master.eSettings.MovieSetSortTokens.ToArray)
     End Sub
 
     Private Sub RefreshFileSystemExcludeDirs()
@@ -1255,16 +1052,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub RemoveMovieSetSortToken()
-        If lstMovieSetSortTokens.Items.Count > 0 AndAlso lstMovieSetSortTokens.SelectedItems.Count > 0 Then
-            While lstMovieSetSortTokens.SelectedItems.Count > 0
-                lstMovieSetSortTokens.Items.Remove(lstMovieSetSortTokens.SelectedItems(0))
-            End While
-            sResult.NeedsReload_MovieSet = True
-            SetApplyButton(True)
-        End If
-    End Sub
-
     Private Sub RemoveTVMetaData()
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             For Each x As Settings.MetadataPerType In TVMeta
@@ -1278,12 +1065,6 @@ Public Class dlgSettings
         End If
     End Sub
 
-    Private Sub RenumberMovieSetGeneralMediaListSorting()
-        For i As Integer = 0 To MovieSetGeneralMediaListSorting.Count - 1
-            MovieSetGeneralMediaListSorting(i).DisplayIndex = i
-        Next
-    End Sub
-
     Private Sub SaveSettings(ByVal bIsApply As Boolean)
         With Master.eSettings
             .FileSystemNoStackExts.Clear()
@@ -1294,17 +1075,6 @@ Public Class dlgSettings
             .FileSystemValidSubtitlesExts.AddRange(lstFileSystemValidSubtitlesExts.Items.OfType(Of String).ToList)
             .FileSystemValidThemeExts.Clear()
             .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
-            .MovieSetClickScrape = chkMovieSetClickScrape.Checked
-            .MovieSetClickScrapeAsk = chkMovieSetClickScrapeAsk.Checked
-            .MovieSetGeneralCustomScrapeButtonEnabled = rbMovieSetGeneralCustomScrapeButtonEnabled.Checked
-            .MovieSetGeneralCustomScrapeButtonModifierType = CType(cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
-            .MovieSetGeneralCustomScrapeButtonScrapeType = CType(cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
-            .MovieSetGeneralMarkNew = chkMovieSetGeneralMarkNew.Checked
-            .MovieSetGeneralMediaListSorting.Clear()
-            .MovieSetGeneralMediaListSorting.AddRange(MovieSetGeneralMediaListSorting)
-            .MovieSetSortTokens.Clear()
-            .MovieSetSortTokens.AddRange(lstMovieSetSortTokens.Items.OfType(Of String).ToList)
-            If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
             .TVLockEpisodeLanguageA = chkTVLockEpisodeLanguageA.Checked
             .TVLockEpisodeLanguageV = chkTVLockEpisodeLanguageV.Checked
             .TVLockEpisodePlot = chkTVLockEpisodePlot.Checked
@@ -1466,7 +1236,6 @@ Public Class dlgSettings
 
         'Ask On Click Scrape
         Dim strAskOnClickScrape As String = Master.eLang.GetString(852, "Ask On Click Scrape")
-        chkMovieSetClickScrapeAsk.Text = strAskOnClickScrape
 
         'Certifications
         Dim strCertifications As String = Master.eLang.GetString(56, "Certifications")
@@ -1479,7 +1248,6 @@ Public Class dlgSettings
 
         'Column
         Dim strColumn As String = Master.eLang.GetString(1331, "Column")
-        colMovieSetGeneralMediaListSortingLabel.Text = strColumn
 
         'Creators
         Dim strCreators As String = Master.eLang.GetString(744, "Creators")
@@ -1506,7 +1274,6 @@ Public Class dlgSettings
 
         'Enabled Click Scrape
         Dim strEnabledClickScrape As String = Master.eLang.GetString(849, "Enable Click Scrape")
-        chkMovieSetClickScrape.Text = strEnabledClickScrape
 
         'Episode Guide URL
         Dim strEpisodeGuideURL As String = Master.eLang.GetString(723, "Episode Guide URL")
@@ -1526,7 +1293,6 @@ Public Class dlgSettings
 
         'Hide
         Dim strHide As String = Master.eLang.GetString(465, "Hide")
-        colMovieSetGeneralMediaListSortingHide.Text = strHide
 
         'Language (Audio)
         Dim strLanguageAudio As String = Master.eLang.GetString(431, "Language (Audio)")
@@ -1548,7 +1314,6 @@ Public Class dlgSettings
 
         'Miscellaneous
         Dim strMiscellaneous As String = Master.eLang.GetString(429, "Miscellaneous")
-        gbMovieSetGeneralMiscOpts.Text = strMiscellaneous
         gbTVScraperMiscOpts.Text = strMiscellaneous
 
         'Missing
@@ -1564,7 +1329,6 @@ Public Class dlgSettings
 
         'MovieSet List Sorting
         Dim strMovieSetListSorting As String = Master.eLang.GetString(491, "MovieSet List Sorting")
-        gbMovieSetGeneralMediaListSorting.Text = strMovieSetListSorting
 
         'Only if no MPAA is found
         Dim strOnlyIfNoMPAA As String = Master.eLang.GetString(1293, "Only if no MPAA is found")
@@ -1608,7 +1372,6 @@ Public Class dlgSettings
 
         'Sort Tokens to Ignore
         Dim strSortTokens As String = Master.eLang.GetString(463, "Sort Tokens to Ignore")
-        gbMovieSetGeneralMediaListSortTokensOpts.Text = strSortTokens
 
         'Status
         Dim strStatus As String = Master.eLang.GetString(215, "Status")
@@ -1653,7 +1416,6 @@ Public Class dlgSettings
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnOK.Text = Master.eLang.GetString(179, "OK")
         chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
-        chkMovieSetGeneralMarkNew.Text = Master.eLang.GetString(1301, "Mark New MovieSets")
         chkTVScraperEpisodeGuestStarsToActors.Text = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
         chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
@@ -1673,11 +1435,7 @@ Public Class dlgSettings
 
         'items with text from other items
         chkTVScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
-        gbMovieSetGeneralMediaListOpts.Text = Master.eLang.GetString(460, "Media List Options")
         gbTVScraperDefFIExtOpts.Text = gbTVScraperDefFIExtOpts.Text
-
-        LoadCustomScraperButtonModifierTypes_MovieSet()
-        LoadCustomScraperButtonScrapeTypes()
     End Sub
 
     Private Sub ToolStripButton_Click(ByVal sender As Object, ByVal e As EventArgs)
@@ -1729,34 +1487,7 @@ Public Class dlgSettings
         End Function
     End Class
 
-    Private Sub chkMovieSetClickScrape_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetClickScrape.CheckedChanged
-        chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub rbMovieSetGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieSetGeneralCustomScrapeButtonDisabled.CheckedChanged
-        If rbMovieSetGeneralCustomScrapeButtonDisabled.Checked Then
-            cbMovieSetGeneralCustomScrapeButtonModifierType.Enabled = False
-            cbMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = False
-            txtMovieSetGeneralCustomScrapeButtonModifierType.Enabled = False
-            txtMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = False
-        End If
-        SetApplyButton(True)
-    End Sub
-
-    Private Sub rbMovieSetGeneralCustomScrapeButtonEnabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieSetGeneralCustomScrapeButtonEnabled.CheckedChanged
-        If rbMovieSetGeneralCustomScrapeButtonEnabled.Checked Then
-            cbMovieSetGeneralCustomScrapeButtonModifierType.Enabled = True
-            cbMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = True
-            txtMovieSetGeneralCustomScrapeButtonModifierType.Enabled = True
-            txtMovieSetGeneralCustomScrapeButtonScrapeType.Enabled = True
-        End If
-        SetApplyButton(True)
-    End Sub
-
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
-        cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedIndexChanged,
-        cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedIndexChanged,
         chkCleanDotFanartJPG.CheckedChanged,
         chkCleanExtrathumbs.CheckedChanged,
         chkCleanFanartJPG.CheckedChanged,
@@ -1771,8 +1502,6 @@ Public Class dlgSettings
         chkCleanPosterJPG.CheckedChanged,
         chkCleanPosterTBN.CheckedChanged,
         chkFileSystemCleanerWhitelist.CheckedChanged,
-        chkMovieSetClickScrapeAsk.CheckedChanged,
-        chkMovieSetGeneralMarkNew.CheckedChanged,
         chkTVLockEpisodeLanguageA.CheckedChanged,
         chkTVLockEpisodeLanguageV.CheckedChanged,
         chkTVLockEpisodePlot.CheckedChanged,

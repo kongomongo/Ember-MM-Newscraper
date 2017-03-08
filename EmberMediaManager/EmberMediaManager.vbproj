@@ -389,6 +389,12 @@
     <Compile Include="MasterSettingsPanels\frmMovieSet_FileNaming.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_GUI.Designer.vb">
+      <DependentUpon>frmMovieSet_GUI.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmMovieSet_GUI.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MasterSettingsPanels\frmMovieSet_Image.Designer.vb">
       <DependentUpon>frmMovieSet_Image.vb</DependentUpon>
     </Compile>
@@ -606,6 +612,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovieSet_FileNaming.resx">
       <DependentUpon>frmMovieSet_FileNaming.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmMovieSet_GUI.resx">
+      <DependentUpon>frmMovieSet_GUI.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovieSet_Image.resx">
       <DependentUpon>frmMovieSet_Image.vb</DependentUpon>

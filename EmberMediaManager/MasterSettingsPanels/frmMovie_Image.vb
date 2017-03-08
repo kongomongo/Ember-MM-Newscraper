@@ -139,73 +139,73 @@ Public Class frmMovie_Image
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            cbMovieBannerPrefSize.SelectedValue = .MovieBannerPrefSize
-            cbMovieClearArtPrefSize.SelectedValue = .MovieClearArtPrefSize
-            cbMovieClearLogoPrefSize.SelectedValue = .MovieClearLogoPrefSize
-            cbMovieDiscArtPrefSize.SelectedValue = .MovieDiscArtPrefSize
-            cbMovieExtrafanartsPrefSize.SelectedValue = .MovieExtrafanartsPrefSize
-            cbMovieExtrathumbsPrefSize.SelectedValue = .MovieExtrathumbsPrefSize
-            cbMovieFanartPrefSize.SelectedValue = .MovieFanartPrefSize
-            cbMovieLandscapePrefSize.SelectedValue = .MovieLandscapePrefSize
-            cbMoviePosterPrefSize.SelectedValue = .MoviePosterPrefSize
-            chkMovieActorThumbsKeepExisting.Checked = .MovieActorThumbsKeepExisting
-            chkMovieBannerKeepExisting.Checked = .MovieBannerKeepExisting
-            chkMovieBannerPrefSizeOnly.Checked = .MovieBannerPrefSizeOnly
-            txtMovieBannerHeight.Text = .MovieBannerHeight.ToString
-            txtMovieBannerWidth.Text = .MovieBannerWidth.ToString
-            chkMovieClearArtKeepExisting.Checked = .MovieClearArtKeepExisting
-            chkMovieClearArtPrefSizeOnly.Checked = .MovieClearArtPrefSizeOnly
-            chkMovieClearLogoKeepExisting.Checked = .MovieClearLogoKeepExisting
-            chkMovieClearLogoPrefSizeOnly.Checked = .MovieClearLogoPrefSizeOnly
-            chkMovieDiscArtKeepExisting.Checked = .MovieDiscArtKeepExisting
-            chkMovieDiscArtPrefSizeOnly.Checked = .MovieDiscArtPrefSizeOnly
-            chkMovieExtrafanartsKeepExisting.Checked = .MovieExtrafanartsKeepExisting
-            chkMovieExtrafanartsPrefSizeOnly.Checked = .MovieExtrafanartsPrefSizeOnly
-            chkMovieExtrafanartsPreselect.Checked = .MovieExtrafanartsPreselect
-            txtMovieExtrafanartsHeight.Text = .MovieExtrafanartsHeight.ToString
-            txtMovieExtrafanartsWidth.Text = .MovieExtrafanartsWidth.ToString
-            chkMovieExtrathumbsCreatorAutoThumbs.Checked = .MovieExtrathumbsCreatorAutoThumbs
-            chkMovieExtrathumbsCreatorNoBlackBars.Checked = .MovieExtrathumbsCreatorNoBlackBars
-            chkMovieExtrathumbsCreatorNoSpoilers.Checked = .MovieExtrathumbsCreatorNoSpoilers
-            chkMovieExtrathumbsCreatorUseETasFA.Checked = .MovieExtrathumbsCreatorUseETasFA
-            chkMovieExtrathumbsKeepExisting.Checked = .MovieExtrathumbsKeepExisting
-            chkMovieExtrathumbsPrefSizeOnly.Checked = .MovieExtrathumbsPrefSizeOnly
-            chkMovieExtrathumbsPreselect.Checked = .MovieExtrathumbsPreselect
-            txtMovieExtrathumbsHeight.Text = .MovieExtrathumbsHeight.ToString
-            txtMovieExtrathumbsWidth.Text = .MovieExtrathumbsWidth.ToString
-            chkMovieFanartKeepExisting.Checked = .MovieFanartKeepExisting
-            chkMovieFanartPrefSizeOnly.Checked = .MovieFanartPrefSizeOnly
-            txtMovieFanartHeight.Text = .MovieFanartHeight.ToString
-            txtMovieFanartWidth.Text = .MovieFanartWidth.ToString
-            chkMovieImagesCacheEnabled.Checked = .MovieImagesCacheEnabled
-            chkMovieImagesDisplayImageSelect.Checked = .MovieImagesDisplayImageSelect
-            chkMovieImagesForceLanguage.Checked = .MovieImagesForceLanguage
-            If .MovieImagesMediaLanguageOnly Then
+        With Master.eSettings.Movie.ImageSettings
+            cbMovieBannerPrefSize.SelectedValue = .BannerPrefSize
+            cbMovieClearArtPrefSize.SelectedValue = .ClearArtPrefSize
+            cbMovieClearLogoPrefSize.SelectedValue = .ClearLogoPrefSize
+            cbMovieDiscArtPrefSize.SelectedValue = .DiscArtPrefSize
+            cbMovieExtrafanartsPrefSize.SelectedValue = .ExtrafanartsPrefSize
+            cbMovieExtrathumbsPrefSize.SelectedValue = .ExtrathumbsPrefSize
+            cbMovieFanartPrefSize.SelectedValue = .FanartPrefSize
+            cbMovieLandscapePrefSize.SelectedValue = .LandscapePrefSize
+            cbMoviePosterPrefSize.SelectedValue = .PosterPrefSize
+            chkMovieActorThumbsKeepExisting.Checked = .ActorThumbsKeepExisting
+            chkMovieBannerKeepExisting.Checked = .BannerKeepExisting
+            chkMovieBannerPrefSizeOnly.Checked = .BannerPrefSizeOnly
+            txtMovieBannerHeight.Text = .BannerMaxHeight.ToString
+            txtMovieBannerWidth.Text = .BannerMaxWidth.ToString
+            chkMovieClearArtKeepExisting.Checked = .ClearArtKeepExisting
+            chkMovieClearArtPrefSizeOnly.Checked = .ClearArtPrefSizeOnly
+            chkMovieClearLogoKeepExisting.Checked = .ClearLogoKeepExisting
+            chkMovieClearLogoPrefSizeOnly.Checked = .ClearLogoPrefSizeOnly
+            chkMovieDiscArtKeepExisting.Checked = .DiscArtKeepExisting
+            chkMovieDiscArtPrefSizeOnly.Checked = .DiscArtPrefSizeOnly
+            chkMovieExtrafanartsKeepExisting.Checked = .ExtrafanartsKeepExisting
+            chkMovieExtrafanartsPrefSizeOnly.Checked = .ExtrafanartsPrefSizeOnly
+            chkMovieExtrafanartsPreselect.Checked = .ExtrafanartsPreselect
+            txtMovieExtrafanartsHeight.Text = .ExtrafanartsMaxHeight.ToString
+            txtMovieExtrafanartsWidth.Text = .ExtrafanartsMaxWidth.ToString
+            chkMovieExtrathumbsCreatorAutoThumbs.Checked = .ExtrathumbsCreatorAuto
+            chkMovieExtrathumbsCreatorNoBlackBars.Checked = .ExtrathumbsCreatorNoBlackBars
+            chkMovieExtrathumbsCreatorNoSpoilers.Checked = .ExtrathumbsCreatorNoSpoilers
+            chkMovieExtrathumbsCreatorUseETasFA.Checked = .ExtrathumbsCreatorUseETasFA
+            chkMovieExtrathumbsKeepExisting.Checked = .ExtrathumbsKeepExisting
+            chkMovieExtrathumbsPrefSizeOnly.Checked = .ExtrathumbsPrefSizeOnly
+            chkMovieExtrathumbsPreselect.Checked = .ExtrathumbsPreselect
+            txtMovieExtrathumbsHeight.Text = .ExtrathumbsMaxHeight.ToString
+            txtMovieExtrathumbsWidth.Text = .ExtrathumbsMaxWidth.ToString
+            chkMovieFanartKeepExisting.Checked = .FanartKeepExisting
+            chkMovieFanartPrefSizeOnly.Checked = .FanartPrefSizeOnly
+            txtMovieFanartHeight.Text = .FanartMaxHeight.ToString
+            txtMovieFanartWidth.Text = .FanartMaxWidth.ToString
+            chkMovieImagesCacheEnabled.Checked = .ImagesCacheEnabled
+            chkMovieImagesDisplayImageSelect.Checked = .ImagesDisplayImageSelect
+            chkMovieImagesForceLanguage.Checked = .ImagesForceLanguage
+            If .ImagesMediaLanguageOnly Then
                 chkMovieImagesMediaLanguageOnly.Checked = True
-                chkMovieImagesGetBlankImages.Checked = .MovieImagesGetBlankImages
-                chkMovieImagesGetEnglishImages.Checked = .MovieImagesGetEnglishImages
+                chkMovieImagesGetBlankImages.Checked = .ImagesGetBlankImages
+                chkMovieImagesGetEnglishImages.Checked = .ImagesGetEnglishImages
             End If
-            chkMovieImagesNotSaveURLToNfo.Checked = .MovieImagesNotSaveURLToNfo
-            chkMovieLandscapeKeepExisting.Checked = .MovieLandscapeKeepExisting
-            chkMovieLandscapePrefSizeOnly.Checked = .MovieLandscapePrefSizeOnly
-            chkMoviePosterKeepExisting.Checked = .MoviePosterKeepExisting
-            chkMoviePosterPrefSizeOnly.Checked = .MoviePosterPrefSizeOnly
-            txtMoviePosterHeight.Text = .MoviePosterHeight.ToString
-            txtMoviePosterWidth.Text = .MoviePosterWidth.ToString
-            txtMovieExtrafanartsLimit.Text = .MovieExtrafanartsLimit.ToString
-            txtMovieExtrathumbsLimit.Text = .MovieExtrathumbsLimit.ToString
+            chkMovieImagesNotSaveURLToNfo.Checked = .ImagesNotSaveURLToNfo
+            chkMovieLandscapeKeepExisting.Checked = .LandscapeKeepExisting
+            chkMovieLandscapePrefSizeOnly.Checked = .LandscapePrefSizeOnly
+            chkMoviePosterKeepExisting.Checked = .PosterKeepExisting
+            chkMoviePosterPrefSizeOnly.Checked = .PosterPrefSizeOnly
+            txtMoviePosterHeight.Text = .PosterMaxHeight.ToString
+            txtMoviePosterWidth.Text = .PosterMaxWidth.ToString
+            txtMovieExtrafanartsLimit.Text = .ExtrafanartsLimit.ToString
+            txtMovieExtrathumbsLimit.Text = .ExtrathumbsLimit.ToString
 
             Try
                 cbMovieImagesForcedLanguage.Items.Clear()
                 cbMovieImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
                 If cbMovieImagesForcedLanguage.Items.Count > 0 Then
-                    If Not String.IsNullOrEmpty(.MovieImagesForcedLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .MovieImagesForcedLanguage)
+                    If Not String.IsNullOrEmpty(.ImagesForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .ImagesForcedLanguage)
                         If tLanguage IsNot Nothing Then
                             cbMovieImagesForcedLanguage.Text = tLanguage.Name
                         Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieImagesForcedLanguage))
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.ImagesForcedLanguage))
                             If tLanguage IsNot Nothing Then
                                 cbMovieImagesForcedLanguage.Text = tLanguage.Name
                             Else
@@ -223,63 +223,63 @@ Public Class frmMovie_Image
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
-            .MovieBannerHeight = If(Not String.IsNullOrEmpty(txtMovieBannerHeight.Text), Convert.ToInt32(txtMovieBannerHeight.Text), 0)
-            .MovieBannerKeepExisting = chkMovieBannerKeepExisting.Checked
-            .MovieBannerPrefSize = CType(cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
-            .MovieBannerPrefSizeOnly = chkMovieBannerPrefSizeOnly.Checked
-            .MovieBannerWidth = If(Not String.IsNullOrEmpty(txtMovieBannerWidth.Text), Convert.ToInt32(txtMovieBannerWidth.Text), 0)
-            .MovieClearArtKeepExisting = chkMovieClearArtKeepExisting.Checked
-            .MovieClearArtPrefSize = CType(cbMovieClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearArtSize)).Value
-            .MovieClearArtPrefSizeOnly = chkMovieClearArtPrefSizeOnly.Checked
-            .MovieClearLogoKeepExisting = chkMovieClearLogoKeepExisting.Checked
-            .MovieClearLogoPrefSize = CType(cbMovieClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearLogoSize)).Value
-            .MovieClearLogoPrefSizeOnly = chkMovieClearLogoPrefSizeOnly.Checked
-            .MovieDiscArtKeepExisting = chkMovieDiscArtKeepExisting.Checked
-            .MovieDiscArtPrefSize = CType(cbMovieDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieDiscArtSize)).Value
-            .MovieDiscArtPrefSizeOnly = chkMovieDiscArtPrefSizeOnly.Checked
-            .MovieExtrafanartsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsHeight.Text), Convert.ToInt32(txtMovieExtrafanartsHeight.Text), 0)
-            .MovieExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsLimit.Text), Convert.ToInt32(txtMovieExtrafanartsLimit.Text), 0)
-            .MovieExtrafanartsKeepExisting = chkMovieExtrafanartsKeepExisting.Checked
-            .MovieExtrafanartsPrefSize = CType(cbMovieExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
-            .MovieExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefSizeOnly.Checked
-            .MovieExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
-            .MovieExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
-            .MovieExtrathumbsCreatorAutoThumbs = chkMovieExtrathumbsCreatorAutoThumbs.Checked
-            .MovieExtrathumbsCreatorNoBlackBars = chkMovieExtrathumbsCreatorNoBlackBars.Checked
-            .MovieExtrathumbsCreatorNoSpoilers = chkMovieExtrathumbsCreatorNoSpoilers.Checked
-            .MovieExtrathumbsCreatorUseETasFA = chkMovieExtrathumbsCreatorUseETasFA.Checked
-            .MovieExtrathumbsHeight = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsHeight.Text), Convert.ToInt32(txtMovieExtrathumbsHeight.Text), 0)
-            .MovieExtrathumbsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsLimit.Text), Convert.ToInt32(txtMovieExtrathumbsLimit.Text), 0)
-            .MovieExtrathumbsKeepExisting = chkMovieExtrathumbsKeepExisting.Checked
-            .MovieExtrathumbsPrefSize = CType(cbMovieExtrathumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
-            .MovieExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefSizeOnly.Checked
-            .MovieExtrathumbsPreselect = chkMovieExtrathumbsPreselect.Checked
-            .MovieExtrathumbsWidth = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsWidth.Text), Convert.ToInt32(txtMovieExtrathumbsWidth.Text), 0)
-            .MovieFanartHeight = If(Not String.IsNullOrEmpty(txtMovieFanartHeight.Text), Convert.ToInt32(txtMovieFanartHeight.Text), 0)
-            .MovieFanartKeepExisting = chkMovieFanartKeepExisting.Checked
-            .MovieFanartPrefSize = CType(cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
-            .MovieFanartPrefSizeOnly = chkMovieFanartPrefSizeOnly.Checked
-            .MovieFanartWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
-            .MovieImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
-            .MovieImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
+        With Master.eSettings.Movie.ImageSettings
+            .ActorThumbsKeepExisting = chkMovieActorThumbsKeepExisting.Checked
+            .BannerMaxHeight = If(Not String.IsNullOrEmpty(txtMovieBannerHeight.Text), Convert.ToInt32(txtMovieBannerHeight.Text), 0)
+            .BannerKeepExisting = chkMovieBannerKeepExisting.Checked
+            .BannerPrefSize = CType(cbMovieBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .BannerPrefSizeOnly = chkMovieBannerPrefSizeOnly.Checked
+            .BannerMaxWidth = If(Not String.IsNullOrEmpty(txtMovieBannerWidth.Text), Convert.ToInt32(txtMovieBannerWidth.Text), 0)
+            .ClearArtKeepExisting = chkMovieClearArtKeepExisting.Checked
+            .ClearArtPrefSize = CType(cbMovieClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .ClearArtPrefSizeOnly = chkMovieClearArtPrefSizeOnly.Checked
+            .ClearLogoKeepExisting = chkMovieClearLogoKeepExisting.Checked
+            .ClearLogoPrefSize = CType(cbMovieClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .ClearLogoPrefSizeOnly = chkMovieClearLogoPrefSizeOnly.Checked
+            .DiscArtKeepExisting = chkMovieDiscArtKeepExisting.Checked
+            .DiscArtPrefSize = CType(cbMovieDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .DiscArtPrefSizeOnly = chkMovieDiscArtPrefSizeOnly.Checked
+            .ExtrafanartsMaxHeight = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsHeight.Text), Convert.ToInt32(txtMovieExtrafanartsHeight.Text), 0)
+            .ExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsLimit.Text), Convert.ToInt32(txtMovieExtrafanartsLimit.Text), 0)
+            .ExtrafanartsKeepExisting = chkMovieExtrafanartsKeepExisting.Checked
+            .ExtrafanartsPrefSize = CType(cbMovieExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .ExtrafanartsPrefSizeOnly = chkMovieExtrafanartsPrefSizeOnly.Checked
+            .ExtrafanartsPreselect = chkMovieExtrafanartsPreselect.Checked
+            .ExtrafanartsMaxWidth = If(Not String.IsNullOrEmpty(txtMovieExtrafanartsWidth.Text), Convert.ToInt32(txtMovieExtrafanartsWidth.Text), 0)
+            .ExtrathumbsCreatorAuto = chkMovieExtrathumbsCreatorAutoThumbs.Checked
+            .ExtrathumbsCreatorNoBlackBars = chkMovieExtrathumbsCreatorNoBlackBars.Checked
+            .ExtrathumbsCreatorNoSpoilers = chkMovieExtrathumbsCreatorNoSpoilers.Checked
+            .ExtrathumbsCreatorUseETasFA = chkMovieExtrathumbsCreatorUseETasFA.Checked
+            .ExtrathumbsMaxHeight = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsHeight.Text), Convert.ToInt32(txtMovieExtrathumbsHeight.Text), 0)
+            .ExtrathumbsLimit = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsLimit.Text), Convert.ToInt32(txtMovieExtrathumbsLimit.Text), 0)
+            .ExtrathumbsKeepExisting = chkMovieExtrathumbsKeepExisting.Checked
+            .ExtrathumbsPrefSize = CType(cbMovieExtrathumbsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .ExtrathumbsPrefSizeOnly = chkMovieExtrathumbsPrefSizeOnly.Checked
+            .ExtrathumbsPreselect = chkMovieExtrathumbsPreselect.Checked
+            .ExtrathumbsMaxWidth = If(Not String.IsNullOrEmpty(txtMovieExtrathumbsWidth.Text), Convert.ToInt32(txtMovieExtrathumbsWidth.Text), 0)
+            .FanartMaxHeight = If(Not String.IsNullOrEmpty(txtMovieFanartHeight.Text), Convert.ToInt32(txtMovieFanartHeight.Text), 0)
+            .FanartKeepExisting = chkMovieFanartKeepExisting.Checked
+            .FanartPrefSize = CType(cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .FanartPrefSizeOnly = chkMovieFanartPrefSizeOnly.Checked
+            .FanartMaxWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
+            .ImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
+            .ImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
             If Not String.IsNullOrEmpty(cbMovieImagesForcedLanguage.Text) Then
-                .MovieImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieImagesForcedLanguage.Text).Abbrevation_MainLanguage
+                .ImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieImagesForcedLanguage.Text).Abbrevation_MainLanguage
             End If
-            .MovieImagesForceLanguage = chkMovieImagesForceLanguage.Checked
-            .MovieImagesGetBlankImages = chkMovieImagesGetBlankImages.Checked
-            .MovieImagesGetEnglishImages = chkMovieImagesGetEnglishImages.Checked
-            .MovieImagesMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
-            .MovieImagesNotSaveURLToNfo = chkMovieImagesNotSaveURLToNfo.Checked
-            .MovieLandscapeKeepExisting = chkMovieLandscapeKeepExisting.Checked
-            .MovieLandscapePrefSize = CType(cbMovieLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieLandscapeSize)).Value
-            .MovieLandscapePrefSizeOnly = chkMovieLandscapePrefSizeOnly.Checked
-            .MoviePosterHeight = If(Not String.IsNullOrEmpty(txtMoviePosterHeight.Text), Convert.ToInt32(txtMoviePosterHeight.Text), 0)
-            .MoviePosterKeepExisting = chkMoviePosterKeepExisting.Checked
-            .MoviePosterPrefSize = CType(cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
-            .MoviePosterPrefSizeOnly = chkMoviePosterPrefSizeOnly.Checked
-            .MoviePosterWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
+            .ImagesForceLanguage = chkMovieImagesForceLanguage.Checked
+            .ImagesGetBlankImages = chkMovieImagesGetBlankImages.Checked
+            .ImagesGetEnglishImages = chkMovieImagesGetEnglishImages.Checked
+            .ImagesMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
+            .ImagesNotSaveURLToNfo = chkMovieImagesNotSaveURLToNfo.Checked
+            .LandscapeKeepExisting = chkMovieLandscapeKeepExisting.Checked
+            .LandscapePrefSize = CType(cbMovieLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .LandscapePrefSizeOnly = chkMovieLandscapePrefSizeOnly.Checked
+            .PosterMaxHeight = If(Not String.IsNullOrEmpty(txtMoviePosterHeight.Text), Convert.ToInt32(txtMoviePosterHeight.Text), 0)
+            .PosterKeepExisting = chkMoviePosterKeepExisting.Checked
+            .PosterPrefSize = CType(cbMoviePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .PosterPrefSizeOnly = chkMoviePosterPrefSizeOnly.Checked
+            .PosterMaxWidth = If(Not String.IsNullOrEmpty(txtMoviePosterWidth.Text), Convert.ToInt32(txtMoviePosterWidth.Text), 0)
         End With
     End Sub
 
@@ -288,51 +288,51 @@ Public Class frmMovie_Image
 #Region "Methods"
 
     Private Sub LoadMovieBannerSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
-        items.Add("1000x185", Enums.MovieBannerSize.HD185)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x185", Enums.ImageSize.HD185)
         cbMovieBannerPrefSize.DataSource = items.ToList
         cbMovieBannerPrefSize.DisplayMember = "Key"
         cbMovieBannerPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieClearArtSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieClearArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearArtSize.Any)
-        items.Add("1000x562", Enums.MovieClearArtSize.HD562)
-        items.Add("500x281", Enums.MovieClearArtSize.SD281)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x562", Enums.ImageSize.HD562)
+        items.Add("500x281", Enums.ImageSize.SD281)
         cbMovieClearArtPrefSize.DataSource = items.ToList
         cbMovieClearArtPrefSize.DisplayMember = "Key"
         cbMovieClearArtPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieClearLogoSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieClearLogoSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearLogoSize.Any)
-        items.Add("800x310", Enums.MovieClearLogoSize.HD310)
-        items.Add("400x155", Enums.MovieClearLogoSize.SD155)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("800x310", Enums.ImageSize.HD310)
+        items.Add("400x155", Enums.ImageSize.SD155)
         cbMovieClearLogoPrefSize.DataSource = items.ToList
         cbMovieClearLogoPrefSize.DisplayMember = "Key"
         cbMovieClearLogoPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieDiscArtSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieDiscArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieDiscArtSize.Any)
-        items.Add("1000x1000", Enums.MovieDiscArtSize.HD1000)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x1000", Enums.ImageSize.HD1000)
         cbMovieDiscArtPrefSize.DataSource = items.ToList
         cbMovieDiscArtPrefSize.DisplayMember = "Key"
         cbMovieDiscArtPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMovieFanartSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
-        items.Add("3840x2160", Enums.MovieFanartSize.UHD2160)
-        items.Add("2560x1440", Enums.MovieFanartSize.QHD1440)
-        items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
-        items.Add("1280x720", Enums.MovieFanartSize.HD720)
-        items.Add("Thumb", Enums.MovieFanartSize.Thumb)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("3840x2160", Enums.ImageSize.UHD2160)
+        items.Add("2560x1440", Enums.ImageSize.QHD1440)
+        items.Add("1920x1080", Enums.ImageSize.HD1080)
+        items.Add("1280x720", Enums.ImageSize.HD720)
+        items.Add("Thumb", Enums.ImageSize.Thumb)
         cbMovieExtrafanartsPrefSize.DataSource = items.ToList
         cbMovieExtrafanartsPrefSize.DisplayMember = "Key"
         cbMovieExtrafanartsPrefSize.ValueMember = "Value"
@@ -345,21 +345,21 @@ Public Class frmMovie_Image
     End Sub
 
     Private Sub LoadMovieLandscapeSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieLandscapeSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieLandscapeSize.Any)
-        items.Add("1000x562", Enums.MovieLandscapeSize.HD562)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x562", Enums.ImageSize.HD562)
         cbMovieLandscapePrefSize.DataSource = items.ToList
         cbMovieLandscapePrefSize.DisplayMember = "Key"
         cbMovieLandscapePrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadMoviePosterSizes()
-        Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
-        items.Add("2000x3000", Enums.MoviePosterSize.HD3000)
-        items.Add("1400x2100", Enums.MoviePosterSize.HD2100)
-        items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
-        items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("2000x3000", Enums.ImageSize.UHD3000)
+        items.Add("1400x2100", Enums.ImageSize.UHD2100)
+        items.Add("1000x1500", Enums.ImageSize.HD1500)
+        items.Add("1000x1426", Enums.ImageSize.HD1426)
         cbMoviePosterPrefSize.DataSource = items.ToList
         cbMoviePosterPrefSize.DisplayMember = "Key"
         cbMoviePosterPrefSize.ValueMember = "Value"

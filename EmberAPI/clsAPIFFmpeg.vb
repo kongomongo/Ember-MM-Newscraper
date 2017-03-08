@@ -141,8 +141,8 @@ Namespace FFmpeg
             End If
 
             'Step 3: (Optional) Analyze video and retrieve real screensize without black bars
-            Dim cropsize As String = ""
-            If Master.eSettings.MovieExtrathumbsCreatorNoBlackBars Then
+            Dim cropsize As String = String.Empty
+            If Master.eSettings.Movie.ImageSettings.ExtrathumbsCreatorNoBlackBars Then
                 cropsize = GetScreenSizeWithoutBars(tDBElement, VideoFileDuration, ScanPath, Timeout)
             End If
 

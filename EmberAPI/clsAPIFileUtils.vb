@@ -492,21 +492,21 @@ Namespace FileUtils
         ''' <summary>
         ''' Determine the lowest-level directory from the supplied path string. 
         ''' </summary>
-        ''' <param name="sPath">The path string to parse</param>
+        ''' <param name="strPath">The path string to parse</param>
         ''' <returns>String containing a directory name, or String.Empty if no valid directory name was found</returns>
         ''' <remarks>Passing a path to a filename will treat that filename as a path. </remarks>
-        Public Shared Function GetDirectory(ByVal sPath As String) As String
-            'TODO Need to evaluate more actual EMM uses of this method. I'm not confident in my understanding of what it is actually trying to accomplish. It seems overly complex for such a simple role
-            'Why not .split on DirectorySeparatorChar and use the last non-Empty string?
+        Public Shared Function GetDirectory(ByVal strPath As String) As String
             Try
-                If String.IsNullOrEmpty(sPath) Then Return String.Empty
-                If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
-                If Not String.IsNullOrEmpty(Path.GetDirectoryName(sPath)) AndAlso sPath.StartsWith(Path.GetDirectoryName(sPath)) Then sPath = sPath.Replace(Path.GetDirectoryName(sPath), String.Empty).Trim
-                If sPath.StartsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(1)
-                'it could be just a drive letter at this point. Check ending chars again
-                If sPath.EndsWith(Path.DirectorySeparatorChar) Then sPath = sPath.Substring(0, sPath.Length - 1)
-                If sPath.EndsWith(":") Then sPath = sPath.Substring(0, sPath.Length - 1)
-                Return sPath
+                Return New DirectoryInfo(strPath).Name
+                'If String.IsNullOrEmpty(strPath) Then Return String.Empty
+                'If strPath.EndsWith(Path.DirectorySeparatorChar) Then strPath = strPath.Substring(0, strPath.Length - 1)
+                'If Not String.IsNullOrEmpty(Path.GetDirectoryName(strPath)) AndAlso strPath.StartsWith(Path.GetDirectoryName(strPath)) Then strPath = strPath.Replace(Path.GetDirectoryName(strPath), String.Empty).Trim
+                'If strPath.StartsWith(Path.DirectorySeparatorChar) Then strPath = strPath.Substring(1)
+                ''it could be just a drive letter at this point. Check ending chars again
+                'If strPath.EndsWith(Path.DirectorySeparatorChar) Then strPath = strPath.Substring(0, strPath.Length - 1)
+                'If strPath.EndsWith(":") Then strPath = strPath.Substring(0, strPath.Length - 1)
+
+                'Return strPath
             Catch ex As Exception
                 Return String.Empty
             End Try

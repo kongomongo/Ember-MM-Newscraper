@@ -679,47 +679,80 @@ Public Class Enums
         Aired = 1
     End Enum
 
-    Public Enum MovieBannerSize As Integer
-        HD185 = 0       'Fanart.tv has only 1000x185
-        Any = 99
-    End Enum
-
-    Public Enum MovieClearArtSize As Integer
-        HD562 = 0
-        SD281 = 1
-        Any = 99
-    End Enum
-
-    Public Enum MovieClearLogoSize As Integer
-        HD310 = 0
-        SD155 = 1
-        Any = 99
-    End Enum
-
-    Public Enum MovieDiscArtSize As Integer
-        HD1000 = 0
-        Any = 99
-    End Enum
-
-    Public Enum MovieFanartSize As Integer
-        UHD2160 = 0
-        QHD1440 = 1
-        HD1080 = 2
-        HD720 = 3
-        Thumb = 4
-        Any = 99
-    End Enum
-
-    Public Enum MovieLandscapeSize As Integer
-        HD562 = 0
-        Any = 99
-    End Enum
-
-    Public Enum MoviePosterSize As Integer
-        HD3000 = 0
-        HD2100 = 1
-        HD1500 = 2
-        HD1426 = 3
+    Public Enum ImageSize As Integer
+        ''' <summary>
+        ''' Poster
+        ''' </summary>
+        UHD3000 = 0
+        ''' <summary>
+        ''' Fanart / Episode Poster
+        ''' </summary>
+        UHD2160 = 1
+        ''' <summary>
+        ''' Poster
+        ''' </summary>
+        UHD2100 = 2
+        ''' <summary>
+        ''' Poster
+        ''' </summary>
+        HD1500 = 3
+        ''' <summary>
+        ''' Fanart
+        ''' </summary>
+        QHD1440 = 4
+        ''' <summary>
+        ''' Poster
+        ''' </summary>
+        HD1426 = 5
+        ''' <summary>
+        ''' Fanart / Episode Poster
+        ''' </summary>
+        HD1080 = 6
+        ''' <summary>
+        ''' DiscArt / Poster
+        ''' </summary>
+        HD1000 = 7
+        ''' <summary>
+        ''' Fanart / Episode Poster
+        ''' </summary>
+        HD720 = 8
+        ''' <summary>
+        ''' Season Poster
+        ''' </summary>
+        HD578 = 9
+        ''' <summary>
+        ''' ClearArt / Landscape
+        ''' </summary>
+        HD562 = 10
+        ''' <summary>
+        ''' CharacterArt
+        ''' </summary>
+        HD512 = 11
+        ''' <summary>
+        ''' ClearLogo
+        ''' </summary>
+        HD310 = 12
+        ''' <summary>
+        ''' ClearArt / Landscape
+        ''' </summary>
+        SD281 = 13
+        ''' <summary>
+        ''' Episode Poster (TVDB 400 x 300 (400x225 for 16:9 images))
+        ''' </summary>
+        SD225 = 14
+        ''' <summary>
+        ''' Banner (Fanart.tv)
+        ''' </summary>
+        HD185 = 15
+        ''' <summary>
+        ''' ClearLogo
+        ''' </summary>
+        SD155 = 16
+        ''' <summary>
+        ''' TVShow/Season Banner (TVDB)
+        ''' </summary>
+        HD140 = 17
+        Thumb = 18
         Any = 99
     End Enum
 
@@ -981,66 +1014,6 @@ Public Class Enums
         SetLockedState = 5
         SetMarkedState = 6
         SetWatchedState = 7
-    End Enum
-
-    Public Enum TVBannerSize As Integer
-        HD185 = 0       'Fanart.tv only 1000x185 (season and tv show banner)
-        HD140 = 1       'TVDB has only 758x140 (season and tv show banner)
-        Any = 99
-    End Enum
-
-    Public Enum TVCharacterArtSize As Integer
-        HD512 = 0
-        Any = 99
-    End Enum
-
-    Public Enum TVClearArtSize As Integer
-        HD562 = 0
-        SD281 = 1
-        Any = 99
-    End Enum
-
-    Public Enum TVClearLogoSize As Integer
-        HD310 = 0
-        SD155 = 1
-        Any = 99
-    End Enum
-
-    Public Enum TVEpisodePosterSize As Integer
-        UHD2160 = 0
-        HD1080 = 1
-        HD720 = 2
-        SD225 = 3      'TVDB has only 400 x 300 (400x225 for 16:9 images)
-        Any = 99
-    End Enum
-
-    Public Enum TVFanartSize As Integer
-        UHD2160 = 0
-        QHD1440 = 1
-        HD1080 = 2      'Fanart.tv has only 1920x1080
-        HD720 = 3      'TVDB has 1280x720 and 1920x1080
-        Any = 99
-    End Enum
-
-    Public Enum TVLandscapeSize As Integer
-        HD562 = 0
-        SD281 = 1
-        Any = 99
-    End Enum
-
-    Public Enum TVPosterSize As Integer
-        HD3000 = 0
-        HD1500 = 1
-        HD1426 = 2      'Fanart.tv has only 1000x1426
-        HD1000 = 3      'TVDB has only 680x1000
-        Any = 99
-    End Enum
-
-    Public Enum TVSeasonPosterSize As Integer
-        HD1500 = 0
-        HD1426 = 1
-        HD578 = 2
-        Any = 99
     End Enum
     ''' <summary>
     ''' Enum representing the trailer codec options

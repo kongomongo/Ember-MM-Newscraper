@@ -207,21 +207,21 @@ Public Class frmMovieSet_Image
         With Master.eSettings
             .MovieSetBannerHeight = If(Not String.IsNullOrEmpty(txtBannerHeight.Text), Convert.ToInt32(txtBannerHeight.Text), 0)
             .MovieSetBannerKeepExisting = chkBannerKeepExisting.Checked
-            .MovieSetBannerPrefSize = CType(cbBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieBannerSize)).Value
+            .MovieSetBannerPrefSize = CType(cbBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
             .MovieSetBannerPrefSizeOnly = chkBannerPrefSizeOnly.Checked
             .MovieSetBannerWidth = If(Not String.IsNullOrEmpty(txtBannerWidth.Text), Convert.ToInt32(txtBannerWidth.Text), 0)
             .MovieSetClearArtKeepExisting = chkClearArtKeepExisting.Checked
-            .MovieSetClearArtPrefSize = CType(cbClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearArtSize)).Value
+            .MovieSetClearArtPrefSize = CType(cbClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ClearArtSize)).Value
             .MovieSetClearArtPrefSizeOnly = chkClearArtPrefSizeOnly.Checked
             .MovieSetClearLogoKeepExisting = chkClearLogoKeepExisting.Checked
-            .MovieSetClearLogoPrefSize = CType(cbClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieClearLogoSize)).Value
+            .MovieSetClearLogoPrefSize = CType(cbClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ClearLogoSize)).Value
             .MovieSetClearLogoPrefSizeOnly = chkClearLogoPrefSizeOnly.Checked
             .MovieSetDiscArtKeepExisting = chkDiscArtKeepExisting.Checked
-            .MovieSetDiscArtPrefSize = CType(cbDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieDiscArtSize)).Value
+            .MovieSetDiscArtPrefSize = CType(cbDiscArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.DiscArtSize)).Value
             .MovieSetDiscArtPrefSizeOnly = chkDiscArtPrefSizeOnly.Checked
             .MovieSetFanartHeight = If(Not String.IsNullOrEmpty(txtFanartHeight.Text), Convert.ToInt32(txtFanartHeight.Text), 0)
             .MovieSetFanartKeepExisting = chkFanartKeepExisting.Checked
-            .MovieSetFanartPrefSize = CType(cbFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieFanartSize)).Value
+            .MovieSetFanartPrefSize = CType(cbFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.FanartSize)).Value
             .MovieSetFanartPrefSizeOnly = chkFanartPrefSizeOnly.Checked
             .MovieSetFanartWidth = If(Not String.IsNullOrEmpty(txtFanartWidth.Text), Convert.ToInt32(txtFanartWidth.Text), 0)
             .MovieSetImagesCacheEnabled = chkMovieSetImagesCacheEnabled.Checked
@@ -234,12 +234,12 @@ Public Class frmMovieSet_Image
             .MovieSetImagesGetEnglishImages = chkMovieSetImagesGetEnglishImages.Checked
             .MovieSetImagesMediaLanguageOnly = chkMovieSetImagesMediaLanguageOnly.Checked
             .MovieSetLandscapeKeepExisting = chkLandscapeKeepExisting.Checked
-            .MovieSetLandscapePrefSize = CType(cbLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.MovieLandscapeSize)).Value
+            .MovieSetLandscapePrefSize = CType(cbLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.LandscapeSize)).Value
             .MovieSetLandscapePrefSizeOnly = chkLandscapePrefSizeOnly.Checked
             .MovieSetPosterHeight = If(Not String.IsNullOrEmpty(txtPosterHeight.Text), Convert.ToInt32(txtPosterHeight.Text), 0)
             .MovieSetPosterKeepExisting = chkPosterKeepExisting.Checked
             .MovieSetPosterPrefSizeOnly = chkPosterPrefSizeOnly.Checked
-            .MovieSetPosterPrefSize = CType(cbPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.MoviePosterSize)).Value
+            .MovieSetPosterPrefSize = CType(cbPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.PosterSize)).Value
             .MovieSetPosterWidth = If(Not String.IsNullOrEmpty(txtPosterWidth.Text), Convert.ToInt32(txtPosterWidth.Text), 0)
         End With
     End Sub
@@ -272,72 +272,72 @@ Public Class frmMovieSet_Image
     End Sub
 
     Private Sub LoadBannerSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieBannerSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieBannerSize.Any)
-        items.Add("1000x185", Enums.MovieBannerSize.HD185)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x185", Enums.ImageSize.HD185)
         cbBannerPrefSize.DataSource = items.ToList
         cbBannerPrefSize.DisplayMember = "Key"
         cbBannerPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadClearArtSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieClearArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearArtSize.Any)
-        items.Add("1000x562", Enums.MovieClearArtSize.HD562)
-        items.Add("500x281", Enums.MovieClearArtSize.SD281)
+        Dim items As New Dictionary(Of String, Enums.ClearArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ClearArtSize.Any)
+        items.Add("1000x562", Enums.ClearArtSize.HD562)
+        items.Add("500x281", Enums.ClearArtSize.SD281)
         cbClearArtPrefSize.DataSource = items.ToList
         cbClearArtPrefSize.DisplayMember = "Key"
         cbClearArtPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadClearLogoSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieClearLogoSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieClearLogoSize.Any)
-        items.Add("800x310", Enums.MovieClearLogoSize.HD310)
-        items.Add("400x155", Enums.MovieClearLogoSize.SD155)
+        Dim items As New Dictionary(Of String, Enums.ClearLogoSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ClearLogoSize.Any)
+        items.Add("800x310", Enums.ClearLogoSize.HD310)
+        items.Add("400x155", Enums.ClearLogoSize.SD155)
         cbClearLogoPrefSize.DataSource = items.ToList
         cbClearLogoPrefSize.DisplayMember = "Key"
         cbClearLogoPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadDiscArtSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieDiscArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieDiscArtSize.Any)
-        items.Add("1000x1000", Enums.MovieDiscArtSize.HD1000)
+        Dim items As New Dictionary(Of String, Enums.DiscArtSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.DiscArtSize.Any)
+        items.Add("1000x1000", Enums.DiscArtSize.HD1000)
         cbDiscArtPrefSize.DataSource = items.ToList
         cbDiscArtPrefSize.DisplayMember = "Key"
         cbDiscArtPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadFanartSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieFanartSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieFanartSize.Any)
-        items.Add("3840x2160", Enums.MovieFanartSize.UHD2160)
-        items.Add("2560x1440", Enums.MovieFanartSize.QHD1440)
-        items.Add("1920x1080", Enums.MovieFanartSize.HD1080)
-        items.Add("1280x720", Enums.MovieFanartSize.HD720)
-        items.Add("Thumb", Enums.MovieFanartSize.Thumb)
+        Dim items As New Dictionary(Of String, Enums.FanartSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.FanartSize.Any)
+        items.Add("3840x2160", Enums.FanartSize.UHD2160)
+        items.Add("2560x1440", Enums.FanartSize.QHD1440)
+        items.Add("1920x1080", Enums.FanartSize.HD1080)
+        items.Add("1280x720", Enums.FanartSize.HD720)
+        items.Add("Thumb", Enums.FanartSize.Thumb)
         cbFanartPrefSize.DataSource = items.ToList
         cbFanartPrefSize.DisplayMember = "Key"
         cbFanartPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadLandscapeSizes()
-        Dim items As New Dictionary(Of String, Enums.MovieLandscapeSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MovieLandscapeSize.Any)
-        items.Add("1000x562", Enums.MovieLandscapeSize.HD562)
+        Dim items As New Dictionary(Of String, Enums.LandscapeSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.LandscapeSize.Any)
+        items.Add("1000x562", Enums.LandscapeSize.HD562)
         cbLandscapePrefSize.DataSource = items.ToList
         cbLandscapePrefSize.DisplayMember = "Key"
         cbLandscapePrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadPosterSizes()
-        Dim items As New Dictionary(Of String, Enums.MoviePosterSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.MoviePosterSize.Any)
-        items.Add("2000x3000", Enums.MoviePosterSize.HD3000)
-        items.Add("1400x2100", Enums.MoviePosterSize.HD2100)
-        items.Add("1000x1500", Enums.MoviePosterSize.HD1500)
-        items.Add("1000x1426", Enums.MoviePosterSize.HD1426)
+        Dim items As New Dictionary(Of String, Enums.PosterSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.PosterSize.Any)
+        items.Add("2000x3000", Enums.PosterSize.HD3000)
+        items.Add("1400x2100", Enums.PosterSize.HD2100)
+        items.Add("1000x1500", Enums.PosterSize.HD1500)
+        items.Add("1000x1426", Enums.PosterSize.HD1426)
         cbPosterPrefSize.DataSource = items.ToList
         cbPosterPrefSize.DisplayMember = "Key"
         cbPosterPrefSize.ValueMember = "Value"

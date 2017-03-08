@@ -1765,7 +1765,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                         If Not DBNull.Value.Equals(SQLreader("ReleaseDate")) Then .ReleaseDate = SQLreader("ReleaseDate").ToString
                         If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = Convert.ToInt32(SQLreader("PlayCount"))
-                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.MovieImagesNotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = Convert.ToInt32(SQLreader("TMDB"))
                         If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = Convert.ToInt32(SQLreader("TMDBColID"))
@@ -3831,7 +3831,7 @@ Public Class Database
             par_movie_ThemePath.Value = If(Not String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath), tDBElement.Theme.LocalFilePath, String.Empty)
             par_movie_TrailerPath.Value = If(Not String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath), tDBElement.Trailer.LocalFilePath, String.Empty)
 
-            If Not Master.eSettings.MovieImagesNotSaveURLToNfo Then
+            If Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo Then
                 par_movie_FanartURL.Value = tDBElement.MainDetails.Fanart.URL
             Else
                 par_movie_FanartURL.Value = String.Empty

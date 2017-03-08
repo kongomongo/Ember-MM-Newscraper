@@ -33,6 +33,10 @@ Public Class Settings
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
+    Private _movie As New MovieSettings
+    Private _movieset As New MoviesetSettings
+    Private _tv As New TVSettings
+
     Private _cleandotfanartjpg As Boolean
     Private _cleanextrathumbs As Boolean
     Private _cleanfanartjpg As Boolean
@@ -107,50 +111,12 @@ Public Class Settings
     Private _generalwindowloc As New Point
     Private _generalwindowsize As New Size
     Private _generalwindowstate As FormWindowState
-    Private _movieactorthumbskeepexisting As Boolean
     Private _moviebackdropsauto As Boolean
     Private _moviebackdropspath As String
-    Private _moviebannerheight As Integer
-    Private _moviebannerkeepexisting As Boolean
-    Private _moviebannerprefsize As Enums.MovieBannerSize
-    Private _moviebannerprefsizeonly As Boolean
-    Private _moviebannerwidth As Integer
     Private _moviecleandb As Boolean
-    Private _movieclearartkeepexisting As Boolean
-    Private _movieclearartprefsize As Enums.MovieClearArtSize
-    Private _movieclearartprefsizeonly As Boolean
-    Private _movieclearlogokeepexisting As Boolean
-    Private _movieclearlogoprefsize As Enums.MovieClearLogoSize
-    Private _movieclearlogoprefsizeonly As Boolean
     Private _movieclickscrape As Boolean
     Private _movieclickscrapeask As Boolean
     Private _moviedatascrapersettings As List(Of ScraperSettings)
-    Private _moviediscartkeepexisting As Boolean
-    Private _moviediscartprefsize As Enums.MovieDiscArtSize
-    Private _moviediscartprefsizeonly As Boolean
-    Private _movieextrafanartsheight As Integer
-    Private _movieextrafanartskeepexisting As Boolean
-    Private _movieextrafanartslimit As Integer
-    Private _movieextrafanartsprefsize As Enums.MovieFanartSize
-    Private _movieextrafanartsprefsizeonly As Boolean
-    Private _movieextrafanartspreselect As Boolean
-    Private _movieextrafanartswidth As Integer
-    Private _movieextrathumbscreatorautothumbs As Boolean
-    Private _movieextrathumbscreatornoblackbars As Boolean
-    Private _movieextrathumbscreatornospoilers As Boolean
-    Private _movieextrathumbscreatoruseetasfa As Boolean
-    Private _movieextrathumbsheight As Integer
-    Private _movieextrathumbskeepexisting As Boolean
-    Private _movieextrathumbslimit As Integer
-    Private _movieextrathumbsprefsize As Enums.MovieFanartSize
-    Private _movieextrathumbsprefsizeonly As Boolean
-    Private _movieextrathumbspreselect As Boolean
-    Private _movieextrathumbswidth As Integer
-    Private _moviefanartheight As Integer
-    Private _moviefanartkeepexisting As Boolean
-    Private _moviefanartprefsize As Enums.MovieFanartSize
-    Private _moviefanartprefsizeonly As Boolean
-    Private _moviefanartwidth As Integer
     Private _moviefiltercustom As List(Of String)
     Private _moviefiltercustomisempty As Boolean
     Private _moviegeneralcustommarker1color As Integer
@@ -169,17 +135,6 @@ Public Class Settings
     Private _moviegenerallanguage As String
     Private _moviegeneralmarknew As Boolean
     Private _moviegeneralmedialistsorting As List(Of ListSorting)
-    Private _movieimagescacheenabled As Boolean
-    Private _movieimagesdisplayimageselect As Boolean
-    Private _movieimagesforcedlanguage As String
-    Private _movieimagesforcelanguage As Boolean
-    Private _movieimagesgetblankimages As Boolean
-    Private _movieimagesgetenglishimages As Boolean
-    Private _movieimagesmedialanguageonly As Boolean
-    Private _movieimagesnotsaveurltonfo As Boolean
-    Private _movielandscapekeepexisting As Boolean
-    Private _movielandscapeprefsize As Enums.MovieLandscapeSize
-    Private _movielandscapeprefsizeonly As Boolean
     Private _movielevtolerance As Integer
     Private _movielockactors As Boolean
     Private _movielockcert As Boolean
@@ -220,11 +175,6 @@ Public Class Settings
     Private _moviemissingsubtitles As Boolean
     Private _moviemissingtheme As Boolean
     Private _moviemissingtrailer As Boolean
-    Private _movieposterheight As Integer
-    Private _movieposterkeepexisting As Boolean
-    Private _movieposterprefsize As Enums.MoviePosterSize
-    Private _movieposterprefsizeonly As Boolean
-    Private _movieposterwidth As Integer
     Private _moviepropercase As Boolean
     Private _moviescanordermodify As Boolean
     Private _moviescrapercast As Boolean
@@ -272,44 +222,15 @@ Public Class Settings
     Private _moviescraperuserrating As Boolean
     Private _moviescraperxbmctrailerformat As Boolean
     Private _moviescraperyear As Boolean
-    Private _moviesetbannerheight As Integer
-    Private _moviesetbannerkeepexisting As Boolean
-    Private _moviesetbannerprefsize As Enums.MovieBannerSize
-    Private _moviesetbannerprefsizeonly As Boolean
-    Private _moviesetbannerwidth As Integer
     Private _moviesetcleandb As Boolean
     Private _moviesetcleanfiles As Boolean
-    Private _moviesetclearartkeepexisting As Boolean
-    Private _moviesetclearartprefsize As Enums.MovieClearArtSize
-    Private _moviesetclearartprefsizeonly As Boolean
-    Private _moviesetclearlogokeepexisting As Boolean
-    Private _moviesetclearlogoprefsize As Enums.MovieClearLogoSize
-    Private _moviesetclearlogoprefsizeonly As Boolean
     Private _moviesetclickscrape As Boolean
     Private _moviesetclickscrapeask As Boolean
-    Private _moviesetdiscartkeepexisting As Boolean
-    Private _moviesetdiscartprefsize As Enums.MovieDiscArtSize
-    Private _moviesetdiscartprefsizeonly As Boolean
-    Private _moviesetfanartheight As Integer
-    Private _moviesetfanartkeepexisting As Boolean
-    Private _moviesetfanartprefsize As Enums.MovieFanartSize
-    Private _moviesetfanartprefsizeonly As Boolean
-    Private _moviesetfanartwidth As Integer
     Private _moviesetgeneralcustomscrapebuttonenabled As Boolean
     Private _moviesetgeneralcustomscrapebuttonmodifiertype As Enums.ScrapeModifierType
     Private _moviesetgeneralcustomscrapebuttonscrapetype As Enums.ScrapeType
     Private _moviesetgeneralmarknew As Boolean
     Private _moviesetgeneralmedialistsorting As List(Of ListSorting)
-    Private _moviesetimagescacheenabled As Boolean
-    Private _moviesetimagesdisplayimageselect As Boolean
-    Private _moviesetimagesforcedlanguage As String
-    Private _moviesetimagesforcelanguage As Boolean
-    Private _moviesetimagesgetblankimages As Boolean
-    Private _moviesetimagesgetenglishimages As Boolean
-    Private _moviesetimagesmedialanguageonly As Boolean
-    Private _moviesetlandscapekeepexisting As Boolean
-    Private _moviesetlandscapeprefsize As Enums.MovieLandscapeSize
-    Private _moviesetlandscapeprefsizeonly As Boolean
     Private _moviesetlockplot As Boolean
     Private _moviesetlocktitle As Boolean
     Private _moviesetmissingbanner As Boolean
@@ -320,11 +241,6 @@ Public Class Settings
     Private _moviesetmissinglandscape As Boolean
     Private _moviesetmissingnfo As Boolean
     Private _moviesetmissingposter As Boolean
-    Private _moviesetposterheight As Integer
-    Private _moviesetposterkeepexisting As Boolean
-    Private _moviesetposterprefsize As Enums.MoviePosterSize
-    Private _moviesetposterprefsizeonly As Boolean
-    Private _moviesetposterwidth As Integer
     Private _moviesetscraperplot As Boolean
     Private _moviesetscrapertitle As Boolean
     Private _moviesetsorttokens As List(Of String)
@@ -354,20 +270,20 @@ Public Class Settings
     Private _sortpath As String
     Private _tvallseasonsbannerheight As Integer
     Private _tvallseasonsbannerkeepexisting As Boolean
-    Private _tvallseasonsbannerprefsize As Enums.TVBannerSize
+    Private _tvallseasonsbannerprefsize As Enums.ImageSize
     Private _tvallseasonsbannerprefsizeonly As Boolean
     Private _tvallseasonsbannerwidth As Integer
     Private _tvallseasonsfanartheight As Integer
     Private _tvallseasonsfanartkeepexisting As Boolean
-    Private _tvallseasonsfanartprefsize As Enums.TVFanartSize
+    Private _tvallseasonsfanartprefsize As Enums.ImageSize
     Private _tvallseasonsfanartprefsizeonly As Boolean
     Private _tvallseasonsfanartwidth As Integer
     Private _tvallseasonslandscapekeepexisting As Boolean
-    Private _tvallseasonslandscapeprefsize As Enums.TVLandscapeSize
+    Private _tvallseasonslandscapeprefsize As Enums.ImageSize
     Private _tvallseasonslandscapeprefsizeonly As Boolean
     Private _tvallseasonsposterheight As Integer
     Private _tvallseasonsposterkeepexisting As Boolean
-    Private _tvallseasonsposterprefsize As Enums.TVPosterSize
+    Private _tvallseasonsposterprefsize As Enums.ImageSize
     Private _tvallseasonsposterprefsizeonly As Boolean
     Private _tvallseasonsposterwidth As Integer
     Private _tvcleandb As Boolean
@@ -375,7 +291,7 @@ Public Class Settings
     Private _tvepisodeactorthumbskeepexisting As Boolean
     Private _tvepisodefanartheight As Integer
     Private _tvepisodefanartkeepexisting As Boolean
-    Private _tvepisodefanartprefsize As Enums.TVFanartSize
+    Private _tvepisodefanartprefsize As Enums.ImageSize
     Private _tvepisodefanartprefsizeonly As Boolean
     Private _tvepisodefanartwidth As Integer
     Private _tvepisodefiltercustom As List(Of String)
@@ -386,7 +302,7 @@ Public Class Settings
     Private _tvepisodenofilter As Boolean
     Private _tvepisodeposterheight As Integer
     Private _tvepisodeposterkeepexisting As Boolean
-    Private _tvepisodeposterprefsize As Enums.TVEpisodePosterSize
+    Private _tvepisodeposterprefsize As Enums.ImageSize
     Private _tvepisodeposterprefsizeonly As Boolean
     Private _tvepisodeposterwidth As Integer
     Private _tvepisodepropercase As Boolean
@@ -489,16 +405,16 @@ Public Class Settings
     Private _tvscraperusesruntimeforep As Boolean
     Private _tvseasonbannerheight As Integer
     Private _tvseasonbannerkeepexisting As Boolean
-    Private _tvseasonbannerprefsize As Enums.TVBannerSize
+    Private _tvseasonbannerprefsize As Enums.ImageSize
     Private _tvseasonbannerprefsizeonly As Boolean
     Private _tvseasonbannerwidth As Integer
     Private _tvseasonfanartheight As Integer
     Private _tvseasonfanartkeepexisting As Boolean
-    Private _tvseasonfanartprefsize As Enums.TVFanartSize
+    Private _tvseasonfanartprefsize As Enums.ImageSize
     Private _tvseasonfanartprefsizeonly As Boolean
     Private _tvseasonfanartwidth As Integer
     Private _tvseasonlandscapekeepexisting As Boolean
-    Private _tvseasonlandscapeprefsize As Enums.TVLandscapeSize
+    Private _tvseasonlandscapeprefsize As Enums.ImageSize
     Private _tvseasonlandscapeprefsizeonly As Boolean
     Private _tvseasonmissingbanner As Boolean
     Private _tvseasonmissingfanart As Boolean
@@ -506,40 +422,40 @@ Public Class Settings
     Private _tvseasonmissingposter As Boolean
     Private _tvseasonposterheight As Integer
     Private _tvseasonposterkeepexisting As Boolean
-    Private _tvseasonposterprefsize As Enums.TVSeasonPosterSize
+    Private _tvseasonposterprefsize As Enums.ImageSize
     Private _tvseasonposterprefsizeonly As Boolean
     Private _tvseasonposterwidth As Integer
     Private _tvshowactorthumbskeepexisting As Boolean
     Private _tvshowbannerheight As Integer
     Private _tvshowbannerkeepexisting As Boolean
-    Private _tvshowbannerprefsize As Enums.TVBannerSize
+    Private _tvshowbannerprefsize As Enums.ImageSize
     Private _tvshowbannerprefsizeonly As Boolean
     Private _tvshowbannerwidth As Integer
     Private _tvshowcharacterartkeepexisting As Boolean
-    Private _tvshowcharacterartprefsize As Enums.TVCharacterArtSize
+    Private _tvshowcharacterartprefsize As Enums.ImageSize
     Private _tvshowcharacterartprefsizeonly As Boolean
     Private _tvshowclearartkeepexisting As Boolean
-    Private _tvshowclearartprefsize As Enums.TVClearArtSize
+    Private _tvshowclearartprefsize As Enums.ImageSize
     Private _tvshowclearartprefsizeonly As Boolean
     Private _tvshowclearlogokeepexisting As Boolean
-    Private _tvshowclearlogoprefsize As Enums.TVClearLogoSize
+    Private _tvshowclearlogoprefsize As Enums.ImageSize
     Private _tvshowclearlogoprefsizeonly As Boolean
     Private _tvshowextrafanartsheight As Integer
     Private _tvshowextrafanartskeepexisting As Boolean
     Private _tvshowextrafanartslimit As Integer
-    Private _tvshowextrafanartsprefsize As Enums.TVFanartSize
+    Private _tvshowextrafanartsprefsize As Enums.ImageSize
     Private _tvshowextrafanartsprefsizeonly As Boolean
     Private _tvshowextrafanartspreselect As Boolean
     Private _tvshowextrafanartswidth As Integer
     Private _tvshowfanartheight As Integer
     Private _tvshowfanartkeepexisting As Boolean
-    Private _tvshowfanartprefsize As Enums.TVFanartSize
+    Private _tvshowfanartprefsize As Enums.ImageSize
     Private _tvshowfanartprefsizeonly As Boolean
     Private _tvshowfanartwidth As Integer
     Private _tvshowfiltercustom As List(Of String)
     Private _tvshowfiltercustomisempty As Boolean
     Private _tvshowlandscapekeepexisting As Boolean
-    Private _tvshowlandscapeprefsize As Enums.TVLandscapeSize
+    Private _tvshowlandscapeprefsize As Enums.ImageSize
     Private _tvshowlandscapeprefsizeonly As Boolean
     Private _tvshowmatching As List(Of regexp)
     Private _tvshowmissingbanner As Boolean
@@ -554,7 +470,7 @@ Public Class Settings
     Private _tvshowmissingtheme As Boolean
     Private _tvshowposterheight As Integer
     Private _tvshowposterkeepexisting As Boolean
-    Private _tvshowposterprefsize As Enums.TVPosterSize
+    Private _tvshowposterprefsize As Enums.ImageSize
     Private _tvshowposterprefsizeonly As Boolean
     Private _tvshowposterwidth As Integer
     Private _tvshowpropercase As Boolean
@@ -874,6 +790,33 @@ Public Class Settings
 
 #Region "Properties"
 
+    Public Property Movie() As MovieSettings
+        Get
+            Return _movie
+        End Get
+        Set(ByVal value As MovieSettings)
+            _movie = value
+        End Set
+    End Property
+
+    Public Property Movieset() As MoviesetSettings
+        Get
+            Return _movieset
+        End Get
+        Set(ByVal value As MoviesetSettings)
+            _movieset = value
+        End Set
+    End Property
+
+    Public Property TV() As TVSettings
+        Get
+            Return _tv
+        End Get
+        Set(ByVal value As TVSettings)
+            _tv = value
+        End Set
+    End Property
+
     Public Property Version() As String
         Get
             Return _version
@@ -1024,15 +967,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             _moviescrapercastlimit = value
-        End Set
-    End Property
-
-    Public Property MovieActorThumbsKeepExisting() As Boolean
-        Get
-            Return _movieactorthumbskeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movieactorthumbskeepexisting = value
         End Set
     End Property
 
@@ -1333,48 +1267,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieImagesCacheEnabled() As Boolean
-        Get
-            Return _movieimagescacheenabled
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagescacheenabled = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesCacheEnabled() As Boolean
-        Get
-            Return _moviesetimagescacheenabled
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetimagescacheenabled = value
-        End Set
-    End Property
-
     Public Property TVImagesCacheEnabled() As Boolean
         Get
             Return _tvimagescacheenabled
         End Get
         Set(ByVal value As Boolean)
             _tvimagescacheenabled = value
-        End Set
-    End Property
-
-    Public Property MovieImagesDisplayImageSelect() As Boolean
-        Get
-            Return _movieimagesdisplayimageselect
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagesdisplayimageselect = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesDisplayImageSelect() As Boolean
-        Get
-            Return _moviesetimagesdisplayimageselect
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetimagesdisplayimageselect = value
         End Set
     End Property
 
@@ -1584,186 +1482,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _filesystemexpertcleaner = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsHeight() As Integer
-        Get
-            Return _tvshowextrafanartsheight
-        End Get
-        Set(ByVal value As Integer)
-            _tvshowextrafanartsheight = value
-        End Set
-    End Property
-
-    Public Property MovieExtrafanartsHeight() As Integer
-        Get
-            Return _movieextrafanartsheight
-        End Get
-        Set(ByVal value As Integer)
-            _movieextrafanartsheight = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsHeight() As Integer
-        Get
-            Return _movieextrathumbsheight
-        End Get
-        Set(ByVal value As Integer)
-            _movieextrathumbsheight = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsLimit() As Integer
-        Get
-            Return _movieextrathumbslimit
-        End Get
-        Set(ByVal value As Integer)
-            _movieextrathumbslimit = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsLimit() As Integer
-        Get
-            Return _tvshowextrafanartslimit
-        End Get
-        Set(ByVal value As Integer)
-            _tvshowextrafanartslimit = value
-        End Set
-    End Property
-
-    Public Property MovieExtrafanartsLimit() As Integer
-        Get
-            Return _movieextrafanartslimit
-        End Get
-        Set(ByVal value As Integer)
-            _movieextrafanartslimit = value
-        End Set
-    End Property
-
-    Public Property MovieFanartHeight() As Integer
-        Get
-            Return _moviefanartheight
-        End Get
-        Set(ByVal value As Integer)
-            _moviefanartheight = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartHeight() As Integer
-        Get
-            Return _moviesetfanartheight
-        End Get
-        Set(ByVal value As Integer)
-            _moviesetfanartheight = value
-        End Set
-    End Property
-
-    Public Property MovieExtrafanartsPrefSizeOnly() As Boolean
-        Get
-            Return _movieextrafanartsprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrafanartsprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsCreatorAutoThumbs() As Boolean
-        Get
-            Return _movieextrathumbscreatorautothumbs
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbscreatorautothumbs = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsCreatorNoBlackBars() As Boolean
-        Get
-            Return _movieextrathumbscreatornoblackbars
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbscreatornoblackbars = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsCreatorNoSpoilers() As Boolean
-        Get
-            Return _movieextrathumbscreatornospoilers
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbscreatornospoilers = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsCreatorUseETasFA() As Boolean
-        Get
-            Return _movieextrathumbscreatoruseetasfa
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbscreatoruseetasfa = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsPrefSizeOnly() As Boolean
-        Get
-            Return _movieextrathumbsprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbsprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieFanartPrefSizeOnly() As Boolean
-        Get
-            Return _moviefanartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviefanartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsWidth() As Integer
-        Get
-            Return _tvshowextrafanartswidth
-        End Get
-        Set(ByVal value As Integer)
-            _tvshowextrafanartswidth = value
-        End Set
-    End Property
-
-    Public Property MovieExtrafanartsWidth() As Integer
-        Get
-            Return _movieextrafanartswidth
-        End Get
-        Set(ByVal value As Integer)
-            _movieextrafanartswidth = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsWidth() As Integer
-        Get
-            Return _movieextrathumbswidth
-        End Get
-        Set(ByVal value As Integer)
-            _movieextrathumbswidth = value
-        End Set
-    End Property
-
-    Public Property MovieFanartWidth() As Integer
-        Get
-            Return _moviefanartwidth
-        End Get
-        Set(ByVal value As Integer)
-            _moviefanartwidth = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartWidth() As Integer
-        Get
-            Return _moviesetfanartwidth
-        End Get
-        Set(ByVal value As Integer)
-            _moviesetfanartwidth = value
         End Set
     End Property
 
@@ -2760,33 +2478,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetBannerPrefSizeOnly() As Boolean
-        Get
-            Return _moviesetbannerprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetbannerprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartPrefSizeOnly() As Boolean
-        Get
-            Return _moviesetfanartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetfanartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterPrefSizeOnly() As Boolean
-        Get
-            Return _moviesetposterprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetposterprefsizeonly = value
-        End Set
-    End Property
-
     Public Property MovieSetClickScrape() As Boolean
         Get
             Return _moviesetclickscrape
@@ -3075,15 +2766,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieImagesNotSaveURLToNfo() As Boolean
-        Get
-            Return _movieimagesnotsaveurltonfo
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagesnotsaveurltonfo = value
-        End Set
-    End Property
-
     Public Property TVShowFilterCustomIsEmpty() As Boolean
         Get
             Return _tvshowfiltercustomisempty
@@ -3273,228 +2955,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieExtrafanartsKeepExisting() As Boolean
-        Get
-            Return _movieextrafanartskeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrafanartskeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsKeepExisting() As Boolean
-        Get
-            Return _movieextrathumbskeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbskeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieFanartKeepExisting() As Boolean
-        Get
-            Return _moviefanartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviefanartkeepexisting = value
-        End Set
-    End Property
-
     Public Property GeneralOverwriteNfo() As Boolean
         Get
             Return _generaloverwritenfo
         End Get
         Set(ByVal value As Boolean)
             _generaloverwritenfo = value
-        End Set
-    End Property
-
-    Public Property MoviePosterKeepExisting() As Boolean
-        Get
-            Return _movieposterkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movieposterkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVSeasonBannerKeepExisting() As Boolean
-        Get
-            Return _tvseasonbannerkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvseasonbannerkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowCharacterArtKeepExisting() As Boolean
-        Get
-            Return _tvshowcharacterartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowcharacterartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowClearArtKeepExisting() As Boolean
-        Get
-            Return _tvshowclearartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowclearartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowClearLogoKeepExisting() As Boolean
-        Get
-            Return _tvshowclearlogokeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowclearlogokeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVSeasonLandscapeKeepExisting() As Boolean
-        Get
-            Return _tvseasonlandscapekeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvseasonlandscapekeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowLandscapeKeepExisting() As Boolean
-        Get
-            Return _tvshowlandscapekeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowlandscapekeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVSeasonFanartKeepExisting() As Boolean
-        Get
-            Return _tvseasonfanartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvseasonfanartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVSeasonPosterKeepExisting() As Boolean
-        Get
-            Return _tvseasonposterkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvseasonposterkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerKeepExisting() As Boolean
-        Get
-            Return _tvshowbannerkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowbannerkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartKeepExisting() As Boolean
-        Get
-            Return _tvshowfanartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowfanartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterKeepExisting() As Boolean
-        Get
-            Return _tvshowposterkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowposterkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieBannerKeepExisting() As Boolean
-        Get
-            Return _moviebannerkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviebannerkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieDiscArtKeepExisting() As Boolean
-        Get
-            Return _moviediscartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviediscartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapeKeepExisting() As Boolean
-        Get
-            Return _movielandscapekeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movielandscapekeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtKeepExisting() As Boolean
-        Get
-            Return _movieclearartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movieclearartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtPrefSize() As Enums.MovieClearArtSize
-        Get
-            Return _movieclearartprefsize
-        End Get
-        Set(ByVal value As Enums.MovieClearArtSize)
-            _movieclearartprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieClearArtPrefSizeOnly() As Boolean
-        Get
-            Return _movieclearartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movieclearartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoKeepExisting() As Boolean
-        Get
-            Return _movieclearlogokeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _movieclearlogokeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoPrefSize() As Enums.MovieClearLogoSize
-        Get
-            Return _movieclearlogoprefsize
-        End Get
-        Set(ByVal value As Enums.MovieClearLogoSize)
-            _movieclearlogoprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieClearLogoPrefSizeOnly() As Boolean
-        Get
-            Return _movieclearlogoprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movieclearlogoprefsizeonly = value
         End Set
     End Property
 
@@ -3507,65 +2973,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieDiscArtPrefSize() As Enums.MovieDiscArtSize
-        Get
-            Return _moviediscartprefsize
-        End Get
-        Set(ByVal value As Enums.MovieDiscArtSize)
-            _moviediscartprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieDiscArtPrefSizeOnly() As Boolean
-        Get
-            Return _moviediscartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviediscartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapePrefSize() As Enums.MovieLandscapeSize
-        Get
-            Return _movielandscapeprefsize
-        End Get
-        Set(ByVal value As Enums.MovieLandscapeSize)
-            _movielandscapeprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieLandscapePrefSizeOnly() As Boolean
-        Get
-            Return _movielandscapeprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movielandscapeprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property TVShowCharacterArtPrefSize() As Enums.TVCharacterArtSize
-        Get
-            Return _tvshowcharacterartprefsize
-        End Get
-        Set(ByVal value As Enums.TVCharacterArtSize)
-            _tvshowcharacterartprefsize = value
-        End Set
-    End Property
-
-    Public Property TVShowCharacterArtPrefSizeOnly() As Boolean
-        Get
-            Return _tvshowcharacterartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowcharacterartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property TVShowClearArtPrefSize() As Enums.TVClearArtSize
+    Public Property TVShowClearArtPrefSize() As Enums.ImageSize
         Get
             Return _tvshowclearartprefsize
         End Get
-        Set(ByVal value As Enums.TVClearArtSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowclearartprefsize = value
         End Set
     End Property
@@ -3579,11 +2991,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowClearLogoPrefSize() As Enums.TVClearLogoSize
+    Public Property TVShowClearLogoPrefSize() As Enums.ImageSize
         Get
             Return _tvshowclearlogoprefsize
         End Get
-        Set(ByVal value As Enums.TVClearLogoSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowclearlogoprefsize = value
         End Set
     End Property
@@ -3597,11 +3009,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowLandscapePrefSize() As Enums.TVLandscapeSize
+    Public Property TVShowLandscapePrefSize() As Enums.ImageSize
         Get
             Return _tvshowlandscapeprefsize
         End Get
-        Set(ByVal value As Enums.TVLandscapeSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowlandscapeprefsize = value
         End Set
     End Property
@@ -3615,11 +3027,11 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVSeasonLandscapePrefSize() As Enums.TVLandscapeSize
+    Public Property TVSeasonLandscapePrefSize() As Enums.ImageSize
         Get
             Return _tvseasonlandscapeprefsize
         End Get
-        Set(ByVal value As Enums.TVLandscapeSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvseasonlandscapeprefsize = value
         End Set
     End Property
@@ -3630,150 +3042,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _tvseasonlandscapeprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtPrefSize() As Enums.MovieClearArtSize
-        Get
-            Return _moviesetclearartprefsize
-        End Get
-        Set(ByVal value As Enums.MovieClearArtSize)
-            _moviesetclearartprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtPrefSizeOnly() As Boolean
-        Get
-            Return _moviesetclearartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoPrefSize() As Enums.MovieClearLogoSize
-        Get
-            Return _moviesetclearlogoprefsize
-        End Get
-        Set(ByVal value As Enums.MovieClearLogoSize)
-            _moviesetclearlogoprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoPrefSizeOnly() As Boolean
-        Get
-            Return _moviesetclearlogoprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearlogoprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetDiscArtPrefSize() As Enums.MovieDiscArtSize
-        Get
-            Return _moviesetdiscartprefsize
-        End Get
-        Set(ByVal value As Enums.MovieDiscArtSize)
-            _moviesetdiscartprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetDiscArtPrefSizeOnly() As Boolean
-        Get
-            Return _moviesetdiscartprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetdiscartprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapePrefSize() As Enums.MovieLandscapeSize
-        Get
-            Return _moviesetlandscapeprefsize
-        End Get
-        Set(ByVal value As Enums.MovieLandscapeSize)
-            _moviesetlandscapeprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapePrefSizeOnly() As Boolean
-        Get
-            Return _moviesetlandscapeprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetlandscapeprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerKeepExisting() As Boolean
-        Get
-            Return _moviesetbannerkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetbannerkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtKeepExisting() As Boolean
-        Get
-            Return _moviesetclearartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoKeepExisting() As Boolean
-        Get
-            Return _moviesetclearlogokeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearlogokeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieSetDiscArtKeepExisting() As Boolean
-        Get
-            Return _moviesetdiscartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetdiscartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartKeepExisting() As Boolean
-        Get
-            Return _moviesetfanartkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetfanartkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapeKeepExisting() As Boolean
-        Get
-            Return _moviesetlandscapekeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetlandscapekeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterKeepExisting() As Boolean
-        Get
-            Return _moviesetposterkeepexisting
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetposterkeepexisting = value
-        End Set
-    End Property
-
-    Public Property MovieBannerPrefSizeOnly() As Boolean
-        Get
-            Return _moviebannerprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviebannerprefsizeonly = value
         End Set
     End Property
 
@@ -3858,146 +3126,47 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MoviePosterHeight() As Integer
-        Get
-            Return _movieposterheight
-        End Get
-        Set(ByVal value As Integer)
-            _movieposterheight = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterHeight() As Integer
-        Get
-            Return _moviesetposterheight
-        End Get
-        Set(ByVal value As Integer)
-            _moviesetposterheight = value
-        End Set
-    End Property
-
-    Public Property MoviePosterPrefSizeOnly() As Boolean
-        Get
-            Return _movieposterprefsizeonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movieposterprefsizeonly = value
-        End Set
-    End Property
-
-    Public Property MoviePosterWidth() As Integer
-        Get
-            Return _movieposterwidth
-        End Get
-        Set(ByVal value As Integer)
-            _movieposterwidth = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterWidth() As Integer
-        Get
-            Return _moviesetposterwidth
-        End Get
-        Set(ByVal value As Integer)
-            _moviesetposterwidth = value
-        End Set
-    End Property
-
-    Public Property TVAllSeasonsPosterPrefSize() As Enums.TVPosterSize
+    Public Property TVAllSeasonsPosterPrefSize() As Enums.ImageSize
         Get
             Return _tvallseasonsposterprefsize
         End Get
-        Set(ByVal value As Enums.TVPosterSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvallseasonsposterprefsize = value
         End Set
     End Property
 
-    Public Property TVEpisodeFanartPrefSize() As Enums.TVFanartSize
+    Public Property TVEpisodeFanartPrefSize() As Enums.ImageSize
         Get
             Return _tvepisodefanartprefsize
         End Get
-        Set(ByVal value As Enums.TVFanartSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvepisodefanartprefsize = value
         End Set
     End Property
 
-    Public Property MovieFanartPrefSize() As Enums.MovieFanartSize
-        Get
-            Return _moviefanartprefsize
-        End Get
-        Set(ByVal value As Enums.MovieFanartSize)
-            _moviefanartprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartPrefSize() As Enums.MovieFanartSize
-        Get
-            Return _moviesetfanartprefsize
-        End Get
-        Set(ByVal value As Enums.MovieFanartSize)
-            _moviesetfanartprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieExtrafanartsPrefSize() As Enums.MovieFanartSize
-        Get
-            Return _movieextrafanartsprefsize
-        End Get
-        Set(ByVal value As Enums.MovieFanartSize)
-            _movieextrafanartsprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsPrefSize() As Enums.MovieFanartSize
-        Get
-            Return _movieextrathumbsprefsize
-        End Get
-        Set(ByVal value As Enums.MovieFanartSize)
-            _movieextrathumbsprefsize = value
-        End Set
-    End Property
-
-    Public Property MoviePosterPrefSize() As Enums.MoviePosterSize
-        Get
-            Return _movieposterprefsize
-        End Get
-        Set(ByVal value As Enums.MoviePosterSize)
-            _movieposterprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterPrefSize() As Enums.MoviePosterSize
-        Get
-            Return _moviesetposterprefsize
-        End Get
-        Set(ByVal value As Enums.MoviePosterSize)
-            _moviesetposterprefsize = value
-        End Set
-    End Property
-
-    Public Property TVSeasonFanartPrefSize() As Enums.TVFanartSize
+    Public Property TVSeasonFanartPrefSize() As Enums.ImageSize
         Get
             Return _tvseasonfanartprefsize
         End Get
-        Set(ByVal value As Enums.TVFanartSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvseasonfanartprefsize = value
         End Set
     End Property
 
-    Public Property TVAllSeasonsFanartPrefSize() As Enums.TVFanartSize
+    Public Property TVAllSeasonsFanartPrefSize() As Enums.ImageSize
         Get
             Return _tvallseasonsfanartprefsize
         End Get
-        Set(ByVal value As Enums.TVFanartSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvallseasonsfanartprefsize = value
         End Set
     End Property
 
-    Public Property TVAllSeasonsLandscapePrefSize() As Enums.TVLandscapeSize
+    Public Property TVAllSeasonsLandscapePrefSize() As Enums.ImageSize
         Get
             Return _tvallseasonslandscapeprefsize
         End Get
-        Set(ByVal value As Enums.TVLandscapeSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvallseasonslandscapeprefsize = value
         End Set
     End Property
@@ -4119,93 +3288,75 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodePosterPrefSize() As Enums.TVEpisodePosterSize
+    Public Property TVEpisodePosterPrefSize() As Enums.ImageSize
 
         Get
             Return _tvepisodeposterprefsize
         End Get
-        Set(ByVal value As Enums.TVEpisodePosterSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvepisodeposterprefsize = value
         End Set
     End Property
 
-    Public Property TVSeasonPosterPrefSize() As Enums.TVSeasonPosterSize
+    Public Property TVSeasonPosterPrefSize() As Enums.ImageSize
         Get
             Return _tvseasonposterprefsize
         End Get
-        Set(ByVal value As Enums.TVSeasonPosterSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvseasonposterprefsize = value
         End Set
     End Property
 
-    Public Property TVShowBannerPrefSize() As Enums.TVBannerSize
+    Public Property TVShowBannerPrefSize() As Enums.ImageSize
         Get
             Return _tvshowbannerprefsize
         End Get
-        Set(ByVal value As Enums.TVBannerSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowbannerprefsize = value
         End Set
     End Property
 
-    Public Property MovieBannerPrefSize() As Enums.MovieBannerSize
-        Get
-            Return _moviebannerprefsize
-        End Get
-        Set(ByVal value As Enums.MovieBannerSize)
-            _moviebannerprefsize = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerPrefSize() As Enums.MovieBannerSize
-        Get
-            Return _moviesetbannerprefsize
-        End Get
-        Set(ByVal value As Enums.MovieBannerSize)
-            _moviesetbannerprefsize = value
-        End Set
-    End Property
-
-    Public Property TVAllSeasonsBannerPrefSize() As Enums.TVBannerSize
+    Public Property TVAllSeasonsBannerPrefSize() As Enums.ImageSize
         Get
             Return _tvallseasonsbannerprefsize
         End Get
-        Set(ByVal value As Enums.TVBannerSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvallseasonsbannerprefsize = value
         End Set
     End Property
 
-    Public Property TVSeasonBannerPrefSize() As Enums.TVBannerSize
+    Public Property TVSeasonBannerPrefSize() As Enums.ImageSize
         Get
             Return _tvseasonbannerprefsize
         End Get
-        Set(ByVal value As Enums.TVBannerSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvseasonbannerprefsize = value
         End Set
     End Property
 
-    Public Property TVShowExtrafanartsPrefSize() As Enums.TVFanartSize
+    Public Property TVShowExtrafanartsPrefSize() As Enums.ImageSize
         Get
             Return _tvshowextrafanartsprefsize
         End Get
-        Set(ByVal value As Enums.TVFanartSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowextrafanartsprefsize = value
         End Set
     End Property
 
-    Public Property TVShowFanartPrefSize() As Enums.TVFanartSize
+    Public Property TVShowFanartPrefSize() As Enums.ImageSize
         Get
             Return _tvshowfanartprefsize
         End Get
-        Set(ByVal value As Enums.TVFanartSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowfanartprefsize = value
         End Set
     End Property
 
-    Public Property TVShowPosterPrefSize() As Enums.TVPosterSize
+    Public Property TVShowPosterPrefSize() As Enums.ImageSize
         Get
             Return _tvshowposterprefsize
         End Get
-        Set(ByVal value As Enums.TVPosterSize)
+        Set(ByVal value As Enums.ImageSize)
             _tvshowposterprefsize = value
         End Set
     End Property
@@ -4651,24 +3802,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieBannerWidth() As Integer
-        Get
-            Return _moviebannerwidth
-        End Get
-        Set(ByVal value As Integer)
-            _moviebannerwidth = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerWidth() As Integer
-        Get
-            Return _moviesetbannerwidth
-        End Get
-        Set(ByVal value As Integer)
-            _moviesetbannerwidth = value
-        End Set
-    End Property
-
     Public Property TVAllSeasonsBannerHeight() As Integer
         Get
             Return _tvallseasonsbannerheight
@@ -4711,24 +3844,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Integer)
             _tvshowbannerheight = value
-        End Set
-    End Property
-
-    Public Property MovieBannerHeight() As Integer
-        Get
-            Return _moviebannerheight
-        End Get
-        Set(ByVal value As Integer)
-            _moviebannerheight = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerHeight() As Integer
-        Get
-            Return _moviesetbannerheight
-        End Get
-        Set(ByVal value As Integer)
-            _moviesetbannerheight = value
         End Set
     End Property
 
@@ -6451,96 +5566,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieImagesGetBlankImages() As Boolean
-        Get
-            Return _movieimagesgetblankimages
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagesgetblankimages = value
-        End Set
-    End Property
-
-    Public Property MovieImagesGetEnglishImages() As Boolean
-        Get
-            Return _movieimagesgetenglishimages
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagesgetenglishimages = value
-        End Set
-    End Property
-
-    Public Property MovieImagesForcedLanguage() As String
-        Get
-            Return _movieimagesforcedlanguage
-        End Get
-        Set(ByVal value As String)
-            _movieimagesforcedlanguage = value
-        End Set
-    End Property
-
-    Public Property MovieImagesForceLanguage() As Boolean
-        Get
-            Return _movieimagesforcelanguage
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagesforcelanguage = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesForcedLanguage() As String
-        Get
-            Return _moviesetimagesforcedlanguage
-        End Get
-        Set(ByVal value As String)
-            _moviesetimagesforcedlanguage = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesForceLanguage() As Boolean
-        Get
-            Return _moviesetimagesforcelanguage
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetimagesforcelanguage = value
-        End Set
-    End Property
-
-    Public Property MovieImagesMediaLanguageOnly() As Boolean
-        Get
-            Return _movieimagesmedialanguageonly
-        End Get
-        Set(ByVal value As Boolean)
-            _movieimagesmedialanguageonly = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesGetBlankImages() As Boolean
-        Get
-            Return _moviesetimagesgetblankimages
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetimagesgetblankimages = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesGetEnglishImages() As Boolean
-        Get
-            Return _moviesetimagesgetenglishimages
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetimagesgetenglishimages = value
-        End Set
-    End Property
-
-    Public Property MovieSetImagesMediaLanguageOnly() As Boolean
-        Get
-            Return _moviesetimagesmedialanguageonly
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetimagesmedialanguageonly = value
-        End Set
-    End Property
-
     Public Property TVImagesGetBlankImages() As Boolean
         Get
             Return _tvimagesgetblankimages
@@ -7684,24 +6709,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieExtrafanartsPreselect() As Boolean
-        Get
-            Return _movieextrafanartspreselect
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrafanartspreselect = value
-        End Set
-    End Property
-
-    Public Property MovieExtrathumbsPreselect() As Boolean
-        Get
-            Return _movieextrathumbspreselect
-        End Get
-        Set(ByVal value As Boolean)
-            _movieextrathumbspreselect = value
-        End Set
-    End Property
-
     Public Property TVShowExtrafanartsPreselect() As Boolean
         Get
             Return _tvshowextrafanartspreselect
@@ -7709,62 +6716,6 @@ Public Class Settings
         Set(ByVal value As Boolean)
             _tvshowextrafanartspreselect = value
         End Set
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieBannerResize() As Boolean
-        Get
-            Return _moviebannerheight > 0 OrElse _moviebannerwidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieExtrafanartsResize() As Boolean
-        Get
-            Return _movieextrafanartsheight > 0 OrElse _movieextrafanartswidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieExtrathumbsResize() As Boolean
-        Get
-            Return _movieextrathumbsheight > 0 OrElse _movieextrathumbswidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieFanartResize() As Boolean
-        Get
-            Return _moviefanartheight > 0 OrElse _moviefanartwidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MoviePosterResize() As Boolean
-        Get
-            Return _movieposterheight > 0 OrElse _movieposterwidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieSetBannerResize() As Boolean
-        Get
-            Return _moviesetbannerheight > 0 OrElse _moviesetbannerwidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieSetFanartResize() As Boolean
-        Get
-            Return _moviesetfanartheight > 0 OrElse _moviesetfanartwidth > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property MovieSetPosterResize() As Boolean
-        Get
-            Return _moviesetposterheight > 0 OrElse _moviesetposterwidth > 0
-        End Get
     End Property
 
     <XmlIgnore()>
@@ -7957,6 +6908,10 @@ Public Class Settings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
+        Movie = New MovieSettings
+        Movieset = New MoviesetSettings
+        TV = New TVSettings
+
         CleanDotFanartJPG = False
         CleanExtrathumbs = False
         CleanFanartJPG = False
@@ -8035,50 +6990,12 @@ Public Class Settings
         MovieActorThumbsExtExpertMulti = ".jpg"
         MovieActorThumbsExtExpertSingle = ".jpg"
         MovieActorThumbsExtExpertVTS = ".jpg"
-        MovieActorThumbsKeepExisting = False
         MovieBackdropsAuto = False
         MovieBackdropsPath = String.Empty
-        MovieBannerHeight = 0
-        MovieBannerKeepExisting = False
-        MovieBannerPrefSizeOnly = False
-        MovieBannerPrefSize = Enums.MovieBannerSize.Any
-        MovieBannerWidth = 0
         MovieCleanDB = False
-        MovieClearArtKeepExisting = False
-        MovieClearArtPrefSize = Enums.MovieClearArtSize.Any
-        MovieClearArtPrefSizeOnly = False
-        MovieClearLogoKeepExisting = False
-        MovieClearLogoPrefSize = Enums.MovieClearLogoSize.Any
-        MovieClearLogoPrefSizeOnly = False
         MovieClickScrape = False
         MovieClickScrapeAsk = False
         MovieDataScraperSettings = New List(Of ScraperSettings)
-        MovieDiscArtKeepExisting = False
-        MovieDiscArtPrefSize = Enums.MovieDiscArtSize.Any
-        MovieDiscArtPrefSizeOnly = False
-        MovieExtrafanartsHeight = 0
-        MovieExtrafanartsLimit = 4
-        MovieExtrafanartsKeepExisting = False
-        MovieExtrafanartsPrefSizeOnly = False
-        MovieExtrafanartsPrefSize = Enums.MovieFanartSize.Any
-        MovieExtrafanartsPreselect = True
-        MovieExtrafanartsWidth = 0
-        MovieExtrathumbsCreatorAutoThumbs = False
-        MovieExtrathumbsCreatorNoBlackBars = False
-        MovieExtrathumbsCreatorNoSpoilers = False
-        MovieExtrathumbsCreatorUseETasFA = False
-        MovieExtrathumbsHeight = 0
-        MovieExtrathumbsLimit = 4
-        MovieExtrathumbsKeepExisting = False
-        MovieExtrathumbsPrefSizeOnly = False
-        MovieExtrathumbsPrefSize = Enums.MovieFanartSize.Any
-        MovieExtrathumbsPreselect = True
-        MovieExtrathumbsWidth = 0
-        MovieFanartHeight = 0
-        MovieFanartKeepExisting = False
-        MovieFanartPrefSizeOnly = False
-        MovieFanartPrefSize = Enums.MovieFanartSize.Any
-        MovieFanartWidth = 0
         MovieFilterCustom = New List(Of String)
         MovieFilterCustomIsEmpty = False
         MovieGeneralCustomMarker1Color = -32704
@@ -8097,17 +7014,6 @@ Public Class Settings
         MovieGeneralLanguage = "en-US"
         MovieGeneralMarkNew = False
         MovieGeneralMediaListSorting = New List(Of ListSorting)
-        MovieImagesCacheEnabled = False
-        MovieImagesDisplayImageSelect = True
-        MovieImagesForcedLanguage = "en"
-        MovieImagesForceLanguage = False
-        MovieImagesGetBlankImages = False
-        MovieImagesGetEnglishImages = False
-        MovieImagesMediaLanguageOnly = False
-        MovieImagesNotSaveURLToNfo = False
-        MovieLandscapeKeepExisting = False
-        MovieLandscapePrefSize = Enums.MovieLandscapeSize.Any
-        MovieLandscapePrefSizeOnly = False
         MovieLevTolerance = 0
         MovieLockActors = False
         MovieLockCert = False
@@ -8148,11 +7054,6 @@ Public Class Settings
         MovieMissingSubtitles = False
         MovieMissingTheme = False
         MovieMissingTrailer = False
-        MoviePosterHeight = 0
-        MoviePosterKeepExisting = False
-        MoviePosterPrefSizeOnly = False
-        MoviePosterPrefSize = Enums.MoviePosterSize.Any
-        MoviePosterWidth = 0
         MovieProperCase = True
         MovieScanOrderModify = False
         MovieScraperCast = True
@@ -8200,44 +7101,15 @@ Public Class Settings
         MovieScraperCredits = True
         MovieScraperXBMCTrailerFormat = False
         MovieScraperYear = True
-        MovieSetBannerHeight = 0
-        MovieSetBannerKeepExisting = False
-        MovieSetBannerPrefSizeOnly = False
-        MovieSetBannerPrefSize = Enums.MovieBannerSize.Any
-        MovieSetBannerWidth = 0
         MovieSetCleanDB = False
         MovieSetCleanFiles = False
-        MovieSetClearArtKeepExisting = False
-        MovieSetClearArtPrefSize = Enums.MovieClearArtSize.Any
-        MovieSetClearArtPrefSizeOnly = False
-        MovieSetClearLogoKeepExisting = False
-        MovieSetClearLogoPrefSize = Enums.MovieClearLogoSize.Any
-        MovieSetClearLogoPrefSizeOnly = False
         MovieSetClickScrape = False
         MovieSetClickScrapeAsk = False
-        MovieSetDiscArtKeepExisting = False
-        MovieSetDiscArtPrefSize = Enums.MovieDiscArtSize.Any
-        MovieSetDiscArtPrefSizeOnly = False
-        MovieSetFanartHeight = 0
-        MovieSetFanartKeepExisting = False
-        MovieSetFanartPrefSizeOnly = False
-        MovieSetFanartPrefSize = Enums.MovieFanartSize.Any
-        MovieSetFanartWidth = 0
         MovieSetGeneralCustomScrapeButtonEnabled = False
         MovieSetGeneralCustomScrapeButtonModifierType = Enums.ScrapeModifierType.All
         MovieSetGeneralCustomScrapeButtonScrapeType = Enums.ScrapeType.NewSkip
         MovieSetGeneralMarkNew = False
         MovieSetGeneralMediaListSorting = New List(Of ListSorting)
-        MovieSetImagesCacheEnabled = False
-        MovieSetImagesDisplayImageSelect = True
-        MovieSetImagesForcedLanguage = "en"
-        MovieSetImagesForceLanguage = False
-        MovieSetImagesGetBlankImages = False
-        MovieSetImagesGetEnglishImages = False
-        MovieSetImagesMediaLanguageOnly = False
-        MovieSetLandscapeKeepExisting = False
-        MovieSetLandscapePrefSize = Enums.MovieLandscapeSize.Any
-        MovieSetLandscapePrefSizeOnly = False
         MovieSetLockPlot = False
         MovieSetLockTitle = False
         MovieSetMissingBanner = False
@@ -8248,11 +7120,6 @@ Public Class Settings
         MovieSetMissingLandscape = False
         MovieSetMissingNFO = False
         MovieSetMissingPoster = False
-        MovieSetPosterHeight = 0
-        MovieSetPosterKeepExisting = False
-        MovieSetPosterPrefSizeOnly = False
-        MovieSetPosterPrefSize = Enums.MoviePosterSize.Any
-        MovieSetPosterWidth = 0
         MovieSetScraperPlot = True
         MovieSetScraperTitle = True
         MovieSkipLessThan = 0
@@ -8283,20 +7150,20 @@ Public Class Settings
         SortPath = String.Empty
         TVAllSeasonsBannerHeight = 0
         TVAllSeasonsBannerKeepExisting = False
-        TVAllSeasonsBannerPrefSize = Enums.TVBannerSize.Any
+        TVAllSeasonsBannerPrefSize = Enums.ImageSize.Any
         TVAllSeasonsBannerPrefSizeOnly = False
         TVAllSeasonsBannerWidth = 0
         TVAllSeasonsFanartHeight = 0
         TVAllSeasonsFanartKeepExisting = False
-        TVAllSeasonsFanartPrefSize = Enums.TVFanartSize.Any
+        TVAllSeasonsFanartPrefSize = Enums.ImageSize.Any
         TVAllSeasonsFanartPrefSizeOnly = False
         TVAllSeasonsFanartWidth = 0
         TVAllSeasonsLandscapeKeepExisting = False
-        TVAllSeasonsLandscapePrefSize = Enums.TVLandscapeSize.Any
+        TVAllSeasonsLandscapePrefSize = Enums.ImageSize.Any
         TVAllSeasonsLandscapePrefSizeOnly = False
         TVAllSeasonsPosterHeight = 0
         TVAllSeasonsPosterKeepExisting = False
-        TVAllSeasonsPosterPrefSize = Enums.TVPosterSize.Any
+        TVAllSeasonsPosterPrefSize = Enums.ImageSize.Any
         TVAllSeasonsPosterPrefSizeOnly = False
         TVAllSeasonsPosterWidth = 0
         TVCleanDB = False
@@ -8305,7 +7172,7 @@ Public Class Settings
         TVEpisodeActorThumbsKeepExisting = False
         TVEpisodeFanartHeight = 0
         TVEpisodeFanartKeepExisting = False
-        TVEpisodeFanartPrefSize = Enums.TVFanartSize.Any
+        TVEpisodeFanartPrefSize = Enums.ImageSize.Any
         TVEpisodeFanartPrefSizeOnly = False
         TVEpisodeFanartWidth = 0
         TVEpisodeFilterCustom = New List(Of String)
@@ -8316,7 +7183,7 @@ Public Class Settings
         TVEpisodeNoFilter = True
         TVEpisodePosterHeight = 0
         TVEpisodePosterKeepExisting = False
-        TVEpisodePosterPrefSize = Enums.TVEpisodePosterSize.Any
+        TVEpisodePosterPrefSize = Enums.ImageSize.Any
         TVEpisodePosterPrefSizeOnly = False
         TVEpisodePosterWidth = 0
         TVEpisodeProperCase = True
@@ -8418,62 +7285,47 @@ Public Class Settings
         TVScraperUseMDDuration = True
         TVScraperUseSRuntimeForEp = True
         TVSeasonBannerHeight = 0
-        TVSeasonBannerKeepExisting = False
-        TVSeasonBannerPrefSize = Enums.TVBannerSize.Any
+        TVSeasonBannerPrefSize = Enums.ImageSize.Any
         TVSeasonBannerPrefSizeOnly = False
         TVSeasonBannerWidth = 0
         TVSeasonFanartHeight = 0
-        TVSeasonFanartKeepExisting = False
-        TVSeasonFanartPrefSize = Enums.TVFanartSize.Any
+        TVSeasonFanartPrefSize = Enums.ImageSize.Any
         TVSeasonFanartPrefSizeOnly = False
         TVSeasonFanartPrefSizeOnly = False
         TVSeasonFanartWidth = 0
-        TVSeasonLandscapeKeepExisting = False
-        TVSeasonLandscapePrefSize = Enums.TVLandscapeSize.Any
+        TVSeasonLandscapePrefSize = Enums.ImageSize.Any
         TVSeasonLandscapePrefSizeOnly = False
         TVSeasonMissingBanner = False
         TVSeasonMissingFanart = False
         TVSeasonMissingLandscape = False
         TVSeasonMissingPoster = False
         TVSeasonPosterHeight = 0
-        TVSeasonPosterKeepExisting = False
-        TVSeasonPosterPrefSize = Enums.TVSeasonPosterSize.Any
+        TVSeasonPosterPrefSize = Enums.ImageSize.Any
         TVSeasonPosterPrefSizeOnly = False
         TVSeasonPosterPrefSizeOnly = False
         TVSeasonPosterWidth = 0
         TVShowActorThumbsExtExpert = ".jpg"
         TVShowActorThumbsKeepExisting = False
         TVShowBannerHeight = 0
-        TVShowBannerKeepExisting = False
-        TVShowBannerPrefSize = Enums.TVBannerSize.Any
+        TVShowBannerPrefSize = Enums.ImageSize.Any
         TVShowBannerPrefSizeOnly = False
         TVShowBannerWidth = 0
-        TVShowCharacterArtKeepExisting = False
-        TVShowCharacterArtPrefSize = Enums.TVCharacterArtSize.Any
-        TVShowCharacterArtPrefSizeOnly = False
-        TVShowClearArtKeepExisting = False
-        TVShowClearArtPrefSize = Enums.TVClearArtSize.Any
+        TVShowClearArtPrefSize = Enums.ImageSize.Any
         TVShowClearArtPrefSizeOnly = False
-        TVShowClearLogoKeepExisting = False
-        TVShowClearLogoPrefSize = Enums.TVClearLogoSize.Any
+        TVShowClearLogoPrefSize = Enums.ImageSize.Any
         TVShowClearLogoPrefSizeOnly = False
-        TVShowExtrafanartsLimit = 4
         TVShowExtrafanartsKeepExisting = False
         TVShowExtrafanartsPrefSizeOnly = False
-        TVShowExtrafanartsPrefSize = Enums.TVFanartSize.Any
+        TVShowExtrafanartsPrefSize = Enums.ImageSize.Any
         TVShowExtrafanartsPrefSizeOnly = False
         TVShowExtrafanartsPreselect = True
-        TVShowExtrafanartsHeight = 0
-        TVShowExtrafanartsWidth = 0
         TVShowFanartHeight = 0
-        TVShowFanartKeepExisting = False
-        TVShowFanartPrefSize = Enums.TVFanartSize.Any
+        TVShowFanartPrefSize = Enums.ImageSize.Any
         TVShowFanartPrefSizeOnly = False
         TVShowFanartWidth = 0
         TVShowFilterCustom = New List(Of String)
         TVShowFilterCustomIsEmpty = False
-        TVShowLandscapeKeepExisting = False
-        TVShowLandscapePrefSize = Enums.TVLandscapeSize.Any
+        TVShowLandscapePrefSize = Enums.ImageSize.Any
         TVShowLandscapePrefSizeOnly = False
         TVShowMatching = New List(Of regexp)
         TVShowMissingBanner = False
@@ -8487,8 +7339,7 @@ Public Class Settings
         TVShowMissingPoster = False
         TVShowMissingTheme = False
         TVShowPosterHeight = 0
-        TVShowPosterKeepExisting = False
-        TVShowPosterPrefSize = Enums.TVPosterSize.Any
+        TVShowPosterPrefSize = Enums.ImageSize.Any
         TVShowPosterPrefSizeOnly = False
         TVShowPosterWidth = 0
         TVShowProperCase = True
@@ -9602,5 +8453,321 @@ Public Class Settings
     End Class
 
 #End Region 'Nested Types
+
+End Class
+
+<Serializable()>
+Public Class MovieSettings
+
+#Region "Properties"
+
+    Public Property ImageSettings() As ImageSettings
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        ImageSettings = New ImageSettings
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+<Serializable()>
+Public Class MoviesetSettings
+
+#Region "Properties"
+
+    Public Property ImageSettings() As ImageSettings
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        ImageSettings = New ImageSettings
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+
+<Serializable()>
+Public Class ImageSettings
+
+#Region "Properties"
+    Public Property ImagesCacheEnabled() As Boolean
+    Public Property ImagesDisplayImageSelect() As Boolean
+    Public Property ImagesNotSaveURLToNfo() As Boolean
+    Public Property ImagesGetBlankImages() As Boolean
+    Public Property ImagesGetEnglishImages() As Boolean
+    Public Property ImagesForceLanguage() As Boolean
+    Public Property ImagesForcedLanguage() As String
+    Public Property ImagesMediaLanguageOnly() As Boolean
+
+
+    Public Property ActorThumbsKeepExisting() As Boolean
+    Public Property BannerKeepExisting() As Boolean
+    Public Property BannerMaxHeight() As Integer
+    Public Property BannerMaxWidth() As Integer
+    Public Property BannerPrefSize() As Enums.ImageSize
+    Public Property BannerPrefSizeOnly() As Boolean
+    Public Property CharacterArtKeepExisting() As Boolean
+    Public Property CharacterArtPrefSize() As Enums.ImageSize
+    Public Property CharacterArtPrefSizeOnly() As Boolean
+    Public Property ClearArtKeepExisting() As Boolean
+    Public Property ClearArtPrefSize() As Enums.ImageSize
+    Public Property ClearArtPrefSizeOnly() As Boolean
+    Public Property ClearLogoKeepExisting() As Boolean
+    Public Property ClearLogoPrefSize() As Enums.ImageSize
+    Public Property ClearLogoPrefSizeOnly() As Boolean
+    Public Property DiscArtKeepExisting() As Boolean
+    Public Property DiscArtPrefSize() As Enums.ImageSize
+    Public Property DiscArtPrefSizeOnly() As Boolean
+    Public Property ExtrafanartsKeepExisting() As Boolean
+    Public Property ExtrafanartsLimit() As Integer
+    Public Property ExtrafanartsMaxHeight() As Integer
+    Public Property ExtrafanartsMaxWidth() As Integer
+    Public Property ExtrafanartsPrefSize() As Enums.ImageSize
+    Public Property ExtrafanartsPrefSizeOnly() As Boolean
+    Public Property ExtrafanartsPreselect() As Boolean
+    Public Property ExtrathumbsCreatorAuto() As Boolean
+    Public Property ExtrathumbsCreatorNoBlackBars() As Boolean
+    Public Property ExtrathumbsCreatorNoSpoilers() As Boolean
+    Public Property ExtrathumbsCreatorUseETasFA() As Boolean
+    Public Property ExtrathumbsKeepExisting() As Boolean
+    Public Property ExtrathumbsLimit() As Integer
+    Public Property ExtrathumbsMaxHeight() As Integer
+    Public Property ExtrathumbsMaxWidth() As Integer
+    Public Property ExtrathumbsPrefSize() As Enums.ImageSize
+    Public Property ExtrathumbsPrefSizeOnly() As Boolean
+    Public Property ExtrathumbsPreselect() As Boolean
+    Public Property FanartKeepExisting() As Boolean
+    Public Property FanartMaxHeight() As Integer
+    Public Property FanartMaxWidth() As Integer
+    Public Property FanartPrefSize() As Enums.ImageSize
+    Public Property FanartPrefSizeOnly() As Boolean
+    Public Property LandscapeKeepExisting() As Boolean
+    Public Property LandscapePrefSize() As Enums.ImageSize
+    Public Property LandscapePrefSizeOnly() As Boolean
+    Public Property PosterKeepExisting() As Boolean
+    Public Property PosterMaxHeight() As Integer
+    Public Property PosterMaxWidth() As Integer
+    Public Property PosterPrefSize() As Enums.ImageSize
+    Public Property PosterPrefSizeOnly() As Boolean
+
+    <XmlIgnore()>
+    Public ReadOnly Property BannerResize() As Boolean
+        Get
+            Return BannerMaxHeight > 0 OrElse BannerMaxWidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property ExtrafanartsResize() As Boolean
+        Get
+            Return ExtrafanartsMaxHeight > 0 OrElse ExtrafanartsMaxWidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property ExtrathumbsResize() As Boolean
+        Get
+            Return ExtrathumbsMaxHeight > 0 OrElse ExtrathumbsMaxWidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FanartResize() As Boolean
+        Get
+            Return FanartMaxHeight > 0 OrElse FanartMaxWidth > 0
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property PosterResize() As Boolean
+        Get
+            Return PosterMaxHeight > 0 OrElse PosterMaxWidth > 0
+        End Get
+    End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        ImagesCacheEnabled = False
+        ImagesDisplayImageSelect = True
+        ImagesForcedLanguage = "en"
+        ImagesForceLanguage = False
+        ImagesGetBlankImages = False
+        ImagesGetEnglishImages = False
+        ImagesMediaLanguageOnly = False
+        ImagesNotSaveURLToNfo = False
+
+        ActorThumbsKeepExisting = False
+        BannerKeepExisting = False
+        BannerPrefSize = Enums.ImageSize.Any
+        BannerPrefSizeOnly = False
+        CharacterArtKeepExisting = False
+        CharacterArtPrefSize = Enums.ImageSize.Any
+        CharacterArtPrefSizeOnly = False
+        ClearArtKeepExisting = False
+        ClearArtPrefSize = Enums.ImageSize.Any
+        ClearArtPrefSizeOnly = False
+        ClearLogoKeepExisting = False
+        ClearLogoPrefSize = Enums.ImageSize.Any
+        ClearLogoPrefSizeOnly = False
+        DiscArtKeepExisting = False
+        DiscArtPrefSize = Enums.ImageSize.Any
+        DiscArtPrefSizeOnly = False
+        ExtrafanartsKeepExisting = False
+        ExtrafanartsLimit = 4
+        ExtrafanartsMaxHeight = 0
+        ExtrafanartsMaxWidth = 0
+        ExtrafanartsPrefSizeOnly = False
+        ExtrafanartsPrefSize = Enums.ImageSize.Any
+        ExtrafanartsPreselect = True
+        ExtrathumbsCreatorAuto = False
+        ExtrathumbsCreatorNoBlackBars = False
+        ExtrathumbsCreatorNoSpoilers = False
+        ExtrathumbsCreatorUseETasFA = False
+        ExtrathumbsLimit = 4
+        ExtrathumbsMaxHeight = 0
+        ExtrathumbsMaxWidth = 0
+        ExtrathumbsKeepExisting = False
+        ExtrathumbsPrefSize = Enums.ImageSize.Any
+        ExtrathumbsPrefSizeOnly = False
+        ExtrathumbsPreselect = True
+        FanartKeepExisting = False
+        FanartMaxHeight = 0
+        FanartMaxWidth = 0
+        FanartPrefSize = Enums.ImageSize.Any
+        FanartPrefSizeOnly = False
+        LandscapeKeepExisting = False
+        LandscapePrefSize = Enums.ImageSize.Any
+        LandscapePrefSizeOnly = False
+        PosterMaxHeight = 0
+        PosterMaxWidth = 0
+        PosterKeepExisting = False
+        PosterPrefSize = Enums.ImageSize.Any
+        PosterPrefSizeOnly = False
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+
+
+<Serializable()>
+Public Class ImageSpezification
+
+#Region "Properties"
+
+    Public Property KeepExisting() As Boolean
+    Public Property MaxHeight() As Integer
+    Public Property MaxWidth() As Integer
+    Public Property PrefSize() As Enums.ImageSize
+    Public Property PrefSizeOnly() As Boolean
+
+    <XmlIgnore()>
+    Public ReadOnly Property Resize() As Boolean
+        Get
+            Return MaxHeight > 0 OrElse MaxWidth > 0
+        End Get
+    End Property
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        MaxHeight = 0
+        MaxWidth = 0
+        KeepExisting = False
+        PrefSize = Enums.ImageSize.Any
+        PrefSizeOnly = False
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+<Serializable()>
+Public Class TVSettings
+
+#Region "Properties"
+
+    Public Property ImageSettings() As ImageSettings
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        ImageSettings = New ImageSettings
+        ImageSettings.ImagesCacheEnabled = True
+    End Sub
+
+#End Region 'Methods
 
 End Class
