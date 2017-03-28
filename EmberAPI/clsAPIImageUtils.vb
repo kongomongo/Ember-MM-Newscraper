@@ -268,37 +268,6 @@ Public Class ImageUtils
 
     End Sub
     ''' <summary>
-    ''' Apply a glass overlay on the supplied <c>PictureBox</c>
-    ''' </summary>
-    ''' <param name="pbUnderlay"><c>PictureBox</c> representing the source image</param>
-    ''' <remarks></remarks>
-    Public Shared Sub SetGlassOverlay(ByRef pbUnderlay As PictureBox)
-        If (pbUnderlay Is Nothing) OrElse (pbUnderlay.Image Is Nothing) Then Return
-
-        Try
-            Dim bmOverlay As New Bitmap(pbUnderlay.Image)
-            Using grOverlay As Graphics = Graphics.FromImage(bmOverlay)
-                Dim bmHeight As Integer = Convert.ToInt32(pbUnderlay.Image.Height * 0.65)
-
-                grOverlay.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-
-                grOverlay.DrawImage(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Overlay.png")), 0, 0, pbUnderlay.Image.Width, bmHeight)
-                pbUnderlay.Image = bmOverlay
-
-                bmOverlay = New Bitmap(pbUnderlay.Image)
-            End Using
-            Using grOverlay = Graphics.FromImage(bmOverlay)
-
-                grOverlay.DrawImage(Image.FromFile(FileUtils.Common.ReturnSettingsFile("Images\Defaults", "Overlay2.png")), 0, 0, pbUnderlay.Image.Width, pbUnderlay.Image.Height)
-                pbUnderlay.Image = bmOverlay
-
-            End Using
-            bmOverlay = Nothing
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-    ''' <summary>
     ''' Adds the supplied <paramref name="imgOverlay"/> on top of the supplied <paramref name="imgUnderlay"/>
     ''' </summary>
     ''' <param name="imgUnderlay">Base <c>Image</c></param>

@@ -192,11 +192,12 @@ CREATE TABLE episode (
         VideoSource     text,
         HasSub          bool NOT NULL DEFAULT 0,
         SubEpisode      integer,
-        LastPlayed     integer,
-        IMDB         text,
-        TMDB         text,
-        TVDB         text,
-        UserRating		integer NOT NULL DEFAULT 0
+        LastPlayed		integer,
+        IMDB			text,
+        TMDB			text,
+        TVDB			text,
+        UserRating		integer NOT NULL DEFAULT 0,
+		DateModified	integer
         );
 
         CREATE TRIGGER delete_episode
@@ -367,17 +368,18 @@ CREATE TABLE movielinktvshow (
         (idMovie, idShow);
 
 CREATE TABLE seasons (
-        idSeason       integer PRIMARY KEY,
-        idShow         integer,
-        Season         integer,
-        SeasonText     text,
-        Lock           bool NOT NULL DEFAULT 0,
-        Mark           bool NOT NULL DEFAULT 0,
-        "New"          bool NOT NULL DEFAULT 0,
-		TVDB        text,
-		TMDB        text,
-		Aired       text,
-		Plot        text
+        idSeason		integer PRIMARY KEY,
+        idShow			integer,
+        Season			integer,
+        SeasonText		text,
+        Lock			bool NOT NULL DEFAULT 0,
+        Mark			bool NOT NULL DEFAULT 0,
+        "New"			bool NOT NULL DEFAULT 0,
+		TVDB			text,
+		TMDB			text,
+		Aired			text,
+		Plot			text,
+		DateModified	integer
         );
 
         CREATE UNIQUE INDEX ix_seasons
@@ -393,17 +395,18 @@ CREATE TABLE seasons (
         END;
 
 CREATE TABLE sets (
-        idSet          integer PRIMARY KEY AUTOINCREMENT,
-        ListTitle      text NOT NULL,
-        NfoPath        text,
-        TMDBColID      text,
-        Plot           text,
-        SetName        text,
-        "New"          bool NOT NULL DEFAULT 0,
-        Mark           bool NOT NULL DEFAULT 0,
-        Lock           bool NOT NULL DEFAULT 0,
-		SortMethod     integer NOT NULL DEFAULT 0,
-		Language       text
+        idSet			integer PRIMARY KEY AUTOINCREMENT,
+        ListTitle		text NOT NULL,
+        NfoPath			text,
+        TMDBColID		text,
+        Plot			text,
+        SetName			text,
+        "New"			bool NOT NULL DEFAULT 0,
+        Mark			bool NOT NULL DEFAULT 0,
+        Lock			bool NOT NULL DEFAULT 0,
+		SortMethod		integer NOT NULL DEFAULT 0,
+		Language		text,
+		DateModified	integer
         );
 
         CREATE TRIGGER delete_set
@@ -471,8 +474,9 @@ CREATE TABLE tvshow (
 		SortTitle			text,
 		IMDB				text,
 		TMDB				text,
-		OriginalTitle	text,
-		UserRating			integer NOT NULL DEFAULT 0
+		OriginalTitle		text,
+		UserRating			integer NOT NULL DEFAULT 0,
+		DateModified		integer
 		);
 
         CREATE UNIQUE INDEX UniqueTVShowPath

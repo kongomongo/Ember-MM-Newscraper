@@ -62,7 +62,7 @@ Public Class Addon
         Get
             Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
                                                      Enums.AddonEventType.Scrape_Movie,
-                                                     Enums.AddonEventType.Scrape_MovieSet,
+                                                     Enums.AddonEventType.Scrape_Movieset,
                                                      Enums.AddonEventType.Scrape_TVSeason,
                                                      Enums.AddonEventType.Scrape_TVShow
                                                      })
@@ -79,13 +79,13 @@ Public Class Addon
                                                           Enums.ScraperCapatibility.Movie_Image_Fanart,
                                                           Enums.ScraperCapatibility.Movie_Image_Landscape,
                                                           Enums.ScraperCapatibility.Movie_Image_Poster,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_Banner,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_ClearArt,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_ClearLogo,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_DiscArt,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_Fanart,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_Landscape,
-                                                          Enums.ScraperCapatibility.MovieSet_Image_Poster,
+                                                          Enums.ScraperCapatibility.Movieset_Image_Banner,
+                                                          Enums.ScraperCapatibility.Movieset_Image_ClearArt,
+                                                          Enums.ScraperCapatibility.Movieset_Image_ClearLogo,
+                                                          Enums.ScraperCapatibility.Movieset_Image_DiscArt,
+                                                          Enums.ScraperCapatibility.Movieset_Image_Fanart,
+                                                          Enums.ScraperCapatibility.Movieset_Image_Landscape,
+                                                          Enums.ScraperCapatibility.Movieset_Image_Poster,
                                                           Enums.ScraperCapatibility.TVSeason_Image_Banner,
                                                           Enums.ScraperCapatibility.TVSeason_Image_Landscape,
                                                           Enums.ScraperCapatibility.TVSeason_Image_Poster,
@@ -182,7 +182,7 @@ Public Class Addon
                 Else
                     logger.Trace(String.Concat("[FanartTV] [Run] [Abort] No TMDB and IMDB ID exist to search: ", tDBElement.ListTitle))
                 End If
-            Case Enums.AddonEventType.Scrape_MovieSet
+            Case Enums.AddonEventType.Scrape_Movieset
                 'If String.IsNullOrEmpty(tDBElement.MainDetails.TMDB) AndAlso tDBElement.MoviesInSetSpecified Then
                 '    tDBElement.MainDetails.TMDB = ModulesManager.Instance.GetMovieCollectionID(tDBElement.MoviesInSet.Item(0).DBMovie.MainDetails.IMDB)
                 'End If

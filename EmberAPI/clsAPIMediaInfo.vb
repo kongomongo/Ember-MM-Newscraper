@@ -264,7 +264,7 @@ Public Class MediaInfo
         Dim ifoVideo(2) As String
         Dim ifoAudio(2) As String
 
-        If Master.eSettings.MovieScraperMetaDataIFOScan AndAlso tFileItem.bIsVideoTS AndAlso cDVD.fctOpenIFOFile(tFileItem.FirstStackedPath) Then
+        If tFileItem.bIsVideoTS AndAlso cDVD.fctOpenIFOFile(tFileItem.FirstStackedPath) Then
             ifoVideo = cDVD.GetIFOVideo
             Dim vRes() As String = ifoVideo(1).Split(Convert.ToChar("x"))
             miVideo.Width = vRes(0)

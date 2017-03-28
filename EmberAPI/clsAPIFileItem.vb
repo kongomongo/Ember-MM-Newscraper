@@ -303,7 +303,7 @@ Public Class FileItemList
 
         'get all files
         Dim lstFiles = diPath.GetFiles.Where(Function(f) _
-                                                 Master.eSettings.FileSystemValidExts.Contains(f.Extension.ToLower) AndAlso
+                                                 Master.eSettings.Options.Filesystem.ValidVideoExts.Contains(f.Extension.ToLower) AndAlso
                                                  Not Regex.IsMatch(f.Name, String.Concat("[^\w\s]\s?(", clsXMLAdvancedSettings.GetSetting("NotValidFileContains", "trailer|sample"), ")"), RegexOptions.IgnoreCase) AndAlso
                                                  ((Not intSkipLessThan > 0 OrElse f.Length >= intSkipLessThan * 1048576))
                                                  ).OrderBy(Function(f) f.FullName)

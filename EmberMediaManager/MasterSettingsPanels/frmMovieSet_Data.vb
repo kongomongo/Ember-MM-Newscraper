@@ -26,7 +26,7 @@ Public Class frmMovieSet_Data
 
 #Region "Fields"
 
-    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.MovieSet
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movieset
     Dim _intImageIndex As Integer = 4
     Dim _intOrder As Integer = 300
     Dim _strName As String = "MovieSet_Data"
@@ -137,22 +137,22 @@ Public Class frmMovieSet_Data
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            chkMovieSetLockPlot.Checked = .MovieSetLockPlot
-            chkMovieSetLockTitle.Checked = .MovieSetLockTitle
-            chkMovieSetScraperPlot.Checked = .MovieSetScraperPlot
-            chkMovieSetScraperTitle.Checked = .MovieSetScraperTitle
+        With Master.eSettings.Movieset.DataSettings
+            chkMovieSetLockPlot.Checked = .Plot.Locked
+            chkMovieSetLockTitle.Checked = .Title.Locked
+            chkMovieSetScraperPlot.Checked = .Plot.Enabled
+            chkMovieSetScraperTitle.Checked = .Title.Enabled
 
             FillMovieSetScraperTitleRenamer()
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieSetLockPlot = chkMovieSetLockPlot.Checked
-            .MovieSetLockTitle = chkMovieSetLockTitle.Checked
-            .MovieSetScraperPlot = chkMovieSetScraperPlot.Checked
-            .MovieSetScraperTitle = chkMovieSetScraperTitle.Checked
+        With Master.eSettings.Movieset.DataSettings
+            .Plot.Locked = chkMovieSetLockPlot.Checked
+            .Title.Locked = chkMovieSetLockTitle.Checked
+            .Plot.Enabled = chkMovieSetScraperPlot.Checked
+            .Title.Enabled = chkMovieSetScraperTitle.Checked
 
             SaveMovieSetScraperTitleRenamer()
         End With
@@ -209,8 +209,8 @@ Public Class frmMovieSet_Data
         dgvMovieSetScraperTitleRenamer.Columns(1).HeaderText = Master.eLang.GetString(1278, "To")
         gbMovieSetScraperTitleRenamerOpts.Text = Master.eLang.GetString(1279, "Title Renamer")
 
-        clsAPITemp.ConvertToScraperGridView(dgvPlot, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Data_Plot)))
-        clsAPITemp.ConvertToScraperGridView(dgvTitle, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Data_Title)))
+        clsAPITemp.ConvertToScraperGridView(dgvPlot, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Data_Plot)))
+        clsAPITemp.ConvertToScraperGridView(dgvTitle, Master.ScraperList.FindAll(Function(f) f.ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Data_Title)))
 
         clsAPITemp.ConvertToSearchEngineGridView(dgvSearchAdditional, Master.SearchEngineList.FindAll(Function(f) f.SearchMovieSet))
         clsAPITemp.ConvertToSearchEngineGridView(dgvSearchInitial, Master.SearchEngineList.FindAll(Function(f) f.SearchMovieSet))

@@ -60,7 +60,6 @@ Partial Class frmOption_GUI
         Me.chkGeneralDoubleClickScrape = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayClearLogo = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayBanner = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralImagesGlassOverlay = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayCharacterArt = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayGenresText = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayLangFlags = New System.Windows.Forms.CheckBox()
@@ -498,7 +497,6 @@ Partial Class frmOption_GUI
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDoubleClickScrape, 0, 0)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayClearLogo, 0, 7)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayBanner, 0, 4)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralImagesGlassOverlay, 1, 1)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayCharacterArt, 0, 5)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayGenresText, 0, 1)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayLangFlags, 0, 3)
@@ -629,18 +627,6 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayBanner.TabIndex = 13
         Me.chkGeneralDisplayBanner.Text = "Display Banner"
         Me.chkGeneralDisplayBanner.UseVisualStyleBackColor = True
-        '
-        'chkGeneralImagesGlassOverlay
-        '
-        Me.chkGeneralImagesGlassOverlay.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralImagesGlassOverlay.AutoSize = True
-        Me.chkGeneralImagesGlassOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralImagesGlassOverlay.Location = New System.Drawing.Point(174, 26)
-        Me.chkGeneralImagesGlassOverlay.Name = "chkGeneralImagesGlassOverlay"
-        Me.chkGeneralImagesGlassOverlay.Size = New System.Drawing.Size(171, 17)
-        Me.chkGeneralImagesGlassOverlay.TabIndex = 12
-        Me.chkGeneralImagesGlassOverlay.Text = "Enable Images Glass Overlay"
-        Me.chkGeneralImagesGlassOverlay.UseVisualStyleBackColor = True
         '
         'chkGeneralDisplayCharacterArt
         '
@@ -1022,7 +1008,6 @@ Partial Class frmOption_GUI
     Friend WithEvents chkGeneralDoubleClickScrape As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayClearLogo As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayBanner As Windows.Forms.CheckBox
-    Friend WithEvents chkGeneralImagesGlassOverlay As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayCharacterArt As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayGenresText As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralDisplayLangFlags As Windows.Forms.CheckBox

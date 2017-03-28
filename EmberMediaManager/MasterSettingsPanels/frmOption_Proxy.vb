@@ -135,38 +135,38 @@ Public Class frmOption_Proxy
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            If Not String.IsNullOrEmpty(.ProxyURI) AndAlso .ProxyPort >= 0 Then
+        With Master.eSettings.Options.Proxy
+            If Not String.IsNullOrEmpty(.URI) AndAlso .Port >= 0 Then
                 chkProxyEnable.Checked = True
-                txtProxyURI.Text = .ProxyURI
-                txtProxyPort.Text = .ProxyPort.ToString
+                txtProxyURI.Text = .URI
+                txtProxyPort.Text = .Port.ToString
 
-                If Not String.IsNullOrEmpty(.ProxyCredentials.UserName) Then
+                If Not String.IsNullOrEmpty(.Credentials.UserName) Then
                     chkProxyCredsEnable.Checked = True
-                    txtProxyUsername.Text = .ProxyCredentials.UserName
-                    txtProxyPassword.Text = .ProxyCredentials.Password
-                    txtProxyDomain.Text = .ProxyCredentials.Domain
+                    txtProxyUsername.Text = .Credentials.UserName
+                    txtProxyPassword.Text = .Credentials.Password
+                    txtProxyDomain.Text = .Credentials.Domain
                 End If
             End If
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
+        With Master.eSettings.Options.Proxy
             If Not String.IsNullOrEmpty(txtProxyURI.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPort.Text) Then
-                .ProxyURI = txtProxyURI.Text
-                .ProxyPort = Convert.ToInt32(txtProxyPort.Text)
+                .URI = txtProxyURI.Text
+                .Port = Convert.ToInt32(txtProxyPort.Text)
 
                 If Not String.IsNullOrEmpty(txtProxyUsername.Text) AndAlso Not String.IsNullOrEmpty(txtProxyPassword.Text) Then
-                    .ProxyCredentials.UserName = txtProxyUsername.Text
-                    .ProxyCredentials.Password = txtProxyPassword.Text
-                    .ProxyCredentials.Domain = txtProxyDomain.Text
+                    .Credentials.UserName = txtProxyUsername.Text
+                    .Credentials.Password = txtProxyPassword.Text
+                    .Credentials.Domain = txtProxyDomain.Text
                 Else
-                    .ProxyCredentials = New NetworkCredential
+                    .Credentials = New NetworkCredential
                 End If
             Else
-                .ProxyURI = String.Empty
-                .ProxyPort = -1
+                .URI = String.Empty
+                .Port = -1
             End If
         End With
     End Sub

@@ -281,7 +281,7 @@ Public Class TaskManager
                         End If
                     Next
 
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     For Each tID In tTaskItem.ListOfID
                         If bwTaskManager.CancellationPending Then Return
                         Dim tmpDBElement As Database.DBElement = Master.DB.Load_MovieSet(tID)
@@ -295,7 +295,7 @@ Public Class TaskManager
                             Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
 
                             bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                         .ContentType = Enums.ContentType.MovieSet,
+                                                         .ContentType = Enums.ContentType.Movieset,
                                                          .EventType = Enums.TaskManagerEventType.RefreshRow,
                                                          .ID = tmpDBElement.ID})
                         End If
@@ -361,7 +361,7 @@ Public Class TaskManager
                     End If
                 Next
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
                     Dim bHasChanged As Boolean = False
@@ -387,7 +387,7 @@ Public Class TaskManager
                         Master.DB.Save_MovieSet(tmpDBElement, True, True, False, False)
 
                         bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                     .ContentType = Enums.ContentType.MovieSet,
+                                                     .ContentType = Enums.ContentType.Movieset,
                                                      .EventType = Enums.TaskManagerEventType.RefreshRow,
                                                      .ID = tmpDBElement.ID})
                     End If
@@ -552,7 +552,7 @@ Public Class TaskManager
                     End Using
                 Next
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 For Each tID In tTaskItem.ListOfID
                     If bwTaskManager.CancellationPending Then Return
 
@@ -572,7 +572,7 @@ Public Class TaskManager
                                     par_Mark.Value = tTaskItem.CommonBooleanValue
                                     SQLCommand_Update.ExecuteNonQuery()
                                     bwTaskManager.ReportProgress(-1, New ProgressValue With {
-                                                                 .ContentType = Enums.ContentType.MovieSet,
+                                                                 .ContentType = Enums.ContentType.Movieset,
                                                                  .EventType = Enums.TaskManagerEventType.RefreshRow,
                                                                  .ID = tID})
                                 End While

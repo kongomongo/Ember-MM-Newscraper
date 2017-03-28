@@ -184,7 +184,7 @@ Public Class CommandLine
                         logger.Warn("[CommandLine] No ScrapeType specified for command ""-scrapemovies""")
                     End If
                 Case "-scrapemoviesets"
-                    Dim nContentType As Enums.ContentType = Enums.ContentType.MovieSet
+                    Dim nContentType As Enums.ContentType = Enums.ContentType.Movieset
                     If Args.Count - 1 > i AndAlso Not Args(i + 1).StartsWith("-") Then
                         i += 1
                         Dim ScrapeType As String = Args(i)

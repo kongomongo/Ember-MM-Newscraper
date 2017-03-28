@@ -1952,10 +1952,10 @@ Public Class dlgImgSelect
         With Master.eSettings
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If .MovieExtrafanartsPreselect OrElse .MovieExtrafanartsKeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
-                    If .MovieExtrathumbsPreselect OrElse .MovieExtrathumbsKeepExisting Then tResultImagesContainer.ImagesContainer.Extrathumbs.AddRange(tPreferredImagesContainer.ImagesContainer.Extrathumbs)
+                    If .Movie.ImageSettings.ExtrafanartsPreselect OrElse .Movie.ImageSettings.Extrafanarts.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
+                    If .Movie.ImageSettings.ExtrathumbsPreselect OrElse .Movie.ImageSettings.Extrathumbs.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrathumbs.AddRange(tPreferredImagesContainer.ImagesContainer.Extrathumbs)
                 Case Enums.ContentType.TV, Enums.ContentType.TVShow
-                    If .TVShowExtrafanartsPreselect OrElse .TVShowExtrafanartsKeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
+                    If .TV.ImageSettings.ExtrafanartsPreselect OrElse .TV.ImageSettings.TVShow.Extrafanarts.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
             End Select
         End With
         tResultImagesContainer.ImagesContainer.Fanart = tPreferredImagesContainer.ImagesContainer.Fanart
@@ -2231,17 +2231,19 @@ Public Class dlgImgSelect
 
         Select Case tContentType
             Case Enums.ContentType.Movie
-                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Banner
-                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_Movie_ClearArt
-                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_Movie_ClearLogo
-                DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso Master.eSettings.FilenameAnyEnabled_Movie_DiscArt
-                DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Extrafanarts
-                DoMainExtrathumbs = tScrapeModifiers.MainExtrathumbs AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Extrathumbs
-                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Fanart
-                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Landscape
-                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Poster
-                If DoMainExtrafanarts OrElse DoMainExtrathumbs Then noSubImages = False
-            Case Enums.ContentType.MovieSet
+                With Master.eSettings.Movie.Filenaming
+                    DoMainBanner = tScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso .FilenameAnyEnabled_DiscArt
+                    DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso .FilenameAnyEnabled_Extrafanarts
+                    DoMainExtrathumbs = tScrapeModifiers.MainExtrathumbs AndAlso .FilenameAnyEnabled_Extrathumbs
+                    DoMainFanart = tScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = tScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                    If DoMainExtrafanarts OrElse DoMainExtrathumbs Then noSubImages = False
+                End With
+            Case Enums.ContentType.Movieset
                 DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Banner
                 DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearArt
                 DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearLogo

@@ -99,7 +99,7 @@ Public Class Scanner
             Try
                 fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName))
                 fList.AddRange(Directory.GetFiles(strMainPath))
-                If Master.eSettings.MovieUseNMJ Then
+                If Master.eSettings.Movie.Filenaming.NMJ.Enabled Then
                     fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
                 End If
             Catch ex As Exception
@@ -221,7 +221,7 @@ Public Class Scanner
 
         'subtitles (external)
         For Each fFile As String In sList
-            For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
+            For Each ext In Master.eSettings.Options.Filesystem.ValidSubtitleExts
                 If fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
                     tDBElement.Subtitles.Add(New MediaContainers.Subtitle With {.SubsPath = fFile, .SubsType = "External", .SubsForced = isForced})
@@ -232,7 +232,7 @@ Public Class Scanner
         'theme
         If String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTheme, bForced)
-                For Each t As String In Master.eSettings.FileSystemValidThemeExts
+                For Each t As String In Master.eSettings.Options.Filesystem.ValidThemeExts
                     tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                     If tDBElement.Theme.LocalFilePathSpecified Then Exit For
                 Next
@@ -243,7 +243,7 @@ Public Class Scanner
         'trailer
         If String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath) Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainTrailer, bForced)
-                For Each t As String In Master.eSettings.FileSystemValidExts
+                For Each t As String In Master.eSettings.Options.Filesystem.ValidVideoExts
                     tDBElement.Trailer.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                     If tDBElement.Trailer.LocalFilePathSpecified Then Exit For
                 Next
@@ -389,7 +389,7 @@ Public Class Scanner
 
         'subtitles (external)
         For Each fFile As String In fList
-            For Each ext In Master.eSettings.FileSystemValidSubtitlesExts
+            For Each ext In Master.eSettings.Options.Filesystem.ValidSubtitleExts
                 Dim FullFilePathWithoutExt As String = Path.Combine(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName, Path.GetFileNameWithoutExtension(tDBElement.FileItem.FirstStackedPath)).ToLower
                 If fFile.ToLower.StartsWith(FullFilePathWithoutExt) AndAlso fFile.ToLower.EndsWith(ext) Then
                     Dim isForced As Boolean = Path.GetFileNameWithoutExtension(fFile).ToLower.EndsWith("forced")
@@ -573,7 +573,7 @@ Public Class Scanner
 
         'show theme
         For Each a In FileUtils.GetFilenameList.TVShow(tDBElement, Enums.ScrapeModifierType.MainTheme)
-            For Each t As String In Master.eSettings.FileSystemValidThemeExts
+            For Each t As String In Master.eSettings.Options.Filesystem.ValidThemeExts
                 tDBElement.Theme.LocalFilePath = fList.FirstOrDefault(Function(s) s.ToLower = String.Concat(a.ToLower, t.ToLower))
                 If tDBElement.Theme.LocalFilePathSpecified Then Exit For
             Next
@@ -589,7 +589,7 @@ Public Class Scanner
         'NFO
         If tDBElement.NfoPathSpecified Then
             tDBElement.MainDetails = NFO.LoadFromNFO_Movie(tDBElement.NfoPath, tDBElement.IsSingle)
-            If Not tDBElement.MainDetails.FileInfoSpecified AndAlso tDBElement.MainDetails.TitleSpecified AndAlso Master.eSettings.MovieScraperMetaDataScan Then
+            If Not tDBElement.MainDetails.FileInfoSpecified AndAlso tDBElement.MainDetails.TitleSpecified AndAlso Master.eSettings.Movie.DataSettings.MetaDataScan Then
                 MetaData.ScanMetaData(tDBElement)
             End If
         End If
@@ -614,7 +614,7 @@ Public Class Scanner
         'ListTitle
         tDBElement.ListTitle = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
 
-        If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieYAMJWatchedFile Then
+        If Master.eSettings.Movie.Filenaming.YAMJ.Enabled AndAlso Master.eSettings.Movie.Filenaming.YAMJ.WatchedFile Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainWatchedFile)
                 If tDBElement.MainDetails.PlayCountSpecified Then
                     If Not File.Exists(a) Then
@@ -742,7 +742,7 @@ Public Class Scanner
                     cEpisode.MainDetails = NFO.LoadFromNFO_TVEpisode(cEpisode.NfoPath, sEpisode.Season, sEpisode.Episode)
                 End If
 
-                If Not cEpisode.MainDetails.FileInfoSpecified AndAlso cEpisode.MainDetails.TitleSpecified AndAlso Master.eSettings.TVScraperMetaDataScan Then
+                If Not cEpisode.MainDetails.FileInfoSpecified AndAlso cEpisode.MainDetails.TitleSpecified AndAlso Master.eSettings.TV.DataSettings.MetaDataScan Then
                     MetaData.ScanMetaData(cEpisode)
                 End If
             Else
@@ -761,7 +761,7 @@ Public Class Scanner
                             ToNfo = True
 
                             'if we had info for it (based on title) and mediainfo scanning is enabled
-                            If Master.eSettings.TVScraperMetaDataScan Then
+                            If Master.eSettings.TV.DataSettings.MetaDataScan Then
                                 MetaData.ScanMetaData(cEpisode)
                             End If
                         End If

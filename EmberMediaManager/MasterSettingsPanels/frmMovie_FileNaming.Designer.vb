@@ -54,9 +54,9 @@ Partial Class frmMovie_FileNaming
         Me.chkMoviePosterEden = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerFrodo = New System.Windows.Forms.CheckBox()
         Me.chkMovieTrailerEden = New System.Windows.Forms.CheckBox()
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts = New System.Windows.Forms.GroupBox()
+        Me.gbOptionalSettings = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesFileNamingKodiOptionalOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkMovieXBMCProtectVTSBDMV = New System.Windows.Forms.CheckBox()
+        Me.chkProtectVTSBDMV = New System.Windows.Forms.CheckBox()
         Me.gbMovieSourcesFilenamingKodiExtendedOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesFileNamingKodiExtendedOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieSourcesFileNamingKodiExtendedClearArt = New System.Windows.Forms.Label()
@@ -89,6 +89,10 @@ Partial Class frmMovie_FileNaming
         Me.pbMovieSourcesADInfo = New System.Windows.Forms.PictureBox()
         Me.lblMovieSourcesFilenamingKodiADEnabled = New System.Windows.Forms.Label()
         Me.chkMovieUseAD = New System.Windows.Forms.CheckBox()
+        Me.lblMovieSourcesFilenamingKodiADFanart = New System.Windows.Forms.Label()
+        Me.chkMovieFanartAD = New System.Windows.Forms.CheckBox()
+        Me.lblMovieSourcesFilenamingKodiADPoster = New System.Windows.Forms.Label()
+        Me.chkMoviePosterAD = New System.Windows.Forms.CheckBox()
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesFileNamingKodiTvTunesOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.pbMovieSourcesTvTunesInfo = New System.Windows.Forms.PictureBox()
@@ -217,7 +221,6 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieRecognizeVTSExpertVTS = New System.Windows.Forms.CheckBox()
-        Me.chkMovieUseBaseDirectoryExpertVTS = New System.Windows.Forms.CheckBox()
         Me.tblMovieSourcesFileNamingExpertVTSOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieSourcesFilenamingExpertVTSBanner = New System.Windows.Forms.Label()
         Me.txtMovieBannerExpertVTS = New System.Windows.Forms.TextBox()
@@ -245,9 +248,6 @@ Partial Class frmMovie_FileNaming
         Me.chkMovieActorThumbsExpertBDMV = New System.Windows.Forms.CheckBox()
         Me.chkMovieExtrafanartsExpertBDMV = New System.Windows.Forms.CheckBox()
         Me.chkMovieExtrathumbsExpertBDMV = New System.Windows.Forms.CheckBox()
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts = New System.Windows.Forms.GroupBox()
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkMovieUseBaseDirectoryExpertBDMV = New System.Windows.Forms.CheckBox()
         Me.tblMovieSourcesFileNamingExpertBDMVOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieSourcesFilenamingExpertBDMVBanner = New System.Windows.Forms.Label()
         Me.txtMovieBannerExpertBDMV = New System.Windows.Forms.TextBox()
@@ -282,7 +282,7 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodi.SuspendLayout()
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.SuspendLayout()
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.SuspendLayout()
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.SuspendLayout()
+        Me.gbOptionalSettings.SuspendLayout()
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.SuspendLayout()
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.SuspendLayout()
         Me.tblMovieSourcesFileNamingKodiExtendedOpts.SuspendLayout()
@@ -334,8 +334,6 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingExpertBDMV.SuspendLayout()
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.SuspendLayout()
         Me.tblMovieSourcesFileNamingExpertBDMVImagesOpts.SuspendLayout()
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.SuspendLayout()
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.SuspendLayout()
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.SuspendLayout()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
@@ -387,13 +385,11 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodi.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodi.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodi.Controls.Add(Me.gbMovieSourcesFilenamingKodiDefaultsOpts, 0, 0)
-        Me.tblMovieSourcesFileNamingKodi.Controls.Add(Me.gbMovieSourcesFilenamingKodiOptionalOpts, 1, 1)
         Me.tblMovieSourcesFileNamingKodi.Controls.Add(Me.gbMovieSourcesFilenamingKodiExtendedOpts, 1, 0)
         Me.tblMovieSourcesFileNamingKodi.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingKodi.Location = New System.Drawing.Point(0, 0)
         Me.tblMovieSourcesFileNamingKodi.Name = "tblMovieSourcesFileNamingKodi"
-        Me.tblMovieSourcesFileNamingKodi.RowCount = 4
-        Me.tblMovieSourcesFileNamingKodi.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSourcesFileNamingKodi.RowCount = 3
         Me.tblMovieSourcesFileNamingKodi.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodi.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodi.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -409,8 +405,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Name = "gbMovieSourcesFilenamingKodiDefaultsOpts"
-        Me.tblMovieSourcesFileNamingKodi.SetRowSpan(Me.gbMovieSourcesFilenamingKodiDefaultsOpts, 2)
-        Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Size = New System.Drawing.Size(172, 231)
+        Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Size = New System.Drawing.Size(172, 221)
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.TabIndex = 10
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.TabStop = False
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.Text = "Defaults"
@@ -463,7 +458,7 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingKodiDefaultsOpts.Size = New System.Drawing.Size(166, 210)
+        Me.tblMovieSourcesFileNamingKodiDefaultsOpts.Size = New System.Drawing.Size(166, 200)
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.TabIndex = 9
         '
         'lblMovieSourcesFilenamingKodiDefaultsActorThumbs
@@ -751,18 +746,18 @@ Partial Class frmMovie_FileNaming
         Me.chkMovieTrailerEden.TabIndex = 16
         Me.chkMovieTrailerEden.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFilenamingKodiOptionalOpts
+        'gbOptionalSettings
         '
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.AutoSize = True
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingKodiOptionalOpts)
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Location = New System.Drawing.Point(181, 190)
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Name = "gbMovieSourcesFilenamingKodiOptionalOpts"
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Size = New System.Drawing.Size(186, 44)
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.TabIndex = 2
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.TabStop = False
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.Text = "Optional Settings"
+        Me.gbOptionalSettings.AutoSize = True
+        Me.gbOptionalSettings.Controls.Add(Me.tblMovieSourcesFileNamingKodiOptionalOpts)
+        Me.gbOptionalSettings.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbOptionalSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbOptionalSettings.Location = New System.Drawing.Point(3, 423)
+        Me.gbOptionalSettings.Name = "gbOptionalSettings"
+        Me.gbOptionalSettings.Size = New System.Drawing.Size(532, 44)
+        Me.gbOptionalSettings.TabIndex = 2
+        Me.gbOptionalSettings.TabStop = False
+        Me.gbOptionalSettings.Text = "Optional Settings"
         '
         'tblMovieSourcesFileNamingKodiOptionalOpts
         '
@@ -770,7 +765,7 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.ColumnCount = 2
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingKodiOptionalOpts.Controls.Add(Me.chkMovieXBMCProtectVTSBDMV, 0, 0)
+        Me.tblMovieSourcesFileNamingKodiOptionalOpts.Controls.Add(Me.chkProtectVTSBDMV, 0, 0)
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.Name = "tblMovieSourcesFileNamingKodiOptionalOpts"
@@ -778,20 +773,21 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblMovieSourcesFileNamingKodiOptionalOpts.Size = New System.Drawing.Size(180, 23)
+        Me.tblMovieSourcesFileNamingKodiOptionalOpts.Size = New System.Drawing.Size(526, 23)
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.TabIndex = 9
         '
-        'chkMovieXBMCProtectVTSBDMV
+        'chkProtectVTSBDMV
         '
-        Me.chkMovieXBMCProtectVTSBDMV.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieXBMCProtectVTSBDMV.AutoSize = True
-        Me.chkMovieXBMCProtectVTSBDMV.Enabled = False
-        Me.chkMovieXBMCProtectVTSBDMV.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieXBMCProtectVTSBDMV.Name = "chkMovieXBMCProtectVTSBDMV"
-        Me.chkMovieXBMCProtectVTSBDMV.Size = New System.Drawing.Size(174, 17)
-        Me.chkMovieXBMCProtectVTSBDMV.TabIndex = 1
-        Me.chkMovieXBMCProtectVTSBDMV.Text = "Protect DVD/Bluray Structure"
-        Me.chkMovieXBMCProtectVTSBDMV.UseVisualStyleBackColor = True
+        Me.chkProtectVTSBDMV.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkProtectVTSBDMV.AutoSize = True
+        Me.chkProtectVTSBDMV.Enabled = False
+        Me.chkProtectVTSBDMV.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkProtectVTSBDMV.Location = New System.Drawing.Point(3, 3)
+        Me.chkProtectVTSBDMV.Name = "chkProtectVTSBDMV"
+        Me.chkProtectVTSBDMV.Size = New System.Drawing.Size(174, 17)
+        Me.chkProtectVTSBDMV.TabIndex = 1
+        Me.chkProtectVTSBDMV.Text = "Protect DVD/Bluray Structure"
+        Me.chkProtectVTSBDMV.UseVisualStyleBackColor = True
         '
         'gbMovieSourcesFilenamingKodiExtendedOpts
         '
@@ -801,7 +797,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Location = New System.Drawing.Point(181, 3)
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Name = "gbMovieSourcesFilenamingKodiExtendedOpts"
-        Me.gbMovieSourcesFilenamingKodiExtendedOpts.Size = New System.Drawing.Size(186, 181)
+        Me.gbMovieSourcesFilenamingKodiExtendedOpts.Size = New System.Drawing.Size(158, 221)
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.TabIndex = 11
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.TabStop = False
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.Text = "Extended Images"
@@ -838,7 +834,7 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiExtendedOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiExtendedOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiExtendedOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingKodiExtendedOpts.Size = New System.Drawing.Size(180, 160)
+        Me.tblMovieSourcesFileNamingKodiExtendedOpts.Size = New System.Drawing.Size(152, 200)
         Me.tblMovieSourcesFileNamingKodiExtendedOpts.TabIndex = 0
         '
         'lblMovieSourcesFileNamingKodiExtendedClearArt
@@ -1022,7 +1018,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFileNamingKodiADOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbMovieSourcesFileNamingKodiADOpts.MinimumSize = New System.Drawing.Size(150, 0)
         Me.gbMovieSourcesFileNamingKodiADOpts.Name = "gbMovieSourcesFileNamingKodiADOpts"
-        Me.gbMovieSourcesFileNamingKodiADOpts.Size = New System.Drawing.Size(336, 141)
+        Me.gbMovieSourcesFileNamingKodiADOpts.Size = New System.Drawing.Size(336, 181)
         Me.gbMovieSourcesFileNamingKodiADOpts.TabIndex = 9
         Me.gbMovieSourcesFileNamingKodiADOpts.TabStop = False
         Me.gbMovieSourcesFileNamingKodiADOpts.Text = "ArtworkDownloader"
@@ -1034,7 +1030,6 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiADOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodiADOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingKodiADOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingKodiADOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADBanner, 0, 1)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieBannerAD, 1, 1)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFileNamingKodiADClearArt, 0, 2)
@@ -1043,15 +1038,19 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieClearLogoAD, 1, 3)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADDiscArt, 0, 4)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieDiscArtAD, 1, 4)
-        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieLandscapeAD, 1, 5)
-        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADLandscape, 0, 5)
+        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieLandscapeAD, 1, 6)
+        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADLandscape, 0, 6)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.pbMovieSourcesADInfo, 2, 0)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADEnabled, 0, 0)
         Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieUseAD, 1, 0)
+        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADFanart, 0, 5)
+        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMovieFanartAD, 1, 5)
+        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.lblMovieSourcesFilenamingKodiADPoster, 0, 7)
+        Me.tblMovieSourcesFileNamingKodiADOpts.Controls.Add(Me.chkMoviePosterAD, 1, 7)
         Me.tblMovieSourcesFileNamingKodiADOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingKodiADOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSourcesFileNamingKodiADOpts.Name = "tblMovieSourcesFileNamingKodiADOpts"
-        Me.tblMovieSourcesFileNamingKodiADOpts.RowCount = 7
+        Me.tblMovieSourcesFileNamingKodiADOpts.RowCount = 9
         Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -1059,7 +1058,9 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingKodiADOpts.Size = New System.Drawing.Size(330, 120)
+        Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSourcesFileNamingKodiADOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSourcesFileNamingKodiADOpts.Size = New System.Drawing.Size(330, 160)
         Me.tblMovieSourcesFileNamingKodiADOpts.TabIndex = 0
         '
         'lblMovieSourcesFilenamingKodiADBanner
@@ -1155,7 +1156,7 @@ Partial Class frmMovie_FileNaming
         Me.chkMovieLandscapeAD.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkMovieLandscapeAD.AutoSize = True
         Me.chkMovieLandscapeAD.Enabled = False
-        Me.chkMovieLandscapeAD.Location = New System.Drawing.Point(70, 103)
+        Me.chkMovieLandscapeAD.Location = New System.Drawing.Point(70, 123)
         Me.chkMovieLandscapeAD.Name = "chkMovieLandscapeAD"
         Me.chkMovieLandscapeAD.Size = New System.Drawing.Size(15, 14)
         Me.chkMovieLandscapeAD.TabIndex = 9
@@ -1166,7 +1167,7 @@ Partial Class frmMovie_FileNaming
         Me.lblMovieSourcesFilenamingKodiADLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblMovieSourcesFilenamingKodiADLandscape.AutoSize = True
         Me.lblMovieSourcesFilenamingKodiADLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblMovieSourcesFilenamingKodiADLandscape.Location = New System.Drawing.Point(3, 103)
+        Me.lblMovieSourcesFilenamingKodiADLandscape.Location = New System.Drawing.Point(3, 123)
         Me.lblMovieSourcesFilenamingKodiADLandscape.Name = "lblMovieSourcesFilenamingKodiADLandscape"
         Me.lblMovieSourcesFilenamingKodiADLandscape.Size = New System.Drawing.Size(61, 13)
         Me.lblMovieSourcesFilenamingKodiADLandscape.TabIndex = 10
@@ -1207,13 +1208,57 @@ Partial Class frmMovie_FileNaming
         Me.chkMovieUseAD.TabIndex = 8
         Me.chkMovieUseAD.UseVisualStyleBackColor = True
         '
+        'lblMovieSourcesFilenamingKodiADFanart
+        '
+        Me.lblMovieSourcesFilenamingKodiADFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSourcesFilenamingKodiADFanart.AutoSize = True
+        Me.lblMovieSourcesFilenamingKodiADFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSourcesFilenamingKodiADFanart.Location = New System.Drawing.Point(3, 103)
+        Me.lblMovieSourcesFilenamingKodiADFanart.Name = "lblMovieSourcesFilenamingKodiADFanart"
+        Me.lblMovieSourcesFilenamingKodiADFanart.Size = New System.Drawing.Size(40, 13)
+        Me.lblMovieSourcesFilenamingKodiADFanart.TabIndex = 10
+        Me.lblMovieSourcesFilenamingKodiADFanart.Text = "Fanart"
+        '
+        'chkMovieFanartAD
+        '
+        Me.chkMovieFanartAD.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkMovieFanartAD.AutoSize = True
+        Me.chkMovieFanartAD.Enabled = False
+        Me.chkMovieFanartAD.Location = New System.Drawing.Point(70, 103)
+        Me.chkMovieFanartAD.Name = "chkMovieFanartAD"
+        Me.chkMovieFanartAD.Size = New System.Drawing.Size(15, 14)
+        Me.chkMovieFanartAD.TabIndex = 7
+        Me.chkMovieFanartAD.UseVisualStyleBackColor = True
+        '
+        'lblMovieSourcesFilenamingKodiADPoster
+        '
+        Me.lblMovieSourcesFilenamingKodiADPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblMovieSourcesFilenamingKodiADPoster.AutoSize = True
+        Me.lblMovieSourcesFilenamingKodiADPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblMovieSourcesFilenamingKodiADPoster.Location = New System.Drawing.Point(3, 143)
+        Me.lblMovieSourcesFilenamingKodiADPoster.Name = "lblMovieSourcesFilenamingKodiADPoster"
+        Me.lblMovieSourcesFilenamingKodiADPoster.Size = New System.Drawing.Size(39, 13)
+        Me.lblMovieSourcesFilenamingKodiADPoster.TabIndex = 10
+        Me.lblMovieSourcesFilenamingKodiADPoster.Text = "Poster"
+        '
+        'chkMoviePosterAD
+        '
+        Me.chkMoviePosterAD.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.chkMoviePosterAD.AutoSize = True
+        Me.chkMoviePosterAD.Enabled = False
+        Me.chkMoviePosterAD.Location = New System.Drawing.Point(70, 143)
+        Me.chkMoviePosterAD.Name = "chkMoviePosterAD"
+        Me.chkMoviePosterAD.Size = New System.Drawing.Size(15, 14)
+        Me.chkMoviePosterAD.TabIndex = 9
+        Me.chkMoviePosterAD.UseVisualStyleBackColor = True
+        '
         'gbMovieSourcesFileNamingKodiTvTunesOpts
         '
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.AutoSize = True
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Controls.Add(Me.tblMovieSourcesFileNamingKodiTvTunesOpts)
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Location = New System.Drawing.Point(3, 150)
+        Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Location = New System.Drawing.Point(3, 190)
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Name = "gbMovieSourcesFileNamingKodiTvTunesOpts"
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.Size = New System.Drawing.Size(336, 169)
         Me.gbMovieSourcesFileNamingKodiTvTunesOpts.TabIndex = 3
@@ -2733,7 +2778,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertVTSImagesOpts)
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Location = New System.Drawing.Point(286, 89)
+        Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Location = New System.Drawing.Point(286, 66)
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Name = "gbMovieSourcesFilenamingExpertVTSImagesOpts"
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.Size = New System.Drawing.Size(165, 95)
         Me.gbMovieSourcesFilenamingExpertVTSImagesOpts.TabIndex = 11
@@ -2816,7 +2861,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Location = New System.Drawing.Point(286, 3)
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Name = "gbMovieSourcesFilenamingExpertVTSOptionalOpts"
-        Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(165, 80)
+        Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(165, 57)
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.TabIndex = 10
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.TabStop = False
         Me.gbMovieSourcesFilenamingExpertVTSOptionalOpts.Text = "Optional Settings"
@@ -2827,16 +2872,14 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.ColumnCount = 2
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Controls.Add(Me.chkMovieRecognizeVTSExpertVTS, 0, 1)
-        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Controls.Add(Me.chkMovieUseBaseDirectoryExpertVTS, 0, 0)
+        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Controls.Add(Me.chkMovieRecognizeVTSExpertVTS, 0, 0)
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Name = "tblMovieSourcesFileNamingExpertVTSOptionalOpts"
-        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowCount = 3
+        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowCount = 2
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(159, 59)
+        Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.Size = New System.Drawing.Size(159, 36)
         Me.tblMovieSourcesFileNamingExpertVTSOptionalOpts.TabIndex = 9
         '
         'chkMovieRecognizeVTSExpertVTS
@@ -2844,24 +2887,12 @@ Partial Class frmMovie_FileNaming
         Me.chkMovieRecognizeVTSExpertVTS.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkMovieRecognizeVTSExpertVTS.AutoSize = True
         Me.chkMovieRecognizeVTSExpertVTS.Enabled = False
-        Me.chkMovieRecognizeVTSExpertVTS.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieRecognizeVTSExpertVTS.Location = New System.Drawing.Point(3, 3)
         Me.chkMovieRecognizeVTSExpertVTS.Name = "chkMovieRecognizeVTSExpertVTS"
         Me.chkMovieRecognizeVTSExpertVTS.Size = New System.Drawing.Size(153, 30)
         Me.chkMovieRecognizeVTSExpertVTS.TabIndex = 3
         Me.chkMovieRecognizeVTSExpertVTS.Text = "Recognize VIDEO_TS" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "without VIDEO_TS folder"
         Me.chkMovieRecognizeVTSExpertVTS.UseVisualStyleBackColor = True
-        '
-        'chkMovieUseBaseDirectoryExpertVTS
-        '
-        Me.chkMovieUseBaseDirectoryExpertVTS.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieUseBaseDirectoryExpertVTS.AutoSize = True
-        Me.chkMovieUseBaseDirectoryExpertVTS.Enabled = False
-        Me.chkMovieUseBaseDirectoryExpertVTS.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieUseBaseDirectoryExpertVTS.Name = "chkMovieUseBaseDirectoryExpertVTS"
-        Me.chkMovieUseBaseDirectoryExpertVTS.Size = New System.Drawing.Size(121, 17)
-        Me.chkMovieUseBaseDirectoryExpertVTS.TabIndex = 2
-        Me.chkMovieUseBaseDirectoryExpertVTS.Text = "Use Base Directory"
-        Me.chkMovieUseBaseDirectoryExpertVTS.UseVisualStyleBackColor = True
         '
         'tblMovieSourcesFileNamingExpertVTSOpts
         '
@@ -3096,15 +3127,13 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingExpertBDMV.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingExpertBDMV.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieSourcesFileNamingExpertBDMV.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingExpertBDMV.Controls.Add(Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts, 1, 1)
-        Me.tblMovieSourcesFileNamingExpertBDMV.Controls.Add(Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts, 1, 0)
+        Me.tblMovieSourcesFileNamingExpertBDMV.Controls.Add(Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts, 1, 0)
         Me.tblMovieSourcesFileNamingExpertBDMV.Controls.Add(Me.tblMovieSourcesFileNamingExpertBDMVOpts, 0, 0)
         Me.tblMovieSourcesFileNamingExpertBDMV.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieSourcesFileNamingExpertBDMV.Location = New System.Drawing.Point(0, 0)
         Me.tblMovieSourcesFileNamingExpertBDMV.Margin = New System.Windows.Forms.Padding(0)
         Me.tblMovieSourcesFileNamingExpertBDMV.Name = "tblMovieSourcesFileNamingExpertBDMV"
-        Me.tblMovieSourcesFileNamingExpertBDMV.RowCount = 4
-        Me.tblMovieSourcesFileNamingExpertBDMV.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSourcesFileNamingExpertBDMV.RowCount = 3
         Me.tblMovieSourcesFileNamingExpertBDMV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertBDMV.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertBDMV.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -3116,7 +3145,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.AutoSize = True
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertBDMVImagesOpts)
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Location = New System.Drawing.Point(286, 53)
+        Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Location = New System.Drawing.Point(286, 3)
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Name = "gbMovieSourcesFilenamingExpertBDMVImagesOpts"
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.Size = New System.Drawing.Size(160, 95)
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.TabIndex = 1
@@ -3192,46 +3221,6 @@ Partial Class frmMovie_FileNaming
         Me.chkMovieExtrathumbsExpertBDMV.Text = "Extrathumbs"
         Me.chkMovieExtrathumbsExpertBDMV.UseVisualStyleBackColor = True
         '
-        'gbMovieSourcesFilenamingExpertBDMVOptionalOpts
-        '
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.AutoSize = True
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Controls.Add(Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts)
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Location = New System.Drawing.Point(286, 3)
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Name = "gbMovieSourcesFilenamingExpertBDMVOptionalOpts"
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Size = New System.Drawing.Size(160, 44)
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.TabIndex = 10
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.TabStop = False
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.Text = "Optional Settings"
-        '
-        'tblMovieSourcesFileNamingExpertBDMVOptionalOpts
-        '
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.AutoSize = True
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.ColumnCount = 2
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.Controls.Add(Me.chkMovieUseBaseDirectoryExpertBDMV, 0, 0)
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.Name = "tblMovieSourcesFileNamingExpertBDMVOptionalOpts"
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.RowCount = 2
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.Size = New System.Drawing.Size(154, 23)
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.TabIndex = 9
-        '
-        'chkMovieUseBaseDirectoryExpertBDMV
-        '
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieUseBaseDirectoryExpertBDMV.AutoSize = True
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Enabled = False
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Name = "chkMovieUseBaseDirectoryExpertBDMV"
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Size = New System.Drawing.Size(121, 17)
-        Me.chkMovieUseBaseDirectoryExpertBDMV.TabIndex = 2
-        Me.chkMovieUseBaseDirectoryExpertBDMV.Text = "Use Base Directory"
-        Me.chkMovieUseBaseDirectoryExpertBDMV.UseVisualStyleBackColor = True
-        '
         'tblMovieSourcesFileNamingExpertBDMVOpts
         '
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.AutoSize = True
@@ -3261,7 +3250,7 @@ Partial Class frmMovie_FileNaming
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.Margin = New System.Windows.Forms.Padding(0)
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.Name = "tblMovieSourcesFileNamingExpertBDMVOpts"
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.RowCount = 10
-        Me.tblMovieSourcesFileNamingExpertBDMV.SetRowSpan(Me.tblMovieSourcesFileNamingExpertBDMVOpts, 3)
+        Me.tblMovieSourcesFileNamingExpertBDMV.SetRowSpan(Me.tblMovieSourcesFileNamingExpertBDMVOpts, 2)
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -3466,7 +3455,7 @@ Partial Class frmMovie_FileNaming
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(555, 522)
+        Me.pnlSettings.Size = New System.Drawing.Size(559, 581)
         Me.pnlSettings.TabIndex = 10
         '
         'tblSettings
@@ -3476,16 +3465,18 @@ Partial Class frmMovie_FileNaming
         Me.tblSettings.ColumnCount = 2
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettings.Controls.Add(Me.gbMovieSourcesBackdropsFolderOpts, 0, 1)
+        Me.tblSettings.Controls.Add(Me.gbMovieSourcesBackdropsFolderOpts, 0, 2)
+        Me.tblSettings.Controls.Add(Me.gbOptionalSettings, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbMovieSourcesFilenamingOpts, 0, 0)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
-        Me.tblSettings.RowCount = 3
+        Me.tblSettings.RowCount = 4
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(555, 522)
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(559, 581)
         Me.tblSettings.TabIndex = 0
         '
         'gbMovieSourcesBackdropsFolderOpts
@@ -3494,7 +3485,7 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesBackdropsFolderOpts.Controls.Add(Me.tblMovieSourcesBackdropsFolderOpts)
         Me.gbMovieSourcesBackdropsFolderOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbMovieSourcesBackdropsFolderOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSourcesBackdropsFolderOpts.Location = New System.Drawing.Point(3, 423)
+        Me.gbMovieSourcesBackdropsFolderOpts.Location = New System.Drawing.Point(3, 473)
         Me.gbMovieSourcesBackdropsFolderOpts.Name = "gbMovieSourcesBackdropsFolderOpts"
         Me.gbMovieSourcesBackdropsFolderOpts.Size = New System.Drawing.Size(532, 72)
         Me.gbMovieSourcesBackdropsFolderOpts.TabIndex = 10
@@ -3560,7 +3551,7 @@ Partial Class frmMovie_FileNaming
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(555, 522)
+        Me.ClientSize = New System.Drawing.Size(559, 581)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmMovie_FileNaming"
         Me.Text = "frmMovie_FileNaming"
@@ -3574,8 +3565,8 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingKodiDefaultsOpts.PerformLayout()
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.ResumeLayout(False)
         Me.tblMovieSourcesFileNamingKodiDefaultsOpts.PerformLayout()
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.ResumeLayout(False)
-        Me.gbMovieSourcesFilenamingKodiOptionalOpts.PerformLayout()
+        Me.gbOptionalSettings.ResumeLayout(False)
+        Me.gbOptionalSettings.PerformLayout()
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.ResumeLayout(False)
         Me.tblMovieSourcesFileNamingKodiOptionalOpts.PerformLayout()
         Me.gbMovieSourcesFilenamingKodiExtendedOpts.ResumeLayout(False)
@@ -3675,10 +3666,6 @@ Partial Class frmMovie_FileNaming
         Me.gbMovieSourcesFilenamingExpertBDMVImagesOpts.PerformLayout()
         Me.tblMovieSourcesFileNamingExpertBDMVImagesOpts.ResumeLayout(False)
         Me.tblMovieSourcesFileNamingExpertBDMVImagesOpts.PerformLayout()
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.ResumeLayout(False)
-        Me.gbMovieSourcesFilenamingExpertBDMVOptionalOpts.PerformLayout()
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.ResumeLayout(False)
-        Me.tblMovieSourcesFileNamingExpertBDMVOptionalOpts.PerformLayout()
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.ResumeLayout(False)
         Me.tblMovieSourcesFileNamingExpertBDMVOpts.PerformLayout()
         Me.pnlSettings.ResumeLayout(False)
@@ -3726,9 +3713,9 @@ Partial Class frmMovie_FileNaming
     Friend WithEvents chkMoviePosterEden As Windows.Forms.CheckBox
     Friend WithEvents chkMovieTrailerFrodo As Windows.Forms.CheckBox
     Friend WithEvents chkMovieTrailerEden As Windows.Forms.CheckBox
-    Friend WithEvents gbMovieSourcesFilenamingKodiOptionalOpts As Windows.Forms.GroupBox
+    Friend WithEvents gbOptionalSettings As Windows.Forms.GroupBox
     Friend WithEvents tblMovieSourcesFileNamingKodiOptionalOpts As Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkMovieXBMCProtectVTSBDMV As Windows.Forms.CheckBox
+    Friend WithEvents chkProtectVTSBDMV As Windows.Forms.CheckBox
     Friend WithEvents gbMovieSourcesFilenamingKodiExtendedOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieSourcesFileNamingKodiExtendedOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents lblMovieSourcesFileNamingKodiExtendedClearArt As Windows.Forms.Label
@@ -3889,7 +3876,6 @@ Partial Class frmMovie_FileNaming
     Friend WithEvents gbMovieSourcesFilenamingExpertVTSOptionalOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieSourcesFileNamingExpertVTSOptionalOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMovieRecognizeVTSExpertVTS As Windows.Forms.CheckBox
-    Friend WithEvents chkMovieUseBaseDirectoryExpertVTS As Windows.Forms.CheckBox
     Friend WithEvents tblMovieSourcesFileNamingExpertVTSOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents lblMovieSourcesFilenamingExpertVTSBanner As Windows.Forms.Label
     Friend WithEvents txtMovieBannerExpertVTS As Windows.Forms.TextBox
@@ -3917,9 +3903,6 @@ Partial Class frmMovie_FileNaming
     Friend WithEvents chkMovieActorThumbsExpertBDMV As Windows.Forms.CheckBox
     Friend WithEvents chkMovieExtrafanartsExpertBDMV As Windows.Forms.CheckBox
     Friend WithEvents chkMovieExtrathumbsExpertBDMV As Windows.Forms.CheckBox
-    Friend WithEvents gbMovieSourcesFilenamingExpertBDMVOptionalOpts As Windows.Forms.GroupBox
-    Friend WithEvents tblMovieSourcesFileNamingExpertBDMVOptionalOpts As Windows.Forms.TableLayoutPanel
-    Friend WithEvents chkMovieUseBaseDirectoryExpertBDMV As Windows.Forms.CheckBox
     Friend WithEvents tblMovieSourcesFileNamingExpertBDMVOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents lblMovieSourcesFilenamingExpertBDMVBanner As Windows.Forms.Label
     Friend WithEvents txtMovieBannerExpertBDMV As Windows.Forms.TextBox
@@ -3948,4 +3931,8 @@ Partial Class frmMovie_FileNaming
     Friend WithEvents txtMovieSourcesBackdropsFolderPath As Windows.Forms.TextBox
     Friend WithEvents btnMovieSourcesBackdropsFolderPathBrowse As Windows.Forms.Button
     Friend WithEvents fbdBrowse As Windows.Forms.FolderBrowserDialog
+    Friend WithEvents lblMovieSourcesFilenamingKodiADFanart As Label
+    Friend WithEvents chkMovieFanartAD As CheckBox
+    Friend WithEvents lblMovieSourcesFilenamingKodiADPoster As Label
+    Friend WithEvents chkMoviePosterAD As CheckBox
 End Class

@@ -70,334 +70,443 @@ Public Class NFO
         Dim new_UserRating As Boolean = False
         Dim new_Year As Boolean = False
 
-        For Each scrapedmovie In ScrapedList
+        With Master.eSettings.Movie.DataSettings
+            For Each scrapedmovie In ScrapedList
 
-            'IDs
-            If scrapedmovie.IMDBSpecified Then
-                tDBElement.MainDetails.IMDB = scrapedmovie.IMDB
-            End If
-            If scrapedmovie.TMDBSpecified Then
-                tDBElement.MainDetails.TMDB = scrapedmovie.TMDB
-            End If
-
-            'Actors
-            If (Not tDBElement.MainDetails.ActorsSpecified OrElse Not Master.eSettings.MovieLockActors) AndAlso tDBElement.ScrapeOptions.bMainActors AndAlso
-                scrapedmovie.ActorsSpecified AndAlso Master.eSettings.MovieScraperCast AndAlso Not new_Actors Then
-
-                If Master.eSettings.MovieScraperCastWithImgOnly Then
-                    For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
-                        If Not scrapedmovie.Actors(i).URLOriginalSpecified Then
-                            scrapedmovie.Actors.RemoveAt(i)
-                        End If
-                    Next
+                'IDs
+                If scrapedmovie.IMDBSpecified Then
+                    tDBElement.MainDetails.IMDB = scrapedmovie.IMDB
+                End If
+                If scrapedmovie.TMDBSpecified Then
+                    tDBElement.MainDetails.TMDB = scrapedmovie.TMDB
                 End If
 
-                If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
-                    scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
-                End If
-
-                tDBElement.MainDetails.Actors = scrapedmovie.Actors
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedmovie.ActorsSpecified Then
-                    new_Actors = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each actor In scrapedmovie.Actors
-                        actor.Order = iOrder
-                        iOrder += 1
-                    Next
-                End If
-
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCast AndAlso Not Master.eSettings.MovieLockActors Then
-                tDBElement.MainDetails.Actors.Clear()
-            End If
-
-            'Certification
-            If (Not tDBElement.MainDetails.CertificationsSpecified OrElse Not Master.eSettings.MovieLockCert) AndAlso tDBElement.ScrapeOptions.bMainCertifications AndAlso
-                scrapedmovie.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCert AndAlso Not new_Certification Then
-                If Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-                    tDBElement.MainDetails.Certifications = scrapedmovie.Certifications
-                    new_Certification = True
-                Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
-                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                        For Each tCert In scrapedmovie.Certifications
-                            If tCert.StartsWith(CertificationLanguage.name) Then
-                                tDBElement.MainDetails.Certifications.Clear()
-                                tDBElement.MainDetails.Certifications.Add(tCert)
-                                new_Certification = True
-                                Exit For
+                'Actors
+                If (Not tDBElement.MainDetails.ActorsSpecified OrElse Not .Actors.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainActors AndAlso
+                    scrapedmovie.ActorsSpecified AndAlso
+                    .Actors.Enabled AndAlso
+                    Not new_Actors Then
+                    If .ActorsWithImageOnly Then
+                        For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
+                            If Not scrapedmovie.Actors(i).URLOriginalSpecified Then
+                                scrapedmovie.Actors.RemoveAt(i)
                             End If
                         Next
-                    Else
-                        logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
                     End If
-                End If
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCert AndAlso Not Master.eSettings.MovieLockCert Then
-                tDBElement.MainDetails.Certifications.Clear()
-            End If
 
-            'Credits
-            If (Not tDBElement.MainDetails.CreditsSpecified OrElse Not Master.eSettings.MovieLockCredits) AndAlso
-                scrapedmovie.CreditsSpecified AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
-                tDBElement.MainDetails.Credits = scrapedmovie.Credits
-                new_Credits = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
-                tDBElement.MainDetails.Credits.Clear()
-            End If
+                    If .Actors.LimitSpecified AndAlso
+                        scrapedmovie.Actors.Count > .Actors.Limit Then
+                        scrapedmovie.Actors.RemoveRange(.Actors.Limit, scrapedmovie.Actors.Count - .Actors.Limit)
+                    End If
 
-            'Collection ID
-            If (Not tDBElement.MainDetails.TMDBColIDSpecified OrElse Not Master.eSettings.MovieLockCollectionID) AndAlso tDBElement.ScrapeOptions.bMainCollectionID AndAlso
-                scrapedmovie.TMDBColIDSpecified AndAlso Master.eSettings.MovieScraperCollectionID AndAlso Not new_CollectionID Then
-                tDBElement.MainDetails.TMDBColID = scrapedmovie.TMDBColID
-                new_CollectionID = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCollectionID AndAlso Not Master.eSettings.MovieLockCollectionID Then
-                tDBElement.MainDetails.TMDBColID = -1
-            End If
-
-            'Collections
-            If (Not tDBElement.MainDetails.SetsSpecified OrElse Not Master.eSettings.MovieLockCollections) AndAlso
-                scrapedmovie.SetsSpecified AndAlso Master.eSettings.MovieScraperCollectionsAuto AndAlso Not new_Collections Then
-                tDBElement.MainDetails.Sets.Clear()
-                For Each movieset In scrapedmovie.Sets
-                    If Not String.IsNullOrEmpty(movieset.Title) Then
-                        For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
-                            movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
+                    tDBElement.MainDetails.Actors = scrapedmovie.Actors
+                    'added check if there's any actors left to add, if not then try with results of following scraper...
+                    If scrapedmovie.ActorsSpecified Then
+                        new_Actors = True
+                        'add numbers for ordering
+                        Dim iOrder As Integer = 0
+                        For Each actor In scrapedmovie.Actors
+                            actor.Order = iOrder
+                            iOrder += 1
                         Next
                     End If
-                Next
-                tDBElement.MainDetails.Sets.AddRange(scrapedmovie.Sets)
-                new_Collections = True
-            End If
 
-            'Countries
-            If (Not tDBElement.MainDetails.CountriesSpecified OrElse Not Master.eSettings.MovieLockCountry) AndAlso tDBElement.ScrapeOptions.bMainCountries AndAlso
-                scrapedmovie.CountriesSpecified AndAlso Master.eSettings.MovieScraperCountry AndAlso Not new_Countries Then
-                tDBElement.MainDetails.Countries = scrapedmovie.Countries
-                new_Countries = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCountry AndAlso Not Master.eSettings.MovieLockCountry Then
-                tDBElement.MainDetails.Countries.Clear()
-            End If
-
-            'Directors
-            If (Not tDBElement.MainDetails.DirectorsSpecified OrElse Not Master.eSettings.MovieLockDirector) AndAlso tDBElement.ScrapeOptions.bMainDirectors AndAlso
-                scrapedmovie.DirectorsSpecified AndAlso Master.eSettings.MovieScraperDirector AndAlso Not new_Directors Then
-                tDBElement.MainDetails.Directors = scrapedmovie.Directors
-                new_Directors = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperDirector AndAlso Not Master.eSettings.MovieLockDirector Then
-                tDBElement.MainDetails.Directors.Clear()
-            End If
-
-            'Genres
-            If (Not tDBElement.MainDetails.GenresSpecified OrElse Not Master.eSettings.MovieLockGenre) AndAlso tDBElement.ScrapeOptions.bMainGenres AndAlso
-                scrapedmovie.GenresSpecified AndAlso Master.eSettings.MovieScraperGenre AndAlso Not new_Genres Then
-
-                StringUtils.GenreFilter(scrapedmovie.Genres)
-
-                If Master.eSettings.MovieScraperGenreLimit > 0 AndAlso Master.eSettings.MovieScraperGenreLimit < scrapedmovie.Genres.Count AndAlso scrapedmovie.Genres.Count > 0 Then
-                    scrapedmovie.Genres.RemoveRange(Master.eSettings.MovieScraperGenreLimit, scrapedmovie.Genres.Count - Master.eSettings.MovieScraperGenreLimit)
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Actors.Enabled AndAlso
+                    Not .Actors.Locked Then
+                    tDBElement.MainDetails.Actors.Clear()
                 End If
-                tDBElement.MainDetails.Genres = scrapedmovie.Genres
-                new_Genres = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperGenre AndAlso Not Master.eSettings.MovieLockGenre Then
-                tDBElement.MainDetails.Genres.Clear()
-            End If
 
-            'MPAA
-            If (Not tDBElement.MainDetails.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) AndAlso tDBElement.ScrapeOptions.bMainMPAA AndAlso
-                scrapedmovie.MPAASpecified AndAlso Master.eSettings.MovieScraperMPAA AndAlso Not new_MPAA Then
-                tDBElement.MainDetails.MPAA = scrapedmovie.MPAA
-                new_MPAA = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperMPAA AndAlso Not Master.eSettings.MovieLockMPAA Then
-                tDBElement.MainDetails.MPAA = String.Empty
-            End If
+                'Certification
+                If (Not tDBElement.MainDetails.CertificationsSpecified OrElse Not .Certifications.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainCertifications AndAlso
+                    scrapedmovie.CertificationsSpecified AndAlso
+                    .Certifications.Enabled AndAlso
+                    Not new_Certification Then
+                    If .Certifications.Filter = Master.eLang.All Then
+                        tDBElement.MainDetails.Certifications = scrapedmovie.Certifications
+                        new_Certification = True
+                    Else
+                        Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .Certifications.Filter)
+                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                            For Each tCert In scrapedmovie.Certifications
+                                If tCert.StartsWith(CertificationLanguage.name) Then
+                                    tDBElement.MainDetails.Certifications.Clear()
+                                    tDBElement.MainDetails.Certifications.Add(tCert)
+                                    new_Certification = True
+                                    Exit For
+                                End If
+                            Next
+                        Else
+                            logger.Error("Movie Certification Language (Limit) not found. Please check your settings!")
+                        End If
+                    End If
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Certifications.Enabled AndAlso
+                    Not .Certifications.Locked Then
+                    tDBElement.MainDetails.Certifications.Clear()
+                End If
 
-            'Originaltitle
-            If (Not tDBElement.MainDetails.OriginalTitleSpecified OrElse Not Master.eSettings.MovieLockOriginalTitle) AndAlso tDBElement.ScrapeOptions.bMainOriginalTitle AndAlso
-                scrapedmovie.OriginalTitleSpecified AndAlso Master.eSettings.MovieScraperOriginalTitle AndAlso Not new_OriginalTitle Then
-                tDBElement.MainDetails.OriginalTitle = scrapedmovie.OriginalTitle
-                new_OriginalTitle = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOriginalTitle AndAlso Not Master.eSettings.MovieLockOriginalTitle Then
-                tDBElement.MainDetails.OriginalTitle = String.Empty
-            End If
+                'Credits
+                If (Not tDBElement.MainDetails.CreditsSpecified OrElse Not .Credits.Locked) AndAlso
+                    scrapedmovie.CreditsSpecified AndAlso
+                    .Credits.Enabled AndAlso
+                    Not new_Credits Then
+                    tDBElement.MainDetails.Credits = scrapedmovie.Credits
+                    new_Credits = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Credits.Enabled AndAlso
+                    Not .Credits.Locked Then
+                    tDBElement.MainDetails.Credits.Clear()
+                End If
 
-            'Outline
-            If (Not tDBElement.MainDetails.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso tDBElement.ScrapeOptions.bMainOutline AndAlso
-                scrapedmovie.OutlineSpecified AndAlso Master.eSettings.MovieScraperOutline AndAlso Not new_Outline Then
-                tDBElement.MainDetails.Outline = scrapedmovie.Outline
-                new_Outline = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperOutline AndAlso Not Master.eSettings.MovieLockOutline Then
-                tDBElement.MainDetails.Outline = String.Empty
-            End If
-            'check if brackets should be removed...
-            If Master.eSettings.MovieScraperCleanPlotOutline Then
-                tDBElement.MainDetails.Outline = StringUtils.RemoveBrackets(tDBElement.MainDetails.Outline)
-            End If
+                'Collection ID
+                If (Not tDBElement.MainDetails.TMDBColIDSpecified OrElse Not .CollectionID.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainCollectionID AndAlso
+                    scrapedmovie.TMDBColIDSpecified AndAlso
+                    .CollectionID.Enabled AndAlso
+                    Not new_CollectionID Then
+                    tDBElement.MainDetails.TMDBColID = scrapedmovie.TMDBColID
+                    new_CollectionID = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .CollectionID.Enabled AndAlso
+                    Not .CollectionID.Locked Then
+                    tDBElement.MainDetails.TMDBColID = -1
+                End If
 
-            'Plot
-            If (Not tDBElement.MainDetails.PlotSpecified OrElse Not Master.eSettings.MovieLockPlot) AndAlso tDBElement.ScrapeOptions.bMainPlot AndAlso
-                scrapedmovie.PlotSpecified AndAlso Master.eSettings.MovieScraperPlot AndAlso Not new_Plot Then
-                tDBElement.MainDetails.Plot = scrapedmovie.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperPlot AndAlso Not Master.eSettings.MovieLockPlot Then
-                tDBElement.MainDetails.Plot = String.Empty
-            End If
-            'check if brackets should be removed...
-            If Master.eSettings.MovieScraperCleanPlotOutline Then
-                tDBElement.MainDetails.Plot = StringUtils.RemoveBrackets(tDBElement.MainDetails.Plot)
-            End If
-
-            'Rating/Votes
-            If (Not tDBElement.MainDetails.RatingSpecified OrElse Not Master.eSettings.MovieLockRating) AndAlso tDBElement.ScrapeOptions.bMainRating AndAlso
-                scrapedmovie.RatingSpecified AndAlso Master.eSettings.MovieScraperRating AndAlso Not new_Rating Then
-                tDBElement.MainDetails.Rating = scrapedmovie.Rating
-                tDBElement.MainDetails.Votes = NumUtils.CleanVotes(scrapedmovie.Votes)
-                new_Rating = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRating AndAlso Not Master.eSettings.MovieLockRating Then
-                tDBElement.MainDetails.Rating = String.Empty
-                tDBElement.MainDetails.Votes = String.Empty
-            End If
-
-            'ReleaseDate
-            If (Not tDBElement.MainDetails.ReleaseDateSpecified OrElse Not Master.eSettings.MovieLockReleaseDate) AndAlso tDBElement.ScrapeOptions.bMainRelease AndAlso
-                scrapedmovie.ReleaseDateSpecified AndAlso Master.eSettings.MovieScraperRelease AndAlso Not new_ReleaseDate Then
-                tDBElement.MainDetails.ReleaseDate = NumUtils.DateToISO8601Date(scrapedmovie.ReleaseDate)
-                new_ReleaseDate = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRelease AndAlso Not Master.eSettings.MovieLockReleaseDate Then
-                tDBElement.MainDetails.ReleaseDate = String.Empty
-            End If
-
-            'Studios
-            If (Not tDBElement.MainDetails.StudiosSpecified OrElse Not Master.eSettings.MovieLockStudio) AndAlso tDBElement.ScrapeOptions.bMainStudios AndAlso
-                scrapedmovie.StudiosSpecified AndAlso Master.eSettings.MovieScraperStudio AndAlso Not new_Studio Then
-                tDBElement.MainDetails.Studios.Clear()
-
-                Dim _studios As New List(Of String)
-                _studios.AddRange(scrapedmovie.Studios)
-
-                If Master.eSettings.MovieScraperStudioWithImgOnly Then
-                    For i = _studios.Count - 1 To 0 Step -1
-                        If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-                            _studios.RemoveAt(i)
+                'Collections
+                If (Not tDBElement.MainDetails.SetsSpecified OrElse Not .Collection.Locked) AndAlso
+                    scrapedmovie.SetsSpecified AndAlso
+                    .Collection.Enabled AndAlso
+                    Not new_Collections Then
+                    tDBElement.MainDetails.Sets.Clear()
+                    For Each movieset In scrapedmovie.Sets
+                        If Not String.IsNullOrEmpty(movieset.Title) Then
+                            For Each sett As AdvancedSettingsSetting In clsXMLAdvancedSettings.GetAllSettings.Where(Function(y) y.Name.StartsWith("MovieSetTitleRenamer:"))
+                                movieset.Title = movieset.Title.Replace(sett.Name.Substring(21), sett.Value)
+                            Next
                         End If
                     Next
+                    tDBElement.MainDetails.Sets.AddRange(scrapedmovie.Sets)
+                    new_Collections = True
                 End If
 
-                If Master.eSettings.MovieScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
-                    _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
+                'Countries
+                If (Not tDBElement.MainDetails.CountriesSpecified OrElse Not .Countries.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainCountries AndAlso
+                    scrapedmovie.CountriesSpecified AndAlso
+                    .Countries.Enabled AndAlso
+                    Not new_Countries Then
+                    tDBElement.MainDetails.Countries = scrapedmovie.Countries
+                    new_Countries = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Countries.Enabled AndAlso
+                    Not .Countries.Locked Then
+                    tDBElement.MainDetails.Countries.Clear()
                 End If
 
-
-                tDBElement.MainDetails.Studios.AddRange(_studios)
-                'added check if there's any studios left to add, if not then try with results of following scraper...
-                If _studios.Count > 0 Then
-                    new_Studio = True
+                'Directors
+                If (Not tDBElement.MainDetails.DirectorsSpecified OrElse Not .Directors.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainDirectors AndAlso
+                    scrapedmovie.DirectorsSpecified AndAlso
+                    .Directors.Enabled AndAlso
+                    Not new_Directors Then
+                    tDBElement.MainDetails.Directors = scrapedmovie.Directors
+                    new_Directors = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Directors.Enabled AndAlso
+                    Not .Directors.Locked Then
+                    tDBElement.MainDetails.Directors.Clear()
                 End If
 
-
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperStudio AndAlso Not Master.eSettings.MovieLockStudio Then
-                tDBElement.MainDetails.Studios.Clear()
-            End If
-
-            'Tagline
-            If (Not tDBElement.MainDetails.TaglineSpecified OrElse Not Master.eSettings.MovieLockTagline) AndAlso tDBElement.ScrapeOptions.bMainTagline AndAlso
-                scrapedmovie.TaglineSpecified AndAlso Master.eSettings.MovieScraperTagline AndAlso Not new_Tagline Then
-                tDBElement.MainDetails.Tagline = scrapedmovie.Tagline
-                new_Tagline = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTagline AndAlso Not Master.eSettings.MovieLockTagline Then
-                tDBElement.MainDetails.Tagline = String.Empty
-            End If
-
-            'Title
-            If (Not tDBElement.MainDetails.TitleSpecified OrElse Not Master.eSettings.MovieLockTitle) AndAlso tDBElement.ScrapeOptions.bMainTitle AndAlso
-                scrapedmovie.TitleSpecified AndAlso Master.eSettings.MovieScraperTitle AndAlso Not new_Title Then
-                tDBElement.MainDetails.Title = scrapedmovie.Title
-                new_Title = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTitle AndAlso Not Master.eSettings.MovieLockTitle Then
-                tDBElement.MainDetails.Title = String.Empty
-            End If
-
-            'Top250 (special handling: no check if "scrapedmovie.Top250Specified" and only set "new_Top250 = True" if a value over 0 has been set)
-            If (Not tDBElement.MainDetails.Top250Specified OrElse Not Master.eSettings.MovieLockTop250) AndAlso tDBElement.ScrapeOptions.bMainTop250 AndAlso
-                Master.eSettings.MovieScraperTop250 AndAlso Not new_Top250 Then
-                tDBElement.MainDetails.Top250 = scrapedmovie.Top250
-                new_Top250 = If(scrapedmovie.Top250Specified, True, False)
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTop250 AndAlso Not Master.eSettings.MovieLockTop250 Then
-                tDBElement.MainDetails.Top250 = 0
-            End If
-
-            'Trailer
-            If (Not tDBElement.MainDetails.TrailerSpecified OrElse Not Master.eSettings.MovieLockTrailer) AndAlso tDBElement.ScrapeOptions.bMainTrailer AndAlso
-                scrapedmovie.TrailerSpecified AndAlso Master.eSettings.MovieScraperTrailer AndAlso Not new_Trailer Then
-                If Master.eSettings.MovieScraperXBMCTrailerFormat AndAlso YouTube.UrlUtils.IsYouTubeURL(scrapedmovie.Trailer) Then
-                    tDBElement.MainDetails.Trailer = StringUtils.ConvertFromYouTubeURLToKodiTrailerFormat(scrapedmovie.Trailer)
-                Else
-                    tDBElement.MainDetails.Trailer = scrapedmovie.Trailer
+                'Genres
+                If (Not tDBElement.MainDetails.GenresSpecified OrElse Not .Genres.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainGenres AndAlso
+                    scrapedmovie.GenresSpecified AndAlso
+                    .Genres.Enabled AndAlso
+                    Not new_Genres Then
+                    StringUtils.GenreFilter(scrapedmovie.Genres)
+                    If .Genres.LimitSpecified AndAlso
+                        .Genres.Limit < scrapedmovie.Genres.Count AndAlso
+                        scrapedmovie.Genres.Count > 0 Then
+                        scrapedmovie.Genres.RemoveRange(.Genres.Limit, scrapedmovie.Genres.Count - .Genres.Limit)
+                    End If
+                    tDBElement.MainDetails.Genres = scrapedmovie.Genres
+                    new_Genres = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Genres.Enabled AndAlso
+                    Not .Genres.Locked Then
+                    tDBElement.MainDetails.Genres.Clear()
                 End If
-                new_Trailer = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperTrailer AndAlso Not Master.eSettings.MovieLockTrailer Then
-                tDBElement.MainDetails.Trailer = String.Empty
+
+                'MPAA
+                If (Not tDBElement.MainDetails.MPAASpecified OrElse Not .MPAA.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainMPAA AndAlso
+                    scrapedmovie.MPAASpecified AndAlso
+                    .MPAA.Enabled AndAlso
+                    Not new_MPAA Then
+                    tDBElement.MainDetails.MPAA = scrapedmovie.MPAA
+                    new_MPAA = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .MPAA.Enabled AndAlso
+                    Not .MPAA.Locked Then
+                    tDBElement.MainDetails.MPAA = String.Empty
+                End If
+
+                'Originaltitle
+                If (Not tDBElement.MainDetails.OriginalTitleSpecified OrElse Not .OriginalTitle.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainOriginalTitle AndAlso
+                    scrapedmovie.OriginalTitleSpecified AndAlso
+                    .OriginalTitle.Enabled AndAlso
+                    Not new_OriginalTitle Then
+                    tDBElement.MainDetails.OriginalTitle = scrapedmovie.OriginalTitle
+                    new_OriginalTitle = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .OriginalTitle.Enabled AndAlso
+                    Not .OriginalTitle.Locked Then
+                    tDBElement.MainDetails.OriginalTitle = String.Empty
+                End If
+
+                'Outline
+                If (Not tDBElement.MainDetails.OutlineSpecified OrElse Not .Outline.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainOutline AndAlso
+                    scrapedmovie.OutlineSpecified AndAlso
+                    .Outline.Enabled AndAlso
+                    Not new_Outline Then
+                    tDBElement.MainDetails.Outline = scrapedmovie.Outline
+                    new_Outline = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Outline.Enabled AndAlso
+                    Not .Outline.Locked Then
+                    tDBElement.MainDetails.Outline = String.Empty
+                End If
+                'check if brackets should be removed...
+                If .CleanPlotAndOutline Then
+                    tDBElement.MainDetails.Outline = StringUtils.RemoveBrackets(tDBElement.MainDetails.Outline)
+                End If
+
+                'Plot
+                If (Not tDBElement.MainDetails.PlotSpecified OrElse Not .Plot.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainPlot AndAlso
+                    scrapedmovie.PlotSpecified AndAlso
+                    .Plot.Enabled AndAlso
+                    Not new_Plot Then
+                    tDBElement.MainDetails.Plot = scrapedmovie.Plot
+                    new_Plot = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Plot.Enabled AndAlso
+                    Not .Plot.Locked Then
+                    tDBElement.MainDetails.Plot = String.Empty
+                End If
+                'check if brackets should be removed...
+                If .CleanPlotAndOutline Then
+                    tDBElement.MainDetails.Plot = StringUtils.RemoveBrackets(tDBElement.MainDetails.Plot)
+                End If
+
+                'Rating/Votes
+                If (Not tDBElement.MainDetails.RatingSpecified OrElse Not .Rating.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainRating AndAlso
+                    scrapedmovie.RatingSpecified AndAlso
+                    .Rating.Enabled AndAlso
+                    Not new_Rating Then
+                    tDBElement.MainDetails.Rating = scrapedmovie.Rating
+                    tDBElement.MainDetails.Votes = NumUtils.CleanVotes(scrapedmovie.Votes)
+                    new_Rating = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Rating.Enabled AndAlso
+                    Not .Rating.Locked Then
+                    tDBElement.MainDetails.Rating = String.Empty
+                    tDBElement.MainDetails.Votes = String.Empty
+                End If
+
+                'ReleaseDate
+                If (Not tDBElement.MainDetails.ReleaseDateSpecified OrElse Not .ReleaseDate.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainRelease AndAlso
+                    scrapedmovie.ReleaseDateSpecified AndAlso
+                    .ReleaseDate.Enabled AndAlso
+                    Not new_ReleaseDate Then
+                    tDBElement.MainDetails.ReleaseDate = NumUtils.DateToISO8601Date(scrapedmovie.ReleaseDate)
+                    new_ReleaseDate = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .ReleaseDate.Enabled AndAlso
+                    Not .ReleaseDate.Locked Then
+                    tDBElement.MainDetails.ReleaseDate = String.Empty
+                End If
+
+                'Studios
+                If (Not tDBElement.MainDetails.StudiosSpecified OrElse Not .Studios.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainStudios AndAlso
+                    scrapedmovie.StudiosSpecified AndAlso
+                    .Studios.Enabled AndAlso
+                    Not new_Studio Then
+                    tDBElement.MainDetails.Studios.Clear()
+
+                    Dim _studios As New List(Of String)
+                    _studios.AddRange(scrapedmovie.Studios)
+
+                    If .StudiosWithImageOnly Then
+                        For i = _studios.Count - 1 To 0 Step -1
+                            If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
+                                _studios.RemoveAt(i)
+                            End If
+                        Next
+                    End If
+
+                    If .Studios.LimitSpecified AndAlso
+                        .Studios.Limit < _studios.Count AndAlso
+                        _studios.Count > 0 Then
+                        _studios.RemoveRange(.Studios.Limit, _studios.Count - .Studios.Limit)
+                    End If
+                    tDBElement.MainDetails.Studios.AddRange(_studios)
+                    'added check if there's any studios left to add, if not then try with results of following scraper...
+                    If _studios.Count > 0 Then
+                        new_Studio = True
+                    End If
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Studios.Enabled AndAlso
+                    Not .Studios.Locked Then
+                    tDBElement.MainDetails.Studios.Clear()
+                End If
+
+                'Tagline
+                If (Not tDBElement.MainDetails.TaglineSpecified OrElse Not .Tagline.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainTagline AndAlso
+                    scrapedmovie.TaglineSpecified AndAlso
+                    .Tagline.Enabled AndAlso
+                    Not new_Tagline Then
+                    tDBElement.MainDetails.Tagline = scrapedmovie.Tagline
+                    new_Tagline = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Tagline.Enabled AndAlso
+                    Not .Tagline.Locked Then
+                    tDBElement.MainDetails.Tagline = String.Empty
+                End If
+
+                'Title
+                If (Not tDBElement.MainDetails.TitleSpecified OrElse Not .Title.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainTitle AndAlso
+                    scrapedmovie.TitleSpecified AndAlso
+                    .Title.Enabled AndAlso
+                    Not new_Title Then
+                    tDBElement.MainDetails.Title = scrapedmovie.Title
+                    new_Title = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Title.Enabled AndAlso
+                    Not .Title.Locked Then
+                    tDBElement.MainDetails.Title = String.Empty
+                End If
+
+                'Top250 (special handling: no check if "scrapedmovie.Top250Specified" and only set "new_Top250 = True" if a value over 0 has been set)
+                If (Not tDBElement.MainDetails.Top250Specified OrElse Not .Top250.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainTop250 AndAlso
+                    .Top250.Enabled AndAlso
+                    Not new_Top250 Then
+                    tDBElement.MainDetails.Top250 = scrapedmovie.Top250
+                    new_Top250 = If(scrapedmovie.Top250Specified, True, False)
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Top250.Enabled AndAlso
+                    Not .Top250.Locked Then
+                    tDBElement.MainDetails.Top250 = 0
+                End If
+
+                'Trailer
+                If (Not tDBElement.MainDetails.TrailerSpecified OrElse Not .Trailer.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainTrailer AndAlso
+                    scrapedmovie.TrailerSpecified AndAlso
+                    .Trailer.Enabled AndAlso
+                    Not new_Trailer Then
+                    If .TrailerKodiFormat AndAlso YouTube.UrlUtils.IsYouTubeURL(scrapedmovie.Trailer) Then
+                        tDBElement.MainDetails.Trailer = StringUtils.ConvertFromYouTubeURLToKodiTrailerFormat(scrapedmovie.Trailer)
+                    Else
+                        tDBElement.MainDetails.Trailer = scrapedmovie.Trailer
+                    End If
+                    new_Trailer = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Trailer.Enabled AndAlso
+                    Not .Trailer.Locked Then
+                    tDBElement.MainDetails.Trailer = String.Empty
+                End If
+
+                'UserRating
+                If (Not tDBElement.MainDetails.UserRatingSpecified OrElse Not .UserRating.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainUserRating AndAlso
+                    scrapedmovie.UserRatingSpecified AndAlso
+                    .UserRating.Enabled AndAlso
+                    Not new_UserRating Then
+                    tDBElement.MainDetails.UserRating = scrapedmovie.UserRating
+                    new_Rating = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .UserRating.Enabled AndAlso
+                    Not .UserRating.Locked Then
+                    tDBElement.MainDetails.UserRating = 0
+                End If
+
+                'Year
+                If (Not tDBElement.MainDetails.YearSpecified OrElse Not .Year.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainYear AndAlso
+                    scrapedmovie.YearSpecified AndAlso
+                    .Year.Enabled AndAlso
+                    Not new_Year Then
+                    tDBElement.MainDetails.Year = scrapedmovie.Year
+                    new_Year = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Year.Enabled AndAlso
+                    Not .Year.Locked Then
+                    tDBElement.MainDetails.Year = String.Empty
+                End If
+
+                'Runtime
+                If (Not tDBElement.MainDetails.RuntimeSpecified OrElse Not .Runtime.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainRuntime AndAlso
+                    scrapedmovie.RuntimeSpecified AndAlso
+                    .Runtime.Enabled AndAlso
+                    Not new_Runtime Then
+                    tDBElement.MainDetails.Runtime = scrapedmovie.Runtime
+                    new_Runtime = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Runtime.Enabled AndAlso
+                    Not .Runtime.Locked Then
+                    tDBElement.MainDetails.Runtime = String.Empty
+                End If
+
+            Next
+
+            'Certification for MPAA
+            If tDBElement.MainDetails.CertificationsSpecified AndAlso
+                .CertificationsForMPAA AndAlso
+                (Not .CertificationsForMPAAFallback AndAlso
+                (Not tDBElement.MainDetails.MPAASpecified OrElse Not .MPAA.Locked) OrElse
+                 Not new_MPAA AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not .MPAA.Locked)) Then
+
+                Dim tmpstring As String = String.Empty
+                tmpstring = If(.Certifications.Filter = "us", StringUtils.USACertToMPAA(String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)), If(.CertificationsOnlyValue, String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)))
+                'only update DBMovie if scraped result is not empty/nothing!
+                If Not String.IsNullOrEmpty(tmpstring) Then
+                    tDBElement.MainDetails.MPAA = tmpstring
+                End If
             End If
 
-            'UserRating
-            If (Not tDBElement.MainDetails.UserRatingSpecified OrElse Not Master.eSettings.MovieLockUserRating) AndAlso tDBElement.ScrapeOptions.bMainUserRating AndAlso
-                scrapedmovie.UserRatingSpecified AndAlso Master.eSettings.MovieScraperUserRating AndAlso Not new_UserRating Then
-                tDBElement.MainDetails.UserRating = scrapedmovie.UserRating
-                new_Rating = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperUserRating AndAlso Not Master.eSettings.MovieLockUserRating Then
-                tDBElement.MainDetails.UserRating = 0
+            'MPAA value if MPAA is not available
+            If Not tDBElement.MainDetails.MPAASpecified AndAlso .MPAANotRatedValueSpecified Then
+                tDBElement.MainDetails.MPAA = .MPAANotRatedValue
             End If
 
-            'Year
-            If (Not tDBElement.MainDetails.YearSpecified OrElse Not Master.eSettings.MovieLockYear) AndAlso tDBElement.ScrapeOptions.bMainYear AndAlso
-                scrapedmovie.YearSpecified AndAlso Master.eSettings.MovieScraperYear AndAlso Not new_Year Then
-                tDBElement.MainDetails.Year = scrapedmovie.Year
-                new_Year = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperYear AndAlso Not Master.eSettings.MovieLockYear Then
-                tDBElement.MainDetails.Year = String.Empty
+            'Plot for Outline
+            If ((Not tDBElement.MainDetails.OutlineSpecified OrElse Not .Outline.Locked) AndAlso
+                .PlotForOutline AndAlso Not .PlotForOutlineAsFallback) OrElse
+                (Not tDBElement.MainDetails.OutlineSpecified AndAlso .PlotForOutline AndAlso
+                .PlotForOutlineAsFallback) Then
+                tDBElement.MainDetails.Outline = StringUtils.ShortenOutline(tDBElement.MainDetails.Plot, .Outline.Limit)
             End If
 
-            'Runtime
-            If (Not tDBElement.MainDetails.RuntimeSpecified OrElse Not Master.eSettings.MovieLockRuntime) AndAlso tDBElement.ScrapeOptions.bMainRuntime AndAlso
-                scrapedmovie.RuntimeSpecified AndAlso Master.eSettings.MovieScraperRuntime AndAlso Not new_Runtime Then
-                tDBElement.MainDetails.Runtime = scrapedmovie.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperRuntime AndAlso Not Master.eSettings.MovieLockRuntime Then
-                tDBElement.MainDetails.Runtime = String.Empty
+            'set ListTitle at the end of merging
+            If tDBElement.MainDetails.TitleSpecified Then
+                tDBElement.ListTitle = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
+            Else
+                tDBElement.ListTitle = StringUtils.FilterTitleFromPath_Movie(tDBElement.FileItem, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
             End If
-
-        Next
-
-        'Certification for MPAA
-        If tDBElement.MainDetails.CertificationsSpecified AndAlso Master.eSettings.MovieScraperCertForMPAA AndAlso
-            (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA) OrElse
-             Not new_MPAA AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not Master.eSettings.MovieLockMPAA)) Then
-
-            Dim tmpstring As String = String.Empty
-            tmpstring = If(Master.eSettings.MovieScraperCertLang = "us", StringUtils.USACertToMPAA(String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)), If(Master.eSettings.MovieScraperCertOnlyValue, String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)))
-            'only update DBMovie if scraped result is not empty/nothing!
-            If Not String.IsNullOrEmpty(tmpstring) Then
-                tDBElement.MainDetails.MPAA = tmpstring
-            End If
-        End If
-
-        'MPAA value if MPAA is not available
-        If Not tDBElement.MainDetails.MPAASpecified AndAlso Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then
-            tDBElement.MainDetails.MPAA = Master.eSettings.MovieScraperMPAANotRated
-        End If
-
-        'Plot for Outline
-        If ((Not tDBElement.MainDetails.OutlineSpecified OrElse Not Master.eSettings.MovieLockOutline) AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Not Master.eSettings.MovieScraperPlotForOutlineIfEmpty) OrElse
-            (Not tDBElement.MainDetails.OutlineSpecified AndAlso Master.eSettings.MovieScraperPlotForOutline AndAlso Master.eSettings.MovieScraperPlotForOutlineIfEmpty) Then
-            tDBElement.MainDetails.Outline = StringUtils.ShortenOutline(tDBElement.MainDetails.Plot, Master.eSettings.MovieScraperOutlineLimit)
-        End If
-
-        'set ListTitle at the end of merging
-        If tDBElement.MainDetails.TitleSpecified Then
-            tDBElement.ListTitle = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
-        Else
-            tDBElement.ListTitle = StringUtils.FilterTitleFromPath_Movie(tDBElement.FileItem, tDBElement.IsSingle, tDBElement.Source.UseFolderName)
-        End If
+        End With
 
         Return tDBElement
     End Function
@@ -416,17 +525,25 @@ Public Class NFO
             End If
 
             'Plot
-            If (Not tDBElement.MainDetails.PlotSpecified OrElse Not Master.eSettings.MovieSetLockPlot) AndAlso tDBElement.ScrapeOptions.bMainPlot AndAlso
-                scrapedmovieset.PlotSpecified AndAlso Master.eSettings.MovieSetScraperPlot AndAlso Not new_Plot Then
+            If (Not tDBElement.MainDetails.PlotSpecified OrElse Not Master.eSettings.Movieset.DataSettings.Plot.Locked) AndAlso
+                tDBElement.ScrapeOptions.bMainPlot AndAlso
+                scrapedmovieset.PlotSpecified AndAlso
+                Master.eSettings.Movieset.DataSettings.Plot.Enabled AndAlso
+                Not new_Plot Then
                 tDBElement.MainDetails.Plot = scrapedmovieset.Plot
                 new_Plot = True
-                'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperPlot AndAlso Not Master.eSettings.MovieSetLockPlot Then
-                '    DBMovieSet.MovieSet.Plot = String.Empty
+            ElseIf Master.eSettings.Movieset.DataSettings.ClearDisabledFields AndAlso
+                Not Master.eSettings.Movieset.DataSettings.Plot.Enabled AndAlso
+                Not Master.eSettings.Movieset.DataSettings.Plot.Locked Then
+                tDBElement.MainDetails.Plot = String.Empty
             End If
 
             'Title
-            If (Not tDBElement.MainDetails.TitleSpecified OrElse Not Master.eSettings.MovieSetLockTitle) AndAlso tDBElement.ScrapeOptions.bMainTitle AndAlso
-                 scrapedmovieset.TitleSpecified AndAlso Master.eSettings.MovieSetScraperTitle AndAlso Not new_Title Then
+            If (Not tDBElement.MainDetails.TitleSpecified OrElse Not Master.eSettings.Movieset.DataSettings.Title.Locked) AndAlso
+                tDBElement.ScrapeOptions.bMainTitle AndAlso
+                 scrapedmovieset.TitleSpecified AndAlso
+                 Master.eSettings.Movieset.DataSettings.Title.Enabled AndAlso
+                 Not new_Title Then
                 tDBElement.MainDetails.Title = scrapedmovieset.Title
                 new_Title = True
                 'ElseIf Master.eSettings.MovieSetScraperCleanFields AndAlso Not Master.eSettings.MovieSetScraperTitle AndAlso Not Master.eSettings.MovieSetLockTitle Then
@@ -503,298 +620,375 @@ Public Class NFO
         '    PreviewDataScraperResults(ScrapedList)
         'End If
 
-        For Each scrapedshow In ScrapedList
+        With Master.eSettings.TV.DataSettings.TVShow
+            For Each scrapedshow In ScrapedList
 
-            'IDs
-            If scrapedshow.TVDBSpecified Then
-                tDBElement.MainDetails.TVDB = scrapedshow.TVDB
-            End If
-            If scrapedshow.IMDBSpecified Then
-                tDBElement.MainDetails.IMDB = scrapedshow.IMDB
-            End If
-            If scrapedshow.TMDBSpecified Then
-                tDBElement.MainDetails.TMDB = scrapedshow.TMDB
-            End If
+                'IDs
+                If scrapedshow.TVDBSpecified Then
+                    tDBElement.MainDetails.TVDB = scrapedshow.TVDB
+                End If
+                If scrapedshow.IMDBSpecified Then
+                    tDBElement.MainDetails.IMDB = scrapedshow.IMDB
+                End If
+                If scrapedshow.TMDBSpecified Then
+                    tDBElement.MainDetails.TMDB = scrapedshow.TMDB
+                End If
 
-            'Actors
-            If (Not tDBElement.MainDetails.ActorsSpecified OrElse Not Master.eSettings.TVLockShowActors) AndAlso tDBElement.ScrapeOptions.bMainActors AndAlso
-                scrapedshow.ActorsSpecified AndAlso Master.eSettings.TVScraperShowActors AndAlso Not new_Actors Then
+                'Actors
+                If (Not tDBElement.MainDetails.ActorsSpecified OrElse Not .Actors.Locked) AndAlso
+                tDBElement.ScrapeOptions.bMainActors AndAlso
+                scrapedshow.ActorsSpecified AndAlso
+                 .Actors.Enabled AndAlso
+                Not new_Actors Then
+                    If .ActorsWithImageOnly Then
+                        For i = scrapedshow.Actors.Count - 1 To 0 Step -1
+                            If Not scrapedshow.Actors(i).URLOriginalSpecified Then
+                                scrapedshow.Actors.RemoveAt(i)
+                            End If
+                        Next
+                    End If
 
-                If Master.eSettings.TVScraperShowCastWithImgOnly Then
-                    For i = scrapedshow.Actors.Count - 1 To 0 Step -1
-                        If Not scrapedshow.Actors(i).URLOriginalSpecified Then
-                            scrapedshow.Actors.RemoveAt(i)
+                    If .Actors.LimitSpecified AndAlso
+                    scrapedshow.Actors.Count > .Actors.Limit Then
+                        scrapedshow.Actors.RemoveRange(.Actors.Limit, scrapedshow.Actors.Count - .Actors.Limit)
+                    End If
+
+                    tDBElement.MainDetails.Actors = scrapedshow.Actors
+                    'added check if there's any actors left to add, if not then try with results of following scraper...
+                    If scrapedshow.ActorsSpecified Then
+                        new_Actors = True
+                        'add numbers for ordering
+                        Dim iOrder As Integer = 0
+                        For Each actor In scrapedshow.Actors
+                            actor.Order = iOrder
+                            iOrder += 1
+                        Next
+                    End If
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Actors.Enabled AndAlso
+                    Not .Actors.Locked Then
+                    tDBElement.MainDetails.Actors.Clear()
+                End If
+
+                'Certification
+                If (Not tDBElement.MainDetails.CertificationsSpecified OrElse Not .Certifications.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainCertifications AndAlso
+                    scrapedshow.CertificationsSpecified AndAlso
+                    .Certifications.Enabled AndAlso
+                    Not new_Certification Then
+                    If .Certifications.Filter = Master.eLang.All Then
+                        tDBElement.MainDetails.Certifications = scrapedshow.Certifications
+                        new_Certification = True
+                    Else
+                        Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .Certifications.Filter)
+                        If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
+                            For Each tCert In scrapedshow.Certifications
+                                If tCert.StartsWith(CertificationLanguage.name) Then
+                                    tDBElement.MainDetails.Certifications.Clear()
+                                    tDBElement.MainDetails.Certifications.Add(tCert)
+                                    new_Certification = True
+                                    Exit For
+                                End If
+                            Next
+                        Else
+                            logger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
+                        End If
+                    End If
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Certifications.Enabled AndAlso
+                    Not .Certifications.Locked Then
+                    tDBElement.MainDetails.Certifications.Clear()
+                End If
+
+                'Creators
+                If (Not tDBElement.MainDetails.CreatorsSpecified OrElse Not .Creators.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainCreators AndAlso
+                    scrapedshow.CreatorsSpecified AndAlso
+                    .Creators.Enabled AndAlso
+                    Not new_Creators Then
+                    tDBElement.MainDetails.Creators = scrapedshow.Creators
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Creators.Enabled AndAlso
+                    Not .Creators.Locked Then
+                    tDBElement.MainDetails.Creators.Clear()
+                End If
+
+                'Countries
+                If (Not tDBElement.MainDetails.CountriesSpecified OrElse Not .Countries.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainCountries AndAlso
+                    scrapedshow.CountriesSpecified AndAlso
+                    .Countries.Enabled AndAlso
+                    Not new_ShowCountries Then
+                    tDBElement.MainDetails.Countries = scrapedshow.Countries
+                    new_ShowCountries = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Countries.Enabled AndAlso
+                    Not .Countries.Locked Then
+                    tDBElement.MainDetails.Countries.Clear()
+                End If
+
+                'EpisodeGuideURL
+                If tDBElement.ScrapeOptions.bMainEpisodeGuide AndAlso
+                    scrapedshow.EpisodeGuideSpecified AndAlso
+                    .EpisodeGuideURL.Enabled Then
+                    tDBElement.MainDetails.EpisodeGuide = scrapedshow.EpisodeGuide
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .EpisodeGuideURL.Enabled Then
+                    tDBElement.MainDetails.EpisodeGuide.Clear()
+                End If
+
+                'Genres
+                If (Not tDBElement.MainDetails.GenresSpecified OrElse Not .Genres.Locked) AndAlso
+                tDBElement.ScrapeOptions.bMainGenres AndAlso
+                scrapedshow.GenresSpecified AndAlso
+                 .Genres.Enabled AndAlso
+                Not new_Genres Then
+                    StringUtils.GenreFilter(scrapedshow.Genres)
+                    If .Genres.LimitSpecified AndAlso
+                     .Genres.Limit < scrapedshow.Genres.Count AndAlso
+                    scrapedshow.Genres.Count > 0 Then
+                        scrapedshow.Genres.RemoveRange(.Genres.Limit, scrapedshow.Genres.Count - .Genres.Limit)
+                    End If
+                    tDBElement.MainDetails.Genres = scrapedshow.Genres
+                    new_Genres = True
+                ElseIf .ClearDisabledFields AndAlso
+                Not .Genres.Enabled AndAlso
+                Not .Genres.Locked Then
+                    tDBElement.MainDetails.Genres.Clear()
+                End If
+
+                'MPAA
+                If (Not tDBElement.MainDetails.MPAASpecified OrElse Not .MPAA.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainMPAA AndAlso
+                  scrapedshow.MPAASpecified AndAlso
+                  .MPAA.Enabled AndAlso
+                  Not new_MPAA Then
+                    tDBElement.MainDetails.MPAA = scrapedshow.MPAA
+                    new_MPAA = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .MPAA.Enabled AndAlso
+                    Not .MPAA.Locked Then
+                    tDBElement.MainDetails.MPAA = String.Empty
+                End If
+
+                'Originaltitle
+                If (Not tDBElement.MainDetails.OriginalTitleSpecified OrElse Not .OriginalTitle.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainOriginalTitle AndAlso
+                    scrapedshow.OriginalTitleSpecified AndAlso
+                    .OriginalTitle.Enabled AndAlso
+                    Not new_OriginalTitle Then
+                    tDBElement.MainDetails.OriginalTitle = scrapedshow.OriginalTitle
+                    new_OriginalTitle = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .OriginalTitle.Enabled AndAlso
+                    Not .OriginalTitle.Locked Then
+                    tDBElement.MainDetails.OriginalTitle = String.Empty
+                End If
+
+                'Plot
+                If (Not tDBElement.MainDetails.PlotSpecified OrElse Not .Plot.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainPlot AndAlso
+                     scrapedshow.PlotSpecified AndAlso
+                     .Plot.Enabled AndAlso
+                     Not new_Plot Then
+                    tDBElement.MainDetails.Plot = scrapedshow.Plot
+                    new_Plot = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Plot.Enabled AndAlso
+                    Not .Plot.Locked Then
+                    tDBElement.MainDetails.Plot = String.Empty
+                End If
+
+                'Premiered
+                If (Not tDBElement.MainDetails.PremieredSpecified OrElse Not .Premiered.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainPremiered AndAlso
+                    scrapedshow.PremieredSpecified AndAlso
+                    .Premiered.Enabled AndAlso
+                    Not new_Premiered Then
+                    tDBElement.MainDetails.Premiered = NumUtils.DateToISO8601Date(scrapedshow.Premiered)
+                    new_Premiered = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Premiered.Enabled AndAlso
+                    Not .Premiered.Locked Then
+                    tDBElement.MainDetails.Premiered = String.Empty
+                End If
+
+                'Rating/Votes
+                If (Not tDBElement.MainDetails.RatingSpecified OrElse Not .Rating.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainRating AndAlso
+                    scrapedshow.RatingSpecified AndAlso
+                    .Rating.Enabled AndAlso
+                    Not new_Rating Then
+                    tDBElement.MainDetails.Rating = scrapedshow.Rating
+                    tDBElement.MainDetails.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
+                    new_Rating = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Rating.Enabled AndAlso
+                    Not .Rating.Locked Then
+                    tDBElement.MainDetails.Rating = String.Empty
+                    tDBElement.MainDetails.Votes = String.Empty
+                End If
+
+                'Runtime
+                If (Not tDBElement.MainDetails.RuntimeSpecified OrElse Not .Runtime.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainRuntime AndAlso
+                    scrapedshow.RuntimeSpecified AndAlso
+                    .Runtime.Enabled AndAlso
+                    Not new_Runtime Then
+                    tDBElement.MainDetails.Runtime = scrapedshow.Runtime
+                    new_Runtime = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Runtime.Enabled AndAlso
+                    Not .Runtime.Locked Then
+                    tDBElement.MainDetails.Runtime = String.Empty
+                End If
+
+                'Status
+                If (tDBElement.MainDetails.StatusSpecified OrElse Not .Status.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainStatus AndAlso
+                    scrapedshow.StatusSpecified AndAlso
+                    .Status.Enabled AndAlso
+                    Not new_Status Then
+                    tDBElement.MainDetails.Status = scrapedshow.Status
+                    new_Status = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Status.Enabled AndAlso
+                    Not .Status.Locked Then
+                    tDBElement.MainDetails.Status = String.Empty
+                End If
+
+                'Studios
+                If (Not tDBElement.MainDetails.StudiosSpecified OrElse Not .Studios.Locked) AndAlso
+                tDBElement.ScrapeOptions.bMainStudios AndAlso
+                scrapedshow.StudiosSpecified AndAlso
+                 .Studios.Enabled AndAlso
+                Not new_Studio Then
+                    tDBElement.MainDetails.Studios.Clear()
+
+                    Dim _studios As New List(Of String)
+                    _studios.AddRange(scrapedshow.Studios)
+
+                    If .StudiosWithImageOnly Then
+                        For i = _studios.Count - 1 To 0 Step -1
+                            If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
+                                _studios.RemoveAt(i)
+                            End If
+                        Next
+                    End If
+
+                    If .Studios.LimitSpecified AndAlso
+                     .Studios.Limit < _studios.Count AndAlso
+                    _studios.Count > 0 Then
+                        _studios.RemoveRange(.Studios.Limit, _studios.Count - .Studios.Limit)
+                    End If
+                    tDBElement.MainDetails.Studios.AddRange(_studios)
+                    'added check if there's any studios left to add, if not then try with results of following scraper...
+                    If _studios.Count > 0 Then
+                        new_Studio = True
+                    End If
+                ElseIf .ClearDisabledFields AndAlso
+                Not .Studios.Enabled AndAlso
+                Not .Studios.Locked Then
+                    tDBElement.MainDetails.Studios.Clear()
+                End If
+
+                'Title
+                If (Not tDBElement.MainDetails.TitleSpecified OrElse Not .Title.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainTitle AndAlso
+                    scrapedshow.TitleSpecified AndAlso
+                    .Title.Enabled AndAlso
+                    Not new_Title Then
+                    tDBElement.MainDetails.Title = scrapedshow.Title
+                    new_Title = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .Title.Enabled AndAlso
+                    Not .Title.Locked Then
+                    tDBElement.MainDetails.Title = String.Empty
+                End If
+
+                'UserRating
+                If (Not tDBElement.MainDetails.UserRatingSpecified OrElse Not .UserRating.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bMainUserRating AndAlso
+                    scrapedshow.UserRatingSpecified AndAlso
+                    .UserRating.Enabled AndAlso
+                    Not new_UserRating Then
+                    tDBElement.MainDetails.UserRating = scrapedshow.UserRating
+                    new_UserRating = True
+                ElseIf .ClearDisabledFields AndAlso
+                    Not .UserRating.Enabled AndAlso
+                    Not .UserRating.Locked Then
+                    tDBElement.MainDetails.UserRating = 0
+                End If
+
+                '    'Credits
+                '    If (DBTV.Movie.Credits.Count < 1 OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
+                '        scrapedmovie.Credits.Count > 0 AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
+                '        DBTV.Movie.Credits.Clear()
+                '        DBTV.Movie.Credits.AddRange(scrapedmovie.Credits)
+                '        new_Credits = True
+                '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
+                '        DBTV.Movie.Credits.Clear()
+                '    End If
+
+                'Create KnowSeasons index
+                For Each kSeason As MediaContainers.MainDetails In scrapedshow.KnownSeasons
+                    If Not KnownSeasonsIndex.Contains(kSeason.Season) Then
+                        KnownSeasonsIndex.Add(kSeason.Season)
+                    End If
+                Next
+
+                'Create KnownEpisodes index (season and episode number)
+                If tDBElement.ScrapeModifiers.withEpisodes Then
+                    For Each kEpisode As MediaContainers.MainDetails In scrapedshow.KnownEpisodes
+                        Dim nKnownEpisode As New KnownEpisode With {.AiredDate = kEpisode.Aired,
+                                                                    .Episode = kEpisode.Episode,
+                                                                    .EpisodeAbsolute = kEpisode.EpisodeAbsolute,
+                                                                    .EpisodeCombined = kEpisode.EpisodeCombined,
+                                                                    .EpisodeDVD = kEpisode.EpisodeDVD,
+                                                                    .Season = kEpisode.Season,
+                                                                    .SeasonCombined = kEpisode.SeasonCombined,
+                                                                    .SeasonDVD = kEpisode.SeasonDVD}
+                        If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
+                            KnownEpisodesIndex.Add(nKnownEpisode)
+
+                            'try to get an episode information with more numbers
+                        ElseIf KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season AndAlso
+                                    ((nKnownEpisode.EpisodeAbsolute > -1 AndAlso Not f.EpisodeAbsolute = nKnownEpisode.EpisodeAbsolute) OrElse
+                                     (nKnownEpisode.EpisodeCombined > -1 AndAlso Not f.EpisodeCombined = nKnownEpisode.EpisodeCombined) OrElse
+                                     (nKnownEpisode.EpisodeDVD > -1 AndAlso Not f.EpisodeDVD = nKnownEpisode.EpisodeDVD) OrElse
+                                     (nKnownEpisode.SeasonCombined > -1 AndAlso Not f.SeasonCombined = nKnownEpisode.SeasonCombined) OrElse
+                                     (nKnownEpisode.SeasonDVD > -1 AndAlso Not f.SeasonDVD = nKnownEpisode.SeasonDVD))).Count = 1 Then
+                            Dim toRemove As KnownEpisode = KnownEpisodesIndex.FirstOrDefault(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season)
+                            KnownEpisodesIndex.Remove(toRemove)
+                            KnownEpisodesIndex.Add(nKnownEpisode)
                         End If
                     Next
                 End If
-
-                'If Master.eSettings.MovieScraperCastLimit > 0 AndAlso scrapedmovie.Actors.Count > Master.eSettings.MovieScraperCastLimit Then
-                '    scrapedmovie.Actors.RemoveRange(Master.eSettings.MovieScraperCastLimit, scrapedmovie.Actors.Count - Master.eSettings.MovieScraperCastLimit)
-                'End If
-
-                tDBElement.MainDetails.Actors = scrapedshow.Actors
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedshow.ActorsSpecified Then
-                    new_Actors = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each actor In scrapedshow.Actors
-                        actor.Order = iOrder
-                        iOrder += 1
-                    Next
-                End If
-
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowActors AndAlso Not Master.eSettings.TVLockShowActors Then
-                tDBElement.MainDetails.Actors.Clear()
-            End If
-
-            'Certification
-            If (Not tDBElement.MainDetails.CertificationsSpecified OrElse Not Master.eSettings.TVLockShowCert) AndAlso tDBElement.ScrapeOptions.bMainCertifications AndAlso
-                scrapedshow.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCert AndAlso Not new_Certification Then
-                If Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-                    tDBElement.MainDetails.Certifications = scrapedshow.Certifications
-                    new_Certification = True
-                Else
-                    Dim CertificationLanguage = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
-                    If CertificationLanguage IsNot Nothing AndAlso CertificationLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(CertificationLanguage.name) Then
-                        For Each tCert In scrapedshow.Certifications
-                            If tCert.StartsWith(CertificationLanguage.name) Then
-                                tDBElement.MainDetails.Certifications.Clear()
-                                tDBElement.MainDetails.Certifications.Add(tCert)
-                                new_Certification = True
-                                Exit For
-                            End If
-                        Next
-                    Else
-                        logger.Error("TV Show Certification Language (Limit) not found. Please check your settings!")
-                    End If
-                End If
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCert AndAlso Not Master.eSettings.TVLockShowCert Then
-                tDBElement.MainDetails.Certifications.Clear()
-            End If
-
-            'Creators
-            If (Not tDBElement.MainDetails.CreatorsSpecified OrElse Not Master.eSettings.TVLockShowCreators) AndAlso tDBElement.ScrapeOptions.bMainCreators AndAlso
-                scrapedshow.CreatorsSpecified AndAlso Master.eSettings.TVScraperShowCreators AndAlso Not new_Creators Then
-                tDBElement.MainDetails.Creators = scrapedshow.Creators
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCreators AndAlso Not Master.eSettings.TVLockShowCreators Then
-                tDBElement.MainDetails.Creators.Clear()
-            End If
-
-            'Countries
-            If (Not tDBElement.MainDetails.CountriesSpecified OrElse Not Master.eSettings.TVLockShowCountry) AndAlso tDBElement.ScrapeOptions.bMainCountries AndAlso
-                scrapedshow.CountriesSpecified AndAlso Master.eSettings.TVScraperShowCountry AndAlso Not new_ShowCountries Then
-                tDBElement.MainDetails.Countries = scrapedshow.Countries
-                new_ShowCountries = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowCountry AndAlso Not Master.eSettings.TVLockShowCountry Then
-                tDBElement.MainDetails.Countries.Clear()
-            End If
-
-            'EpisodeGuideURL
-            If tDBElement.ScrapeOptions.bMainEpisodeGuide AndAlso scrapedshow.EpisodeGuideSpecified AndAlso Master.eSettings.TVScraperShowEpiGuideURL Then
-                tDBElement.MainDetails.EpisodeGuide = scrapedshow.EpisodeGuide
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowEpiGuideURL Then
-                tDBElement.MainDetails.EpisodeGuide.Clear()
-            End If
-
-            'Genres
-            If (Not tDBElement.MainDetails.GenresSpecified OrElse Not Master.eSettings.TVLockShowGenre) AndAlso tDBElement.ScrapeOptions.bMainGenres AndAlso
-                scrapedshow.GenresSpecified AndAlso Master.eSettings.TVScraperShowGenre AndAlso Not new_Genres Then
-
-                StringUtils.GenreFilter(scrapedshow.Genres)
-
-                'If Master.eSettings.TVScraperShowGenreLimit > 0 AndAlso Master.eSettings.TVScraperShowGenreLimit < _genres.Count AndAlso _genres.Count > 0 Then
-                '    _genres.RemoveRange(Master.eSettings.TVScraperShowGenreLimit, _genres.Count - Master.eSettings.TVScraperShowGenreLimit)
-                'End If
-                tDBElement.MainDetails.Genres = scrapedshow.Genres
-                new_Genres = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowGenre AndAlso Not Master.eSettings.TVLockShowGenre Then
-                tDBElement.MainDetails.Genres.Clear()
-            End If
-
-            'MPAA
-            If (Not tDBElement.MainDetails.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) AndAlso tDBElement.ScrapeOptions.bMainMPAA AndAlso
-              scrapedshow.MPAASpecified AndAlso Master.eSettings.TVScraperShowMPAA AndAlso Not new_MPAA Then
-                tDBElement.MainDetails.MPAA = scrapedshow.MPAA
-                new_MPAA = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowMPAA AndAlso Not Master.eSettings.TVLockShowMPAA Then
-                tDBElement.MainDetails.MPAA = String.Empty
-            End If
-
-            'Originaltitle
-            If (Not tDBElement.MainDetails.OriginalTitleSpecified OrElse Not Master.eSettings.TVLockShowOriginalTitle) AndAlso tDBElement.ScrapeOptions.bMainOriginalTitle AndAlso
-                scrapedshow.OriginalTitleSpecified AndAlso Master.eSettings.TVScraperShowOriginalTitle AndAlso Not new_OriginalTitle Then
-                tDBElement.MainDetails.OriginalTitle = scrapedshow.OriginalTitle
-                new_OriginalTitle = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowOriginalTitle AndAlso Not Master.eSettings.TVLockShowOriginalTitle Then
-                tDBElement.MainDetails.OriginalTitle = String.Empty
-            End If
-
-            'Plot
-            If (Not tDBElement.MainDetails.PlotSpecified OrElse Not Master.eSettings.TVLockShowPlot) AndAlso tDBElement.ScrapeOptions.bMainPlot AndAlso
-                 scrapedshow.PlotSpecified AndAlso Master.eSettings.TVScraperShowPlot AndAlso Not new_Plot Then
-                tDBElement.MainDetails.Plot = scrapedshow.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPlot AndAlso Not Master.eSettings.TVLockShowPlot Then
-                tDBElement.MainDetails.Plot = String.Empty
-            End If
-
-            'Premiered
-            If (Not tDBElement.MainDetails.PremieredSpecified OrElse Not Master.eSettings.TVLockShowPremiered) AndAlso tDBElement.ScrapeOptions.bMainPremiered AndAlso
-                scrapedshow.PremieredSpecified AndAlso Master.eSettings.TVScraperShowPremiered AndAlso Not new_Premiered Then
-                tDBElement.MainDetails.Premiered = NumUtils.DateToISO8601Date(scrapedshow.Premiered)
-                new_Premiered = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowPremiered AndAlso Not Master.eSettings.TVLockShowPremiered Then
-                tDBElement.MainDetails.Premiered = String.Empty
-            End If
-
-            'Rating/Votes
-            If (Not tDBElement.MainDetails.RatingSpecified OrElse Not Master.eSettings.TVLockShowRating) AndAlso tDBElement.ScrapeOptions.bMainRating AndAlso
-                scrapedshow.RatingSpecified AndAlso Master.eSettings.TVScraperShowRating AndAlso Not new_Rating Then
-                tDBElement.MainDetails.Rating = scrapedshow.Rating
-                tDBElement.MainDetails.Votes = NumUtils.CleanVotes(scrapedshow.Votes)
-                new_Rating = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRating AndAlso Not Master.eSettings.TVLockShowRating Then
-                tDBElement.MainDetails.Rating = String.Empty
-                tDBElement.MainDetails.Votes = String.Empty
-            End If
-
-            'Runtime
-            If (Not tDBElement.MainDetails.RuntimeSpecified OrElse tDBElement.MainDetails.Runtime = "0" OrElse Not Master.eSettings.TVLockShowRuntime) AndAlso tDBElement.ScrapeOptions.bMainRuntime AndAlso
-                scrapedshow.RuntimeSpecified AndAlso Not scrapedshow.Runtime = "0" AndAlso Master.eSettings.TVScraperShowRuntime AndAlso Not new_Runtime Then
-                tDBElement.MainDetails.Runtime = scrapedshow.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowRuntime AndAlso Not Master.eSettings.TVLockShowRuntime Then
-                tDBElement.MainDetails.Runtime = String.Empty
-            End If
-
-            'Status
-            If (tDBElement.MainDetails.StatusSpecified OrElse Not Master.eSettings.TVLockShowStatus) AndAlso tDBElement.ScrapeOptions.bMainStatus AndAlso
-                scrapedshow.StatusSpecified AndAlso Master.eSettings.TVScraperShowStatus AndAlso Not new_Status Then
-                tDBElement.MainDetails.Status = scrapedshow.Status
-                new_Status = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStatus AndAlso Not Master.eSettings.TVLockShowStatus Then
-                tDBElement.MainDetails.Status = String.Empty
-            End If
-
-            'Studios
-            If (Not tDBElement.MainDetails.StudiosSpecified OrElse Not Master.eSettings.TVLockShowStudio) AndAlso tDBElement.ScrapeOptions.bMainStudios AndAlso
-                scrapedshow.StudiosSpecified AndAlso Master.eSettings.TVScraperShowStudio AndAlso Not new_Studio Then
-                tDBElement.MainDetails.Studios.Clear()
-
-                Dim _studios As New List(Of String)
-                _studios.AddRange(scrapedshow.Studios)
-
-                'If Master.eSettings.TVScraperShowStudioWithImgOnly Then
-                '    For i = _studios.Count - 1 To 0 Step -1
-                '        If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-                '            _studios.RemoveAt(i)
-                '        End If
-                '    Next
-                'End If
-
-                'If Master.eSettings.tvScraperStudioLimit > 0 AndAlso Master.eSettings.MovieScraperStudioLimit < _studios.Count AndAlso _studios.Count > 0 Then
-                '    _studios.RemoveRange(Master.eSettings.MovieScraperStudioLimit, _studios.Count - Master.eSettings.MovieScraperStudioLimit)
-                'End If
-
-
-                tDBElement.MainDetails.Studios.AddRange(_studios)
-                'added check if there's any studios left to add, if not then try with results of following scraper...
-                If _studios.Count > 0 Then
-                    new_Studio = True
-                End If
-
-
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowStudio AndAlso Not Master.eSettings.TVLockShowStudio Then
-                tDBElement.MainDetails.Studios.Clear()
-            End If
-
-            'Title
-            If (Not tDBElement.MainDetails.TitleSpecified OrElse Not Master.eSettings.TVLockShowTitle) AndAlso tDBElement.ScrapeOptions.bMainTitle AndAlso
-                scrapedshow.TitleSpecified AndAlso Master.eSettings.TVScraperShowTitle AndAlso Not new_Title Then
-                tDBElement.MainDetails.Title = scrapedshow.Title
-                new_Title = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowTitle AndAlso Not Master.eSettings.TVLockShowTitle Then
-                tDBElement.MainDetails.Title = String.Empty
-            End If
-
-            'UserRating
-            If (Not tDBElement.MainDetails.UserRatingSpecified OrElse Not Master.eSettings.TVLockShowUserRating) AndAlso tDBElement.ScrapeOptions.bMainUserRating AndAlso
-                scrapedshow.UserRatingSpecified AndAlso Master.eSettings.TVScraperShowUserRating AndAlso Not new_UserRating Then
-                tDBElement.MainDetails.UserRating = scrapedshow.UserRating
-                new_UserRating = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperShowUserRating AndAlso Not Master.eSettings.TVLockShowUserRating Then
-                tDBElement.MainDetails.UserRating = 0
-            End If
-
-            '    'Credits
-            '    If (DBTV.Movie.Credits.Count < 1 OrElse Not Master.eSettings.MovieLockCredits) AndAlso _
-            '        scrapedmovie.Credits.Count > 0 AndAlso Master.eSettings.MovieScraperCredits AndAlso Not new_Credits Then
-            '        DBTV.Movie.Credits.Clear()
-            '        DBTV.Movie.Credits.AddRange(scrapedmovie.Credits)
-            '        new_Credits = True
-            '    ElseIf Master.eSettings.MovieScraperCleanFields AndAlso Not Master.eSettings.MovieScraperCredits AndAlso Not Master.eSettings.MovieLockCredits Then
-            '        DBTV.Movie.Credits.Clear()
-            '    End If
-
-            'Create KnowSeasons index
-            For Each kSeason As MediaContainers.MainDetails In scrapedshow.KnownSeasons
-                If Not KnownSeasonsIndex.Contains(kSeason.Season) Then
-                    KnownSeasonsIndex.Add(kSeason.Season)
-                End If
             Next
 
-            'Create KnownEpisodes index (season and episode number)
-            If tDBElement.ScrapeModifiers.withEpisodes Then
-                For Each kEpisode As MediaContainers.MainDetails In scrapedshow.KnownEpisodes
-                    Dim nKnownEpisode As New KnownEpisode With {.AiredDate = kEpisode.Aired,
-                                                                .Episode = kEpisode.Episode,
-                                                                .EpisodeAbsolute = kEpisode.EpisodeAbsolute,
-                                                                .EpisodeCombined = kEpisode.EpisodeCombined,
-                                                                .EpisodeDVD = kEpisode.EpisodeDVD,
-                                                                .Season = kEpisode.Season,
-                                                                .SeasonCombined = kEpisode.SeasonCombined,
-                                                                .SeasonDVD = kEpisode.SeasonDVD}
-                    If KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season).Count = 0 Then
-                        KnownEpisodesIndex.Add(nKnownEpisode)
+            'Certification for MPAA
+            If tDBElement.MainDetails.CertificationsSpecified AndAlso .CertificationsForMPAA AndAlso
+            (Not .CertificationsForMPAAFallback AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not .MPAA.Locked) OrElse
+             Not new_MPAA AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not .MPAA.Locked)) Then
 
-                        'try to get an episode information with more numbers
-                    ElseIf KnownEpisodesIndex.Where(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season AndAlso
-                                ((nKnownEpisode.EpisodeAbsolute > -1 AndAlso Not f.EpisodeAbsolute = nKnownEpisode.EpisodeAbsolute) OrElse
-                                 (nKnownEpisode.EpisodeCombined > -1 AndAlso Not f.EpisodeCombined = nKnownEpisode.EpisodeCombined) OrElse
-                                 (nKnownEpisode.EpisodeDVD > -1 AndAlso Not f.EpisodeDVD = nKnownEpisode.EpisodeDVD) OrElse
-                                 (nKnownEpisode.SeasonCombined > -1 AndAlso Not f.SeasonCombined = nKnownEpisode.SeasonCombined) OrElse
-                                 (nKnownEpisode.SeasonDVD > -1 AndAlso Not f.SeasonDVD = nKnownEpisode.SeasonDVD))).Count = 1 Then
-                        Dim toRemove As KnownEpisode = KnownEpisodesIndex.FirstOrDefault(Function(f) f.Episode = nKnownEpisode.Episode AndAlso f.Season = nKnownEpisode.Season)
-                        KnownEpisodesIndex.Remove(toRemove)
-                        KnownEpisodesIndex.Add(nKnownEpisode)
-                    End If
-                Next
+                Dim tmpstring As String = String.Empty
+                tmpstring = If(.Certifications.Filter = "us", StringUtils.USACertToMPAA(String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)), If(.CertificationsOnlyValue, String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)))
+                'only update DBMovie if scraped result is not empty/nothing!
+                If Not String.IsNullOrEmpty(tmpstring) Then
+                    tDBElement.MainDetails.MPAA = tmpstring
+                End If
             End If
-        Next
 
-        'Certification for MPAA
-        If tDBElement.MainDetails.CertificationsSpecified AndAlso Master.eSettings.TVScraperShowCertForMPAA AndAlso
-            (Not Master.eSettings.MovieScraperCertForMPAAFallback AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA) OrElse
-             Not new_MPAA AndAlso (Not tDBElement.MainDetails.MPAASpecified OrElse Not Master.eSettings.TVLockShowMPAA)) Then
-
-            Dim tmpstring As String = String.Empty
-            tmpstring = If(Master.eSettings.TVScraperShowCertLang = "us", StringUtils.USACertToMPAA(String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)), If(Master.eSettings.TVScraperShowCertOnlyValue, String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray).Split(Convert.ToChar(":"))(1), String.Join(" / ", tDBElement.MainDetails.Certifications.ToArray)))
-            'only update DBMovie if scraped result is not empty/nothing!
-            If Not String.IsNullOrEmpty(tmpstring) Then
-                tDBElement.MainDetails.MPAA = tmpstring
+            'MPAA value if MPAA is not available
+            If Not tDBElement.MainDetails.MPAASpecified AndAlso .MPAANotRatedValueSpecified Then
+                tDBElement.MainDetails.MPAA = .MPAANotRatedValue
             End If
-        End If
 
-        'MPAA value if MPAA is not available
-        If Not tDBElement.MainDetails.MPAASpecified AndAlso Not String.IsNullOrEmpty(Master.eSettings.TVScraperShowMPAANotRated) Then
-            tDBElement.MainDetails.MPAA = Master.eSettings.TVScraperShowMPAANotRated
-        End If
-
-        'set ListTitle at the end of merging
-        If tDBElement.MainDetails.TitleSpecified Then
-            tDBElement.ListTitle = StringUtils.SortTokens_TV(tDBElement.MainDetails.Title)
-        End If
+            'set ListTitle at the end of merging
+            If tDBElement.MainDetails.TitleSpecified Then
+                tDBElement.ListTitle = StringUtils.SortTokens_TV(tDBElement.MainDetails.Title)
+            End If
+        End With
 
 
         'Seasons
@@ -931,49 +1125,66 @@ Public Class NFO
         Dim new_Season As Boolean = False
         Dim new_Title As Boolean = False
 
-        For Each scrapedseason In ScrapedList
+        With Master.eSettings.TV.DataSettings.TVSeason
+            For Each scrapedseason In ScrapedList
 
-            'IDs
-            If scrapedseason.TMDBSpecified Then
-                tDBElement.MainDetails.TMDB = scrapedseason.TMDB
-            End If
-            If scrapedseason.TVDBSpecified Then
-                tDBElement.MainDetails.TVDB = scrapedseason.TVDB
-            End If
+                'IDs
+                If scrapedseason.TMDBSpecified Then
+                    tDBElement.MainDetails.TMDB = scrapedseason.TMDB
+                End If
+                If scrapedseason.TVDBSpecified Then
+                    tDBElement.MainDetails.TVDB = scrapedseason.TVDB
+                End If
 
-            'Season number
-            If scrapedseason.SeasonSpecified AndAlso Not new_Season Then
-                tDBElement.MainDetails.Season = scrapedseason.Season
-                new_Season = True
-            End If
+                'Season number
+                If scrapedseason.SeasonSpecified AndAlso Not new_Season Then
+                    tDBElement.MainDetails.Season = scrapedseason.Season
+                    new_Season = True
+                End If
 
-            'Aired
-            If (Not tDBElement.MainDetails.AiredSpecified OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso tDBElement.ScrapeOptions.bSeasonAired AndAlso
-                scrapedseason.AiredSpecified AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
-                tDBElement.MainDetails.Aired = scrapedseason.Aired
-                new_Aired = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
-                tDBElement.MainDetails.Aired = String.Empty
-            End If
+                'Aired
+                If (Not tDBElement.MainDetails.AiredSpecified OrElse Not .Aired.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bSeasonAired AndAlso
+                scrapedseason.AiredSpecified AndAlso
+                .Aired.Enabled AndAlso
+                Not new_Aired Then
+                    tDBElement.MainDetails.Aired = scrapedseason.Aired
+                    new_Aired = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Aired.Enabled AndAlso
+                                        Not .Aired.Locked Then
+                    tDBElement.MainDetails.Aired = String.Empty
+                End If
 
-            'Plot
-            If (Not tDBElement.MainDetails.PlotSpecified OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso tDBElement.ScrapeOptions.bSeasonPlot AndAlso
-                scrapedseason.PlotSpecified AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
-                tDBElement.MainDetails.Plot = scrapedseason.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodePlot AndAlso Not Master.eSettings.TVLockEpisodePlot Then
-                tDBElement.MainDetails.Plot = String.Empty
-            End If
+                'Plot
+                If (Not tDBElement.MainDetails.PlotSpecified OrElse Not .Plot.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bSeasonPlot AndAlso
+                scrapedseason.PlotSpecified AndAlso
+                .Plot.Enabled AndAlso
+                Not new_Plot Then
+                    tDBElement.MainDetails.Plot = scrapedseason.Plot
+                    new_Plot = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Plot.Enabled AndAlso
+                    Not .Plot.Locked Then
+                    tDBElement.MainDetails.Plot = String.Empty
+                End If
 
-            'Title
-            If (Not tDBElement.MainDetails.TitleSpecified OrElse Not Master.eSettings.TVLockSeasonTitle) AndAlso tDBElement.ScrapeOptions.bSeasonTitle AndAlso
-                scrapedseason.TitleSpecified AndAlso Master.eSettings.TVScraperSeasonTitle AndAlso Not new_Title Then
-                tDBElement.MainDetails.Title = scrapedseason.Title
-                new_Title = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperSeasonTitle AndAlso Not Master.eSettings.TVLockSeasonTitle Then
-                tDBElement.MainDetails.Title = String.Empty
-            End If
-        Next
+                'Title
+                If (Not tDBElement.MainDetails.TitleSpecified OrElse Not .Title.Locked) AndAlso
+                    tDBElement.ScrapeOptions.bSeasonTitle AndAlso
+                scrapedseason.TitleSpecified AndAlso
+                .Title.Enabled AndAlso
+                Not new_Title Then
+                    tDBElement.MainDetails.Title = scrapedseason.Title
+                    new_Title = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Title.Enabled AndAlso
+                    Not .Title.Locked Then
+                    tDBElement.MainDetails.Title = String.Empty
+                End If
+            Next
+        End With
 
         Return tDBElement
     End Function
@@ -1012,183 +1223,238 @@ Public Class NFO
         '    PreviewDataScraperResults(ScrapedList)
         'End If
 
-        For Each scrapedepisode In ScrapedList
+        With Master.eSettings.TV.DataSettings.TVEpisode
+            For Each scrapedepisode In ScrapedList
 
-            'IDs
-            If scrapedepisode.IMDBSpecified Then
-                DBTVEpisode.MainDetails.IMDB = scrapedepisode.IMDB
-            End If
-            If scrapedepisode.TMDBSpecified Then
-                DBTVEpisode.MainDetails.TMDB = scrapedepisode.TMDB
-            End If
-            If scrapedepisode.TVDBSpecified Then
-                DBTVEpisode.MainDetails.TVDB = scrapedepisode.TVDB
-            End If
-
-            'DisplayEpisode
-            If scrapedepisode.DisplayEpisodeSpecified Then
-                DBTVEpisode.MainDetails.DisplayEpisode = scrapedepisode.DisplayEpisode
-            End If
-
-            'DisplaySeason
-            If scrapedepisode.DisplaySeasonSpecified Then
-                DBTVEpisode.MainDetails.DisplaySeason = scrapedepisode.DisplaySeason
-            End If
-
-            'Actors
-            If (Not DBTVEpisode.MainDetails.ActorsSpecified OrElse Not Master.eSettings.TVLockEpisodeActors) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeActors AndAlso
-                scrapedepisode.ActorsSpecified AndAlso Master.eSettings.TVScraperEpisodeActors AndAlso Not new_Actors Then
-
-                If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
-                    For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
-                        If Not scrapedepisode.Actors(i).URLOriginalSpecified Then
-                            scrapedepisode.Actors.RemoveAt(i)
-                        End If
-                    Next
+                'IDs
+                If scrapedepisode.IMDBSpecified Then
+                    DBTVEpisode.MainDetails.IMDB = scrapedepisode.IMDB
+                End If
+                If scrapedepisode.TMDBSpecified Then
+                    DBTVEpisode.MainDetails.TMDB = scrapedepisode.TMDB
+                End If
+                If scrapedepisode.TVDBSpecified Then
+                    DBTVEpisode.MainDetails.TVDB = scrapedepisode.TVDB
                 End If
 
-                'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
-                '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
-                'End If
-
-                DBTVEpisode.MainDetails.Actors = scrapedepisode.Actors
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedepisode.ActorsSpecified Then
-                    new_Actors = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each actor In scrapedepisode.Actors
-                        actor.Order = iOrder
-                        iOrder += 1
-                    Next
+                'DisplayEpisode
+                If scrapedepisode.DisplayEpisodeSpecified Then
+                    DBTVEpisode.MainDetails.DisplayEpisode = scrapedepisode.DisplayEpisode
                 End If
 
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
-                DBTVEpisode.MainDetails.Actors.Clear()
-            End If
-
-            'Aired
-            If (Not DBTVEpisode.MainDetails.AiredSpecified OrElse Not Master.eSettings.TVLockEpisodeAired) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeAired AndAlso
-                scrapedepisode.AiredSpecified AndAlso Master.eSettings.TVScraperEpisodeAired AndAlso Not new_Aired Then
-                DBTVEpisode.MainDetails.Aired = NumUtils.DateToISO8601Date(scrapedepisode.Aired)
-                new_Aired = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeAired AndAlso Not Master.eSettings.TVLockEpisodeAired Then
-                DBTVEpisode.MainDetails.Aired = String.Empty
-            End If
-
-            'Credits
-            If (Not DBTVEpisode.MainDetails.CreditsSpecified OrElse Not Master.eSettings.TVLockEpisodeCredits) AndAlso
-                scrapedepisode.CreditsSpecified AndAlso Master.eSettings.TVScraperEpisodeCredits AndAlso Not new_Credits Then
-                DBTVEpisode.MainDetails.Credits = scrapedepisode.Credits
-                new_Credits = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeCredits AndAlso Not Master.eSettings.TVLockEpisodeCredits Then
-                DBTVEpisode.MainDetails.Credits.Clear()
-            End If
-
-            'Directors
-            If (Not DBTVEpisode.MainDetails.DirectorsSpecified OrElse Not Master.eSettings.TVLockEpisodeDirector) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeDirectors AndAlso
-                scrapedepisode.DirectorsSpecified AndAlso Master.eSettings.TVScraperEpisodeDirector AndAlso Not new_Directors Then
-                DBTVEpisode.MainDetails.Directors = scrapedepisode.Directors
-                new_Directors = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeDirector AndAlso Not Master.eSettings.TVLockEpisodeDirector Then
-                DBTVEpisode.MainDetails.Directors.Clear()
-            End If
-
-            'GuestStars
-            If (Not DBTVEpisode.MainDetails.GuestStarsSpecified OrElse Not Master.eSettings.TVLockEpisodeGuestStars) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeGuestStars AndAlso
-                scrapedepisode.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not new_GuestStars Then
-
-                If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
-                    For i = scrapedepisode.GuestStars.Count - 1 To 0 Step -1
-                        If Not scrapedepisode.GuestStars(i).URLOriginalSpecified Then
-                            scrapedepisode.GuestStars.RemoveAt(i)
-                        End If
-                    Next
+                'DisplaySeason
+                If scrapedepisode.DisplaySeasonSpecified Then
+                    DBTVEpisode.MainDetails.DisplaySeason = scrapedepisode.DisplaySeason
                 End If
 
-                'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
-                '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
-                'End If
+                'Actors
+                If (Not DBTVEpisode.MainDetails.ActorsSpecified OrElse Not .Actors.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeActors AndAlso
+                    scrapedepisode.ActorsSpecified AndAlso
+                    .Actors.Enabled AndAlso
+                    Not new_Actors Then
 
-                DBTVEpisode.MainDetails.GuestStars = scrapedepisode.GuestStars
-                'added check if there's any actors left to add, if not then try with results of following scraper...
-                If scrapedepisode.GuestStarsSpecified Then
-                    new_GuestStars = True
-                    'add numbers for ordering
-                    Dim iOrder As Integer = 0
-                    For Each aGuestStar In scrapedepisode.GuestStars
-                        aGuestStar.Order = iOrder
-                        iOrder += 1
-                    Next
+                    If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
+                        For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
+                            If Not scrapedepisode.Actors(i).URLOriginalSpecified Then
+                                scrapedepisode.Actors.RemoveAt(i)
+                            End If
+                        Next
+                    End If
+
+                    'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
+                    '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
+                    'End If
+
+                    DBTVEpisode.MainDetails.Actors = scrapedepisode.Actors
+                    'added check if there's any actors left to add, if not then try with results of following scraper...
+                    If scrapedepisode.ActorsSpecified Then
+                        new_Actors = True
+                        'add numbers for ordering
+                        Dim iOrder As Integer = 0
+                        For Each actor In scrapedepisode.Actors
+                            actor.Order = iOrder
+                            iOrder += 1
+                        Next
+                    End If
+
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Actors.Enabled AndAlso
+                    Not .Actors.Enabled Then
+                    DBTVEpisode.MainDetails.Actors.Clear()
                 End If
 
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeGuestStars AndAlso Not Master.eSettings.TVLockEpisodeGuestStars Then
-                DBTVEpisode.MainDetails.GuestStars.Clear()
+                'Aired
+                If (Not DBTVEpisode.MainDetails.AiredSpecified OrElse Not .Aired.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeAired AndAlso
+                    scrapedepisode.AiredSpecified AndAlso
+                    .Aired.Enabled AndAlso
+                    Not new_Aired Then
+                    DBTVEpisode.MainDetails.Aired = NumUtils.DateToISO8601Date(scrapedepisode.Aired)
+                    new_Aired = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Aired.Enabled AndAlso
+                    Not .Aired.Locked Then
+                    DBTVEpisode.MainDetails.Aired = String.Empty
+                End If
+
+                'Credits
+                If (Not DBTVEpisode.MainDetails.CreditsSpecified OrElse Not .Credits.Locked) AndAlso
+                    scrapedepisode.CreditsSpecified AndAlso
+                    .Credits.Enabled AndAlso
+                    Not new_Credits Then
+                    DBTVEpisode.MainDetails.Credits = scrapedepisode.Credits
+                    new_Credits = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Credits.Enabled AndAlso
+                    Not .Credits.Locked Then
+                    DBTVEpisode.MainDetails.Credits.Clear()
+                End If
+
+                'Directors
+                If (Not DBTVEpisode.MainDetails.DirectorsSpecified OrElse Not .Directors.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeDirectors AndAlso
+                    scrapedepisode.DirectorsSpecified AndAlso
+                    .Directors.Enabled AndAlso
+                    Not new_Directors Then
+                    DBTVEpisode.MainDetails.Directors = scrapedepisode.Directors
+                    new_Directors = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Directors.Enabled AndAlso
+                    Not .Directors.Locked Then
+                    DBTVEpisode.MainDetails.Directors.Clear()
+                End If
+
+                'GuestStars
+                If (Not DBTVEpisode.MainDetails.GuestStarsSpecified OrElse Not .GuestStars.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeGuestStars AndAlso
+                    scrapedepisode.GuestStarsSpecified AndAlso
+                    .GuestStars.Enabled AndAlso
+                    Not new_GuestStars Then
+
+                    If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
+                        For i = scrapedepisode.GuestStars.Count - 1 To 0 Step -1
+                            If Not scrapedepisode.GuestStars(i).URLOriginalSpecified Then
+                                scrapedepisode.GuestStars.RemoveAt(i)
+                            End If
+                        Next
+                    End If
+
+                    'If Master.eSettings.TVScraperEpisodeCastLimit > 0 AndAlso scrapedepisode.Actors.Count > Master.eSettings.TVScraperEpisodeCastLimit Then
+                    '    scrapedepisode.Actors.RemoveRange(Master.eSettings.TVScraperEpisodeCastLimit, scrapedepisode.Actors.Count - Master.eSettings.TVScraperEpisodeCastLimit)
+                    'End If
+
+                    DBTVEpisode.MainDetails.GuestStars = scrapedepisode.GuestStars
+                    'added check if there's any actors left to add, if not then try with results of following scraper...
+                    If scrapedepisode.GuestStarsSpecified Then
+                        new_GuestStars = True
+                        'add numbers for ordering
+                        Dim iOrder As Integer = 0
+                        For Each aGuestStar In scrapedepisode.GuestStars
+                            aGuestStar.Order = iOrder
+                            iOrder += 1
+                        Next
+                    End If
+
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .GuestStars.Enabled AndAlso
+                    Not .GuestStars.Locked Then
+                    DBTVEpisode.MainDetails.GuestStars.Clear()
+                End If
+
+                'Plot
+                If (Not DBTVEpisode.MainDetails.PlotSpecified OrElse Not .Plot.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodePlot AndAlso
+                    scrapedepisode.PlotSpecified AndAlso
+                    .Plot.Enabled AndAlso
+                    Not new_Plot Then
+                    DBTVEpisode.MainDetails.Plot = scrapedepisode.Plot
+                    new_Plot = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Plot.Enabled AndAlso
+                    Not .Plot.Locked Then
+                    DBTVEpisode.MainDetails.Plot = String.Empty
+                End If
+
+                'Rating/Votes
+                If (Not DBTVEpisode.MainDetails.RatingSpecified OrElse Not .Rating.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeRating AndAlso
+                    scrapedepisode.RatingSpecified AndAlso
+                    .Rating.Enabled AndAlso
+                    Not new_Rating Then
+                    DBTVEpisode.MainDetails.Rating = scrapedepisode.Rating
+                    DBTVEpisode.MainDetails.Votes = NumUtils.CleanVotes(scrapedepisode.Votes)
+                    new_Rating = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Rating.Enabled AndAlso
+                    Not .Rating.Locked Then
+                    DBTVEpisode.MainDetails.Rating = String.Empty
+                    DBTVEpisode.MainDetails.Votes = String.Empty
+                End If
+
+                'Runtime
+                If (Not DBTVEpisode.MainDetails.RuntimeSpecified OrElse Not .Runtime.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeRuntime AndAlso
+                    scrapedepisode.RuntimeSpecified AndAlso
+                    .Runtime.Enabled AndAlso
+                    Not new_Runtime Then
+                    DBTVEpisode.MainDetails.Runtime = scrapedepisode.Runtime
+                    new_Runtime = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Runtime.Enabled AndAlso
+                    Not .Runtime.Locked Then
+                    DBTVEpisode.MainDetails.Runtime = String.Empty
+                End If
+
+                'ThumbPoster
+                If (Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLOriginal) OrElse Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLThumb)) AndAlso Not new_ThumbPoster Then
+                    DBTVEpisode.MainDetails.ThumbPoster = scrapedepisode.ThumbPoster
+                    new_ThumbPoster = True
+                End If
+
+                'Title
+                If (Not DBTVEpisode.MainDetails.TitleSpecified OrElse Not .Title.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeTitle AndAlso
+                   scrapedepisode.TitleSpecified AndAlso
+                   .Title.Enabled AndAlso
+                   Not new_Title Then
+                    DBTVEpisode.MainDetails.Title = scrapedepisode.Title
+                    new_Title = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .Title.Enabled AndAlso
+                    Not .Title.Locked Then
+                    DBTVEpisode.MainDetails.Title = String.Empty
+                End If
+
+                'USerRating
+                If (Not DBTVEpisode.MainDetails.UserRatingSpecified OrElse Not .UserRating.Locked) AndAlso
+                    DBTVEpisode.ScrapeOptions.bEpisodeUserRating AndAlso
+                    scrapedepisode.UserRatingSpecified AndAlso
+                    .UserRating.Enabled AndAlso
+                    Not new_UserRating Then
+                    DBTVEpisode.MainDetails.UserRating = scrapedepisode.UserRating
+                    new_UserRating = True
+                ElseIf Master.eSettings.TV.DataSettings.TVShow.ClearDisabledFields AndAlso
+                    Not .UserRating.Enabled AndAlso
+                    Not .UserRating.Locked Then
+                    DBTVEpisode.MainDetails.UserRating = 0
+                End If
+            Next
+
+            'Add GuestStars to Actors
+            If DBTVEpisode.MainDetails.GuestStarsSpecified AndAlso
+                Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso
+                Not .Actors.Locked Then
+                DBTVEpisode.MainDetails.Actors.AddRange(DBTVEpisode.MainDetails.GuestStars)
             End If
 
-            'Plot
-            If (Not DBTVEpisode.MainDetails.PlotSpecified OrElse Not Master.eSettings.TVLockEpisodePlot) AndAlso DBTVEpisode.ScrapeOptions.bEpisodePlot AndAlso
-                scrapedepisode.PlotSpecified AndAlso Master.eSettings.TVScraperEpisodePlot AndAlso Not new_Plot Then
-                DBTVEpisode.MainDetails.Plot = scrapedepisode.Plot
-                new_Plot = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodePlot AndAlso Not Master.eSettings.TVLockEpisodePlot Then
-                DBTVEpisode.MainDetails.Plot = String.Empty
+            'TV Show Runtime for Episode Runtime
+            If Not DBTVEpisode.MainDetails.RuntimeSpecified AndAlso
+                Master.eSettings.TVScraperUseSRuntimeForEp AndAlso
+                DBTVEpisode.TVShowDetails.RuntimeSpecified Then
+                DBTVEpisode.MainDetails.Runtime = DBTVEpisode.TVShowDetails.Runtime
             End If
-
-            'Rating/Votes
-            If (Not DBTVEpisode.MainDetails.RatingSpecified OrElse Not Master.eSettings.TVLockEpisodeRating) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeRating AndAlso
-                scrapedepisode.RatingSpecified AndAlso Master.eSettings.TVScraperEpisodeRating AndAlso Not new_Rating Then
-                DBTVEpisode.MainDetails.Rating = scrapedepisode.Rating
-                DBTVEpisode.MainDetails.Votes = NumUtils.CleanVotes(scrapedepisode.Votes)
-                new_Rating = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRating AndAlso Not Master.eSettings.TVLockEpisodeRating Then
-                DBTVEpisode.MainDetails.Rating = String.Empty
-                DBTVEpisode.MainDetails.Votes = String.Empty
-            End If
-
-            'Runtime
-            If (Not DBTVEpisode.MainDetails.RuntimeSpecified OrElse Not Master.eSettings.TVLockEpisodeRuntime) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeRuntime AndAlso
-                scrapedepisode.RuntimeSpecified AndAlso Master.eSettings.TVScraperEpisodeRuntime AndAlso Not new_Runtime Then
-                DBTVEpisode.MainDetails.Runtime = scrapedepisode.Runtime
-                new_Runtime = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeRuntime AndAlso Not Master.eSettings.TVLockEpisodeRuntime Then
-                DBTVEpisode.MainDetails.Runtime = String.Empty
-            End If
-
-            'ThumbPoster
-            If (Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLOriginal) OrElse Not String.IsNullOrEmpty(scrapedepisode.ThumbPoster.URLThumb)) AndAlso Not new_ThumbPoster Then
-                DBTVEpisode.MainDetails.ThumbPoster = scrapedepisode.ThumbPoster
-                new_ThumbPoster = True
-            End If
-
-            'Title
-            If (Not DBTVEpisode.MainDetails.TitleSpecified OrElse Not Master.eSettings.TVLockEpisodeTitle) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeTitle AndAlso
-               scrapedepisode.TitleSpecified AndAlso Master.eSettings.TVScraperEpisodeTitle AndAlso Not new_Title Then
-                DBTVEpisode.MainDetails.Title = scrapedepisode.Title
-                new_Title = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeTitle AndAlso Not Master.eSettings.TVLockEpisodeTitle Then
-                DBTVEpisode.MainDetails.Title = String.Empty
-            End If
-
-            'USerRating
-            If (Not DBTVEpisode.MainDetails.UserRatingSpecified OrElse Not Master.eSettings.TVLockEpisodeUserRating) AndAlso DBTVEpisode.ScrapeOptions.bEpisodeUserRating AndAlso
-                scrapedepisode.UserRatingSpecified AndAlso Master.eSettings.TVScraperEpisodeUserRating AndAlso Not new_UserRating Then
-                DBTVEpisode.MainDetails.UserRating = scrapedepisode.UserRating
-                new_UserRating = True
-            ElseIf Master.eSettings.TVScraperCleanFields AndAlso Not Master.eSettings.TVScraperEpisodeUserRating AndAlso Not Master.eSettings.TVLockEpisodeUserRating Then
-                DBTVEpisode.MainDetails.UserRating = 0
-            End If
-        Next
-
-        'Add GuestStars to Actors
-        If DBTVEpisode.MainDetails.GuestStarsSpecified AndAlso Master.eSettings.TVScraperEpisodeGuestStarsToActors AndAlso Not Master.eSettings.TVLockEpisodeActors Then
-            DBTVEpisode.MainDetails.Actors.AddRange(DBTVEpisode.MainDetails.GuestStars)
-        End If
-
-        'TV Show Runtime for Episode Runtime
-        If Not DBTVEpisode.MainDetails.RuntimeSpecified AndAlso Master.eSettings.TVScraperUseSRuntimeForEp AndAlso DBTVEpisode.TVShowDetails.RuntimeSpecified Then
-            DBTVEpisode.MainDetails.Runtime = DBTVEpisode.TVShowDetails.Runtime
-        End If
+        End With
 
         Return DBTVEpisode
     End Function
@@ -2231,7 +2497,7 @@ Public Class NFO
                 Dim fAttWritable As Boolean = True
 
                 'YAMJ support
-                If Master.eSettings.MovieUseYAMJ AndAlso Master.eSettings.MovieNFOYAMJ Then
+                If Master.eSettings.Movie.Filenaming.YAMJ.Enabled AndAlso Master.eSettings.Movie.Filenaming.YAMJ.NFO Then
                     If tMovie.TMDBSpecified Then
                         tMovie.TMDB = -1
                     End If

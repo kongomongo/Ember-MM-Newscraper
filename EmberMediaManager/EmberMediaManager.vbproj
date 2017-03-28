@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="clsAPIManager.vb" />
     <Compile Include="clsTheming.vb" />
     <Compile Include="dlgAbout.Designer.vb">
       <DependentUpon>dlgAbout.vb</DependentUpon>
@@ -221,34 +222,10 @@
     <Compile Include="dlgEditDataField.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgEditTVEpisode.Designer.vb">
-      <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgEditTVEpisode.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgEditMovieSet.Designer.vb">
-      <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgEditMovieSet.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgEdit.Designer.vb">
       <DependentUpon>dlgEdit.vb</DependentUpon>
     </Compile>
     <Compile Include="dlgEdit.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgEditTVSeason.Designer.vb">
-      <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgEditTVSeason.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dlgEditTVShow.Designer.vb">
-      <DependentUpon>dlgEditTVShow.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgEditTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="dlgErrorViewer.Designer.vb">
@@ -359,12 +336,6 @@
     <Compile Include="dlgSourceTVShow.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="dlgWizard.Designer.vb">
-      <DependentUpon>dlgWizard.vb</DependentUpon>
-    </Compile>
-    <Compile Include="dlgWizard.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="dlgImgSelect.Designer.vb">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
     </Compile>
@@ -417,6 +388,12 @@
       <DependentUpon>frmMovie_Source.vb</DependentUpon>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmMovie_Source.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_FileSystem.Designer.vb">
+      <DependentUpon>frmOption_FileSystem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsPanels\frmOption_FileSystem.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MasterSettingsPanels\frmOption_GUI.Designer.vb">
@@ -500,6 +477,7 @@
     <Compile Include="MasterSettingsPanels\frmOption_Proxy.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Settings\clsSettings.vb" />
     <Compile Include="XMLViewer\CharacterEncoder.vb" />
     <Compile Include="XMLViewer\XMLViewer.vb">
       <SubType>Component</SubType>
@@ -524,20 +502,8 @@
     <EmbeddedResource Include="dlgEditDataField.resx">
       <DependentUpon>dlgEditDataField.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditTVEpisode.resx">
-      <DependentUpon>dlgEditTVEpisode.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditMovieSet.resx">
-      <DependentUpon>dlgEditMovieSet.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgEdit.resx">
       <DependentUpon>dlgEdit.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditTVSeason.resx">
-      <DependentUpon>dlgEditTVSeason.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dlgEditTVShow.resx">
-      <DependentUpon>dlgEditTVShow.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dlgErrorViewer.resx">
       <DependentUpon>dlgErrorViewer.vb</DependentUpon>
@@ -597,9 +563,6 @@
     <EmbeddedResource Include="dlgSourceTVShow.resx">
       <DependentUpon>dlgSourceTVShow.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="dlgWizard.resx">
-      <DependentUpon>dlgWizard.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="dlgImgSelect.resx">
       <DependentUpon>dlgImgSelect.vb</DependentUpon>
     </EmbeddedResource>
@@ -627,6 +590,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmMovie_Source.resx">
       <DependentUpon>frmMovie_Source.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsPanels\frmOption_FileSystem.resx">
+      <DependentUpon>frmOption_FileSystem.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterSettingsPanels\frmOption_GUI.resx">
       <DependentUpon>frmOption_GUI.vb</DependentUpon>
@@ -5435,7 +5401,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bin\" />
-    <Folder Include="Settings\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

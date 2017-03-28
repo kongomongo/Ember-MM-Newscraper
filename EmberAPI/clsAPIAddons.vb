@@ -131,7 +131,7 @@ Public Class AddonsManager
 
                         'add addon to the list of available scrapers
                         If nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_Movie) OrElse
-                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_MovieSet) OrElse
+                            nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_Movieset) OrElse
                             nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_TVEpisode) OrElse
                             nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_TVSeason) OrElse
                             nAddon.Addon.Capabilities_AddonEventTypes.Contains(Enums.AddonEventType.Scrape_TVShow) Then
@@ -198,13 +198,13 @@ Public Class AddonsManager
             Application.DoEvents()
         End While
 
-        If ScrapeModifiers.MainBanner AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Banner) Then Return True
-        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_ClearArt) Then Return True
-        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_ClearLogo) Then Return True
-        If ScrapeModifiers.MainDiscArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_DiscArt) Then Return True
-        If ScrapeModifiers.MainFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Fanart) Then Return True
-        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Landscape) Then Return True
-        If ScrapeModifiers.MainPoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.MovieSet_Image_Poster) Then Return True
+        If ScrapeModifiers.MainBanner AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_Banner) Then Return True
+        If ScrapeModifiers.MainClearArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_ClearArt) Then Return True
+        If ScrapeModifiers.MainClearLogo AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_ClearLogo) Then Return True
+        If ScrapeModifiers.MainDiscArt AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_DiscArt) Then Return True
+        If ScrapeModifiers.MainFanart AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_Fanart) Then Return True
+        If ScrapeModifiers.MainLandscape AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_Landscape) Then Return True
+        If ScrapeModifiers.MainPoster AndAlso tExternalModule.Addon.Capabilities_ScraperCapatibilities.Contains(Enums.ScraperCapatibility.Movieset_Image_Poster) Then Return True
 
         Return False
     End Function
@@ -553,7 +553,7 @@ Public Class AddonsManager
             For Each _externalScraperModule In modules
                 logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Using] {0}", _externalScraperModule.Addon.Shortname))
 
-                ret = _externalScraperModule.Addon.Run(oDBMovieSet, Enums.AddonEventType.Scrape_MovieSet, Nothing)
+                ret = _externalScraperModule.Addon.Run(oDBMovieSet, Enums.AddonEventType.Scrape_Movieset, Nothing)
 
                 If ret.bCancelled Then
                     logger.Trace(String.Format("[AddonsManager] [ScrapeData_MovieSet] [Cancelled] [No Scraper Results] {0}", tDBElement.MainDetails.Title))
@@ -894,7 +894,7 @@ Public Class AddonsManager
             For Each _externalScraperModule In modules
                 logger.Trace(String.Format("[AddonsManager] [ScrapeImage_MovieSet] [Using] {0}", _externalScraperModule.Addon.Shortname))
                 If QueryScraperCapabilities_Image_MovieSet(_externalScraperModule, ScrapeModifiers) Then
-                    ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_MovieSet, Nothing)
+                    ret = _externalScraperModule.Addon.Run(tDBElement, Enums.AddonEventType.Scrape_Movieset, Nothing)
                     If ret.ScraperResult_ImageContainer IsNot Nothing Then
                         ImagesContainer.MainBanners.AddRange(ret.ScraperResult_ImageContainer.MainBanners)
                         ImagesContainer.MainCharacterArts.AddRange(ret.ScraperResult_ImageContainer.MainCharacterArts)
@@ -1111,7 +1111,7 @@ Public Class AddonsManager
         Select Case tContentType
             Case Enums.ContentType.Movie
                 Return ScraperWithCapabilityAnyEnabled_Image_Movie(tImageType)
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 Return ScraperWithCapabilityAnyEnabled_Image_MovieSet(tImageType)
             Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                 Return ScraperWithCapabilityAnyEnabled_Image_TV(tImageType)

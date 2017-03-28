@@ -34,7 +34,7 @@ Public Class frmMovie_GUI
     Dim _strName As String = "Movie_GUI"
     Dim _strTitle As String = "GUI"
 
-    Private MovieGeneralMediaListSorting As New List(Of Settings.ListSorting)
+    Dim _medialistsorting As New MediaListSortingSpecification
 
 #End Region 'Fields
 
@@ -139,50 +139,50 @@ Public Class frmMovie_GUI
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            btnMovieGeneralCustomMarker1.BackColor = Color.FromArgb(.MovieGeneralCustomMarker1Color)
-            btnMovieGeneralCustomMarker2.BackColor = Color.FromArgb(.MovieGeneralCustomMarker2Color)
-            btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.MovieGeneralCustomMarker3Color)
-            btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.MovieGeneralCustomMarker4Color)
-            cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieGeneralCustomScrapeButtonModifierType
-            cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieGeneralCustomScrapeButtonScrapeType
+        With Manager.mSettings.Movie.GUI
+            btnMovieGeneralCustomMarker1.BackColor = Color.FromArgb(.CustomMarker1.Color)
+            btnMovieGeneralCustomMarker2.BackColor = Color.FromArgb(.CustomMarker2.Color)
+            btnMovieGeneralCustomMarker3.BackColor = Color.FromArgb(.CustomMarker3.Color)
+            btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.CustomMarker4.Color)
+            cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .CustomScrapeButton.ModifierType
+            cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .CustomScrapeButton.ScrapeType
             cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
-            chkMovieClickScrape.Checked = .MovieClickScrape
-            chkMovieClickScrapeAsk.Checked = .MovieClickScrapeAsk
-            If .MovieGeneralCustomScrapeButtonEnabled Then
+            chkMovieClickScrape.Checked = .ClickScrape
+            chkMovieClickScrapeAsk.Checked = .ClickScrapeAsk
+            If .CustomScrapeButton.Enabled Then
                 rbMovieGeneralCustomScrapeButtonEnabled.Checked = True
             Else
                 rbMovieGeneralCustomScrapeButtonDisabled.Checked = True
             End If
-            txtMovieGeneralCustomMarker1.Text = .MovieGeneralCustomMarker1Name.ToString
-            txtMovieGeneralCustomMarker2.Text = .MovieGeneralCustomMarker2Name.ToString
-            txtMovieGeneralCustomMarker3.Text = .MovieGeneralCustomMarker3Name.ToString
-            txtMovieGeneralCustomMarker4.Text = .MovieGeneralCustomMarker4Name.ToString
+            txtMovieGeneralCustomMarker1.Text = .CustomMarker1.Name
+            txtMovieGeneralCustomMarker2.Text = .CustomMarker2.Name
+            txtMovieGeneralCustomMarker3.Text = .CustomMarker3.Name
+            txtMovieGeneralCustomMarker4.Text = .CustomMarker4.Name
             chkMovieClickScrapeAsk.Enabled = chkMovieClickScrape.Checked
 
-            MovieGeneralMediaListSorting.AddRange(.MovieGeneralMediaListSorting)
+            _medialistsorting.AddRange(.MediaListSorting)
             LoadMovieGeneralMediaListSorting()
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieClickScrape = chkMovieClickScrape.Checked
-            .MovieClickScrapeAsk = chkMovieClickScrapeAsk.Checked
-            .MovieGeneralCustomMarker1Color = btnMovieGeneralCustomMarker1.BackColor.ToArgb
-            .MovieGeneralCustomMarker2Color = btnMovieGeneralCustomMarker2.BackColor.ToArgb
-            .MovieGeneralCustomMarker3Color = btnMovieGeneralCustomMarker3.BackColor.ToArgb
-            .MovieGeneralCustomMarker4Color = btnMovieGeneralCustomMarker4.BackColor.ToArgb
-            .MovieGeneralCustomMarker1Name = txtMovieGeneralCustomMarker1.Text
-            .MovieGeneralCustomMarker2Name = txtMovieGeneralCustomMarker2.Text
-            .MovieGeneralCustomMarker3Name = txtMovieGeneralCustomMarker3.Text
-            .MovieGeneralCustomMarker4Name = txtMovieGeneralCustomMarker4.Text
-            .MovieGeneralCustomScrapeButtonEnabled = rbMovieGeneralCustomScrapeButtonEnabled.Checked
-            .MovieGeneralCustomScrapeButtonModifierType = CType(cbMovieGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
-            .MovieGeneralCustomScrapeButtonScrapeType = CType(cbMovieGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
+        With Manager.mSettings.Movie.GUI
+            .ClickScrape = chkMovieClickScrape.Checked
+            .ClickScrapeAsk = chkMovieClickScrapeAsk.Checked
+            .CustomMarker1.Color = btnMovieGeneralCustomMarker1.BackColor.ToArgb
+            .CustomMarker2.Color = btnMovieGeneralCustomMarker2.BackColor.ToArgb
+            .CustomMarker3.Color = btnMovieGeneralCustomMarker3.BackColor.ToArgb
+            .CustomMarker4.Color = btnMovieGeneralCustomMarker4.BackColor.ToArgb
+            .CustomMarker1.Name = txtMovieGeneralCustomMarker1.Text
+            .CustomMarker2.Name = txtMovieGeneralCustomMarker2.Text
+            .CustomMarker3.Name = txtMovieGeneralCustomMarker3.Text
+            .CustomMarker4.Name = txtMovieGeneralCustomMarker4.Text
+            .CustomScrapeButton.Enabled = rbMovieGeneralCustomScrapeButtonEnabled.Checked
+            .CustomScrapeButton.ModifierType = CType(cbMovieGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
+            .CustomScrapeButton.ScrapeType = CType(cbMovieGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .MovieGeneralFlagLang = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
-            .MovieGeneralMediaListSorting.Clear()
-            .MovieGeneralMediaListSorting.AddRange(MovieGeneralMediaListSorting)
+            .MediaListSorting.Clear()
+            .MediaListSorting.AddRange(_medialistsorting)
             .MovieSortTokens.Clear()
             .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
             If .MovieSortTokens.Count <= 0 Then .MovieSortTokensIsEmpty = True
@@ -250,9 +250,9 @@ Public Class frmMovie_GUI
     End Sub
 
     Private Sub btnMovieGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieListSorting, True)
-        MovieGeneralMediaListSorting.Clear()
-        MovieGeneralMediaListSorting.AddRange(Master.eSettings.MovieGeneralMediaListSorting)
+        Manager.mSettings.Movie.GUI.MediaListSorting.SetDefaults(Enums.ContentType.Movie, True)
+        _medialistsorting.Clear()
+        _medialistsorting.AddRange(Manager.mSettings.Movie.GUI.MediaListSorting)
         LoadMovieGeneralMediaListSorting()
         EnableApplyButton()
     End Sub
@@ -267,14 +267,14 @@ Public Class frmMovie_GUI
     Private Sub btnMovieGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingUp.Click
         Try
             If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
+                Dim selItem As MediaListSortingItemSpecification = _medialistsorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvMovieGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieGeneralMediaListSorting.IndexOf(selItem)
+                    Dim iIndex As Integer = _medialistsorting.IndexOf(selItem)
                     Dim selIndex As Integer = lvMovieGeneralMediaListSorting.SelectedIndices(0)
-                    MovieGeneralMediaListSorting.Remove(selItem)
-                    MovieGeneralMediaListSorting.Insert(iIndex - 1, selItem)
+                    _medialistsorting.Remove(selItem)
+                    _medialistsorting.Insert(iIndex - 1, selItem)
 
                     RenumberMovieGeneralMediaListSorting()
                     LoadMovieGeneralMediaListSorting()
@@ -301,14 +301,14 @@ Public Class frmMovie_GUI
     Private Sub btnMovieGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingDown.Click
         Try
             If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieGeneralMediaListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
+                Dim selItem As MediaListSortingItemSpecification = _medialistsorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvMovieGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieGeneralMediaListSorting.IndexOf(selItem)
+                    Dim iIndex As Integer = _medialistsorting.IndexOf(selItem)
                     Dim selIndex As Integer = lvMovieGeneralMediaListSorting.SelectedIndices(0)
-                    MovieGeneralMediaListSorting.Remove(selItem)
-                    MovieGeneralMediaListSorting.Insert(iIndex + 1, selItem)
+                    _medialistsorting.Remove(selItem)
+                    _medialistsorting.Insert(iIndex + 1, selItem)
 
                     RenumberMovieGeneralMediaListSorting()
                     LoadMovieGeneralMediaListSorting()
@@ -341,7 +341,7 @@ Public Class frmMovie_GUI
     Private Sub LoadMovieGeneralMediaListSorting()
         Dim lvItem As ListViewItem
         lvMovieGeneralMediaListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In MovieGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
+        For Each rColumn As MediaListSortingItemSpecification In _medialistsorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
             lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
@@ -411,7 +411,7 @@ Public Class frmMovie_GUI
 
     Private Sub lvMovieGeneralMediaListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvMovieGeneralMediaListSorting.MouseDoubleClick
         If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = MovieGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
+            Dim selItem As MediaListSortingItemSpecification = _medialistsorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieGeneralMediaListSorting.SelectedItems(0).Text))
 
             If selItem IsNot Nothing Then
                 lvMovieGeneralMediaListSorting.SuspendLayout()
@@ -442,8 +442,8 @@ Public Class frmMovie_GUI
     End Sub
 
     Private Sub RenumberMovieGeneralMediaListSorting()
-        For i As Integer = 0 To MovieGeneralMediaListSorting.Count - 1
-            MovieGeneralMediaListSorting(i).DisplayIndex = i
+        For i As Integer = 0 To _medialistsorting.Count - 1
+            _medialistsorting(i).DisplayIndex = i
         Next
     End Sub
 

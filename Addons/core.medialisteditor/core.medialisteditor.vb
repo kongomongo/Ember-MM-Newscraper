@@ -112,7 +112,7 @@ Public Class Core
                     If cTab.Value.StartsWith("movie-") Then
                         cTabType = Enums.ContentType.Movie
                     ElseIf cTab.Value.StartsWith("sets-") Then
-                        cTabType = Enums.ContentType.MovieSet
+                        cTabType = Enums.ContentType.Movieset
                     ElseIf cTab.Value.StartsWith("tvshow-") Then
                         cTabType = Enums.ContentType.TV
                     End If

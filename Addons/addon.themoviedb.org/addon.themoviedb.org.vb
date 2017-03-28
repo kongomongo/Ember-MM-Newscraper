@@ -66,12 +66,12 @@ Public Class Addon
         Get
             Return New List(Of Enums.AddonEventType)(New Enums.AddonEventType() {
                                                       Enums.AddonEventType.Scrape_Movie,
-                                                      Enums.AddonEventType.Scrape_MovieSet,
+                                                      Enums.AddonEventType.Scrape_Movieset,
                                                       Enums.AddonEventType.Scrape_TVEpisode,
                                                       Enums.AddonEventType.Scrape_TVSeason,
                                                       Enums.AddonEventType.Scrape_TVShow,
                                                       Enums.AddonEventType.Search_Movie,
-                                                      Enums.AddonEventType.Search_MovieSet,
+                                                      Enums.AddonEventType.Search_Movieset,
                                                       Enums.AddonEventType.Search_TVShow
                                                       })
         End Get
@@ -99,10 +99,10 @@ Public Class Addon
                                                        Enums.ScraperCapatibility.Movie_Data_Year,
                                                        Enums.ScraperCapatibility.Movie_Image_Fanart,
                                                        Enums.ScraperCapatibility.Movie_Image_Poster,
-                                                       Enums.ScraperCapatibility.MovieSet_Data_Plot,
-                                                       Enums.ScraperCapatibility.MovieSet_Data_Title,
-                                                       Enums.ScraperCapatibility.MovieSet_Image_Fanart,
-                                                       Enums.ScraperCapatibility.MovieSet_Image_Poster,
+                                                       Enums.ScraperCapatibility.Movieset_Data_Plot,
+                                                       Enums.ScraperCapatibility.Movieset_Data_Title,
+                                                       Enums.ScraperCapatibility.Movieset_Image_Fanart,
+                                                       Enums.ScraperCapatibility.Movieset_Image_Poster,
                                                        Enums.ScraperCapatibility.TVEpisode_Data_Actors,
                                                        Enums.ScraperCapatibility.TVEpisode_Data_Aired,
                                                        Enums.ScraperCapatibility.TVEpisode_Data_Directors,
@@ -214,8 +214,8 @@ Public Class Addon
 
         'MovieSet
         _AddonSettings_MovieSet.APIKey = If(String.IsNullOrEmpty(_strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", _strPrivateAPIKey)
-        _AddonSettings_MovieSet.FallBackToEng = _settings.GetBooleanSetting("FallBackToEn", False, Enums.ContentType.MovieSet)
-        _AddonSettings_MovieSet.IncludeAdultItems = _settings.GetBooleanSetting("IncludeAdultItems", False, Enums.ContentType.MovieSet)
+        _AddonSettings_MovieSet.FallBackToEng = _settings.GetBooleanSetting("FallBackToEn", False, Enums.ContentType.Movieset)
+        _AddonSettings_MovieSet.IncludeAdultItems = _settings.GetBooleanSetting("IncludeAdultItems", False, Enums.ContentType.Movieset)
 
         'TV
         _AddonSettings_TV.APIKey = If(String.IsNullOrEmpty(_strPrivateAPIKey), "44810eefccd9cb1fa1d57e7b0d67b08d", _strPrivateAPIKey)
@@ -239,7 +239,7 @@ Public Class Addon
         Select Case tDBElement.ContentType
             Case Enums.ContentType.Movie
                 ScraperSettings = _AddonSettings_Movie
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 ScraperSettings = _AddonSettings_MovieSet
             Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
                 ScraperSettings = _AddonSettings_TV
@@ -255,7 +255,7 @@ Public Class Addon
                 ElseIf tDBElement.MainDetails.IMDBSpecified Then
                     nModuleResult = _scraper.Scrape_Movie(tDBElement.MainDetails.IMDB, tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 End If
-            Case Enums.AddonEventType.Scrape_MovieSet
+            Case Enums.AddonEventType.Scrape_Movieset
                 If tDBElement.MainDetails.TMDBSpecified Then
                     nModuleResult = _scraper.Scrape_Movieset(CStr(tDBElement.MainDetails.TMDB), tDBElement.ScrapeModifiers, tDBElement.ScrapeOptions)
                 End If
@@ -295,7 +295,7 @@ Public Class Addon
                 If tDBElement.MainDetails.TitleSpecified Then
                     nModuleResult.SearchResults = _scraper.Search_Movie(tDBElement.MainDetails.Title, tDBElement.MainDetails.Year)
                 End If
-            Case Enums.AddonEventType.Search_MovieSet
+            Case Enums.AddonEventType.Search_Movieset
                 If tDBElement.MainDetails.TitleSpecified Then
                     nModuleResult.SearchResults = _scraper.Search_MovieSet(tDBElement.MainDetails.Title)
                 End If
@@ -319,8 +319,8 @@ Public Class Addon
         _settings.SetBooleanSetting("SearchDeviant", _AddonSettings_Movie.SearchDeviant, , Enums.ContentType.Movie)
 
         'MovieSet
-        _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_MovieSet.FallBackToEng, , Enums.ContentType.MovieSet)
-        _settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_MovieSet.IncludeAdultItems, , Enums.ContentType.MovieSet)
+        _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_MovieSet.FallBackToEng, , Enums.ContentType.Movieset)
+        _settings.SetBooleanSetting("IncludeAdultItems", _AddonSettings_MovieSet.IncludeAdultItems, , Enums.ContentType.Movieset)
 
         'TV
         _settings.SetBooleanSetting("FallBackToEn", _AddonSettings_TV.FallBackToEng, , Enums.ContentType.TV)

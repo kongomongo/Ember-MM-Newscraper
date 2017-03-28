@@ -382,30 +382,30 @@ Public Class Images
         With Master.eSettings.Movie.ImageSettings
             Select Case tImageType
                 Case Enums.ScrapeModifierType.MainBanner
-                    bResizeEnabled = .BannerResize
-                    intHeight = .BannerMaxHeight
+                    bResizeEnabled = .Banner.ResizeSpecified
+                    intHeight = .Banner.MaxHeight
                     intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.Movie))
-                    intWidth = .BannerMaxWidth
+                    intWidth = .Banner.MaxWidth
                 Case Enums.ScrapeModifierType.MainExtrafanarts
-                    bResizeEnabled = .ExtrafanartsResize
-                    intHeight = .ExtrafanartsMaxHeight
+                    bResizeEnabled = .Extrafanarts.ResizeSpecified
+                    intHeight = .Extrafanarts.MaxHeight
                     intQuality = CInt(clsXMLAdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.Movie))
-                    intWidth = .ExtrafanartsMaxWidth
+                    intWidth = .Extrafanarts.MaxWidth
                 Case Enums.ScrapeModifierType.MainExtrathumbs
-                    bResizeEnabled = .ExtrathumbsResize
-                    intHeight = .ExtrathumbsMaxHeight
+                    bResizeEnabled = .Extrathumbs.ResizeSpecified
+                    intHeight = .Extrathumbs.MaxHeight
                     intQuality = CInt(clsXMLAdvancedSettings.GetSetting("ExtrathumbsQuality", "100", , Enums.ContentType.Movie))
-                    intWidth = .ExtrathumbsMaxWidth
+                    intWidth = .Extrathumbs.MaxWidth
                 Case Enums.ScrapeModifierType.MainFanart
-                    bResizeEnabled = .FanartResize
-                    intHeight = .FanartMaxHeight
+                    bResizeEnabled = .Fanart.ResizeSpecified
+                    intHeight = .Fanart.MaxHeight
                     intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.Movie))
-                    intWidth = .FanartMaxWidth
+                    intWidth = .Fanart.MaxWidth
                 Case Enums.ScrapeModifierType.MainPoster
-                    bResizeEnabled = Master.eSettings.Movie.ImageSettings.PosterResize
-                    intHeight = Master.eSettings.Movie.ImageSettings.PosterMaxHeight
+                    bResizeEnabled = Master.eSettings.Movie.ImageSettings.Poster.ResizeSpecified
+                    intHeight = Master.eSettings.Movie.ImageSettings.Poster.MaxHeight
                     intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.Movie))
-                    intWidth = Master.eSettings.Movie.ImageSettings.PosterMaxWidth
+                    intWidth = Master.eSettings.Movie.ImageSettings.Poster.MaxWidth
             End Select
         End With
 
@@ -429,7 +429,7 @@ Public Class Images
             Next
 
             If tImageType = Enums.ScrapeModifierType.MainFanart AndAlso Not String.IsNullOrEmpty(strReturn) AndAlso
-                Not String.IsNullOrEmpty(Master.eSettings.MovieBackdropsPath) AndAlso Master.eSettings.MovieBackdropsAuto Then
+                Not String.IsNullOrEmpty(Master.eSettings.Movie.Filenaming.BackdropsPath) AndAlso Master.eSettings.Movie.Filenaming.BackdropsAuto Then
                 FileUtils.Common.CopyFanartToBackdropsPath(strReturn, tDBElement.ContentType)
             End If
         Catch ex As Exception
@@ -458,20 +458,20 @@ Public Class Images
         With Master.eSettings.Movieset.ImageSettings
             Select Case tImageType
                 Case Enums.ScrapeModifierType.MainBanner
-                    bResizeEnabled = .BannerResize
-                    intHeight = .BannerMaxHeight
-                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.MovieSet))
-                    intWidth = .BannerMaxWidth
+                    bResizeEnabled = .Banner.ResizeSpecified
+                    intHeight = .Banner.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.Movieset))
+                    intWidth = .Banner.MaxWidth
                 Case Enums.ScrapeModifierType.MainFanart
-                    bResizeEnabled = .FanartResize
-                    intHeight = .FanartMaxHeight
-                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.MovieSet))
-                    intWidth = .FanartMaxWidth
+                    bResizeEnabled = .Fanart.ResizeSpecified
+                    intHeight = .Fanart.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.Movieset))
+                    intWidth = .Fanart.MaxWidth
                 Case Enums.ScrapeModifierType.MainPoster
-                    bResizeEnabled = .PosterResize
-                    intHeight = .PosterMaxHeight
-                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.MovieSet))
-                    intWidth = .PosterMaxWidth
+                    bResizeEnabled = .Poster.ResizeSpecified
+                    intHeight = .Poster.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.Movieset))
+                    intWidth = .Poster.MaxWidth
             End Select
         End With
 
@@ -516,23 +516,25 @@ Public Class Images
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
-        Select Case tImageType
-            Case Enums.ScrapeModifierType.AllSeasonsBanner
-                bResizeEnabled = Master.eSettings.TVAllSeasonsBannerResize
-                intHeight = Master.eSettings.TVAllSeasonsBannerHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
-                intWidth = Master.eSettings.TVAllSeasonsBannerWidth
-            Case Enums.ScrapeModifierType.SeasonFanart
-                bResizeEnabled = Master.eSettings.TVAllSeasonsFanartResize
-                intHeight = Master.eSettings.TVAllSeasonsFanartHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
-                intWidth = Master.eSettings.TVAllSeasonsFanartWidth
-            Case Enums.ScrapeModifierType.SeasonPoster
-                bResizeEnabled = Master.eSettings.TVAllSeasonsPosterResize
-                intHeight = Master.eSettings.TVAllSeasonsPosterHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
-                intWidth = Master.eSettings.TVAllSeasonsPosterWidth
-        End Select
+        With Master.eSettings.TV.ImageSettings.TVAllSeasons
+            Select Case tImageType
+                Case Enums.ScrapeModifierType.AllSeasonsBanner
+                    bResizeEnabled = .Banner.ResizeSpecified
+                    intHeight = .Banner.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
+                    intWidth = .Banner.MaxWidth
+                Case Enums.ScrapeModifierType.SeasonFanart
+                    bResizeEnabled = .Fanart.ResizeSpecified
+                    intHeight = .Fanart.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
+                    intWidth = .Fanart.MaxWidth
+                Case Enums.ScrapeModifierType.SeasonPoster
+                    bResizeEnabled = .Poster.ResizeSpecified
+                    intHeight = .Poster.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
+                    intWidth = .Poster.MaxWidth
+            End Select
+        End With
 
         If bResizeEnabled Then
             If _image Is Nothing Then LoadFromMemoryStream()
@@ -575,18 +577,20 @@ Public Class Images
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
-        Select Case tImageType
-            Case Enums.ScrapeModifierType.EpisodeFanart
-                bResizeEnabled = Master.eSettings.TVEpisodeFanartResize
-                intHeight = Master.eSettings.TVEpisodeFanartHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVEpisode))
-                intWidth = Master.eSettings.TVEpisodeFanartWidth
-            Case Enums.ScrapeModifierType.EpisodePoster
-                bResizeEnabled = Master.eSettings.TVEpisodePosterResize
-                intHeight = Master.eSettings.TVEpisodePosterHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVEpisode))
-                intWidth = Master.eSettings.TVEpisodePosterWidth
-        End Select
+        With Master.eSettings.TV.ImageSettings.TVEpisode
+            Select Case tImageType
+                Case Enums.ScrapeModifierType.EpisodeFanart
+                    bResizeEnabled = .Fanart.ResizeSpecified
+                    intHeight = .Fanart.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVEpisode))
+                    intWidth = .Fanart.MaxWidth
+                Case Enums.ScrapeModifierType.EpisodePoster
+                    bResizeEnabled = .Poster.ResizeSpecified
+                    intHeight = .Poster.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVEpisode))
+                    intWidth = .Poster.MaxWidth
+            End Select
+        End With
 
         If bResizeEnabled Then
             If _image Is Nothing Then LoadFromMemoryStream()
@@ -629,23 +633,25 @@ Public Class Images
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
-        Select Case tImageType
-            Case Enums.ScrapeModifierType.SeasonBanner
-                bResizeEnabled = Master.eSettings.TVSeasonBannerResize
-                intHeight = Master.eSettings.TVSeasonBannerHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
-                intWidth = Master.eSettings.TVSeasonBannerWidth
-            Case Enums.ScrapeModifierType.SeasonFanart
-                bResizeEnabled = Master.eSettings.TVSeasonFanartResize
-                intHeight = Master.eSettings.TVSeasonFanartHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
-                intWidth = Master.eSettings.TVSeasonFanartWidth
-            Case Enums.ScrapeModifierType.SeasonPoster
-                bResizeEnabled = Master.eSettings.TVSeasonPosterResize
-                intHeight = Master.eSettings.TVSeasonPosterHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
-                intWidth = Master.eSettings.TVSeasonPosterWidth
-        End Select
+        With Master.eSettings.TV.ImageSettings.TVSeason
+            Select Case tImageType
+                Case Enums.ScrapeModifierType.SeasonBanner
+                    bResizeEnabled = .Banner.ResizeSpecified
+                    intHeight = .Banner.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVSeason))
+                    intWidth = .Banner.MaxWidth
+                Case Enums.ScrapeModifierType.SeasonFanart
+                    bResizeEnabled = .Fanart.ResizeSpecified
+                    intHeight = .Fanart.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVSeason))
+                    intWidth = .Fanart.MaxWidth
+                Case Enums.ScrapeModifierType.SeasonPoster
+                    bResizeEnabled = .Poster.ResizeSpecified
+                    intHeight = .Poster.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVSeason))
+                    intWidth = .Poster.MaxWidth
+            End Select
+        End With
 
         If bResizeEnabled Then
             If _image Is Nothing Then LoadFromMemoryStream()
@@ -688,28 +694,30 @@ Public Class Images
         Dim intQuality As Integer = 100
         Dim intWidth As Integer = -1
 
-        Select Case tImageType
-            Case Enums.ScrapeModifierType.MainBanner
-                bResizeEnabled = Master.eSettings.TVShowBannerResize
-                intHeight = Master.eSettings.TVShowBannerHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVShow))
-                intWidth = Master.eSettings.TVShowBannerWidth
-            Case Enums.ScrapeModifierType.MainExtrafanarts
-                bResizeEnabled = Master.eSettings.TVShowExtrafanartsResize
-                intHeight = Master.eSettings.TVShowExtrafanartsHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.TVShow))
-                intWidth = Master.eSettings.TVShowExtrafanartsWidth
-            Case Enums.ScrapeModifierType.MainFanart
-                bResizeEnabled = Master.eSettings.TVShowFanartResize
-                intHeight = Master.eSettings.TVShowFanartHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVShow))
-                intWidth = Master.eSettings.TVShowFanartWidth
-            Case Enums.ScrapeModifierType.MainPoster
-                bResizeEnabled = Master.eSettings.TVShowPosterResize
-                intHeight = Master.eSettings.TVShowPosterHeight
-                intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVShow))
-                intWidth = Master.eSettings.TVShowPosterWidth
-        End Select
+        With Master.eSettings.TV.ImageSettings.TVShow
+            Select Case tImageType
+                Case Enums.ScrapeModifierType.MainBanner
+                    bResizeEnabled = .Banner.ResizeSpecified
+                    intHeight = .Banner.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("BannerQuality", "100", , Enums.ContentType.TVShow))
+                    intWidth = .Banner.MaxWidth
+                Case Enums.ScrapeModifierType.MainExtrafanarts
+                    bResizeEnabled = .Extrafanarts.ResizeSpecified
+                    intHeight = .Extrafanarts.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("ExtrafanartsQuality", "100", , Enums.ContentType.TVShow))
+                    intWidth = .Extrafanarts.MaxWidth
+                Case Enums.ScrapeModifierType.MainFanart
+                    bResizeEnabled = .Fanart.ResizeSpecified
+                    intHeight = .Fanart.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("FanartQuality", "100", , Enums.ContentType.TVShow))
+                    intWidth = .Fanart.MaxWidth
+                Case Enums.ScrapeModifierType.MainPoster
+                    bResizeEnabled = .Poster.ResizeSpecified
+                    intHeight = .Poster.MaxHeight
+                    intQuality = CInt(clsXMLAdvancedSettings.GetSetting("PosterQuality", "100", , Enums.ContentType.TVShow))
+                    intWidth = .Poster.MaxWidth
+            End Select
+        End With
 
         If bResizeEnabled Then
             If _image Is Nothing Then LoadFromMemoryStream()
@@ -816,14 +824,14 @@ Public Class Images
         If Not tDBElement.FilenameSpecified Then Return efPath
 
         Dim doResize As Boolean = False
-        If Master.eSettings.Movie.ImageSettings.ExtrafanartsResize Then
+        If Master.eSettings.Movie.ImageSettings.Extrafanarts.ResizeSpecified Then
             If _image Is Nothing Then LoadFromMemoryStream()
-            doResize = _image.Width > Master.eSettings.Movie.ImageSettings.ExtrafanartsMaxWidth OrElse _image.Height > Master.eSettings.Movie.ImageSettings.ExtrafanartsMaxHeight
+            doResize = _image.Width > Master.eSettings.Movie.ImageSettings.Extrafanarts.MaxWidth OrElse _image.Height > Master.eSettings.Movie.ImageSettings.Extrafanarts.MaxHeight
         End If
 
         Try
             If doResize Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.Movie.ImageSettings.ExtrafanartsMaxWidth, Master.eSettings.Movie.ImageSettings.ExtrafanartsMaxHeight)
+                ImageUtils.ResizeImage(_image, Master.eSettings.Movie.ImageSettings.Extrafanarts.MaxWidth, Master.eSettings.Movie.ImageSettings.Extrafanarts.MaxHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
@@ -894,14 +902,14 @@ Public Class Images
         If Not tDBElement.FilenameSpecified Then Return etPath
 
         Dim doResize As Boolean = False
-        If Master.eSettings.Movie.ImageSettings.ExtrathumbsResize Then
+        If Master.eSettings.Movie.ImageSettings.Extrathumbs.ResizeSpecified Then
             If _image Is Nothing Then LoadFromMemoryStream()
-            doResize = _image.Width > Master.eSettings.Movie.ImageSettings.ExtrathumbsMaxWidth OrElse _image.Height > Master.eSettings.Movie.ImageSettings.ExtrathumbsMaxHeight
+            doResize = _image.Width > Master.eSettings.Movie.ImageSettings.Extrathumbs.MaxWidth OrElse _image.Height > Master.eSettings.Movie.ImageSettings.Extrathumbs.MaxHeight
         End If
 
         Try
             If doResize Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.Movie.ImageSettings.ExtrathumbsMaxWidth, Master.eSettings.Movie.ImageSettings.ExtrathumbsMaxHeight)
+                ImageUtils.ResizeImage(_image, Master.eSettings.Movie.ImageSettings.Extrathumbs.MaxWidth, Master.eSettings.Movie.ImageSettings.Extrathumbs.MaxHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
@@ -1036,14 +1044,14 @@ Public Class Images
         If String.IsNullOrEmpty(mShow.ShowPath) Then Return efPath
 
         Dim doResize As Boolean = False
-        If Master.eSettings.TVShowExtrafanartsResize Then
+        If Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.ResizeSpecified Then
             If _image Is Nothing Then LoadFromMemoryStream()
-            doResize = _image.Width > Master.eSettings.TVShowExtrafanartsWidth OrElse _image.Height > Master.eSettings.TVShowExtrafanartsHeight
+            doResize = _image.Width > Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.MaxWidth OrElse _image.Height > Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.MaxHeight
         End If
 
         Try
             If doResize Then
-                ImageUtils.ResizeImage(_image, Master.eSettings.TVShowExtrafanartsWidth, Master.eSettings.TVShowExtrafanartsHeight)
+                ImageUtils.ResizeImage(_image, Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.MaxWidth, Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.MaxHeight)
                 'need to align _immage and _ms
                 UpdateMSfromImg(_image)
             End If
@@ -1098,16 +1106,18 @@ Public Class Images
 
         Select Case tContentType
             Case Enums.ContentType.Movie
-                DoMainBanner = ScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Banner
-                DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_Movie_ClearArt
-                DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_Movie_ClearLogo
-                DoMainDiscArt = ScrapeModifiers.MainDiscArt AndAlso Master.eSettings.FilenameAnyEnabled_Movie_DiscArt
-                DoMainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Extrafanarts
-                DoMainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Extrathumbs
-                DoMainFanart = ScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Fanart
-                DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Landscape
-                DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_Movie_Poster
-            Case Enums.ContentType.MovieSet
+                With Master.eSettings.Movie.Filenaming
+                    DoMainBanner = ScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainDiscArt = ScrapeModifiers.MainDiscArt AndAlso .FilenameAnyEnabled_DiscArt
+                    DoMainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso .FilenameAnyEnabled_Extrafanarts
+                    DoMainExtrathumbs = ScrapeModifiers.MainExtrathumbs AndAlso .FilenameAnyEnabled_Extrathumbs
+                    DoMainFanart = ScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = ScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
+            Case Enums.ContentType.Movieset
                 DoMainBanner = ScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Banner
                 DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearArt
                 DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearLogo
@@ -1120,7 +1130,7 @@ Public Class Images
                 DoMainPoster = ScrapeModifiers.EpisodePoster AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster
             Case Enums.ContentType.TVSeason
                 DoMainBanner = (ScrapeModifiers.SeasonBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner) OrElse (ScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner)
-                DoMainFanart = (ScrapeModifiers.SeasonFanart AndAlso Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart) OrElse (ScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart)
+                DoMainFanart = (ScrapeModifiers.SeasonFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart) OrElse (ScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart)
                 DoMainLandscape = (ScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape) OrElse (ScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape)
                 DoMainPoster = (ScrapeModifiers.SeasonPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster) OrElse (ScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster)
             Case Enums.ContentType.TVShow
@@ -1135,7 +1145,7 @@ Public Class Images
                 DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Landscape
                 DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Poster
                 DoSeasonBanner = ScrapeModifiers.SeasonBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner
-                DoSeasonFanart = ScrapeModifiers.SeasonFanart AndAlso Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart
+                DoSeasonFanart = ScrapeModifiers.SeasonFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart
                 DoSeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape
                 DoSeasonPoster = ScrapeModifiers.SeasonPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster
         End Select
@@ -1146,26 +1156,26 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.BannerKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.Banner.KeepExisting Then
                         GetPreferredBanner(tContentType, SearchResultsContainer.MainBanners, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.BannerKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.Banner.KeepExisting Then
                         GetPreferredBanner(tContentType, SearchResultsContainer.MainBanners, defImg)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.MainDetails.Season = 999 Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsBannerKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.KeepExisting Then
                             GetPreferredTVAllSeasonsBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVSeasonBannerKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Banner.KeepExisting Then
                             GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, DBElement.MainDetails.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVShowBannerKeepExisting Then
-                        GetPreferredTVShowBanner(SearchResultsContainer.MainBanners, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.Banner.KeepExisting Then
+                        GetPreferredBanner(tContentType, SearchResultsContainer.MainBanners, defImg)
                     End If
             End Select
 
@@ -1184,8 +1194,8 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.CharacterArt.LocalFilePath) OrElse Not Master.eSettings.TVShowCharacterArtKeepExisting Then
-                        GetPreferredTVShowCharacterArt(SearchResultsContainer.MainCharacterArts, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.CharacterArt.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.CharacterArt.KeepExisting Then
+                        GetPreferredCharacterArt(tContentType, SearchResultsContainer.MainCharacterArts, defImg)
                     End If
             End Select
 
@@ -1204,16 +1214,16 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.ClearArtKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.ClearArt.KeepExisting Then
                         GetPreferredClearArt(tContentType, SearchResultsContainer.MainClearArts, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.ClearArtKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.ClearArt.KeepExisting Then
                         GetPreferredClearArt(tContentType, SearchResultsContainer.MainClearArts, defImg)
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.TVShowClearArtKeepExisting Then
-                        GetPreferredTVShowClearArt(SearchResultsContainer.MainClearArts, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearArt.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.ClearArt.KeepExisting Then
+                        GetPreferredClearArt(tContentType, SearchResultsContainer.MainClearArts, defImg)
                     End If
             End Select
 
@@ -1232,16 +1242,16 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.ClearLogoKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.ClearLogo.KeepExisting Then
                         GetPreferredClearLogo(tContentType, SearchResultsContainer.MainClearLogos, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.ClearLogoKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.ClearLogo.KeepExisting Then
                         GetPreferredClearLogo(tContentType, SearchResultsContainer.MainClearLogos, defImg)
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.TVShowClearLogoKeepExisting Then
-                        GetPreferredTVShowClearLogo(SearchResultsContainer.MainClearLogos, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.ClearLogo.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.ClearLogo.KeepExisting Then
+                        GetPreferredClearLogo(tContentType, SearchResultsContainer.MainClearLogos, defImg)
                     End If
             End Select
 
@@ -1260,11 +1270,11 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.DiscArtKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.DiscArt.KeepExisting Then
                         GetPreferredDiscArt(tContentType, SearchResultsContainer.MainDiscArts, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.DiscArtKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.DiscArt.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.DiscArt.KeepExisting Then
                         GetPreferredDiscArt(tContentType, SearchResultsContainer.MainDiscArts, defImg)
                     End If
             End Select
@@ -1284,30 +1294,30 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.FanartKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.Fanart.KeepExisting Then
                         GetPreferredFanart(tContentType, SearchResultsContainer.MainFanarts, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.FanartKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.Fanart.KeepExisting Then
                         GetPreferredFanart(tContentType, SearchResultsContainer.MainFanarts, defImg)
                     End If
                 Case Enums.ContentType.TVEpisode
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVEpisodeFanartKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVEpisode.Fanart.KeepExisting Then
                         GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, DBElement.MainDetails.Season, DBElement.MainDetails.Episode)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.MainDetails.Season = 999 Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsFanartKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.KeepExisting Then
                             GetPreferredTVAllSeasonsFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVSeasonFanartKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Fanart.KeepExisting Then
                             GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, DBElement.MainDetails.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVShowFanartKeepExisting Then
-                        GetPreferredTVShowFanart(SearchResultsContainer.MainFanarts, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.Fanart.KeepExisting Then
+                        GetPreferredFanart(tContentType, SearchResultsContainer.MainFanarts, defImg)
                     End If
             End Select
 
@@ -1328,11 +1338,11 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    bKeepExisting = Master.eSettings.Movie.ImageSettings.ExtrafanartsKeepExisting
+                    bKeepExisting = Master.eSettings.Movie.ImageSettings.Extrafanarts.KeepExisting
                     iLimit = Master.eSettings.Movie.ImageSettings.ExtrafanartsLimit
                 Case Enums.ContentType.TVShow
-                    bKeepExisting = Master.eSettings.TVShowExtrafanartsKeepExisting
-                    iLimit = Master.eSettings.TVShowExtrafanartsLimit
+                    bKeepExisting = Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.KeepExisting
+                    iLimit = Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.Limit
             End Select
 
             If Not bKeepExisting OrElse Not DBElement.ImagesContainer.Extrafanarts.Count >= iLimit OrElse iLimit = 0 Then
@@ -1375,8 +1385,8 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    bKeepExisting = Master.eSettings.Movie.ImageSettings.ExtrathumbsKeepExisting
-                    iLimit = Master.eSettings.Movie.ImageSettings.ExtrathumbsLimit
+                    bKeepExisting = Master.eSettings.Movie.ImageSettings.Extrathumbs.KeepExisting
+                    iLimit = Master.eSettings.Movie.ImageSettings.Extrathumbs.Limit
             End Select
 
             If Not bKeepExisting OrElse Not DBElement.ImagesContainer.Extrathumbs.Count >= iLimit OrElse iLimit = 0 Then
@@ -1407,26 +1417,26 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.LandscapeKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.Landscape.KeepExisting Then
                         GetPreferredLandscape(tContentType, SearchResultsContainer.MainLandscapes, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.LandscapeKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.Landscape.KeepExisting Then
                         GetPreferredLandscape(tContentType, SearchResultsContainer.MainLandscapes, defImg)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.MainDetails.Season = 999 Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsLandscapeKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.KeepExisting Then
                             GetPreferredTVAllSeasonsLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVSeasonLandscapeKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Landscape.KeepExisting Then
                             GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, DBElement.MainDetails.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVShowLandscapeKeepExisting Then
-                        GetPreferredTVShowLandscape(SearchResultsContainer.MainLandscapes, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.Landscape.KeepExisting Then
+                        GetPreferredLandscape(tContentType, SearchResultsContainer.MainLandscapes, defImg)
                     End If
             End Select
 
@@ -1445,30 +1455,30 @@ Public Class Images
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.PosterKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.Movie.ImageSettings.Poster.KeepExisting Then
                         GetPreferredPoster(tContentType, SearchResultsContainer.MainPosters, defImg)
                     End If
-                Case Enums.ContentType.MovieSet
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.PosterKeepExisting Then
+                Case Enums.ContentType.Movieset
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.Movieset.ImageSettings.Poster.KeepExisting Then
                         GetPreferredPoster(tContentType, SearchResultsContainer.MainPosters, defImg)
                     End If
                 Case Enums.ContentType.TVEpisode
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVEpisodePosterKeepExisting Then
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVEpisode.Poster.KeepExisting Then
                         GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, DBElement.MainDetails.Season, DBElement.MainDetails.Episode)
                     End If
                 Case Enums.ContentType.TVSeason
                     If DBElement.MainDetails.Season = 999 Then
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsPosterKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.KeepExisting Then
                             GetPreferredTVAllSeasonsPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
                         End If
                     Else
-                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVSeasonPosterKeepExisting Then
+                        If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Poster.KeepExisting Then
                             GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, DBElement.MainDetails.Season)
                         End If
                     End If
                 Case Enums.ContentType.TVShow
-                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVShowPosterKeepExisting Then
-                        GetPreferredTVShowPoster(SearchResultsContainer.MainPosters, defImg)
+                    If String.IsNullOrEmpty(DBElement.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVShow.Poster.KeepExisting Then
+                        GetPreferredPoster(tContentType, SearchResultsContainer.MainPosters, defImg)
                     End If
             End Select
 
@@ -1489,11 +1499,11 @@ Public Class Images
             If DoSeasonBanner Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.MainDetails.Season = 999 Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsBannerKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.KeepExisting Then
                         GetPreferredTVAllSeasonsBanner(SearchResultsContainer.SeasonBanners, SearchResultsContainer.MainBanners, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TVSeasonBannerKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Banner.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Banner.KeepExisting Then
                         GetPreferredTVSeasonBanner(SearchResultsContainer.SeasonBanners, defImg, sContainer.Season)
                     End If
                 End If
@@ -1512,11 +1522,11 @@ Public Class Images
             If DoSeasonFanart Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.MainDetails.Season = 999 Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsFanartKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.KeepExisting Then
                         GetPreferredTVAllSeasonsFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVSeasonFanartKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Fanart.KeepExisting Then
                         GetPreferredTVSeasonFanart(SearchResultsContainer.SeasonFanarts, SearchResultsContainer.MainFanarts, defImg, sContainer.Season)
                     End If
                 End If
@@ -1535,11 +1545,11 @@ Public Class Images
             If DoSeasonLandscape Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.MainDetails.Season = 999 Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsLandscapeKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.KeepExisting Then
                         GetPreferredTVAllSeasonsLandscape(SearchResultsContainer.SeasonLandscapes, SearchResultsContainer.MainLandscapes, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TVSeasonLandscapeKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Landscape.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Landscape.KeepExisting Then
                         GetPreferredTVSeasonLandscape(SearchResultsContainer.SeasonLandscapes, defImg, sContainer.Season)
                     End If
                 End If
@@ -1558,11 +1568,11 @@ Public Class Images
             If DoSeasonPoster Then
                 Dim defImg As MediaContainers.Image = Nothing
                 If sSeason.MainDetails.Season = 999 Then
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVAllSeasonsPosterKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.KeepExisting Then
                         GetPreferredTVAllSeasonsPoster(SearchResultsContainer.SeasonPosters, SearchResultsContainer.MainPosters, defImg)
                     End If
                 Else
-                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVSeasonPosterKeepExisting Then
+                    If String.IsNullOrEmpty(sSeason.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVSeason.Poster.KeepExisting Then
                         GetPreferredTVSeasonPoster(SearchResultsContainer.SeasonPosters, defImg, sContainer.Season)
                     End If
                 End If
@@ -1587,7 +1597,7 @@ Public Class Images
             'Episode Fanart
             If DoEpisodeFanart Then
                 Dim defImg As MediaContainers.Image = Nothing
-                If String.IsNullOrEmpty(tEpisode.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TVEpisodeFanartKeepExisting Then
+                If String.IsNullOrEmpty(tEpisode.ImagesContainer.Fanart.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVEpisode.Fanart.KeepExisting Then
                     GetPreferredTVEpisodeFanart(SearchResultsContainer.EpisodeFanarts, SearchResultsContainer.MainFanarts, defImg, sContainer.Season, sContainer.Episode)
                 End If
 
@@ -1604,7 +1614,7 @@ Public Class Images
             'Episode Poster
             If DoEpisodePoster Then
                 Dim defImg As MediaContainers.Image = Nothing
-                If String.IsNullOrEmpty(tEpisode.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TVEpisodePosterKeepExisting Then
+                If String.IsNullOrEmpty(tEpisode.ImagesContainer.Poster.LocalFilePath) OrElse Not Master.eSettings.TV.ImageSettings.TVEpisode.Poster.KeepExisting Then
                     GetPreferredTVEpisodePoster(SearchResultsContainer.EpisodePosters, defImg, sContainer.Season, sContainer.Episode)
                 End If
 
@@ -2295,38 +2305,278 @@ Public Class Images
     ''' <summary>
     ''' Select the single most preferred Banner image
     ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="tImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredBanner(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredBanner(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         Dim bPrefSizeOnly As Boolean
         Dim nPrefSize As Enums.ImageSize
 
         Select Case tContentType
             Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.BannerPrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.BannerPrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.BannerPrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.BannerPrefSize
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.Banner.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.Banner.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.Banner.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.Banner.PrefSize
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.Banner.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.Banner.PrefSize
             Case Else
                 Return False
         End Select
 
-        If ImageList.Count = 0 Then Return False
+        If tImageList.Count = 0 Then Return False
         imgResult = Nothing
 
         If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
+            imgResult = tImageList.First
         End If
 
         If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
         End If
 
         If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
+            imgResult = tImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredCharacterArt(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        Dim bPrefSizeOnly As Boolean
+        Dim nPrefSize As Enums.ImageSize
+
+        Select Case tContentType
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.CharacterArt.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.CharacterArt.PrefSize
+            Case Else
+                Return False
+        End Select
+
+        If tImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredClearArt(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        Dim bPrefSizeOnly As Boolean
+        Dim nPrefSize As Enums.ImageSize
+
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.ClearArt.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.ClearArt.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.ClearArt.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.ClearArt.PrefSize
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.ClearArt.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.ClearArt.PrefSize
+            Case Else
+                Return False
+        End Select
+
+        If tImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredClearLogo(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        Dim bPrefSizeOnly As Boolean
+        Dim nPrefSize As Enums.ImageSize
+
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.ClearLogo.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.ClearLogo.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.ClearLogo.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.ClearLogo.PrefSize
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.ClearLogo.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.ClearLogo.PrefSize
+            Case Else
+                Return False
+        End Select
+
+        If tImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredDiscArt(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        Dim bPrefSizeOnly As Boolean
+        Dim nPrefSize As Enums.ImageSize
+
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.DiscArt.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.DiscArt.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.DiscArt.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.DiscArt.PrefSize
+            Case Else
+                Return False
+        End Select
+
+        If tImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredLandscape(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        Dim bPrefSizeOnly As Boolean
+        Dim nPrefSize As Enums.ImageSize
+
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.Landscape.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.Landscape.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.Landscape.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.Landscape.PrefSize
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.Landscape.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.Landscape.PrefSize
+            Case Else
+                Return False
+        End Select
+
+        If tImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    ''' <summary>
+    ''' Select the single most preferred Fanart image
+    ''' </summary>
+    ''' <param name="tImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available fanart</param>
+    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
+    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
+    ''' <remarks></remarks>
+    Public Shared Function GetPreferredFanart(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        Dim bPrefSizeOnly As Boolean
+        Dim nPrefSize As Enums.ImageSize
+
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.Fanart.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.Fanart.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.Fanart.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.Fanart.PrefSize
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.Fanart.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.Fanart.PrefSize
+            Case Else
+                Return False
+        End Select
+
+        If tImageList.Count = 0 Then Return False
+        imgResult = Nothing
+
+        If nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
+        End If
+
+        If imgResult Is Nothing Then
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
+        End If
+
+        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
+            imgResult = tImageList.First
         End If
 
         If imgResult IsNot Nothing Then
@@ -2338,149 +2588,41 @@ Public Class Images
     ''' <summary>
     ''' Select the single most preferred Poster image
     ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available posters</param>
+    ''' <param name="tImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available posters</param>
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredPoster(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+    Public Shared Function GetPreferredPoster(ByVal tContentType As Enums.ContentType, ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
         Dim bPrefSizeOnly As Boolean
         Dim nPrefSize As Enums.ImageSize
 
         Select Case tContentType
             Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.PosterPrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.PosterPrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.PosterPrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.PosterPrefSize
+                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.Poster.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movie.ImageSettings.Poster.PrefSize
+            Case Enums.ContentType.Movieset
+                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.Poster.PrefSizeOnly
+                nPrefSize = Master.eSettings.Movieset.ImageSettings.Poster.PrefSize
+            Case Enums.ContentType.TVShow
+                bPrefSizeOnly = Master.eSettings.TV.ImageSettings.TVShow.Poster.PrefSizeOnly
+                nPrefSize = Master.eSettings.TV.ImageSettings.TVShow.Poster.PrefSize
             Case Else
                 Return False
         End Select
 
-        If ImageList.Count = 0 Then Return False
+        If tImageList.Count = 0 Then Return False
         imgResult = Nothing
 
         If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
+            imgResult = tImageList.First
         End If
 
         If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
+            imgResult = tImageList.Find(Function(f) f.Size = nPrefSize)
         End If
 
         If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredClearArt(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        Dim bPrefSizeOnly As Boolean
-        Dim nPrefSize As Enums.ImageSize
-
-        Select Case tContentType
-            Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.ClearArtPrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.ClearArtPrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.ClearArtPrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.ClearArtPrefSize
-            Case Else
-                Return False
-        End Select
-
-        If ImageList.Count = 0 Then Return False
-        imgResult = Nothing
-
-        If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredClearLogo(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        Dim bPrefSizeOnly As Boolean
-        Dim nPrefSize As Enums.ImageSize
-
-        Select Case tContentType
-            Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.ClearLogoPrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.ClearLogoPrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.BannerPrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.ClearLogoPrefSize
-            Case Else
-                Return False
-        End Select
-
-        If ImageList.Count = 0 Then Return False
-        imgResult = Nothing
-
-        If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredDiscArt(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        Dim bPrefSizeOnly As Boolean
-        Dim nPrefSize As Enums.ImageSize
-
-        Select Case tContentType
-            Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.DiscArtPrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.DiscArtPrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.DiscArtPrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.DiscArtPrefSize
-            Case Else
-                Return False
-        End Select
-
-        If ImageList.Count = 0 Then Return False
-        imgResult = Nothing
-
-        If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
+            imgResult = tImageList.First
         End If
 
         If imgResult IsNot Nothing Then
@@ -2492,11 +2634,11 @@ Public Class Images
     ''' <summary>
     ''' Fetch a list of preferred extraFanart
     ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extraFanart</param>
+    ''' <param name="tImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extraFanart</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredMovieExtrafanarts(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+        If tImageList.Count = 0 Then Return False
 
         Dim DoCalculateDuplicaImages As Boolean = False
 
@@ -2504,8 +2646,8 @@ Public Class Images
             DoCalculateDuplicaImages = True
         End If
 
-        If Master.eSettings.Movie.ImageSettings.ExtrafanartsPrefSize = Enums.ImageSize.Any Then
-            For Each img As MediaContainers.Image In ImageList
+        If Master.eSettings.Movie.ImageSettings.Extrafanarts.PrefSize = Enums.ImageSize.Any Then
+            For Each img As MediaContainers.Image In tImageList
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because method RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -2515,8 +2657,8 @@ Public Class Images
             Next
         End If
 
-        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.Movie.ImageSettings.ExtrafanartsPrefSizeOnly Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.Size = Master.eSettings.Movie.ImageSettings.ExtrafanartsPrefSize)
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.Movie.ImageSettings.Extrafanarts.PrefSizeOnly Then
+            For Each img As MediaContainers.Image In tImageList.Where(Function(f) f.Size = Master.eSettings.Movie.ImageSettings.Extrafanarts.PrefSize)
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -2526,8 +2668,8 @@ Public Class Images
             Next
         End If
 
-        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.Movie.ImageSettings.ExtrafanartsPrefSizeOnly AndAlso Not Master.eSettings.Movie.ImageSettings.ExtrafanartsPrefSize = Enums.ImageSize.Any Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.Movie.ImageSettings.Extrafanarts.PrefSizeOnly AndAlso Not Master.eSettings.Movie.ImageSettings.Extrafanarts.PrefSize = Enums.ImageSize.Any Then
+            For Each img As MediaContainers.Image In tImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -2565,29 +2707,29 @@ Public Class Images
     ''' <summary>
     ''' Fetch a list of preferred extrathumbs
     ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extrathumbs</param>
+    ''' <param name="tImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available extrathumbs</param>
     ''' <returns><c>List</c> of image URLs that fit the preferred thumb size</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredMovieExtrathumbs(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, ByVal DBElement As Database.DBElement, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
+    Public Shared Function GetPreferredMovieExtrathumbs(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, ByVal DBElement As Database.DBElement, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
 
         'Generate thumbnails?
-        If (Master.eSettings.Movie.ImageSettings.ExtrathumbsCreatorAuto OrElse (Master.eSettings.Movie.ImageSettings.ExtrathumbsCreatorUseETasFA AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
+        If (Master.eSettings.Movie.ImageSettings.Extrathumbs.CreatorAuto OrElse (Master.eSettings.Movie.ImageSettings.ExtrathumbsCreatorUseETasFA AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
             imgResultList.Clear()
-            imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.Movie.ImageSettings.ExtrathumbsCreatorNoSpoilers, Timeout:=30000)
+            imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.Movie.ImageSettings.Extrathumbs.CreatorNoSpoilers, Timeout:=30000)
             'dont't care about the following extrathumb PrefQuality setting(s) of scrapers since it doesn't make sense for frame extraction (we only respect the Keep and Limit setting and Resize options for extracted frames)
             'if it necessary to mix scraped fanarts with extracted frames then special handling is needed in this function but for now don't care about this
             Return True
         End If
 
-        If ImageList.Count = 0 Then Return False
+        If tImageList.Count = 0 Then Return False
         Dim DoCalculateDuplicaImages As Boolean = False
 
         If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
             DoCalculateDuplicaImages = True
         End If
 
-        If Master.eSettings.Movie.ImageSettings.ExtrathumbsPrefSize = Enums.ImageSize.Any Then
-            For Each img As MediaContainers.Image In ImageList
+        If Master.eSettings.Movie.ImageSettings.Extrathumbs.PrefSize = Enums.ImageSize.Any Then
+            For Each img As MediaContainers.Image In tImageList
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -2597,8 +2739,8 @@ Public Class Images
             Next
         End If
 
-        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.Movie.ImageSettings.ExtrathumbsPrefSizeOnly Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.Size = Master.eSettings.Movie.ImageSettings.ExtrathumbsPrefSize)
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.Movie.ImageSettings.Extrathumbs.PrefSizeOnly Then
+            For Each img As MediaContainers.Image In tImageList.Where(Function(f) f.Size = Master.eSettings.Movie.ImageSettings.Extrathumbs.PrefSize)
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -2608,8 +2750,8 @@ Public Class Images
             Next
         End If
 
-        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.Movie.ImageSettings.ExtrathumbsPrefSizeOnly AndAlso Not Master.eSettings.Movie.ImageSettings.ExtrathumbsPrefSize = Enums.ImageSize.Any Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.Movie.ImageSettings.Extrathumbs.PrefSizeOnly AndAlso Not Master.eSettings.Movie.ImageSettings.Extrathumbs.PrefSize = Enums.ImageSize.Any Then
+            For Each img As MediaContainers.Image In tImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -2634,114 +2776,36 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredLandscape(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        Dim bPrefSizeOnly As Boolean
-        Dim nPrefSize As Enums.ImageSize
+    Public Shared Function GetPreferredTVAllSeasonsBanner(ByRef tSeasonImageList As List(Of MediaContainers.Image), ByRef tShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If tSeasonImageList.Count = 0 AndAlso tShowImageList.Count = 0 Then Return False
 
-        Select Case tContentType
-            Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.LandscapePrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.LandscapePrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.LandscapePrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.LandscapePrefSize
-            Case Else
-                Return False
-        End Select
-
-        If ImageList.Count = 0 Then Return False
-        imgResult = Nothing
-
-        If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    ''' <summary>
-    ''' Select the single most preferred Fanart image
-    ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available fanart</param>
-    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
-    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetPreferredFanart(ByVal tContentType As Enums.ContentType, ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        Dim bPrefSizeOnly As Boolean
-        Dim nPrefSize As Enums.ImageSize
-
-        Select Case tContentType
-            Case Enums.ContentType.Movie
-                bPrefSizeOnly = Master.eSettings.Movie.ImageSettings.FanartPrefSizeOnly
-                nPrefSize = Master.eSettings.Movie.ImageSettings.FanartPrefSize
-            Case Enums.ContentType.MovieSet
-                bPrefSizeOnly = Master.eSettings.Movieset.ImageSettings.FanartPrefSizeOnly
-                nPrefSize = Master.eSettings.Movieset.ImageSettings.FanartPrefSize
-            Case Else
-                Return False
-        End Select
-
-        If ImageList.Count = 0 Then Return False
-        imgResult = Nothing
-
-        If nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = nPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not bPrefSizeOnly AndAlso Not nPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVAllSeasonsBanner(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
-
-        If Not SeasonImageList.Count = 0 Then
-            If Master.eSettings.TVAllSeasonsBannerPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not tSeasonImageList.Count = 0 Then
+            If Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
 
             If imgResult Is Nothing Then
-                imgResult = SeasonImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsBannerPrefSize AndAlso f.Season = 999)
+                imgResult = tSeasonImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSize AndAlso f.Season = 999)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsBannerPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsBannerPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
         End If
 
-        If Not ShowImageList.Count = 0 Then
-            If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsBannerPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+        If Not tShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
 
             If imgResult Is Nothing Then
-                imgResult = ShowImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsBannerPrefSize)
+                imgResult = tShowImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSize)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsBannerPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsBannerPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Banner.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
         End If
 
@@ -2752,35 +2816,37 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsFanart(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVAllSeasonsFanart(ByRef tSeasonImageList As List(Of MediaContainers.Image), ByRef tShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If tSeasonImageList.Count = 0 AndAlso tShowImageList.Count = 0 Then Return False
 
 
-        If Not SeasonImageList.Count = 0 Then
-            If Master.eSettings.TVAllSeasonsFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not tSeasonImageList.Count = 0 Then
+            If Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
 
             If imgResult Is Nothing Then
-                imgResult = SeasonImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsFanartPrefSize AndAlso f.Season = 999)
+                imgResult = tSeasonImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSize AndAlso f.Season = 999)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsFanartPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
         End If
 
-        If Not ShowImageList.Count = 0 Then
-            If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+        If Not tShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
 
             If imgResult Is Nothing Then
-                imgResult = ShowImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsFanartPrefSize)
+                imgResult = tShowImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSize)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsFanartPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Fanart.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
         End If
 
@@ -2791,34 +2857,36 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsLandscape(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVAllSeasonsLandscape(ByRef tSeasonImageList As List(Of MediaContainers.Image), ByRef tShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If tSeasonImageList.Count = 0 AndAlso tShowImageList.Count = 0 Then Return False
 
-        If Not SeasonImageList.Count = 0 Then
-            If Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not tSeasonImageList.Count = 0 Then
+            If Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
 
             If imgResult Is Nothing Then
-                imgResult = SeasonImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsLandscapePrefSize AndAlso f.Season = 999)
+                imgResult = tSeasonImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSize AndAlso f.Season = 999)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
         End If
 
-        If Not ShowImageList.Count = 0 Then
-            If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+        If Not tShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
 
             If imgResult Is Nothing Then
-                imgResult = ShowImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsLandscapePrefSize)
+                imgResult = tShowImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSize)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsLandscapePrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Landscape.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
         End If
 
@@ -2829,34 +2897,36 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVAllSeasonsPoster(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVAllSeasonsPoster(ByRef tSeasonImageList As List(Of MediaContainers.Image), ByRef tShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
+        If tSeasonImageList.Count = 0 AndAlso tShowImageList.Count = 0 Then Return False
 
-        If Not SeasonImageList.Count = 0 Then
-            If Master.eSettings.TVAllSeasonsPosterPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+        If Not tSeasonImageList.Count = 0 Then
+            If Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
 
             If imgResult Is Nothing Then
-                imgResult = SeasonImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsPosterPrefSize AndAlso f.Season = 999)
+                imgResult = tSeasonImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSize AndAlso f.Season = 999)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsPosterPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsPosterPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = 999)
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tSeasonImageList.Find(Function(f) f.Season = 999)
             End If
         End If
 
-        If Not ShowImageList.Count = 0 Then
-            If imgResult Is Nothing AndAlso Master.eSettings.TVAllSeasonsPosterPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+        If Not tShowImageList.Count = 0 Then
+            If imgResult Is Nothing AndAlso Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
 
             If imgResult Is Nothing Then
-                imgResult = ShowImageList.Find(Function(f) f.Size = Master.eSettings.TVAllSeasonsPosterPrefSize)
+                imgResult = tShowImageList.Find(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSize)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVAllSeasonsPosterPrefSizeOnly AndAlso Not Master.eSettings.TVAllSeasonsPosterPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSizeOnly AndAlso
+                Not Master.eSettings.TV.ImageSettings.TVAllSeasons.Poster.PrefSize = Enums.ImageSize.Any Then
+                imgResult = tShowImageList.First
             End If
         End If
 
@@ -2867,36 +2937,38 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVEpisodeFanart(ByRef EpisodeImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
-        If EpisodeImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVEpisodeFanart(ByRef tEpisodeImageList As List(Of MediaContainers.Image), ByRef tShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
+        If tEpisodeImageList.Count = 0 AndAlso tShowImageList.Count = 0 Then Return False
 
-        If Not EpisodeImageList.Count = 0 Then
-            If Master.eSettings.TVEpisodeFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = EpisodeImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+        With Master.eSettings.TV.ImageSettings.TVEpisode.Fanart
+            If Not tEpisodeImageList.Count = 0 Then
+                If .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tEpisodeImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+                End If
+
+                If imgResult Is Nothing Then
+                    imgResult = tEpisodeImageList.Find(Function(f) f.Size = .PrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = 999)
+                End If
+
+                If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tEpisodeImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = 999)
+                End If
             End If
 
-            If imgResult Is Nothing Then
-                imgResult = EpisodeImageList.Find(Function(f) f.Size = Master.eSettings.TVEpisodeFanartPrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = 999)
-            End If
+            If Not tShowImageList.Count = 0 Then
+                If imgResult Is Nothing AndAlso .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tShowImageList.First
+                End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodeFanartPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = EpisodeImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = 999)
-            End If
-        End If
+                If imgResult Is Nothing Then
+                    imgResult = tShowImageList.Find(Function(f) f.Size = .PrefSize)
+                End If
 
-        If Not ShowImageList.Count = 0 Then
-            If imgResult Is Nothing AndAlso Master.eSettings.TVEpisodeFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+                If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tShowImageList.First
+                End If
             End If
-
-            If imgResult Is Nothing Then
-                imgResult = ShowImageList.Find(Function(f) f.Size = Master.eSettings.TVEpisodeFanartPrefSize)
-            End If
-
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodeFanartPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodeFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
-            End If
-        End If
+        End With
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2905,20 +2977,22 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVEpisodePoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVEpisodePoster(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer, ByVal iEpisode As Integer) As Boolean
+        If tImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVEpisodePosterPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
-        End If
+        With Master.eSettings.TV.ImageSettings.TVEpisode.Poster
+            If .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+            End If
 
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVEpisodePosterPrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = iSeason)
-        End If
+            If imgResult Is Nothing Then
+                imgResult = tImageList.Find(Function(f) f.Size = .PrefSize AndAlso f.Episode = iEpisode AndAlso f.Season = iSeason)
+            End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVEpisodePosterPrefSizeOnly AndAlso Not Master.eSettings.TVEpisodePosterPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
-        End If
+            If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Episode = iEpisode AndAlso f.Season = iSeason)
+            End If
+        End With
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2929,62 +3003,90 @@ Public Class Images
     ''' <summary>
     ''' Select the single most preferred Banner image
     ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
+    ''' <param name="tImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
     ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
     ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
     ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVSeasonBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVSeasonBanner(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+        If tImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVSeasonBannerPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVSeasonBannerPrefSize AndAlso f.Season = iSeason)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonBannerPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonBannerPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVSeasonFanart(ByRef SeasonImageList As List(Of MediaContainers.Image), ByRef ShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
-        If SeasonImageList.Count = 0 AndAlso ShowImageList.Count = 0 Then Return False
-
-        If Not SeasonImageList.Count = 0 Then
-            If Master.eSettings.TVSeasonFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = iSeason)
+        With Master.eSettings.TV.ImageSettings.TVSeason.Banner
+            If .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Season = iSeason)
             End If
 
             If imgResult Is Nothing Then
-                imgResult = SeasonImageList.Find(Function(f) f.Size = Master.eSettings.TVSeasonFanartPrefSize AndAlso f.Season = iSeason)
+                imgResult = tImageList.Find(Function(f) f.Size = .PrefSize AndAlso f.Season = iSeason)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonFanartPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = SeasonImageList.Find(Function(f) f.Season = iSeason)
+            If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Season = iSeason)
             End If
+        End With
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
         End If
+    End Function
 
-        If Not ShowImageList.Count = 0 Then
-            If imgResult Is Nothing AndAlso Master.eSettings.TVSeasonFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+    Public Shared Function GetPreferredTVSeasonFanart(ByRef tSeasonImageList As List(Of MediaContainers.Image), ByRef tShowImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+        If tSeasonImageList.Count = 0 AndAlso tShowImageList.Count = 0 Then Return False
+
+        With Master.eSettings.TV.ImageSettings.TVSeason.Fanart
+            If Not tSeasonImageList.Count = 0 Then
+                If .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tSeasonImageList.Find(Function(f) f.Season = iSeason)
+                End If
+
+                If imgResult Is Nothing Then
+                    imgResult = tSeasonImageList.Find(Function(f) f.Size = .PrefSize AndAlso f.Season = iSeason)
+                End If
+
+                If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tSeasonImageList.Find(Function(f) f.Season = iSeason)
+                End If
+            End If
+
+            If Not tShowImageList.Count = 0 Then
+                If imgResult Is Nothing AndAlso .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tShowImageList.First
+                End If
+
+                If imgResult Is Nothing Then
+                    imgResult = tShowImageList.Find(Function(f) f.Size = .PrefSize)
+                End If
+
+                If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                    imgResult = tShowImageList.First
+                End If
+            End If
+        End With
+
+        If imgResult IsNot Nothing Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+
+    Public Shared Function GetPreferredTVSeasonLandscape(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+        If tImageList.Count = 0 Then Return False
+
+        With Master.eSettings.TV.ImageSettings.TVSeason.Landscape
+            If .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Season = iSeason)
             End If
 
             If imgResult Is Nothing Then
-                imgResult = ShowImageList.Find(Function(f) f.Size = Master.eSettings.TVSeasonFanartPrefSize)
+                imgResult = tImageList.Find(Function(f) f.Size = .PrefSize AndAlso f.Season = iSeason)
             End If
 
-            If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonFanartPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonFanartPrefSize = Enums.ImageSize.Any Then
-                imgResult = ShowImageList.First
+            If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Season = iSeason)
             End If
-        End If
+        End With
 
         If imgResult IsNot Nothing Then
             Return True
@@ -2993,70 +3095,22 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVSeasonLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVSeasonPoster(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
+        If tImageList.Count = 0 Then Return False
 
-        If Master.eSettings.TVSeasonLandscapePrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
-        End If
+        With Master.eSettings.TV.ImageSettings.TVSeason.Poster
+            If .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Season = iSeason)
+            End If
 
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVSeasonLandscapePrefSize AndAlso f.Season = iSeason)
-        End If
+            If imgResult Is Nothing Then
+                imgResult = tImageList.Find(Function(f) f.Size = .PrefSize AndAlso f.Season = iSeason)
+            End If
 
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVSeasonLandscapePrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVSeasonPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image, ByVal iSeason As Integer) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVSeasonPosterPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVSeasonPosterPrefSize AndAlso f.Season = iSeason)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVSeasonPosterPrefSizeOnly AndAlso Not Master.eSettings.TVSeasonPosterPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.Find(Function(f) f.Season = iSeason)
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    ''' <summary>
-    ''' Select the single most preferred Banner image
-    ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
-    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
-    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVShowBanner(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVShowBannerPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowBannerPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowBannerPrefSizeOnly AndAlso Not Master.eSettings.TVShowBannerPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
+            If imgResult Is Nothing AndAlso Not .PrefSizeOnly AndAlso Not .PrefSize = Enums.ImageSize.Any Then
+                imgResult = tImageList.Find(Function(f) f.Season = iSeason)
+            End If
+        End With
 
         If imgResult IsNot Nothing Then
             Return True
@@ -3065,75 +3119,9 @@ Public Class Images
         End If
     End Function
 
-    Public Shared Function GetPreferredTVShowCharacterArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
+    Public Shared Function GetPreferredTVShowExtrafanarts(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal lsttmpCurrentTVSowFanarts As List(Of MediaContainers.Image), Optional ByVal IsAutoScraper As Boolean = False) As Boolean
 
-        If Master.eSettings.TVShowCharacterArtPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowCharacterArtPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowCharacterArtPrefSizeOnly AndAlso Not Master.eSettings.TVShowCharacterArtPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVShowClearArt(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVShowClearArtPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowClearArtPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowClearArtPrefSizeOnly AndAlso Not Master.eSettings.TVShowClearArtPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVShowClearLogo(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVShowClearLogoPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowClearLogoPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowClearLogoPrefSizeOnly AndAlso Not Master.eSettings.TVShowClearLogoPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVShowExtrafanarts(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal lsttmpCurrentTVSowFanarts As List(Of MediaContainers.Image), Optional ByVal IsAutoScraper As Boolean = False) As Boolean
-
-        If ImageList.Count = 0 Then Return False
+        If tImageList.Count = 0 Then Return False
 
         Dim DoCalculateDuplicaImages As Boolean = False
 
@@ -3141,8 +3129,8 @@ Public Class Images
             DoCalculateDuplicaImages = True
         End If
 
-        If Master.eSettings.TVShowExtrafanartsPrefSize = Enums.ImageSize.Any Then
-            For Each img As MediaContainers.Image In ImageList
+        If Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.PrefSize = Enums.ImageSize.Any Then
+            For Each img As MediaContainers.Image In tImageList
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because method RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -3152,8 +3140,8 @@ Public Class Images
             Next
         End If
 
-        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.TVShowExtrafanartsPrefSizeOnly Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) f.Size = Master.eSettings.TVShowExtrafanartsPrefSize)
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.PrefSizeOnly Then
+            For Each img As MediaContainers.Image In tImageList.Where(Function(f) f.Size = Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.PrefSize)
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -3163,8 +3151,10 @@ Public Class Images
             Next
         End If
 
-        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso Not Master.eSettings.TVShowExtrafanartsPrefSizeOnly AndAlso Not Master.eSettings.TVShowExtrafanartsPrefSize = Enums.ImageSize.Any Then
-            For Each img As MediaContainers.Image In ImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
+        If (imgResultList Is Nothing OrElse imgResultList.Count < iLimit) AndAlso
+            Not Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.PrefSizeOnly AndAlso
+            Not Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.PrefSize = Enums.ImageSize.Any Then
+            For Each img As MediaContainers.Image In tImageList.Where(Function(f) Not String.IsNullOrEmpty(f.URLOriginal))
                 imgResultList.Add(img)
                 'different handling if ImageFilter is activated: Dont't limit/cut images because RemoveDuplicateImages will make sure that only "iLimit" and unique images will be returned
                 If DoCalculateDuplicaImages = False Then
@@ -3180,84 +3170,6 @@ Public Class Images
         End If
 
         If imgResultList IsNot Nothing AndAlso imgResultList.Count > 0 Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    ''' <summary>
-    ''' Select the single most preferred Fanart image
-    ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
-    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
-    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVShowFanart(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVShowFanartPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowFanartPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowFanartPrefSizeOnly AndAlso Not Master.eSettings.TVShowFanartPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-
-    Public Shared Function GetPreferredTVShowLandscape(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVShowLandscapePrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowLandscapePrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowLandscapePrefSizeOnly AndAlso Not Master.eSettings.TVShowLandscapePrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
-            Return True
-        Else
-            Return False
-        End If
-    End Function
-    ''' <summary>
-    ''' Select the single most preferred Poster image
-    ''' </summary>
-    ''' <param name="ImageList">Source <c>List</c> of <c>MediaContainers.Image</c> holding available banners</param>
-    ''' <param name="imgResult">Single <c>MediaContainers.Image</c>, if preferred image was found</param>
-    ''' <returns><c>True</c> if a preferred image was found, <c>False</c> otherwise</returns>
-    ''' <remarks></remarks>
-    Public Shared Function GetPreferredTVShowPoster(ByRef ImageList As List(Of MediaContainers.Image), ByRef imgResult As MediaContainers.Image) As Boolean
-        If ImageList.Count = 0 Then Return False
-
-        If Master.eSettings.TVShowPosterPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult Is Nothing Then
-            imgResult = ImageList.Find(Function(f) f.Size = Master.eSettings.TVShowPosterPrefSize)
-        End If
-
-        If imgResult Is Nothing AndAlso Not Master.eSettings.TVShowPosterPrefSizeOnly AndAlso Not Master.eSettings.TVShowPosterPrefSize = Enums.ImageSize.Any Then
-            imgResult = ImageList.First
-        End If
-
-        If imgResult IsNot Nothing Then
             Return True
         Else
             Return False

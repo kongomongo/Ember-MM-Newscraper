@@ -29,13 +29,13 @@ Public Class frmMovieSet_GUI
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.MovieSet
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movieset
     Dim _intImageIndex As Integer = 0
     Dim _intOrder As Integer = 100
     Dim _strName As String = "Movieset_GUI"
     Dim _strTitle As String = "GUI"
 
-    Private MovieSetGeneralMediaListSorting As New List(Of Settings.ListSorting)
+    Dim _medialistsorting As New MediaListSortingSpecification
 
 #End Region 'Fields
 
@@ -140,40 +140,39 @@ Public Class frmMovieSet_GUI
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .MovieSetGeneralCustomScrapeButtonModifierType
-            cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .MovieSetGeneralCustomScrapeButtonScrapeType
-            chkMovieSetClickScrape.Checked = .MovieSetClickScrape
-            chkMovieSetClickScrapeAsk.Checked = .MovieSetClickScrapeAsk
+        With Manager.mSettings.Movieset.GUI
+            cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedValue = .CustomScrapeButton.ModifierType
+            cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedValue = .CustomScrapeButton.ScrapeType
+            chkMovieSetClickScrape.Checked = .ClickScrape
+            chkMovieSetClickScrapeAsk.Checked = .ClickScrapeAsk
             chkMovieSetGeneralMarkNew.Checked = .MovieSetGeneralMarkNew
             chkMovieSetClickScrapeAsk.Enabled = chkMovieSetClickScrape.Checked
 
-            If .MovieSetGeneralCustomScrapeButtonEnabled Then
+            If .CustomScrapeButton.Enabled Then
                 rbMovieSetGeneralCustomScrapeButtonEnabled.Checked = True
             Else
                 rbMovieSetGeneralCustomScrapeButtonDisabled.Checked = True
             End If
 
-            MovieSetGeneralMediaListSorting.AddRange(.MovieSetGeneralMediaListSorting)
+            _medialistsorting.AddRange(.MediaListSorting)
             LoadMovieSetGeneralMediaListSorting()
             RefreshMovieSetSortTokens()
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieSetClickScrape = chkMovieSetClickScrape.Checked
-            .MovieSetClickScrapeAsk = chkMovieSetClickScrapeAsk.Checked
-            .MovieSetGeneralCustomScrapeButtonEnabled = rbMovieSetGeneralCustomScrapeButtonEnabled.Checked
-            .MovieSetGeneralCustomScrapeButtonModifierType = CType(cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
-            .MovieSetGeneralCustomScrapeButtonScrapeType = CType(cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
+        With Manager.mSettings.Movieset.GUI
+            .ClickScrape = chkMovieSetClickScrape.Checked
+            .ClickScrapeAsk = chkMovieSetClickScrapeAsk.Checked
+            .CustomScrapeButton.Enabled = rbMovieSetGeneralCustomScrapeButtonEnabled.Checked
+            .CustomScrapeButton.ModifierType = CType(cbMovieSetGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
+            .CustomScrapeButton.ScrapeType = CType(cbMovieSetGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
             .MovieSetGeneralMarkNew = chkMovieSetGeneralMarkNew.Checked
-            .MovieSetGeneralMediaListSorting.Clear()
-            .MovieSetGeneralMediaListSorting.AddRange(MovieSetGeneralMediaListSorting)
+            .MediaListSorting.Clear()
+            .MediaListSorting.AddRange(_medialistsorting)
             .MovieSetSortTokens.Clear()
             .MovieSetSortTokens.AddRange(lstMovieSetSortTokens.Items.OfType(Of String).ToList)
             If .MovieSetSortTokens.Count <= 0 Then .MovieSetSortTokensIsEmpty = True
-
         End With
     End Sub
 
@@ -196,14 +195,14 @@ Public Class frmMovieSet_GUI
     Private Sub btnMovieSetGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs)
         Try
             If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
+                Dim selItem As MediaListSortingItemSpecification = _medialistsorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvMovieSetGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieSetGeneralMediaListSorting.IndexOf(selItem)
+                    Dim iIndex As Integer = _medialistsorting.IndexOf(selItem)
                     Dim selIndex As Integer = lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
-                    MovieSetGeneralMediaListSorting.Remove(selItem)
-                    MovieSetGeneralMediaListSorting.Insert(iIndex - 1, selItem)
+                    _medialistsorting.Remove(selItem)
+                    _medialistsorting.Insert(iIndex - 1, selItem)
 
                     RenumberMovieSetGeneralMediaListSorting()
                     LoadMovieSetGeneralMediaListSorting()
@@ -226,14 +225,14 @@ Public Class frmMovieSet_GUI
     Private Sub btnMovieSetGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs)
         Try
             If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems(0).Index < (lvMovieSetGeneralMediaListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
+                Dim selItem As MediaListSortingItemSpecification = _medialistsorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvMovieSetGeneralMediaListSorting.SuspendLayout()
-                    Dim iIndex As Integer = MovieSetGeneralMediaListSorting.IndexOf(selItem)
+                    Dim iIndex As Integer = _medialistsorting.IndexOf(selItem)
                     Dim selIndex As Integer = lvMovieSetGeneralMediaListSorting.SelectedIndices(0)
-                    MovieSetGeneralMediaListSorting.Remove(selItem)
-                    MovieSetGeneralMediaListSorting.Insert(iIndex + 1, selItem)
+                    _medialistsorting.Remove(selItem)
+                    _medialistsorting.Insert(iIndex + 1, selItem)
 
                     RenumberMovieSetGeneralMediaListSorting()
                     LoadMovieSetGeneralMediaListSorting()
@@ -255,7 +254,7 @@ Public Class frmMovieSet_GUI
 
     Private Sub lvMovieSetGeneralMediaListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs)
         If lvMovieSetGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieSetGeneralMediaListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = MovieSetGeneralMediaListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
+            Dim selItem As MediaListSortingItemSpecification = _medialistsorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvMovieSetGeneralMediaListSorting.SelectedItems(0).Text))
 
             If selItem IsNot Nothing Then
                 lvMovieSetGeneralMediaListSorting.SuspendLayout()
@@ -276,9 +275,9 @@ Public Class frmMovieSet_GUI
     End Sub
 
     Private Sub btnMovieSetGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetListSorting, True)
-        MovieSetGeneralMediaListSorting.Clear()
-        MovieSetGeneralMediaListSorting.AddRange(Master.eSettings.MovieSetGeneralMediaListSorting)
+        Manager.mSettings.Movieset.GUI.MediaListSorting.SetDefaults(Enums.ContentType.Movieset, True)
+        _medialistsorting.Clear()
+        _medialistsorting.AddRange(Manager.mSettings.Movieset.GUI.MediaListSorting)
         LoadMovieSetGeneralMediaListSorting()
         EnableApplyButton()
     End Sub
@@ -288,7 +287,7 @@ Public Class frmMovieSet_GUI
     End Sub
 
     Private Sub btnMovieSetSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs)
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetSortTokens, True)
+        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MoviesetSortTokens, True)
         RefreshMovieSetSortTokens()
         Handle_NeedsReload_MovieSet()
         EnableApplyButton()
@@ -302,7 +301,7 @@ Public Class frmMovieSet_GUI
     Private Sub LoadMovieSetGeneralMediaListSorting()
         Dim lvItem As ListViewItem
         lvMovieSetGeneralMediaListSorting.Items.Clear()
-        For Each rColumn As Settings.ListSorting In MovieSetGeneralMediaListSorting.OrderBy(Function(f) f.DisplayIndex)
+        For Each rColumn As MediaListSortingItemSpecification In _medialistsorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
             lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
@@ -379,8 +378,8 @@ Public Class frmMovieSet_GUI
     End Sub
 
     Private Sub RenumberMovieSetGeneralMediaListSorting()
-        For i As Integer = 0 To MovieSetGeneralMediaListSorting.Count - 1
-            MovieSetGeneralMediaListSorting(i).DisplayIndex = i
+        For i As Integer = 0 To _medialistsorting.Count - 1
+            _medialistsorting(i).DisplayIndex = i
         Next
     End Sub
 

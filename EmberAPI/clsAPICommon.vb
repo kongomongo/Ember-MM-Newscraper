@@ -555,66 +555,66 @@ Public Class Enums
 #Region "Enumerations"
 
     Public Enum AddonEventType As Integer
-        AfterEdit_Movie = 0
-        AfterEdit_MovieSet = 1
-        AfterEdit_TVEpisode = 2
-        AfterEdit_TVSeason = 3
-        AfterEdit_TVShow = 4
-        AfterUpdateDB_Movie = 5
-        AfterUpdateDB_TV = 6
-        BeforeEdit_Movie = 7
-        BeforeEdit_MovieSet = 8
-        BeforeEdit_TVEpisode = 9
-        BeforeEdit_TVSeason = 10
-        BeforeEdit_TVShow = 11
-        BeforeScraping_Movie = 12
-        BeforeScraping_MovieSet = 13
-        BeforeScraping_TVEpisode = 14
-        BeforeScraping_TVSeason = 15
-        BeforeScraping_TVShow = 16
-        CommandLine = 17
-        DuringScrapingMulti_Movie = 18
-        DuringScrapingMulti_TVEpisode = 19
-        DuringScrapingMulti_TVSeason = 20
-        DuringScrapingMulti_TVShow = 21
-        DuringScrapingSingle_Movie = 22
-        DuringScrapingSingle_TVEpisode = 23
-        DuringScrapingSingle_TVSeason = 24
-        DuringScrapingSingle_TVShow = 25
-        DuringUpdateDB_TV = 26
-        Generic = 27
-        MediaPlayer_Audio = 36
-        MediaPlayer_Video = 37
-        Remove_Movie = 38
-        Remove_MovieSet = 39
-        Remove_TVEpisode = 40
-        Remove_TVSeason = 41
-        Remove_TVShow = 42
-        Scrape_Movie = 43
-        Scrape_MovieSet = 44
-        Scrape_TVEpisode = 45
-        Scrape_TVSeason = 46
-        Scrape_TVShow = 47
-        Search_Movie = 48
-        Search_MovieSet = 49
-        Search_TVEpisode = 50
-        Search_TVSeason = 51
-        Search_TVShow = 52
-        Show_Movie = 53
-        Show_TVShow = 54
-        Sync_Movie = 55
-        Sync_MovieSet = 56
-        Sync_TVEpisode = 57
-        Sync_TVSeason = 58
-        Sync_TVShow = 59
-        Task = 60
+        AfterEdit_Movie
+        AfterEdit_Movieset
+        AfterEdit_TVEpisode
+        AfterEdit_TVSeason
+        AfterEdit_TVShow
+        AfterUpdateDB_Movie
+        AfterUpdateDB_TV
+        BeforeEdit_Movie
+        BeforeEdit_Movieset
+        BeforeEdit_TVEpisode
+        BeforeEdit_TVSeason
+        BeforeEdit_TVShow
+        BeforeScraping_Movie
+        BeforeScraping_Movieset
+        BeforeScraping_TVEpisode
+        BeforeScraping_TVSeason
+        BeforeScraping_TVShow
+        CommandLine
+        DuringScrapingMulti_Movie
+        DuringScrapingMulti_TVEpisode
+        DuringScrapingMulti_TVSeason
+        DuringScrapingMulti_TVShow
+        DuringScrapingSingle_Movie
+        DuringScrapingSingle_TVEpisode
+        DuringScrapingSingle_TVSeason
+        DuringScrapingSingle_TVShow
+        DuringUpdateDB_TV
+        Generic
+        MediaPlayer_Audio
+        MediaPlayer_Video
+        Remove_Movie
+        Remove_Movieset
+        Remove_TVEpisode
+        Remove_TVSeason
+        Remove_TVShow
+        Scrape_Movie
+        Scrape_Movieset
+        Scrape_TVEpisode
+        Scrape_TVSeason
+        Scrape_TVShow
+        Search_Movie
+        Search_Movieset
+        Search_TVEpisode
+        Search_TVSeason
+        Search_TVShow
+        Show_Movie
+        Show_TVShow
+        Sync_Movie
+        Sync_Movieset
+        Sync_TVEpisode
+        Sync_TVSeason
+        Sync_TVShow
+        Task
     End Enum
 
     Public Enum ContentType As Integer
         None = 0
         Generic = 1
         Movie = 2
-        MovieSet = 3
+        Movieset = 3
         Music = 4
         TV = 5
         TVEpisode = 6
@@ -644,13 +644,8 @@ Public Class Enums
         TrailerCodec = 6
         ValidThemeExts = 7
         ValidSubtitleExts = 8
-        MovieListSorting = 9
-        MovieSetListSorting = 10
-        TVEpisodeListSorting = 11
-        TVSeasonListSorting = 12
-        TVShowListSorting = 13
         MovieSortTokens = 14
-        MovieSetSortTokens = 15
+        MoviesetSortTokens = 15
         TVSortTokens = 16
     End Enum
 
@@ -761,12 +756,12 @@ Public Class Enums
         Info = 1
         Warn = 2
         Added_Movie = 3
-        Added_MovieSet = 4
+        Added_Movieset = 4
         Added_TVEpisode = 5
         Added_TVSeason = 6
         Added_TVShows = 7
         Scraped_Movie = 8
-        Scraped_MovieSet = 9
+        Scraped_Movieset = 9
         Scraped_TVEpisode = 10
         Scraped_TVSeason = 11
         Scraped_TVShow = 12
@@ -866,16 +861,16 @@ Public Class Enums
         Movie_Trailer = 29
         Movie_Theme = 30
 
-        'MovieSet
-        MovieSet_Data_Plot = 31
-        MovieSet_Data_Title = 32
-        MovieSet_Image_Banner = 33
-        MovieSet_Image_ClearArt = 34
-        MovieSet_Image_ClearLogo = 35
-        MovieSet_Image_DiscArt = 36
-        MovieSet_Image_Fanart = 37
-        MovieSet_Image_Landscape = 38
-        MovieSet_Image_Poster = 39
+        'Movieset
+        Movieset_Data_Plot = 31
+        Movieset_Data_Title = 32
+        Movieset_Image_Banner = 33
+        Movieset_Image_ClearArt = 34
+        Movieset_Image_ClearLogo = 35
+        Movieset_Image_DiscArt = 36
+        Movieset_Image_Fanart = 37
+        Movieset_Image_Landscape = 38
+        Movieset_Image_Poster = 39
 
         'TVEpisode
         TVEpisode_Data_Actors = 40
@@ -972,12 +967,12 @@ Public Class Enums
         MovieGUI
         MovieImage
         MovieSource
-        MovieSet
-        MovieSetData
-        MovieSetFileNaming
-        MovieSetSource
-        MovieSetGUI
-        MovieSetImage
+        Movieset
+        MoviesetData
+        MoviesetFileNaming
+        MoviesetSource
+        MoviesetGUI
+        MoviesetImage
         MovieTheme
         MovieTrailer
         Options
@@ -1222,64 +1217,64 @@ Public Class Functions
     ''' <remarks></remarks>
     Public Shared Sub CreateDefaultOptions()
         With Master.DefaultOptions_Movie
-            .bMainActors = Master.eSettings.MovieScraperCast
-            .bMainCertifications = Master.eSettings.MovieScraperCert
-            .bMainCollectionID = Master.eSettings.MovieScraperCollectionID
-            .bMainCountries = Master.eSettings.MovieScraperCountry
-            .bMainDirectors = Master.eSettings.MovieScraperDirector
-            .bMainGenres = Master.eSettings.MovieScraperGenre
-            .bMainMPAA = Master.eSettings.MovieScraperMPAA
-            .bMainOriginalTitle = Master.eSettings.MovieScraperOriginalTitle
-            .bMainOutline = Master.eSettings.MovieScraperOutline
-            .bMainPlot = Master.eSettings.MovieScraperPlot
-            .bMainRating = Master.eSettings.MovieScraperRating
-            .bMainRelease = Master.eSettings.MovieScraperRelease
-            .bMainRuntime = Master.eSettings.MovieScraperRuntime
-            .bMainStudios = Master.eSettings.MovieScraperStudio
-            .bMainTagline = Master.eSettings.MovieScraperTagline
-            .bMainTitle = Master.eSettings.MovieScraperTitle
-            .bMainTop250 = Master.eSettings.MovieScraperTop250
-            .bMainTrailer = Master.eSettings.MovieScraperTrailer
-            .bMainUserRating = Master.eSettings.MovieScraperUserRating
-            .bMainWriters = Master.eSettings.MovieScraperCredits
-            .bMainYear = Master.eSettings.MovieScraperYear
+            .bMainActors = Master.eSettings.Movie.DataSettings.Actors.Enabled
+            .bMainCertifications = Master.eSettings.Movie.DataSettings.Certifications.Enabled
+            .bMainCollectionID = Master.eSettings.Movie.DataSettings.CollectionID.Enabled
+            .bMainCountries = Master.eSettings.Movie.DataSettings.Countries.Enabled
+            .bMainDirectors = Master.eSettings.Movie.DataSettings.Directors.Enabled
+            .bMainGenres = Master.eSettings.Movie.DataSettings.Genres.Enabled
+            .bMainMPAA = Master.eSettings.Movie.DataSettings.MPAA.Enabled
+            .bMainOriginalTitle = Master.eSettings.Movie.DataSettings.OriginalTitle.Enabled
+            .bMainOutline = Master.eSettings.Movie.DataSettings.Outline.Enabled
+            .bMainPlot = Master.eSettings.Movie.DataSettings.Plot.Enabled
+            .bMainRating = Master.eSettings.Movie.DataSettings.Rating.Enabled
+            .bMainRelease = Master.eSettings.Movie.DataSettings.ReleaseDate.Enabled
+            .bMainRuntime = Master.eSettings.Movie.DataSettings.Runtime.Enabled
+            .bMainStudios = Master.eSettings.Movie.DataSettings.Studios.Enabled
+            .bMainTagline = Master.eSettings.Movie.DataSettings.Tagline.Enabled
+            .bMainTitle = Master.eSettings.Movie.DataSettings.Title.Enabled
+            .bMainTop250 = Master.eSettings.Movie.DataSettings.Top250.Enabled
+            .bMainTrailer = Master.eSettings.Movie.DataSettings.Trailer.Enabled
+            .bMainUserRating = Master.eSettings.Movie.DataSettings.UserRating.Enabled
+            .bMainWriters = Master.eSettings.Movie.DataSettings.Credits.Enabled
+            .bMainYear = Master.eSettings.Movie.DataSettings.Year.Enabled
         End With
 
         With Master.DefaultOptions_MovieSet
-            .bMainPlot = Master.eSettings.MovieSetScraperPlot
-            .bMainTitle = Master.eSettings.MovieSetScraperTitle
+            .bMainPlot = Master.eSettings.Movieset.DataSettings.Plot.Enabled
+            .bMainTitle = Master.eSettings.Movieset.DataSettings.Title.Enabled
         End With
 
         With Master.DefaultOptions_TV
-            .bEpisodeActors = Master.eSettings.TVScraperEpisodeActors
-            .bEpisodeAired = Master.eSettings.TVScraperEpisodeAired
-            .bEpisodeCredits = Master.eSettings.TVScraperEpisodeCredits
-            .bEpisodeDirectors = Master.eSettings.TVScraperEpisodeDirector
-            .bEpisodeGuestStars = Master.eSettings.TVScraperEpisodeGuestStars
-            .bEpisodePlot = Master.eSettings.TVScraperEpisodePlot
-            .bEpisodeRating = Master.eSettings.TVScraperEpisodeRating
-            .bEpisodeRuntime = Master.eSettings.TVScraperEpisodeRuntime
-            .bEpisodeTitle = Master.eSettings.TVScraperEpisodeTitle
-            .bEpisodeUserRating = Master.eSettings.TVScraperEpisodeUserRating
-            .bMainActors = Master.eSettings.TVScraperShowActors
-            .bMainCertifications = Master.eSettings.TVScraperShowCert
-            .bMainCountries = Master.eSettings.TVScraperShowCountry
-            .bMainCreators = Master.eSettings.TVScraperShowCreators
-            .bMainEpisodeGuide = Master.eSettings.TVScraperShowEpiGuideURL
-            .bMainGenres = Master.eSettings.TVScraperShowGenre
-            .bMainMPAA = Master.eSettings.TVScraperShowMPAA
-            .bMainOriginalTitle = Master.eSettings.TVScraperShowOriginalTitle
-            .bMainPlot = Master.eSettings.TVScraperShowPlot
-            .bMainPremiered = Master.eSettings.TVScraperShowPremiered
-            .bMainRating = Master.eSettings.TVScraperShowRating
-            .bMainRuntime = Master.eSettings.TVScraperShowRuntime
-            .bMainStatus = Master.eSettings.TVScraperShowStatus
-            .bMainStudios = Master.eSettings.TVScraperShowStudio
-            .bMainTitle = Master.eSettings.TVScraperShowTitle
-            .bMainUserRating = Master.eSettings.TVScraperShowUserRating
-            .bSeasonAired = Master.eSettings.TVScraperSeasonAired
-            .bSeasonPlot = Master.eSettings.TVScraperSeasonPlot
-            .bSeasonTitle = Master.eSettings.TVScraperSeasonTitle
+            .bEpisodeActors = Master.eSettings.TV.DataSettings.TVEpisode.Actors.Enabled
+            .bEpisodeAired = Master.eSettings.TV.DataSettings.TVEpisode.Aired.Enabled
+            .bEpisodeCredits = Master.eSettings.TV.DataSettings.TVEpisode.Credits.Enabled
+            .bEpisodeDirectors = Master.eSettings.TV.DataSettings.TVEpisode.Directors.Enabled
+            .bEpisodeGuestStars = Master.eSettings.TV.DataSettings.TVEpisode.GuestStars.Enabled
+            .bEpisodePlot = Master.eSettings.TV.DataSettings.TVEpisode.Plot.Enabled
+            .bEpisodeRating = Master.eSettings.TV.DataSettings.TVEpisode.Rating.Enabled
+            .bEpisodeRuntime = Master.eSettings.TV.DataSettings.TVEpisode.Runtime.Enabled
+            .bEpisodeTitle = Master.eSettings.TV.DataSettings.TVEpisode.Title.Enabled
+            .bEpisodeUserRating = Master.eSettings.TV.DataSettings.TVEpisode.UserRating.Enabled
+            .bMainActors = Master.eSettings.TV.DataSettings.TVShow.Actors.Enabled
+            .bMainCertifications = Master.eSettings.TV.DataSettings.TVShow.Certifications.Enabled
+            .bMainCountries = Master.eSettings.TV.DataSettings.TVShow.Countries.Enabled
+            .bMainCreators = Master.eSettings.TV.DataSettings.TVShow.Creators.Enabled
+            .bMainEpisodeGuide = Master.eSettings.TV.DataSettings.TVShow.EpisodeGuideURL.Enabled
+            .bMainGenres = Master.eSettings.TV.DataSettings.TVShow.Genres.Enabled
+            .bMainMPAA = Master.eSettings.TV.DataSettings.TVShow.MPAA.Enabled
+            .bMainOriginalTitle = Master.eSettings.TV.DataSettings.TVShow.OriginalTitle.Enabled
+            .bMainPlot = Master.eSettings.TV.DataSettings.TVShow.Plot.Enabled
+            .bMainPremiered = Master.eSettings.TV.DataSettings.TVShow.Premiered.Enabled
+            .bMainRating = Master.eSettings.TV.DataSettings.TVShow.Rating.Enabled
+            .bMainRuntime = Master.eSettings.TV.DataSettings.TVShow.Runtime.Enabled
+            .bMainStatus = Master.eSettings.TV.DataSettings.TVShow.Status.Enabled
+            .bMainStudios = Master.eSettings.TV.DataSettings.TVShow.Studios.Enabled
+            .bMainTitle = Master.eSettings.TV.DataSettings.TVShow.Title.Enabled
+            .bMainUserRating = Master.eSettings.TV.DataSettings.TVShow.UserRating.Enabled
+            .bSeasonAired = Master.eSettings.TV.DataSettings.TVSeason.Aired.Enabled
+            .bSeasonPlot = Master.eSettings.TV.DataSettings.TVSeason.Plot.Enabled
+            .bSeasonTitle = Master.eSettings.TV.DataSettings.TVSeason.Title.Enabled
         End With
     End Sub
     ''' <summary>

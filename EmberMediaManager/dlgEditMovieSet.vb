@@ -788,7 +788,7 @@ Public Class dlgEditMovieSet
         lvMoviesInSet.SuspendLayout()
 
         lvMoviesInSet.Items.Clear()
-        If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+        If Master.eSettings.Movie.DataSettings.CollectionYAMJCompatible Then
             tmpDBElement.MoviesInSet.Sort()
         End If
 
@@ -846,7 +846,7 @@ Public Class dlgEditMovieSet
         pbLandscape.AllowDrop = True
         pbPoster.AllowDrop = True
 
-        If Master.eSettings.MovieScraperCollectionsYAMJCompatibleSets Then
+        If Master.eSettings.Movie.DataSettings.CollectionYAMJCompatible Then
             btnMovieDown.Visible = True
             btnMovieUp.Visible = True
             colOrdering.Width = 25

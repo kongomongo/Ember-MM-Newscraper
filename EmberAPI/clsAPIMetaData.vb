@@ -207,13 +207,13 @@ Public Class MetaData
 
         Select Case tDBElement.ContentType
             Case Enums.ContentType.Movie
-                bLockAudioLanguage = Master.eSettings.MovieLockLanguageA
-                bLockVideoLanguage = Master.eSettings.MovieLockLanguageV
-                strRuntimeMask = Master.eSettings.MovieScraperDurationRuntimeFormat
+                bLockAudioLanguage = Master.eSettings.Movie.DataSettings.LockAudioLanguage
+                bLockVideoLanguage = Master.eSettings.Movie.DataSettings.LockVideoLanguage
+                strRuntimeMask = Master.eSettings.Movie.DataSettings.DurationFormat
             Case Enums.ContentType.TVEpisode
-                bLockAudioLanguage = Master.eSettings.TVLockEpisodeLanguageA
-                bLockVideoLanguage = Master.eSettings.TVLockEpisodeLanguageV
-                strRuntimeMask = Master.eSettings.TVScraperDurationRuntimeFormat
+                bLockAudioLanguage = Master.eSettings.TV.DataSettings.TVEpisode.LockAudioLanguage
+                bLockVideoLanguage = Master.eSettings.TV.DataSettings.TVEpisode.LockVideoLanguage
+                strRuntimeMask = Master.eSettings.TV.DataSettings.DurationFormat
         End Select
 
         If Not tDBElement.FileItem.bIsDiscStub AndAlso Master.CanScanDiscImage OrElse Not (tDBElement.FileItem.bIsDiscImage OrElse tDBElement.FileItem.bIsRAR) Then
@@ -250,7 +250,7 @@ Public Class MetaData
                 tDBElement.MainDetails.FileInfo = nFileInfo
             End If
 
-            If tDBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified AndAlso Master.eSettings.MovieScraperUseMDDuration Then
+            If tDBElement.MainDetails.FileInfo.StreamDetails.VideoSpecified AndAlso Master.eSettings.Movie.DataSettings.DurationForRuntime Then
                 Dim tVid As MediaContainers.Video = NFO.GetBestVideo(tDBElement.MainDetails.FileInfo)
                 'cocotus 29/02/2014, Added check to only save Runtime in nfo/moviedb if scraped Runtime <> 0! (=Error during Mediainfo Scan)
                 If tVid.DurationSpecified AndAlso Not tVid.Duration.Trim = "0" Then

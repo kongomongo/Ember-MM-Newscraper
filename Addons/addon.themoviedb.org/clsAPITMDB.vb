@@ -70,7 +70,7 @@ Public Class Scraper
             If tContentType = Enums.ContentType.Movie Then
                 APIResult = Task.Run(Function() _TMDBApiG.GetMovieImagesAsync(CInt(strTMDB)))
                 Results = APIResult.Result
-            ElseIf tContentType = Enums.ContentType.MovieSet Then
+            ElseIf tContentType = Enums.ContentType.Movieset Then
                 APIResult = Task.Run(Function() _TMDBApiG.GetCollectionImagesAsync(CInt(strTMDB)))
                 Results = APIResult.Result
             End If
@@ -1258,7 +1258,7 @@ Public Class Scraper
     Public Function Scrape_Movieset(ByVal strID As String, ByVal tScrapeModifiers As Structures.ScrapeModifiers, ByVal tScrapeOptions As Structures.ScrapeOptions) As Interfaces.AddonResult
         Dim nAddonResult As New Interfaces.AddonResult
         nAddonResult.ScraperResult_Data = GetInfo_MovieSet(strID, tScrapeOptions)
-        nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.MovieSet)
+        nAddonResult.ScraperResult_ImageContainer = GetImages_Movie_MovieSet(strID, tScrapeModifiers, Enums.ContentType.Movieset)
         Return nAddonResult
     End Function
 

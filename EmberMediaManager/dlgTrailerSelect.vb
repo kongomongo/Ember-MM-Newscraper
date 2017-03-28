@@ -96,7 +96,7 @@ Public Class dlgTrailerSelect
         lvTrailers.FullRowSelect = True
         lvTrailers.HideSelection = False
 
-        txtYouTubeSearch.Text = String.Concat(DBMovie.MainDetails.Title, " ", Master.eSettings.MovieTrailerDefaultSearch)
+        txtYouTubeSearch.Text = String.Concat(DBMovie.MainDetails.Title, " ", Master.eSettings.Movie.TrailerSettings.DefaultSearch)
 
         _tmpDBElement = DBMovie
 
@@ -152,7 +152,7 @@ Public Class dlgTrailerSelect
 
         If txtLocalTrailer.Text.Length > 0 Then
             lblStatus.Text = Master.eLang.GetString(907, "Copying specified file to trailer...")
-            If Master.eSettings.FileSystemValidExts.Contains(Path.GetExtension(txtLocalTrailer.Text)) AndAlso File.Exists(txtLocalTrailer.Text) Then
+            If Master.eSettings.Options.Filesystem.ValidVideoExts.Contains(Path.GetExtension(txtLocalTrailer.Text)) AndAlso File.Exists(txtLocalTrailer.Text) Then
                 If CloseDialog Then
                     If _noDownload Then
                         Result.URLWebsite = txtLocalTrailer.Text

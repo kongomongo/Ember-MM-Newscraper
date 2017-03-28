@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<CommandFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <transaction name="MyVideosDBSQL_v46_to_v47">
+    <command type="DB">
+      <description>added DateModified to table episode</description>
+      <execute>
+        ALTER TABLE episode
+        ADD COLUMN DateModified integer;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>added DateModified to table season</description>
+      <execute>
+        ALTER TABLE seasons
+        ADD COLUMN DateModified integer;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>added DateModified to table sets</description>
+      <execute>
+        ALTER TABLE sets
+        ADD COLUMN DateModified integer;
+      </execute>
+    </command>
+    <command type="DB">
+      <description>added DateModified to table tvshow</description>
+      <execute>
+        ALTER TABLE tvshow
+        ADD COLUMN DateModified integer;
+      </execute>
+    </command>
+  </transaction>
+  <noTransaction type="">
+  </noTransaction>
+<!-- 
+  <noTransaction type="DB">
+    <description>nd1</description>
+    <execute>ne1</execute>
+  </noTransaction>
+-->
+</CommandFile>

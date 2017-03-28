@@ -26,49 +26,49 @@ Partial Class frmTV_Image
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.tblScraperSettings = New System.Windows.Forms.TableLayoutPanel()
-        Me.txtTVEpisodeFanartHeight = New System.Windows.Forms.TextBox()
-        Me.txtTVSeasonFanartHeight = New System.Windows.Forms.TextBox()
-        Me.txtTVEpisodeFanartWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVEpisodeFanartMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonFanartMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVEpisodeFanartMaxWidth = New System.Windows.Forms.TextBox()
         Me.chkTVEpisodePosterKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cbTVEpisodePosterPrefSize = New System.Windows.Forms.ComboBox()
-        Me.txtTVEpisodePosterHeight = New System.Windows.Forms.TextBox()
-        Me.txtTVEpisodePosterWidth = New System.Windows.Forms.TextBox()
-        Me.txtTVSeasonPosterHeight = New System.Windows.Forms.TextBox()
-        Me.txtTVSeasonFanartWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVEpisodePosterMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVEpisodePosterMaxWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonPosterMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonFanartMaxWidth = New System.Windows.Forms.TextBox()
         Me.chkTVEpisodeFanartKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cbTVEpisodeFanartPrefSize = New System.Windows.Forms.ComboBox()
         Me.chkTVSeasonLandscapeKeepExisting = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodePosterPrefSizeOnly = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodeFanartPrefSizeOnly = New System.Windows.Forms.CheckBox()
-        Me.txtTVSeasonPosterWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonPosterMaxWidth = New System.Windows.Forms.TextBox()
         Me.chkTVSeasonLandscapePrefSizeOnly = New System.Windows.Forms.CheckBox()
         Me.cbTVSeasonLandscapePrefSize = New System.Windows.Forms.ComboBox()
-        Me.txtTVSeasonBannerWidth = New System.Windows.Forms.TextBox()
-        Me.txtTVSeasonBannerHeight = New System.Windows.Forms.TextBox()
-        Me.txtTVAllSeasonsFanartHeight = New System.Windows.Forms.TextBox()
-        Me.txtTVAllSeasonsBannerHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonBannerMaxWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonBannerMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsFanartMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsBannerMaxHeight = New System.Windows.Forms.TextBox()
         Me.chkTVSeasonBannerKeepExisting = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonFanartPrefSizeOnly = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonBannerPrefSizeOnly = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonPosterPrefSizeOnly = New System.Windows.Forms.CheckBox()
-        Me.txtTVAllSeasonsFanartWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsFanartMaxWidth = New System.Windows.Forms.TextBox()
         Me.chkTVSeasonFanartKeepExisting = New System.Windows.Forms.CheckBox()
-        Me.txtTVAllSeasonsPosterHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsPosterMaxHeight = New System.Windows.Forms.TextBox()
         Me.chkTVSeasonPosterKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cbTVSeasonFanartPrefSize = New System.Windows.Forms.ComboBox()
         Me.cbTVSeasonBannerPrefSize = New System.Windows.Forms.ComboBox()
         Me.cbTVSeasonPosterPrefSize = New System.Windows.Forms.ComboBox()
-        Me.txtTVAllSeasonsBannerWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsBannerMaxWidth = New System.Windows.Forms.TextBox()
         Me.chkTVAllSeasonsLandscapePrefSizeOnly = New System.Windows.Forms.CheckBox()
-        Me.txtTVAllSeasonsPosterWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsPosterMaxWidth = New System.Windows.Forms.TextBox()
         Me.chkTVAllSeasonsLandscapeKeepExisting = New System.Windows.Forms.CheckBox()
-        Me.txtTVShowFanartWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVShowFanartMaxWidth = New System.Windows.Forms.TextBox()
         Me.cbTVAllSeasonsLandscapePrefSize = New System.Windows.Forms.ComboBox()
-        Me.txtTVShowBannerWidth = New System.Windows.Forms.TextBox()
-        Me.txtTVShowExtrafanartsHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVShowBannerMaxWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVShowExtrafanartsMaxHeight = New System.Windows.Forms.TextBox()
         Me.chkTVAllSeasonsFanartKeepExisting = New System.Windows.Forms.CheckBox()
         Me.chkTVAllSeasonsPosterKeepExisting = New System.Windows.Forms.CheckBox()
-        Me.txtTVShowFanartHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVShowFanartMaxHeight = New System.Windows.Forms.TextBox()
         Me.chkTVAllSeasonsBannerKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cbTVAllSeasonsFanartPrefSize = New System.Windows.Forms.ComboBox()
         Me.cbTVAllSeasonsPosterPrefSize = New System.Windows.Forms.ComboBox()
@@ -76,13 +76,13 @@ Partial Class frmTV_Image
         Me.chkTVAllSeasonsPosterPrefSizeOnly = New System.Windows.Forms.CheckBox()
         Me.chkTVShowActorThumbsKeepExisting = New System.Windows.Forms.CheckBox()
         Me.chkTVAllSeasonsBannerPrefSizeOnly = New System.Windows.Forms.CheckBox()
-        Me.txtTVShowExtrafanartsWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVShowExtrafanartsMaxWidth = New System.Windows.Forms.TextBox()
         Me.txtTVShowPosterWidth = New System.Windows.Forms.TextBox()
         Me.chkTVShowClearArtKeepExisting = New System.Windows.Forms.CheckBox()
         Me.cbTVAllSeasonsBannerPrefSize = New System.Windows.Forms.ComboBox()
-        Me.txtTVShowBannerHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVShowBannerMaxHeight = New System.Windows.Forms.TextBox()
         Me.lblImageType = New System.Windows.Forms.Label()
-        Me.txtTVShowPosterHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVShowPosterMaxHeight = New System.Windows.Forms.TextBox()
         Me.chkTVShowClearLogoKeepExisting = New System.Windows.Forms.CheckBox()
         Me.chkTVShowBannerKeepExisting = New System.Windows.Forms.CheckBox()
         Me.chkTVShowPosterKeepExisting = New System.Windows.Forms.CheckBox()
@@ -166,6 +166,12 @@ Partial Class frmTV_Image
         Me.chkTVImagesCacheEnabled = New System.Windows.Forms.CheckBox()
         Me.chkTVImagesNotSaveURLToNfo = New System.Windows.Forms.CheckBox()
         Me.chkTVImagesDisplayImageSelect = New System.Windows.Forms.CheckBox()
+        Me.txtTVShowLandscapeMaxWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVShowLandscapeMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsLandscapeMaxWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVAllSeasonsLandscapeMaxHeight = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonLandscapeMaxWidth = New System.Windows.Forms.TextBox()
+        Me.txtTVSeasonLandscapeMaxHeight = New System.Windows.Forms.TextBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -254,49 +260,49 @@ Partial Class frmTV_Image
         Me.tblScraperSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblScraperSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodeFanartHeight, 6, 22)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonFanartHeight, 6, 18)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodeFanartWidth, 5, 22)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodeFanartMaxHeight, 6, 22)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonFanartMaxHeight, 6, 18)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodeFanartMaxWidth, 5, 22)
         Me.tblScraperSettings.Controls.Add(Me.chkTVEpisodePosterKeepExisting, 4, 23)
         Me.tblScraperSettings.Controls.Add(Me.cbTVEpisodePosterPrefSize, 1, 23)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodePosterHeight, 6, 23)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodePosterWidth, 5, 23)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonPosterHeight, 6, 20)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonFanartWidth, 5, 18)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodePosterMaxHeight, 6, 23)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVEpisodePosterMaxWidth, 5, 23)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonPosterMaxHeight, 6, 20)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonFanartMaxWidth, 5, 18)
         Me.tblScraperSettings.Controls.Add(Me.chkTVEpisodeFanartKeepExisting, 4, 22)
         Me.tblScraperSettings.Controls.Add(Me.cbTVEpisodeFanartPrefSize, 1, 22)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonLandscapeKeepExisting, 4, 19)
         Me.tblScraperSettings.Controls.Add(Me.chkTVEpisodePosterPrefSizeOnly, 2, 23)
         Me.tblScraperSettings.Controls.Add(Me.chkTVEpisodeFanartPrefSizeOnly, 2, 22)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonPosterWidth, 5, 20)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonPosterMaxWidth, 5, 20)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonLandscapePrefSizeOnly, 2, 19)
         Me.tblScraperSettings.Controls.Add(Me.cbTVSeasonLandscapePrefSize, 1, 19)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonBannerWidth, 5, 17)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonBannerHeight, 6, 17)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsFanartHeight, 6, 13)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsBannerHeight, 6, 12)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonBannerMaxWidth, 5, 17)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonBannerMaxHeight, 6, 17)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsFanartMaxHeight, 6, 13)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsBannerMaxHeight, 6, 12)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonBannerKeepExisting, 4, 17)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonFanartPrefSizeOnly, 2, 18)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonBannerPrefSizeOnly, 2, 17)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonPosterPrefSizeOnly, 2, 20)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsFanartWidth, 5, 13)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsFanartMaxWidth, 5, 13)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonFanartKeepExisting, 4, 18)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsPosterHeight, 6, 15)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsPosterMaxHeight, 6, 15)
         Me.tblScraperSettings.Controls.Add(Me.chkTVSeasonPosterKeepExisting, 4, 20)
         Me.tblScraperSettings.Controls.Add(Me.cbTVSeasonFanartPrefSize, 1, 18)
         Me.tblScraperSettings.Controls.Add(Me.cbTVSeasonBannerPrefSize, 1, 17)
         Me.tblScraperSettings.Controls.Add(Me.cbTVSeasonPosterPrefSize, 1, 20)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsBannerWidth, 5, 12)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsBannerMaxWidth, 5, 12)
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsLandscapePrefSizeOnly, 2, 14)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsPosterWidth, 5, 15)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsPosterMaxWidth, 5, 15)
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsLandscapeKeepExisting, 4, 14)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowFanartWidth, 5, 8)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowFanartMaxWidth, 5, 8)
         Me.tblScraperSettings.Controls.Add(Me.cbTVAllSeasonsLandscapePrefSize, 1, 14)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowBannerWidth, 5, 3)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowExtrafanartsHeight, 6, 7)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowBannerMaxWidth, 5, 3)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowExtrafanartsMaxHeight, 6, 7)
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsFanartKeepExisting, 4, 13)
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsPosterKeepExisting, 4, 15)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowFanartHeight, 6, 8)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowFanartMaxHeight, 6, 8)
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsBannerKeepExisting, 4, 12)
         Me.tblScraperSettings.Controls.Add(Me.cbTVAllSeasonsFanartPrefSize, 1, 13)
         Me.tblScraperSettings.Controls.Add(Me.cbTVAllSeasonsPosterPrefSize, 1, 15)
@@ -304,13 +310,13 @@ Partial Class frmTV_Image
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsPosterPrefSizeOnly, 2, 15)
         Me.tblScraperSettings.Controls.Add(Me.chkTVShowActorThumbsKeepExisting, 4, 2)
         Me.tblScraperSettings.Controls.Add(Me.chkTVAllSeasonsBannerPrefSizeOnly, 2, 12)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowExtrafanartsWidth, 5, 7)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowExtrafanartsMaxWidth, 5, 7)
         Me.tblScraperSettings.Controls.Add(Me.txtTVShowPosterWidth, 5, 10)
         Me.tblScraperSettings.Controls.Add(Me.chkTVShowClearArtKeepExisting, 4, 5)
         Me.tblScraperSettings.Controls.Add(Me.cbTVAllSeasonsBannerPrefSize, 1, 12)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowBannerHeight, 6, 3)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowBannerMaxHeight, 6, 3)
         Me.tblScraperSettings.Controls.Add(Me.lblImageType, 0, 0)
-        Me.tblScraperSettings.Controls.Add(Me.txtTVShowPosterHeight, 6, 10)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowPosterMaxHeight, 6, 10)
         Me.tblScraperSettings.Controls.Add(Me.chkTVShowClearLogoKeepExisting, 4, 6)
         Me.tblScraperSettings.Controls.Add(Me.chkTVShowBannerKeepExisting, 4, 3)
         Me.tblScraperSettings.Controls.Add(Me.chkTVShowPosterKeepExisting, 4, 10)
@@ -382,6 +388,12 @@ Partial Class frmTV_Image
         Me.tblScraperSettings.Controls.Add(Me.lblAllSeasons, 0, 11)
         Me.tblScraperSettings.Controls.Add(Me.lblSeason, 0, 16)
         Me.tblScraperSettings.Controls.Add(Me.lblEpisode, 0, 21)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowLandscapeMaxWidth, 5, 9)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVShowLandscapeMaxHeight, 6, 9)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsLandscapeMaxWidth, 5, 14)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVAllSeasonsLandscapeMaxHeight, 6, 14)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonLandscapeMaxWidth, 5, 19)
+        Me.tblScraperSettings.Controls.Add(Me.txtTVSeasonLandscapeMaxHeight, 6, 19)
         Me.tblScraperSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblScraperSettings.Location = New System.Drawing.Point(3, 18)
         Me.tblScraperSettings.Name = "tblScraperSettings"
@@ -414,35 +426,35 @@ Partial Class frmTV_Image
         Me.tblScraperSettings.Size = New System.Drawing.Size(701, 534)
         Me.tblScraperSettings.TabIndex = 0
         '
-        'txtTVEpisodeFanartHeight
+        'txtTVEpisodeFanartMaxHeight
         '
-        Me.txtTVEpisodeFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVEpisodeFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVEpisodeFanartHeight.Location = New System.Drawing.Point(419, 488)
-        Me.txtTVEpisodeFanartHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVEpisodeFanartHeight.Name = "txtTVEpisodeFanartHeight"
-        Me.txtTVEpisodeFanartHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVEpisodeFanartHeight.TabIndex = 7
+        Me.txtTVEpisodeFanartMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVEpisodeFanartMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVEpisodeFanartMaxHeight.Location = New System.Drawing.Point(419, 488)
+        Me.txtTVEpisodeFanartMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVEpisodeFanartMaxHeight.Name = "txtTVEpisodeFanartMaxHeight"
+        Me.txtTVEpisodeFanartMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVEpisodeFanartMaxHeight.TabIndex = 7
         '
-        'txtTVSeasonFanartHeight
+        'txtTVSeasonFanartMaxHeight
         '
-        Me.txtTVSeasonFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVSeasonFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonFanartHeight.Location = New System.Drawing.Point(419, 399)
-        Me.txtTVSeasonFanartHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVSeasonFanartHeight.Name = "txtTVSeasonFanartHeight"
-        Me.txtTVSeasonFanartHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVSeasonFanartHeight.TabIndex = 7
+        Me.txtTVSeasonFanartMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonFanartMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonFanartMaxHeight.Location = New System.Drawing.Point(419, 399)
+        Me.txtTVSeasonFanartMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonFanartMaxHeight.Name = "txtTVSeasonFanartMaxHeight"
+        Me.txtTVSeasonFanartMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonFanartMaxHeight.TabIndex = 7
         '
-        'txtTVEpisodeFanartWidth
+        'txtTVEpisodeFanartMaxWidth
         '
-        Me.txtTVEpisodeFanartWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVEpisodeFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVEpisodeFanartWidth.Location = New System.Drawing.Point(346, 488)
-        Me.txtTVEpisodeFanartWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVEpisodeFanartWidth.Name = "txtTVEpisodeFanartWidth"
-        Me.txtTVEpisodeFanartWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVEpisodeFanartWidth.TabIndex = 5
+        Me.txtTVEpisodeFanartMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVEpisodeFanartMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVEpisodeFanartMaxWidth.Location = New System.Drawing.Point(346, 488)
+        Me.txtTVEpisodeFanartMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVEpisodeFanartMaxWidth.Name = "txtTVEpisodeFanartMaxWidth"
+        Me.txtTVEpisodeFanartMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVEpisodeFanartMaxWidth.TabIndex = 5
         '
         'chkTVEpisodePosterKeepExisting
         '
@@ -466,45 +478,45 @@ Partial Class frmTV_Image
         Me.cbTVEpisodePosterPrefSize.Size = New System.Drawing.Size(80, 21)
         Me.cbTVEpisodePosterPrefSize.TabIndex = 9
         '
-        'txtTVEpisodePosterHeight
+        'txtTVEpisodePosterMaxHeight
         '
-        Me.txtTVEpisodePosterHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVEpisodePosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVEpisodePosterHeight.Location = New System.Drawing.Point(419, 511)
-        Me.txtTVEpisodePosterHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVEpisodePosterHeight.Name = "txtTVEpisodePosterHeight"
-        Me.txtTVEpisodePosterHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVEpisodePosterHeight.TabIndex = 5
+        Me.txtTVEpisodePosterMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVEpisodePosterMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVEpisodePosterMaxHeight.Location = New System.Drawing.Point(419, 511)
+        Me.txtTVEpisodePosterMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVEpisodePosterMaxHeight.Name = "txtTVEpisodePosterMaxHeight"
+        Me.txtTVEpisodePosterMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVEpisodePosterMaxHeight.TabIndex = 5
         '
-        'txtTVEpisodePosterWidth
+        'txtTVEpisodePosterMaxWidth
         '
-        Me.txtTVEpisodePosterWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVEpisodePosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVEpisodePosterWidth.Location = New System.Drawing.Point(346, 511)
-        Me.txtTVEpisodePosterWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVEpisodePosterWidth.Name = "txtTVEpisodePosterWidth"
-        Me.txtTVEpisodePosterWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVEpisodePosterWidth.TabIndex = 3
+        Me.txtTVEpisodePosterMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVEpisodePosterMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVEpisodePosterMaxWidth.Location = New System.Drawing.Point(346, 511)
+        Me.txtTVEpisodePosterMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVEpisodePosterMaxWidth.Name = "txtTVEpisodePosterMaxWidth"
+        Me.txtTVEpisodePosterMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVEpisodePosterMaxWidth.TabIndex = 3
         '
-        'txtTVSeasonPosterHeight
+        'txtTVSeasonPosterMaxHeight
         '
-        Me.txtTVSeasonPosterHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVSeasonPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonPosterHeight.Location = New System.Drawing.Point(419, 445)
-        Me.txtTVSeasonPosterHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVSeasonPosterHeight.Name = "txtTVSeasonPosterHeight"
-        Me.txtTVSeasonPosterHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVSeasonPosterHeight.TabIndex = 7
+        Me.txtTVSeasonPosterMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonPosterMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonPosterMaxHeight.Location = New System.Drawing.Point(419, 445)
+        Me.txtTVSeasonPosterMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonPosterMaxHeight.Name = "txtTVSeasonPosterMaxHeight"
+        Me.txtTVSeasonPosterMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonPosterMaxHeight.TabIndex = 7
         '
-        'txtTVSeasonFanartWidth
+        'txtTVSeasonFanartMaxWidth
         '
-        Me.txtTVSeasonFanartWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVSeasonFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonFanartWidth.Location = New System.Drawing.Point(346, 399)
-        Me.txtTVSeasonFanartWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVSeasonFanartWidth.Name = "txtTVSeasonFanartWidth"
-        Me.txtTVSeasonFanartWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVSeasonFanartWidth.TabIndex = 5
+        Me.txtTVSeasonFanartMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonFanartMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonFanartMaxWidth.Location = New System.Drawing.Point(346, 399)
+        Me.txtTVSeasonFanartMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonFanartMaxWidth.Name = "txtTVSeasonFanartMaxWidth"
+        Me.txtTVSeasonFanartMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonFanartMaxWidth.TabIndex = 5
         '
         'chkTVEpisodeFanartKeepExisting
         '
@@ -561,15 +573,15 @@ Partial Class frmTV_Image
         Me.chkTVEpisodeFanartPrefSizeOnly.TabIndex = 8
         Me.chkTVEpisodeFanartPrefSizeOnly.UseVisualStyleBackColor = True
         '
-        'txtTVSeasonPosterWidth
+        'txtTVSeasonPosterMaxWidth
         '
-        Me.txtTVSeasonPosterWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVSeasonPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonPosterWidth.Location = New System.Drawing.Point(346, 445)
-        Me.txtTVSeasonPosterWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVSeasonPosterWidth.Name = "txtTVSeasonPosterWidth"
-        Me.txtTVSeasonPosterWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVSeasonPosterWidth.TabIndex = 5
+        Me.txtTVSeasonPosterMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonPosterMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonPosterMaxWidth.Location = New System.Drawing.Point(346, 445)
+        Me.txtTVSeasonPosterMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonPosterMaxWidth.Name = "txtTVSeasonPosterMaxWidth"
+        Me.txtTVSeasonPosterMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonPosterMaxWidth.TabIndex = 5
         '
         'chkTVSeasonLandscapePrefSizeOnly
         '
@@ -593,45 +605,45 @@ Partial Class frmTV_Image
         Me.cbTVSeasonLandscapePrefSize.Size = New System.Drawing.Size(80, 21)
         Me.cbTVSeasonLandscapePrefSize.TabIndex = 3
         '
-        'txtTVSeasonBannerWidth
+        'txtTVSeasonBannerMaxWidth
         '
-        Me.txtTVSeasonBannerWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVSeasonBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonBannerWidth.Location = New System.Drawing.Point(346, 376)
-        Me.txtTVSeasonBannerWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVSeasonBannerWidth.Name = "txtTVSeasonBannerWidth"
-        Me.txtTVSeasonBannerWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVSeasonBannerWidth.TabIndex = 5
+        Me.txtTVSeasonBannerMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonBannerMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonBannerMaxWidth.Location = New System.Drawing.Point(346, 376)
+        Me.txtTVSeasonBannerMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonBannerMaxWidth.Name = "txtTVSeasonBannerMaxWidth"
+        Me.txtTVSeasonBannerMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonBannerMaxWidth.TabIndex = 5
         '
-        'txtTVSeasonBannerHeight
+        'txtTVSeasonBannerMaxHeight
         '
-        Me.txtTVSeasonBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVSeasonBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSeasonBannerHeight.Location = New System.Drawing.Point(419, 376)
-        Me.txtTVSeasonBannerHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVSeasonBannerHeight.Name = "txtTVSeasonBannerHeight"
-        Me.txtTVSeasonBannerHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVSeasonBannerHeight.TabIndex = 7
+        Me.txtTVSeasonBannerMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonBannerMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonBannerMaxHeight.Location = New System.Drawing.Point(419, 376)
+        Me.txtTVSeasonBannerMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonBannerMaxHeight.Name = "txtTVSeasonBannerMaxHeight"
+        Me.txtTVSeasonBannerMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonBannerMaxHeight.TabIndex = 7
         '
-        'txtTVAllSeasonsFanartHeight
+        'txtTVAllSeasonsFanartMaxHeight
         '
-        Me.txtTVAllSeasonsFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVAllSeasonsFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsFanartHeight.Location = New System.Drawing.Point(419, 287)
-        Me.txtTVAllSeasonsFanartHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVAllSeasonsFanartHeight.Name = "txtTVAllSeasonsFanartHeight"
-        Me.txtTVAllSeasonsFanartHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVAllSeasonsFanartHeight.TabIndex = 7
+        Me.txtTVAllSeasonsFanartMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsFanartMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsFanartMaxHeight.Location = New System.Drawing.Point(419, 287)
+        Me.txtTVAllSeasonsFanartMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsFanartMaxHeight.Name = "txtTVAllSeasonsFanartMaxHeight"
+        Me.txtTVAllSeasonsFanartMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsFanartMaxHeight.TabIndex = 7
         '
-        'txtTVAllSeasonsBannerHeight
+        'txtTVAllSeasonsBannerMaxHeight
         '
-        Me.txtTVAllSeasonsBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVAllSeasonsBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsBannerHeight.Location = New System.Drawing.Point(419, 264)
-        Me.txtTVAllSeasonsBannerHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVAllSeasonsBannerHeight.Name = "txtTVAllSeasonsBannerHeight"
-        Me.txtTVAllSeasonsBannerHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVAllSeasonsBannerHeight.TabIndex = 9
+        Me.txtTVAllSeasonsBannerMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsBannerMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsBannerMaxHeight.Location = New System.Drawing.Point(419, 264)
+        Me.txtTVAllSeasonsBannerMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsBannerMaxHeight.Name = "txtTVAllSeasonsBannerMaxHeight"
+        Me.txtTVAllSeasonsBannerMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsBannerMaxHeight.TabIndex = 9
         '
         'chkTVSeasonBannerKeepExisting
         '
@@ -677,15 +689,15 @@ Partial Class frmTV_Image
         Me.chkTVSeasonPosterPrefSizeOnly.TabIndex = 8
         Me.chkTVSeasonPosterPrefSizeOnly.UseVisualStyleBackColor = True
         '
-        'txtTVAllSeasonsFanartWidth
+        'txtTVAllSeasonsFanartMaxWidth
         '
-        Me.txtTVAllSeasonsFanartWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVAllSeasonsFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsFanartWidth.Location = New System.Drawing.Point(346, 287)
-        Me.txtTVAllSeasonsFanartWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVAllSeasonsFanartWidth.Name = "txtTVAllSeasonsFanartWidth"
-        Me.txtTVAllSeasonsFanartWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVAllSeasonsFanartWidth.TabIndex = 5
+        Me.txtTVAllSeasonsFanartMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsFanartMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsFanartMaxWidth.Location = New System.Drawing.Point(346, 287)
+        Me.txtTVAllSeasonsFanartMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsFanartMaxWidth.Name = "txtTVAllSeasonsFanartMaxWidth"
+        Me.txtTVAllSeasonsFanartMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsFanartMaxWidth.TabIndex = 5
         '
         'chkTVSeasonFanartKeepExisting
         '
@@ -698,15 +710,15 @@ Partial Class frmTV_Image
         Me.chkTVSeasonFanartKeepExisting.TabIndex = 2
         Me.chkTVSeasonFanartKeepExisting.UseVisualStyleBackColor = True
         '
-        'txtTVAllSeasonsPosterHeight
+        'txtTVAllSeasonsPosterMaxHeight
         '
-        Me.txtTVAllSeasonsPosterHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVAllSeasonsPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsPosterHeight.Location = New System.Drawing.Point(419, 333)
-        Me.txtTVAllSeasonsPosterHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVAllSeasonsPosterHeight.Name = "txtTVAllSeasonsPosterHeight"
-        Me.txtTVAllSeasonsPosterHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVAllSeasonsPosterHeight.TabIndex = 9
+        Me.txtTVAllSeasonsPosterMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsPosterMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsPosterMaxHeight.Location = New System.Drawing.Point(419, 333)
+        Me.txtTVAllSeasonsPosterMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsPosterMaxHeight.Name = "txtTVAllSeasonsPosterMaxHeight"
+        Me.txtTVAllSeasonsPosterMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsPosterMaxHeight.TabIndex = 9
         '
         'chkTVSeasonPosterKeepExisting
         '
@@ -752,15 +764,15 @@ Partial Class frmTV_Image
         Me.cbTVSeasonPosterPrefSize.Size = New System.Drawing.Size(80, 21)
         Me.cbTVSeasonPosterPrefSize.TabIndex = 1
         '
-        'txtTVAllSeasonsBannerWidth
+        'txtTVAllSeasonsBannerMaxWidth
         '
-        Me.txtTVAllSeasonsBannerWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVAllSeasonsBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsBannerWidth.Location = New System.Drawing.Point(346, 264)
-        Me.txtTVAllSeasonsBannerWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVAllSeasonsBannerWidth.Name = "txtTVAllSeasonsBannerWidth"
-        Me.txtTVAllSeasonsBannerWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVAllSeasonsBannerWidth.TabIndex = 7
+        Me.txtTVAllSeasonsBannerMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsBannerMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsBannerMaxWidth.Location = New System.Drawing.Point(346, 264)
+        Me.txtTVAllSeasonsBannerMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsBannerMaxWidth.Name = "txtTVAllSeasonsBannerMaxWidth"
+        Me.txtTVAllSeasonsBannerMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsBannerMaxWidth.TabIndex = 7
         '
         'chkTVAllSeasonsLandscapePrefSizeOnly
         '
@@ -773,15 +785,15 @@ Partial Class frmTV_Image
         Me.chkTVAllSeasonsLandscapePrefSizeOnly.TabIndex = 11
         Me.chkTVAllSeasonsLandscapePrefSizeOnly.UseVisualStyleBackColor = True
         '
-        'txtTVAllSeasonsPosterWidth
+        'txtTVAllSeasonsPosterMaxWidth
         '
-        Me.txtTVAllSeasonsPosterWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVAllSeasonsPosterWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVAllSeasonsPosterWidth.Location = New System.Drawing.Point(346, 333)
-        Me.txtTVAllSeasonsPosterWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVAllSeasonsPosterWidth.Name = "txtTVAllSeasonsPosterWidth"
-        Me.txtTVAllSeasonsPosterWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVAllSeasonsPosterWidth.TabIndex = 7
+        Me.txtTVAllSeasonsPosterMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsPosterMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsPosterMaxWidth.Location = New System.Drawing.Point(346, 333)
+        Me.txtTVAllSeasonsPosterMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsPosterMaxWidth.Name = "txtTVAllSeasonsPosterMaxWidth"
+        Me.txtTVAllSeasonsPosterMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsPosterMaxWidth.TabIndex = 7
         '
         'chkTVAllSeasonsLandscapeKeepExisting
         '
@@ -794,15 +806,15 @@ Partial Class frmTV_Image
         Me.chkTVAllSeasonsLandscapeKeepExisting.TabIndex = 4
         Me.chkTVAllSeasonsLandscapeKeepExisting.UseVisualStyleBackColor = True
         '
-        'txtTVShowFanartWidth
+        'txtTVShowFanartMaxWidth
         '
-        Me.txtTVShowFanartWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowFanartWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowFanartWidth.Location = New System.Drawing.Point(346, 175)
-        Me.txtTVShowFanartWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowFanartWidth.Name = "txtTVShowFanartWidth"
-        Me.txtTVShowFanartWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowFanartWidth.TabIndex = 6
+        Me.txtTVShowFanartMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowFanartMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowFanartMaxWidth.Location = New System.Drawing.Point(346, 175)
+        Me.txtTVShowFanartMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowFanartMaxWidth.Name = "txtTVShowFanartMaxWidth"
+        Me.txtTVShowFanartMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowFanartMaxWidth.TabIndex = 6
         '
         'cbTVAllSeasonsLandscapePrefSize
         '
@@ -815,25 +827,25 @@ Partial Class frmTV_Image
         Me.cbTVAllSeasonsLandscapePrefSize.Size = New System.Drawing.Size(80, 21)
         Me.cbTVAllSeasonsLandscapePrefSize.TabIndex = 6
         '
-        'txtTVShowBannerWidth
+        'txtTVShowBannerMaxWidth
         '
-        Me.txtTVShowBannerWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowBannerWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowBannerWidth.Location = New System.Drawing.Point(346, 60)
-        Me.txtTVShowBannerWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowBannerWidth.Name = "txtTVShowBannerWidth"
-        Me.txtTVShowBannerWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowBannerWidth.TabIndex = 6
+        Me.txtTVShowBannerMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowBannerMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowBannerMaxWidth.Location = New System.Drawing.Point(346, 60)
+        Me.txtTVShowBannerMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowBannerMaxWidth.Name = "txtTVShowBannerMaxWidth"
+        Me.txtTVShowBannerMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowBannerMaxWidth.TabIndex = 6
         '
-        'txtTVShowExtrafanartsHeight
+        'txtTVShowExtrafanartsMaxHeight
         '
-        Me.txtTVShowExtrafanartsHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowExtrafanartsHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowExtrafanartsHeight.Location = New System.Drawing.Point(419, 152)
-        Me.txtTVShowExtrafanartsHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowExtrafanartsHeight.Name = "txtTVShowExtrafanartsHeight"
-        Me.txtTVShowExtrafanartsHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowExtrafanartsHeight.TabIndex = 8
+        Me.txtTVShowExtrafanartsMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowExtrafanartsMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowExtrafanartsMaxHeight.Location = New System.Drawing.Point(419, 152)
+        Me.txtTVShowExtrafanartsMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowExtrafanartsMaxHeight.Name = "txtTVShowExtrafanartsMaxHeight"
+        Me.txtTVShowExtrafanartsMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowExtrafanartsMaxHeight.TabIndex = 8
         '
         'chkTVAllSeasonsFanartKeepExisting
         '
@@ -857,15 +869,15 @@ Partial Class frmTV_Image
         Me.chkTVAllSeasonsPosterKeepExisting.TabIndex = 4
         Me.chkTVAllSeasonsPosterKeepExisting.UseVisualStyleBackColor = True
         '
-        'txtTVShowFanartHeight
+        'txtTVShowFanartMaxHeight
         '
-        Me.txtTVShowFanartHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowFanartHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowFanartHeight.Location = New System.Drawing.Point(419, 175)
-        Me.txtTVShowFanartHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowFanartHeight.Name = "txtTVShowFanartHeight"
-        Me.txtTVShowFanartHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowFanartHeight.TabIndex = 8
+        Me.txtTVShowFanartMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowFanartMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowFanartMaxHeight.Location = New System.Drawing.Point(419, 175)
+        Me.txtTVShowFanartMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowFanartMaxHeight.Name = "txtTVShowFanartMaxHeight"
+        Me.txtTVShowFanartMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowFanartMaxHeight.TabIndex = 8
         '
         'chkTVAllSeasonsBannerKeepExisting
         '
@@ -944,15 +956,15 @@ Partial Class frmTV_Image
         Me.chkTVAllSeasonsBannerPrefSizeOnly.TabIndex = 10
         Me.chkTVAllSeasonsBannerPrefSizeOnly.UseVisualStyleBackColor = True
         '
-        'txtTVShowExtrafanartsWidth
+        'txtTVShowExtrafanartsMaxWidth
         '
-        Me.txtTVShowExtrafanartsWidth.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowExtrafanartsWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowExtrafanartsWidth.Location = New System.Drawing.Point(346, 152)
-        Me.txtTVShowExtrafanartsWidth.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowExtrafanartsWidth.Name = "txtTVShowExtrafanartsWidth"
-        Me.txtTVShowExtrafanartsWidth.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowExtrafanartsWidth.TabIndex = 6
+        Me.txtTVShowExtrafanartsMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowExtrafanartsMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowExtrafanartsMaxWidth.Location = New System.Drawing.Point(346, 152)
+        Me.txtTVShowExtrafanartsMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowExtrafanartsMaxWidth.Name = "txtTVShowExtrafanartsMaxWidth"
+        Me.txtTVShowExtrafanartsMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowExtrafanartsMaxWidth.TabIndex = 6
         '
         'txtTVShowPosterWidth
         '
@@ -986,15 +998,15 @@ Partial Class frmTV_Image
         Me.cbTVAllSeasonsBannerPrefSize.Size = New System.Drawing.Size(80, 21)
         Me.cbTVAllSeasonsBannerPrefSize.TabIndex = 3
         '
-        'txtTVShowBannerHeight
+        'txtTVShowBannerMaxHeight
         '
-        Me.txtTVShowBannerHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowBannerHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowBannerHeight.Location = New System.Drawing.Point(419, 60)
-        Me.txtTVShowBannerHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowBannerHeight.Name = "txtTVShowBannerHeight"
-        Me.txtTVShowBannerHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowBannerHeight.TabIndex = 8
+        Me.txtTVShowBannerMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowBannerMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowBannerMaxHeight.Location = New System.Drawing.Point(419, 60)
+        Me.txtTVShowBannerMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowBannerMaxHeight.Name = "txtTVShowBannerMaxHeight"
+        Me.txtTVShowBannerMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowBannerMaxHeight.TabIndex = 8
         '
         'lblImageType
         '
@@ -1007,15 +1019,15 @@ Partial Class frmTV_Image
         Me.lblImageType.TabIndex = 0
         Me.lblImageType.Text = "Image Type"
         '
-        'txtTVShowPosterHeight
+        'txtTVShowPosterMaxHeight
         '
-        Me.txtTVShowPosterHeight.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.txtTVShowPosterHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVShowPosterHeight.Location = New System.Drawing.Point(419, 221)
-        Me.txtTVShowPosterHeight.Margin = New System.Windows.Forms.Padding(0)
-        Me.txtTVShowPosterHeight.Name = "txtTVShowPosterHeight"
-        Me.txtTVShowPosterHeight.Size = New System.Drawing.Size(34, 22)
-        Me.txtTVShowPosterHeight.TabIndex = 8
+        Me.txtTVShowPosterMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowPosterMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowPosterMaxHeight.Location = New System.Drawing.Point(419, 221)
+        Me.txtTVShowPosterMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowPosterMaxHeight.Name = "txtTVShowPosterMaxHeight"
+        Me.txtTVShowPosterMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowPosterMaxHeight.TabIndex = 8
         '
         'chkTVShowClearLogoKeepExisting
         '
@@ -1926,6 +1938,66 @@ Partial Class frmTV_Image
         Me.chkTVImagesDisplayImageSelect.Text = "Display ""Image Select"" dialog while single scraping"
         Me.chkTVImagesDisplayImageSelect.UseVisualStyleBackColor = True
         '
+        'txtTVShowLandscapeMaxWidth
+        '
+        Me.txtTVShowLandscapeMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowLandscapeMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowLandscapeMaxWidth.Location = New System.Drawing.Point(346, 198)
+        Me.txtTVShowLandscapeMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowLandscapeMaxWidth.Name = "txtTVShowLandscapeMaxWidth"
+        Me.txtTVShowLandscapeMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowLandscapeMaxWidth.TabIndex = 6
+        '
+        'txtTVShowLandscapeMaxHeight
+        '
+        Me.txtTVShowLandscapeMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVShowLandscapeMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVShowLandscapeMaxHeight.Location = New System.Drawing.Point(419, 198)
+        Me.txtTVShowLandscapeMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVShowLandscapeMaxHeight.Name = "txtTVShowLandscapeMaxHeight"
+        Me.txtTVShowLandscapeMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVShowLandscapeMaxHeight.TabIndex = 8
+        '
+        'txtTVAllSeasonsLandscapeMaxWidth
+        '
+        Me.txtTVAllSeasonsLandscapeMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsLandscapeMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsLandscapeMaxWidth.Location = New System.Drawing.Point(346, 310)
+        Me.txtTVAllSeasonsLandscapeMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsLandscapeMaxWidth.Name = "txtTVAllSeasonsLandscapeMaxWidth"
+        Me.txtTVAllSeasonsLandscapeMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsLandscapeMaxWidth.TabIndex = 5
+        '
+        'txtTVAllSeasonsLandscapeMaxHeight
+        '
+        Me.txtTVAllSeasonsLandscapeMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVAllSeasonsLandscapeMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVAllSeasonsLandscapeMaxHeight.Location = New System.Drawing.Point(419, 310)
+        Me.txtTVAllSeasonsLandscapeMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVAllSeasonsLandscapeMaxHeight.Name = "txtTVAllSeasonsLandscapeMaxHeight"
+        Me.txtTVAllSeasonsLandscapeMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVAllSeasonsLandscapeMaxHeight.TabIndex = 7
+        '
+        'txtTVSeasonLandscapeMaxWidth
+        '
+        Me.txtTVSeasonLandscapeMaxWidth.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonLandscapeMaxWidth.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonLandscapeMaxWidth.Location = New System.Drawing.Point(346, 422)
+        Me.txtTVSeasonLandscapeMaxWidth.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonLandscapeMaxWidth.Name = "txtTVSeasonLandscapeMaxWidth"
+        Me.txtTVSeasonLandscapeMaxWidth.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonLandscapeMaxWidth.TabIndex = 5
+        '
+        'txtTVSeasonLandscapeMaxHeight
+        '
+        Me.txtTVSeasonLandscapeMaxHeight.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.txtTVSeasonLandscapeMaxHeight.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTVSeasonLandscapeMaxHeight.Location = New System.Drawing.Point(419, 422)
+        Me.txtTVSeasonLandscapeMaxHeight.Margin = New System.Windows.Forms.Padding(0)
+        Me.txtTVSeasonLandscapeMaxHeight.Name = "txtTVSeasonLandscapeMaxHeight"
+        Me.txtTVSeasonLandscapeMaxHeight.Size = New System.Drawing.Size(34, 22)
+        Me.txtTVSeasonLandscapeMaxHeight.TabIndex = 7
+        '
         'frmTV_Image
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1987,26 +2059,26 @@ Partial Class frmTV_Image
     Friend WithEvents chkTVImagesMediaLanguageOnly As Windows.Forms.CheckBox
     Friend WithEvents chkTVImagesForceLanguage As Windows.Forms.CheckBox
     Friend WithEvents cbTVImagesForcedLanguage As Windows.Forms.ComboBox
-    Friend WithEvents txtTVAllSeasonsPosterHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVAllSeasonsPosterWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVAllSeasonsPosterMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVAllSeasonsPosterMaxWidth As Windows.Forms.TextBox
     Friend WithEvents cbTVAllSeasonsPosterPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVAllSeasonsPosterKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents chkTVAllSeasonsPosterPrefSizeOnly As Windows.Forms.CheckBox
     Friend WithEvents chkTVAllSeasonsLandscapePrefSizeOnly As Windows.Forms.CheckBox
     Friend WithEvents cbTVAllSeasonsLandscapePrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVAllSeasonsLandscapeKeepExisting As Windows.Forms.CheckBox
-    Friend WithEvents txtTVAllSeasonsBannerHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVAllSeasonsBannerWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVAllSeasonsBannerMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVAllSeasonsBannerMaxWidth As Windows.Forms.TextBox
     Friend WithEvents chkTVAllSeasonsBannerKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents cbTVAllSeasonsBannerPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVAllSeasonsBannerPrefSizeOnly As Windows.Forms.CheckBox
-    Friend WithEvents txtTVAllSeasonsFanartHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVAllSeasonsFanartWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVAllSeasonsFanartMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVAllSeasonsFanartMaxWidth As Windows.Forms.TextBox
     Friend WithEvents cbTVAllSeasonsFanartPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVAllSeasonsFanartKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents chkTVAllSeasonsFanartPrefSizeOnly As Windows.Forms.CheckBox
-    Friend WithEvents txtTVSeasonPosterHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVSeasonPosterWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVSeasonPosterMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVSeasonPosterMaxWidth As Windows.Forms.TextBox
     Friend WithEvents cbTVSeasonPosterPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVSeasonPosterKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonPosterPrefSizeOnly As Windows.Forms.CheckBox
@@ -2015,37 +2087,37 @@ Partial Class frmTV_Image
     Friend WithEvents chkTVSeasonLandscapePrefSizeOnly As Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonBannerKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents cbTVSeasonBannerPrefSize As Windows.Forms.ComboBox
-    Friend WithEvents txtTVSeasonBannerWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVSeasonBannerMaxWidth As Windows.Forms.TextBox
     Friend WithEvents chkTVSeasonBannerPrefSizeOnly As Windows.Forms.CheckBox
-    Friend WithEvents txtTVSeasonBannerHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVSeasonFanartHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVSeasonFanartWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVSeasonBannerMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVSeasonFanartMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVSeasonFanartMaxWidth As Windows.Forms.TextBox
     Friend WithEvents cbTVSeasonFanartPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVSeasonFanartKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonFanartPrefSizeOnly As Windows.Forms.CheckBox
     Friend WithEvents cbTVEpisodePosterPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVEpisodePosterKeepExisting As Windows.Forms.CheckBox
-    Friend WithEvents txtTVEpisodePosterWidth As Windows.Forms.TextBox
-    Friend WithEvents txtTVEpisodePosterHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVEpisodePosterMaxWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVEpisodePosterMaxHeight As Windows.Forms.TextBox
     Friend WithEvents chkTVEpisodePosterPrefSizeOnly As Windows.Forms.CheckBox
-    Friend WithEvents txtTVEpisodeFanartHeight As Windows.Forms.TextBox
-    Friend WithEvents txtTVEpisodeFanartWidth As Windows.Forms.TextBox
+    Friend WithEvents txtTVEpisodeFanartMaxHeight As Windows.Forms.TextBox
+    Friend WithEvents txtTVEpisodeFanartMaxWidth As Windows.Forms.TextBox
     Friend WithEvents cbTVEpisodeFanartPrefSize As Windows.Forms.ComboBox
     Friend WithEvents chkTVEpisodeFanartKeepExisting As Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodeFanartPrefSizeOnly As Windows.Forms.CheckBox
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents tblScraperSettings As TableLayoutPanel
-    Friend WithEvents txtTVShowFanartWidth As TextBox
-    Friend WithEvents txtTVShowBannerWidth As TextBox
-    Friend WithEvents txtTVShowExtrafanartsHeight As TextBox
-    Friend WithEvents txtTVShowFanartHeight As TextBox
+    Friend WithEvents txtTVShowFanartMaxWidth As TextBox
+    Friend WithEvents txtTVShowBannerMaxWidth As TextBox
+    Friend WithEvents txtTVShowExtrafanartsMaxHeight As TextBox
+    Friend WithEvents txtTVShowFanartMaxHeight As TextBox
     Friend WithEvents chkTVShowActorThumbsKeepExisting As CheckBox
-    Friend WithEvents txtTVShowExtrafanartsWidth As TextBox
+    Friend WithEvents txtTVShowExtrafanartsMaxWidth As TextBox
     Friend WithEvents txtTVShowPosterWidth As TextBox
     Friend WithEvents chkTVShowClearArtKeepExisting As CheckBox
-    Friend WithEvents txtTVShowBannerHeight As TextBox
+    Friend WithEvents txtTVShowBannerMaxHeight As TextBox
     Friend WithEvents lblImageType As Label
-    Friend WithEvents txtTVShowPosterHeight As TextBox
+    Friend WithEvents txtTVShowPosterMaxHeight As TextBox
     Friend WithEvents chkTVShowClearLogoKeepExisting As CheckBox
     Friend WithEvents chkTVShowBannerKeepExisting As CheckBox
     Friend WithEvents chkTVShowPosterKeepExisting As CheckBox
@@ -2117,4 +2189,10 @@ Partial Class frmTV_Image
     Friend WithEvents lblAllSeasons As Label
     Friend WithEvents lblSeason As Label
     Friend WithEvents lblEpisode As Label
+    Friend WithEvents txtTVShowLandscapeMaxWidth As TextBox
+    Friend WithEvents txtTVShowLandscapeMaxHeight As TextBox
+    Friend WithEvents txtTVAllSeasonsLandscapeMaxWidth As TextBox
+    Friend WithEvents txtTVAllSeasonsLandscapeMaxHeight As TextBox
+    Friend WithEvents txtTVSeasonLandscapeMaxWidth As TextBox
+    Friend WithEvents txtTVSeasonLandscapeMaxHeight As TextBox
 End Class

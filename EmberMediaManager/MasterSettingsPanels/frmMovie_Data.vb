@@ -141,87 +141,85 @@ Public Class frmMovie_Data
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            chkMovieLockActors.Checked = .MovieLockActors
-            chkMovieLockCert.Checked = .MovieLockCert
-            chkMovieLockCountry.Checked = .MovieLockCountry
-            chkMovieLockCollectionID.Checked = .MovieLockCollectionID
-            chkMovieLockCollections.Checked = .MovieLockCollections
-            chkMovieLockDirector.Checked = .MovieLockDirector
-            chkMovieLockGenre.Checked = .MovieLockGenre
-            chkMovieLockLanguageA.Checked = .MovieLockLanguageA
-            chkMovieLockLanguageV.Checked = .MovieLockLanguageV
-            chkMovieLockMPAA.Checked = .MovieLockMPAA
-            chkMovieLockOriginalTitle.Checked = .MovieLockOriginalTitle
-            chkMovieLockOutline.Checked = .MovieLockOutline
-            chkMovieLockPlot.Checked = .MovieLockPlot
-            chkMovieLockRating.Checked = .MovieLockRating
-            chkMovieLockReleaseDate.Checked = .MovieLockReleaseDate
-            chkMovieLockRuntime.Checked = .MovieLockRuntime
-            chkMovieLockStudio.Checked = .MovieLockStudio
-            chkMovieLockTagline.Checked = .MovieLockTagline
-            chkMovieLockTags.Checked = .MovieLockTags
-            chkMovieLockTitle.Checked = .MovieLockTitle
-            chkMovieLockTop250.Checked = .MovieLockTop250
-            chkMovieLockTrailer.Checked = .MovieLockTrailer
-            chkMovieLockUserRating.Checked = .MovieLockUserRating
-            chkMovieLockCredits.Checked = .MovieLockCredits
-            chkMovieLockYear.Checked = .MovieLockYear
-            chkMovieScraperCast.Checked = .MovieScraperCast
-            chkMovieScraperCastWithImg.Checked = .MovieScraperCastWithImgOnly
-            chkMovieScraperCert.Checked = .MovieScraperCert
-            chkMovieScraperCertForMPAA.Checked = .MovieScraperCertForMPAA
-            chkMovieScraperCertForMPAAFallback.Checked = .MovieScraperCertForMPAAFallback
-            chkMovieScraperCertOnlyValue.Checked = .MovieScraperCertOnlyValue
-            chkMovieScraperCleanFields.Checked = .MovieScraperCleanFields
-            chkMovieScraperCleanPlotOutline.Checked = .MovieScraperCleanPlotOutline
-            chkMovieScraperCollectionID.Checked = .MovieScraperCollectionID
-            chkMovieScraperCollectionsAuto.Checked = .MovieScraperCollectionsAuto
-            chkMovieScraperCollectionsExtendedInfo.Checked = .MovieScraperCollectionsExtendedInfo
-            chkMovieScraperCollectionsYAMJCompatibleSets.Checked = .MovieScraperCollectionsYAMJCompatibleSets
-            chkMovieScraperCountry.Checked = .MovieScraperCountry
-            chkMovieScraperDirector.Checked = .MovieScraperDirector
-            chkMovieScraperGenre.Checked = .MovieScraperGenre
-            chkMovieScraperMetaDataIFOScan.Checked = .MovieScraperMetaDataIFOScan
-            chkMovieScraperMetaDataScan.Checked = .MovieScraperMetaDataScan
-            chkMovieScraperMPAA.Checked = .MovieScraperMPAA
-            chkMovieScraperOriginalTitle.Checked = .MovieScraperOriginalTitle
-            chkMovieScraperDetailView.Checked = .MovieScraperUseDetailView
-            chkMovieScraperOutline.Checked = .MovieScraperOutline
-            chkMovieScraperPlot.Checked = .MovieScraperPlot
-            chkMovieScraperPlotForOutline.Checked = .MovieScraperPlotForOutline
-            chkMovieScraperPlotForOutlineIfEmpty.Checked = .MovieScraperPlotForOutlineIfEmpty
-            chkMovieScraperRating.Checked = .MovieScraperRating
-            chkMovieScraperRelease.Checked = .MovieScraperRelease
-            chkMovieScraperRuntime.Checked = .MovieScraperRuntime
-            chkMovieScraperStudio.Checked = .MovieScraperStudio
-            chkMovieScraperStudioWithImg.Checked = .MovieScraperStudioWithImgOnly
-            chkMovieScraperTagline.Checked = .MovieScraperTagline
-            chkMovieScraperTitle.Checked = .MovieScraperTitle
-            chkMovieScraperTop250.Checked = .MovieScraperTop250
-            chkMovieScraperTrailer.Checked = .MovieScraperTrailer
-            chkMovieScraperUseMDDuration.Checked = .MovieScraperUseMDDuration
-            chkMovieScraperUserRating.Checked = .MovieScraperUserRating
-            chkMovieScraperCredits.Checked = .MovieScraperCredits
-            chkMovieScraperXBMCTrailerFormat.Checked = .MovieScraperXBMCTrailerFormat
-            chkMovieScraperYear.Checked = .MovieScraperYear
-            txtMovieScraperCastLimit.Text = .MovieScraperCastLimit.ToString
-            txtMovieScraperDurationRuntimeFormat.Text = .MovieScraperDurationRuntimeFormat
-            txtMovieScraperGenreLimit.Text = .MovieScraperGenreLimit.ToString
-            txtMovieScraperMPAANotRated.Text = .MovieScraperMPAANotRated
-            txtMovieScraperOutlineLimit.Text = .MovieScraperOutlineLimit.ToString
-            txtMovieScraperStudioLimit.Text = .MovieScraperStudioLimit.ToString
-            txtMovieScraperDurationRuntimeFormat.Enabled = .MovieScraperUseMDDuration
+        With Master.eSettings.Movie.DataSettings
+            chkMovieLockActors.Checked = .Actors.Locked
+            chkMovieLockCert.Checked = .Certifications.Locked
+            chkMovieLockCountry.Checked = .Countries.Locked
+            chkMovieLockCollectionID.Checked = .CollectionID.Locked
+            chkMovieLockCollections.Checked = .Collection.Locked
+            chkMovieLockDirector.Checked = .Directors.Locked
+            chkMovieLockGenre.Checked = .Genres.Locked
+            chkMovieLockLanguageA.Checked = .LockAudioLanguage
+            chkMovieLockLanguageV.Checked = .LockVideoLanguage
+            chkMovieLockMPAA.Checked = .MPAA.Locked
+            chkMovieLockOriginalTitle.Checked = .OriginalTitle.Locked
+            chkMovieLockOutline.Checked = .Outline.Locked
+            chkMovieLockPlot.Checked = .Plot.Locked
+            chkMovieLockRating.Checked = .Rating.Locked
+            chkMovieLockReleaseDate.Checked = .ReleaseDate.Locked
+            chkMovieLockRuntime.Checked = .Runtime.Locked
+            chkMovieLockStudio.Checked = .Studios.Locked
+            chkMovieLockTagline.Checked = .Tagline.Locked
+            chkMovieLockTags.Checked = .Tags.Locked
+            chkMovieLockTitle.Checked = .Title.Locked
+            chkMovieLockTop250.Checked = .Top250.Locked
+            chkMovieLockTrailer.Checked = .Trailer.Locked
+            chkMovieLockUserRating.Checked = .UserRating.Locked
+            chkMovieLockCredits.Checked = .Credits.Locked
+            chkMovieLockYear.Checked = .Year.Locked
+            chkMovieScraperCast.Checked = .Actors.Enabled
+            chkMovieScraperCastWithImg.Checked = .ActorsWithImageOnly
+            chkMovieScraperCert.Checked = .Certifications.Enabled
+            chkMovieScraperCertForMPAA.Checked = .CertificationsForMPAA
+            chkMovieScraperCertForMPAAFallback.Checked = .CertificationsForMPAAFallback
+            chkMovieScraperCertOnlyValue.Checked = .CertificationsOnlyValue
+            chkMovieScraperCleanFields.Checked = .ClearDisabledFields
+            chkMovieScraperCleanPlotOutline.Checked = .CleanPlotAndOutline
+            chkMovieScraperCollectionID.Checked = .CollectionID.Enabled
+            chkMovieScraperCollectionsAuto.Checked = .CollectionAutoAdd
+            chkMovieScraperCollectionsExtendedInfo.Checked = .CollectionKodiExtendedInfo
+            chkMovieScraperCollectionsYAMJCompatibleSets.Checked = .CollectionYAMJCompatible
+            chkMovieScraperCountry.Checked = .Countries.Enabled
+            chkMovieScraperDirector.Checked = .Directors.Enabled
+            chkMovieScraperGenre.Checked = .Genres.Enabled
+            chkMovieScraperMetaDataScan.Checked = .MetaDataScan
+            chkMovieScraperMPAA.Checked = .MPAA.Enabled
+            chkMovieScraperOriginalTitle.Checked = .OriginalTitle.Enabled
+            chkMovieScraperDetailView.Checked = Master.eSettings.MovieScraperUseDetailView
+            chkMovieScraperOutline.Checked = .Outline.Enabled
+            chkMovieScraperPlot.Checked = .Plot.Enabled
+            chkMovieScraperPlotForOutline.Checked = .PlotForOutline
+            chkMovieScraperPlotForOutlineIfEmpty.Checked = .PlotForOutlineAsFallback
+            chkMovieScraperRating.Checked = .Rating.Enabled
+            chkMovieScraperRelease.Checked = .ReleaseDate.Enabled
+            chkMovieScraperRuntime.Checked = .Runtime.Enabled
+            chkMovieScraperStudio.Checked = .Studios.Enabled
+            chkMovieScraperStudioWithImg.Checked = .StudiosWithImageOnly
+            chkMovieScraperTagline.Checked = .Tagline.Enabled
+            chkMovieScraperTitle.Checked = .Title.Enabled
+            chkMovieScraperTop250.Checked = .Top250.Enabled
+            chkMovieScraperTrailer.Checked = .Trailer.Enabled
+            chkDurationForRuntime.Checked = .DurationForRuntime
+            chkMovieScraperUserRating.Checked = .UserRating.Enabled
+            chkMovieScraperCredits.Checked = .Credits.Enabled
+            chkMovieScraperTrailerKodiFormat.Checked = .TrailerKodiFormat
+            chkMovieScraperYear.Checked = .Year.Enabled
+            txtMovieScraperCastLimit.Text = .Actors.Limit.ToString
+            txtDurationFormat.Text = .DurationFormat
+            txtMovieScraperGenreLimit.Text = .Genres.Limit.ToString
+            txtMovieScraperMPAANotRated.Text = .MPAANotRatedValue
+            txtMovieScraperOutlineLimit.Text = .Outline.Limit.ToString
+            txtMovieScraperStudioLimit.Text = .Studios.Limit.ToString
 
             Try
                 cbMovieScraperCertLang.Items.Clear()
                 cbMovieScraperCertLang.Items.Add(Master.eLang.All)
                 cbMovieScraperCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
                 If cbMovieScraperCertLang.Items.Count > 0 Then
-                    If .MovieScraperCertLang = Master.eLang.All Then
+                    If .Certifications.Filter = Master.eLang.All Then
                         cbMovieScraperCertLang.SelectedIndex = 0
-                    ElseIf Not String.IsNullOrEmpty(.MovieScraperCertLang) Then
-                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .MovieScraperCertLang)
+                    ElseIf .Certifications.FilterSpecified Then
+                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .Certifications.Filter)
                         If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
                             cbMovieScraperCertLang.Text = tLanguage.name
                         Else
@@ -235,107 +233,106 @@ Public Class frmMovie_Data
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            _lstMovieMeta.AddRange(.MovieMetadataPerFileType)
+            _lstMovieMeta.AddRange(Master.eSettings.MovieMetadataPerFileType)
             LoadMovieMetadata()
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieLockActors = chkMovieLockActors.Checked
-            .MovieLockCert = chkMovieLockCert.Checked
-            .MovieLockCollectionID = chkMovieLockCollectionID.Checked
-            .MovieLockCollections = chkMovieLockCollections.Checked
-            .MovieLockCountry = chkMovieLockCountry.Checked
-            .MovieLockDirector = chkMovieLockDirector.Checked
-            .MovieLockGenre = chkMovieLockGenre.Checked
-            .MovieLockLanguageA = chkMovieLockLanguageA.Checked
-            .MovieLockLanguageV = chkMovieLockLanguageV.Checked
-            .MovieLockMPAA = chkMovieLockMPAA.Checked
-            .MovieLockOutline = chkMovieLockOutline.Checked
-            .MovieLockPlot = chkMovieLockPlot.Checked
-            .MovieLockRating = chkMovieLockRating.Checked
-            .MovieLockReleaseDate = chkMovieLockReleaseDate.Checked
-            .MovieLockRuntime = chkMovieLockRuntime.Checked
-            .MovieLockStudio = chkMovieLockStudio.Checked
-            .MovieLockTags = chkMovieLockTags.Checked
-            .MovieLockTagline = chkMovieLockTagline.Checked
-            .MovieLockOriginalTitle = chkMovieLockOriginalTitle.Checked
-            .MovieLockTitle = chkMovieLockTitle.Checked
-            .MovieLockTop250 = chkMovieLockTop250.Checked
-            .MovieLockTrailer = chkMovieLockTrailer.Checked
-            .MovieLockUserRating = chkMovieLockUserRating.Checked
-            .MovieLockCredits = chkMovieLockCredits.Checked
-            .MovieLockYear = chkMovieLockYear.Checked
-            .MovieMetadataPerFileType.Clear()
-            .MovieMetadataPerFileType.AddRange(_lstMovieMeta)
-            .MovieScraperCast = chkMovieScraperCast.Checked
+        With Master.eSettings.Movie.DataSettings
+            .Actors.Locked = chkMovieLockActors.Checked
+            .Certifications.Locked = chkMovieLockCert.Checked
+            .Collection.Locked = chkMovieLockCollections.Checked
+            .CollectionID.Locked = chkMovieLockCollectionID.Checked
+            .Countries.Locked = chkMovieLockCountry.Checked
+            .Directors.Locked = chkMovieLockDirector.Checked
+            .Genres.Locked = chkMovieLockGenre.Checked
+            .LockAudioLanguage = chkMovieLockLanguageA.Checked
+            .LockVideoLanguage = chkMovieLockLanguageV.Checked
+            .MPAA.Locked = chkMovieLockMPAA.Checked
+            .Outline.Locked = chkMovieLockOutline.Checked
+            .Plot.Locked = chkMovieLockPlot.Checked
+            .Rating.Locked = chkMovieLockRating.Checked
+            .ReleaseDate.Locked = chkMovieLockReleaseDate.Checked
+            .Runtime.Locked = chkMovieLockRuntime.Checked
+            .Studios.Locked = chkMovieLockStudio.Checked
+            .Tags.Locked = chkMovieLockTags.Checked
+            .Tagline.Locked = chkMovieLockTagline.Checked
+            .OriginalTitle.Locked = chkMovieLockOriginalTitle.Checked
+            .Title.Locked = chkMovieLockTitle.Checked
+            .Top250.Locked = chkMovieLockTop250.Checked
+            .Trailer.Locked = chkMovieLockTrailer.Checked
+            .UserRating.Locked = chkMovieLockUserRating.Checked
+            .Credits.Locked = chkMovieLockCredits.Checked
+            .Year.Locked = chkMovieLockYear.Checked
+            Master.eSettings.MovieMetadataPerFileType.Clear()
+            Master.eSettings.MovieMetadataPerFileType.AddRange(_lstMovieMeta)
+            .Actors.Enabled = chkMovieScraperCast.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperCastLimit.Text) Then
-                .MovieScraperCastLimit = Convert.ToInt32(txtMovieScraperCastLimit.Text)
+                .Actors.Limit = Convert.ToInt32(txtMovieScraperCastLimit.Text)
             Else
-                .MovieScraperCastLimit = 0
+                .Actors.Limit = 0
             End If
-            .MovieScraperCastWithImgOnly = chkMovieScraperCastWithImg.Checked
-            .MovieScraperCert = chkMovieScraperCert.Checked
-            .MovieScraperCertForMPAA = chkMovieScraperCertForMPAA.Checked
-            .MovieScraperCertForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
-            .MovieScraperCertOnlyValue = chkMovieScraperCertOnlyValue.Checked
+            .ActorsWithImageOnly = chkMovieScraperCastWithImg.Checked
+            .Certifications.Enabled = chkMovieScraperCert.Checked
+            .CertificationsForMPAA = chkMovieScraperCertForMPAA.Checked
+            .CertificationsForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
+            .CertificationsOnlyValue = chkMovieScraperCertOnlyValue.Checked
             If Not String.IsNullOrEmpty(cbMovieScraperCertLang.Text) Then
                 If cbMovieScraperCertLang.SelectedIndex = 0 Then
-                    .MovieScraperCertLang = Master.eLang.All
+                    .Certifications.Filter = Master.eLang.All
                 Else
-                    .MovieScraperCertLang = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
+                    .Certifications.Filter = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbMovieScraperCertLang.Text).abbreviation
                 End If
             End If
-            .MovieScraperCleanFields = chkMovieScraperCleanFields.Checked
-            .MovieScraperCleanPlotOutline = chkMovieScraperCleanPlotOutline.Checked
-            .MovieScraperCollectionID = chkMovieScraperCollectionID.Checked
-            .MovieScraperCollectionsAuto = chkMovieScraperCollectionsAuto.Checked
-            .MovieScraperCollectionsExtendedInfo = chkMovieScraperCollectionsExtendedInfo.Checked
-            .MovieScraperCollectionsYAMJCompatibleSets = chkMovieScraperCollectionsYAMJCompatibleSets.Checked
-            .MovieScraperCountry = chkMovieScraperCountry.Checked
-            .MovieScraperDirector = chkMovieScraperDirector.Checked
-            .MovieScraperDurationRuntimeFormat = txtMovieScraperDurationRuntimeFormat.Text
-            .MovieScraperGenre = chkMovieScraperGenre.Checked
+            .ClearDisabledFields = chkMovieScraperCleanFields.Checked
+            .CleanPlotAndOutline = chkMovieScraperCleanPlotOutline.Checked
+            .CollectionID.Enabled = chkMovieScraperCollectionID.Checked
+            .CollectionAutoAdd = chkMovieScraperCollectionsAuto.Checked
+            .CollectionKodiExtendedInfo = chkMovieScraperCollectionsExtendedInfo.Checked
+            .CollectionYAMJCompatible = chkMovieScraperCollectionsYAMJCompatibleSets.Checked
+            .Countries.Enabled = chkMovieScraperCountry.Checked
+            .Directors.Enabled = chkMovieScraperDirector.Checked
+            .DurationFormat = txtDurationFormat.Text
+            .Genres.Enabled = chkMovieScraperGenre.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperGenreLimit.Text) Then
-                .MovieScraperGenreLimit = Convert.ToInt32(txtMovieScraperGenreLimit.Text)
+                .Genres.Limit = Convert.ToInt32(txtMovieScraperGenreLimit.Text)
             Else
-                .MovieScraperGenreLimit = 0
+                .Genres.Limit = 0
             End If
-            .MovieScraperMetaDataIFOScan = chkMovieScraperMetaDataIFOScan.Checked
-            .MovieScraperMetaDataScan = chkMovieScraperMetaDataScan.Checked
-            .MovieScraperMPAA = chkMovieScraperMPAA.Checked
-            .MovieScraperMPAANotRated = txtMovieScraperMPAANotRated.Text
-            .MovieScraperOriginalTitle = chkMovieScraperOriginalTitle.Checked
-            .MovieScraperOutline = chkMovieScraperOutline.Checked
+            .MetaDataScan = chkMovieScraperMetaDataScan.Checked
+            .MPAA.Enabled = chkMovieScraperMPAA.Checked
+            .MPAANotRatedValue = txtMovieScraperMPAANotRated.Text
+            .OriginalTitle.Enabled = chkMovieScraperOriginalTitle.Checked
+            .Outline.Enabled = chkMovieScraperOutline.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperOutlineLimit.Text) Then
-                .MovieScraperOutlineLimit = Convert.ToInt32(txtMovieScraperOutlineLimit.Text)
+                .Outline.Limit = Convert.ToInt32(txtMovieScraperOutlineLimit.Text)
             Else
-                .MovieScraperOutlineLimit = 0
+                .Outline.Limit = 0
             End If
-            .MovieScraperPlot = chkMovieScraperPlot.Checked
-            .MovieScraperPlotForOutline = chkMovieScraperPlotForOutline.Checked
-            .MovieScraperPlotForOutlineIfEmpty = chkMovieScraperPlotForOutlineIfEmpty.Checked
-            .MovieScraperRating = chkMovieScraperRating.Checked
-            .MovieScraperRelease = chkMovieScraperRelease.Checked
-            .MovieScraperRuntime = chkMovieScraperRuntime.Checked
-            .MovieScraperStudio = chkMovieScraperStudio.Checked
-            .MovieScraperStudioWithImgOnly = chkMovieScraperStudioWithImg.Checked
+            .Plot.Enabled = chkMovieScraperPlot.Checked
+            .PlotForOutline = chkMovieScraperPlotForOutline.Checked
+            .PlotForOutlineAsFallback = chkMovieScraperPlotForOutlineIfEmpty.Checked
+            .Rating.Enabled = chkMovieScraperRating.Checked
+            .ReleaseDate.Enabled = chkMovieScraperRelease.Checked
+            .Runtime.Enabled = chkMovieScraperRuntime.Checked
+            .Studios.Enabled = chkMovieScraperStudio.Checked
+            .StudiosWithImageOnly = chkMovieScraperStudioWithImg.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperStudioLimit.Text) Then
-                .MovieScraperStudioLimit = Convert.ToInt32(txtMovieScraperStudioLimit.Text)
+                .Studios.Limit = Convert.ToInt32(txtMovieScraperStudioLimit.Text)
             Else
-                .MovieScraperStudioLimit = 0
+                .Studios.Limit = 0
             End If
-            .MovieScraperTagline = chkMovieScraperTagline.Checked
-            .MovieScraperTitle = chkMovieScraperTitle.Checked
-            .MovieScraperTop250 = chkMovieScraperTop250.Checked
-            .MovieScraperTrailer = chkMovieScraperTrailer.Checked
-            .MovieScraperUseDetailView = chkMovieScraperDetailView.Checked
-            .MovieScraperUseMDDuration = chkMovieScraperUseMDDuration.Checked
-            .MovieScraperUserRating = chkMovieScraperUserRating.Checked
-            .MovieScraperCredits = chkMovieScraperCredits.Checked
-            .MovieScraperXBMCTrailerFormat = chkMovieScraperXBMCTrailerFormat.Checked
-            .MovieScraperYear = chkMovieScraperYear.Checked
+            .Tagline.Enabled = chkMovieScraperTagline.Checked
+            .Title.Enabled = chkMovieScraperTitle.Checked
+            .Top250.Enabled = chkMovieScraperTop250.Checked
+            .Trailer.Enabled = chkMovieScraperTrailer.Checked
+            Master.eSettings.MovieScraperUseDetailView = chkMovieScraperDetailView.Checked
+            .DurationForRuntime = chkDurationForRuntime.Checked
+            .UserRating.Enabled = chkMovieScraperUserRating.Checked
+            .Credits.Enabled = chkMovieScraperCredits.Checked
+            .TrailerKodiFormat = chkMovieScraperTrailerKodiFormat.Checked
+            .Year.Enabled = chkMovieScraperYear.Checked
 
         End With
     End Sub
@@ -479,8 +476,8 @@ Public Class frmMovie_Data
         End If
     End Sub
 
-    Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperUseMDDuration.CheckedChanged
-        txtMovieScraperDurationRuntimeFormat.Enabled = chkMovieScraperUseMDDuration.Checked
+    Private Sub chkMovieScraperUseMDDuration_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkDurationForRuntime.CheckedChanged
+        txtDurationFormat.Enabled = chkDurationForRuntime.Checked
         EnableApplyButton()
     End Sub
 
@@ -592,13 +589,12 @@ Public Class frmMovie_Data
         chkMovieScraperCleanPlotOutline.Text = Master.eLang.GetString(985, "Clean Plot/Outline")
         chkMovieScraperCollectionsAuto.Text = Master.eLang.GetString(1266, "Add Movie automatically to Collections")
         chkMovieScraperDetailView.Text = Master.eLang.GetString(1249, "Show scraped results in detailed view")
-        chkMovieScraperMetaDataIFOScan.Text = Master.eLang.GetString(628, "Enable IFO Parsing")
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
         chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
         chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
-        chkMovieScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
-        chkMovieScraperXBMCTrailerFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
+        chkDurationForRuntime.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
+        chkMovieScraperTrailerKodiFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
         chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")
         gbMovieScraperDefFIExtOpts.Text = Master.eLang.GetString(625, "Defaults by File Type")
         lblMovieScraperDurationRuntimeFormat.Text = String.Format(Master.eLang.GetString(732, "<h>=Hours{0}<m>=Minutes{0}<s>=Seconds"), Environment.NewLine)

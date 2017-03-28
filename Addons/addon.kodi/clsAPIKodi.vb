@@ -328,7 +328,7 @@ Namespace Kodi
                 Case Enums.ContentType.Movie
                     Dim KodiMovie As Video.Details.Movie = Await SearchMovie(tDBElement).ConfigureAwait(False)
                     If KodiMovie IsNot Nothing Then Return KodiMovie.movieid
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     Dim KodiMovieset As Video.Details.MovieSet = Await SearchMovieSet(tDBElement).ConfigureAwait(False)
                     If KodiMovieset IsNot Nothing Then Return KodiMovieset.setid
                 Case Enums.ContentType.TVEpisode
@@ -652,7 +652,7 @@ Namespace Kodi
                         Dim filterRule As New List.Filter.Rule.Textures
                         filterRule.field = List.Filter.Fields.Textures.url
                         filterRule.Operator = List.Filter.Operators.Is
-                        filterRule.value = If(tDBElement.ContentType = Enums.ContentType.MovieSet, GetRemotePath_MovieSet(tURL), GetRemotePath(tURL))
+                        filterRule.value = If(tDBElement.ContentType = Enums.ContentType.Movieset, GetRemotePath_MovieSet(tURL), GetRemotePath(tURL))
                         filter.or.Add(filterRule)
                     Next
 

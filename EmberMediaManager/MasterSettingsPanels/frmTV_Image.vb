@@ -140,106 +140,124 @@ Public Class frmTV_Image
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            cbTVAllSeasonsBannerPrefSize.SelectedValue = .TVAllSeasonsBannerPrefSize
-            cbTVAllSeasonsFanartPrefSize.SelectedValue = .TVAllSeasonsFanartPrefSize
-            cbTVAllSeasonsLandscapePrefSize.SelectedValue = .TVAllSeasonsLandscapePrefSize
-            cbTVAllSeasonsPosterPrefSize.SelectedValue = .TVAllSeasonsPosterPrefSize
-            cbTVEpisodeFanartPrefSize.SelectedValue = .TVEpisodeFanartPrefSize
-            cbTVEpisodePosterPrefSize.SelectedValue = .TVEpisodePosterPrefSize
-            cbTVSeasonBannerPrefSize.SelectedValue = .TVSeasonBannerPrefSize
-            cbTVSeasonFanartPrefSize.SelectedValue = .TVSeasonFanartPrefSize
-            cbTVSeasonLandscapePrefSize.SelectedValue = .TVSeasonLandscapePrefSize
-            cbTVSeasonPosterPrefSize.SelectedValue = .TVSeasonPosterPrefSize
-            cbTVShowBannerPrefSize.SelectedValue = .TVShowBannerPrefSize
-            cbTVShowCharacterArtPrefSize.SelectedValue = .TVShowCharacterArtPrefSize
-            cbTVShowClearArtPrefSize.SelectedValue = .TVShowClearArtPrefSize
-            cbTVShowClearLogoPrefSize.SelectedValue = .TVShowClearLogoPrefSize
-            cbTVShowExtrafanartsPrefSize.SelectedValue = .TVShowExtrafanartsPrefSize
-            cbTVShowFanartPrefSize.SelectedValue = .TVShowFanartPrefSize
-            cbTVShowLandscapePrefSize.SelectedValue = .TVShowLandscapePrefSize
-            cbTVShowPosterPrefSize.SelectedValue = .TVShowPosterPrefSize
-            chkTVAllSeasonsBannerKeepExisting.Checked = .TVAllSeasonsBannerKeepExisting
-            chkTVAllSeasonsBannerPrefSizeOnly.Checked = .TVAllSeasonsBannerPrefSizeOnly
-            txtTVAllSeasonsBannerHeight.Text = .TVAllSeasonsBannerHeight.ToString
-            txtTVAllSeasonsBannerWidth.Text = .TVAllSeasonsBannerWidth.ToString
-            chkTVAllSeasonsFanartKeepExisting.Checked = .TVAllSeasonsFanartKeepExisting
-            chkTVAllSeasonsFanartPrefSizeOnly.Checked = .TVAllSeasonsFanartPrefSizeOnly
-            txtTVAllSeasonsFanartHeight.Text = .TVAllSeasonsFanartHeight.ToString
-            txtTVAllSeasonsFanartWidth.Text = .TVAllSeasonsFanartWidth.ToString
-            chkTVAllSeasonsLandscapeKeepExisting.Checked = .TVAllSeasonsLandscapeKeepExisting
-            chkTVAllSeasonsLandscapePrefSizeOnly.Checked = .TVAllSeasonsLandscapePrefSizeOnly
-            chkTVAllSeasonsPosterKeepExisting.Checked = .TVAllSeasonsPosterKeepExisting
-            chkTVAllSeasonsPosterPrefSizeOnly.Checked = .TVAllSeasonsPosterPrefSizeOnly
-            txtTVAllSeasonsPosterHeight.Text = .TVAllSeasonsPosterHeight.ToString
-            txtTVAllSeasonsPosterWidth.Text = .TVAllSeasonsPosterWidth.ToString
-            chkTVEpisodeFanartKeepExisting.Checked = .TVEpisodeFanartKeepExisting
-            chkTVEpisodeFanartPrefSizeOnly.Checked = .TVEpisodeFanartPrefSizeOnly
-            txtTVEpisodeFanartHeight.Text = .TVEpisodeFanartHeight.ToString
-            txtTVEpisodeFanartWidth.Text = .TVEpisodeFanartWidth.ToString
-            chkTVEpisodePosterKeepExisting.Checked = .TVEpisodePosterKeepExisting
-            chkTVEpisodePosterPrefSizeOnly.Checked = .TVEpisodePosterPrefSizeOnly
-            txtTVEpisodePosterHeight.Text = .TVEpisodePosterHeight.ToString
-            txtTVEpisodePosterWidth.Text = .TVEpisodePosterWidth.ToString
-            chkTVImagesCacheEnabled.Checked = .TVImagesCacheEnabled
-            chkTVImagesDisplayImageSelect.Checked = .TVImagesDisplayImageSelect
-            chkTVImagesForceLanguage.Checked = .TVImagesForceLanguage
-            If .TVImagesMediaLanguageOnly Then
+        With Master.eSettings.TV.ImageSettings.TVAllSeasons
+            cbTVAllSeasonsBannerPrefSize.SelectedValue = .Banner.PrefSize
+            cbTVAllSeasonsFanartPrefSize.SelectedValue = .Fanart.PrefSize
+            cbTVAllSeasonsLandscapePrefSize.SelectedValue = .Landscape.PrefSize
+            cbTVAllSeasonsPosterPrefSize.SelectedValue = .Poster.PrefSize
+            chkTVAllSeasonsBannerKeepExisting.Checked = .Banner.KeepExisting
+            chkTVAllSeasonsBannerPrefSizeOnly.Checked = .Banner.PrefSizeOnly
+            chkTVAllSeasonsFanartKeepExisting.Checked = .Fanart.KeepExisting
+            chkTVAllSeasonsFanartPrefSizeOnly.Checked = .Fanart.PrefSizeOnly
+            chkTVAllSeasonsLandscapeKeepExisting.Checked = .Landscape.KeepExisting
+            chkTVAllSeasonsLandscapePrefSizeOnly.Checked = .Landscape.PrefSizeOnly
+            chkTVAllSeasonsPosterKeepExisting.Checked = .Poster.KeepExisting
+            chkTVAllSeasonsPosterPrefSizeOnly.Checked = .Poster.PrefSizeOnly
+            txtTVAllSeasonsBannerMaxHeight.Text = .Banner.MaxHeight.ToString
+            txtTVAllSeasonsBannerMaxWidth.Text = .Banner.MaxWidth.ToString
+            txtTVAllSeasonsFanartMaxHeight.Text = .Fanart.MaxHeight.ToString
+            txtTVAllSeasonsFanartMaxWidth.Text = .Fanart.MaxWidth.ToString
+            txtTVAllSeasonsLandscapeMaxHeight.Text = .Landscape.MaxHeight.ToString
+            txtTVAllSeasonsLandscapeMaxWidth.Text = .Landscape.MaxWidth.ToString
+            txtTVAllSeasonsPosterMaxHeight.Text = .Poster.MaxHeight.ToString
+            txtTVAllSeasonsPosterMaxWidth.Text = .Poster.MaxWidth.ToString
+        End With
+
+        With Master.eSettings.TV.ImageSettings.TVEpisode
+            cbTVEpisodeFanartPrefSize.SelectedValue = .Fanart.PrefSize
+            cbTVEpisodePosterPrefSize.SelectedValue = .Poster.PrefSize
+            chkTVEpisodeFanartKeepExisting.Checked = .Fanart.KeepExisting
+            chkTVEpisodeFanartPrefSizeOnly.Checked = .Fanart.PrefSizeOnly
+            chkTVEpisodePosterKeepExisting.Checked = .Poster.KeepExisting
+            chkTVEpisodePosterPrefSizeOnly.Checked = .Poster.PrefSizeOnly
+            txtTVEpisodeFanartMaxHeight.Text = .Fanart.MaxHeight.ToString
+            txtTVEpisodeFanartMaxWidth.Text = .Fanart.MaxWidth.ToString
+            txtTVEpisodePosterMaxHeight.Text = .Poster.MaxHeight.ToString
+            txtTVEpisodePosterMaxWidth.Text = .Poster.MaxWidth.ToString
+        End With
+
+        With Master.eSettings.TV.ImageSettings.TVSeason
+            cbTVSeasonBannerPrefSize.SelectedValue = .Banner.PrefSize
+            cbTVSeasonFanartPrefSize.SelectedValue = .Fanart.PrefSize
+            cbTVSeasonLandscapePrefSize.SelectedValue = .Landscape.PrefSize
+            cbTVSeasonPosterPrefSize.SelectedValue = .Poster.PrefSize
+            chkTVSeasonBannerKeepExisting.Checked = .Banner.KeepExisting
+            chkTVSeasonBannerPrefSizeOnly.Checked = .Banner.PrefSizeOnly
+            chkTVSeasonFanartKeepExisting.Checked = .Fanart.KeepExisting
+            chkTVSeasonFanartPrefSizeOnly.Checked = .Fanart.PrefSizeOnly
+            chkTVSeasonLandscapeKeepExisting.Checked = .Landscape.KeepExisting
+            chkTVSeasonLandscapePrefSizeOnly.Checked = .Landscape.PrefSizeOnly
+            chkTVSeasonPosterKeepExisting.Checked = .Poster.KeepExisting
+            chkTVSeasonPosterPrefSizeOnly.Checked = .Poster.PrefSizeOnly
+            txtTVSeasonBannerMaxHeight.Text = .Banner.MaxHeight.ToString
+            txtTVSeasonBannerMaxWidth.Text = .Banner.MaxWidth.ToString
+            txtTVSeasonFanartMaxHeight.Text = .Fanart.MaxHeight.ToString
+            txtTVSeasonFanartMaxWidth.Text = .Fanart.MaxWidth.ToString
+            txtTVSeasonLandscapeMaxHeight.Text = .Landscape.MaxHeight.ToString
+            txtTVSeasonLandscapeMaxWidth.Text = .Landscape.MaxWidth.ToString
+            txtTVSeasonPosterMaxHeight.Text = .Poster.MaxHeight.ToString
+            txtTVSeasonPosterMaxWidth.Text = .Poster.MaxWidth.ToString
+        End With
+
+        With Master.eSettings.TV.ImageSettings.TVShow
+            'chkTVShowExtrafanartsPreselect.Checked = ExtrafanartsPreselect
+            cbTVShowBannerPrefSize.SelectedValue = .Banner.PrefSize
+            cbTVShowCharacterArtPrefSize.SelectedValue = .CharacterArt.PrefSize
+            cbTVShowClearArtPrefSize.SelectedValue = .ClearArt.PrefSize
+            cbTVShowClearLogoPrefSize.SelectedValue = .ClearLogo.PrefSize
+            cbTVShowExtrafanartsPrefSize.SelectedValue = .Extrafanarts.PrefSize
+            cbTVShowFanartPrefSize.SelectedValue = .Fanart.PrefSize
+            cbTVShowLandscapePrefSize.SelectedValue = .Landscape.PrefSize
+            cbTVShowPosterPrefSize.SelectedValue = .Poster.PrefSize
+            chkTVShowBannerKeepExisting.Checked = .Banner.KeepExisting
+            chkTVShowBannerPrefSizeOnly.Checked = .Banner.PrefSizeOnly
+            chkTVShowCharacterArtKeepExisting.Checked = .CharacterArt.KeepExisting
+            chkTVShowCharacterArtPrefSizeOnly.Checked = .CharacterArt.PrefSizeOnly
+            chkTVShowClearArtKeepExisting.Checked = .ClearArt.KeepExisting
+            chkTVShowClearArtPrefSizeOnly.Checked = .ClearArt.PrefSizeOnly
+            chkTVShowClearLogoKeepExisting.Checked = .ClearLogo.KeepExisting
+            chkTVShowClearLogoPrefSizeOnly.Checked = .ClearLogo.PrefSizeOnly
+            chkTVShowExtrafanartsKeepExisting.Checked = .Extrafanarts.KeepExisting
+            chkTVShowExtrafanartsPrefSizeOnly.Checked = .Extrafanarts.PrefSizeOnly
+            chkTVShowFanartKeepExisting.Checked = .Fanart.KeepExisting
+            chkTVShowFanartPrefSizeOnly.Checked = .Fanart.PrefSizeOnly
+            chkTVShowLandscapeKeepExisting.Checked = .Landscape.KeepExisting
+            chkTVShowLandscapePrefSizeOnly.Checked = .Landscape.PrefSizeOnly
+            chkTVShowPosterKeepExisting.Checked = .Poster.KeepExisting
+            chkTVShowPosterPrefSizeOnly.Checked = .Poster.PrefSizeOnly
+            txtTVShowBannerMaxHeight.Text = .Banner.MaxHeight.ToString
+            txtTVShowBannerMaxWidth.Text = .Banner.MaxWidth.ToString
+            txtTVShowExtrafanartsLimit.Text = .Extrafanarts.Limit.ToString
+            txtTVShowExtrafanartsMaxHeight.Text = .Extrafanarts.MaxHeight.ToString
+            txtTVShowExtrafanartsMaxWidth.Text = .Extrafanarts.MaxWidth.ToString
+            txtTVShowFanartMaxHeight.Text = .Fanart.MaxHeight.ToString
+            txtTVShowFanartMaxWidth.Text = .Fanart.MaxWidth.ToString
+            txtTVShowLandscapeMaxHeight.Text = .Landscape.MaxHeight.ToString
+            txtTVShowLandscapeMaxWidth.Text = .Landscape.MaxWidth.ToString
+            txtTVShowPosterMaxHeight.Text = .Poster.MaxHeight.ToString
+            txtTVShowPosterWidth.Text = .Poster.MaxWidth.ToString
+        End With
+
+        With Master.eSettings.TV.ImageSettings
+            chkTVImagesCacheEnabled.Checked = .TVShow.ImagesCacheEnabled
+            chkTVImagesDisplayImageSelect.Checked = .ImagesDisplayImageSelect
+            chkTVImagesForceLanguage.Checked = .Language.ForceLanguage
+            If .Language.GetMediaLanguageOnly Then
                 chkTVImagesMediaLanguageOnly.Checked = True
-                chkTVImagesGetBlankImages.Checked = .TVImagesGetBlankImages
-                chkTVImagesGetEnglishImages.Checked = .TVImagesGetEnglishImages
+                chkTVImagesGetBlankImages.Checked = .Language.GetBlankImages
+                chkTVImagesGetEnglishImages.Checked = .Language.GetEnglishImages
             End If
-            chkTVSeasonBannerKeepExisting.Checked = .TVSeasonBannerKeepExisting
-            chkTVSeasonBannerPrefSizeOnly.Checked = .TVSeasonBannerPrefSizeOnly
-            txtTVSeasonBannerHeight.Text = .TVSeasonBannerHeight.ToString
-            txtTVSeasonBannerWidth.Text = .TVSeasonBannerWidth.ToString
-            chkTVSeasonFanartKeepExisting.Checked = .TVSeasonFanartKeepExisting
-            chkTVSeasonFanartPrefSizeOnly.Checked = .TVSeasonFanartPrefSizeOnly
-            txtTVSeasonFanartHeight.Text = .TVSeasonFanartHeight.ToString
-            txtTVSeasonFanartWidth.Text = .TVSeasonFanartWidth.ToString
-            chkTVSeasonLandscapeKeepExisting.Checked = .TVSeasonLandscapeKeepExisting
-            chkTVSeasonLandscapePrefSizeOnly.Checked = .TVSeasonLandscapePrefSizeOnly
-            chkTVSeasonPosterKeepExisting.Checked = .TVSeasonPosterKeepExisting
-            chkTVSeasonPosterPrefSizeOnly.Checked = .TVSeasonPosterPrefSizeOnly
-            txtTVSeasonPosterHeight.Text = .TVSeasonPosterHeight.ToString
-            txtTVSeasonPosterWidth.Text = .TVSeasonPosterWidth.ToString
-            chkTVShowBannerKeepExisting.Checked = .TVShowBannerKeepExisting
-            chkTVShowBannerPrefSizeOnly.Checked = .TVShowBannerPrefSizeOnly
-            txtTVShowBannerHeight.Text = .TVShowBannerHeight.ToString
-            txtTVShowBannerWidth.Text = .TVShowBannerWidth.ToString
-            chkTVShowCharacterArtKeepExisting.Checked = .TVShowCharacterArtKeepExisting
-            chkTVShowCharacterArtPrefSizeOnly.Checked = .TVShowCharacterArtPrefSizeOnly
-            chkTVShowClearArtKeepExisting.Checked = .TVShowClearArtKeepExisting
-            chkTVShowClearArtPrefSizeOnly.Checked = .TVShowClearArtPrefSizeOnly
-            chkTVShowClearLogoKeepExisting.Checked = .TVShowClearLogoKeepExisting
-            chkTVShowClearLogoPrefSizeOnly.Checked = .TVShowClearLogoPrefSizeOnly
-            chkTVShowExtrafanartsKeepExisting.Checked = .TVShowExtrafanartsKeepExisting
-            chkTVShowExtrafanartsPrefSizeOnly.Checked = .TVShowExtrafanartsPrefSizeOnly
-            'chkTVShowExtrafanartsPreselect.Checked = .TVShowExtrafanartsPreselect
-            txtTVShowExtrafanartsHeight.Text = .TVShowExtrafanartsHeight.ToString
-            txtTVShowExtrafanartsWidth.Text = .TVShowExtrafanartsWidth.ToString
-            chkTVShowFanartKeepExisting.Checked = .TVShowFanartKeepExisting
-            chkTVShowFanartPrefSizeOnly.Checked = .TVShowFanartPrefSizeOnly
-            txtTVShowFanartHeight.Text = .TVShowFanartHeight.ToString
-            txtTVShowFanartWidth.Text = .TVShowFanartWidth.ToString
-            chkTVShowLandscapeKeepExisting.Checked = .TVShowLandscapeKeepExisting
-            chkTVShowLandscapePrefSizeOnly.Checked = .TVShowLandscapePrefSizeOnly
-            chkTVShowPosterKeepExisting.Checked = .TVShowPosterKeepExisting
-            chkTVShowPosterPrefSizeOnly.Checked = .TVShowPosterPrefSizeOnly
-            txtTVShowPosterHeight.Text = .TVShowPosterHeight.ToString
-            txtTVShowPosterWidth.Text = .TVShowPosterWidth.ToString
-            txtTVShowExtrafanartsLimit.Text = .TVShowExtrafanartsLimit.ToString
 
             Try
                 cbTVImagesForcedLanguage.Items.Clear()
                 cbTVImagesForcedLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Name).Distinct.ToArray)
                 If cbTVImagesForcedLanguage.Items.Count > 0 Then
-                    If Not String.IsNullOrEmpty(.TVImagesForcedLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .TVImagesForcedLanguage)
+                    If Not String.IsNullOrEmpty(.Language.ForcedLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbrevation_MainLanguage = .Language.ForcedLanguage)
                         If tLanguage IsNot Nothing Then
                             cbTVImagesForcedLanguage.Text = tLanguage.Name
                         Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVImagesForcedLanguage))
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.Language.ForcedLanguage))
                             If tLanguage IsNot Nothing Then
                                 cbTVImagesForcedLanguage.Text = tLanguage.Name
                             Else
@@ -257,98 +275,115 @@ Public Class frmTV_Image
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .TVAllSeasonsBannerHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsBannerHeight.Text), Convert.ToInt32(txtTVAllSeasonsBannerHeight.Text), 0)
-            .TVAllSeasonsBannerKeepExisting = chkTVAllSeasonsBannerKeepExisting.Checked
-            .TVAllSeasonsBannerPrefSize = CType(cbTVAllSeasonsBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVBannerSize)).Value
-            .TVAllSeasonsBannerPrefSizeOnly = chkTVAllSeasonsBannerPrefSizeOnly.Checked
-            .TVAllSeasonsBannerWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsBannerWidth.Text), Convert.ToInt32(txtTVAllSeasonsBannerWidth.Text), 0)
-            .TVAllSeasonsFanartHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsFanartHeight.Text), Convert.ToInt32(txtTVAllSeasonsFanartHeight.Text), 0)
-            .TVAllSeasonsFanartKeepExisting = chkTVAllSeasonsFanartKeepExisting.Checked
-            .TVAllSeasonsFanartPrefSize = CType(cbTVAllSeasonsFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
-            .TVAllSeasonsFanartPrefSizeOnly = chkTVAllSeasonsFanartPrefSizeOnly.Checked
-            .TVAllSeasonsFanartWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsFanartWidth.Text), Convert.ToInt32(txtTVAllSeasonsFanartWidth.Text), 0)
-            .TVAllSeasonsLandscapeKeepExisting = chkTVAllSeasonsLandscapeKeepExisting.Checked
-            .TVAllSeasonsLandscapePrefSize = CType(cbTVAllSeasonsLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVLandscapeSize)).Value
-            .TVAllSeasonsLandscapePrefSizeOnly = chkTVAllSeasonsLandscapePrefSizeOnly.Checked
-            .TVAllSeasonsPosterHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsPosterHeight.Text), Convert.ToInt32(txtTVAllSeasonsPosterHeight.Text), 0)
-            .TVAllSeasonsPosterKeepExisting = chkTVAllSeasonsPosterKeepExisting.Checked
-            .TVAllSeasonsPosterPrefSize = CType(cbTVAllSeasonsPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
-            .TVAllSeasonsPosterPrefSizeOnly = chkTVAllSeasonsPosterPrefSizeOnly.Checked
-            .TVAllSeasonsPosterWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsPosterWidth.Text), Convert.ToInt32(txtTVAllSeasonsPosterWidth.Text), 0)
+        With Master.eSettings.TV.ImageSettings.TVAllSeasons
+            .Banner.KeepExisting = chkTVAllSeasonsBannerKeepExisting.Checked
+            .Banner.MaxHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsBannerMaxHeight.Text), Convert.ToInt32(txtTVAllSeasonsBannerMaxHeight.Text), 0)
+            .Banner.MaxWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsBannerMaxWidth.Text), Convert.ToInt32(txtTVAllSeasonsBannerMaxWidth.Text), 0)
+            .Banner.PrefSize = CType(cbTVAllSeasonsBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Banner.PrefSizeOnly = chkTVAllSeasonsBannerPrefSizeOnly.Checked
+            .Fanart.KeepExisting = chkTVAllSeasonsFanartKeepExisting.Checked
+            .Fanart.MaxHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsFanartMaxHeight.Text), Convert.ToInt32(txtTVAllSeasonsFanartMaxHeight.Text), 0)
+            .Fanart.MaxWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsFanartMaxWidth.Text), Convert.ToInt32(txtTVAllSeasonsFanartMaxWidth.Text), 0)
+            .Fanart.PrefSize = CType(cbTVAllSeasonsFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Fanart.PrefSizeOnly = chkTVAllSeasonsFanartPrefSizeOnly.Checked
+            .Landscape.KeepExisting = chkTVAllSeasonsLandscapeKeepExisting.Checked
+            .Landscape.MaxHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsLandscapeMaxHeight.Text), Convert.ToInt32(txtTVAllSeasonsLandscapeMaxHeight.Text), 0)
+            .Landscape.MaxWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsLandscapeMaxWidth.Text), Convert.ToInt32(txtTVAllSeasonsLandscapeMaxWidth.Text), 0)
+            .Landscape.PrefSize = CType(cbTVAllSeasonsLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Landscape.PrefSizeOnly = chkTVAllSeasonsLandscapePrefSizeOnly.Checked
+            .Poster.KeepExisting = chkTVAllSeasonsPosterKeepExisting.Checked
+            .Poster.MaxHeight = If(Not String.IsNullOrEmpty(txtTVAllSeasonsPosterMaxHeight.Text), Convert.ToInt32(txtTVAllSeasonsPosterMaxHeight.Text), 0)
+            .Poster.MaxWidth = If(Not String.IsNullOrEmpty(txtTVAllSeasonsPosterMaxWidth.Text), Convert.ToInt32(txtTVAllSeasonsPosterMaxWidth.Text), 0)
+            .Poster.PrefSize = CType(cbTVAllSeasonsPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Poster.PrefSizeOnly = chkTVAllSeasonsPosterPrefSizeOnly.Checked
+        End With
 
-            .TVEpisodeFanartHeight = If(Not String.IsNullOrEmpty(txtTVEpisodeFanartHeight.Text), Convert.ToInt32(txtTVEpisodeFanartHeight.Text), 0)
-            .TVEpisodeFanartKeepExisting = chkTVEpisodeFanartKeepExisting.Checked
-            .TVEpisodeFanartPrefSize = CType(cbTVEpisodeFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
-            .TVEpisodeFanartPrefSizeOnly = chkTVEpisodeFanartPrefSizeOnly.Checked
-            .TVEpisodeFanartWidth = If(Not String.IsNullOrEmpty(txtTVEpisodeFanartWidth.Text), Convert.ToInt32(txtTVEpisodeFanartWidth.Text), 0)
-            .TVEpisodePosterHeight = If(Not String.IsNullOrEmpty(txtTVEpisodePosterHeight.Text), Convert.ToInt32(txtTVEpisodePosterHeight.Text), 0)
-            .TVEpisodePosterKeepExisting = chkTVEpisodePosterKeepExisting.Checked
-            .TVEpisodePosterPrefSize = CType(cbTVEpisodePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVEpisodePosterSize)).Value
-            .TVEpisodePosterPrefSizeOnly = chkTVEpisodePosterPrefSizeOnly.Checked
-            .TVEpisodePosterWidth = If(Not String.IsNullOrEmpty(txtTVEpisodePosterWidth.Text), Convert.ToInt32(txtTVEpisodePosterWidth.Text), 0)
-            .TVImagesCacheEnabled = chkTVImagesCacheEnabled.Checked
-            .TVImagesDisplayImageSelect = chkTVImagesDisplayImageSelect.Checked
-            If Not String.IsNullOrEmpty(cbTVImagesForcedLanguage.Text) Then
-                .TVImagesForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
-            End If
-            .TVImagesForceLanguage = chkTVImagesForceLanguage.Checked
-            .TVImagesGetBlankImages = chkTVImagesGetBlankImages.Checked
-            .TVImagesGetEnglishImages = chkTVImagesGetEnglishImages.Checked
-            .TVImagesMediaLanguageOnly = chkTVImagesMediaLanguageOnly.Checked
-            .TVSeasonBannerHeight = If(Not String.IsNullOrEmpty(txtTVSeasonBannerHeight.Text), Convert.ToInt32(txtTVSeasonBannerHeight.Text), 0)
-            .TVSeasonBannerKeepExisting = chkTVSeasonBannerKeepExisting.Checked
-            .TVSeasonBannerPrefSize = CType(cbTVSeasonBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVBannerSize)).Value
-            .TVSeasonBannerPrefSizeOnly = chkTVSeasonBannerPrefSizeOnly.Checked
-            .TVSeasonBannerWidth = If(Not String.IsNullOrEmpty(txtTVSeasonBannerWidth.Text), Convert.ToInt32(txtTVSeasonBannerWidth.Text), 0)
-            .TVSeasonFanartHeight = If(Not String.IsNullOrEmpty(txtTVSeasonFanartHeight.Text), Convert.ToInt32(txtTVSeasonFanartHeight.Text), 0)
-            .TVSeasonFanartKeepExisting = chkTVSeasonFanartKeepExisting.Checked
-            .TVSeasonFanartPrefSize = CType(cbTVSeasonFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
-            .TVSeasonFanartPrefSizeOnly = chkTVSeasonFanartPrefSizeOnly.Checked
-            .TVSeasonFanartWidth = If(Not String.IsNullOrEmpty(txtTVSeasonFanartWidth.Text), Convert.ToInt32(txtTVSeasonFanartWidth.Text), 0)
-            .TVSeasonLandscapeKeepExisting = chkTVSeasonLandscapeKeepExisting.Checked
-            .TVSeasonLandscapePrefSize = CType(cbTVSeasonLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVLandscapeSize)).Value
-            .TVSeasonLandscapePrefSizeOnly = chkTVSeasonLandscapePrefSizeOnly.Checked
-            .TVSeasonPosterHeight = If(Not String.IsNullOrEmpty(txtTVSeasonPosterHeight.Text), Convert.ToInt32(txtTVSeasonPosterHeight.Text), 0)
-            .TVSeasonPosterKeepExisting = chkTVSeasonPosterKeepExisting.Checked
-            .TVSeasonPosterPrefSize = CType(cbTVSeasonPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVSeasonPosterSize)).Value
-            .TVSeasonPosterPrefSizeOnly = chkTVSeasonPosterPrefSizeOnly.Checked
-            .TVSeasonPosterWidth = If(Not String.IsNullOrEmpty(txtTVSeasonPosterWidth.Text), Convert.ToInt32(txtTVSeasonPosterWidth.Text), 0)
-            .TVShowBannerHeight = If(Not String.IsNullOrEmpty(txtTVShowBannerHeight.Text), Convert.ToInt32(txtTVShowBannerHeight.Text), 0)
-            .TVShowBannerKeepExisting = chkTVShowBannerKeepExisting.Checked
-            .TVShowBannerPrefSize = CType(cbTVShowBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVBannerSize)).Value
-            .TVShowBannerPrefSizeOnly = chkTVShowBannerPrefSizeOnly.Checked
-            .TVShowBannerWidth = If(Not String.IsNullOrEmpty(txtTVShowBannerWidth.Text), Convert.ToInt32(txtTVShowBannerWidth.Text), 0)
-            .TVShowCharacterArtKeepExisting = chkTVShowCharacterArtKeepExisting.Checked
-            .TVShowCharacterArtPrefSize = CType(cbTVShowCharacterArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.CharacterArtSize)).Value
-            .TVShowCharacterArtPrefSizeOnly = chkTVShowCharacterArtPrefSizeOnly.Checked
-            .TVShowClearArtKeepExisting = chkTVShowClearArtKeepExisting.Checked
-            .TVShowClearArtPrefSize = CType(cbTVShowClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVClearArtSize)).Value
-            .TVShowClearArtPrefSizeOnly = chkTVShowClearArtPrefSizeOnly.Checked
-            .TVShowClearLogoKeepExisting = chkTVShowClearLogoKeepExisting.Checked
-            .TVShowClearLogoPrefSize = CType(cbTVShowClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVClearLogoSize)).Value
-            .TVShowClearLogoPrefSizeOnly = chkTVShowClearLogoPrefSizeOnly.Checked
-            .TVShowExtrafanartsHeight = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsHeight.Text), Convert.ToInt32(txtTVShowExtrafanartsHeight.Text), 0)
-            .TVShowExtrafanartsLimit = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsLimit.Text), Convert.ToInt32(txtTVShowExtrafanartsLimit.Text), 0)
-            .TVShowExtrafanartsKeepExisting = chkTVShowExtrafanartsKeepExisting.Checked
-            .TVShowExtrafanartsPrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
-            .TVShowExtrafanartsPrefSize = CType(cbTVShowExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
-            .TVShowExtrafanartsPrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
+        With Master.eSettings.TV.ImageSettings.TVEpisode
+            .Fanart.KeepExisting = chkTVEpisodeFanartKeepExisting.Checked
+            .Fanart.MaxHeight = If(Not String.IsNullOrEmpty(txtTVEpisodeFanartMaxHeight.Text), Convert.ToInt32(txtTVEpisodeFanartMaxHeight.Text), 0)
+            .Fanart.MaxWidth = If(Not String.IsNullOrEmpty(txtTVEpisodeFanartMaxWidth.Text), Convert.ToInt32(txtTVEpisodeFanartMaxWidth.Text), 0)
+            .Fanart.PrefSize = CType(cbTVEpisodeFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Fanart.PrefSizeOnly = chkTVEpisodeFanartPrefSizeOnly.Checked
+            .Poster.KeepExisting = chkTVEpisodePosterKeepExisting.Checked
+            .Poster.MaxHeight = If(Not String.IsNullOrEmpty(txtTVEpisodePosterMaxHeight.Text), Convert.ToInt32(txtTVEpisodePosterMaxHeight.Text), 0)
+            .Poster.MaxWidth = If(Not String.IsNullOrEmpty(txtTVEpisodePosterMaxWidth.Text), Convert.ToInt32(txtTVEpisodePosterMaxWidth.Text), 0)
+            .Poster.PrefSize = CType(cbTVEpisodePosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Poster.PrefSizeOnly = chkTVEpisodePosterPrefSizeOnly.Checked
+        End With
+
+        With Master.eSettings.TV.ImageSettings.TVSeason
+            .Banner.KeepExisting = chkTVSeasonBannerKeepExisting.Checked
+            .Banner.MaxHeight = If(Not String.IsNullOrEmpty(txtTVSeasonBannerMaxHeight.Text), Convert.ToInt32(txtTVSeasonBannerMaxHeight.Text), 0)
+            .Banner.MaxWidth = If(Not String.IsNullOrEmpty(txtTVSeasonBannerMaxWidth.Text), Convert.ToInt32(txtTVSeasonBannerMaxWidth.Text), 0)
+            .Banner.PrefSize = CType(cbTVSeasonBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Banner.PrefSizeOnly = chkTVSeasonBannerPrefSizeOnly.Checked
+            .Fanart.KeepExisting = chkTVSeasonFanartKeepExisting.Checked
+            .Fanart.MaxHeight = If(Not String.IsNullOrEmpty(txtTVSeasonFanartMaxHeight.Text), Convert.ToInt32(txtTVSeasonFanartMaxHeight.Text), 0)
+            .Fanart.MaxWidth = If(Not String.IsNullOrEmpty(txtTVSeasonFanartMaxWidth.Text), Convert.ToInt32(txtTVSeasonFanartMaxWidth.Text), 0)
+            .Fanart.PrefSize = CType(cbTVSeasonFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Fanart.PrefSizeOnly = chkTVSeasonFanartPrefSizeOnly.Checked
+            .Landscape.KeepExisting = chkTVSeasonLandscapeKeepExisting.Checked
+            .Landscape.MaxHeight = If(Not String.IsNullOrEmpty(txtTVSeasonLandscapeMaxHeight.Text), Convert.ToInt32(txtTVSeasonLandscapeMaxHeight.Text), 0)
+            .Landscape.MaxWidth = If(Not String.IsNullOrEmpty(txtTVSeasonLandscapeMaxWidth.Text), Convert.ToInt32(txtTVSeasonLandscapeMaxWidth.Text), 0)
+            .Landscape.PrefSize = CType(cbTVSeasonLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Landscape.PrefSizeOnly = chkTVSeasonLandscapePrefSizeOnly.Checked
+            .Poster.KeepExisting = chkTVSeasonPosterKeepExisting.Checked
+            .Poster.MaxHeight = If(Not String.IsNullOrEmpty(txtTVSeasonPosterMaxHeight.Text), Convert.ToInt32(txtTVSeasonPosterMaxHeight.Text), 0)
+            .Poster.MaxWidth = If(Not String.IsNullOrEmpty(txtTVSeasonPosterMaxWidth.Text), Convert.ToInt32(txtTVSeasonPosterMaxWidth.Text), 0)
+            .Poster.PrefSize = CType(cbTVSeasonPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Poster.PrefSizeOnly = chkTVSeasonPosterPrefSizeOnly.Checked
+        End With
+
+        With Master.eSettings.TV.ImageSettings.TVShow
             '.TVShowExtrafanartsPreselect = chkTVShowExtrafanartsPreselect.Checked
-            .TVShowExtrafanartsWidth = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsWidth.Text), Convert.ToInt32(txtTVShowExtrafanartsWidth.Text), 0)
-            .TVShowFanartHeight = If(Not String.IsNullOrEmpty(txtTVShowFanartHeight.Text), Convert.ToInt32(txtTVShowFanartHeight.Text), 0)
-            .TVShowFanartKeepExisting = chkTVShowFanartKeepExisting.Checked
-            .TVShowFanartPrefSize = CType(cbTVShowFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVFanartSize)).Value
-            .TVShowFanartPrefSizeOnly = chkTVShowFanartKeepExisting.Checked
-            .TVShowFanartWidth = If(Not String.IsNullOrEmpty(txtTVShowFanartWidth.Text), Convert.ToInt32(txtTVShowFanartWidth.Text), 0)
-            .TVShowLandscapeKeepExisting = chkTVShowLandscapeKeepExisting.Checked
-            .TVShowLandscapePrefSize = CType(cbTVShowLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVLandscapeSize)).Value
-            .TVShowLandscapePrefSizeOnly = chkTVShowLandscapePrefSizeOnly.Checked
-            .TVShowPosterHeight = If(Not String.IsNullOrEmpty(txtTVShowPosterHeight.Text), Convert.ToInt32(txtTVShowPosterHeight.Text), 0)
-            .TVShowPosterKeepExisting = chkTVShowPosterKeepExisting.Checked
-            .TVShowPosterPrefSize = CType(cbTVShowPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.TVPosterSize)).Value
-            .TVShowPosterPrefSizeOnly = chkTVShowPosterPrefSizeOnly.Checked
-            .TVShowPosterWidth = If(Not String.IsNullOrEmpty(txtTVShowPosterWidth.Text), Convert.ToInt32(txtTVShowPosterWidth.Text), 0)
+            .Banner.KeepExisting = chkTVShowBannerKeepExisting.Checked
+            .Banner.MaxHeight = If(Not String.IsNullOrEmpty(txtTVShowBannerMaxHeight.Text), Convert.ToInt32(txtTVShowBannerMaxHeight.Text), 0)
+            .Banner.MaxWidth = If(Not String.IsNullOrEmpty(txtTVShowBannerMaxWidth.Text), Convert.ToInt32(txtTVShowBannerMaxWidth.Text), 0)
+            .Banner.PrefSize = CType(cbTVShowBannerPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Banner.PrefSizeOnly = chkTVShowBannerPrefSizeOnly.Checked
+            .CharacterArt.KeepExisting = chkTVShowCharacterArtKeepExisting.Checked
+            .CharacterArt.PrefSize = CType(cbTVShowCharacterArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .CharacterArt.PrefSizeOnly = chkTVShowCharacterArtPrefSizeOnly.Checked
+            .ClearArt.KeepExisting = chkTVShowClearArtKeepExisting.Checked
+            .ClearArt.PrefSize = CType(cbTVShowClearArtPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .ClearArt.PrefSizeOnly = chkTVShowClearArtPrefSizeOnly.Checked
+            .ClearLogo.KeepExisting = chkTVShowClearLogoKeepExisting.Checked
+            .ClearLogo.PrefSize = CType(cbTVShowClearLogoPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .ClearLogo.PrefSizeOnly = chkTVShowClearLogoPrefSizeOnly.Checked
+            .Extrafanarts.KeepExisting = chkTVShowExtrafanartsKeepExisting.Checked
+            .Extrafanarts.Limit = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsLimit.Text), Convert.ToInt32(txtTVShowExtrafanartsLimit.Text), 0)
+            .Extrafanarts.MaxHeight = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsMaxHeight.Text), Convert.ToInt32(txtTVShowExtrafanartsMaxHeight.Text), 0)
+            .Extrafanarts.MaxWidth = If(Not String.IsNullOrEmpty(txtTVShowExtrafanartsMaxWidth.Text), Convert.ToInt32(txtTVShowExtrafanartsMaxWidth.Text), 0)
+            .Extrafanarts.PrefSize = CType(cbTVShowExtrafanartsPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Extrafanarts.PrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
+            .Extrafanarts.PrefSizeOnly = chkTVShowExtrafanartsPrefSizeOnly.Checked
+            .Fanart.KeepExisting = chkTVShowFanartKeepExisting.Checked
+            .Fanart.MaxHeight = If(Not String.IsNullOrEmpty(txtTVShowFanartMaxHeight.Text), Convert.ToInt32(txtTVShowFanartMaxHeight.Text), 0)
+            .Fanart.MaxWidth = If(Not String.IsNullOrEmpty(txtTVShowFanartMaxWidth.Text), Convert.ToInt32(txtTVShowFanartMaxWidth.Text), 0)
+            .Fanart.PrefSize = CType(cbTVShowFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Fanart.PrefSizeOnly = chkTVShowFanartKeepExisting.Checked
+            .Landscape.KeepExisting = chkTVShowLandscapeKeepExisting.Checked
+            .Landscape.MaxHeight = If(Not String.IsNullOrEmpty(txtTVShowLandscapeMaxHeight.Text), Convert.ToInt32(txtTVShowLandscapeMaxHeight.Text), 0)
+            .Landscape.MaxWidth = If(Not String.IsNullOrEmpty(txtTVShowLandscapeMaxWidth.Text), Convert.ToInt32(txtTVShowLandscapeMaxWidth.Text), 0)
+            .Landscape.PrefSize = CType(cbTVShowLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Landscape.PrefSizeOnly = chkTVShowLandscapePrefSizeOnly.Checked
+            .Poster.KeepExisting = chkTVShowPosterKeepExisting.Checked
+            .Poster.MaxHeight = If(Not String.IsNullOrEmpty(txtTVShowPosterMaxHeight.Text), Convert.ToInt32(txtTVShowPosterMaxHeight.Text), 0)
+            .Poster.MaxWidth = If(Not String.IsNullOrEmpty(txtTVShowPosterWidth.Text), Convert.ToInt32(txtTVShowPosterWidth.Text), 0)
+            .Poster.PrefSize = CType(cbTVShowPosterPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
+            .Poster.PrefSizeOnly = chkTVShowPosterPrefSizeOnly.Checked
+        End With
+
+        With Master.eSettings.TV.ImageSettings
+            .ImagesCacheEnabled = chkTVImagesCacheEnabled.Checked
+            .ImagesDisplayImageSelect = chkTVImagesDisplayImageSelect.Checked
+            If Not String.IsNullOrEmpty(cbTVImagesForcedLanguage.Text) Then
+                .Language.ForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
+            End If
+            .Language.ForceLanguage = chkTVImagesForceLanguage.Checked
+            .Language.GetBlankImages = chkTVImagesGetBlankImages.Checked
+            .Language.GetEnglishImages = chkTVImagesGetEnglishImages.Checked
+            .Language.GetMediaLanguageOnly = chkTVImagesMediaLanguageOnly.Checked
         End With
     End Sub
 
@@ -380,10 +415,10 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub LoadBannerSizes()
-        Dim items As New Dictionary(Of String, Enums.TVBannerSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVBannerSize.Any)
-        items.Add("1000x185", Enums.TVBannerSize.HD185)
-        items.Add("758x140", Enums.TVBannerSize.HD140)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x185", Enums.ImageSize.HD185)
+        items.Add("758x140", Enums.ImageSize.HD140)
         cbTVAllSeasonsBannerPrefSize.DataSource = items.ToList
         cbTVAllSeasonsBannerPrefSize.DisplayMember = "Key"
         cbTVAllSeasonsBannerPrefSize.ValueMember = "Value"
@@ -396,41 +431,41 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub LoadCharacterArtSizes()
-        Dim items As New Dictionary(Of String, Enums.CharacterArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.CharacterArtSize.Any)
-        items.Add("512x512", Enums.CharacterArtSize.HD512)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("512x512", Enums.ImageSize.HD512)
         cbTVShowCharacterArtPrefSize.DataSource = items.ToList
         cbTVShowCharacterArtPrefSize.DisplayMember = "Key"
         cbTVShowCharacterArtPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadClearArtSizes()
-        Dim items As New Dictionary(Of String, Enums.TVClearArtSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVClearArtSize.Any)
-        items.Add("1000x562", Enums.TVClearArtSize.HD562)
-        items.Add("500x281", Enums.TVClearArtSize.SD281)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x562", Enums.ImageSize.HD562)
+        items.Add("500x281", Enums.ImageSize.SD281)
         cbTVShowClearArtPrefSize.DataSource = items.ToList
         cbTVShowClearArtPrefSize.DisplayMember = "Key"
         cbTVShowClearArtPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadClearLogoSizes()
-        Dim items As New Dictionary(Of String, Enums.TVClearLogoSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVClearLogoSize.Any)
-        items.Add("800x310", Enums.TVClearLogoSize.HD310)
-        items.Add("400x155", Enums.TVClearLogoSize.SD155)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("800x310", Enums.ImageSize.HD310)
+        items.Add("400x155", Enums.ImageSize.SD155)
         cbTVShowClearLogoPrefSize.DataSource = items.ToList
         cbTVShowClearLogoPrefSize.DisplayMember = "Key"
         cbTVShowClearLogoPrefSize.ValueMember = "Value"
     End Sub
 
     Private Sub LoadFanartSizes()
-        Dim items As New Dictionary(Of String, Enums.TVFanartSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVFanartSize.Any)
-        items.Add("3840x2160", Enums.TVFanartSize.UHD2160)
-        items.Add("2560x1440", Enums.TVFanartSize.QHD1440)
-        items.Add("1920x1080", Enums.TVFanartSize.HD1080)
-        items.Add("1280x720", Enums.TVFanartSize.HD720)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("3840x2160", Enums.ImageSize.UHD2160)
+        items.Add("2560x1440", Enums.ImageSize.QHD1440)
+        items.Add("1920x1080", Enums.ImageSize.HD1080)
+        items.Add("1280x720", Enums.ImageSize.HD720)
         cbTVAllSeasonsFanartPrefSize.DataSource = items.ToList
         cbTVAllSeasonsFanartPrefSize.DisplayMember = "Key"
         cbTVAllSeasonsFanartPrefSize.ValueMember = "Value"
@@ -449,10 +484,10 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub LoadLandscapeSizes()
-        Dim items As New Dictionary(Of String, Enums.TVLandscapeSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVLandscapeSize.Any)
-        items.Add("1000x562", Enums.TVLandscapeSize.HD562)
-        items.Add("500x281", Enums.TVLandscapeSize.SD281)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("1000x562", Enums.ImageSize.HD562)
+        items.Add("500x281", Enums.ImageSize.SD281)
         cbTVAllSeasonsLandscapePrefSize.DataSource = items.ToList
         cbTVAllSeasonsLandscapePrefSize.DisplayMember = "Key"
         cbTVAllSeasonsLandscapePrefSize.ValueMember = "Value"
@@ -465,12 +500,12 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub LoadPosterSizes()
-        Dim items As New Dictionary(Of String, Enums.TVPosterSize)
-        items.Add(Master.eLang.GetString(745, "Any"), Enums.TVPosterSize.Any)
-        items.Add("2000x3000", Enums.TVPosterSize.HD3000)
-        items.Add("1000x1500", Enums.TVPosterSize.HD1500)
-        items.Add("1000x1426", Enums.TVPosterSize.HD1426)
-        items.Add("680x1000", Enums.TVPosterSize.HD1000)
+        Dim items As New Dictionary(Of String, Enums.ImageSize)
+        items.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items.Add("2000x3000", Enums.ImageSize.UHD3000)
+        items.Add("1000x1500", Enums.ImageSize.HD1500)
+        items.Add("1000x1426", Enums.ImageSize.HD1426)
+        items.Add("680x1000", Enums.ImageSize.HD1000)
         cbTVAllSeasonsPosterPrefSize.DataSource = items.ToList
         cbTVAllSeasonsPosterPrefSize.DisplayMember = "Key"
         cbTVAllSeasonsPosterPrefSize.ValueMember = "Value"
@@ -478,21 +513,21 @@ Public Class frmTV_Image
         cbTVShowPosterPrefSize.DisplayMember = "Key"
         cbTVShowPosterPrefSize.ValueMember = "Value"
 
-        Dim items2 As New Dictionary(Of String, Enums.TVSeasonPosterSize)
-        items2.Add(Master.eLang.GetString(745, "Any"), Enums.TVSeasonPosterSize.Any)
-        items2.Add("1000x1500", Enums.TVSeasonPosterSize.HD1500)
-        items2.Add("1000x1426", Enums.TVSeasonPosterSize.HD1426)
-        items2.Add("400x578", Enums.TVSeasonPosterSize.HD578)
+        Dim items2 As New Dictionary(Of String, Enums.ImageSize)
+        items2.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items2.Add("1000x1500", Enums.ImageSize.HD1500)
+        items2.Add("1000x1426", Enums.ImageSize.HD1426)
+        items2.Add("400x578", Enums.ImageSize.HD578)
         cbTVSeasonPosterPrefSize.DataSource = items2.ToList
         cbTVSeasonPosterPrefSize.DisplayMember = "Key"
         cbTVSeasonPosterPrefSize.ValueMember = "Value"
 
-        Dim items3 As New Dictionary(Of String, Enums.TVEpisodePosterSize)
-        items3.Add(Master.eLang.GetString(745, "Any"), Enums.TVEpisodePosterSize.Any)
-        items3.Add("3840x2160", Enums.TVEpisodePosterSize.UHD2160)
-        items3.Add("1920x1080", Enums.TVEpisodePosterSize.HD1080)
-        items3.Add("1280x720", Enums.TVEpisodePosterSize.HD720)
-        items3.Add("400x225", Enums.TVEpisodePosterSize.SD225)
+        Dim items3 As New Dictionary(Of String, Enums.ImageSize)
+        items3.Add(Master.eLang.GetString(745, "Any"), Enums.ImageSize.Any)
+        items3.Add("3840x2160", Enums.ImageSize.UHD2160)
+        items3.Add("1920x1080", Enums.ImageSize.HD1080)
+        items3.Add("1280x720", Enums.ImageSize.HD720)
+        items3.Add("400x225", Enums.ImageSize.SD225)
         cbTVEpisodePosterPrefSize.DataSource = items3.ToList
         cbTVEpisodePosterPrefSize.DisplayMember = "Key"
         cbTVEpisodePosterPrefSize.ValueMember = "Value"
@@ -579,31 +614,31 @@ Public Class frmTV_Image
     End Sub
 
     Private Sub NumericOnly(ByVal sender As Object, ByVal e As KeyPressEventArgs) Handles _
-            txtTVAllSeasonsBannerHeight.KeyPress,
-            txtTVAllSeasonsBannerWidth.KeyPress,
-            txtTVAllSeasonsFanartHeight.KeyPress,
-            txtTVAllSeasonsFanartWidth.KeyPress,
-            txtTVAllSeasonsPosterHeight.KeyPress,
-            txtTVAllSeasonsPosterWidth.KeyPress,
-            txtTVEpisodeFanartHeight.KeyPress,
-            txtTVEpisodeFanartWidth.KeyPress,
-            txtTVEpisodePosterHeight.KeyPress,
-            txtTVEpisodePosterWidth.KeyPress,
-            txtTVSeasonBannerHeight.KeyPress,
-            txtTVSeasonBannerWidth.KeyPress,
-            txtTVSeasonFanartHeight.KeyPress,
-            txtTVSeasonFanartWidth.KeyPress,
-            txtTVSeasonPosterHeight.KeyPress,
-            txtTVSeasonPosterWidth.KeyPress,
-            txtTVShowBannerHeight.KeyPress,
-            txtTVShowBannerWidth.KeyPress,
-            txtTVShowExtrafanartsHeight.KeyPress,
+            txtTVAllSeasonsBannerMaxHeight.KeyPress,
+            txtTVAllSeasonsBannerMaxWidth.KeyPress,
+            txtTVAllSeasonsFanartMaxHeight.KeyPress,
+            txtTVAllSeasonsFanartMaxWidth.KeyPress,
+            txtTVAllSeasonsPosterMaxHeight.KeyPress,
+            txtTVAllSeasonsPosterMaxWidth.KeyPress,
+            txtTVEpisodeFanartMaxHeight.KeyPress,
+            txtTVEpisodeFanartMaxWidth.KeyPress,
+            txtTVEpisodePosterMaxHeight.KeyPress,
+            txtTVEpisodePosterMaxWidth.KeyPress,
+            txtTVSeasonBannerMaxHeight.KeyPress,
+            txtTVSeasonBannerMaxWidth.KeyPress,
+            txtTVSeasonFanartMaxHeight.KeyPress,
+            txtTVSeasonFanartMaxWidth.KeyPress,
+            txtTVSeasonPosterMaxHeight.KeyPress,
+            txtTVSeasonPosterMaxWidth.KeyPress,
+            txtTVShowBannerMaxHeight.KeyPress,
+            txtTVShowBannerMaxWidth.KeyPress,
+            txtTVShowExtrafanartsMaxHeight.KeyPress,
             txtTVShowExtrafanartsLimit.KeyPress,
-            txtTVShowExtrafanartsWidth.KeyPress,
-            txtTVShowFanartHeight.KeyPress,
-            txtTVShowFanartWidth.KeyPress,
-            txtTVShowPosterHeight.KeyPress,
-            txtTVShowPosterWidth.KeyPress
+            txtTVShowExtrafanartsMaxWidth.KeyPress,
+            txtTVShowFanartMaxHeight.KeyPress,
+            txtTVShowFanartMaxWidth.KeyPress,
+            txtTVShowPosterMaxHeight.KeyPress,
+            txtTVShowPosterWidth.KeyPress, txtTVShowLandscapeMaxWidth.KeyPress, txtTVSeasonLandscapeMaxWidth.KeyPress, txtTVAllSeasonsLandscapeMaxWidth.KeyPress, txtTVSeasonLandscapeMaxHeight.KeyPress, txtTVAllSeasonsLandscapeMaxHeight.KeyPress, txtTVShowLandscapeMaxHeight.KeyPress
 
         e.Handled = StringUtils.NumericOnly(e.KeyChar)
     End Sub

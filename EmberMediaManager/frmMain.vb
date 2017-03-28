@@ -579,27 +579,27 @@ Public Class frmMain
     End Sub
 
     Private Function CheckColumnHide_Movies(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.MovieGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn = Manager.mSettings.Movie.GUI.MediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
     Private Function CheckColumnHide_MovieSets(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.MovieSetGeneralMediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn = Manager.mSettings.Movieset.GUI.MediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
     Private Function CheckColumnHide_TVEpisodes(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVGeneralEpisodeListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn = Manager.mSettings.TV.TVEpisode.GUI.MediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
     Private Function CheckColumnHide_TVSeasons(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVGeneralSeasonListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn = Manager.mSettings.TV.TVSeason.GUI.MediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
     Private Function CheckColumnHide_TVShows(ByVal ColumnName As String) As Boolean
-        Dim lsColumn As Settings.ListSorting = Master.eSettings.TVGeneralShowListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
+        Dim lsColumn = Manager.mSettings.TV.TVShow.GUI.MediaListSorting.FirstOrDefault(Function(l) l.Column = ColumnName)
         Return If(lsColumn Is Nothing, True, lsColumn.Hide)
     End Function
 
@@ -699,7 +699,7 @@ Public Class frmMain
 
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
-        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.Movieset, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 1
                 If btnMid.Visible Then
                     pnlInfoPanel.Height = _ipmid
@@ -710,7 +710,7 @@ Public Class frmMain
                     pnlInfoPanel.Height = _ipup
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                         InfoPanelState_Movie = 2
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+                    ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
                         InfoPanelState_MovieSet = 2
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
                         InfoPanelState_TVShow = 2
@@ -722,7 +722,7 @@ Public Class frmMain
                     pnlInfoPanel.Height = 25
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                         InfoPanelState_Movie = 0
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+                    ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
                         InfoPanelState_MovieSet = 0
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
                         InfoPanelState_TVShow = 0
@@ -742,7 +742,7 @@ Public Class frmMain
 
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                         InfoPanelState_Movie = 1
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+                    ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
                         InfoPanelState_MovieSet = 1
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
                         InfoPanelState_TVShow = 1
@@ -755,7 +755,7 @@ Public Class frmMain
                     pnlInfoPanel.Height = 25
                     If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                         InfoPanelState_Movie = 0
-                    ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+                    ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
                         InfoPanelState_MovieSet = 0
                     ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
                         InfoPanelState_TVShow = 0
@@ -768,7 +768,7 @@ Public Class frmMain
                 pnlInfoPanel.Height = 25
                 If currMainTabTag.ContentType = Enums.ContentType.Movie Then
                     InfoPanelState_Movie = 0
-                ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+                ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
                     InfoPanelState_MovieSet = 0
                 ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
                     InfoPanelState_TVShow = 0
@@ -825,7 +825,7 @@ Public Class frmMain
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 0
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+        ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
             InfoPanelState_MovieSet = 0
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             InfoPanelState_TVShow = 0
@@ -879,7 +879,7 @@ Public Class frmMain
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 1
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+        ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
             InfoPanelState_MovieSet = 1
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             InfoPanelState_TVShow = 1
@@ -1147,7 +1147,7 @@ Public Class frmMain
         tcMain.Focus()
         If currMainTabTag.ContentType = Enums.ContentType.Movie Then
             InfoPanelState_Movie = 2
-        ElseIf currMainTabTag.ContentType = Enums.ContentType.MovieSet Then
+        ElseIf currMainTabTag.ContentType = Enums.ContentType.Movieset Then
             InfoPanelState_MovieSet = 2
         ElseIf currMainTabTag.ContentType = Enums.ContentType.TV Then
             InfoPanelState_TVShow = 2
@@ -1488,14 +1488,16 @@ Public Class frmMain
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currMovie.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currMovie.ImagesContainer.ClearArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currMovie.ImagesContainer.ClearLogo.ImageOriginal
-        If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currMovie.ImagesContainer.DiscArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currMovie.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currMovie.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currMovie.ImagesContainer.Poster.ImageOriginal
+        With Manager.mSettings.General
+            If .DisplayBanner Then MainBanner = currMovie.ImagesContainer.Banner.ImageOriginal
+            If .DisplayClearArt Then MainClearArt = currMovie.ImagesContainer.ClearArt.ImageOriginal
+            If .DisplayClearLogo Then MainClearLogo = currMovie.ImagesContainer.ClearLogo.ImageOriginal
+            If .DisplayDiscArt Then MainDiscArt = currMovie.ImagesContainer.DiscArt.ImageOriginal
+            If .DisplayFanart Then MainFanart = currMovie.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayFanartSmall Then MainFanartSmall = currMovie.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayLandscape Then MainLandscape = currMovie.ImagesContainer.Landscape.ImageOriginal
+            If .DisplayPoster Then MainPoster = currMovie.ImagesContainer.Poster.ImageOriginal
+        End With
 
         If bwLoadImages_Movie.CancellationPending Then
             e.Cancel = True
@@ -1533,14 +1535,16 @@ Public Class frmMain
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currMovieSet.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currMovieSet.ImagesContainer.ClearArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
-        If Master.eSettings.GeneralDisplayDiscArt Then MainDiscArt = currMovieSet.ImagesContainer.DiscArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currMovieSet.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currMovieSet.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currMovieSet.ImagesContainer.Poster.ImageOriginal
+        With Manager.mSettings.General
+            If .DisplayBanner Then MainBanner = currMovieSet.ImagesContainer.Banner.ImageOriginal
+            If .DisplayClearArt Then MainClearArt = currMovieSet.ImagesContainer.ClearArt.ImageOriginal
+            If .DisplayClearLogo Then MainClearLogo = currMovieSet.ImagesContainer.ClearLogo.ImageOriginal
+            If .DisplayDiscArt Then MainDiscArt = currMovieSet.ImagesContainer.DiscArt.ImageOriginal
+            If .DisplayFanart Then MainFanart = currMovieSet.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayFanartSmall Then MainFanartSmall = currMovieSet.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayLandscape Then MainLandscape = currMovieSet.ImagesContainer.Landscape.ImageOriginal
+            If .DisplayPoster Then MainPoster = currMovieSet.ImagesContainer.Poster.ImageOriginal
+        End With
 
         If bwLoadImages_MovieSet.CancellationPending Then
             e.Cancel = True
@@ -1642,15 +1646,17 @@ Public Class frmMain
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
+        With Manager.mSettings.General
+            If .DisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
+        End With
 
         If bwLoadImages_TVEpisode.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayFanart Then
+        If Manager.mSettings.General.DisplayFanart Then
             Dim NeedsGS As Boolean = False
             If currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
@@ -1714,17 +1720,19 @@ Public Class frmMain
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currTV.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currTV.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
+        With Manager.mSettings.General
+            If .DisplayBanner Then MainBanner = currTV.ImagesContainer.Banner.ImageOriginal
+            If .DisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayLandscape Then MainLandscape = currTV.ImagesContainer.Landscape.ImageOriginal
+            If .DisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
+        End With
 
         If bwLoadImages_TVSeason.CancellationPending Then
             e.Cancel = True
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayFanart Then
+        If Manager.mSettings.General.DisplayFanart Then
             Dim NeedsGS As Boolean = False
             If currTV.ImagesContainer.Fanart.ImageOriginal.Image IsNot Nothing Then
                 MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
@@ -1777,14 +1785,16 @@ Public Class frmMain
             Return
         End If
 
-        If Master.eSettings.GeneralDisplayBanner Then MainBanner = currTV.ImagesContainer.Banner.ImageOriginal
-        If Master.eSettings.GeneralDisplayCharacterArt Then MainCharacterArt = currTV.ImagesContainer.CharacterArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearArt Then MainClearArt = currTV.ImagesContainer.ClearArt.ImageOriginal
-        If Master.eSettings.GeneralDisplayClearLogo Then MainClearLogo = currTV.ImagesContainer.ClearLogo.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanart Then MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
-        If Master.eSettings.GeneralDisplayLandscape Then MainLandscape = currTV.ImagesContainer.Landscape.ImageOriginal
-        If Master.eSettings.GeneralDisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
+        With Manager.mSettings.General
+            If .DisplayBanner Then MainBanner = currTV.ImagesContainer.Banner.ImageOriginal
+            If .DisplayCharacterArt Then MainCharacterArt = currTV.ImagesContainer.CharacterArt.ImageOriginal
+            If .DisplayClearArt Then MainClearArt = currTV.ImagesContainer.ClearArt.ImageOriginal
+            If .DisplayClearLogo Then MainClearLogo = currTV.ImagesContainer.ClearLogo.ImageOriginal
+            If .DisplayFanart Then MainFanart = currTV.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayFanartSmall Then MainFanartSmall = currTV.ImagesContainer.Fanart.ImageOriginal
+            If .DisplayLandscape Then MainLandscape = currTV.ImagesContainer.Landscape.ImageOriginal
+            If .DisplayPoster Then MainPoster = currTV.ImagesContainer.Poster.ImageOriginal
+        End With
 
         If bwLoadImages_TVShow.CancellationPending Then
             e.Cancel = True
@@ -1888,7 +1898,7 @@ Public Class frmMain
             If bwMovieScraper.CancellationPending Then Exit For
 
             If Not Cancelled Then
-                If Master.eSettings.MovieScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
+                If Master.eSettings.Movie.DataSettings.MetaDataScan AndAlso tScrapeItem.ScrapeModifiers.MainMeta Then
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
                     MetaData.ScanMetaData(DBScrapeMovie)
                 End If
@@ -2043,7 +2053,7 @@ Public Class frmMain
     Private Sub bwMovieSetScraper_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bwMovieSetScraper.DoWork
         Dim Args As Arguments = DirectCast(e.Argument, Arguments)
         Dim Cancelled As Boolean = False
-        Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.MovieSet)
+        Dim DBScrapeMovieSet As New Database.DBElement(Enums.ContentType.Movieset)
 
         logger.Trace(String.Format("[MovieSet Scraper] [Start] MovieSets Count [{0}]", Args.ScrapeList.Count.ToString))
 
@@ -2158,7 +2168,7 @@ Public Class frmMain
 
     Private Sub bwMovieSetScraper_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwMovieSetScraper.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_MovieSet, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString))
+            Notifications.Show(New Notifications.Notification(Enums.NotificationType.Scraped_Movieset, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString))
         ElseIf e.ProgressPercentage = -2 Then
             RefreshRow_MovieSet(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
@@ -2304,7 +2314,7 @@ Public Class frmMain
                 If bwTVScraper.CancellationPending Then Exit For
 
                 'Episode Meta Data
-                If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TVScraperMetaDataScan Then
+                If tScrapeItem.ScrapeModifiers.withEpisodes AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta AndAlso Master.eSettings.TV.DataSettings.MetaDataScan Then
                     bwTVScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(140, "Scanning Meta Data"), ":"))
                     For Each tEpisode In DBScrapeShow.Episodes.Where(Function(f) f.FilenameSpecified)
                         MetaData.ScanMetaData(tEpisode)
@@ -2425,7 +2435,7 @@ Public Class frmMain
             If bwTVEpisodeScraper.CancellationPending Then Exit For
 
             If Not Cancelled Then
-                If Master.eSettings.TVScraperMetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
+                If Master.eSettings.TV.DataSettings.MetaDataScan AndAlso tScrapeItem.ScrapeModifiers.EpisodeMeta Then
                     MetaData.ScanMetaData(DBScrapeEpisode)
                 End If
                 If bwTVEpisodeScraper.CancellationPending Then Exit For
@@ -2843,20 +2853,20 @@ Public Class frmMain
         Dim lstMissingFilter As New List(Of String)
         FilterArray_Movies.Remove(filMissing_Movies)
         If chkFilterMissing_Movies.Checked Then
-            With Master.eSettings
-                If .MovieMissingBanner Then lstMissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
-                If .MovieMissingClearArt Then lstMissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
-                If .MovieMissingClearLogo Then lstMissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
-                If .MovieMissingDiscArt Then lstMissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
-                If .MovieMissingExtrafanarts Then lstMissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
-                If .MovieMissingExtrathumbs Then lstMissingFilter.Add("EThumbsPath IS NULL OR EThumbsPath=''")
-                If .MovieMissingFanart Then lstMissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
-                If .MovieMissingLandscape Then lstMissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
-                If .MovieMissingNFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
-                If .MovieMissingPoster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
-                If .MovieMissingSubtitles Then lstMissingFilter.Add("HasSub = 0")
-                If .MovieMissingTheme Then lstMissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
-                If .MovieMissingTrailer Then lstMissingFilter.Add("TrailerPath IS NULL OR TrailerPath=''")
+            With Manager.mSettings.Movie.Filter.Missing
+                If .Banner Then lstMissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
+                If .ClearArt Then lstMissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
+                If .ClearLogo Then lstMissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
+                If .DiscArt Then lstMissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
+                If .Extrafanarts Then lstMissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
+                If .Extrathumbs Then lstMissingFilter.Add("EThumbsPath IS NULL OR EThumbsPath=''")
+                If .Fanart Then lstMissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
+                If .Landscape Then lstMissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
+                If .NFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
+                If .Poster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
+                If .Subtitles Then lstMissingFilter.Add("HasSub = 0")
+                If .Theme Then lstMissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
+                If .Trailer Then lstMissingFilter.Add("TrailerPath IS NULL OR TrailerPath=''")
             End With
             filMissing_Movies = String.Join(" OR ", lstMissingFilter.ToArray)
             If filMissing_Movies IsNot Nothing Then FilterArray_Movies.Add(filMissing_Movies)
@@ -2868,15 +2878,15 @@ Public Class frmMain
         Dim lstMissingFilter As New List(Of String)
         FilterArray_MovieSets.Remove(filMissing_MovieSets)
         If chkFilterMissing_MovieSets.Checked Then
-            With Master.eSettings
-                If .MovieSetMissingBanner Then lstMissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
-                If .MovieSetMissingClearArt Then lstMissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
-                If .MovieSetMissingClearLogo Then lstMissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
-                If .MovieSetMissingDiscArt Then lstMissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
-                If .MovieSetMissingFanart Then lstMissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
-                If .MovieSetMissingLandscape Then lstMissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
-                If .MovieSetMissingNFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
-                If .MovieSetMissingPoster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
+            With Manager.mSettings.Movieset.Filter.Missing
+                If .Banner Then lstMissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
+                If .ClearArt Then lstMissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
+                If .ClearLogo Then lstMissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
+                If .DiscArt Then lstMissingFilter.Add("DiscArtPath IS NULL OR DiscArtPath=''")
+                If .Fanart Then lstMissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
+                If .Landscape Then lstMissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
+                If .NFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
+                If .Poster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
             End With
             filMissing_MovieSets = String.Join(" OR ", lstMissingFilter.ToArray)
             If filMissing_MovieSets IsNot Nothing Then FilterArray_MovieSets.Add(filMissing_MovieSets)
@@ -2888,24 +2898,23 @@ Public Class frmMain
         Dim lstMissingFilter As New List(Of String)
         FilterArray_TVShows.Remove(filMissing_TVShows)
         If chkFilterMissing_Shows.Checked Then
-            With Master.eSettings
-                If .TVShowMissingBanner Then lstMissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
-                If .TVShowMissingCharacterArt Then lstMissingFilter.Add("CharacterArtPath IS NULL OR CharacterArtPath=''")
-                If .TVShowMissingClearArt Then lstMissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
-                If .TVShowMissingClearLogo Then lstMissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
-                If .TVShowMissingExtrafanarts Then lstMissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
-                If .TVShowMissingFanart Then lstMissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
-                If .TVShowMissingLandscape Then lstMissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
-                If .TVShowMissingNFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
-                If .TVShowMissingPoster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
-                If .TVShowMissingTheme Then lstMissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
+            With Manager.mSettings.TV.Filter.Missing
+                If .Banner Then lstMissingFilter.Add("BannerPath IS NULL OR BannerPath=''")
+                If .CharacterArt Then lstMissingFilter.Add("CharacterArtPath IS NULL OR CharacterArtPath=''")
+                If .ClearArt Then lstMissingFilter.Add("ClearArtPath IS NULL OR ClearArtPath=''")
+                If .ClearLogo Then lstMissingFilter.Add("ClearLogoPath IS NULL OR ClearLogoPath=''")
+                If .Extrafanarts Then lstMissingFilter.Add("EFanartsPath IS NULL OR EFanartsPath=''")
+                If .Fanart Then lstMissingFilter.Add("FanartPath IS NULL OR FanartPath=''")
+                If .Landscape Then lstMissingFilter.Add("LandscapePath IS NULL OR LandscapePath=''")
+                If .NFO Then lstMissingFilter.Add("NfoPath IS NULL OR NfoPath=''")
+                If .Poster Then lstMissingFilter.Add("PosterPath IS NULL OR PosterPath=''")
+                If .Theme Then lstMissingFilter.Add("ThemePath IS NULL OR ThemePath=''")
             End With
             filMissing_TVShows = String.Join(" OR ", lstMissingFilter.ToArray)
             If filMissing_TVShows IsNot Nothing Then FilterArray_TVShows.Add(filMissing_TVShows)
         End If
         RunFilter_Shows()
     End Sub
-
 
     Private Sub SetFilterYear_Movies()
         If Not String.IsNullOrEmpty(cbFilterYearFrom_Movies.Text) AndAlso Not cbFilterYearFrom_Movies.Text = Master.eLang.All Then
@@ -3218,220 +3227,282 @@ Public Class frmMain
     End Sub
 
     Private Sub chkMovieMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingBanner.CheckedChanged
-        Master.eSettings.MovieMissingBanner = chkMovieMissingBanner.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Banner = chkMovieMissingBanner.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearArt.CheckedChanged
-        Master.eSettings.MovieMissingClearArt = chkMovieMissingClearArt.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .ClearArt = chkMovieMissingClearArt.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingClearLogo.CheckedChanged
-        Master.eSettings.MovieMissingClearLogo = chkMovieMissingClearLogo.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .ClearLogo = chkMovieMissingClearLogo.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingDiscArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingDiscArt.CheckedChanged
-        Master.eSettings.MovieMissingDiscArt = chkMovieMissingDiscArt.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .DiscArt = chkMovieMissingDiscArt.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingExtrafanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingExtrafanarts.CheckedChanged
-        Master.eSettings.MovieMissingExtrafanarts = chkMovieMissingExtrafanarts.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Extrafanarts = chkMovieMissingExtrafanarts.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingExtrathumbs_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingExtrathumbs.CheckedChanged
-        Master.eSettings.MovieMissingExtrathumbs = chkMovieMissingExtrathumbs.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Extrathumbs = chkMovieMissingExtrathumbs.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingFanart.CheckedChanged
-        Master.eSettings.MovieMissingFanart = chkMovieMissingFanart.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Fanart = chkMovieMissingFanart.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingLandscape.CheckedChanged
-        Master.eSettings.MovieMissingLandscape = chkMovieMissingLandscape.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Landscape = chkMovieMissingLandscape.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingNFO.CheckedChanged
-        Master.eSettings.MovieMissingNFO = chkMovieMissingNFO.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .NFO = chkMovieMissingNFO.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingPoster.CheckedChanged
-        Master.eSettings.MovieMissingPoster = chkMovieMissingPoster.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Poster = chkMovieMissingPoster.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingSubtitles_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingSubtitles.CheckedChanged
-        Master.eSettings.MovieMissingSubtitles = chkMovieMissingSubtitles.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Subtitles = chkMovieMissingSubtitles.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingTheme_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingTheme.CheckedChanged
-        Master.eSettings.MovieMissingTheme = chkMovieMissingTheme.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Theme = chkMovieMissingTheme.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieMissingTrailer_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieMissingTrailer.CheckedChanged
-        Master.eSettings.MovieMissingTrailer = chkMovieMissingTrailer.Checked
-        chkFilterMissing_Movies.Enabled = Master.eSettings.MissingItemsAnyEnabled_Movie
-        chkFilterMissing_Movies.Checked = Master.eSettings.MissingItemsAnyEnabled_Movie
-        SetFilterMissing_Movies()
+        With Manager.mSettings.Movie.Filter.Missing
+            .Trailer = chkMovieMissingTrailer.Checked
+            chkFilterMissing_Movies.Enabled = .AnyEnabled
+            chkFilterMissing_Movies.Checked = .AnyEnabled
+            SetFilterMissing_Movies()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingBanner.CheckedChanged
-        Master.eSettings.MovieSetMissingBanner = chkMovieSetMissingBanner.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .Banner = chkMovieSetMissingBanner.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearArt.CheckedChanged
-        Master.eSettings.MovieSetMissingClearArt = chkMovieSetMissingClearArt.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .ClearArt = chkMovieSetMissingClearArt.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingClearLogo.CheckedChanged
-        Master.eSettings.MovieSetMissingClearLogo = chkMovieSetMissingClearLogo.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .ClearLogo = chkMovieSetMissingClearLogo.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingDiscArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingDiscArt.CheckedChanged
-        Master.eSettings.MovieSetMissingDiscArt = chkMovieSetMissingDiscArt.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .DiscArt = chkMovieSetMissingDiscArt.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingFanart.CheckedChanged
-        Master.eSettings.MovieSetMissingFanart = chkMovieSetMissingFanart.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .Fanart = chkMovieSetMissingFanart.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingLandscape.CheckedChanged
-        Master.eSettings.MovieSetMissingLandscape = chkMovieSetMissingLandscape.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .Landscape = chkMovieSetMissingLandscape.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingNFO.CheckedChanged
-        Master.eSettings.MovieSetMissingNFO = chkMovieSetMissingNFO.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .NFO = chkMovieSetMissingNFO.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkMovieSetMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkMovieSetMissingPoster.CheckedChanged
-        Master.eSettings.MovieSetMissingPoster = chkMovieSetMissingPoster.Checked
-        chkFilterMissing_MovieSets.Enabled = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        chkFilterMissing_MovieSets.Checked = Master.eSettings.MissingItemsAnyEnabled_MovieSet
-        SetFilterMissing_MovieSets()
+        With Manager.mSettings.Movieset.Filter.Missing
+            .Poster = chkMovieSetMissingPoster.Checked
+            chkFilterMissing_MovieSets.Enabled = .AnyEnabled
+            chkFilterMissing_MovieSets.Checked = .AnyEnabled
+            SetFilterMissing_MovieSets()
+        End With
     End Sub
 
     Private Sub chkShowMissingBanner_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingBanner.CheckedChanged
-        Master.eSettings.TVShowMissingBanner = chkShowMissingBanner.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .Banner = chkShowMissingBanner.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingCharacterArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingCharacterArt.CheckedChanged
-        Master.eSettings.TVShowMissingCharacterArt = chkShowMissingCharacterArt.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .CharacterArt = chkShowMissingCharacterArt.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingClearArt_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingClearArt.CheckedChanged
-        Master.eSettings.TVShowMissingClearArt = chkShowMissingClearArt.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .ClearArt = chkShowMissingClearArt.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingClearLogo_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingClearLogo.CheckedChanged
-        Master.eSettings.TVShowMissingClearLogo = chkShowMissingClearLogo.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .ClearLogo = chkShowMissingClearLogo.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingExtrafanarts_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingExtrafanarts.CheckedChanged
-        Master.eSettings.TVShowMissingExtrafanarts = chkShowMissingExtrafanarts.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .Extrafanarts = chkShowMissingExtrafanarts.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingFanart_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingFanart.CheckedChanged
-        Master.eSettings.TVShowMissingFanart = chkShowMissingFanart.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .Fanart = chkShowMissingFanart.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingLandscape_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingLandscape.CheckedChanged
-        Master.eSettings.TVShowMissingLandscape = chkShowMissingLandscape.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .Landscape = chkShowMissingLandscape.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingNFO_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingNFO.CheckedChanged
-        Master.eSettings.TVShowMissingNFO = chkShowMissingNFO.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .NFO = chkShowMissingNFO.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingPoster_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingPoster.CheckedChanged
-        Master.eSettings.TVShowMissingPoster = chkShowMissingPoster.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .Poster = chkShowMissingPoster.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub chkShowMissingTheme_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles chkShowMissingTheme.CheckedChanged
-        Master.eSettings.TVShowMissingTheme = chkShowMissingTheme.Checked
-        chkFilterMissing_Shows.Enabled = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        chkFilterMissing_Shows.Checked = Master.eSettings.MissingItemsAnyEnabled_TVShow
-        SetFilterMissing_Shows()
+        With Manager.mSettings.TV.Filter.Missing
+            .Theme = chkShowMissingTheme.Checked
+            chkFilterMissing_Shows.Enabled = .AnyEnabled
+            chkFilterMissing_Shows.Checked = .AnyEnabled
+            SetFilterMissing_Shows()
+        End With
     End Sub
 
     Private Sub clbFilterTags_Movies_ItemCheck(sender As Object, e As ItemCheckEventArgs) Handles clbFilterTags_Movies.ItemCheck
@@ -4123,7 +4194,7 @@ Public Class frmMain
                 Dim dlgChangeEp As New dlgTVChangeEp(tmpShow)
                 If dlgChangeEp.ShowDialog = DialogResult.OK Then
                     If dlgChangeEp.Result.Count > 0 Then
-                        If Master.eSettings.TVScraperMetaDataScan Then
+                        If Master.eSettings.TV.DataSettings.MetaDataScan Then
                             MetaData.ScanMetaData(tmpEpisode)
                         End If
                         Master.DB.Change_TVEpisode(tmpEpisode, dlgChangeEp.Result, False)
@@ -4385,19 +4456,19 @@ Public Class frmMain
     End Sub
 
     Private Sub cmnuMovieSetLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetLock.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetUnlock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetUnlock.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLockedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetMark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetMark.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, True, String.Empty)
     End Sub
 
     Private Sub cmnuMovieSetUnmark_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuMovieSetUnmark.Click
-        CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
+        CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetMarkedState, False, String.Empty)
     End Sub
 
     Private Sub cmnuEpisodeLock_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmnuEpisodeLock.Click
@@ -4996,7 +5067,7 @@ Public Class frmMain
         dgvMovieSets.ClearSelection()
         ClearInfo()
 
-        Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.MovieSet) With {.MainDetails = New MediaContainers.MainDetails}
+        Dim tmpDBMovieSet = New Database.DBElement(Enums.ContentType.Movieset) With {.MainDetails = New MediaContainers.MainDetails}
 
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
@@ -5405,7 +5476,7 @@ Public Class frmMain
                 pnlGenre(i).BringToFront()
                 AddHandler pbGenre(i).MouseEnter, AddressOf pbGenre_MouseEnter
                 AddHandler pbGenre(i).MouseLeave, AddressOf pbGenre_MouseLeave
-                If Master.eSettings.GeneralShowGenresText Then
+                If Manager.mSettings.General.DisplayGenreText Then
                     pbGenre(i).Image = ImageUtils.AddGenreString(pbGenre(i).Image, pbGenre(i).Name)
                 End If
             Catch ex As Exception
@@ -5481,7 +5552,7 @@ Public Class frmMain
 
         If lstMovieSetID.Count > 0 Then
             Using dlg As New dlgDeleteConfirm
-                If dlg.ShowDialog(lstMovieSetID, Enums.ContentType.MovieSet) = DialogResult.OK Then
+                If dlg.ShowDialog(lstMovieSetID, Enums.ContentType.Movieset) = DialogResult.OK Then
                     FillList(True, True, False)
                 End If
             End Using
@@ -5503,7 +5574,7 @@ Public Class frmMain
                        If(String.IsNullOrEmpty(dgvMovies.Rows(e.RowIndex).Cells("LastPlayed").Value.ToString), True, False),
                        String.Empty)
 
-        ElseIf Master.eSettings.MovieClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
+        ElseIf Manager.mSettings.Movie.GUI.ClickScrape AndAlso colName = "HasSet" AndAlso Not bwMovieScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvMovies.Rows(e.RowIndex).Cells(e.ColumnIndex)
 
             dgvMovies.ClearSelection()
@@ -5516,7 +5587,7 @@ Public Class frmMain
             Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainNFO, True)
             CreateScrapeList_Movie(Enums.ScrapeType.SingleField, scrapeOptions, ScrapeModifiers)
 
-        ElseIf Master.eSettings.MovieClickScrape AndAlso
+        ElseIf Manager.mSettings.Movie.GUI.ClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse
             colName = "DiscArtPath" OrElse colName = "EFanartsPath" OrElse colName = "EThumbsPath" OrElse
             colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse
@@ -5561,7 +5632,7 @@ Public Class frmMain
                 Case "MetaData" 'Metadata - need to add this column to the view.
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainMeta, True)
             End Select
-            If Master.eSettings.MovieClickScrapeAsk Then
+            If Manager.mSettings.Movie.GUI.ClickScrapeAsk Then
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_Movie, ScrapeModifiers)
             Else
                 CreateScrapeList_Movie(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_Movie, ScrapeModifiers)
@@ -5617,7 +5688,7 @@ Public Class frmMain
             colName = "HasSet" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             dgvMovies.ShowCellToolTips = False
 
-            If Master.eSettings.MovieClickScrape AndAlso Not bwMovieScraper.IsBusy Then
+            If Manager.mSettings.Movie.GUI.ClickScrape AndAlso Not bwMovieScraper.IsBusy Then
                 oldStatus = GetStatus()
                 Dim movieTitle As String = dgvMovies.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Dim scrapeFor As String = String.Empty
@@ -5655,7 +5726,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
                 End Select
 
-                If Master.eSettings.MovieClickScrapeAsk Then
+                If Manager.mSettings.Movie.GUI.ClickScrapeAsk Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -5747,21 +5818,21 @@ Public Class frmMain
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
                 e.CellStyle.SelectionForeColor = Color.Green
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom1", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
+                e.CellStyle.ForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker1.Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
+                e.CellStyle.SelectionForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker1.Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom2", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
+                e.CellStyle.ForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker2.Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
+                e.CellStyle.SelectionForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker2.Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom3", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
+                e.CellStyle.ForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker3.Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
+                e.CellStyle.SelectionForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker3.Color)
             ElseIf Convert.ToBoolean(dgvMovies.Item("MarkCustom4", e.RowIndex).Value) Then
-                e.CellStyle.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
+                e.CellStyle.ForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker4.Color)
                 e.CellStyle.Font = New Font("Segoe UI", 9, FontStyle.Bold)
-                e.CellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
+                e.CellStyle.SelectionForeColor = Color.FromArgb(Manager.mSettings.Movie.GUI.CustomMarker4.Color)
             Else
                 e.CellStyle.ForeColor = Color.Black
                 e.CellStyle.Font = New Font("Segoe UI", 8.25, FontStyle.Regular)
@@ -6200,7 +6271,7 @@ Public Class frmMain
 
     Private Sub dgvMovieSets_CellEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvMovieSets.CellEnter
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If Not currMainTabTag.ContentType = Enums.ContentType.MovieSet Then Return
+        If Not currMainTabTag.ContentType = Enums.ContentType.Movieset Then Return
 
         tmrWait_TVShow.Stop()
         tmrWait_TVSeason.Stop()
@@ -8094,12 +8165,12 @@ Public Class frmMain
         SetControlsEnabled(False)
         'If DBMovieSet.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovieSet, True) Then
         Using dEditMovieSet As New dlgEdit
-            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
+            AddonsManager.Instance.RunGeneric(Enums.AddonEventType.BeforeEdit_Movieset, Nothing, Nothing, False, DBMovieSet)
             'AddHandler ModulesManager.Instance.GenericEvent, AddressOf dEditMovie.GenericRunCallBack
             Select Case dEditMovieSet.ShowDialog(DBMovieSet)
                 Case DialogResult.OK
                     DBMovieSet = dEditMovieSet.Result
-                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
+                    AddonsManager.Instance.RunGeneric(Enums.AddonEventType.AfterEdit_Movieset, Nothing, Nothing, False, DBMovieSet)
                     tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                     Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True)
                     RefreshRow_MovieSet(DBMovieSet.ID)
@@ -8215,7 +8286,7 @@ Public Class frmMain
         chkFilterMarkCustom2_Movies.Enabled = isEnabled
         chkFilterMarkCustom3_Movies.Enabled = isEnabled
         chkFilterMarkCustom4_Movies.Enabled = isEnabled
-        chkFilterMissing_Movies.Enabled = If(Master.eSettings.MissingItemsAnyEnabled_Movie, isEnabled, False)
+        chkFilterMissing_Movies.Enabled = If(Manager.mSettings.Movie.Filter.Missing.AnyEnabled, isEnabled, False)
         chkFilterNew_Movies.Enabled = isEnabled
         chkFilterTolerance_Movies.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
         pnlFilterMissingItems_Movies.Visible = If(Not isEnabled, False, pnlFilterMissingItems_Movies.Visible)
@@ -8245,7 +8316,7 @@ Public Class frmMain
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        chkFilterMissing_MovieSets.Enabled = If(Master.eSettings.MissingItemsAnyEnabled_MovieSet, isEnabled, False)
+        chkFilterMissing_MovieSets.Enabled = If(Manager.mSettings.Movieset.Filter.Missing.AnyEnabled, isEnabled, False)
         chkFilterMultiple_MovieSets.Enabled = isEnabled
         chkFilterNew_MovieSets.Enabled = isEnabled
         chkFilterOne_MovieSets.Enabled = isEnabled
@@ -8275,7 +8346,7 @@ Public Class frmMain
         'Me.chkFilterMarkCustom2.Enabled = isEnabled
         'Me.chkFilterMarkCustom3.Enabled = isEnabled
         'Me.chkFilterMarkCustom4.Enabled = isEnabled
-        chkFilterMissing_Shows.Enabled = If(Master.eSettings.MissingItemsAnyEnabled_TVShow, isEnabled, False)
+        chkFilterMissing_Shows.Enabled = If(Manager.mSettings.TV.Filter.Missing.AnyEnabled, isEnabled, False)
         chkFilterNewEpisodes_Shows.Enabled = isEnabled
         chkFilterNewShows_Shows.Enabled = isEnabled
         'Me.chkFilterTolerance.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
@@ -8374,16 +8445,16 @@ Public Class frmMain
                 dgvMovies.DataSource = bsMovies
 
                 Try
-                    If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                    If Manager.mSettings.Movie.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.Movie.GUI.MediaListSorting
                             dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
                 Catch ex As Exception
                     logger.Warn("default list for movie list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieListSorting, True)
-                    If Master.eSettings.MovieGeneralMediaListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.MovieGeneralMediaListSorting
+                    Manager.mSettings.Movie.GUI.MediaListSorting.SetDefaults(Enums.ContentType.Movie, True)
+                    If Manager.mSettings.Movie.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.Movie.GUI.MediaListSorting
                             dgvMovies.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
@@ -8554,16 +8625,16 @@ Public Class frmMain
                 dgvMovieSets.DataSource = bsMovieSets
 
                 Try
-                    If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                    If Manager.mSettings.Movieset.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.Movieset.GUI.MediaListSorting
                             dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
                 Catch ex As Exception
                     logger.Warn("default list for movieset list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSetListSorting, True)
-                    If Master.eSettings.MovieSetGeneralMediaListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.MovieSetGeneralMediaListSorting
+                    Manager.mSettings.Movieset.GUI.MediaListSorting.SetDefaults(Enums.ContentType.Movieset, True)
+                    If Manager.mSettings.Movieset.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.Movieset.GUI.MediaListSorting
                             dgvMovieSets.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
@@ -8647,16 +8718,16 @@ Public Class frmMain
                 dgvTVShows.DataSource = bsTVShows
 
                 Try
-                    If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralShowListSorting
+                    If Manager.mSettings.TV.TVShow.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.TV.TVShow.GUI.MediaListSorting
                             dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
                 Catch ex As Exception
                     logger.Warn("default list for tv show list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowListSorting, True)
-                    If Master.eSettings.TVGeneralShowListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralShowListSorting
+                    Manager.mSettings.TV.TVShow.GUI.MediaListSorting.SetDefaults(Enums.ContentType.TVShow, True)
+                    If Manager.mSettings.TV.TVShow.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.TV.TVShow.GUI.MediaListSorting
                             dgvTVShows.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
@@ -8799,7 +8870,7 @@ Public Class frmMain
                 RestoreSorting_Movies()
             End If
             If doMovieSets Then
-                RestoreSorting_MovieSets()
+                RestoreSorting_Moviesets()
             End If
             If doTVShows Then
                 RestoreSorting_Shows()
@@ -8833,16 +8904,16 @@ Public Class frmMain
 
             If dgvTVSeasons.Columns.Count > 0 Then
                 Try
-                    If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                    If Manager.mSettings.TV.TVSeason.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.TV.TVSeason.GUI.MediaListSorting
                             dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
                 Catch ex As Exception
                     logger.Warn("default list for season list sorting has been loaded")
-                    Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSeasonListSorting, True)
-                    If Master.eSettings.TVGeneralSeasonListSorting.Count > 0 Then
-                        For Each mColumn In Master.eSettings.TVGeneralSeasonListSorting
+                    Manager.mSettings.TV.TVSeason.GUI.MediaListSorting.SetDefaults(Enums.ContentType.TVSeason, True)
+                    If Manager.mSettings.TV.TVSeason.GUI.MediaListSorting.Count > 0 Then
+                        For Each mColumn In Manager.mSettings.TV.TVSeason.GUI.MediaListSorting
                             dgvTVSeasons.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                         Next
                     End If
@@ -8932,16 +9003,16 @@ Public Class frmMain
         dgvTVEpisodes.DataSource = bsTVEpisodes
 
         Try
-            If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+            If Manager.mSettings.TV.TVEpisode.GUI.MediaListSorting.Count > 0 Then
+                For Each mColumn In Manager.mSettings.TV.TVEpisode.GUI.MediaListSorting
                     dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                 Next
             End If
         Catch ex As Exception
             logger.Warn("default list for episode list sorting has been loaded")
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVEpisodeListSorting, True)
-            If Master.eSettings.TVGeneralEpisodeListSorting.Count > 0 Then
-                For Each mColumn In Master.eSettings.TVGeneralEpisodeListSorting
+            Manager.mSettings.TV.TVEpisode.GUI.MediaListSorting.SetDefaults(Enums.ContentType.TVEpisode, True)
+            If Manager.mSettings.TV.TVEpisode.GUI.MediaListSorting.Count > 0 Then
+                For Each mColumn In Manager.mSettings.TV.TVEpisode.GUI.MediaListSorting
                     dgvTVEpisodes.Columns(mColumn.Column.ToString).DisplayIndex = mColumn.DisplayIndex
                 Next
             End If
@@ -9039,237 +9110,239 @@ Public Class frmMain
         Dim lenSize As Integer
         Dim rect As Rectangle
 
-        If MainPoster.Image IsNot Nothing OrElse MainPoster.LoadFromMemoryStream Then
-            lblPosterSize.Text = String.Format("{0} x {1}", MainPoster.Image.Width, MainPoster.Image.Height)
-            pbPosterCache.Image = MainPoster.Image
-            ImageUtils.ResizePB(pbPoster, pbPosterCache, PosterMaxHeight, PosterMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbPoster)
+        With Manager.mSettings.General
+            If MainPoster.Image IsNot Nothing OrElse MainPoster.LoadFromMemoryStream Then
+                lblPosterSize.Text = String.Format("{0} x {1}", MainPoster.Image.Width, MainPoster.Image.Height)
+                pbPosterCache.Image = MainPoster.Image
+                ImageUtils.ResizePB(pbPoster, pbPosterCache, PosterMaxHeight, PosterMaxWidth)
 
-            If Master.eSettings.GeneralShowImgDims Then
-                lblPosterSize.Visible = True
+                If .DisplayImageDimensions Then
+                    lblPosterSize.Visible = True
+                Else
+                    lblPosterSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblPosterTitle.Visible = True
+                Else
+                    lblPosterTitle.Visible = False
+                End If
             Else
-                lblPosterSize.Visible = False
+                If pbPoster.Image IsNot Nothing Then
+                    pbPoster.Image.Dispose()
+                    pbPoster.Image = Nothing
+                End If
             End If
 
-            If Master.eSettings.GeneralShowImgNames Then
-                lblPosterTitle.Visible = True
+            If MainFanartSmall.Image IsNot Nothing OrElse MainFanartSmall.LoadFromMemoryStream Then
+                lblFanartSmallSize.Text = String.Format("{0} x {1}", MainFanartSmall.Image.Width, MainFanartSmall.Image.Height)
+                pbFanartSmallCache.Image = MainFanartSmall.Image
+                ImageUtils.ResizePB(pbFanartSmall, pbFanartSmallCache, FanartSmallMaxHeight, FanartSmallMaxWidth)
+
+                'Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)    TODO: move the Location to theme settings
+                pnlFanartSmall.Location = New Point(124, 130)
+
+                If .DisplayImageDimensions Then
+                    lblFanartSmallSize.Visible = True
+                Else
+                    lblFanartSmallSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblFanartSmallTitle.Visible = True
+                Else
+                    lblFanartSmallTitle.Visible = False
+                End If
             Else
-                lblPosterTitle.Visible = False
+                If pbFanartSmall.Image IsNot Nothing Then
+                    pbFanartSmall.Image.Dispose()
+                    pbFanartSmall.Image = Nothing
+                End If
             End If
-        Else
-            If pbPoster.Image IsNot Nothing Then
-                pbPoster.Image.Dispose()
-                pbPoster.Image = Nothing
-            End If
-        End If
 
-        If MainFanartSmall.Image IsNot Nothing OrElse MainFanartSmall.LoadFromMemoryStream Then
-            lblFanartSmallSize.Text = String.Format("{0} x {1}", MainFanartSmall.Image.Width, MainFanartSmall.Image.Height)
-            pbFanartSmallCache.Image = MainFanartSmall.Image
-            ImageUtils.ResizePB(pbFanartSmall, pbFanartSmallCache, FanartSmallMaxHeight, FanartSmallMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbFanartSmall)
-            'Me.pnlFanartSmall.Location = New Point(Me.pnlPoster.Location.X + Me.pnlPoster.Width + 5, Me.pnlPoster.Location.Y)    TODO: move the Location to theme settings
-            pnlFanartSmall.Location = New Point(124, 130)
+            If MainLandscape.Image IsNot Nothing OrElse MainLandscape.LoadFromMemoryStream Then
+                lblLandscapeSize.Text = String.Format("{0} x {1}", MainLandscape.Image.Width, MainLandscape.Image.Height)
+                pbLandscapeCache.Image = MainLandscape.Image
+                ImageUtils.ResizePB(pbLandscape, pbLandscapeCache, LandscapeMaxHeight, LandscapeMaxWidth)
 
-            If Master.eSettings.GeneralShowImgDims Then
-                lblFanartSmallSize.Visible = True
+                'Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
+                pnlLandscape.Location = New Point(419, 130)
+
+                If .DisplayImageDimensions Then
+                    lblLandscapeSize.Visible = True
+                Else
+                    lblLandscapeSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblLandscapeTitle.Visible = True
+                Else
+                    lblLandscapeTitle.Visible = False
+                End If
             Else
-                lblFanartSmallSize.Visible = False
+                If pbLandscape.Image IsNot Nothing Then
+                    pbLandscape.Image.Dispose()
+                    pbLandscape.Image = Nothing
+                End If
             End If
 
-            If Master.eSettings.GeneralShowImgNames Then
-                lblFanartSmallTitle.Visible = True
+            If MainClearArt.Image IsNot Nothing OrElse MainClearArt.LoadFromMemoryStream Then
+                lblClearArtSize.Text = String.Format("{0} x {1}", MainClearArt.Image.Width, MainClearArt.Image.Height)
+                pbClearArtCache.Image = MainClearArt.Image
+                ImageUtils.ResizePB(pbClearArt, pbClearArtCache, ClearArtMaxHeight, ClearArtMaxWidth)
+
+                'Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
+                pnlClearArt.Location = New Point(715, 130)
+
+                If .DisplayImageDimensions Then
+                    lblClearArtSize.Visible = True
+                Else
+                    lblClearArtSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblClearArtTitle.Visible = True
+                Else
+                    lblClearArtTitle.Visible = False
+                End If
             Else
-                lblFanartSmallTitle.Visible = False
+                If pbClearArt.Image IsNot Nothing Then
+                    pbClearArt.Image.Dispose()
+                    pbClearArt.Image = Nothing
+                End If
             End If
-        Else
-            If pbFanartSmall.Image IsNot Nothing Then
-                pbFanartSmall.Image.Dispose()
-                pbFanartSmall.Image = Nothing
-            End If
-        End If
 
-        If MainLandscape.Image IsNot Nothing OrElse MainLandscape.LoadFromMemoryStream Then
-            lblLandscapeSize.Text = String.Format("{0} x {1}", MainLandscape.Image.Width, MainLandscape.Image.Height)
-            pbLandscapeCache.Image = MainLandscape.Image
-            ImageUtils.ResizePB(pbLandscape, pbLandscapeCache, LandscapeMaxHeight, LandscapeMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbLandscape)
-            'Me.pnlLandscape.Location = New Point(Me.pnlFanartSmall.Location.X + Me.pnlFanartSmall.Width + 5, Me.pnlFanartSmall.Location.Y)
-            pnlLandscape.Location = New Point(419, 130)
+            If MainCharacterArt.Image IsNot Nothing OrElse MainCharacterArt.LoadFromMemoryStream Then
+                lblCharacterArtSize.Text = String.Format("{0} x {1}", MainCharacterArt.Image.Width, MainCharacterArt.Image.Height)
+                pbCharacterArtCache.Image = MainCharacterArt.Image
+                ImageUtils.ResizePB(pbCharacterArt, pbCharacterArtCache, CharacterArtMaxHeight, CharacterArtMaxWidth)
 
-            If Master.eSettings.GeneralShowImgDims Then
-                lblLandscapeSize.Visible = True
+                'Me.pnlCharacterArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+                pnlCharacterArt.Location = New Point(1011, 130)
+
+                If .DisplayImageDimensions Then
+                    lblCharacterArtSize.Visible = True
+                Else
+                    lblCharacterArtSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblCharacterArtTitle.Visible = True
+                Else
+                    lblCharacterArtTitle.Visible = False
+                End If
             Else
-                lblLandscapeSize.Visible = False
+                If pbCharacterArt.Image IsNot Nothing Then
+                    pbCharacterArt.Image.Dispose()
+                    pbCharacterArt.Image = Nothing
+                End If
             End If
 
-            If Master.eSettings.GeneralShowImgNames Then
-                lblLandscapeTitle.Visible = True
+            If MainDiscArt.Image IsNot Nothing OrElse MainDiscArt.LoadFromMemoryStream Then
+                lblDiscArtSize.Text = String.Format("{0} x {1}", MainDiscArt.Image.Width, MainDiscArt.Image.Height)
+                pbDiscArtCache.Image = MainDiscArt.Image
+                ImageUtils.ResizePB(pbDiscArt, pbDiscArtCache, DiscArtMaxHeight, DiscArtMaxWidth)
+
+                'Me.pnlDiscArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
+                pnlDiscArt.Location = New Point(1011, 130)
+
+                If .DisplayImageDimensions Then
+                    lblDiscArtSize.Visible = True
+                Else
+                    lblDiscArtSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblDiscArtTitle.Visible = True
+                Else
+                    lblDiscArtTitle.Visible = False
+                End If
             Else
-                lblLandscapeTitle.Visible = False
+                If pbDiscArt.Image IsNot Nothing Then
+                    pbDiscArt.Image.Dispose()
+                    pbDiscArt.Image = Nothing
+                End If
             End If
-        Else
-            If pbLandscape.Image IsNot Nothing Then
-                pbLandscape.Image.Dispose()
-                pbLandscape.Image = Nothing
-            End If
-        End If
 
-        If MainClearArt.Image IsNot Nothing OrElse MainClearArt.LoadFromMemoryStream Then
-            lblClearArtSize.Text = String.Format("{0} x {1}", MainClearArt.Image.Width, MainClearArt.Image.Height)
-            pbClearArtCache.Image = MainClearArt.Image
-            ImageUtils.ResizePB(pbClearArt, pbClearArtCache, ClearArtMaxHeight, ClearArtMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbClearArt)
-            'Me.pnlClearArt.Location = New Point(Me.pnlLandscape.Location.X + Me.pnlLandscape.Width + 5, Me.pnlLandscape.Location.Y)
-            pnlClearArt.Location = New Point(715, 130)
+            If MainBanner.Image IsNot Nothing OrElse MainBanner.LoadFromMemoryStream Then
+                lblBannerSize.Text = String.Format("{0} x {1}", MainBanner.Image.Width, MainBanner.Image.Height)
+                pbBannerCache.Image = MainBanner.Image
+                ImageUtils.ResizePB(pbBanner, pbBannerCache, BannerMaxHeight, BannerMaxWidth)
 
-            If Master.eSettings.GeneralShowImgDims Then
-                lblClearArtSize.Visible = True
+                'Me.pnlBanner.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
+                pnlBanner.Location = New Point(124, 327)
+
+                If .DisplayImageDimensions Then
+                    lblBannerSize.Visible = True
+                Else
+                    lblBannerSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblBannerTitle.Visible = True
+                Else
+                    lblBannerTitle.Visible = False
+                End If
             Else
-                lblClearArtSize.Visible = False
+                If pbBanner.Image IsNot Nothing Then
+                    pbBanner.Image.Dispose()
+                    pbBanner.Image = Nothing
+                End If
             End If
 
-            If Master.eSettings.GeneralShowImgNames Then
-                lblClearArtTitle.Visible = True
+            If MainClearLogo.Image IsNot Nothing OrElse MainClearLogo.LoadFromMemoryStream Then
+                lblClearLogoSize.Text = String.Format("{0} x {1}", MainClearLogo.Image.Width, MainClearLogo.Image.Height)
+                pbClearLogoCache.Image = MainClearLogo.Image
+                ImageUtils.ResizePB(pbClearLogo, pbClearLogoCache, ClearLogoMaxHeight, ClearLogoMaxWidth)
+
+                'Me.pnlClearLogo.Location = New Point(Me.pnlLandscape.Location.X, Me.pnlLandscape.Location.Y + Me.pnlLandscape.Height + 5)
+                pnlClearLogo.Location = New Point(419, 327)
+
+                If .DisplayImageDimensions Then
+                    lblClearLogoSize.Visible = True
+                Else
+                    lblClearLogoSize.Visible = False
+                End If
+
+                If .DisplayImageNames Then
+                    lblClearLogoTitle.Visible = True
+                Else
+                    lblClearLogoTitle.Visible = False
+                End If
             Else
-                lblClearArtTitle.Visible = False
+                If pbClearLogo.Image IsNot Nothing Then
+                    pbClearLogo.Image.Dispose()
+                    pbClearLogo.Image = Nothing
+                End If
             End If
-        Else
-            If pbClearArt.Image IsNot Nothing Then
-                pbClearArt.Image.Dispose()
-                pbClearArt.Image = Nothing
-            End If
-        End If
 
-        If MainCharacterArt.Image IsNot Nothing OrElse MainCharacterArt.LoadFromMemoryStream Then
-            lblCharacterArtSize.Text = String.Format("{0} x {1}", MainCharacterArt.Image.Width, MainCharacterArt.Image.Height)
-            pbCharacterArtCache.Image = MainCharacterArt.Image
-            ImageUtils.ResizePB(pbCharacterArt, pbCharacterArtCache, CharacterArtMaxHeight, CharacterArtMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbCharacterArt)
-            'Me.pnlCharacterArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
-            pnlCharacterArt.Location = New Point(1011, 130)
+            If MainFanart.Image IsNot Nothing OrElse MainFanart.LoadFromMemoryStream Then
+                pbFanartCache.Image = MainFanart.Image
 
-            If Master.eSettings.GeneralShowImgDims Then
-                lblCharacterArtSize.Visible = True
+                ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
+                pbFanart.Left = Convert.ToInt32((scMain.Panel2.Width - pbFanart.Width) / 2)
+
+                If pbFanart.Image IsNot Nothing AndAlso .DisplayImageDimensions Then
+                    g = Graphics.FromImage(pbFanart.Image)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    strSize = String.Format("{0} x {1}", MainFanart.Image.Width, MainFanart.Image.Height)
+                    lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
+                    rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), pbFanart.Height - 25, lenSize + 30, 25)
+                    ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
+                    g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2), pbFanart.Height - 20)
+                End If
             Else
-                lblCharacterArtSize.Visible = False
+                If pbFanartCache.Image IsNot Nothing Then
+                    pbFanartCache.Image.Dispose()
+                    pbFanartCache.Image = Nothing
+                End If
+                If pbFanart.Image IsNot Nothing Then
+                    pbFanart.Image.Dispose()
+                    pbFanart.Image = Nothing
+                End If
             End If
+        End With
 
-            If Master.eSettings.GeneralShowImgNames Then
-                lblCharacterArtTitle.Visible = True
-            Else
-                lblCharacterArtTitle.Visible = False
-            End If
-        Else
-            If pbCharacterArt.Image IsNot Nothing Then
-                pbCharacterArt.Image.Dispose()
-                pbCharacterArt.Image = Nothing
-            End If
-        End If
-
-        If MainDiscArt.Image IsNot Nothing OrElse MainDiscArt.LoadFromMemoryStream Then
-            lblDiscArtSize.Text = String.Format("{0} x {1}", MainDiscArt.Image.Width, MainDiscArt.Image.Height)
-            pbDiscArtCache.Image = MainDiscArt.Image
-            ImageUtils.ResizePB(pbDiscArt, pbDiscArtCache, DiscArtMaxHeight, DiscArtMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbDiscArt)
-            'Me.pnlDiscArt.Location = New Point(Me.pnlClearArt.Location.X + Me.pnlClearArt.Width + 5, Me.pnlClearArt.Location.Y)
-            pnlDiscArt.Location = New Point(1011, 130)
-
-            If Master.eSettings.GeneralShowImgDims Then
-                lblDiscArtSize.Visible = True
-            Else
-                lblDiscArtSize.Visible = False
-            End If
-
-            If Master.eSettings.GeneralShowImgNames Then
-                lblDiscArtTitle.Visible = True
-            Else
-                lblDiscArtTitle.Visible = False
-            End If
-        Else
-            If pbDiscArt.Image IsNot Nothing Then
-                pbDiscArt.Image.Dispose()
-                pbDiscArt.Image = Nothing
-            End If
-        End If
-
-        If MainBanner.Image IsNot Nothing OrElse MainBanner.LoadFromMemoryStream Then
-            lblBannerSize.Text = String.Format("{0} x {1}", MainBanner.Image.Width, MainBanner.Image.Height)
-            pbBannerCache.Image = MainBanner.Image
-            ImageUtils.ResizePB(pbBanner, pbBannerCache, BannerMaxHeight, BannerMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbBanner)
-            'Me.pnlBanner.Location = New Point(Me.pnlFanartSmall.Location.X, Me.pnlFanartSmall.Location.Y + Me.pnlFanartSmall.Height + 5)
-            pnlBanner.Location = New Point(124, 327)
-
-            If Master.eSettings.GeneralShowImgDims Then
-                lblBannerSize.Visible = True
-            Else
-                lblBannerSize.Visible = False
-            End If
-
-            If Master.eSettings.GeneralShowImgNames Then
-                lblBannerTitle.Visible = True
-            Else
-                lblBannerTitle.Visible = False
-            End If
-        Else
-            If pbBanner.Image IsNot Nothing Then
-                pbBanner.Image.Dispose()
-                pbBanner.Image = Nothing
-            End If
-        End If
-
-        If MainClearLogo.Image IsNot Nothing OrElse MainClearLogo.LoadFromMemoryStream Then
-            lblClearLogoSize.Text = String.Format("{0} x {1}", MainClearLogo.Image.Width, MainClearLogo.Image.Height)
-            pbClearLogoCache.Image = MainClearLogo.Image
-            ImageUtils.ResizePB(pbClearLogo, pbClearLogoCache, ClearLogoMaxHeight, ClearLogoMaxWidth)
-            If Master.eSettings.GeneralImagesGlassOverlay Then ImageUtils.SetGlassOverlay(pbClearLogo)
-            'Me.pnlClearLogo.Location = New Point(Me.pnlLandscape.Location.X, Me.pnlLandscape.Location.Y + Me.pnlLandscape.Height + 5)
-            pnlClearLogo.Location = New Point(419, 327)
-
-            If Master.eSettings.GeneralShowImgDims Then
-                lblClearLogoSize.Visible = True
-            Else
-                lblClearLogoSize.Visible = False
-            End If
-
-            If Master.eSettings.GeneralShowImgNames Then
-                lblClearLogoTitle.Visible = True
-            Else
-                lblClearLogoTitle.Visible = False
-            End If
-        Else
-            If pbClearLogo.Image IsNot Nothing Then
-                pbClearLogo.Image.Dispose()
-                pbClearLogo.Image = Nothing
-            End If
-        End If
-
-        If MainFanart.Image IsNot Nothing OrElse MainFanart.LoadFromMemoryStream Then
-            pbFanartCache.Image = MainFanart.Image
-
-            ImageUtils.ResizePB(pbFanart, pbFanartCache, scMain.Panel2.Height - 90, scMain.Panel2.Width)
-            pbFanart.Left = Convert.ToInt32((scMain.Panel2.Width - pbFanart.Width) / 2)
-
-            If pbFanart.Image IsNot Nothing AndAlso Master.eSettings.GeneralShowImgDims Then
-                g = Graphics.FromImage(pbFanart.Image)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                strSize = String.Format("{0} x {1}", MainFanart.Image.Width, MainFanart.Image.Height)
-                lenSize = Convert.ToInt32(g.MeasureString(strSize, New Font("Arial", 8, FontStyle.Bold)).Width)
-                rect = New Rectangle(Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2 - 15), pbFanart.Height - 25, lenSize + 30, 25)
-                ImageUtils.DrawGradEllipse(g, rect, Color.FromArgb(250, 120, 120, 120), Color.FromArgb(0, 255, 255, 255))
-                g.DrawString(strSize, New Font("Arial", 8, FontStyle.Bold), New SolidBrush(Color.White), Convert.ToInt32((pbFanart.Image.Width - lenSize) / 2), pbFanart.Height - 20)
-            End If
-        Else
-            If pbFanartCache.Image IsNot Nothing Then
-                pbFanartCache.Image.Dispose()
-                pbFanartCache.Image = Nothing
-            End If
-            If pbFanart.Image IsNot Nothing Then
-                pbFanart.Image.Dispose()
-                pbFanart.Image = Nothing
-            End If
-        End If
         If pbBanner.Image IsNot Nothing Then pnlBanner.Visible = True
         If pbCharacterArt.Image IsNot Nothing Then pnlCharacterArt.Visible = True
         If pbClearArt.Image IsNot Nothing Then pnlClearArt.Visible = True
@@ -9386,7 +9459,7 @@ Public Class frmMain
             lblStudio.Text = pbStudio.Tag.ToString
         End If
 
-        If Master.eSettings.MovieScraperMetaDataScan Then
+        If Master.eSettings.Movie.DataSettings.MetaDataScan Then
             SetAVImages(APIXML.GetAVImages(currMovie.MainDetails.FileInfo, False, currMovie.MainDetails.VideoSource))
             pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
@@ -9552,7 +9625,7 @@ Public Class frmMain
         If clsXMLAdvancedSettings.GetBooleanSetting("StudioTagAlwaysOn", False) Then
             lblStudio.Text = pbStudio.Tag.ToString
         End If
-        If Master.eSettings.TVScraperMetaDataScan AndAlso currTV.FilenameSpecified Then
+        If Master.eSettings.TV.DataSettings.MetaDataScan AndAlso currTV.FilenameSpecified Then
             SetAVImages(APIXML.GetAVImages(currTV.MainDetails.FileInfo, True, currTV.MainDetails.VideoSource))
             pnlInfoIcons.Width = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + pbStudio.Width + 6
             pbStudio.Left = pbVideo.Width + pbVType.Width + pbResolution.Width + pbAudio.Width + pbChannels.Width + 5
@@ -9852,20 +9925,22 @@ Public Class frmMain
                 pnlFilter_MovieSets.Visible = False
                 pnlFilter_Shows.Visible = False
                 Application.DoEvents()
-                Master.eSettings.GeneralFilterPanelIsRaisedMovie = FilterPanelIsRaised_Movie
-                Master.eSettings.GeneralFilterPanelIsRaisedMovieSet = FilterPanelIsRaised_MovieSet
-                Master.eSettings.GeneralFilterPanelIsRaisedTVShow = FilterPanelIsRaised_TVShow
-                Master.eSettings.GeneralInfoPanelStateMovie = InfoPanelState_Movie
-                Master.eSettings.GeneralInfoPanelStateMovieSet = InfoPanelState_MovieSet
-                Master.eSettings.GeneralInfoPanelStateTVShow = InfoPanelState_TVShow
-                Master.eSettings.GeneralSplitterDistanceMain = scMain.SplitterDistance
-                Master.eSettings.GeneralSplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
-                Master.eSettings.GeneralSplitterDistanceTVShow = scTV.SplitterDistance
-                If WindowState = FormWindowState.Normal Then
-                    Master.eSettings.GeneralWindowLoc = Location
-                    Master.eSettings.GeneralWindowSize = Size
-                End If
-                Master.eSettings.GeneralWindowState = WindowState
+                With Manager.mSettings
+                    .Movie.Filter.PanelIsRaised = FilterPanelIsRaised_Movie
+                    .Movieset.Filter.PanelIsRaised = FilterPanelIsRaised_MovieSet
+                    .TV.Filter.PanelIsRaised = FilterPanelIsRaised_TVShow
+                    .Movie.GUI.InfoPanelState = InfoPanelState_Movie
+                    .Movieset.GUI.InfoPanelState = InfoPanelState_MovieSet
+                    .TV.GUI.InfoPanelState = InfoPanelState_TVShow
+                    .General.SplitterDistanceMain = scMain.SplitterDistance
+                    .General.SplitterDistanceTVSeason = scTVSeasonsEpisodes.SplitterDistance
+                    .General.SplitterDistanceTVShow = scTV.SplitterDistance
+                    If WindowState = FormWindowState.Normal Then
+                        .General.WindowLocation = Location
+                        .General.WindowSize = Size
+                    End If
+                    .General.WindowState = WindowState
+                End With
                 Master.eSettings.Save()
             End If
 
@@ -9918,7 +9993,7 @@ Public Class frmMain
         Master.DB.Load_ExcludeDirs()
 
         tpMovies.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(36, "Movies"), .ContentType = Enums.ContentType.Movie, .DefaultList = "movielist"}
-        tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.MovieSet, .DefaultList = "setslist"}
+        tpMovieSets.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(366, "Sets"), .ContentType = Enums.ContentType.Movieset, .DefaultList = "setslist"}
         tpTVShows.Tag = New Structures.MainTabType With {.ContentName = Master.eLang.GetString(653, "TV Shows"), .ContentType = Enums.ContentType.TV, .DefaultList = "tvshowlist"}
         AddonsManager.Instance.RuntimeObjects.MediaTabSelected = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
@@ -10047,25 +10122,28 @@ Public Class frmMain
 
                 SetUp(True)
 
-                Master.fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
-                Location = Master.eSettings.GeneralWindowLoc
-                Size = Master.eSettings.GeneralWindowSize
-                WindowState = Master.eSettings.GeneralWindowState
-                If Not WindowState = FormWindowState.Minimized Then
-                    Master.AppPos = Bounds
-                End If
+                With Manager.mSettings.General
 
-                'SplitterDistance
-                Try ' On error just ignore this a let it use default
-                    scMain.SplitterDistance = Master.eSettings.GeneralSplitterDistanceMain
-                    scTV.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVShow
-                    scTVSeasonsEpisodes.SplitterDistance = Master.eSettings.GeneralSplitterDistanceTVSeason
-                Catch ex As Exception
-                    logger.Error(ex, New StackFrame().GetMethod().Name)
-                End Try
+                    Master.fLoading.SetLoadingMesg(Master.eLang.GetString(863, "Positioning controls..."))
+                    Location = .WindowLocation
+                    Size = .WindowSize
+                    WindowState = .WindowState
+                    If Not WindowState = FormWindowState.Minimized Then
+                        Master.AppPos = Bounds
+                    End If
+
+                    'SplitterDistance
+                    Try ' On error just ignore this a let it use default
+                        scMain.SplitterDistance = .SplitterDistanceMain
+                        scTV.SplitterDistance = .SplitterDistanceTVShow
+                        scTVSeasonsEpisodes.SplitterDistance = .SplitterDistanceTVSeason
+                    Catch ex As Exception
+                        logger.Error(ex, New StackFrame().GetMethod().Name)
+                    End Try
+                End With
 
                 'Info panels
-                InfoPanelState_Movie = Master.eSettings.GeneralInfoPanelStateMovie
+                InfoPanelState_Movie = Manager.mSettings.Movie.GUI.InfoPanelState
                 Select Case InfoPanelState_Movie
                     Case 0
                         pnlInfoPanel.Height = 25
@@ -10084,11 +10162,11 @@ Public Class frmMain
                         btnMid.Enabled = True
                 End Select
 
-                InfoPanelState_MovieSet = Master.eSettings.GeneralInfoPanelStateMovieSet
-                InfoPanelState_TVShow = Master.eSettings.GeneralInfoPanelStateTVShow
+                InfoPanelState_MovieSet = Manager.mSettings.Movieset.GUI.InfoPanelState
+                InfoPanelState_TVShow = Manager.mSettings.TV.GUI.InfoPanelState
 
                 'Filter panels
-                FilterPanelIsRaised_Movie = Master.eSettings.GeneralFilterPanelIsRaisedMovie
+                FilterPanelIsRaised_Movie = Manager.mSettings.Movie.Filter.PanelIsRaised
                 If FilterPanelIsRaised_Movie Then
                     'Me.pnlFilter_Movies.Height = Functions.Quantize(Me.gbFilterSpecific_Movies.Height + Me.lblFilter_Movies.Height + 15, 5)
                     pnlFilter_Movies.AutoSize = True
@@ -10102,7 +10180,7 @@ Public Class frmMain
                     btnFilterUp_Movies.Enabled = True
                 End If
 
-                FilterPanelIsRaised_MovieSet = Master.eSettings.GeneralFilterPanelIsRaisedMovieSet
+                FilterPanelIsRaised_MovieSet = Manager.mSettings.Movieset.Filter.PanelIsRaised
                 If FilterPanelIsRaised_MovieSet Then
                     'Me.pnlFilter_MovieSets.Height = Functions.Quantize(Me.gbFilterSpecific_MovieSets.Height + Me.lblFilter_MovieSets.Height + 15, 5)
                     pnlFilter_MovieSets.AutoSize = True
@@ -10116,7 +10194,7 @@ Public Class frmMain
                     btnFilterUp_MovieSets.Enabled = True
                 End If
 
-                FilterPanelIsRaised_TVShow = Master.eSettings.GeneralFilterPanelIsRaisedTVShow
+                FilterPanelIsRaised_TVShow = Manager.mSettings.TV.Filter.PanelIsRaised
                 If FilterPanelIsRaised_TVShow Then
                     'Me.pnlFilter_Shows.Height = Functions.Quantize(Me.gbFilterSpecific_Shows.Height + Me.lblFilter_Shows.Height + 15, 5)
                     pnlFilter_Shows.AutoSize = True
@@ -10314,7 +10392,7 @@ Public Class frmMain
             Case Enums.AddonEventType.Remove_Movie
                 RemoveRow_Movie(Convert.ToInt64(_params(0)))
 
-            Case Enums.AddonEventType.Remove_MovieSet
+            Case Enums.AddonEventType.Remove_Movieset
                 RemoveRow_MovieSet(Convert.ToInt64(_params(0)))
 
             Case Enums.AddonEventType.Remove_TVEpisode
@@ -10406,7 +10484,7 @@ Public Class frmMain
                 Select Case eProgressValue.ContentType
                     Case Enums.ContentType.Movie
                         RefreshRow_Movie(eProgressValue.ID)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         RefreshRow_MovieSet(eProgressValue.ID)
                     Case Enums.ContentType.TVEpisode
                         RefreshRow_TVEpisode(eProgressValue.ID)
@@ -10690,7 +10768,7 @@ Public Class frmMain
                 Case "movie"
                     CreateTask(Enums.ContentType.Movie, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
                 Case "movieset"
-                    CreateTask(Enums.ContentType.MovieSet, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
+                    CreateTask(Enums.ContentType.Movieset, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
                 Case "tvshow"
                     CreateTask(Enums.ContentType.TVShow, Enums.SelectionType.Selected, Enums.TaskManagerType.SetLanguage, False, strLanguage)
             End Select
@@ -11056,35 +11134,41 @@ Public Class frmMain
     End Sub
 
     Private Sub mnuScrapeMovies_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeMovies.ButtonClick
-        If Master.eSettings.MovieGeneralCustomScrapeButtonEnabled Then
-            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieGeneralCustomScrapeButtonModifierType, True)
-            CreateScrapeList_Movie(Master.eSettings.MovieGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_Movie, ScrapeModifiers)
-        Else
-            mnuScrapeMovies.ShowDropDown()
-        End If
+        With Manager.mSettings.Movie.GUI.CustomScrapeButton
+            If .Enabled Then
+                Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                Functions.SetScrapeModifiers(ScrapeModifiers, .ModifierType, True)
+                CreateScrapeList_Movie(.ScrapeType, Master.DefaultOptions_Movie, ScrapeModifiers)
+            Else
+                mnuScrapeMovies.ShowDropDown()
+            End If
+        End With
     End Sub
 
     Private Sub mnuScrapeMovieSets_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeMovieSets.ButtonClick
-        If Master.eSettings.MovieSetGeneralCustomScrapeButtonEnabled Then
-            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.MovieSetGeneralCustomScrapeButtonModifierType, True)
-            CreateScrapeList_MovieSet(Master.eSettings.MovieSetGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_MovieSet, ScrapeModifiers)
-        Else
-            mnuScrapeMovieSets.ShowDropDown()
-        End If
+        With Manager.mSettings.Movieset.GUI.CustomScrapeButton
+            If .Enabled Then
+                Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                Functions.SetScrapeModifiers(ScrapeModifiers, .ModifierType, True)
+                CreateScrapeList_MovieSet(.ScrapeType, Master.DefaultOptions_MovieSet, ScrapeModifiers)
+            Else
+                mnuScrapeMovieSets.ShowDropDown()
+            End If
+        End With
     End Sub
 
     Private Sub mnuScrapeTVShows_ButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuScrapeTVShows.ButtonClick
-        If Master.eSettings.TVGeneralCustomScrapeButtonEnabled Then
-            Dim ScrapeModifiers As New Structures.ScrapeModifiers
-            Functions.SetScrapeModifiers(ScrapeModifiers, Master.eSettings.TVGeneralCustomScrapeButtonModifierType, True)
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.withEpisodes, True)
-            Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.withSeasons, True)
-            CreateScrapeList_TV(Master.eSettings.TVGeneralCustomScrapeButtonScrapeType, Master.DefaultOptions_TV, ScrapeModifiers)
-        Else
-            mnuScrapeTVShows.ShowDropDown()
-        End If
+        With Manager.mSettings.TV.GUI.CustomScrapeButton
+            If .Enabled Then
+                Dim ScrapeModifiers As New Structures.ScrapeModifiers
+                Functions.SetScrapeModifiers(ScrapeModifiers, .ModifierType, True)
+                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.withEpisodes, True)
+                Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.withSeasons, True)
+                CreateScrapeList_TV(.ScrapeType, Master.DefaultOptions_TV, ScrapeModifiers)
+            Else
+                mnuScrapeTVShows.ShowDropDown()
+            End If
+        End With
     End Sub
 
     Private Sub mnuDataField_Opened(sender As Object, e As EventArgs) Handles mnuDataField.Opened
@@ -11113,270 +11197,280 @@ Public Class frmMain
         With Master.eSettings
             Select Case _SelectedContentType
                 Case "movie"
-                    mnuScrapeOptionActors.Enabled = .MovieScraperCast
-                    mnuScrapeOptionActors.Visible = True
-                    mnuScrapeOptionAired.Enabled = False
-                    mnuScrapeOptionAired.Visible = False
-                    mnuScrapeOptionCertifications.Enabled = .MovieScraperCert
-                    mnuScrapeOptionCertifications.Visible = True
-                    mnuScrapeOptionCollectionID.Enabled = .MovieScraperCollectionID
-                    mnuScrapeOptionCollectionID.Visible = True
-                    mnuScrapeOptionCountries.Enabled = .MovieScraperCountry
-                    mnuScrapeOptionCountries.Visible = True
-                    mnuScrapeOptionCreators.Enabled = False
-                    mnuScrapeOptionCreators.Visible = False
-                    mnuScrapeOptionDirectors.Enabled = .MovieScraperDirector
-                    mnuScrapeOptionDirectors.Visible = True
-                    mnuScrapeOptionEpiGuideURL.Enabled = False
-                    mnuScrapeOptionEpiGuideURL.Visible = False
-                    mnuScrapeOptionGenres.Enabled = .MovieScraperGenre
-                    mnuScrapeOptionGenres.Visible = True
-                    mnuScrapeOptionGuestStars.Enabled = False
-                    mnuScrapeOptionGuestStars.Visible = False
-                    mnuScrapeOptionMPAA.Enabled = .MovieScraperMPAA
-                    mnuScrapeOptionMPAA.Visible = True
-                    mnuScrapeOptionOriginalTitle.Enabled = .MovieScraperOriginalTitle
-                    mnuScrapeOptionOriginalTitle.Visible = True
-                    mnuScrapeOptionOutline.Enabled = .MovieScraperOutline
-                    mnuScrapeOptionOutline.Visible = True
-                    mnuScrapeOptionPlot.Enabled = .MovieScraperPlot
-                    mnuScrapeOptionPlot.Visible = True
-                    mnuScrapeOptionPremiered.Enabled = False
-                    mnuScrapeOptionPremiered.Visible = False
-                    mnuScrapeOptionRating.Enabled = .MovieScraperRating
-                    mnuScrapeOptionRating.Visible = True
-                    mnuScrapeOptionReleaseDate.Enabled = .MovieScraperRelease
-                    mnuScrapeOptionReleaseDate.Visible = True
-                    mnuScrapeOptionRuntime.Enabled = .MovieScraperRuntime
-                    mnuScrapeOptionRuntime.Visible = True
-                    mnuScrapeOptionStatus.Enabled = False
-                    mnuScrapeOptionStatus.Visible = False
-                    mnuScrapeOptionStudios.Enabled = .MovieScraperStudio
-                    mnuScrapeOptionStudios.Visible = True
-                    mnuScrapeOptionTagline.Enabled = .MovieScraperTagline
-                    mnuScrapeOptionTagline.Visible = True
-                    mnuScrapeOptionTitle.Enabled = .MovieScraperTitle
-                    mnuScrapeOptionTitle.Visible = True
-                    mnuScrapeOptionTop250.Enabled = .MovieScraperTop250
-                    mnuScrapeOptionTop250.Visible = True
-                    mnuScrapeOptionTrailer.Enabled = .MovieScraperTrailer
-                    mnuScrapeOptionTrailer.Visible = True
-                    mnuScrapeOptionWriters.Enabled = .MovieScraperCredits
-                    mnuScrapeOptionWriters.Visible = True
-                    mnuScrapeOptionYear.Enabled = .MovieScraperYear
-                    mnuScrapeOptionYear.Visible = True
+                    With Master.eSettings.Movie.DataSettings
+                        mnuScrapeOptionActors.Enabled = .Actors.Enabled
+                        mnuScrapeOptionActors.Visible = True
+                        mnuScrapeOptionAired.Enabled = False
+                        mnuScrapeOptionAired.Visible = False
+                        mnuScrapeOptionCertifications.Enabled = .Certifications.Enabled
+                        mnuScrapeOptionCertifications.Visible = True
+                        mnuScrapeOptionCollectionID.Enabled = .CollectionID.Enabled
+                        mnuScrapeOptionCollectionID.Visible = True
+                        mnuScrapeOptionCountries.Enabled = .Countries.Enabled
+                        mnuScrapeOptionCountries.Visible = True
+                        mnuScrapeOptionCreators.Enabled = False
+                        mnuScrapeOptionCreators.Visible = False
+                        mnuScrapeOptionDirectors.Enabled = .Directors.Enabled
+                        mnuScrapeOptionDirectors.Visible = True
+                        mnuScrapeOptionEpiGuideURL.Enabled = False
+                        mnuScrapeOptionEpiGuideURL.Visible = False
+                        mnuScrapeOptionGenres.Enabled = .Genres.Enabled
+                        mnuScrapeOptionGenres.Visible = True
+                        mnuScrapeOptionGuestStars.Enabled = False
+                        mnuScrapeOptionGuestStars.Visible = False
+                        mnuScrapeOptionMPAA.Enabled = .MPAA.Enabled
+                        mnuScrapeOptionMPAA.Visible = True
+                        mnuScrapeOptionOriginalTitle.Enabled = .OriginalTitle.Enabled
+                        mnuScrapeOptionOriginalTitle.Visible = True
+                        mnuScrapeOptionOutline.Enabled = .Outline.Enabled
+                        mnuScrapeOptionOutline.Visible = True
+                        mnuScrapeOptionPlot.Enabled = .Plot.Enabled
+                        mnuScrapeOptionPlot.Visible = True
+                        mnuScrapeOptionPremiered.Enabled = False
+                        mnuScrapeOptionPremiered.Visible = False
+                        mnuScrapeOptionRating.Enabled = .Rating.Enabled
+                        mnuScrapeOptionRating.Visible = True
+                        mnuScrapeOptionReleaseDate.Enabled = .ReleaseDate.Enabled
+                        mnuScrapeOptionReleaseDate.Visible = True
+                        mnuScrapeOptionRuntime.Enabled = .Runtime.Enabled
+                        mnuScrapeOptionRuntime.Visible = True
+                        mnuScrapeOptionStatus.Enabled = False
+                        mnuScrapeOptionStatus.Visible = False
+                        mnuScrapeOptionStudios.Enabled = .Studios.Enabled
+                        mnuScrapeOptionStudios.Visible = True
+                        mnuScrapeOptionTagline.Enabled = .Tagline.Enabled
+                        mnuScrapeOptionTagline.Visible = True
+                        mnuScrapeOptionTitle.Enabled = .Title.Enabled
+                        mnuScrapeOptionTitle.Visible = True
+                        mnuScrapeOptionTop250.Enabled = .Top250.Enabled
+                        mnuScrapeOptionTop250.Visible = True
+                        mnuScrapeOptionTrailer.Enabled = .Trailer.Enabled
+                        mnuScrapeOptionTrailer.Visible = True
+                        mnuScrapeOptionWriters.Enabled = .Credits.Enabled
+                        mnuScrapeOptionWriters.Visible = True
+                        mnuScrapeOptionYear.Enabled = .Year.Enabled
+                        mnuScrapeOptionYear.Visible = True
+                    End With
                 Case "movieset"
-                    mnuScrapeOptionActors.Enabled = False
-                    mnuScrapeOptionActors.Visible = False
-                    mnuScrapeOptionAired.Enabled = False
-                    mnuScrapeOptionAired.Visible = False
-                    mnuScrapeOptionCertifications.Enabled = False
-                    mnuScrapeOptionCertifications.Visible = False
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
-                    mnuScrapeOptionCountries.Enabled = False
-                    mnuScrapeOptionCountries.Visible = False
-                    mnuScrapeOptionCreators.Enabled = False
-                    mnuScrapeOptionCreators.Visible = False
-                    mnuScrapeOptionDirectors.Enabled = False
-                    mnuScrapeOptionDirectors.Visible = False
-                    mnuScrapeOptionEpiGuideURL.Enabled = False
-                    mnuScrapeOptionEpiGuideURL.Visible = False
-                    mnuScrapeOptionGenres.Enabled = False
-                    mnuScrapeOptionGenres.Visible = False
-                    mnuScrapeOptionGuestStars.Enabled = False
-                    mnuScrapeOptionGuestStars.Visible = False
-                    mnuScrapeOptionMPAA.Enabled = False
-                    mnuScrapeOptionMPAA.Visible = False
-                    mnuScrapeOptionOriginalTitle.Enabled = False
-                    mnuScrapeOptionOriginalTitle.Visible = False
-                    mnuScrapeOptionOutline.Enabled = False
-                    mnuScrapeOptionOutline.Visible = False
-                    mnuScrapeOptionPlot.Enabled = .MovieSetScraperPlot
-                    mnuScrapeOptionPlot.Visible = True
-                    mnuScrapeOptionPremiered.Enabled = False
-                    mnuScrapeOptionPremiered.Visible = False
-                    mnuScrapeOptionRating.Enabled = False
-                    mnuScrapeOptionRating.Visible = False
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
-                    mnuScrapeOptionRuntime.Enabled = False
-                    mnuScrapeOptionRuntime.Visible = False
-                    mnuScrapeOptionStatus.Enabled = False
-                    mnuScrapeOptionStatus.Visible = False
-                    mnuScrapeOptionStudios.Enabled = False
-                    mnuScrapeOptionStudios.Visible = False
-                    mnuScrapeOptionTagline.Enabled = False
-                    mnuScrapeOptionTagline.Visible = False
-                    mnuScrapeOptionTitle.Enabled = .MovieSetScraperTitle
-                    mnuScrapeOptionTitle.Visible = True
-                    mnuScrapeOptionTop250.Enabled = False
-                    mnuScrapeOptionTop250.Visible = False
-                    mnuScrapeOptionTrailer.Enabled = False
-                    mnuScrapeOptionTrailer.Visible = False
-                    mnuScrapeOptionWriters.Enabled = False
-                    mnuScrapeOptionWriters.Visible = False
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
+                    With Master.eSettings.Movieset.DataSettings
+                        mnuScrapeOptionActors.Enabled = False
+                        mnuScrapeOptionActors.Visible = False
+                        mnuScrapeOptionAired.Enabled = False
+                        mnuScrapeOptionAired.Visible = False
+                        mnuScrapeOptionCertifications.Enabled = False
+                        mnuScrapeOptionCertifications.Visible = False
+                        mnuScrapeOptionCollectionID.Enabled = False
+                        mnuScrapeOptionCollectionID.Visible = False
+                        mnuScrapeOptionCountries.Enabled = False
+                        mnuScrapeOptionCountries.Visible = False
+                        mnuScrapeOptionCreators.Enabled = False
+                        mnuScrapeOptionCreators.Visible = False
+                        mnuScrapeOptionDirectors.Enabled = False
+                        mnuScrapeOptionDirectors.Visible = False
+                        mnuScrapeOptionEpiGuideURL.Enabled = False
+                        mnuScrapeOptionEpiGuideURL.Visible = False
+                        mnuScrapeOptionGenres.Enabled = False
+                        mnuScrapeOptionGenres.Visible = False
+                        mnuScrapeOptionGuestStars.Enabled = False
+                        mnuScrapeOptionGuestStars.Visible = False
+                        mnuScrapeOptionMPAA.Enabled = False
+                        mnuScrapeOptionMPAA.Visible = False
+                        mnuScrapeOptionOriginalTitle.Enabled = False
+                        mnuScrapeOptionOriginalTitle.Visible = False
+                        mnuScrapeOptionOutline.Enabled = False
+                        mnuScrapeOptionOutline.Visible = False
+                        mnuScrapeOptionPlot.Enabled = .Plot.Enabled
+                        mnuScrapeOptionPlot.Visible = True
+                        mnuScrapeOptionPremiered.Enabled = False
+                        mnuScrapeOptionPremiered.Visible = False
+                        mnuScrapeOptionRating.Enabled = False
+                        mnuScrapeOptionRating.Visible = False
+                        mnuScrapeOptionReleaseDate.Enabled = False
+                        mnuScrapeOptionReleaseDate.Visible = False
+                        mnuScrapeOptionRuntime.Enabled = False
+                        mnuScrapeOptionRuntime.Visible = False
+                        mnuScrapeOptionStatus.Enabled = False
+                        mnuScrapeOptionStatus.Visible = False
+                        mnuScrapeOptionStudios.Enabled = False
+                        mnuScrapeOptionStudios.Visible = False
+                        mnuScrapeOptionTagline.Enabled = False
+                        mnuScrapeOptionTagline.Visible = False
+                        mnuScrapeOptionTitle.Enabled = .Title.Enabled
+                        mnuScrapeOptionTitle.Visible = True
+                        mnuScrapeOptionTop250.Enabled = False
+                        mnuScrapeOptionTop250.Visible = False
+                        mnuScrapeOptionTrailer.Enabled = False
+                        mnuScrapeOptionTrailer.Visible = False
+                        mnuScrapeOptionWriters.Enabled = False
+                        mnuScrapeOptionWriters.Visible = False
+                        mnuScrapeOptionYear.Enabled = False
+                        mnuScrapeOptionYear.Visible = False
+                    End With
                 Case "tvepisode"
-                    mnuScrapeOptionActors.Enabled = .TVScraperEpisodeActors
-                    mnuScrapeOptionActors.Visible = True
-                    mnuScrapeOptionAired.Enabled = .TVScraperEpisodeAired
-                    mnuScrapeOptionAired.Visible = True
-                    mnuScrapeOptionCertifications.Enabled = False
-                    mnuScrapeOptionCertifications.Visible = False
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
-                    mnuScrapeOptionCountries.Enabled = False
-                    mnuScrapeOptionCountries.Visible = False
-                    mnuScrapeOptionCreators.Enabled = False
-                    mnuScrapeOptionCreators.Visible = False
-                    mnuScrapeOptionDirectors.Enabled = .TVScraperEpisodeDirector
-                    mnuScrapeOptionDirectors.Visible = True
-                    mnuScrapeOptionEpiGuideURL.Enabled = False
-                    mnuScrapeOptionEpiGuideURL.Visible = False
-                    mnuScrapeOptionGenres.Enabled = False
-                    mnuScrapeOptionGenres.Visible = False
-                    mnuScrapeOptionGuestStars.Enabled = .TVScraperEpisodeGuestStars
-                    mnuScrapeOptionGuestStars.Visible = True
-                    mnuScrapeOptionMPAA.Enabled = False
-                    mnuScrapeOptionMPAA.Visible = False
-                    mnuScrapeOptionOriginalTitle.Enabled = False
-                    mnuScrapeOptionOriginalTitle.Visible = False
-                    mnuScrapeOptionOutline.Enabled = False
-                    mnuScrapeOptionOutline.Visible = False
-                    mnuScrapeOptionPlot.Enabled = .TVScraperEpisodePlot
-                    mnuScrapeOptionPlot.Visible = True
-                    mnuScrapeOptionPremiered.Enabled = False
-                    mnuScrapeOptionPremiered.Visible = False
-                    mnuScrapeOptionRating.Enabled = .TVScraperEpisodeRating
-                    mnuScrapeOptionRating.Visible = True
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
-                    mnuScrapeOptionRuntime.Enabled = .TVScraperEpisodeRuntime
-                    mnuScrapeOptionRuntime.Visible = True
-                    mnuScrapeOptionStatus.Enabled = False
-                    mnuScrapeOptionStatus.Visible = False
-                    mnuScrapeOptionStudios.Enabled = False
-                    mnuScrapeOptionStudios.Visible = False
-                    mnuScrapeOptionTagline.Enabled = False
-                    mnuScrapeOptionTagline.Visible = False
-                    mnuScrapeOptionTitle.Enabled = .TVScraperEpisodeTitle
-                    mnuScrapeOptionTitle.Visible = True
-                    mnuScrapeOptionTop250.Enabled = False
-                    mnuScrapeOptionTop250.Visible = False
-                    mnuScrapeOptionTrailer.Enabled = False
-                    mnuScrapeOptionTrailer.Visible = False
-                    mnuScrapeOptionWriters.Enabled = .TVScraperEpisodeCredits
-                    mnuScrapeOptionWriters.Visible = True
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
+                    With Master.eSettings.TV.DataSettings.TVEpisode
+                        mnuScrapeOptionActors.Enabled = .Actors.Enabled
+                        mnuScrapeOptionActors.Visible = True
+                        mnuScrapeOptionAired.Enabled = .Aired.Enabled
+                        mnuScrapeOptionAired.Visible = True
+                        mnuScrapeOptionCertifications.Enabled = False
+                        mnuScrapeOptionCertifications.Visible = False
+                        mnuScrapeOptionCollectionID.Enabled = False
+                        mnuScrapeOptionCollectionID.Visible = False
+                        mnuScrapeOptionCountries.Enabled = False
+                        mnuScrapeOptionCountries.Visible = False
+                        mnuScrapeOptionCreators.Enabled = False
+                        mnuScrapeOptionCreators.Visible = False
+                        mnuScrapeOptionDirectors.Enabled = .Directors.Enabled
+                        mnuScrapeOptionDirectors.Visible = True
+                        mnuScrapeOptionEpiGuideURL.Enabled = False
+                        mnuScrapeOptionEpiGuideURL.Visible = False
+                        mnuScrapeOptionGenres.Enabled = False
+                        mnuScrapeOptionGenres.Visible = False
+                        mnuScrapeOptionGuestStars.Enabled = .GuestStars.Enabled
+                        mnuScrapeOptionGuestStars.Visible = True
+                        mnuScrapeOptionMPAA.Enabled = False
+                        mnuScrapeOptionMPAA.Visible = False
+                        mnuScrapeOptionOriginalTitle.Enabled = False
+                        mnuScrapeOptionOriginalTitle.Visible = False
+                        mnuScrapeOptionOutline.Enabled = False
+                        mnuScrapeOptionOutline.Visible = False
+                        mnuScrapeOptionPlot.Enabled = .Plot.Enabled
+                        mnuScrapeOptionPlot.Visible = True
+                        mnuScrapeOptionPremiered.Enabled = False
+                        mnuScrapeOptionPremiered.Visible = False
+                        mnuScrapeOptionRating.Enabled = .Rating.Enabled
+                        mnuScrapeOptionRating.Visible = True
+                        mnuScrapeOptionReleaseDate.Enabled = False
+                        mnuScrapeOptionReleaseDate.Visible = False
+                        mnuScrapeOptionRuntime.Enabled = .Runtime.Enabled
+                        mnuScrapeOptionRuntime.Visible = True
+                        mnuScrapeOptionStatus.Enabled = False
+                        mnuScrapeOptionStatus.Visible = False
+                        mnuScrapeOptionStudios.Enabled = False
+                        mnuScrapeOptionStudios.Visible = False
+                        mnuScrapeOptionTagline.Enabled = False
+                        mnuScrapeOptionTagline.Visible = False
+                        mnuScrapeOptionTitle.Enabled = .Title.Enabled
+                        mnuScrapeOptionTitle.Visible = True
+                        mnuScrapeOptionTop250.Enabled = False
+                        mnuScrapeOptionTop250.Visible = False
+                        mnuScrapeOptionTrailer.Enabled = False
+                        mnuScrapeOptionTrailer.Visible = False
+                        mnuScrapeOptionWriters.Enabled = .Credits.Enabled
+                        mnuScrapeOptionWriters.Visible = True
+                        mnuScrapeOptionYear.Enabled = False
+                        mnuScrapeOptionYear.Visible = False
+                    End With
                 Case "tvseason"
-                    mnuScrapeOptionActors.Enabled = False
-                    mnuScrapeOptionActors.Visible = False
-                    mnuScrapeOptionAired.Enabled = .TVScraperSeasonAired
-                    mnuScrapeOptionAired.Visible = True
-                    mnuScrapeOptionCertifications.Enabled = False
-                    mnuScrapeOptionCertifications.Visible = False
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
-                    mnuScrapeOptionCountries.Enabled = False
-                    mnuScrapeOptionCountries.Visible = False
-                    mnuScrapeOptionCreators.Enabled = False
-                    mnuScrapeOptionCreators.Visible = False
-                    mnuScrapeOptionDirectors.Enabled = False
-                    mnuScrapeOptionDirectors.Visible = False
-                    mnuScrapeOptionEpiGuideURL.Enabled = False
-                    mnuScrapeOptionEpiGuideURL.Visible = False
-                    mnuScrapeOptionGenres.Enabled = False
-                    mnuScrapeOptionGenres.Visible = False
-                    mnuScrapeOptionGuestStars.Enabled = False
-                    mnuScrapeOptionGuestStars.Visible = False
-                    mnuScrapeOptionMPAA.Enabled = False
-                    mnuScrapeOptionMPAA.Visible = False
-                    mnuScrapeOptionOriginalTitle.Enabled = False
-                    mnuScrapeOptionOriginalTitle.Visible = False
-                    mnuScrapeOptionOutline.Enabled = False
-                    mnuScrapeOptionOutline.Visible = False
-                    mnuScrapeOptionPlot.Enabled = .TVScraperSeasonPlot
-                    mnuScrapeOptionPlot.Visible = True
-                    mnuScrapeOptionPremiered.Enabled = False
-                    mnuScrapeOptionPremiered.Visible = False
-                    mnuScrapeOptionRating.Enabled = False
-                    mnuScrapeOptionRating.Visible = False
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
-                    mnuScrapeOptionRuntime.Enabled = False
-                    mnuScrapeOptionRuntime.Visible = False
-                    mnuScrapeOptionStatus.Enabled = False
-                    mnuScrapeOptionStatus.Visible = False
-                    mnuScrapeOptionStudios.Enabled = False
-                    mnuScrapeOptionStudios.Visible = False
-                    mnuScrapeOptionTagline.Enabled = False
-                    mnuScrapeOptionTagline.Visible = False
-                    mnuScrapeOptionTitle.Enabled = .TVScraperSeasonTitle
-                    mnuScrapeOptionTitle.Visible = True
-                    mnuScrapeOptionTop250.Enabled = False
-                    mnuScrapeOptionTop250.Visible = False
-                    mnuScrapeOptionTrailer.Enabled = False
-                    mnuScrapeOptionTrailer.Visible = False
-                    mnuScrapeOptionWriters.Enabled = False
-                    mnuScrapeOptionWriters.Visible = False
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
+                    With Master.eSettings.TV.DataSettings.TVSeason
+                        mnuScrapeOptionActors.Enabled = False
+                        mnuScrapeOptionActors.Visible = False
+                        mnuScrapeOptionAired.Enabled = .Aired.Enabled
+                        mnuScrapeOptionAired.Visible = True
+                        mnuScrapeOptionCertifications.Enabled = False
+                        mnuScrapeOptionCertifications.Visible = False
+                        mnuScrapeOptionCollectionID.Enabled = False
+                        mnuScrapeOptionCollectionID.Visible = False
+                        mnuScrapeOptionCountries.Enabled = False
+                        mnuScrapeOptionCountries.Visible = False
+                        mnuScrapeOptionCreators.Enabled = False
+                        mnuScrapeOptionCreators.Visible = False
+                        mnuScrapeOptionDirectors.Enabled = False
+                        mnuScrapeOptionDirectors.Visible = False
+                        mnuScrapeOptionEpiGuideURL.Enabled = False
+                        mnuScrapeOptionEpiGuideURL.Visible = False
+                        mnuScrapeOptionGenres.Enabled = False
+                        mnuScrapeOptionGenres.Visible = False
+                        mnuScrapeOptionGuestStars.Enabled = False
+                        mnuScrapeOptionGuestStars.Visible = False
+                        mnuScrapeOptionMPAA.Enabled = False
+                        mnuScrapeOptionMPAA.Visible = False
+                        mnuScrapeOptionOriginalTitle.Enabled = False
+                        mnuScrapeOptionOriginalTitle.Visible = False
+                        mnuScrapeOptionOutline.Enabled = False
+                        mnuScrapeOptionOutline.Visible = False
+                        mnuScrapeOptionPlot.Enabled = .Plot.Enabled
+                        mnuScrapeOptionPlot.Visible = True
+                        mnuScrapeOptionPremiered.Enabled = False
+                        mnuScrapeOptionPremiered.Visible = False
+                        mnuScrapeOptionRating.Enabled = False
+                        mnuScrapeOptionRating.Visible = False
+                        mnuScrapeOptionReleaseDate.Enabled = False
+                        mnuScrapeOptionReleaseDate.Visible = False
+                        mnuScrapeOptionRuntime.Enabled = False
+                        mnuScrapeOptionRuntime.Visible = False
+                        mnuScrapeOptionStatus.Enabled = False
+                        mnuScrapeOptionStatus.Visible = False
+                        mnuScrapeOptionStudios.Enabled = False
+                        mnuScrapeOptionStudios.Visible = False
+                        mnuScrapeOptionTagline.Enabled = False
+                        mnuScrapeOptionTagline.Visible = False
+                        mnuScrapeOptionTitle.Enabled = .Title.Enabled
+                        mnuScrapeOptionTitle.Visible = True
+                        mnuScrapeOptionTop250.Enabled = False
+                        mnuScrapeOptionTop250.Visible = False
+                        mnuScrapeOptionTrailer.Enabled = False
+                        mnuScrapeOptionTrailer.Visible = False
+                        mnuScrapeOptionWriters.Enabled = False
+                        mnuScrapeOptionWriters.Visible = False
+                        mnuScrapeOptionYear.Enabled = False
+                        mnuScrapeOptionYear.Visible = False
+                    End With
                 Case "tvshow"
-                    mnuScrapeOptionActors.Enabled = .TVScraperShowActors
-                    mnuScrapeOptionActors.Visible = True
-                    mnuScrapeOptionAired.Enabled = False
-                    mnuScrapeOptionAired.Visible = False
-                    mnuScrapeOptionCertifications.Enabled = .TVScraperShowCert
-                    mnuScrapeOptionCertifications.Visible = True
-                    mnuScrapeOptionCollectionID.Enabled = False
-                    mnuScrapeOptionCollectionID.Visible = False
-                    mnuScrapeOptionCountries.Enabled = .TVScraperShowCountry
-                    mnuScrapeOptionCountries.Visible = True
-                    mnuScrapeOptionCreators.Enabled = .TVScraperShowCreators
-                    mnuScrapeOptionCreators.Visible = True
-                    mnuScrapeOptionDirectors.Enabled = False
-                    mnuScrapeOptionDirectors.Visible = False
-                    mnuScrapeOptionEpiGuideURL.Enabled = .TVScraperShowEpiGuideURL
-                    mnuScrapeOptionEpiGuideURL.Visible = True
-                    mnuScrapeOptionGenres.Enabled = .TVScraperShowGenre
-                    mnuScrapeOptionGenres.Visible = True
-                    mnuScrapeOptionGuestStars.Enabled = False
-                    mnuScrapeOptionGuestStars.Visible = False
-                    mnuScrapeOptionMPAA.Enabled = .TVScraperShowMPAA
-                    mnuScrapeOptionMPAA.Visible = True
-                    mnuScrapeOptionOriginalTitle.Enabled = .TVScraperShowOriginalTitle
-                    mnuScrapeOptionOriginalTitle.Visible = True
-                    mnuScrapeOptionOutline.Enabled = False
-                    mnuScrapeOptionOutline.Visible = False
-                    mnuScrapeOptionPlot.Enabled = .TVScraperShowPlot
-                    mnuScrapeOptionPlot.Visible = True
-                    mnuScrapeOptionPremiered.Enabled = .TVScraperShowPremiered
-                    mnuScrapeOptionPremiered.Visible = True
-                    mnuScrapeOptionRating.Enabled = .TVScraperShowRating
-                    mnuScrapeOptionRating.Visible = True
-                    mnuScrapeOptionReleaseDate.Enabled = False
-                    mnuScrapeOptionReleaseDate.Visible = False
-                    mnuScrapeOptionRuntime.Enabled = .TVScraperShowRuntime
-                    mnuScrapeOptionRuntime.Visible = True
-                    mnuScrapeOptionStatus.Enabled = .TVScraperShowStatus
-                    mnuScrapeOptionStatus.Visible = True
-                    mnuScrapeOptionStudios.Enabled = .TVScraperShowStudio
-                    mnuScrapeOptionStudios.Visible = True
-                    mnuScrapeOptionTagline.Enabled = False
-                    mnuScrapeOptionTagline.Visible = False
-                    mnuScrapeOptionTitle.Enabled = .TVScraperShowTitle
-                    mnuScrapeOptionTitle.Visible = True
-                    mnuScrapeOptionTop250.Enabled = False
-                    mnuScrapeOptionTop250.Visible = False
-                    mnuScrapeOptionTrailer.Enabled = False
-                    mnuScrapeOptionTrailer.Visible = False
-                    mnuScrapeOptionWriters.Enabled = False
-                    mnuScrapeOptionWriters.Visible = False
-                    mnuScrapeOptionYear.Enabled = False
-                    mnuScrapeOptionYear.Visible = False
+                    With Master.eSettings.TV.DataSettings.TVShow
+                        mnuScrapeOptionActors.Enabled = .Actors.Enabled
+                        mnuScrapeOptionActors.Visible = True
+                        mnuScrapeOptionAired.Enabled = False
+                        mnuScrapeOptionAired.Visible = False
+                        mnuScrapeOptionCertifications.Enabled = .Certifications.Enabled
+                        mnuScrapeOptionCertifications.Visible = True
+                        mnuScrapeOptionCollectionID.Enabled = False
+                        mnuScrapeOptionCollectionID.Visible = False
+                        mnuScrapeOptionCountries.Enabled = .Countries.Enabled
+                        mnuScrapeOptionCountries.Visible = True
+                        mnuScrapeOptionCreators.Enabled = .Creators.Enabled
+                        mnuScrapeOptionCreators.Visible = True
+                        mnuScrapeOptionDirectors.Enabled = False
+                        mnuScrapeOptionDirectors.Visible = False
+                        mnuScrapeOptionEpiGuideURL.Enabled = .EpisodeGuideURL.Enabled
+                        mnuScrapeOptionEpiGuideURL.Visible = True
+                        mnuScrapeOptionGenres.Enabled = .Genres.Enabled
+                        mnuScrapeOptionGenres.Visible = True
+                        mnuScrapeOptionGuestStars.Enabled = False
+                        mnuScrapeOptionGuestStars.Visible = False
+                        mnuScrapeOptionMPAA.Enabled = .MPAA.Enabled
+                        mnuScrapeOptionMPAA.Visible = True
+                        mnuScrapeOptionOriginalTitle.Enabled = .OriginalTitle.Enabled
+                        mnuScrapeOptionOriginalTitle.Visible = True
+                        mnuScrapeOptionOutline.Enabled = False
+                        mnuScrapeOptionOutline.Visible = False
+                        mnuScrapeOptionPlot.Enabled = .Plot.Enabled
+                        mnuScrapeOptionPlot.Visible = True
+                        mnuScrapeOptionPremiered.Enabled = .Premiered.Enabled
+                        mnuScrapeOptionPremiered.Visible = True
+                        mnuScrapeOptionRating.Enabled = .Rating.Enabled
+                        mnuScrapeOptionRating.Visible = True
+                        mnuScrapeOptionReleaseDate.Enabled = False
+                        mnuScrapeOptionReleaseDate.Visible = False
+                        mnuScrapeOptionRuntime.Enabled = .Runtime.Enabled
+                        mnuScrapeOptionRuntime.Visible = True
+                        mnuScrapeOptionStatus.Enabled = .Status.Enabled
+                        mnuScrapeOptionStatus.Visible = True
+                        mnuScrapeOptionStudios.Enabled = .Status.Enabled
+                        mnuScrapeOptionStudios.Visible = True
+                        mnuScrapeOptionTagline.Enabled = False
+                        mnuScrapeOptionTagline.Visible = False
+                        mnuScrapeOptionTitle.Enabled = .Title.Enabled
+                        mnuScrapeOptionTitle.Visible = True
+                        mnuScrapeOptionTop250.Enabled = False
+                        mnuScrapeOptionTop250.Visible = False
+                        mnuScrapeOptionTrailer.Enabled = False
+                        mnuScrapeOptionTrailer.Visible = False
+                        mnuScrapeOptionWriters.Enabled = False
+                        mnuScrapeOptionWriters.Visible = False
+                        mnuScrapeOptionYear.Enabled = False
+                        mnuScrapeOptionYear.Visible = False
+                    End With
             End Select
         End With
     End Sub
@@ -11387,36 +11481,38 @@ Public Class frmMain
         With Master.eSettings
             Select Case _SelectedContentType
                 Case "movie"
-                    mnuScrapeModifierActorthumbs.Enabled = .FilenameAnyEnabled_Movie_Actorthumbs
-                    mnuScrapeModifierActorthumbs.Visible = True
-                    mnuScrapeModifierBanner.Enabled = .FilenameAnyEnabled_Movie_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainBanner)
-                    mnuScrapeModifierBanner.Visible = True
-                    mnuScrapeModifierCharacterArt.Enabled = False
-                    mnuScrapeModifierCharacterArt.Visible = False
-                    mnuScrapeModifierClearArt.Enabled = .FilenameAnyEnabled_Movie_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearArt)
-                    mnuScrapeModifierClearArt.Visible = True
-                    mnuScrapeModifierClearLogo.Enabled = .FilenameAnyEnabled_Movie_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearLogo)
-                    mnuScrapeModifierClearLogo.Visible = True
-                    mnuScrapeModifierDiscArt.Enabled = .FilenameAnyEnabled_Movie_DiscArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainDiscArt)
-                    mnuScrapeModifierDiscArt.Visible = True
-                    mnuScrapeModifierExtrafanarts.Enabled = .FilenameAnyEnabled_Movie_Extrafanarts AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainExtrafanarts)
-                    mnuScrapeModifierExtrafanarts.Visible = True
-                    mnuScrapeModifierExtrathumbs.Enabled = .FilenameAnyEnabled_Movie_Extrathumbs AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainExtrathumbs)
-                    mnuScrapeModifierExtrathumbs.Visible = True
-                    mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_Movie_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
-                    mnuScrapeModifierFanart.Visible = True
-                    mnuScrapeModifierLandscape.Enabled = .FilenameAnyEnabled_Movie_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainLandscape)
-                    mnuScrapeModifierLandscape.Visible = True
-                    mnuScrapeModifierMetaData.Enabled = .MovieScraperMetaDataScan
-                    mnuScrapeModifierMetaData.Visible = True
-                    mnuScrapeModifierNFO.Enabled = True
-                    mnuScrapeModifierNFO.Visible = True
-                    mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_Movie_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainPoster)
-                    mnuScrapeModifierPoster.Visible = True
-                    mnuScrapeModifierTheme.Enabled = .FilenameAnyEnabled_Movie_Theme AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ScrapeModifierType.MainTheme)
-                    mnuScrapeModifierTheme.Visible = True
-                    mnuScrapeModifierTrailer.Enabled = .FilenameAnyEnabled_Movie_Trailer AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ScrapeModifierType.MainTrailer)
-                    mnuScrapeModifierTrailer.Visible = True
+                    With Master.eSettings.Movie.Filenaming
+                        mnuScrapeModifierActorthumbs.Enabled = .FilenameAnyEnabled_Actorthumbs
+                        mnuScrapeModifierActorthumbs.Visible = True
+                        mnuScrapeModifierBanner.Enabled = .FilenameAnyEnabled_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainBanner)
+                        mnuScrapeModifierBanner.Visible = True
+                        mnuScrapeModifierCharacterArt.Enabled = False
+                        mnuScrapeModifierCharacterArt.Visible = False
+                        mnuScrapeModifierClearArt.Enabled = .FilenameAnyEnabled_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearArt)
+                        mnuScrapeModifierClearArt.Visible = True
+                        mnuScrapeModifierClearLogo.Enabled = .FilenameAnyEnabled_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearLogo)
+                        mnuScrapeModifierClearLogo.Visible = True
+                        mnuScrapeModifierDiscArt.Enabled = .FilenameAnyEnabled_DiscArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainDiscArt)
+                        mnuScrapeModifierDiscArt.Visible = True
+                        mnuScrapeModifierExtrafanarts.Enabled = .FilenameAnyEnabled_Extrafanarts AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainExtrafanarts)
+                        mnuScrapeModifierExtrafanarts.Visible = True
+                        mnuScrapeModifierExtrathumbs.Enabled = .FilenameAnyEnabled_Extrathumbs AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainExtrathumbs)
+                        mnuScrapeModifierExtrathumbs.Visible = True
+                        mnuScrapeModifierFanart.Enabled = .FilenameAnyEnabled_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
+                        mnuScrapeModifierFanart.Visible = True
+                        mnuScrapeModifierLandscape.Enabled = .FilenameAnyEnabled_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainLandscape)
+                        mnuScrapeModifierLandscape.Visible = True
+                        mnuScrapeModifierMetaData.Enabled = Master.eSettings.Movie.DataSettings.MetaDataScan
+                        mnuScrapeModifierMetaData.Visible = True
+                        mnuScrapeModifierNFO.Enabled = True
+                        mnuScrapeModifierNFO.Visible = True
+                        mnuScrapeModifierPoster.Enabled = .FilenameAnyEnabled_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainPoster)
+                        mnuScrapeModifierPoster.Visible = True
+                        mnuScrapeModifierTheme.Enabled = .FilenameAnyEnabled_Theme AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ScrapeModifierType.MainTheme)
+                        mnuScrapeModifierTheme.Visible = True
+                        mnuScrapeModifierTrailer.Enabled = .FilenameAnyEnabled_Trailer AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ScrapeModifierType.MainTrailer)
+                        mnuScrapeModifierTrailer.Visible = True
+                    End With
                 Case "movieset"
                     mnuScrapeModifierActorthumbs.Enabled = False
                     mnuScrapeModifierActorthumbs.Visible = False
@@ -11469,7 +11565,7 @@ Public Class frmMain
                     mnuScrapeModifierFanart.Visible = True
                     mnuScrapeModifierLandscape.Enabled = False
                     mnuScrapeModifierLandscape.Visible = False
-                    mnuScrapeModifierMetaData.Enabled = .TVScraperMetaDataScan
+                    mnuScrapeModifierMetaData.Enabled = Master.eSettings.TV.DataSettings.MetaDataScan
                     mnuScrapeModifierMetaData.Visible = True
                     mnuScrapeModifierNFO.Enabled = True
                     mnuScrapeModifierNFO.Visible = True
@@ -11705,7 +11801,7 @@ Public Class frmMain
                     End Using
                 Case "movieset"
                     SetControlsEnabled(False)
-                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.MovieSet)
+                    Using dlgCustomScraper As New dlgCustomScraper(Enums.ContentType.Movieset)
                         Dim CustomScraper As Structures.CustomUpdaterStruct = Nothing
                         CustomScraper = dlgCustomScraper.ShowDialog()
                         If Not CustomScraper.Canceled Then
@@ -11925,18 +12021,19 @@ Public Class frmMain
                 Next
         End Select
 
-        Dim ActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Actorthumbs
-        Dim BannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainBanner)
-        Dim ClearArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearArt)
-        Dim ClearLogoAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearLogo)
-        Dim DiscArtAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_DiscArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainDiscArt)
-        Dim ExtrafanartsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Extrafanarts AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
-        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Extrathumbs AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
-        Dim FanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
-        Dim LandscapeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainLandscape)
-        Dim PosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainPoster)
-        Dim ThemeAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Theme AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ScrapeModifierType.MainTheme)
-        Dim TrailerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_Movie_Trailer AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ScrapeModifierType.MainTrailer)
+        Dim ActorThumbsAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Actorthumbs
+        Dim BannerAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainBanner)
+        Dim ClearArtAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearArt)
+        Dim ClearLogoAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainClearLogo)
+        Dim DiscArtAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_DiscArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainDiscArt)
+        Dim ExtrafanartsAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Extrafanarts AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
+        Dim ExtrathumbsAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Extrathumbs AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
+        Dim FanartAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainFanart)
+        Dim LandscapeAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainLandscape)
+        Dim PosterAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_Movie(Enums.ScrapeModifierType.MainPoster)
+        Dim ThemeAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Theme AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_Movie(Enums.ScrapeModifierType.MainTheme)
+        Dim TrailerAllowed As Boolean = Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Trailer AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Trailer_Movie(Enums.ScrapeModifierType.MainTrailer)
+
 
         'create ScrapeList of movies acording to scrapetype
         For Each drvRow As DataRow In DataRowList
@@ -12147,8 +12244,8 @@ Public Class frmMain
                     If Not String.IsNullOrEmpty(drvRow.Item("NfoPath").ToString) Then sModifier.MainNFO = False
                     If Not String.IsNullOrEmpty(drvRow.Item("PosterPath").ToString) Then sModifier.MainPoster = False
             End Select
-            ScrapeList.Add(New Database.DBElement(Enums.ContentType.MovieSet) With {
-                           .ID = CLng(drvRow.Item("idMovieSet")),
+            ScrapeList.Add(New Database.DBElement(Enums.ContentType.Movieset) With {
+                           .ID = CLng(drvRow.Item("idSet")),
                            .ScrapeModifiers = sModifier,
                            .ScrapeType = tScrapeType,
                            .ScrapeOptions = tScrapeOptions})
@@ -12278,7 +12375,7 @@ Public Class frmMain
         Dim AllSeasonsPosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.AllSeasonsPoster)
         Dim EpisodeActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_ActorThumbs
         Dim EpisodeFanartAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodeFanart)
-        Dim EpisodeMetaAllowed As Boolean = Master.eSettings.TVScraperMetaDataScan
+        Dim EpisodeMetaAllowed As Boolean = Master.eSettings.TV.DataSettings.MetaDataScan
         Dim EpisodePosterAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodePoster)
         Dim MainActorThumbsAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_ActorTumbs
         Dim MainBannerAllowed As Boolean = Master.eSettings.FilenameAnyEnabled_TVShow_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainBanner)
@@ -13254,7 +13351,7 @@ Public Class frmMain
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub pbGenre_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs)
-        If Master.eSettings.GeneralShowGenresText Then Return 'Because Image already has genre text displayed
+        If Manager.mSettings.General.DisplayGenreText Then Return 'Because Image already has genre text displayed
         GenreImage = DirectCast(sender, PictureBox).Image    'Store the image for later retrieval
         DirectCast(sender, PictureBox).Image = ImageUtils.AddGenreString(DirectCast(sender, PictureBox).Image, DirectCast(sender, PictureBox).Name.ToString)
     End Sub
@@ -13265,19 +13362,19 @@ Public Class frmMain
     ''' <param name="e"></param>
     ''' <remarks></remarks>
     Private Sub pbGenre_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs)
-        If Master.eSettings.GeneralShowGenresText Then Return
+        If Manager.mSettings.General.DisplayGenreText Then Return
         DirectCast(sender, PictureBox).Image = GenreImage
     End Sub
 
     Private Sub pbBanner_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbBanner.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbBannerCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbBannerCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -13305,7 +13402,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13403,18 +13500,18 @@ Public Class frmMain
 
     Private Sub pbCharacterArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbCharacterArt.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbCharacterArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbCharacterArtCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
                         Return
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         Return
                     Case Enums.ContentType.TV
                         'TV Show list
@@ -13462,13 +13559,13 @@ Public Class frmMain
 
     Private Sub pbClearArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearArt.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbClearArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbClearArtCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -13496,7 +13593,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13567,13 +13664,13 @@ Public Class frmMain
 
     Private Sub pbClearLogo_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbClearLogo.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbClearLogoCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbClearLogoCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -13601,7 +13698,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13672,13 +13769,13 @@ Public Class frmMain
 
     Private Sub pbDiscArt_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbDiscArt.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbDiscArtCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbDiscArtCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -13706,7 +13803,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13759,7 +13856,7 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub pbFanart_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbFanart.MouseDoubleClick, pbFanartSmall.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbFanartCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbFanartCache.Image)
@@ -13769,7 +13866,7 @@ Public Class frmMain
                         dImgView.ShowDialog(pbFanartSmallCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -13797,7 +13894,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -13918,13 +14015,13 @@ Public Class frmMain
 
     Private Sub pbLandscape_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbLandscape.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbLandscapeCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbLandscapeCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -13952,7 +14049,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -14050,13 +14147,13 @@ Public Class frmMain
 
     Private Sub pbPoster_DoubleClick(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles pbPoster.MouseDoubleClick
         Try
-            If e.Button = MouseButtons.Left OrElse Not Master.eSettings.GeneralDoubleClickScrape Then
+            If e.Button = MouseButtons.Left OrElse Not Manager.mSettings.General.DoubleClickScrape Then
                 If pbPosterCache.Image IsNot Nothing Then
                     Using dImgView As New dlgImgView
                         dImgView.ShowDialog(pbPosterCache.Image)
                     End Using
                 End If
-            ElseIf e.Button = MouseButtons.Right AndAlso Master.eSettings.GeneralDoubleClickScrape Then
+            ElseIf e.Button = MouseButtons.Right AndAlso Manager.mSettings.General.DoubleClickScrape Then
 
                 Select Case DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType).ContentType
                     Case Enums.ContentType.Movie
@@ -14084,7 +14181,7 @@ Public Class frmMain
                             End If
                         End If
                         SetControlsEnabled(True)
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         If dgvMovieSets.SelectedRows.Count > 1 Then Return
                         SetControlsEnabled(False)
 
@@ -15413,41 +15510,71 @@ Public Class frmMain
         End If
     End Sub
 
+    Private Sub RestoreSorting(ByVal tContentType As Enums.ContentType)
+        Dim nDataGrid As DataGridView = Nothing
+        Dim nFilter As FilterSettings = Nothing
+
+        Select Case tContentType
+            Case Enums.ContentType.Movie
+                nDataGrid = dgvMovies
+                nFilter = Manager.mSettings.Movie.Filter
+            Case Enums.ContentType.Movieset
+                nDataGrid = dgvMovieSets
+                nFilter = Manager.mSettings.Movieset.Filter
+            Case Enums.ContentType.TVShow
+                nDataGrid = dgvTVShows
+                nFilter = Manager.mSettings.TV.TVShow.Filter
+        End Select
+
+        If nDataGrid IsNot Nothing AndAlso nFilter IsNot Nothing Then
+            With nFilter
+                If .SortColumn = 0 AndAlso .SortOrder = 0 Then
+                    .SortColumn = 3         'ListTitle
+                    .SortOrder = 0          'ASC
+                End If
+
+                If nDataGrid.DataSource IsNot Nothing Then
+                    nDataGrid.Sort(nDataGrid.Columns(.SortColumn), CType(.SortOrder, ComponentModel.ListSortDirection))
+                End If
+            End With
+        End If
+    End Sub
+
     Private Sub RestoreSorting_Movies()
-        With Master.eSettings
-            If .GeneralMainFilterSortColumn_Movies = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
-                .GeneralMainFilterSortColumn_Movies = 3         'ListTitle in movielist
-                .GeneralMainFilterSortOrder_Movies = 0          'ASC
+        With Manager.mSettings.Movie.Filter
+            If .SortColumn = 0 AndAlso .SortOrder = 0 Then
+                .SortColumn = 3         'ListTitle in movielist
+                .SortOrder = 0          'ASC
             End If
 
             If dgvMovies.DataSource IsNot Nothing Then
-                dgvMovies.Sort(dgvMovies.Columns(.GeneralMainFilterSortColumn_Movies), CType(.GeneralMainFilterSortOrder_Movies, ComponentModel.ListSortDirection))
+                dgvMovies.Sort(dgvMovies.Columns(.SortColumn), CType(.SortOrder, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
 
-    Private Sub RestoreSorting_MovieSets()
-        With Master.eSettings
-            If .GeneralMainFilterSortColumn_MovieSets = 0 AndAlso .GeneralMainFilterSortOrder_Movies = 0 Then
-                .GeneralMainFilterSortColumn_MovieSets = 3         'ListTitle in movielist
-                .GeneralMainFilterSortOrder_MovieSets = 0          'ASC
+    Private Sub RestoreSorting_Moviesets()
+        With Manager.mSettings.Movieset.Filter
+            If .SortColumn = 0 AndAlso .SortOrder = 0 Then
+                .SortColumn = 3         'ListTitle in movielist
+                .SortOrder = 0          'ASC
             End If
 
             If dgvMovieSets.DataSource IsNot Nothing Then
-                dgvMovieSets.Sort(dgvMovieSets.Columns(.GeneralMainFilterSortColumn_MovieSets), CType(.GeneralMainFilterSortOrder_MovieSets, ComponentModel.ListSortDirection))
+                dgvMovieSets.Sort(dgvMovieSets.Columns(.SortColumn), CType(.SortOrder, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
 
     Private Sub RestoreSorting_Shows()
-        With Master.eSettings
-            If .GeneralMainFilterSortColumn_Shows = 0 AndAlso .GeneralMainFilterSortOrder_Shows = 0 Then
-                .GeneralMainFilterSortColumn_Shows = 1         'ListTitle in tvshowlist
-                .GeneralMainFilterSortOrder_Shows = 0          'ASC
+        With Manager.mSettings.TV.TVShow.Filter
+            If .SortColumn = 0 AndAlso .SortOrder = 0 Then
+                .SortColumn = 1         'ListTitle in tvshowlist
+                .SortOrder = 0          'ASC
             End If
 
             If dgvTVShows.DataSource IsNot Nothing Then
-                dgvTVShows.Sort(dgvTVShows.Columns(.GeneralMainFilterSortColumn_Shows), CType(.GeneralMainFilterSortOrder_Shows, ComponentModel.ListSortDirection))
+                dgvTVShows.Sort(dgvTVShows.Columns(.SortColumn), CType(.SortOrder, ComponentModel.ListSortDirection))
             End If
         End With
     End Sub
@@ -15458,8 +15585,8 @@ Public Class frmMain
         If dgvMovies.SortOrder = SortOrder.Ascending Then Order = 0
         If dgvMovies.SortOrder = SortOrder.Descending Then Order = 1
 
-        Master.eSettings.GeneralMainFilterSortColumn_Movies = dgvMovies.SortedColumn.Index
-        Master.eSettings.GeneralMainFilterSortOrder_Movies = Order
+        Manager.mSettings.Movie.Filter.SortColumn = dgvMovies.SortedColumn.Index
+        Manager.mSettings.Movie.Filter.SortOrder = Order
     End Sub
 
     Private Sub SaveSorting_MovieSets()
@@ -15468,8 +15595,8 @@ Public Class frmMain
         If dgvMovieSets.SortOrder = SortOrder.Ascending Then Order = 0
         If dgvMovieSets.SortOrder = SortOrder.Descending Then Order = 1
 
-        Master.eSettings.GeneralMainFilterSortColumn_MovieSets = dgvMovieSets.SortedColumn.Index
-        Master.eSettings.GeneralMainFilterSortOrder_MovieSets = Order
+        Manager.mSettings.Movieset.Filter.SortColumn = dgvMovieSets.SortedColumn.Index
+        Manager.mSettings.Movieset.Filter.SortOrder = Order
     End Sub
 
     Private Sub SaveFilter_Shows()
@@ -15478,8 +15605,8 @@ Public Class frmMain
         If dgvTVShows.SortOrder = SortOrder.Ascending Then Order = 0
         If dgvTVShows.SortOrder = SortOrder.Descending Then Order = 1
 
-        Master.eSettings.GeneralMainFilterSortColumn_Shows = dgvTVShows.SortedColumn.Index
-        Master.eSettings.GeneralMainFilterSortOrder_Shows = Order
+        Manager.mSettings.TV.TVShow.Filter.SortColumn = dgvTVShows.SortedColumn.Index
+        Manager.mSettings.TV.TVShow.Filter.SortOrder = Order
     End Sub
 
     Private Sub scMain_SplitterMoved(ByVal sender As System.Object, ByVal e As System.Windows.Forms.SplitterEventArgs) Handles scMain.SplitterMoved
@@ -15578,7 +15705,7 @@ Public Class frmMain
                 String.IsNullOrEmpty(dgvMovieSets.Item("ClearLogoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("DiscArtPath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(dgvMovieSets.Item("FanartPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("LandscapePath", iRow).Value.ToString) AndAlso
                 String.IsNullOrEmpty(dgvMovieSets.Item("NfoPath", iRow).Value.ToString) AndAlso String.IsNullOrEmpty(dgvMovieSets.Item("PosterPath", iRow).Value.ToString) Then
-                ShowNoInfo(True, Enums.ContentType.MovieSet)
+                ShowNoInfo(True, Enums.ContentType.Movieset)
                 currMovieSet = Master.DB.Load_MovieSet(Convert.ToInt64(dgvMovieSets.Item("idSet", iRow).Value))
                 FillScreenInfoWith_MovieSet()
             Else
@@ -15723,12 +15850,12 @@ Public Class frmMain
                 Dim o As ToolStripMenuItem = DirectCast(i, ToolStripMenuItem)
                 If o.Tag Is Nothing Then
                     o.Enabled = isEnabled AndAlso ((dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse
-                                                   (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse
+                                                   (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset) OrElse
                                                    (dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV))
                 ElseIf TypeOf o.Tag Is Structures.ModulesMenus Then
                     Dim tagmenu As Structures.ModulesMenus = DirectCast(o.Tag, Structures.ModulesMenus)
                     o.Enabled = (isEnabled OrElse Not withTools) AndAlso (((tagmenu.IfTabMovies AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie) OrElse
-                                                                           (tagmenu.IfTabMovieSets AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet) OrElse
+                                                                           (tagmenu.IfTabMovieSets AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset) OrElse
                                                                            (tagmenu.IfTabTVShows AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)) AndAlso
                                                                        ((tagmenu.ForMovies AndAlso (dgvMovies.RowCount > 0 OrElse tagmenu.IfNoMovies)) OrElse
                                                                         (tagmenu.ForMovieSets AndAlso (dgvMovieSets.RowCount > 0 OrElse tagmenu.IfNoMovieSets)) OrElse
@@ -15739,16 +15866,8 @@ Public Class frmMain
                 o.Visible = (mnuMainTools.DropDownItems.IndexOf(o) < mnuMainTools.DropDownItems.Count - 1)
             End If
         Next
-        With Master.eSettings
-            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse
-            (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
-                mnuMainToolsCleanFiles.Enabled = isEnabled AndAlso dgvMovies.RowCount > 0 AndAlso tcMain.SelectedIndex = 0
-            Else
-                mnuMainToolsCleanFiles.Enabled = True  'False
-            End If
-            If Not String.IsNullOrEmpty(.MovieBackdropsPath) AndAlso dgvMovies.RowCount > 0 Then
+        With Master.eSettings.Movie.Filenaming
+            If Not String.IsNullOrEmpty(.BackdropsPath) AndAlso dgvMovies.RowCount > 0 Then
                 mnuMainToolsBackdrops.Enabled = True
             Else
                 mnuMainToolsBackdrops.Enabled = False
@@ -15757,8 +15876,8 @@ Public Class frmMain
         mnuMainEdit.Enabled = isEnabled
         mnuScrapeMovies.Enabled = isEnabled AndAlso dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie
         mnuScrapeMovies.Visible = currMainTabTag.ContentType = Enums.ContentType.Movie
-        mnuScrapeMovieSets.Enabled = isEnabled AndAlso dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet
-        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.MovieSet
+        mnuScrapeMovieSets.Enabled = isEnabled AndAlso dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset
+        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.Movieset
         mnuScrapeTVShows.Enabled = isEnabled AndAlso dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV
         mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
         mnuUpdate.Enabled = isEnabled
@@ -15809,7 +15928,7 @@ Public Class frmMain
             Case Enums.ContentType.Movie
                 nDataGridView = dgvMovies
                 strIDName = "idMovie"
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 nDataGridView = dgvMovieSets
                 strIDName = "idSet"
             Case Enums.ContentType.TVEpisode
@@ -15876,187 +15995,176 @@ Public Class frmMain
         Dim mnuItem As ToolStripItem
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
 
-        With Master.eSettings
-            If (Not .FileSystemExpertCleaner AndAlso (.CleanDotFanartJPG OrElse .CleanFanartJPG OrElse .CleanFolderJPG OrElse .CleanMovieFanartJPG OrElse
-            .CleanMovieJPG OrElse .CleanMovieNameJPG OrElse .CleanMovieNFO OrElse .CleanMovieNFOB OrElse
-            .CleanMovieTBN OrElse .CleanMovieTBNB OrElse .CleanPosterJPG OrElse .CleanPosterTBN OrElse .CleanExtrathumbs)) OrElse
-            (.FileSystemExpertCleaner AndAlso (.FileSystemCleanerWhitelist OrElse .FileSystemCleanerWhitelistExts.Count > 0)) Then
-                mnuMainToolsCleanFiles.Enabled = True AndAlso dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie
+        mnuMainToolsBackdrops.Enabled = Not String.IsNullOrEmpty(Master.eSettings.Movie.Filenaming.BackdropsPath)
+
+        ' for future use
+        mnuMainToolsClearCache.Enabled = False
+
+        mnuUpdateMovies.DropDownItems.Clear()
+        cmnuTrayUpdateMovies.DropDownItems.Clear()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLNewcommand.CommandText = "SELECT COUNT(idSource) AS cID FROM moviesource;"
+            If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
+                mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+            End If
+            SQLNewcommand.CommandText = "SELECT idSource, strName, bExclude FROM moviesource;"
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                    mnuItem.Tag = SQLReader("idSource")
+                    mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
+                    mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
+                    mnuItem.Tag = SQLReader("idSource")
+                    mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
+                End While
+            End Using
+        End Using
+
+        mnuUpdateShows.DropDownItems.Clear()
+        cmnuTrayUpdateShows.DropDownItems.Clear()
+        Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+            SQLNewcommand.CommandText = "SELECT COUNT(idSource) AS cID FROM tvshowsource;"
+            If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
+                mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+            End If
+            SQLNewcommand.CommandText = "SELECT idSource, strName, bExclude FROM tvshowsource;"
+            Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                While SQLReader.Read
+                    mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                    mnuItem.Tag = SQLReader("idSource")
+                    mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
+                    mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
+                    mnuItem.Tag = SQLReader("idSource")
+                    mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
+                End While
+            End Using
+        End Using
+
+        clbFilterDataFields_Movies.Items.Clear()
+        clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "IMDB", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "UserRating", "VideoSource", "Votes", "Year"})
+
+        Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
+        SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
+        SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Title)
+        cmnuMovieSetEditSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
+        cmnuMovieSetEditSortMethodMethods.ComboBox.DisplayMember = "Key"
+        cmnuMovieSetEditSortMethodMethods.ComboBox.ValueMember = "Value"
+        cmnuMovieSetEditSortMethodMethods.ComboBox.BindingContext = BindingContext
+
+        listViews_Movies.Clear()
+        listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
+        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
+            listViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
+        Next
+        cbFilterLists_Movies.DataSource = listViews_Movies.ToList
+        cbFilterLists_Movies.DisplayMember = "Key"
+        cbFilterLists_Movies.ValueMember = "Value"
+        cbFilterLists_Movies.SelectedIndex = 0
+
+        listViews_MovieSets.Clear()
+        listViews_MovieSets.Add(Master.eLang.GetString(786, "Default List"), "setslist")
+        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movieset)
+            listViews_MovieSets.Add(Regex.Replace(cList, "sets-", String.Empty).Trim, cList)
+        Next
+        cbFilterLists_MovieSets.DataSource = listViews_MovieSets.ToList
+        cbFilterLists_MovieSets.DisplayMember = "Key"
+        cbFilterLists_MovieSets.ValueMember = "Value"
+        cbFilterLists_MovieSets.SelectedIndex = 0
+
+        listViews_TVShows.Clear()
+        listViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
+        For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
+            listViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
+        Next
+        cbFilterLists_Shows.DataSource = listViews_TVShows.ToList
+        cbFilterLists_Shows.DisplayMember = "Key"
+        cbFilterLists_Shows.ValueMember = "Value"
+        cbFilterLists_Shows.SelectedIndex = 0
+
+        mnuLanguagesLanguage.Items.Clear()
+        mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
+
+        'not technically a menu, but it's a good place to put it
+        If ReloadFilters Then
+
+            RemoveHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
+            cbFilterDataField_Movies.Items.Clear()
+            cbFilterDataField_Movies.Items.AddRange(New Object() {Master.eLang.GetString(1291, "Is Empty"), Master.eLang.GetString(1292, "Is Not Empty")})
+            cbFilterDataField_Movies.SelectedIndex = 0
+            AddHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
+
+            clbFilterSources_Movies.Items.Clear()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLNewcommand.CommandText = String.Concat("SELECT strName FROM moviesource;")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    While SQLReader.Read
+                        clbFilterSources_Movies.Items.Add(SQLReader("strName"))
+                    End While
+                End Using
+            End Using
+
+            clbFilterSource_Shows.Items.Clear()
+            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
+                SQLNewcommand.CommandText = String.Concat("SELECT strName FROM tvshowsource;")
+                Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
+                    While SQLReader.Read
+                        clbFilterSource_Shows.Items.Add(SQLReader("strName"))
+                    End While
+                End Using
+            End Using
+
+            RemoveHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
+            cbFilterYearFrom_Movies.Items.Clear()
+            cbFilterYearFrom_Movies.Items.Add(Master.eLang.All)
+            For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
+                cbFilterYearFrom_Movies.Items.Add(i)
+            Next
+            cbFilterYearFrom_Movies.SelectedIndex = 0
+            AddHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
+            cbFilterYearModFrom_Movies.SelectedIndex = 0
+            AddHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
+            cbFilterYearTo_Movies.Items.Clear()
+            cbFilterYearTo_Movies.Items.Add(Master.eLang.All)
+            For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
+                cbFilterYearTo_Movies.Items.Add(i)
+            Next
+            cbFilterYearTo_Movies.SelectedIndex = 0
+            AddHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
+            cbFilterYearModTo_Movies.SelectedIndex = 0
+            AddHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
+
+            RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
+            cbFilterVideoSource_Movies.Items.Clear()
+            cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
+            'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
+            Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
+            mySources = clsXMLAdvancedSettings.GetComplexSetting("MovieSources")
+            If Not mySources Is Nothing Then
+                For Each k In mySources
+                    If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then
+                        cbFilterVideoSource_Movies.Items.Add(k.Value)
+                    End If
+                Next
             Else
-                mnuMainToolsCleanFiles.Enabled = True 'False
+                cbFilterVideoSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
             End If
+            cbFilterVideoSource_Movies.Items.Add(Master.eLang.None)
+            cbFilterVideoSource_Movies.SelectedIndex = 0
+            AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
+        End If
 
-            mnuMainToolsBackdrops.Enabled = Not String.IsNullOrEmpty(.MovieBackdropsPath)
-
-            ' for future use
-            mnuMainToolsClearCache.Enabled = False
-
-            mnuUpdateMovies.DropDownItems.Clear()
-            cmnuTrayUpdateMovies.DropDownItems.Clear()
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = "SELECT COUNT(idSource) AS cID FROM moviesource;"
-                If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
-                    mnuItem = mnuUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
-                    mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
-                End If
-                SQLNewcommand.CommandText = "SELECT idSource, strName, bExclude FROM moviesource;"
-                Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    While SQLReader.Read
-                        mnuItem = mnuUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
-                        mnuItem.Tag = SQLReader("idSource")
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
-                        mnuItem = cmnuTrayUpdateMovies.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_Movie))
-                        mnuItem.Tag = SQLReader("idSource")
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
-                    End While
-                End Using
-            End Using
-
-            mnuUpdateShows.DropDownItems.Clear()
-            cmnuTrayUpdateShows.DropDownItems.Clear()
-            Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                SQLNewcommand.CommandText = "SELECT COUNT(idSource) AS cID FROM tvshowsource;"
-                If Convert.ToInt32(SQLNewcommand.ExecuteScalar) > 1 Then
-                    mnuItem = mnuUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
-                    mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(Master.eLang.GetString(649, "Update All"), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
-                End If
-                SQLNewcommand.CommandText = "SELECT idSource, strName, bExclude FROM tvshowsource;"
-                Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                    While SQLReader.Read
-                        mnuItem = mnuUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
-                        mnuItem.Tag = SQLReader("idSource")
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
-                        mnuItem = cmnuTrayUpdateShows.DropDownItems.Add(String.Format(Master.eLang.GetString(143, "Update {0} Only"), SQLReader("strName")), Nothing, New System.EventHandler(AddressOf SourceSubClick_TV))
-                        mnuItem.Tag = SQLReader("idSource")
-                        mnuItem.ForeColor = If(Convert.ToBoolean(SQLReader("bExclude")), Color.Gray, Color.Black)
-                    End While
-                End Using
-            End Using
-
-            clbFilterDataFields_Movies.Items.Clear()
-            clbFilterDataFields_Movies.Items.AddRange(New Object() {"Certification", "Credits", "Director", "IMDB", "MPAA", "OriginalTitle", "Outline", "Plot", "Rating", "ReleaseDate", "Runtime", "SortTitle", "Studio", "TMDB", "TMDBColID", "Tag", "Tagline", "Title", "Top250", "Trailer", "UserRating", "VideoSource", "Votes", "Year"})
-
-            Dim SortMethods As New Dictionary(Of String, Enums.SortMethod_MovieSet)
-            SortMethods.Add(Master.eLang.GetString(278, "Year"), Enums.SortMethod_MovieSet.Year)
-            SortMethods.Add(Master.eLang.GetString(21, "Title"), Enums.SortMethod_MovieSet.Title)
-            cmnuMovieSetEditSortMethodMethods.ComboBox.DataSource = SortMethods.ToList
-            cmnuMovieSetEditSortMethodMethods.ComboBox.DisplayMember = "Key"
-            cmnuMovieSetEditSortMethodMethods.ComboBox.ValueMember = "Value"
-            cmnuMovieSetEditSortMethodMethods.ComboBox.BindingContext = BindingContext
-
-            listViews_Movies.Clear()
-            listViews_Movies.Add(Master.eLang.GetString(786, "Default List"), "movielist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.Movie)
-                listViews_Movies.Add(Regex.Replace(cList, "movie-", String.Empty).Trim, cList)
-            Next
-            cbFilterLists_Movies.DataSource = listViews_Movies.ToList
-            cbFilterLists_Movies.DisplayMember = "Key"
-            cbFilterLists_Movies.ValueMember = "Value"
-            cbFilterLists_Movies.SelectedIndex = 0
-
-            listViews_MovieSets.Clear()
-            listViews_MovieSets.Add(Master.eLang.GetString(786, "Default List"), "setslist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.MovieSet)
-                listViews_MovieSets.Add(Regex.Replace(cList, "sets-", String.Empty).Trim, cList)
-            Next
-            cbFilterLists_MovieSets.DataSource = listViews_MovieSets.ToList
-            cbFilterLists_MovieSets.DisplayMember = "Key"
-            cbFilterLists_MovieSets.ValueMember = "Value"
-            cbFilterLists_MovieSets.SelectedIndex = 0
-
-            listViews_TVShows.Clear()
-            listViews_TVShows.Add(Master.eLang.GetString(786, "Default List"), "tvshowlist")
-            For Each cList As String In Master.DB.GetViewList(Enums.ContentType.TVShow)
-                listViews_TVShows.Add(Regex.Replace(cList, "tvshow-", String.Empty).Trim, cList)
-            Next
-            cbFilterLists_Shows.DataSource = listViews_TVShows.ToList
-            cbFilterLists_Shows.DisplayMember = "Key"
-            cbFilterLists_Shows.ValueMember = "Value"
-            cbFilterLists_Shows.SelectedIndex = 0
-
-            mnuLanguagesLanguage.Items.Clear()
-            mnuLanguagesLanguage.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages.OrderBy(Function(f) f.Description) Select lLang.Description).ToArray)
-
-            'not technically a menu, but it's a good place to put it
-            If ReloadFilters Then
-
-                RemoveHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
-                cbFilterDataField_Movies.Items.Clear()
-                cbFilterDataField_Movies.Items.AddRange(New Object() {Master.eLang.GetString(1291, "Is Empty"), Master.eLang.GetString(1292, "Is Not Empty")})
-                cbFilterDataField_Movies.SelectedIndex = 0
-                AddHandler cbFilterDataField_Movies.SelectedIndexChanged, AddressOf clbFilterDataFields_Movies_LostFocus
-
-                clbFilterSources_Movies.Items.Clear()
-                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM moviesource;")
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                        While SQLReader.Read
-                            clbFilterSources_Movies.Items.Add(SQLReader("strName"))
-                        End While
-                    End Using
-                End Using
-
-                clbFilterSource_Shows.Items.Clear()
-                Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLNewcommand.CommandText = String.Concat("SELECT strName FROM tvshowsource;")
-                    Using SQLReader As SQLite.SQLiteDataReader = SQLNewcommand.ExecuteReader()
-                        While SQLReader.Read
-                            clbFilterSource_Shows.Items.Add(SQLReader("strName"))
-                        End While
-                    End Using
-                End Using
-
-                RemoveHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
-                cbFilterYearFrom_Movies.Items.Clear()
-                cbFilterYearFrom_Movies.Items.Add(Master.eLang.All)
-                For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
-                    cbFilterYearFrom_Movies.Items.Add(i)
-                Next
-                cbFilterYearFrom_Movies.SelectedIndex = 0
-                AddHandler cbFilterYearFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearFrom_Movies_SelectedIndexChanged
-
-                RemoveHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
-                cbFilterYearModFrom_Movies.SelectedIndex = 0
-                AddHandler cbFilterYearModFrom_Movies.SelectedIndexChanged, AddressOf cbFilterYearModFrom_Movies_SelectedIndexChanged
-
-                RemoveHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
-                cbFilterYearTo_Movies.Items.Clear()
-                cbFilterYearTo_Movies.Items.Add(Master.eLang.All)
-                For i As Integer = (Date.Now.Year + 1) To 1888 Step -1
-                    cbFilterYearTo_Movies.Items.Add(i)
-                Next
-                cbFilterYearTo_Movies.SelectedIndex = 0
-                AddHandler cbFilterYearTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearTo_Movies_SelectedIndexChanged
-
-                RemoveHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
-                cbFilterYearModTo_Movies.SelectedIndex = 0
-                AddHandler cbFilterYearModTo_Movies.SelectedIndexChanged, AddressOf cbFilterYearModTo_Movies_SelectedIndexChanged
-
-                RemoveHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
-                cbFilterVideoSource_Movies.Items.Clear()
-                cbFilterVideoSource_Movies.Items.Add(Master.eLang.All)
-                'Cocotus 2014/10/11 Automatically populate available videosources from user settings to sourcefilter instead of using hardcoded list here!
-                Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
-                mySources = clsXMLAdvancedSettings.GetComplexSetting("MovieSources")
-                If Not mySources Is Nothing Then
-                    For Each k In mySources
-                        If cbFilterVideoSource_Movies.Items.Contains(k.Value) = False Then
-                            cbFilterVideoSource_Movies.Items.Add(k.Value)
-                        End If
-                    Next
-                Else
-                    cbFilterVideoSource_Movies.Items.AddRange(APIXML.SourceList.ToArray)
-                End If
-                cbFilterVideoSource_Movies.Items.Add(Master.eLang.None)
-                cbFilterVideoSource_Movies.SelectedIndex = 0
-                AddHandler cbFilterVideoSource_Movies.SelectedIndexChanged, AddressOf cbFilterVideoSource_Movies_SelectedIndexChanged
-            End If
-
-        End With
         mnuScrapeMovies.Enabled = (dgvMovies.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movie)
         mnuScrapeMovies.Visible = currMainTabTag.ContentType = Enums.ContentType.Movie
-        mnuScrapeMovieSets.Enabled = (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.MovieSet)
-        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.MovieSet
+        mnuScrapeMovieSets.Enabled = (dgvMovieSets.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.Movieset)
+        mnuScrapeMovieSets.Visible = currMainTabTag.ContentType = Enums.ContentType.Movieset
         mnuScrapeTVShows.Enabled = (dgvTVShows.RowCount > 0 AndAlso currMainTabTag.ContentType = Enums.ContentType.TV)
         mnuScrapeTVShows.Visible = currMainTabTag.ContentType = Enums.ContentType.TV
         cmnuTrayScrapeMovies.Enabled = dgvMovies.RowCount > 0
@@ -16294,7 +16402,7 @@ Public Class frmMain
             Dim currTag As Structures.MainTabType = DirectCast(mTabPage.Tag, Structures.MainTabType)
             Dim mCount As Integer = Master.DB.GetViewMediaCount(currTag.DefaultList)
             Select Case currTag.ContentType
-                Case Enums.ContentType.Movie, Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movie, Enums.ContentType.Movieset
                     If mCount > 0 Then
                         mTabPage.Text = String.Format("{0} ({1})", currTag.ContentName, mCount)
                     Else
@@ -16330,7 +16438,7 @@ Public Class frmMain
     ''' <remarks></remarks>
     Private Sub SetMovieSetCount()
         Dim currTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        If currTag.ContentType = Enums.ContentType.MovieSet Then
+        If currTag.ContentType = Enums.ContentType.Movieset Then
             If dgvMovieSets.RowCount > 0 Then
                 tcMain.SelectedTab.Text = String.Format("{0} ({1})", currTag.ContentName, dgvMovieSets.RowCount)
             Else
@@ -16716,137 +16824,145 @@ Public Class frmMain
         btnFilterSortYear_Movies.Text = Master.eLang.GetString(278, "Year")
         chkFilterDuplicates_Movies.Text = Master.eLang.GetString(41, "Duplicates")
         chkFilterEmpty_MovieSets.Text = Master.eLang.GetString(1275, "Empty")
-        chkFilterMarkCustom1_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
-        chkFilterMarkCustom2_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
-        chkFilterMarkCustom3_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
-        chkFilterMarkCustom4_Movies.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
+        With Manager.mSettings.Movieset.GUI
+            chkFilterMarkCustom1_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker1.Name), .CustomMarker1.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
+            chkFilterMarkCustom2_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker2.Name), .CustomMarker2.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
+            chkFilterMarkCustom3_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker3.Name), .CustomMarker3.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
+            chkFilterMarkCustom4_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker4.Name), .CustomMarker4.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
+        End With
         chkFilterMultiple_MovieSets.Text = Master.eLang.GetString(876, "Multiple Movies")
         chkFilterOne_MovieSets.Text = Master.eLang.GetString(1289, "Only One Movie")
         chkFilterTolerance_Movies.Text = Master.eLang.GetString(39, "Out of Tolerance")
 
-        RemoveHandler chkMovieMissingBanner.CheckedChanged, AddressOf chkMovieMissingBanner_CheckedChanged
-        chkMovieMissingBanner.Checked = Master.eSettings.MovieMissingBanner
-        AddHandler chkMovieMissingBanner.CheckedChanged, AddressOf chkMovieMissingBanner_CheckedChanged
+        With Manager.mSettings.Movie.Filter.Missing
+            RemoveHandler chkMovieMissingBanner.CheckedChanged, AddressOf chkMovieMissingBanner_CheckedChanged
+            chkMovieMissingBanner.Checked = .Banner
+            AddHandler chkMovieMissingBanner.CheckedChanged, AddressOf chkMovieMissingBanner_CheckedChanged
 
-        RemoveHandler chkMovieMissingClearArt.CheckedChanged, AddressOf chkMovieMissingClearArt_CheckedChanged
-        chkMovieMissingClearArt.Checked = Master.eSettings.MovieMissingClearArt
-        AddHandler chkMovieMissingClearArt.CheckedChanged, AddressOf chkMovieMissingClearArt_CheckedChanged
+            RemoveHandler chkMovieMissingClearArt.CheckedChanged, AddressOf chkMovieMissingClearArt_CheckedChanged
+            chkMovieMissingClearArt.Checked = .ClearArt
+            AddHandler chkMovieMissingClearArt.CheckedChanged, AddressOf chkMovieMissingClearArt_CheckedChanged
 
-        RemoveHandler chkMovieMissingClearLogo.CheckedChanged, AddressOf chkMovieMissingClearLogo_CheckedChanged
-        chkMovieMissingClearLogo.Checked = Master.eSettings.MovieMissingClearLogo
-        AddHandler chkMovieMissingClearLogo.CheckedChanged, AddressOf chkMovieMissingClearLogo_CheckedChanged
+            RemoveHandler chkMovieMissingClearLogo.CheckedChanged, AddressOf chkMovieMissingClearLogo_CheckedChanged
+            chkMovieMissingClearLogo.Checked = .ClearLogo
+            AddHandler chkMovieMissingClearLogo.CheckedChanged, AddressOf chkMovieMissingClearLogo_CheckedChanged
 
-        RemoveHandler chkMovieMissingDiscArt.CheckedChanged, AddressOf chkMovieMissingDiscArt_CheckedChanged
-        chkMovieMissingDiscArt.Checked = Master.eSettings.MovieMissingDiscArt
-        AddHandler chkMovieMissingDiscArt.CheckedChanged, AddressOf chkMovieMissingDiscArt_CheckedChanged
+            RemoveHandler chkMovieMissingDiscArt.CheckedChanged, AddressOf chkMovieMissingDiscArt_CheckedChanged
+            chkMovieMissingDiscArt.Checked = .DiscArt
+            AddHandler chkMovieMissingDiscArt.CheckedChanged, AddressOf chkMovieMissingDiscArt_CheckedChanged
 
-        RemoveHandler chkMovieMissingExtrafanarts.CheckedChanged, AddressOf chkMovieMissingExtrafanarts_CheckedChanged
-        chkMovieMissingExtrafanarts.Checked = Master.eSettings.MovieMissingExtrafanarts
-        AddHandler chkMovieMissingExtrafanarts.CheckedChanged, AddressOf chkMovieMissingExtrafanarts_CheckedChanged
+            RemoveHandler chkMovieMissingExtrafanarts.CheckedChanged, AddressOf chkMovieMissingExtrafanarts_CheckedChanged
+            chkMovieMissingExtrafanarts.Checked = .Extrafanarts
+            AddHandler chkMovieMissingExtrafanarts.CheckedChanged, AddressOf chkMovieMissingExtrafanarts_CheckedChanged
 
-        RemoveHandler chkMovieMissingExtrathumbs.CheckedChanged, AddressOf chkMovieMissingExtrathumbs_CheckedChanged
-        chkMovieMissingExtrathumbs.Checked = Master.eSettings.MovieMissingExtrathumbs
-        AddHandler chkMovieMissingExtrathumbs.CheckedChanged, AddressOf chkMovieMissingExtrathumbs_CheckedChanged
+            RemoveHandler chkMovieMissingExtrathumbs.CheckedChanged, AddressOf chkMovieMissingExtrathumbs_CheckedChanged
+            chkMovieMissingExtrathumbs.Checked = .Extrathumbs
+            AddHandler chkMovieMissingExtrathumbs.CheckedChanged, AddressOf chkMovieMissingExtrathumbs_CheckedChanged
 
-        RemoveHandler chkMovieMissingFanart.CheckedChanged, AddressOf chkMovieMissingFanart_CheckedChanged
-        chkMovieMissingFanart.Checked = Master.eSettings.MovieMissingFanart
-        AddHandler chkMovieMissingFanart.CheckedChanged, AddressOf chkMovieMissingFanart_CheckedChanged
+            RemoveHandler chkMovieMissingFanart.CheckedChanged, AddressOf chkMovieMissingFanart_CheckedChanged
+            chkMovieMissingFanart.Checked = .Fanart
+            AddHandler chkMovieMissingFanart.CheckedChanged, AddressOf chkMovieMissingFanart_CheckedChanged
 
-        RemoveHandler chkMovieMissingLandscape.CheckedChanged, AddressOf chkMovieMissingLandscape_CheckedChanged
-        chkMovieMissingLandscape.Checked = Master.eSettings.MovieMissingLandscape
-        AddHandler chkMovieMissingLandscape.CheckedChanged, AddressOf chkMovieMissingLandscape_CheckedChanged
+            RemoveHandler chkMovieMissingLandscape.CheckedChanged, AddressOf chkMovieMissingLandscape_CheckedChanged
+            chkMovieMissingLandscape.Checked = .Landscape
+            AddHandler chkMovieMissingLandscape.CheckedChanged, AddressOf chkMovieMissingLandscape_CheckedChanged
 
-        RemoveHandler chkMovieMissingNFO.CheckedChanged, AddressOf chkMovieMissingNFO_CheckedChanged
-        chkMovieMissingNFO.Checked = Master.eSettings.MovieMissingNFO
-        AddHandler chkMovieMissingNFO.CheckedChanged, AddressOf chkMovieMissingNFO_CheckedChanged
+            RemoveHandler chkMovieMissingNFO.CheckedChanged, AddressOf chkMovieMissingNFO_CheckedChanged
+            chkMovieMissingNFO.Checked = .NFO
+            AddHandler chkMovieMissingNFO.CheckedChanged, AddressOf chkMovieMissingNFO_CheckedChanged
 
-        RemoveHandler chkMovieMissingPoster.CheckedChanged, AddressOf chkMovieMissingPoster_CheckedChanged
-        chkMovieMissingPoster.Checked = Master.eSettings.MovieMissingPoster
-        AddHandler chkMovieMissingPoster.CheckedChanged, AddressOf chkMovieMissingPoster_CheckedChanged
+            RemoveHandler chkMovieMissingPoster.CheckedChanged, AddressOf chkMovieMissingPoster_CheckedChanged
+            chkMovieMissingPoster.Checked = .Poster
+            AddHandler chkMovieMissingPoster.CheckedChanged, AddressOf chkMovieMissingPoster_CheckedChanged
 
-        RemoveHandler chkMovieMissingSubtitles.CheckedChanged, AddressOf chkMovieMissingSubtitles_CheckedChanged
-        chkMovieMissingSubtitles.Checked = Master.eSettings.MovieMissingSubtitles
-        AddHandler chkMovieMissingSubtitles.CheckedChanged, AddressOf chkMovieMissingSubtitles_CheckedChanged
+            RemoveHandler chkMovieMissingSubtitles.CheckedChanged, AddressOf chkMovieMissingSubtitles_CheckedChanged
+            chkMovieMissingSubtitles.Checked = .Subtitles
+            AddHandler chkMovieMissingSubtitles.CheckedChanged, AddressOf chkMovieMissingSubtitles_CheckedChanged
 
-        RemoveHandler chkMovieMissingTheme.CheckedChanged, AddressOf chkMovieMissingTheme_CheckedChanged
-        chkMovieMissingTheme.Checked = Master.eSettings.MovieMissingTheme
-        AddHandler chkMovieMissingTheme.CheckedChanged, AddressOf chkMovieMissingTheme_CheckedChanged
+            RemoveHandler chkMovieMissingTheme.CheckedChanged, AddressOf chkMovieMissingTheme_CheckedChanged
+            chkMovieMissingTheme.Checked = .Theme
+            AddHandler chkMovieMissingTheme.CheckedChanged, AddressOf chkMovieMissingTheme_CheckedChanged
 
-        RemoveHandler chkMovieMissingTrailer.CheckedChanged, AddressOf chkMovieMissingTrailer_CheckedChanged
-        chkMovieMissingTrailer.Checked = Master.eSettings.MovieMissingTrailer
-        AddHandler chkMovieMissingTrailer.CheckedChanged, AddressOf chkMovieMissingTrailer_CheckedChanged
+            RemoveHandler chkMovieMissingTrailer.CheckedChanged, AddressOf chkMovieMissingTrailer_CheckedChanged
+            chkMovieMissingTrailer.Checked = .Trailer
+            AddHandler chkMovieMissingTrailer.CheckedChanged, AddressOf chkMovieMissingTrailer_CheckedChanged
+        End With
 
-        RemoveHandler chkMovieSetMissingBanner.CheckedChanged, AddressOf chkMovieSetMissingBanner_CheckedChanged
-        chkMovieSetMissingBanner.Checked = Master.eSettings.MovieSetMissingBanner
-        AddHandler chkMovieSetMissingBanner.CheckedChanged, AddressOf chkMovieSetMissingBanner_CheckedChanged
+        With Manager.mSettings.Movie.Filter.Missing
+            RemoveHandler chkMovieSetMissingBanner.CheckedChanged, AddressOf chkMovieSetMissingBanner_CheckedChanged
+            chkMovieSetMissingBanner.Checked = .Banner
+            AddHandler chkMovieSetMissingBanner.CheckedChanged, AddressOf chkMovieSetMissingBanner_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingClearArt.CheckedChanged, AddressOf chkMovieSetMissingClearArt_CheckedChanged
-        chkMovieSetMissingClearArt.Checked = Master.eSettings.MovieSetMissingClearArt
-        AddHandler chkMovieSetMissingClearArt.CheckedChanged, AddressOf chkMovieSetMissingClearArt_CheckedChanged
+            RemoveHandler chkMovieSetMissingClearArt.CheckedChanged, AddressOf chkMovieSetMissingClearArt_CheckedChanged
+            chkMovieSetMissingClearArt.Checked = .ClearArt
+            AddHandler chkMovieSetMissingClearArt.CheckedChanged, AddressOf chkMovieSetMissingClearArt_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingClearLogo.CheckedChanged, AddressOf chkMovieSetMissingClearLogo_CheckedChanged
-        chkMovieSetMissingClearLogo.Checked = Master.eSettings.MovieSetMissingClearLogo
-        AddHandler chkMovieSetMissingClearLogo.CheckedChanged, AddressOf chkMovieSetMissingClearLogo_CheckedChanged
+            RemoveHandler chkMovieSetMissingClearLogo.CheckedChanged, AddressOf chkMovieSetMissingClearLogo_CheckedChanged
+            chkMovieSetMissingClearLogo.Checked = .ClearLogo
+            AddHandler chkMovieSetMissingClearLogo.CheckedChanged, AddressOf chkMovieSetMissingClearLogo_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingDiscArt.CheckedChanged, AddressOf chkMovieSetMissingDiscArt_CheckedChanged
-        chkMovieSetMissingDiscArt.Checked = Master.eSettings.MovieSetMissingDiscArt
-        AddHandler chkMovieSetMissingDiscArt.CheckedChanged, AddressOf chkMovieSetMissingDiscArt_CheckedChanged
+            RemoveHandler chkMovieSetMissingDiscArt.CheckedChanged, AddressOf chkMovieSetMissingDiscArt_CheckedChanged
+            chkMovieSetMissingDiscArt.Checked = .DiscArt
+            AddHandler chkMovieSetMissingDiscArt.CheckedChanged, AddressOf chkMovieSetMissingDiscArt_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingFanart.CheckedChanged, AddressOf chkMovieSetMissingFanart_CheckedChanged
-        chkMovieSetMissingFanart.Checked = Master.eSettings.MovieSetMissingFanart
-        AddHandler chkMovieSetMissingFanart.CheckedChanged, AddressOf chkMovieSetMissingFanart_CheckedChanged
+            RemoveHandler chkMovieSetMissingFanart.CheckedChanged, AddressOf chkMovieSetMissingFanart_CheckedChanged
+            chkMovieSetMissingFanart.Checked = .Fanart
+            AddHandler chkMovieSetMissingFanart.CheckedChanged, AddressOf chkMovieSetMissingFanart_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingLandscape.CheckedChanged, AddressOf chkMovieSetMissingLandscape_CheckedChanged
-        chkMovieSetMissingLandscape.Checked = Master.eSettings.MovieSetMissingLandscape
-        AddHandler chkMovieSetMissingLandscape.CheckedChanged, AddressOf chkMovieSetMissingLandscape_CheckedChanged
+            RemoveHandler chkMovieSetMissingLandscape.CheckedChanged, AddressOf chkMovieSetMissingLandscape_CheckedChanged
+            chkMovieSetMissingLandscape.Checked = .Landscape
+            AddHandler chkMovieSetMissingLandscape.CheckedChanged, AddressOf chkMovieSetMissingLandscape_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingNFO.CheckedChanged, AddressOf chkMovieSetMissingNFO_CheckedChanged
-        chkMovieSetMissingNFO.Checked = Master.eSettings.MovieSetMissingNFO
-        AddHandler chkMovieSetMissingNFO.CheckedChanged, AddressOf chkMovieSetMissingNFO_CheckedChanged
+            RemoveHandler chkMovieSetMissingNFO.CheckedChanged, AddressOf chkMovieSetMissingNFO_CheckedChanged
+            chkMovieSetMissingNFO.Checked = .NFO
+            AddHandler chkMovieSetMissingNFO.CheckedChanged, AddressOf chkMovieSetMissingNFO_CheckedChanged
 
-        RemoveHandler chkMovieSetMissingPoster.CheckedChanged, AddressOf chkMovieSetMissingPoster_CheckedChanged
-        chkMovieSetMissingPoster.Checked = Master.eSettings.MovieSetMissingPoster
-        AddHandler chkMovieSetMissingPoster.CheckedChanged, AddressOf chkMovieSetMissingPoster_CheckedChanged
+            RemoveHandler chkMovieSetMissingPoster.CheckedChanged, AddressOf chkMovieSetMissingPoster_CheckedChanged
+            chkMovieSetMissingPoster.Checked = .Poster
+            AddHandler chkMovieSetMissingPoster.CheckedChanged, AddressOf chkMovieSetMissingPoster_CheckedChanged
+        End With
 
-        RemoveHandler chkShowMissingBanner.CheckedChanged, AddressOf chkShowMissingBanner_CheckedChanged
-        chkShowMissingBanner.Checked = Master.eSettings.TVShowMissingBanner
-        AddHandler chkShowMissingBanner.CheckedChanged, AddressOf chkShowMissingBanner_CheckedChanged
+        With Manager.mSettings.TV.Filter.Missing
+            RemoveHandler chkShowMissingBanner.CheckedChanged, AddressOf chkShowMissingBanner_CheckedChanged
+            chkShowMissingBanner.Checked = .Banner
+            AddHandler chkShowMissingBanner.CheckedChanged, AddressOf chkShowMissingBanner_CheckedChanged
 
-        RemoveHandler chkShowMissingCharacterArt.CheckedChanged, AddressOf chkShowMissingCharacterArt_CheckedChanged
-        chkShowMissingCharacterArt.Checked = Master.eSettings.TVShowMissingCharacterArt
-        AddHandler chkShowMissingCharacterArt.CheckedChanged, AddressOf chkShowMissingCharacterArt_CheckedChanged
+            RemoveHandler chkShowMissingCharacterArt.CheckedChanged, AddressOf chkShowMissingCharacterArt_CheckedChanged
+            chkShowMissingCharacterArt.Checked = .CharacterArt
+            AddHandler chkShowMissingCharacterArt.CheckedChanged, AddressOf chkShowMissingCharacterArt_CheckedChanged
 
-        RemoveHandler chkShowMissingClearArt.CheckedChanged, AddressOf chkShowMissingClearArt_CheckedChanged
-        chkShowMissingClearArt.Checked = Master.eSettings.TVShowMissingClearArt
-        AddHandler chkShowMissingClearArt.CheckedChanged, AddressOf chkShowMissingClearArt_CheckedChanged
+            RemoveHandler chkShowMissingClearArt.CheckedChanged, AddressOf chkShowMissingClearArt_CheckedChanged
+            chkShowMissingClearArt.Checked = .ClearArt
+            AddHandler chkShowMissingClearArt.CheckedChanged, AddressOf chkShowMissingClearArt_CheckedChanged
 
-        RemoveHandler chkShowMissingClearLogo.CheckedChanged, AddressOf chkShowMissingClearLogo_CheckedChanged
-        chkShowMissingClearLogo.Checked = Master.eSettings.TVShowMissingClearLogo
-        AddHandler chkShowMissingClearLogo.CheckedChanged, AddressOf chkShowMissingClearLogo_CheckedChanged
+            RemoveHandler chkShowMissingClearLogo.CheckedChanged, AddressOf chkShowMissingClearLogo_CheckedChanged
+            chkShowMissingClearLogo.Checked = .ClearLogo
+            AddHandler chkShowMissingClearLogo.CheckedChanged, AddressOf chkShowMissingClearLogo_CheckedChanged
 
-        RemoveHandler chkShowMissingExtrafanarts.CheckedChanged, AddressOf chkShowMissingExtrafanarts_CheckedChanged
-        chkShowMissingExtrafanarts.Checked = Master.eSettings.TVShowMissingExtrafanarts
-        AddHandler chkShowMissingExtrafanarts.CheckedChanged, AddressOf chkShowMissingExtrafanarts_CheckedChanged
+            RemoveHandler chkShowMissingExtrafanarts.CheckedChanged, AddressOf chkShowMissingExtrafanarts_CheckedChanged
+            chkShowMissingExtrafanarts.Checked = .Extrafanarts
+            AddHandler chkShowMissingExtrafanarts.CheckedChanged, AddressOf chkShowMissingExtrafanarts_CheckedChanged
 
-        RemoveHandler chkShowMissingFanart.CheckedChanged, AddressOf chkShowMissingFanart_CheckedChanged
-        chkShowMissingFanart.Checked = Master.eSettings.TVShowMissingFanart
-        AddHandler chkShowMissingFanart.CheckedChanged, AddressOf chkShowMissingFanart_CheckedChanged
+            RemoveHandler chkShowMissingFanart.CheckedChanged, AddressOf chkShowMissingFanart_CheckedChanged
+            chkShowMissingFanart.Checked = .Fanart
+            AddHandler chkShowMissingFanart.CheckedChanged, AddressOf chkShowMissingFanart_CheckedChanged
 
-        RemoveHandler chkShowMissingLandscape.CheckedChanged, AddressOf chkShowMissingLandscape_CheckedChanged
-        chkShowMissingLandscape.Checked = Master.eSettings.TVShowMissingLandscape
-        AddHandler chkShowMissingLandscape.CheckedChanged, AddressOf chkShowMissingLandscape_CheckedChanged
+            RemoveHandler chkShowMissingLandscape.CheckedChanged, AddressOf chkShowMissingLandscape_CheckedChanged
+            chkShowMissingLandscape.Checked = .Landscape
+            AddHandler chkShowMissingLandscape.CheckedChanged, AddressOf chkShowMissingLandscape_CheckedChanged
 
-        RemoveHandler chkShowMissingNFO.CheckedChanged, AddressOf chkShowMissingNFO_CheckedChanged
-        chkShowMissingNFO.Checked = Master.eSettings.TVShowMissingNFO
-        AddHandler chkShowMissingNFO.CheckedChanged, AddressOf chkShowMissingNFO_CheckedChanged
+            RemoveHandler chkShowMissingNFO.CheckedChanged, AddressOf chkShowMissingNFO_CheckedChanged
+            chkShowMissingNFO.Checked = .NFO
+            AddHandler chkShowMissingNFO.CheckedChanged, AddressOf chkShowMissingNFO_CheckedChanged
 
-        RemoveHandler chkShowMissingPoster.CheckedChanged, AddressOf chkShowMissingPoster_CheckedChanged
-        chkShowMissingPoster.Checked = Master.eSettings.TVShowMissingPoster
-        AddHandler chkShowMissingPoster.CheckedChanged, AddressOf chkShowMissingPoster_CheckedChanged
+            RemoveHandler chkShowMissingPoster.CheckedChanged, AddressOf chkShowMissingPoster_CheckedChanged
+            chkShowMissingPoster.Checked = .Poster
+            AddHandler chkShowMissingPoster.CheckedChanged, AddressOf chkShowMissingPoster_CheckedChanged
 
-        RemoveHandler chkShowMissingTheme.CheckedChanged, AddressOf chkShowMissingTheme_CheckedChanged
-        chkShowMissingTheme.Checked = Master.eSettings.TVShowMissingTheme
-        AddHandler chkShowMissingTheme.CheckedChanged, AddressOf chkShowMissingTheme_CheckedChanged
+            RemoveHandler chkShowMissingTheme.CheckedChanged, AddressOf chkShowMissingTheme_CheckedChanged
+            chkShowMissingTheme.Checked = .Theme
+            AddHandler chkShowMissingTheme.CheckedChanged, AddressOf chkShowMissingTheme_CheckedChanged
+        End With
 
         cmnuEpisodeChange.Text = Master.eLang.GetString(772, "Change Episode")
         cmnuEpisodeEdit.Text = Master.eLang.GetString(656, "Edit Episode")
@@ -16861,14 +16977,16 @@ Public Class frmMain
         cmnuMovieEditMetaData.Text = Master.eLang.GetString(603, "Edit Meta Data")
         cmnuMovieLock.Text = Master.eLang.GetString(24, "Lock")
         cmnuMovieMarkAs.Text = Master.eLang.GetString(1192, "Mark as")
-        cmnuMovieMarkAsCustom1.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker1Name), Master.eSettings.MovieGeneralCustomMarker1Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
-        cmnuMovieMarkAsCustom1.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker1Color)
-        cmnuMovieMarkAsCustom2.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker2Name), Master.eSettings.MovieGeneralCustomMarker2Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
-        cmnuMovieMarkAsCustom2.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker2Color)
-        cmnuMovieMarkAsCustom3.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker3Name), Master.eSettings.MovieGeneralCustomMarker3Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
-        cmnuMovieMarkAsCustom3.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker3Color)
-        cmnuMovieMarkAsCustom4.Text = If(Not String.IsNullOrEmpty(Master.eSettings.MovieGeneralCustomMarker4Name), Master.eSettings.MovieGeneralCustomMarker4Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
-        cmnuMovieMarkAsCustom4.ForeColor = System.Drawing.Color.FromArgb(Master.eSettings.MovieGeneralCustomMarker4Color)
+        With Manager.mSettings.Movie.GUI
+            cmnuMovieMarkAsCustom1.Text = If(Not String.IsNullOrEmpty(.CustomMarker1.Name), .CustomMarker1.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
+            cmnuMovieMarkAsCustom1.ForeColor = Color.FromArgb(.CustomMarker1.Color)
+            cmnuMovieMarkAsCustom2.Text = If(Not String.IsNullOrEmpty(.CustomMarker2.Name), .CustomMarker2.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
+            cmnuMovieMarkAsCustom2.ForeColor = Color.FromArgb(.CustomMarker2.Color)
+            cmnuMovieMarkAsCustom3.Text = If(Not String.IsNullOrEmpty(.CustomMarker3.Name), .CustomMarker3.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))
+            cmnuMovieMarkAsCustom3.ForeColor = Color.FromArgb(.CustomMarker3.Color)
+            cmnuMovieMarkAsCustom4.Text = If(Not String.IsNullOrEmpty(.CustomMarker4.Name), .CustomMarker4.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #4"))
+            cmnuMovieMarkAsCustom4.ForeColor = Color.FromArgb(.CustomMarker4.Color)
+        End With
         cmnuMovieOpenFolder.Text = Master.eLang.GetString(33, "Open Containing Folder")
         cmnuMovieReload.Text = Master.eLang.GetString(22, "Reload")
         cmnuMovieRemove.Text = Master.eLang.GetString(30, "Remove")
@@ -17080,7 +17198,7 @@ Public Class frmMain
         If doTheme Then
             tTheme = New Theming
             Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-            ApplyTheme(If(currMainTabTag.ContentType = Enums.ContentType.Movie, Theming.ThemeType.Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
+            ApplyTheme(If(currMainTabTag.ContentType = Enums.ContentType.Movie, Theming.ThemeType.Movie, If(currMainTabTag.ContentType = Enums.ContentType.Movieset, Theming.ThemeType.MovieSet, Theming.ThemeType.Show)))
         End If
     End Sub
     ''' <summary>
@@ -17095,7 +17213,7 @@ Public Class frmMain
                 Case Enums.ContentType.Movie
                     lblNoInfo.Text = Master.eLang.GetString(55, "No information is available for this Movie")
                     If Not currThemeType = Theming.ThemeType.Movie Then ApplyTheme(Theming.ThemeType.Movie)
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     lblNoInfo.Text = Master.eLang.GetString(1154, "No information is available for this MovieSet")
                     If Not currThemeType = Theming.ThemeType.MovieSet Then ApplyTheme(Theming.ThemeType.MovieSet)
                 Case Enums.ContentType.TVEpisode
@@ -17196,7 +17314,7 @@ Public Class frmMain
                     SetControlsEnabled(True)
                 End If
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 currList_MovieSets = currMainTabTag.DefaultList
                 cbFilterLists_MovieSets.SelectedValue = currList_MovieSets
                 AddonsManager.Instance.RuntimeObjects.ListMovieSets = currList_MovieSets
@@ -17280,7 +17398,7 @@ Public Class frmMain
 
     Private Sub MoveInfoPanel()
         Dim currMainTabTag As Structures.MainTabType = DirectCast(tcMain.SelectedTab.Tag, Structures.MainTabType)
-        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+        Select Case If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.Movieset, InfoPanelState_MovieSet, InfoPanelState_TVShow))
             Case 0
                 pnlInfoPanel.Height = 25
 
@@ -17294,7 +17412,7 @@ Public Class frmMain
         MoveGenres()
         MoveMPAA()
 
-        Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.MovieSet, InfoPanelState_MovieSet, InfoPanelState_TVShow))
+        Dim aType As Integer = If(currMainTabTag.ContentType = Enums.ContentType.Movie, InfoPanelState_Movie, If(currMainTabTag.ContentType = Enums.ContentType.Movieset, InfoPanelState_MovieSet, InfoPanelState_TVShow))
         Select Case aType
             Case 0
                 If pnlInfoPanel.Height = 25 Then

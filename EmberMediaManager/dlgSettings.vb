@@ -23,7 +23,6 @@
 
 Imports EmberAPI
 Imports NLog
-Imports System.IO
 
 Public Class dlgSettings
 
@@ -139,7 +138,7 @@ Public Class dlgSettings
               .Image = My.Resources.MovieSet,
               .TextImageRelation = TextImageRelation.ImageAboveText,
               .DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.MovieSet, .iIndex = 300, .strTitle = Master.eLang.GetString(1203, "MovieSets")}}
+              .Tag = New ButtonTag With {.ePanelType = Enums.SettingsPanelType.Movieset, .iIndex = 300, .strTitle = Master.eLang.GetString(1203, "MovieSets")}}
         AddHandler TSB.Click, AddressOf ToolStripButton_Click
         TSBs.Add(TSB)
         TSB = New ToolStripButton With {
@@ -246,13 +245,6 @@ Public Class dlgSettings
              .Type = Enums.SettingsPanelType.TV,
              .Panel = pnlTVScraper,
              .Order = 400})
-        _SettingsPanels.Add(New Containers.SettingsPanel With {
-             .Name = "pnlExtensions",
-             .Title = Master.eLang.GetString(553, "File System"),
-             .ImageIndex = 4,
-             .Type = Enums.SettingsPanelType.Options,
-             .Panel = pnlFileSystem,
-             .Order = 200})
 
         _lstMasterSettingsPanels.Add(frmMovie_Data)
         _lstMasterSettingsPanels.Add(frmMovie_FileNaming)
@@ -265,6 +257,7 @@ Public Class dlgSettings
         _lstMasterSettingsPanels.Add(frmMovieSet_FileNaming)
         _lstMasterSettingsPanels.Add(frmMovieSet_GUI)
         _lstMasterSettingsPanels.Add(frmMovieSet_Image)
+        _lstMasterSettingsPanels.Add(frmOption_FileSystem)
         _lstMasterSettingsPanels.Add(frmOption_GUI)
         _lstMasterSettingsPanels.Add(frmOption_Proxy)
         _lstMasterSettingsPanels.Add(frmTV_FileNaming)
@@ -336,153 +329,6 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub btnFileSystemExcludedDirsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemExcludedDirs.Text) Then
-            If Not lstFileSystemExcludedDirs.Items.Contains(txtFileSystemExcludedDirs.Text.ToLower) Then
-                AddExcludedDir(txtFileSystemExcludedDirs.Text)
-                RefreshFileSystemExcludeDirs()
-                txtFileSystemExcludedDirs.Text = String.Empty
-                txtFileSystemExcludedDirs.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnFileSystemExcludedDirsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemExcludedDirsRemove.Click
-        RemoveExcludeDir()
-        RefreshFileSystemExcludeDirs()
-    End Sub
-
-    Private Sub lstFileSystemExcludedDirs_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemExcludedDirs.KeyDown
-        If e.KeyCode = Keys.Delete Then
-            RemoveExcludeDir()
-            RefreshFileSystemExcludeDirs()
-        End If
-    End Sub
-
-    Private Sub AddExcludedDir(ByVal Path As String)
-        Try
-            Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                    SQLcommand.CommandText = "INSERT OR REPLACE INTO ExcludeDir (Dirname) VALUES (?);"
-
-                    Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
-                    parDirname.Value = Path
-
-                    SQLcommand.ExecuteNonQuery()
-                End Using
-                SQLtransaction.Commit()
-            End Using
-
-            SetApplyButton(True)
-            sResult.NeedsDBClean_Movie = True
-            sResult.NeedsDBClean_TV = True
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        Finally
-            Master.DB.Load_ExcludeDirs()
-        End Try
-    End Sub
-
-    Private Sub RemoveExcludeDir()
-        Try
-            If lstFileSystemExcludedDirs.SelectedItems.Count > 0 Then
-                lstFileSystemExcludedDirs.BeginUpdate()
-
-                Using SQLtransaction As SQLite.SQLiteTransaction = Master.DB.MyVideosDBConn.BeginTransaction()
-                    Using SQLcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
-                        Dim parDirname As SQLite.SQLiteParameter = SQLcommand.Parameters.Add("parDirname", DbType.String, 0, "Dirname")
-                        While lstFileSystemExcludedDirs.SelectedItems.Count > 0
-                            parDirname.Value = lstFileSystemExcludedDirs.SelectedItems(0).ToString
-                            SQLcommand.CommandText = String.Concat("DELETE FROM ExcludeDir WHERE Dirname = (?);")
-                            SQLcommand.ExecuteNonQuery()
-                            lstFileSystemExcludedDirs.Items.Remove(lstFileSystemExcludedDirs.SelectedItems(0))
-                        End While
-                    End Using
-                    SQLtransaction.Commit()
-                End Using
-
-                lstFileSystemExcludedDirs.EndUpdate()
-                lstFileSystemExcludedDirs.Refresh()
-
-                SetApplyButton(True)
-                sResult.NeedsDBUpdate_Movie = True
-                sResult.NeedsDBUpdate_TV = True
-            End If
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        Finally
-            Master.DB.Load_ExcludeDirs()
-        End Try
-    End Sub
-
-    Private Sub btnFileSystemValidVideoExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemValidVideoExts.Text) Then
-            If Not txtFileSystemValidVideoExts.Text.Substring(0, 1) = "." Then txtFileSystemValidVideoExts.Text = String.Concat(".", txtFileSystemValidVideoExts.Text)
-            If Not lstFileSystemValidVideoExts.Items.Contains(txtFileSystemValidVideoExts.Text.ToLower) Then
-                lstFileSystemValidVideoExts.Items.Add(txtFileSystemValidVideoExts.Text.ToLower)
-                SetApplyButton(True)
-                sResult.NeedsDBUpdate_Movie = True
-                sResult.NeedsDBUpdate_TV = True
-                txtFileSystemValidVideoExts.Text = String.Empty
-                txtFileSystemValidVideoExts.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidSubtitlesExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemValidSubtitlesExts.Text) Then
-            If Not txtFileSystemValidSubtitlesExts.Text.Substring(0, 1) = "." Then txtFileSystemValidSubtitlesExts.Text = String.Concat(".", txtFileSystemValidSubtitlesExts.Text)
-            If Not lstFileSystemValidSubtitlesExts.Items.Contains(txtFileSystemValidSubtitlesExts.Text.ToLower) Then
-                lstFileSystemValidSubtitlesExts.Items.Add(txtFileSystemValidSubtitlesExts.Text.ToLower)
-                SetApplyButton(True)
-                sResult.NeedsReload_Movie = True
-                sResult.NeedsReload_TVEpisode = True
-                txtFileSystemValidSubtitlesExts.Text = String.Empty
-                txtFileSystemValidSubtitlesExts.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidThemeExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemValidThemeExts.Text) Then
-            If Not txtFileSystemValidThemeExts.Text.Substring(0, 1) = "." Then txtFileSystemValidThemeExts.Text = String.Concat(".", txtFileSystemValidThemeExts.Text)
-            If Not lstFileSystemValidThemeExts.Items.Contains(txtFileSystemValidThemeExts.Text.ToLower) Then
-                lstFileSystemValidThemeExts.Items.Add(txtFileSystemValidThemeExts.Text.ToLower)
-                SetApplyButton(True)
-                sResult.NeedsReload_Movie = True
-                sResult.NeedsReload_TVShow = True
-                txtFileSystemValidThemeExts.Text = String.Empty
-                txtFileSystemValidThemeExts.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnFileSystemNoStackExtsAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemNoStackExtsAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemNoStackExts.Text) Then
-            If Not txtFileSystemNoStackExts.Text.Substring(0, 1) = "." Then txtFileSystemNoStackExts.Text = String.Concat(".", txtFileSystemNoStackExts.Text)
-            If Not lstFileSystemNoStackExts.Items.Contains(txtFileSystemNoStackExts.Text) Then
-                lstFileSystemNoStackExts.Items.Add(txtFileSystemNoStackExts.Text)
-                SetApplyButton(True)
-                sResult.NeedsDBUpdate_Movie = True
-                sResult.NeedsDBUpdate_TV = True
-                txtFileSystemNoStackExts.Text = String.Empty
-                txtFileSystemNoStackExts.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub btnFileSystemCleanerWhitelistAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistAdd.Click
-        If Not String.IsNullOrEmpty(txtFileSystemCleanerWhitelist.Text) Then
-            If Not txtFileSystemCleanerWhitelist.Text.Substring(0, 1) = "." Then txtFileSystemCleanerWhitelist.Text = String.Concat(".", txtFileSystemCleanerWhitelist.Text)
-            If Not lstFileSystemCleanerWhitelist.Items.Contains(txtFileSystemCleanerWhitelist.Text.ToLower) Then
-                lstFileSystemCleanerWhitelist.Items.Add(txtFileSystemCleanerWhitelist.Text.ToLower)
-                SetApplyButton(True)
-                txtFileSystemCleanerWhitelist.Text = String.Empty
-                txtFileSystemCleanerWhitelist.Focus()
-            End If
-        End If
-    End Sub
-
     Private Sub btnApply_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply.Click
         SaveSettings(True)
         SetApplyButton(False)
@@ -548,57 +394,8 @@ Public Class dlgSettings
         Close()
     End Sub
 
-    Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidExts, True)
-            RefreshFileSystemValidExts()
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidSubtitleExts, True)
-            RefreshFileSystemValidSubtitlesExts()
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
-        If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidThemeExts, True)
-            RefreshFileSystemValidThemeExts()
-            SetApplyButton(True)
-        End If
-    End Sub
-
-    Private Sub btnFileSystemValidExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsRemove.Click
-        RemoveFileSystemValidExts()
-    End Sub
-
-    Private Sub btnFileSystemValidSubtitlesExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsRemove.Click
-        RemoveFileSystemValidSubtitlesExts()
-    End Sub
-
-    Private Sub btnFileSystemValidThemeExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsRemove.Click
-        RemoveFileSystemValidThemeExts()
-    End Sub
-
-    Private Sub btnFileSystemNoStackExtsRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemNoStackExtsRemove.Click
-        RemoveFileSystemNoStackExts()
-    End Sub
-
     Private Sub btnTVScraperDefFIExtRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVScraperDefFIExtRemove.Click
         RemoveTVMetaData()
-    End Sub
-
-    Private Sub btnFileSystemCleanerWhitelistRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemCleanerWhitelistRemove.Click
-        If lstFileSystemCleanerWhitelist.Items.Count > 0 AndAlso lstFileSystemCleanerWhitelist.SelectedItems.Count > 0 Then
-            While lstFileSystemCleanerWhitelist.SelectedItems.Count > 0
-                lstFileSystemCleanerWhitelist.Items.Remove(lstFileSystemCleanerWhitelist.SelectedItems(0))
-            End While
-            SetApplyButton(True)
-        End If
     End Sub
 
     Private Sub chkTVScraperShowCert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVScraperShowCert.CheckedChanged
@@ -678,122 +475,101 @@ Public Class dlgSettings
     End Sub
 
     Private Sub FillSettings()
-
-
         With Master.eSettings
-            chkCleanDotFanartJPG.Checked = .CleanDotFanartJPG
-            chkCleanExtrathumbs.Checked = .CleanExtrathumbs
-            chkCleanFanartJPG.Checked = .CleanFanartJPG
-            chkCleanFolderJPG.Checked = .CleanFolderJPG
-            chkCleanMovieFanartJPG.Checked = .CleanMovieFanartJPG
-            chkCleanMovieJPG.Checked = .CleanMovieJPG
-            chkCleanMovieNFO.Checked = .CleanMovieNFO
-            chkCleanMovieNFOb.Checked = .CleanMovieNFOB
-            chkCleanMovieNameJPG.Checked = .CleanMovieNameJPG
-            chkCleanMovieTBN.Checked = .CleanMovieTBN
-            chkCleanMovieTBNb.Checked = .CleanMovieTBNB
-            chkCleanPosterJPG.Checked = .CleanPosterJPG
-            chkCleanPosterTBN.Checked = .CleanPosterTBN
-            chkFileSystemCleanerWhitelist.Checked = .FileSystemCleanerWhitelist
-            chkTVLockEpisodeLanguageA.Checked = .TVLockEpisodeLanguageA
-            chkTVLockEpisodeLanguageV.Checked = .TVLockEpisodeLanguageV
-            chkTVLockEpisodePlot.Checked = .TVLockEpisodePlot
-            chkTVLockEpisodeRating.Checked = .TVLockEpisodeRating
-            chkTVLockEpisodeRuntime.Checked = .TVLockEpisodeRuntime
-            chkTVLockEpisodeTitle.Checked = .TVLockEpisodeTitle
-            chkTVLockEpisodeUserRating.Checked = .TVLockEpisodeUserRating
-            chkTVLockSeasonPlot.Checked = .TVLockSeasonPlot
-            chkTVLockSeasonTitle.Checked = .TVLockSeasonTitle
-            chkTVLockShowCert.Checked = .TVLockShowCert
-            chkTVLockShowCreators.Checked = .TVLockShowCreators
-            chkTVLockShowGenre.Checked = .TVLockShowGenre
-            chkTVLockShowMPAA.Checked = .TVLockShowMPAA
-            chkTVLockShowOriginalTitle.Checked = .TVLockShowOriginalTitle
-            chkTVLockShowPlot.Checked = .TVLockShowPlot
-            chkTVLockShowRating.Checked = .TVLockShowRating
-            chkTVLockShowRuntime.Checked = .TVLockShowRuntime
-            chkTVLockShowStatus.Checked = .TVLockShowStatus
-            chkTVLockShowStudio.Checked = .TVLockShowStudio
-            chkTVLockShowTitle.Checked = .TVLockShowTitle
-            chkTVLockShowUserRating.Checked = .TVLockShowUserRating
-            chkTVScraperCastWithImg.Checked = .TVScraperShowCastWithImgOnly
-            chkTVScraperCleanFields.Checked = .TVScraperCleanFields
-            chkTVScraperEpisodeActors.Checked = .TVScraperEpisodeActors
-            chkTVScraperEpisodeAired.Checked = .TVScraperEpisodeAired
-            chkTVScraperEpisodeCredits.Checked = .TVScraperEpisodeCredits
-            chkTVScraperEpisodeDirector.Checked = .TVScraperEpisodeDirector
-            chkTVScraperEpisodeGuestStars.Checked = .TVScraperEpisodeGuestStars
             chkTVScraperEpisodeGuestStarsToActors.Checked = .TVScraperEpisodeGuestStarsToActors
-            chkTVScraperEpisodePlot.Checked = .TVScraperEpisodePlot
-            chkTVScraperEpisodeRating.Checked = .TVScraperEpisodeRating
-            chkTVScraperEpisodeRuntime.Checked = .TVScraperEpisodeRuntime
-            chkTVScraperEpisodeTitle.Checked = .TVScraperEpisodeTitle
-            chkTVScraperEpisodeUserRating.Checked = .TVScraperEpisodeUserRating
-            chkTVScraperMetaDataScan.Checked = .TVScraperMetaDataScan
-            chkTVScraperSeasonAired.Checked = .TVScraperSeasonAired
-            chkTVScraperSeasonPlot.Checked = .TVScraperSeasonPlot
-            chkTVScraperSeasonTitle.Checked = .TVScraperSeasonTitle
-            chkTVScraperShowActors.Checked = .TVScraperShowActors
-            chkTVScraperShowCert.Checked = .TVScraperShowCert
-            chkTVScraperShowCreators.Checked = .TVScraperShowCreators
-            chkTVScraperShowCertForMPAA.Checked = .TVScraperShowCertForMPAA
-            chkTVScraperShowCertForMPAAFallback.Checked = .TVScraperShowCertForMPAAFallback
-            chkTVScraperShowCertFSK.Checked = .TVScraperShowCertFSK
-            chkTVScraperShowCertOnlyValue.Checked = .TVScraperShowCertOnlyValue
-            chkTVScraperShowEpiGuideURL.Checked = .TVScraperShowEpiGuideURL
-            chkTVScraperShowGenre.Checked = .TVScraperShowGenre
-            chkTVScraperShowMPAA.Checked = .TVScraperShowMPAA
-            chkTVScraperShowOriginalTitle.Checked = .TVScraperShowOriginalTitle
-            chkTVScraperShowPlot.Checked = .TVScraperShowPlot
-            chkTVScraperShowPremiered.Checked = .TVScraperShowPremiered
-            chkTVScraperShowRating.Checked = .TVScraperShowRating
-            chkTVScraperShowRuntime.Checked = .TVScraperShowRuntime
-            chkTVScraperShowStatus.Checked = .TVScraperShowStatus
-            chkTVScraperShowStudio.Checked = .TVScraperShowStudio
-            chkTVScraperShowTitle.Checked = .TVScraperShowTitle
-            chkTVScraperShowUserRating.Checked = .TVScraperShowUserRating
-            chkTVScraperUseDisplaySeasonEpisode.Checked = .TVScraperUseDisplaySeasonEpisode
-            chkTVScraperUseMDDuration.Checked = .TVScraperUseMDDuration
-            chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
-            lstFileSystemCleanerWhitelist.Items.AddRange(.FileSystemCleanerWhitelistExts.ToArray)
-            lstFileSystemNoStackExts.Items.AddRange(.FileSystemNoStackExts.ToArray)
-            tcFileSystemCleaner.SelectedTab = If(.FileSystemExpertCleaner, tpFileSystemCleanerExpert, tpFileSystemCleanerStandard)
-            txtTVScraperDurationRuntimeFormat.Text = .TVScraperDurationRuntimeFormat.ToString
-            txtTVScraperShowMPAANotRated.Text = .TVScraperShowMPAANotRated
+            With Master.eSettings.TV.DataSettings
+                chkTVScraperMetaDataScan.Checked = .MetaDataScan
+                txtTVScraperDurationRuntimeFormat.Text = .DurationFormat
+                chkTVScraperUseMDDuration.Checked = .DurationForRuntime
+            End With
+            With Master.eSettings.TV.DataSettings.TVEpisode
+                chkTVLockEpisodeLanguageA.Checked = .LockAudioLanguage
+                chkTVLockEpisodeLanguageV.Checked = .LockVideoLanguage
+                chkTVLockEpisodePlot.Checked = .Plot.Locked
+                chkTVLockEpisodeRating.Checked = .Rating.Locked
+                chkTVLockEpisodeRuntime.Checked = .Runtime.Locked
+                chkTVLockEpisodeTitle.Checked = .Title.Locked
+                chkTVLockEpisodeUserRating.Checked = .UserRating.Locked
+                chkTVScraperEpisodeActors.Checked = .Actors.Enabled
+                chkTVScraperEpisodeAired.Checked = .Aired.Enabled
+                chkTVScraperEpisodeCredits.Checked = .Credits.Enabled
+                chkTVScraperEpisodeDirector.Checked = .Directors.Enabled
+                chkTVScraperEpisodeGuestStars.Checked = .GuestStars.Enabled
+                chkTVScraperEpisodePlot.Checked = .Plot.Enabled
+                chkTVScraperEpisodeRating.Checked = .Rating.Enabled
+                chkTVScraperEpisodeRuntime.Checked = .Runtime.Enabled
+                chkTVScraperEpisodeTitle.Checked = .Title.Enabled
+                chkTVScraperEpisodeUserRating.Checked = .UserRating.Enabled
+            End With
+            With Master.eSettings.TV.DataSettings.TVSeason
+                chkTVLockSeasonPlot.Checked = .Plot.Locked
+                chkTVLockSeasonTitle.Checked = .Title.Locked
+                chkTVScraperSeasonAired.Checked = .Aired.Locked
+                chkTVScraperSeasonPlot.Checked = .Plot.Locked
+                chkTVScraperSeasonTitle.Checked = .Title.Locked
+            End With
+            With Master.eSettings.TV.DataSettings.TVShow
+                chkTVScraperCleanFields.Checked = .ClearDisabledFields
+                chkTVLockShowCert.Checked = .Certifications.Locked
+                chkTVLockShowCreators.Checked = .Creators.Locked
+                chkTVLockShowGenre.Checked = .Genres.Locked
+                chkTVLockShowMPAA.Checked = .MPAA.Locked
+                chkTVLockShowOriginalTitle.Checked = .OriginalTitle.Locked
+                chkTVLockShowPlot.Checked = .Plot.Locked
+                chkTVLockShowRating.Checked = .Rating.Locked
+                chkTVLockShowRuntime.Checked = .Runtime.Locked
+                chkTVLockShowStatus.Checked = .Status.Locked
+                chkTVLockShowStudio.Checked = .Status.Locked
+                chkTVLockShowTitle.Checked = .Title.Locked
+                chkTVLockShowUserRating.Checked = .UserRating.Locked
+                chkTVScraperShowActors.Checked = .Actors.Enabled
+                chkTVScraperShowCert.Checked = .Certifications.Enabled
+                chkTVScraperShowCreators.Checked = .Creators.Enabled
+                chkTVScraperShowEpiGuideURL.Checked = .EpisodeGuideURL.Enabled
+                chkTVScraperShowGenre.Checked = .Genres.Enabled
+                chkTVScraperShowMPAA.Checked = .MPAA.Enabled
+                chkTVScraperShowOriginalTitle.Checked = .OriginalTitle.Enabled
+                chkTVScraperShowPlot.Checked = .Plot.Enabled
+                chkTVScraperShowPremiered.Checked = .Premiered.Enabled
+                chkTVScraperShowRating.Checked = .Rating.Enabled
+                chkTVScraperShowRuntime.Checked = .Runtime.Enabled
+                chkTVScraperShowStatus.Checked = .Status.Enabled
+                chkTVScraperShowStudio.Checked = .Studios.Enabled
+                chkTVScraperShowTitle.Checked = .Tags.Enabled
+                chkTVScraperShowUserRating.Checked = .UserRating.Enabled
+                txtTVScraperShowMPAANotRated.Text = .MPAANotRatedValue
+                chkTVScraperShowCertForMPAA.Checked = .CertificationsForMPAA
+                chkTVScraperShowCertForMPAAFallback.Checked = .CertificationsForMPAAFallback
+                chkTVScraperShowCertOnlyValue.Checked = .CertificationsOnlyValue
+                chkTVScraperCastWithImg.Checked = .ActorsWithImageOnly
 
-
-            TVMeta.AddRange(.TVMetadataPerFileType)
-            LoadTVMetadata()
-
-            Try
-                cbTVScraperShowCertLang.Items.Clear()
-                cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
-                cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
-                If cbTVScraperShowCertLang.Items.Count > 0 Then
-                    If .TVScraperShowCertLang = Master.eLang.All Then
-                        cbTVScraperShowCertLang.SelectedIndex = 0
-                    ElseIf Not String.IsNullOrEmpty(.TVScraperShowCertLang) Then
-                        Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .TVScraperShowCertLang)
-                        If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
-                            cbTVScraperShowCertLang.Text = tLanguage.name
+                Try
+                    cbTVScraperShowCertLang.Items.Clear()
+                    cbTVScraperShowCertLang.Items.Add(Master.eLang.All)
+                    cbTVScraperShowCertLang.Items.AddRange((From lLang In APIXML.CertLanguagesXML.Language Select lLang.name).ToArray)
+                    If cbTVScraperShowCertLang.Items.Count > 0 Then
+                        If .Certifications.Filter = Master.eLang.All Then
+                            cbTVScraperShowCertLang.SelectedIndex = 0
+                        ElseIf Not String.IsNullOrEmpty(.Certifications.Filter) Then
+                            Dim tLanguage As CertLanguages = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = .Certifications.Filter)
+                            If tLanguage IsNot Nothing AndAlso tLanguage.name IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.name) Then
+                                cbTVScraperShowCertLang.Text = tLanguage.name
+                            Else
+                                cbTVScraperShowCertLang.SelectedIndex = 0
+                            End If
                         Else
                             cbTVScraperShowCertLang.SelectedIndex = 0
                         End If
-                    Else
-                        cbTVScraperShowCertLang.SelectedIndex = 0
                     End If
-                End If
-            Catch ex As Exception
-                logger.Error(ex, New StackFrame().GetMethod().Name)
-            End Try
+                Catch ex As Exception
+                    logger.Error(ex, New StackFrame().GetMethod().Name)
+                End Try
+            End With
+            chkTVScraperUseDisplaySeasonEpisode.Checked = .TVScraperUseDisplaySeasonEpisode
+            chkTVScraperUseSRuntimeForEp.Checked = .TVScraperUseSRuntimeForEp
 
-
-            txtTVScraperDurationRuntimeFormat.Enabled = .TVScraperUseMDDuration
-
-            RefreshFileSystemExcludeDirs()
-            RefreshFileSystemValidExts()
-            RefreshFileSystemValidSubtitlesExts()
-            RefreshFileSystemValidThemeExts()
+            TVMeta.AddRange(.TVMetadataPerFileType)
+            LoadTVMetadata()
         End With
     End Sub
 
@@ -921,22 +697,6 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub lstFileSystemValidExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemValidVideoExts.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemValidExts()
-    End Sub
-
-    Private Sub lstFileSystemValidSubtitlesExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemValidSubtitlesExts.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemValidSubtitlesExts()
-    End Sub
-
-    Private Sub lstFileSystemValidThemeExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemValidThemeExts.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemValidThemeExts()
-    End Sub
-
-    Private Sub lstFileSystemNoStackExts_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstFileSystemNoStackExts.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveFileSystemNoStackExts()
-    End Sub
-
     Private Sub lstTVScraperDefFIExt_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lstTVScraperDefFIExt.DoubleClick
         If lstTVScraperDefFIExt.SelectedItems.Count > 0 Then
             Using dEditMeta As New dlgFileInfo(New Database.DBElement(Enums.ContentType.TVEpisode), True)
@@ -982,73 +742,9 @@ Public Class dlgSettings
         Next
     End Sub
 
-    Private Sub RefreshFileSystemExcludeDirs()
-        lstFileSystemExcludedDirs.Items.Clear()
-        lstFileSystemExcludedDirs.Items.AddRange(Master.ExcludedDirs.ToArray)
-    End Sub
-
-    Private Sub RefreshFileSystemValidExts()
-        lstFileSystemValidVideoExts.Items.Clear()
-        lstFileSystemValidVideoExts.Items.AddRange(Master.eSettings.FileSystemValidExts.ToArray)
-    End Sub
-
-    Private Sub RefreshFileSystemValidSubtitlesExts()
-        lstFileSystemValidSubtitlesExts.Items.Clear()
-        lstFileSystemValidSubtitlesExts.Items.AddRange(Master.eSettings.FileSystemValidSubtitlesExts.ToArray)
-    End Sub
-
-    Private Sub RefreshFileSystemValidThemeExts()
-        lstFileSystemValidThemeExts.Items.Clear()
-        lstFileSystemValidThemeExts.Items.AddRange(Master.eSettings.FileSystemValidThemeExts.ToArray)
-    End Sub
-
     Private Sub RemoveCurrPanel()
         If pnlSettingsMain.Controls.Count > 0 Then
             pnlSettingsMain.Controls.Remove(_currpanel)
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemValidExts()
-        If lstFileSystemValidVideoExts.Items.Count > 0 AndAlso lstFileSystemValidVideoExts.SelectedItems.Count > 0 Then
-            While lstFileSystemValidVideoExts.SelectedItems.Count > 0
-                lstFileSystemValidVideoExts.Items.Remove(lstFileSystemValidVideoExts.SelectedItems(0))
-            End While
-            SetApplyButton(True)
-            sResult.NeedsDBClean_Movie = True
-            sResult.NeedsDBClean_TV = True
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemValidSubtitlesExts()
-        If lstFileSystemValidSubtitlesExts.Items.Count > 0 AndAlso lstFileSystemValidSubtitlesExts.SelectedItems.Count > 0 Then
-            While lstFileSystemValidSubtitlesExts.SelectedItems.Count > 0
-                lstFileSystemValidSubtitlesExts.Items.Remove(lstFileSystemValidSubtitlesExts.SelectedItems(0))
-            End While
-            SetApplyButton(True)
-            sResult.NeedsReload_Movie = True
-            sResult.NeedsReload_TVEpisode = True
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemValidThemeExts()
-        If lstFileSystemValidThemeExts.Items.Count > 0 AndAlso lstFileSystemValidThemeExts.SelectedItems.Count > 0 Then
-            While lstFileSystemValidThemeExts.SelectedItems.Count > 0
-                lstFileSystemValidThemeExts.Items.Remove(lstFileSystemValidThemeExts.SelectedItems(0))
-            End While
-            SetApplyButton(True)
-            sResult.NeedsReload_Movie = True
-            sResult.NeedsReload_TVEpisode = True
-        End If
-    End Sub
-
-    Private Sub RemoveFileSystemNoStackExts()
-        If lstFileSystemNoStackExts.Items.Count > 0 AndAlso lstFileSystemNoStackExts.SelectedItems.Count > 0 Then
-            While lstFileSystemNoStackExts.SelectedItems.Count > 0
-                lstFileSystemNoStackExts.Items.Remove(lstFileSystemNoStackExts.SelectedItems(0))
-            End While
-            SetApplyButton(True)
-            sResult.NeedsDBUpdate_Movie = True
-            sResult.NeedsDBUpdate_TV = True
         End If
     End Sub
 
@@ -1066,123 +762,85 @@ Public Class dlgSettings
     End Sub
 
     Private Sub SaveSettings(ByVal bIsApply As Boolean)
-        With Master.eSettings
-            .FileSystemNoStackExts.Clear()
-            .FileSystemNoStackExts.AddRange(lstFileSystemNoStackExts.Items.OfType(Of String).ToList)
-            .FileSystemValidExts.Clear()
-            .FileSystemValidExts.AddRange(lstFileSystemValidVideoExts.Items.OfType(Of String).ToList)
-            .FileSystemValidSubtitlesExts.Clear()
-            .FileSystemValidSubtitlesExts.AddRange(lstFileSystemValidSubtitlesExts.Items.OfType(Of String).ToList)
-            .FileSystemValidThemeExts.Clear()
-            .FileSystemValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
-            .TVLockEpisodeLanguageA = chkTVLockEpisodeLanguageA.Checked
-            .TVLockEpisodeLanguageV = chkTVLockEpisodeLanguageV.Checked
-            .TVLockEpisodePlot = chkTVLockEpisodePlot.Checked
-            .TVLockEpisodeRating = chkTVLockEpisodeRating.Checked
-            .TVLockEpisodeRuntime = chkTVLockEpisodeRuntime.Checked
-            .TVLockEpisodeTitle = chkTVLockEpisodeTitle.Checked
-            .TVLockEpisodeUserRating = chkTVLockEpisodeUserRating.Checked
-            .TVLockSeasonPlot = chkTVLockSeasonPlot.Checked
-            .TVLockSeasonTitle = chkTVLockSeasonTitle.Checked
-            .TVLockShowCert = chkTVLockShowCert.Checked
-            .TVLockShowCreators = chkTVLockShowCreators.Checked
-            .TVLockShowGenre = chkTVLockShowGenre.Checked
-            .TVLockShowMPAA = chkTVLockShowMPAA.Checked
-            .TVLockShowOriginalTitle = chkTVLockShowOriginalTitle.Checked
-            .TVLockShowPlot = chkTVLockShowPlot.Checked
-            .TVLockShowRating = chkTVLockShowRating.Checked
-            .TVLockShowRuntime = chkTVLockShowRuntime.Checked
-            .TVLockShowStatus = chkTVLockShowStatus.Checked
-            .TVLockShowStudio = chkTVLockShowStudio.Checked
-            .TVLockShowTitle = chkTVLockShowTitle.Checked
-            .TVLockShowUserRating = chkTVLockShowUserRating.Checked
-            .TVMetadataPerFileType.Clear()
-            .TVMetadataPerFileType.AddRange(TVMeta)
-            .TVScraperShowCastWithImgOnly = chkTVScraperCastWithImg.Checked
-            .TVScraperCleanFields = chkTVScraperCleanFields.Checked
-            .TVScraperDurationRuntimeFormat = txtTVScraperDurationRuntimeFormat.Text
-            .TVScraperEpisodeActors = chkTVScraperEpisodeActors.Checked
-            .TVScraperEpisodeAired = chkTVScraperEpisodeAired.Checked
-            .TVScraperEpisodeCredits = chkTVScraperEpisodeCredits.Checked
-            .TVScraperEpisodeDirector = chkTVScraperEpisodeDirector.Checked
-            .TVScraperEpisodeGuestStars = chkTVScraperEpisodeGuestStars.Checked
-            .TVScraperEpisodeGuestStarsToActors = chkTVScraperEpisodeGuestStarsToActors.Checked
-            .TVScraperEpisodePlot = chkTVScraperEpisodePlot.Checked
-            .TVScraperEpisodeRating = chkTVScraperEpisodeRating.Checked
-            .TVScraperEpisodeRuntime = chkTVScraperEpisodeRuntime.Checked
-            .TVScraperEpisodeTitle = chkTVScraperEpisodeTitle.Checked
-            .TVScraperEpisodeUserRating = chkTVScraperEpisodeUserRating.Checked
-            .TVScraperMetaDataScan = chkTVScraperMetaDataScan.Checked
-            .TVScraperSeasonAired = chkTVScraperSeasonAired.Checked
-            .TVScraperSeasonPlot = chkTVScraperSeasonPlot.Checked
-            .TVScraperSeasonTitle = chkTVScraperSeasonTitle.Checked
-            .TVScraperShowActors = chkTVScraperShowActors.Checked
-            .TVScraperShowCert = chkTVScraperShowCert.Checked
-            .TVScraperShowCreators = chkTVScraperShowCreators.Checked
-            .TVScraperShowCertForMPAA = chkTVScraperShowCertForMPAA.Checked
-            .TVScraperShowCertForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
-            .TVScraperShowCertFSK = chkTVScraperShowCertFSK.Checked
-            .TVScraperShowCertOnlyValue = chkTVScraperShowCertOnlyValue.Checked
+        With Master.eSettings.TV.DataSettings
+            .DurationForRuntime = chkTVScraperUseMDDuration.Checked
+            .DurationFormat = txtTVScraperDurationRuntimeFormat.Text
+            .MetaDataScan = chkTVScraperMetaDataScan.Checked
+        End With
+        With Master.eSettings.TV.DataSettings.TVEpisode
+            .Actors.Enabled = chkTVScraperEpisodeActors.Checked
+            .Aired.Enabled = chkTVScraperEpisodeAired.Checked
+            .Credits.Enabled = chkTVScraperEpisodeCredits.Checked
+            .Directors.Enabled = chkTVScraperEpisodeDirector.Checked
+            .GuestStars.Enabled = chkTVScraperEpisodeGuestStars.Checked
+            .LockAudioLanguage = chkTVLockEpisodeLanguageA.Checked
+            .LockVideoLanguage = chkTVLockEpisodeLanguageV.Checked
+            .Plot.Enabled = chkTVScraperEpisodePlot.Checked
+            .Plot.Locked = chkTVLockEpisodePlot.Checked
+            .Rating.Enabled = chkTVScraperEpisodeRating.Checked
+            .Rating.Locked = chkTVLockEpisodeRating.Checked
+            .Runtime.Enabled = chkTVScraperEpisodeRuntime.Checked
+            .Runtime.Locked = chkTVLockEpisodeRuntime.Checked
+            .Title.Enabled = chkTVScraperEpisodeTitle.Checked
+            .Title.Locked = chkTVLockEpisodeTitle.Checked
+            .UserRating.Enabled = chkTVScraperEpisodeUserRating.Checked
+            .UserRating.Locked = chkTVLockEpisodeUserRating.Checked
+        End With
+        With Master.eSettings.TV.DataSettings.TVSeason
+            .Aired.Enabled = chkTVScraperSeasonAired.Checked
+            .Plot.Enabled = chkTVScraperSeasonPlot.Checked
+            .Plot.Locked = chkTVLockSeasonPlot.Checked
+            .Title.Enabled = chkTVScraperSeasonTitle.Checked
+            .Title.Locked = chkTVLockSeasonTitle.Checked
+        End With
+        With Master.eSettings.TV.DataSettings.TVShow
+            .ClearDisabledFields = chkTVScraperCleanFields.Checked
+            .Actors.Enabled = chkTVScraperShowActors.Checked
+            .ActorsWithImageOnly = chkTVScraperCastWithImg.Checked
+            .Certifications.Enabled = chkTVScraperShowCert.Checked
+            .Certifications.Locked = chkTVLockShowCert.Checked
             If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then
                 If cbTVScraperShowCertLang.SelectedIndex = 0 Then
-                    .TVScraperShowCertLang = Master.eLang.All
+                    .Certifications.Filter = Master.eLang.All
                 Else
-                    .TVScraperShowCertLang = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbTVScraperShowCertLang.Text).abbreviation
+                    .Certifications.Filter = APIXML.CertLanguagesXML.Language.FirstOrDefault(Function(l) l.name = cbTVScraperShowCertLang.Text).abbreviation
                 End If
             End If
-            .TVScraperShowEpiGuideURL = chkTVScraperShowEpiGuideURL.Checked
-            .TVScraperShowGenre = chkTVScraperShowGenre.Checked
-            .TVScraperShowMPAA = chkTVScraperShowMPAA.Checked
-            .TVScraperShowOriginalTitle = chkTVScraperShowOriginalTitle.Checked
-            .TVScraperShowMPAANotRated = txtTVScraperShowMPAANotRated.Text
-            .TVScraperShowPlot = chkTVScraperShowPlot.Checked
-            .TVScraperShowPremiered = chkTVScraperShowPremiered.Checked
-            .TVScraperShowRating = chkTVScraperShowRating.Checked
-            .TVScraperShowRuntime = chkTVScraperShowRuntime.Checked
-            .TVScraperShowStatus = chkTVScraperShowStatus.Checked
-            .TVScraperShowStudio = chkTVScraperShowStudio.Checked
-            .TVScraperShowTitle = chkTVScraperShowTitle.Checked
-            .TVScraperShowUserRating = chkTVScraperShowUserRating.Checked
+            .CertificationsForMPAA = chkTVScraperShowCertForMPAA.Checked
+            .CertificationsForMPAAFallback = chkTVScraperShowCertForMPAAFallback.Checked
+            .CertificationsOnlyValue = chkTVScraperShowCertOnlyValue.Checked
+            .Creators.Enabled = chkTVScraperShowCreators.Checked
+            .Creators.Locked = chkTVLockShowCreators.Checked
+            .EpisodeGuideURL.Enabled = chkTVScraperShowEpiGuideURL.Checked
+            .Genres.Enabled = chkTVScraperShowGenre.Checked
+            .Genres.Locked = chkTVLockShowGenre.Checked
+            .MPAA.Enabled = chkTVScraperShowMPAA.Checked
+            .MPAA.Locked = chkTVLockShowMPAA.Checked
+            .MPAANotRatedValue = txtTVScraperShowMPAANotRated.Text
+            .OriginalTitle.Enabled = chkTVScraperShowOriginalTitle.Checked
+            .OriginalTitle.Locked = chkTVLockShowOriginalTitle.Checked
+            .Plot.Enabled = chkTVScraperShowPlot.Checked
+            .Plot.Locked = chkTVLockShowPlot.Checked
+            .Premiered.Enabled = chkTVScraperShowPremiered.Checked
+            .Rating.Enabled = chkTVScraperShowRating.Checked
+            .Rating.Locked = chkTVLockShowRating.Checked
+            .Runtime.Enabled = chkTVScraperShowRuntime.Checked
+            .Runtime.Locked = chkTVLockShowRuntime.Checked
+            .Status.Enabled = chkTVScraperShowStatus.Checked
+            .Status.Enabled = chkTVScraperShowStudio.Checked
+            .Status.Locked = chkTVLockShowStatus.Checked
+            .Studios.Locked = chkTVLockShowStudio.Checked
+            .Title.Enabled = chkTVScraperShowTitle.Checked
+            .Title.Locked = chkTVLockShowTitle.Checked
+            .UserRating.Enabled = chkTVScraperShowUserRating.Checked
+            .UserRating.Locked = chkTVLockShowUserRating.Checked
+        End With
+        With Master.eSettings
+            .TVScraperEpisodeGuestStarsToActors = chkTVScraperEpisodeGuestStarsToActors.Checked
+            .TVMetadataPerFileType.Clear()
+            .TVMetadataPerFileType.AddRange(TVMeta)
             .TVScraperUseDisplaySeasonEpisode = chkTVScraperUseDisplaySeasonEpisode.Checked
-            .TVScraperUseMDDuration = chkTVScraperUseMDDuration.Checked
             .TVScraperUseSRuntimeForEp = chkTVScraperUseSRuntimeForEp.Checked
-
-            If tcFileSystemCleaner.SelectedTab.Name = "tpFileSystemCleanerExpert" Then
-                .FileSystemExpertCleaner = True
-                .CleanFolderJPG = False
-                .CleanMovieTBN = False
-                .CleanMovieTBNB = False
-                .CleanFanartJPG = False
-                .CleanMovieFanartJPG = False
-                .CleanMovieNFO = False
-                .CleanMovieNFOB = False
-                .CleanPosterTBN = False
-                .CleanPosterJPG = False
-                .CleanMovieJPG = False
-                .CleanMovieNameJPG = False
-                .CleanDotFanartJPG = False
-                .CleanExtrathumbs = False
-                .FileSystemCleanerWhitelist = chkFileSystemCleanerWhitelist.Checked
-                .FileSystemCleanerWhitelistExts.Clear()
-                .FileSystemCleanerWhitelistExts.AddRange(lstFileSystemCleanerWhitelist.Items.OfType(Of String).ToList)
-            Else
-                .FileSystemExpertCleaner = False
-                .CleanFolderJPG = chkCleanFolderJPG.Checked
-                .CleanMovieTBN = chkCleanMovieTBN.Checked
-                .CleanMovieTBNB = chkCleanMovieTBNb.Checked
-                .CleanFanartJPG = chkCleanFanartJPG.Checked
-                .CleanMovieFanartJPG = chkCleanMovieFanartJPG.Checked
-                .CleanMovieNFO = chkCleanMovieNFO.Checked
-                .CleanMovieNFOB = chkCleanMovieNFOb.Checked
-                .CleanPosterTBN = chkCleanPosterTBN.Checked
-                .CleanPosterJPG = chkCleanPosterJPG.Checked
-                .CleanMovieJPG = chkCleanMovieJPG.Checked
-                .CleanMovieNameJPG = chkCleanMovieNameJPG.Checked
-                .CleanDotFanartJPG = chkCleanDotFanartJPG.Checked
-                .CleanExtrathumbs = chkCleanExtrathumbs.Checked
-                .FileSystemCleanerWhitelist = False
-                .FileSystemCleanerWhitelistExts.Clear()
-            End If
         End With
 
         'SettingsPanels 
@@ -1415,23 +1073,12 @@ Public Class dlgSettings
         btnApply.Text = Master.eLang.GetString(276, "Apply")
         btnCancel.Text = Master.eLang.GetString(167, "Cancel")
         btnOK.Text = Master.eLang.GetString(179, "OK")
-        chkFileSystemCleanerWhitelist.Text = Master.eLang.GetString(440, "Whitelist Video Extensions")
         chkTVScraperEpisodeGuestStarsToActors.Text = Master.eLang.GetString(974, "Add Episode Guest Stars to Actors list")
         chkTVScraperUseMDDuration.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkTVScraperUseSRuntimeForEp.Text = Master.eLang.GetString(1262, "Use Show Runtime for Episodes if no Episode Runtime can be found")
-        gbFileSystemExcludedDirs.Text = Master.eLang.GetString(1273, "Excluded Directories")
-        gbFileSystemCleanFiles.Text = Master.eLang.GetString(437, "Clean Files")
-        gbFileSystemNoStackExts.Text = Master.eLang.GetString(530, "No Stack Extensions")
-        gbFileSystemValidVideoExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
-        gbFileSystemValidSubtitlesExts.Text = Master.eLang.GetString(1284, "Valid Subtitles Extensions")
-        gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
         gbSettingsHelp.Text = String.Concat("     ", Master.eLang.GetString(458, "Help"))
         gbTVScraperDurationFormatOpts.Text = Master.eLang.GetString(515, "Duration Format")
-        lblFileSystemCleanerWarning.Text = Master.eLang.GetString(442, "WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.")
-        lblFileSystemCleanerWhitelist.Text = Master.eLang.GetString(441, "Whitelisted Extensions:")
         lblTVScraperGlobalGuestStars.Text = Master.eLang.GetString(508, "Guest Stars")
-        tpFileSystemCleanerExpert.Text = Master.eLang.GetString(439, "Expert")
-        tpFileSystemCleanerStandard.Text = Master.eLang.GetString(438, "Standard")
 
         'items with text from other items
         chkTVScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
@@ -1488,20 +1135,6 @@ Public Class dlgSettings
     End Class
 
     Private Sub EnableApplyButton(ByVal sender As Object, ByVal e As EventArgs) Handles _
-        chkCleanDotFanartJPG.CheckedChanged,
-        chkCleanExtrathumbs.CheckedChanged,
-        chkCleanFanartJPG.CheckedChanged,
-        chkCleanFolderJPG.CheckedChanged,
-        chkCleanMovieFanartJPG.CheckedChanged,
-        chkCleanMovieJPG.CheckedChanged,
-        chkCleanMovieNFO.CheckedChanged,
-        chkCleanMovieNFOb.CheckedChanged,
-        chkCleanMovieNameJPG.CheckedChanged,
-        chkCleanMovieTBN.CheckedChanged,
-        chkCleanMovieTBNb.CheckedChanged,
-        chkCleanPosterJPG.CheckedChanged,
-        chkCleanPosterTBN.CheckedChanged,
-        chkFileSystemCleanerWhitelist.CheckedChanged,
         chkTVLockEpisodeLanguageA.CheckedChanged,
         chkTVLockEpisodeLanguageV.CheckedChanged,
         chkTVLockEpisodePlot.CheckedChanged,
@@ -1553,7 +1186,6 @@ Public Class dlgSettings
         chkTVScraperShowUserRating.CheckedChanged,
         chkTVScraperUseDisplaySeasonEpisode.CheckedChanged,
         chkTVScraperUseSRuntimeForEp.CheckedChanged,
-        tcFileSystemCleaner.SelectedIndexChanged,
         txtTVScraperDurationRuntimeFormat.TextChanged, chkTVScraperCastWithImg.CheckedChanged
 
         SetApplyButton(True)

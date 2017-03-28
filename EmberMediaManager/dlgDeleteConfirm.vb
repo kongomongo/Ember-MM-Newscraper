@@ -115,7 +115,7 @@ Public Class dlgDeleteConfirm
                         Select Case _ContentType
                             Case Enums.ContentType.Movie
                                 Master.DB.Delete_Movie(Convert.ToInt64(nMainNode.Tag), True)
-                            Case Enums.ContentType.MovieSet
+                            Case Enums.ContentType.Movieset
                                 Master.DB.Delete_MovieSet(Convert.ToInt64(nMainNode.Tag), True)
                             Case Enums.ContentType.TVEpisode
                                 Master.DB.Delete_TVEpisode(Convert.ToInt64(nMainNode.Tag), True, False)
@@ -126,7 +126,7 @@ Public Class dlgDeleteConfirm
                         'TODO: Reload
                         Select Case _ContentType
                             Case Enums.ContentType.Movie
-                            Case Enums.ContentType.MovieSet
+                            Case Enums.ContentType.Movieset
                             Case Enums.ContentType.TVEpisode
                             Case Enums.ContentType.TVSeason
                             Case Enums.ContentType.TVShow
@@ -226,7 +226,7 @@ Public Class dlgDeleteConfirm
                     Next
 
                     'MovieSet
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     For Each lngMovieID As Long In lstIDs
                         bHadError = False
 

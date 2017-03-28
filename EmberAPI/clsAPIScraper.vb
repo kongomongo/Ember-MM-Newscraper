@@ -268,7 +268,7 @@ Public Class SearchEngineProperties
 
     Public Sub New(ByVal strAssemblyName As String, ByVal strName As String, ByVal lstSearchEngineCapatibilities As List(Of Enums.AddonEventType))
         If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_Movie) Then _bSearchMovie = True
-        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_MovieSet) Then _bSearchMovieset = True
+        If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_Movieset) Then _bSearchMovieset = True
         If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_TVEpisode) Then _bSearchTVEpisode = True
         If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_TVSeason) Then _bSearchTVSeason = True
         If lstSearchEngineCapatibilities.Contains(Enums.AddonEventType.Search_TVShow) Then _bSearchTVShow = True

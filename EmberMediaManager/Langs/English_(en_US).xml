@@ -438,9 +438,9 @@
   <string id="437">Clean Files</string>
   <string id="438">Standard</string>
   <string id="439">Expert</string>
-  <string id="440">Whitelist Video Extensions</string>
-  <string id="441">Whitelisted Extensions:</string>
-  <string id="442">WARNING: Using the Expert Mode Cleaner could potentially delete wanted files. Take care when using this tool.</string>
+  <string id="440"></string>
+  <string id="441"></string>
+  <string id="442"></string>
   <string id="443">Use embedded API Key</string>
   <string id="444">Removing Template can not be undone. Are you sure?</string>
   <string id="445">Remove Template</string>
@@ -626,7 +626,7 @@
   <string id="625">Defaults by File Type</string>
   <string id="626">File Type</string>
   <string id="627">Selected Items: {0}</string>
-  <string id="628">Enable IFO Parsing</string>
+  <string id="628"></string>
   <string id="629">GUI Themes</string>
   <string id="630">Reconnect the source and press Retry</string>
   <string id="631">Fanart as backdrop.jpg</string>
@@ -964,7 +964,7 @@
   <string id="963">TV Image Selection</string>
   <string id="964">Current Image:</string>
   <string id="965">Use Plot for Plot Outline</string>
-  <string id="966">Enable Images Glass Overlay</string>
+  <string id="966"></string>
   <string id="967">Display Small Fanart</string>
   <string id="968">
     Created By: Jason Schnitzler
@@ -1373,7 +1373,7 @@
   <string id="1281">Open IMDB-Page</string>
   <string id="1282">Open TMDB-Page</string>
   <string id="1283">Are you sure you want to reset to the default list of valid subtitle extensions?</string>
-  <string id="1284">Valid Subtitles Extensions</string>
+  <string id="1284">Valid Subtitle Extensions</string>
   <string id="1285">Themes</string>
   <string id="1286">StereoMode</string>
   <string id="1287">Forced</string>

@@ -1061,7 +1061,7 @@ Public Class dlgEdit
 
     Private Sub btnSetTrailerLocal_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSetTrailerLocal.Click
         TrailerStop()
-        Dim strValidExtesions As String() = Master.eSettings.FileSystemValidExts.ToArray
+        Dim strValidExtesions As String() = Master.eSettings.Options.Filesystem.ValidVideoExts.ToArray
         With ofdLocalFiles
             .InitialDirectory = _tmpDBElement.FileItem.MainPath.FullName
             .Filter = FileUtils.Common.GetOpenFileDialogFilter_Video(Master.eLang.GetString(1195, "Trailers"))
@@ -1251,7 +1251,7 @@ Public Class dlgEdit
 
                 txtReleaseDate.Text = _tmpDBElement.MainDetails.ReleaseDate
 
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 'hide not used controls
                 cbEpisodeSorting.Visible = False
                 cbOrdering.Visible = False
@@ -1481,7 +1481,7 @@ Public Class dlgEdit
         End If
 
         'Trailer
-        If Master.eSettings.FilenameAnyEnabled_Movie_Trailer Then
+        If Master.eSettings.Movie.Filenaming.FilenameAnyEnabled_Trailer Then
             If Not String.IsNullOrEmpty(_tmpDBElement.Trailer.LocalFilePath) OrElse Not String.IsNullOrEmpty(_tmpDBElement.Trailer.URLVideoStream) Then
                 LoadTrailer(_tmpDBElement.Trailer)
             End If
@@ -1748,7 +1748,7 @@ Public Class dlgEdit
 
     Private Sub LoadRatings()
         lbMPAA.Items.Add(Master.eLang.None)
-        If Not String.IsNullOrEmpty(Master.eSettings.MovieScraperMPAANotRated) Then lbMPAA.Items.Add(Master.eSettings.MovieScraperMPAANotRated)
+        If Not String.IsNullOrEmpty(Master.eSettings.Movie.DataSettings.MPAANotRatedValue) Then lbMPAA.Items.Add(Master.eSettings.Movie.DataSettings.MPAANotRatedValue)
         lbMPAA.Items.AddRange(APIXML.GetRatingList_Movie)
     End Sub
 
@@ -1986,7 +1986,7 @@ Public Class dlgEdit
 
     Private Sub SelectMPAA()
         If Not String.IsNullOrEmpty(_tmpDBElement.MainDetails.MPAA) Then
-            If Master.eSettings.MovieScraperCertOnlyValue Then
+            If Master.eSettings.Movie.DataSettings.CertificationsOnlyValue Then
                 Dim sItem As String = String.Empty
                 For i As Integer = 0 To lbMPAA.Items.Count - 1
                     sItem = lbMPAA.Items(i).ToString
@@ -2131,8 +2131,14 @@ Public Class dlgEdit
             MediaStub.SaveDiscStub(StubFile, Title, Message)
         End If
 
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
-        If Not Master.eSettings.MovieImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
+        Select Case _tmpDBElement.ContentType
+            Case Enums.ContentType.Movie
+                If Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
+                If Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
+            Case Enums.ContentType.TVShow
+                If Not Master.eSettings.TV.ImageSettings.ImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
+                If Not Master.eSettings.TV.ImageSettings.ImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
+        End Select
 
         Dim removeSubtitles As New List(Of MediaContainers.Subtitle)
         For Each Subtitle In _tmpDBElement.Subtitles
@@ -2208,7 +2214,7 @@ Public Class dlgEdit
             Case Enums.ContentType.Movie
                 Text = String.Concat(Master.eLang.GetString(25, "Edit Movie"), If(String.IsNullOrEmpty(strTitle), String.Empty, String.Concat(" - ", strTitle)))
                 tsFilename.Text = _tmpDBElement.FileItem.FullPath
-            Case Enums.ContentType.MovieSet
+            Case Enums.ContentType.Movieset
                 Text = String.Concat(Master.eLang.GetString(207, "Edit MovieSet"), If(String.IsNullOrEmpty(strTitle), String.Empty, String.Concat(" - ", strTitle)))
                 tsFilename.Text = String.Empty
             Case Enums.ContentType.TVEpisode

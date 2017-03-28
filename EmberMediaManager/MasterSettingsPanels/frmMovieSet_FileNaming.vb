@@ -30,7 +30,7 @@ Public Class frmMovieSet_FileNaming
 
     Shared logger As Logger = LogManager.GetCurrentClassLogger()
 
-    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.MovieSet
+    Dim _ePanelType As Enums.SettingsPanelType = Enums.SettingsPanelType.Movieset
     Dim _intImageIndex As Integer = 3
     Dim _intOrder As Integer = 200
     Dim _strName As String = "MovieSet_FileNaming"

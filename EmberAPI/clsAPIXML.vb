@@ -482,7 +482,7 @@ Public Class APIXML
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-        If Not strRating = Master.eSettings.MovieScraperMPAANotRated Then
+        If Not strRating = Master.eSettings.Movie.DataSettings.MPAANotRatedValue Then
             Dim v = From e In RatingXML.movies.Where(Function(f) f.searchstring = strRating)
             If v.Count > 0 Then
                 imgRatingStr = Path.Combine(mePath, v(0).icon)
@@ -511,8 +511,8 @@ Public Class APIXML
 
     Public Shared Function GetRatingList_Movie() As Object()
         Dim retRatings As New List(Of String)
-        If Master.eSettings.MovieScraperCertForMPAA AndAlso Not Master.eSettings.MovieScraperCertLang = Master.eLang.All Then
-            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.MovieScraperCertLang)
+        If Master.eSettings.Movie.DataSettings.CertificationsForMPAA AndAlso Not Master.eSettings.Movie.DataSettings.Certifications.Filter = Master.eLang.All Then
+            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.Movie.DataSettings.Certifications.Filter)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
                 For Each r In RatingXML.movies.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
                     retRatings.Add(r.searchstring)
@@ -529,8 +529,8 @@ Public Class APIXML
 
     Public Shared Function GetRatingList_TV() As Object()
         Dim retRatings As New List(Of String)
-        If Master.eSettings.TVScraperShowCertForMPAA AndAlso Not Master.eSettings.TVScraperShowCertLang = Master.eLang.All Then
-            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TVScraperShowCertLang)
+        If Master.eSettings.TV.DataSettings.TVShow.CertificationsForMPAA AndAlso Not Master.eSettings.TV.DataSettings.TVShow.Certifications.Filter = Master.eLang.All Then
+            Dim tCountry = CertLanguagesXML.Language.FirstOrDefault(Function(l) l.abbreviation = Master.eSettings.TV.DataSettings.TVShow.Certifications.Filter)
             If tCountry IsNot Nothing AndAlso Not String.IsNullOrEmpty(tCountry.name) Then
                 For Each r In RatingXML.tv.FindAll(Function(f) f.country.ToLower = tCountry.name.ToLower)
                     retRatings.Add(r.searchstring)
@@ -563,7 +563,7 @@ Public Class APIXML
         Dim mePath As String = String.Concat(Functions.AppPath, "Images", Path.DirectorySeparatorChar, "Ratings")
         Dim imgRating As Image = Nothing
         Dim imgRatingStr As String = String.Empty
-        If Not strRating = Master.eSettings.TVScraperShowMPAANotRated Then
+        If Not strRating = Master.eSettings.TV.DataSettings.TVShow.MPAANotRatedValue Then
             Dim v = From e In RatingXML.tv.Where(Function(f) f.searchstring = strRating)
             If v.Count > 0 Then
                 imgRatingStr = Path.Combine(mePath, v(0).icon)

@@ -136,20 +136,20 @@ Public Class frmMovie_Trailer
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            cbMinVideoQual.SelectedValue = .MovieTrailerMinVideoQual
-            cbPrefVideoQual.SelectedValue = .MovieTrailerPrefVideoQual
-            chkKeepExisting.Checked = .MovieTrailerKeepExisting
-            txtDefaultSearch.Text = .MovieTrailerDefaultSearch.ToString
+        With Master.eSettings.Movie.TrailerSettings
+            cbMinVideoQual.SelectedValue = .MinVideoQuality
+            cbPrefVideoQual.SelectedValue = .PrefVideoQuality
+            chkKeepExisting.Checked = .KeepExisting
+            txtDefaultSearch.Text = .DefaultSearch.ToString
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieTrailerDefaultSearch = txtDefaultSearch.Text
-            .MovieTrailerKeepExisting = chkKeepExisting.Checked
-            .MovieTrailerMinVideoQual = CType(cbMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
-            .MovieTrailerPrefVideoQual = CType(cbPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
+        With Master.eSettings.Movie.TrailerSettings
+            .DefaultSearch = txtDefaultSearch.Text
+            .KeepExisting = chkKeepExisting.Checked
+            .MinVideoQuality = CType(cbMinVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
+            .PrefVideoQuality = CType(cbPrefVideoQual.SelectedItem, KeyValuePair(Of String, Enums.TrailerVideoQuality)).Value
         End With
     End Sub
 

@@ -139,14 +139,14 @@ Public Class frmOption_GUI
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
+        With Manager.mSettings.General
             cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
             cbGeneralDateTime.SelectedValue = .GeneralDateTime
             cbGeneralLanguage.SelectedItem = .GeneralLanguage
-            cbGeneralMovieTheme.SelectedItem = .GeneralMovieTheme
-            cbGeneralMovieSetTheme.SelectedItem = .GeneralMovieSetTheme
-            cbGeneralTVEpisodeTheme.SelectedItem = .GeneralTVEpisodeTheme
-            cbGeneralTVShowTheme.SelectedItem = .GeneralTVShowTheme
+            cbGeneralMovieTheme.SelectedItem = .ThemeMovie
+            cbGeneralMovieSetTheme.SelectedItem = .ThemeMovieset
+            cbGeneralTVEpisodeTheme.SelectedItem = .ThemeTVEpisode
+            cbGeneralTVShowTheme.SelectedItem = .ThemeTVShow
             chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
             chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
             chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
@@ -157,22 +157,21 @@ Public Class frmOption_GUI
             chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
             chkGeneralImageFilterPoster.Checked = .GeneralImageFilterPoster
             txtGeneralImageFilterPosterMatchRate.Enabled = .GeneralImageFilterPoster
-            chkGeneralDoubleClickScrape.Checked = .GeneralDoubleClickScrape
-            chkGeneralDisplayBanner.Checked = .GeneralDisplayBanner
-            chkGeneralDisplayCharacterArt.Checked = .GeneralDisplayCharacterArt
-            chkGeneralDisplayClearArt.Checked = .GeneralDisplayClearArt
-            chkGeneralDisplayClearLogo.Checked = .GeneralDisplayClearLogo
-            chkGeneralDisplayDiscArt.Checked = .GeneralDisplayDiscArt
-            chkGeneralDisplayFanart.Checked = .GeneralDisplayFanart
-            chkGeneralDisplayFanartSmall.Checked = .GeneralDisplayFanartSmall
-            chkGeneralDisplayLandscape.Checked = .GeneralDisplayLandscape
-            chkGeneralDisplayPoster.Checked = .GeneralDisplayPoster
-            chkGeneralImagesGlassOverlay.Checked = .GeneralImagesGlassOverlay
+            chkGeneralDoubleClickScrape.Checked = .DoubleClickScrape
+            chkGeneralDisplayBanner.Checked = .DisplayBanner
+            chkGeneralDisplayCharacterArt.Checked = .DisplayCharacterArt
+            chkGeneralDisplayClearArt.Checked = .DisplayClearArt
+            chkGeneralDisplayClearLogo.Checked = .DisplayClearLogo
+            chkGeneralDisplayDiscArt.Checked = .DisplayDiscArt
+            chkGeneralDisplayFanart.Checked = .DisplayFanart
+            chkGeneralDisplayFanartSmall.Checked = .DisplayFanartSmall
+            chkGeneralDisplayLandscape.Checked = .DisplayLandscape
+            chkGeneralDisplayPoster.Checked = .DisplayPoster
             chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
-            chkGeneralDisplayGenresText.Checked = .GeneralShowGenresText
-            chkGeneralDisplayLangFlags.Checked = .GeneralShowLangFlags
-            chkGeneralDisplayImgDims.Checked = .GeneralShowImgDims
-            chkGeneralDisplayImgNames.Checked = .GeneralShowImgNames
+            chkGeneralDisplayGenresText.Checked = .DisplayGenreText
+            chkGeneralDisplayLangFlags.Checked = .DisplayLanguageFlags
+            chkGeneralDisplayImgDims.Checked = .DisplayImageDimensions
+            chkGeneralDisplayImgNames.Checked = .DisplayImageNames
             chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
             txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
             txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
@@ -181,24 +180,23 @@ Public Class frmOption_GUI
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
+        With Manager.mSettings.General
             .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
             .GeneralDateAddedIgnoreNFO = chkGeneralDateAddedIgnoreNFO.Checked
             .GeneralDigitGrpSymbolVotes = chkGeneralDigitGrpSymbolVotes.Checked
             .GeneralDateTime = CType(cbGeneralDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTime)).Value
-            .GeneralDoubleClickScrape = chkGeneralDoubleClickScrape.Checked
+            .DoubleClickScrape = chkGeneralDoubleClickScrape.Checked
             .GeneralDaemonDrive = cbGeneralDaemonDrive.Text
             .GeneralDaemonPath = txtGeneralDaemonPath.Text
-            .GeneralDisplayBanner = chkGeneralDisplayBanner.Checked
-            .GeneralDisplayCharacterArt = chkGeneralDisplayCharacterArt.Checked
-            .GeneralDisplayClearArt = chkGeneralDisplayClearArt.Checked
-            .GeneralDisplayClearLogo = chkGeneralDisplayClearLogo.Checked
-            .GeneralDisplayDiscArt = chkGeneralDisplayDiscArt.Checked
-            .GeneralDisplayFanart = chkGeneralDisplayFanart.Checked
-            .GeneralDisplayFanartSmall = chkGeneralDisplayFanartSmall.Checked
-            .GeneralDisplayLandscape = chkGeneralDisplayLandscape.Checked
-            .GeneralDisplayPoster = chkGeneralDisplayPoster.Checked
-            .GeneralImagesGlassOverlay = chkGeneralImagesGlassOverlay.Checked
+            .DisplayBanner = chkGeneralDisplayBanner.Checked
+            .DisplayCharacterArt = chkGeneralDisplayCharacterArt.Checked
+            .DisplayClearArt = chkGeneralDisplayClearArt.Checked
+            .DisplayClearLogo = chkGeneralDisplayClearLogo.Checked
+            .DisplayDiscArt = chkGeneralDisplayDiscArt.Checked
+            .DisplayFanart = chkGeneralDisplayFanart.Checked
+            .DisplayFanartSmall = chkGeneralDisplayFanartSmall.Checked
+            .DisplayLandscape = chkGeneralDisplayLandscape.Checked
+            .DisplayPoster = chkGeneralDisplayPoster.Checked
             .GeneralImageFilter = chkGeneralImageFilter.Checked
             .GeneralImageFilterAutoscraper = chkGeneralImageFilterAutoscraper.Checked
             .GeneralImageFilterFanart = chkGeneralImageFilterFanart.Checked
@@ -215,16 +213,16 @@ Public Class frmOption_GUI
                 .GeneralImageFilterPosterMatchTolerance = 1
             End If
             .GeneralLanguage = cbGeneralLanguage.Text
-            .GeneralMovieTheme = cbGeneralMovieTheme.Text
-            .GeneralMovieSetTheme = cbGeneralMovieSetTheme.Text
+            .ThemeMovie = cbGeneralMovieTheme.Text
+            .ThemeMovieset = cbGeneralMovieSetTheme.Text
             .GeneralOverwriteNfo = chkGeneralOverwriteNfo.Checked
-            .GeneralShowGenresText = chkGeneralDisplayGenresText.Checked
-            .GeneralShowLangFlags = chkGeneralDisplayLangFlags.Checked
-            .GeneralShowImgDims = chkGeneralDisplayImgDims.Checked
-            .GeneralShowImgNames = chkGeneralDisplayImgNames.Checked
+            .DisplayGenreText = chkGeneralDisplayGenresText.Checked
+            .DisplayLanguageFlags = chkGeneralDisplayLangFlags.Checked
+            .DisplayImageDimensions = chkGeneralDisplayImgDims.Checked
+            .DisplayImageNames = chkGeneralDisplayImgNames.Checked
             .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
-            .GeneralTVEpisodeTheme = cbGeneralTVEpisodeTheme.Text
-            .GeneralTVShowTheme = cbGeneralTVShowTheme.Text
+            .ThemeTVEpisode = cbGeneralTVEpisodeTheme.Text
+            .ThemeTVShow = cbGeneralTVShowTheme.Text
 
         End With
     End Sub
@@ -325,11 +323,9 @@ Public Class frmOption_GUI
     Private Sub CheckHideSettings()
         If chkGeneralDisplayBanner.Checked OrElse chkGeneralDisplayCharacterArt.Checked OrElse chkGeneralDisplayClearArt.Checked OrElse chkGeneralDisplayClearLogo.Checked OrElse
               chkGeneralDisplayDiscArt.Checked OrElse chkGeneralDisplayFanart.Checked OrElse chkGeneralDisplayFanartSmall.Checked OrElse chkGeneralDisplayLandscape.Checked OrElse chkGeneralDisplayPoster.Checked Then
-            chkGeneralImagesGlassOverlay.Enabled = True
             chkGeneralDisplayImgDims.Enabled = True
             chkGeneralDisplayImgNames.Enabled = True
         Else
-            chkGeneralImagesGlassOverlay.Enabled = False
             chkGeneralDisplayImgDims.Enabled = False
             chkGeneralDisplayImgNames.Enabled = False
         End If
@@ -458,7 +454,6 @@ Public Class frmOption_GUI
         chkGeneralDisplayFanartSmall.Text = Master.eLang.GetString(967, "Display Small Fanart")
         chkGeneralDisplayLandscape.Text = Master.eLang.GetString(1151, "Display Landscape")
         chkGeneralDisplayPoster.Text = Master.eLang.GetString(456, "Display Poster")
-        chkGeneralImagesGlassOverlay.Text = Master.eLang.GetString(966, "Enable Images Glass Overlay")
         chkGeneralImageFilter.Text = Master.eLang.GetString(1459, "Activate ImageFilter to avoid duplicate images")
         chkGeneralImageFilterAutoscraper.Text = Master.eLang.GetString(1457, "Autoscraper")
         chkGeneralImageFilterFanart.Text = Master.eLang.GetString(149, "Fanart")

@@ -137,16 +137,16 @@ Public Class frmTV_Theme
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            chkKeepExisting.Checked = .TVShowThemeKeepExisting
-            txtDefaultSearch.Text = .TVShowThemeDefaultSearch
+        With Master.eSettings.TV.ThemeSettings
+            chkKeepExisting.Checked = .KeepExisting
+            txtDefaultSearch.Text = .DefaultSearch
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .TVShowThemeDefaultSearch = txtDefaultSearch.Text.Trim
-            .TVShowThemeKeepExisting = chkKeepExisting.Checked
+        With Master.eSettings.TV.ThemeSettings
+            .DefaultSearch = txtDefaultSearch.Text.Trim
+            .KeepExisting = chkKeepExisting.Checked
         End With
     End Sub
 

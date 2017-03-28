@@ -133,7 +133,7 @@ Public Class Addon
                                                       Enums.AddonEventType.DuringScrapingSingle_TVSeason,
                                                       Enums.AddonEventType.DuringScrapingSingle_TVShow,
                                                       Enums.AddonEventType.Sync_Movie,
-                                                      Enums.AddonEventType.Sync_MovieSet,
+                                                      Enums.AddonEventType.Sync_Movieset,
                                                       Enums.AddonEventType.Sync_TVEpisode,
                                                       Enums.AddonEventType.Sync_TVSeason,
                                                       Enums.AddonEventType.Sync_TVShow})
@@ -192,7 +192,7 @@ Public Class Addon
                 eAddonEventType = Enums.AddonEventType.Remove_TVEpisode OrElse
                 eAddonEventType = Enums.AddonEventType.Remove_TVShow OrElse
                 eAddonEventType = Enums.AddonEventType.Sync_Movie OrElse
-                eAddonEventType = Enums.AddonEventType.Sync_MovieSet OrElse
+                eAddonEventType = Enums.AddonEventType.Sync_Movieset OrElse
                 eAddonEventType = Enums.AddonEventType.Sync_TVEpisode OrElse
                 eAddonEventType = Enums.AddonEventType.Sync_TVSeason OrElse
                 eAddonEventType = Enums.AddonEventType.Sync_TVShow) Then
@@ -608,7 +608,7 @@ Public Class Addon
                     End If
 
                     'Sync MovieSet
-                Case Enums.AddonEventType.Sync_MovieSet
+                Case Enums.AddonEventType.Sync_Movieset
                     If mDBElement.MoviesInSetSpecified Then
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -968,7 +968,7 @@ Public Class Addon
             Select Case tContentType
                 Case Enums.ContentType.Movie
                     AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_Movie_Click
-                Case Enums.ContentType.MovieSet
+                Case Enums.ContentType.Movieset
                     AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_MovieSet_Click
                 Case Enums.ContentType.TVEpisode
                     AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVEpisode_Click
@@ -1042,7 +1042,7 @@ Public Class Addon
                 Select Case tContentType
                     Case Enums.ContentType.Movie
                         AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_Movie_Click
-                    Case Enums.ContentType.MovieSet
+                    Case Enums.ContentType.Movieset
                         AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_MovieSet_Click
                     Case Enums.ContentType.TVEpisode
                         AddHandler mnuHostSyncItem.Click, AddressOf cmnuHostSyncItem_TVEpisode_Click
@@ -1187,7 +1187,7 @@ Public Class Addon
         cmnuKodi_MovieSets.DropDownItems.Clear()
         cmnuKodi_MovieSets.Image = New Bitmap(My.Resources.icon)
         cmnuKodi_MovieSets.Text = "Kodi Interface"
-        CreateContextMenu(cmnuKodi_MovieSets, Enums.ContentType.MovieSet)
+        CreateContextMenu(cmnuKodi_MovieSets, Enums.ContentType.Movieset)
         AddToolStripItem_MovieSets(cmnuSep_MovieSets)
         AddToolStripItem_MovieSets(cmnuKodi_MovieSets)
 
@@ -1560,7 +1560,7 @@ Public Class Addon
                 Dim DBElement As Database.DBElement = Master.DB.Load_MovieSet(ID)
                 If DBElement.MainDetails.TitleSpecified Then
                     'add job to tasklist and get everything done
-                    AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_MovieSet})
+                    AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.AddonEventType.Sync_Movieset})
                 Else
                     Notifications.Show(New Notifications.Notification(Enums.NotificationType.Error, "Kodi Interface", Master.eLang.GetString(1442, "Please Scrape In Ember First!")))
                 End If

@@ -151,7 +151,7 @@ Partial Class frmMovie_Data
         Me.lblMovieScraperOutlineLimit = New System.Windows.Forms.Label()
         Me.txtMovieScraperOutlineLimit = New System.Windows.Forms.TextBox()
         Me.chkMovieScraperPlotForOutline = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperXBMCTrailerFormat = New System.Windows.Forms.CheckBox()
+        Me.chkMovieScraperTrailerKodiFormat = New System.Windows.Forms.CheckBox()
         Me.chkMovieScraperPlotForOutlineIfEmpty = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperMetaDataOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperMetaDataOpts = New System.Windows.Forms.TableLayoutPanel()
@@ -164,12 +164,11 @@ Partial Class frmMovie_Data
         Me.btnMovieScraperDefFIExtAdd = New System.Windows.Forms.Button()
         Me.lblMovieScraperDefFIExt = New System.Windows.Forms.Label()
         Me.chkMovieScraperMetaDataScan = New System.Windows.Forms.CheckBox()
-        Me.chkMovieScraperMetaDataIFOScan = New System.Windows.Forms.CheckBox()
         Me.gbMovieScraperDurationFormatOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperDurationFormatOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.lblMovieScraperDurationRuntimeFormat = New System.Windows.Forms.Label()
-        Me.chkMovieScraperUseMDDuration = New System.Windows.Forms.CheckBox()
-        Me.txtMovieScraperDurationRuntimeFormat = New System.Windows.Forms.TextBox()
+        Me.chkDurationForRuntime = New System.Windows.Forms.CheckBox()
+        Me.txtDurationFormat = New System.Windows.Forms.TextBox()
         Me.gbMovieScraperCollectionOpts = New System.Windows.Forms.GroupBox()
         Me.tblMovieScraperCollectionOpts = New System.Windows.Forms.TableLayoutPanel()
         Me.chkMovieScraperCollectionsYAMJCompatibleSets = New System.Windows.Forms.CheckBox()
@@ -1667,7 +1666,7 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.lblMovieScraperOutlineLimit, 1, 4)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.txtMovieScraperOutlineLimit, 2, 4)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutline, 0, 4)
-        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperXBMCTrailerFormat, 0, 7)
+        Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperTrailerKodiFormat, 0, 7)
         Me.tblMovieScraperMiscOpts.Controls.Add(Me.chkMovieScraperPlotForOutlineIfEmpty, 0, 5)
         Me.tblMovieScraperMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperMiscOpts.Location = New System.Drawing.Point(3, 18)
@@ -1783,17 +1782,17 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperPlotForOutline.Text = "Use Plot  for Outline "
         Me.chkMovieScraperPlotForOutline.UseVisualStyleBackColor = True
         '
-        'chkMovieScraperXBMCTrailerFormat
+        'chkMovieScraperTrailerKodiFormat
         '
-        Me.chkMovieScraperXBMCTrailerFormat.AutoSize = True
-        Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperXBMCTrailerFormat, 3)
-        Me.chkMovieScraperXBMCTrailerFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkMovieScraperXBMCTrailerFormat.Location = New System.Drawing.Point(3, 169)
-        Me.chkMovieScraperXBMCTrailerFormat.Name = "chkMovieScraperXBMCTrailerFormat"
-        Me.chkMovieScraperXBMCTrailerFormat.Size = New System.Drawing.Size(302, 17)
-        Me.chkMovieScraperXBMCTrailerFormat.TabIndex = 83
-        Me.chkMovieScraperXBMCTrailerFormat.Text = "Save YouTube-Trailer-Links in XBMC compatible format"
-        Me.chkMovieScraperXBMCTrailerFormat.UseVisualStyleBackColor = True
+        Me.chkMovieScraperTrailerKodiFormat.AutoSize = True
+        Me.tblMovieScraperMiscOpts.SetColumnSpan(Me.chkMovieScraperTrailerKodiFormat, 3)
+        Me.chkMovieScraperTrailerKodiFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!)
+        Me.chkMovieScraperTrailerKodiFormat.Location = New System.Drawing.Point(3, 169)
+        Me.chkMovieScraperTrailerKodiFormat.Name = "chkMovieScraperTrailerKodiFormat"
+        Me.chkMovieScraperTrailerKodiFormat.Size = New System.Drawing.Size(302, 17)
+        Me.chkMovieScraperTrailerKodiFormat.TabIndex = 83
+        Me.chkMovieScraperTrailerKodiFormat.Text = "Save YouTube-Trailer-Links in XBMC compatible format"
+        Me.chkMovieScraperTrailerKodiFormat.UseVisualStyleBackColor = True
         '
         'chkMovieScraperPlotForOutlineIfEmpty
         '
@@ -1830,13 +1829,11 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperMetaDataOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.gbMovieScraperDefFIExtOpts, 1, 0)
         Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.chkMovieScraperMetaDataScan, 0, 0)
-        Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.chkMovieScraperMetaDataIFOScan, 0, 1)
-        Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.gbMovieScraperDurationFormatOpts, 0, 2)
+        Me.tblMovieScraperMetaDataOpts.Controls.Add(Me.gbMovieScraperDurationFormatOpts, 0, 1)
         Me.tblMovieScraperMetaDataOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperMetaDataOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieScraperMetaDataOpts.Name = "tblMovieScraperMetaDataOpts"
-        Me.tblMovieScraperMetaDataOpts.RowCount = 5
-        Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieScraperMetaDataOpts.RowCount = 4
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblMovieScraperMetaDataOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -1851,7 +1848,7 @@ Partial Class frmMovie_Data
         Me.gbMovieScraperDefFIExtOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbMovieScraperDefFIExtOpts.Location = New System.Drawing.Point(257, 3)
         Me.gbMovieScraperDefFIExtOpts.Name = "gbMovieScraperDefFIExtOpts"
-        Me.tblMovieScraperMetaDataOpts.SetRowSpan(Me.gbMovieScraperDefFIExtOpts, 4)
+        Me.tblMovieScraperMetaDataOpts.SetRowSpan(Me.gbMovieScraperDefFIExtOpts, 3)
         Me.gbMovieScraperDefFIExtOpts.Size = New System.Drawing.Size(180, 136)
         Me.gbMovieScraperDefFIExtOpts.TabIndex = 8
         Me.gbMovieScraperDefFIExtOpts.TabStop = False
@@ -1964,24 +1961,12 @@ Partial Class frmMovie_Data
         Me.chkMovieScraperMetaDataScan.Text = "Scan Meta Data"
         Me.chkMovieScraperMetaDataScan.UseVisualStyleBackColor = True
         '
-        'chkMovieScraperMetaDataIFOScan
-        '
-        Me.chkMovieScraperMetaDataIFOScan.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieScraperMetaDataIFOScan.AutoSize = True
-        Me.chkMovieScraperMetaDataIFOScan.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperMetaDataIFOScan.Location = New System.Drawing.Point(3, 26)
-        Me.chkMovieScraperMetaDataIFOScan.Name = "chkMovieScraperMetaDataIFOScan"
-        Me.chkMovieScraperMetaDataIFOScan.Size = New System.Drawing.Size(123, 17)
-        Me.chkMovieScraperMetaDataIFOScan.TabIndex = 18
-        Me.chkMovieScraperMetaDataIFOScan.Text = "Enable IFO Parsing"
-        Me.chkMovieScraperMetaDataIFOScan.UseVisualStyleBackColor = True
-        '
         'gbMovieScraperDurationFormatOpts
         '
         Me.gbMovieScraperDurationFormatOpts.AutoSize = True
         Me.gbMovieScraperDurationFormatOpts.Controls.Add(Me.tblMovieScraperDurationFormatOpts)
         Me.gbMovieScraperDurationFormatOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieScraperDurationFormatOpts.Location = New System.Drawing.Point(3, 49)
+        Me.gbMovieScraperDurationFormatOpts.Location = New System.Drawing.Point(3, 26)
         Me.gbMovieScraperDurationFormatOpts.Name = "gbMovieScraperDurationFormatOpts"
         Me.gbMovieScraperDurationFormatOpts.Size = New System.Drawing.Size(248, 72)
         Me.gbMovieScraperDurationFormatOpts.TabIndex = 9
@@ -1996,8 +1981,8 @@ Partial Class frmMovie_Data
         Me.tblMovieScraperDurationFormatOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperDurationFormatOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblMovieScraperDurationFormatOpts.Controls.Add(Me.lblMovieScraperDurationRuntimeFormat, 1, 0)
-        Me.tblMovieScraperDurationFormatOpts.Controls.Add(Me.chkMovieScraperUseMDDuration, 0, 0)
-        Me.tblMovieScraperDurationFormatOpts.Controls.Add(Me.txtMovieScraperDurationRuntimeFormat, 0, 1)
+        Me.tblMovieScraperDurationFormatOpts.Controls.Add(Me.chkDurationForRuntime, 0, 0)
+        Me.tblMovieScraperDurationFormatOpts.Controls.Add(Me.txtDurationFormat, 0, 1)
         Me.tblMovieScraperDurationFormatOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblMovieScraperDurationFormatOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblMovieScraperDurationFormatOpts.Name = "tblMovieScraperDurationFormatOpts"
@@ -2021,24 +2006,24 @@ Partial Class frmMovie_Data
         Me.lblMovieScraperDurationRuntimeFormat.Text = "<h>=Hours" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<m>=Minutes" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "<s>=Seconds"
         Me.lblMovieScraperDurationRuntimeFormat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'chkMovieScraperUseMDDuration
+        'chkDurationForRuntime
         '
-        Me.chkMovieScraperUseMDDuration.AutoSize = True
-        Me.chkMovieScraperUseMDDuration.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieScraperUseMDDuration.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieScraperUseMDDuration.Name = "chkMovieScraperUseMDDuration"
-        Me.chkMovieScraperUseMDDuration.Size = New System.Drawing.Size(158, 17)
-        Me.chkMovieScraperUseMDDuration.TabIndex = 8
-        Me.chkMovieScraperUseMDDuration.Text = "Use Duration for Runtime"
-        Me.chkMovieScraperUseMDDuration.UseVisualStyleBackColor = True
+        Me.chkDurationForRuntime.AutoSize = True
+        Me.chkDurationForRuntime.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDurationForRuntime.Location = New System.Drawing.Point(3, 3)
+        Me.chkDurationForRuntime.Name = "chkDurationForRuntime"
+        Me.chkDurationForRuntime.Size = New System.Drawing.Size(158, 17)
+        Me.chkDurationForRuntime.TabIndex = 8
+        Me.chkDurationForRuntime.Text = "Use Duration for Runtime"
+        Me.chkDurationForRuntime.UseVisualStyleBackColor = True
         '
-        'txtMovieScraperDurationRuntimeFormat
+        'txtDurationFormat
         '
-        Me.txtMovieScraperDurationRuntimeFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieScraperDurationRuntimeFormat.Location = New System.Drawing.Point(3, 26)
-        Me.txtMovieScraperDurationRuntimeFormat.Name = "txtMovieScraperDurationRuntimeFormat"
-        Me.txtMovieScraperDurationRuntimeFormat.Size = New System.Drawing.Size(160, 22)
-        Me.txtMovieScraperDurationRuntimeFormat.TabIndex = 22
+        Me.txtDurationFormat.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDurationFormat.Location = New System.Drawing.Point(3, 26)
+        Me.txtDurationFormat.Name = "txtDurationFormat"
+        Me.txtDurationFormat.Size = New System.Drawing.Size(160, 22)
+        Me.txtDurationFormat.TabIndex = 22
         '
         'gbMovieScraperCollectionOpts
         '
@@ -2354,7 +2339,7 @@ Partial Class frmMovie_Data
     Friend WithEvents lblMovieScraperOutlineLimit As Windows.Forms.Label
     Friend WithEvents txtMovieScraperOutlineLimit As Windows.Forms.TextBox
     Friend WithEvents chkMovieScraperPlotForOutline As Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperXBMCTrailerFormat As Windows.Forms.CheckBox
+    Friend WithEvents chkMovieScraperTrailerKodiFormat As Windows.Forms.CheckBox
     Friend WithEvents chkMovieScraperPlotForOutlineIfEmpty As Windows.Forms.CheckBox
     Friend WithEvents gbMovieScraperMetaDataOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieScraperMetaDataOpts As Windows.Forms.TableLayoutPanel
@@ -2367,12 +2352,11 @@ Partial Class frmMovie_Data
     Friend WithEvents btnMovieScraperDefFIExtAdd As Windows.Forms.Button
     Friend WithEvents lblMovieScraperDefFIExt As Windows.Forms.Label
     Friend WithEvents chkMovieScraperMetaDataScan As Windows.Forms.CheckBox
-    Friend WithEvents chkMovieScraperMetaDataIFOScan As Windows.Forms.CheckBox
     Friend WithEvents gbMovieScraperDurationFormatOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieScraperDurationFormatOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents lblMovieScraperDurationRuntimeFormat As Windows.Forms.Label
-    Friend WithEvents chkMovieScraperUseMDDuration As Windows.Forms.CheckBox
-    Friend WithEvents txtMovieScraperDurationRuntimeFormat As Windows.Forms.TextBox
+    Friend WithEvents chkDurationForRuntime As Windows.Forms.CheckBox
+    Friend WithEvents txtDurationFormat As Windows.Forms.TextBox
     Friend WithEvents gbMovieScraperCollectionOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieScraperCollectionOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMovieScraperCollectionsYAMJCompatibleSets As Windows.Forms.CheckBox
