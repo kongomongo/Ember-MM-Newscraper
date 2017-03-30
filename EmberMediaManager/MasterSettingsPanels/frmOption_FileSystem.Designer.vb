@@ -25,6 +25,13 @@ Partial Class frmOption_FileSystem
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmOption_FileSystem))
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
+        Me.gbGeneralDaemon = New System.Windows.Forms.GroupBox()
+        Me.tblGeneralDaemon = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnVirtualDriveAppPathBrowse = New System.Windows.Forms.Button()
+        Me.lblGeneralDaemonDrive = New System.Windows.Forms.Label()
+        Me.txtVirtualDriveAppPath = New System.Windows.Forms.TextBox()
+        Me.cbVirtualDriveDriveLetter = New System.Windows.Forms.ComboBox()
+        Me.lblGeneralDaemonPath = New System.Windows.Forms.Label()
         Me.gbFileSystemValidVideoExts = New System.Windows.Forms.GroupBox()
         Me.tblFileSystemValidVideoExts = New System.Windows.Forms.TableLayoutPanel()
         Me.btnFileSystemValidVideoExtsRemove = New System.Windows.Forms.Button()
@@ -58,8 +65,11 @@ Partial Class frmOption_FileSystem
         Me.btnFileSystemValidThemeExtsAdd = New System.Windows.Forms.Button()
         Me.lstFileSystemValidThemeExts = New System.Windows.Forms.ListBox()
         Me.txtFileSystemValidThemeExts = New System.Windows.Forms.TextBox()
+        Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
+        Me.gbGeneralDaemon.SuspendLayout()
+        Me.tblGeneralDaemon.SuspendLayout()
         Me.gbFileSystemValidVideoExts.SuspendLayout()
         Me.tblFileSystemValidVideoExts.SuspendLayout()
         Me.gbFileSystemNoStackExts.SuspendLayout()
@@ -80,7 +90,7 @@ Partial Class frmOption_FileSystem
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(558, 521)
+        Me.pnlSettings.Size = New System.Drawing.Size(558, 599)
         Me.pnlSettings.TabIndex = 18
         Me.pnlSettings.Visible = False
         '
@@ -93,6 +103,7 @@ Partial Class frmOption_FileSystem
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSettings.Controls.Add(Me.gbGeneralDaemon, 0, 4)
         Me.tblSettings.Controls.Add(Me.gbFileSystemValidVideoExts, 0, 0)
         Me.tblSettings.Controls.Add(Me.gbFileSystemNoStackExts, 2, 0)
         Me.tblSettings.Controls.Add(Me.gbFileSystemExcludedDirs, 0, 3)
@@ -101,14 +112,106 @@ Partial Class frmOption_FileSystem
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
-        Me.tblSettings.RowCount = 5
+        Me.tblSettings.RowCount = 6
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(558, 521)
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(558, 599)
         Me.tblSettings.TabIndex = 6
+        '
+        'gbGeneralDaemon
+        '
+        Me.gbGeneralDaemon.AutoSize = True
+        Me.tblSettings.SetColumnSpan(Me.gbGeneralDaemon, 3)
+        Me.gbGeneralDaemon.Controls.Add(Me.tblGeneralDaemon)
+        Me.gbGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbGeneralDaemon.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.gbGeneralDaemon.Location = New System.Drawing.Point(3, 499)
+        Me.gbGeneralDaemon.Name = "gbGeneralDaemon"
+        Me.gbGeneralDaemon.Size = New System.Drawing.Size(602, 70)
+        Me.gbGeneralDaemon.TabIndex = 18
+        Me.gbGeneralDaemon.TabStop = False
+        Me.gbGeneralDaemon.Text = "Configuration ISO Filescanning"
+        '
+        'tblGeneralDaemon
+        '
+        Me.tblGeneralDaemon.AutoSize = True
+        Me.tblGeneralDaemon.ColumnCount = 3
+        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblGeneralDaemon.Controls.Add(Me.btnVirtualDriveAppPathBrowse, 2, 1)
+        Me.tblGeneralDaemon.Controls.Add(Me.lblGeneralDaemonDrive, 0, 0)
+        Me.tblGeneralDaemon.Controls.Add(Me.txtVirtualDriveAppPath, 1, 1)
+        Me.tblGeneralDaemon.Controls.Add(Me.cbVirtualDriveDriveLetter, 0, 1)
+        Me.tblGeneralDaemon.Controls.Add(Me.lblGeneralDaemonPath, 1, 0)
+        Me.tblGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblGeneralDaemon.Location = New System.Drawing.Point(3, 18)
+        Me.tblGeneralDaemon.Name = "tblGeneralDaemon"
+        Me.tblGeneralDaemon.RowCount = 3
+        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralDaemon.Size = New System.Drawing.Size(596, 49)
+        Me.tblGeneralDaemon.TabIndex = 17
+        '
+        'btnGeneralDaemonPathBrowse
+        '
+        Me.btnVirtualDriveAppPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.btnVirtualDriveAppPathBrowse.Location = New System.Drawing.Point(568, 23)
+        Me.btnVirtualDriveAppPathBrowse.Name = "btnGeneralDaemonPathBrowse"
+        Me.btnVirtualDriveAppPathBrowse.Size = New System.Drawing.Size(25, 23)
+        Me.btnVirtualDriveAppPathBrowse.TabIndex = 4
+        Me.btnVirtualDriveAppPathBrowse.Text = "..."
+        Me.btnVirtualDriveAppPathBrowse.UseVisualStyleBackColor = True
+        '
+        'lblGeneralDaemonDrive
+        '
+        Me.lblGeneralDaemonDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralDaemonDrive.AutoSize = True
+        Me.lblGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lblGeneralDaemonDrive.Location = New System.Drawing.Point(3, 3)
+        Me.lblGeneralDaemonDrive.Name = "lblGeneralDaemonDrive"
+        Me.lblGeneralDaemonDrive.Size = New System.Drawing.Size(63, 13)
+        Me.lblGeneralDaemonDrive.TabIndex = 6
+        Me.lblGeneralDaemonDrive.Text = "Driveletter:"
+        '
+        'txtGeneralDaemonPath
+        '
+        Me.txtVirtualDriveAppPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.txtVirtualDriveAppPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtVirtualDriveAppPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtVirtualDriveAppPath.Location = New System.Drawing.Point(82, 23)
+        Me.txtVirtualDriveAppPath.Name = "txtGeneralDaemonPath"
+        Me.txtVirtualDriveAppPath.Size = New System.Drawing.Size(480, 22)
+        Me.txtVirtualDriveAppPath.TabIndex = 3
+        '
+        'cbGeneralDaemonDrive
+        '
+        Me.cbVirtualDriveDriveLetter.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.cbVirtualDriveDriveLetter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbVirtualDriveDriveLetter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbVirtualDriveDriveLetter.FormattingEnabled = True
+        Me.cbVirtualDriveDriveLetter.Items.AddRange(New Object() {"", "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"})
+        Me.cbVirtualDriveDriveLetter.Location = New System.Drawing.Point(3, 24)
+        Me.cbVirtualDriveDriveLetter.Name = "cbGeneralDaemonDrive"
+        Me.cbVirtualDriveDriveLetter.Size = New System.Drawing.Size(73, 21)
+        Me.cbVirtualDriveDriveLetter.TabIndex = 7
+        '
+        'lblGeneralDaemonPath
+        '
+        Me.lblGeneralDaemonPath.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.lblGeneralDaemonPath.AutoSize = True
+        Me.tblGeneralDaemon.SetColumnSpan(Me.lblGeneralDaemonPath, 2)
+        Me.lblGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGeneralDaemonPath.Location = New System.Drawing.Point(82, 3)
+        Me.lblGeneralDaemonPath.Name = "lblGeneralDaemonPath"
+        Me.lblGeneralDaemonPath.Size = New System.Drawing.Size(191, 13)
+        Me.lblGeneralDaemonPath.TabIndex = 2
+        Me.lblGeneralDaemonPath.Text = "Path to DTAgent.exe/VCDMount.exe"
         '
         'gbFileSystemValidVideoExts
         '
@@ -208,7 +311,7 @@ Partial Class frmOption_FileSystem
         Me.gbFileSystemNoStackExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFileSystemNoStackExts.Location = New System.Drawing.Point(339, 3)
         Me.gbFileSystemNoStackExts.Name = "gbFileSystemNoStackExts"
-        Me.gbFileSystemNoStackExts.Size = New System.Drawing.Size(192, 125)
+        Me.gbFileSystemNoStackExts.Size = New System.Drawing.Size(266, 125)
         Me.gbFileSystemNoStackExts.TabIndex = 1
         Me.gbFileSystemNoStackExts.TabStop = False
         Me.gbFileSystemNoStackExts.Text = "No Stack Extensions"
@@ -232,7 +335,7 @@ Partial Class frmOption_FileSystem
         Me.tblFileSystemNoStackExts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystemNoStackExts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystemNoStackExts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFileSystemNoStackExts.Size = New System.Drawing.Size(186, 104)
+        Me.tblFileSystemNoStackExts.Size = New System.Drawing.Size(260, 104)
         Me.tblFileSystemNoStackExts.TabIndex = 9
         '
         'btnFileSystemNoStackExtsRemove
@@ -286,7 +389,7 @@ Partial Class frmOption_FileSystem
         Me.gbFileSystemExcludedDirs.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
         Me.gbFileSystemExcludedDirs.Location = New System.Drawing.Point(3, 355)
         Me.gbFileSystemExcludedDirs.Name = "gbFileSystemExcludedDirs"
-        Me.gbFileSystemExcludedDirs.Size = New System.Drawing.Size(528, 138)
+        Me.gbFileSystemExcludedDirs.Size = New System.Drawing.Size(602, 138)
         Me.gbFileSystemExcludedDirs.TabIndex = 4
         Me.gbFileSystemExcludedDirs.TabStop = False
         Me.gbFileSystemExcludedDirs.Text = "Excluded Directories"
@@ -310,7 +413,7 @@ Partial Class frmOption_FileSystem
         Me.tblFileSystemExcludedDirs.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystemExcludedDirs.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblFileSystemExcludedDirs.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblFileSystemExcludedDirs.Size = New System.Drawing.Size(522, 117)
+        Me.tblFileSystemExcludedDirs.Size = New System.Drawing.Size(596, 117)
         Me.tblFileSystemExcludedDirs.TabIndex = 7
         '
         'btnFileSystemExcludedDirsRemove
@@ -355,14 +458,14 @@ Partial Class frmOption_FileSystem
         Me.txtFileSystemExcludedDirs.Size = New System.Drawing.Size(410, 22)
         Me.txtFileSystemExcludedDirs.TabIndex = 4
         '
-        'gbFileSystemValidSubtitlesExts
+        'gbFileSystemValidSubtitleExts
         '
         Me.gbFileSystemValidSubtitleExts.AutoSize = True
         Me.gbFileSystemValidSubtitleExts.Controls.Add(Me.tblFileSystemValidSubtitlesExts)
         Me.gbFileSystemValidSubtitleExts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbFileSystemValidSubtitleExts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
         Me.gbFileSystemValidSubtitleExts.Location = New System.Drawing.Point(171, 3)
-        Me.gbFileSystemValidSubtitleExts.Name = "gbFileSystemValidSubtitlesExts"
+        Me.gbFileSystemValidSubtitleExts.Name = "gbFileSystemValidSubtitleExts"
         Me.tblSettings.SetRowSpan(Me.gbFileSystemValidSubtitleExts, 2)
         Me.gbFileSystemValidSubtitleExts.Size = New System.Drawing.Size(162, 170)
         Me.gbFileSystemValidSubtitleExts.TabIndex = 5
@@ -538,7 +641,7 @@ Partial Class frmOption_FileSystem
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(558, 521)
+        Me.ClientSize = New System.Drawing.Size(558, 599)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmOption_FileSystem"
         Me.Text = "frmOption_FileSystem"
@@ -546,6 +649,10 @@ Partial Class frmOption_FileSystem
         Me.pnlSettings.PerformLayout()
         Me.tblSettings.ResumeLayout(False)
         Me.tblSettings.PerformLayout()
+        Me.gbGeneralDaemon.ResumeLayout(False)
+        Me.gbGeneralDaemon.PerformLayout()
+        Me.tblGeneralDaemon.ResumeLayout(False)
+        Me.tblGeneralDaemon.PerformLayout()
         Me.gbFileSystemValidVideoExts.ResumeLayout(False)
         Me.gbFileSystemValidVideoExts.PerformLayout()
         Me.tblFileSystemValidVideoExts.ResumeLayout(False)
@@ -606,4 +713,12 @@ Partial Class frmOption_FileSystem
     Friend WithEvents btnFileSystemValidThemeExtsAdd As Windows.Forms.Button
     Friend WithEvents lstFileSystemValidThemeExts As Windows.Forms.ListBox
     Friend WithEvents txtFileSystemValidThemeExts As Windows.Forms.TextBox
+    Friend WithEvents gbGeneralDaemon As GroupBox
+    Friend WithEvents tblGeneralDaemon As TableLayoutPanel
+    Friend WithEvents btnVirtualDriveAppPathBrowse As Button
+    Friend WithEvents lblGeneralDaemonDrive As Label
+    Friend WithEvents txtVirtualDriveAppPath As TextBox
+    Friend WithEvents cbVirtualDriveDriveLetter As ComboBox
+    Friend WithEvents lblGeneralDaemonPath As Label
+    Friend WithEvents fileBrowse As OpenFileDialog
 End Class

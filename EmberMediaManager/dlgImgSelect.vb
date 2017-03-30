@@ -209,18 +209,24 @@ Public Class dlgImgSelect
                 DoOnlySeason = DBElement.MainDetails.Season
             Case Else
                 tContentType = DBElement.ContentType
-                If Master.eSettings.GeneralImageFilter AndAlso Master.eSettings.GeneralImageFilterImagedialog Then
+                If Master.eSettings.Options.Global.ImageFilter.Enabled AndAlso Master.eSettings.Options.Global.ImageFilter.ImageSelectDialog Then
                     'mark all duplicate images in searchcontainer for movie
                     'posters
-                    If Master.eSettings.GeneralImageFilterPoster Then
-                        Images.FindDuplicateImages(tSearchResultsContainer.MainPosters, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterPosterMatchTolerance, RemoveDuplicatesFromList:=False)
+                    If Master.eSettings.Options.Global.ImageFilter.Poster Then
+                        Images.FindDuplicateImages(tSearchResultsContainer.MainPosters,
+                                                   DBElement.ContentType,
+                                                   MatchTolerance:=Master.eSettings.Options.Global.ImageFilter.PosterMatchTolerance,
+                                                   RemoveDuplicatesFromList:=False)
                         'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
                         Dim orderedList = tSearchResultsContainer.MainPosters.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
                         tSearchResultsContainer.MainPosters = orderedList
                     End If
                     'fanarts
-                    If Master.eSettings.GeneralImageFilterFanart Then
-                        Images.FindDuplicateImages(tSearchResultsContainer.MainFanarts, DBElement.ContentType, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, RemoveDuplicatesFromList:=False)
+                    If Master.eSettings.Options.Global.ImageFilter.Fanart Then
+                        Images.FindDuplicateImages(tSearchResultsContainer.MainFanarts,
+                                                   DBElement.ContentType,
+                                                   MatchTolerance:=Master.eSettings.Options.Global.ImageFilter.FanartMatchTolerance,
+                                                   RemoveDuplicatesFromList:=False)
                         'this will consider IsDuplicate value of all images by moving all duplicate images to bottom
                         Dim orderedList = tSearchResultsContainer.MainFanarts.OrderByDescending(Function(x) x.IsDuplicate = False).ToList()
                         tSearchResultsContainer.MainFanarts = orderedList

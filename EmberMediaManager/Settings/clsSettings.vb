@@ -53,13 +53,27 @@ Public Class ManagerSettings
 #Region "Methods"
 
     Public Sub Load()
+        Dim strXMLpath As String = Path.Combine(Master.SettingsPath, "GUISettings.xml")
 
+        Try
+            If File.Exists(strXMLpath) Then
+                Dim objStreamReader As New StreamReader(strXMLpath)
+                Dim xXMLSettings As New XmlSerializer([GetType])
+
+                Manager.mSettings = CType(xXMLSettings.Deserialize(objStreamReader), ManagerSettings)
+                objStreamReader.Close()
+            End If
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+            File.Copy(strXMLpath, String.Concat(strXMLpath, "_backup"), True)
+            Manager.mSettings = New ManagerSettings
+        End Try
     End Sub
 
     Public Sub Save()
         Try
             Dim xmlSerial As New XmlSerializer(GetType(ManagerSettings))
-            Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "Settings.xml"))
+            Dim xmlWriter As New StreamWriter(Path.Combine(Master.SettingsPath, "GUISettings.xml"))
             xmlSerial.Serialize(xmlWriter, Me)
             xmlWriter.Close()
         Catch ex As Exception
@@ -164,8 +178,8 @@ Public Class FilterSettings
 
 #Region "Constructors"
 
-    Public Sub New(ByVal tContentType As Enums.ContentType)
-        SetDefaults(tContentType)
+    Public Sub New()
+        Clear()
     End Sub
 
 #End Region 'Constructors
@@ -175,11 +189,14 @@ Public Class FilterSettings
     ''' Defines all default settings for a new installation
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub SetDefaults(ByVal tContentType As Enums.ContentType)
+    Public Sub Clear()
         Missing = New FilterMissingSpecification
         PanelIsRaised = False
+        SortColumn = 0
         SortOrder = 0
+    End Sub
 
+    Public Sub SetDefaults(ByVal tContentType As Enums.ContentType)
         Select Case tContentType
             Case Enums.ContentType.Movie
                 SortColumn = 3
@@ -309,12 +326,12 @@ Public Class FilterMissingSpecification
 
 End Class
 
-
 <Serializable()>
-Public Class GUISettings
+Public Class GUISettings_Movie
 
 #Region "Properties"
 
+    Public Property BestAudioStreamOfLanguage As String
     Public Property ClickScrape As Boolean
     Public Property ClickScrapeAsk As Boolean
     Public Property CustomMarker1 As New CustomMarkerSpecification
@@ -341,6 +358,7 @@ Public Class GUISettings
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
+        BestAudioStreamOfLanguage = String.Empty
         ClickScrape = False
         ClickScrapeAsk = False
         CustomMarker1 = New CustomMarkerSpecification With {.Color = -32704}
@@ -348,8 +366,9 @@ Public Class GUISettings
         CustomMarker3 = New CustomMarkerSpecification With {.Color = -12582784}
         CustomMarker4 = New CustomMarkerSpecification With {.Color = -16711681}
         CustomScrapeButton = New CustomScrapeButtonSpecification
-        InfoPanelState = 200
+        InfoPanelState = 2
         MediaListSorting = New MediaListSortingSpecification
+        MediaListSorting.SetDefaults(Enums.ContentType.Movie, True)
     End Sub
 
 #End Region 'Methods 
@@ -358,12 +377,15 @@ End Class
 
 
 <Serializable()>
-Public Class GUISettings_TV
+Public Class GUISettings_Movieset
 
 #Region "Properties"
 
+    Public Property ClickScrape As Boolean
+    Public Property ClickScrapeAsk As Boolean
     Public Property CustomScrapeButton As New CustomScrapeButtonSpecification
     Public Property InfoPanelState() As Integer
+    Public Property MediaListSorting As New MediaListSortingSpecification
 
 #End Region 'Properties
 
@@ -381,14 +403,69 @@ Public Class GUISettings_TV
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
+        ClickScrape = False
+        ClickScrapeAsk = False
         CustomScrapeButton = New CustomScrapeButtonSpecification
-        InfoPanelState = 200
+        InfoPanelState = 2
+        MediaListSorting = New MediaListSortingSpecification
+        MediaListSorting.SetDefaults(Enums.ContentType.Movieset, True)
+    End Sub
+
+#End Region 'Methods 
+
+End Class
+
+
+<Serializable()>
+Public Class GUISettings_TV
+
+#Region "Properties"
+
+    Public Property BestAudioStreamOfLanguage As String
+    Public Property ClickScrape As Boolean
+    Public Property ClickScrapeAsk As Boolean
+    Public Property CustomScrapeButton As New CustomScrapeButtonSpecification
+    Public Property DisplayMissingEpisodes As Boolean
+    Public Property InfoPanelState() As Integer
+    Public Property TVEpisodeMediaListSorting As New MediaListSortingSpecification
+    Public Property TVSeasonMediaListSorting As New MediaListSortingSpecification
+    Public Property TVShowMediaListSorting As New MediaListSortingSpecification
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        BestAudioStreamOfLanguage = String.Empty
+        ClickScrape = False
+        ClickScrapeAsk = False
+        CustomScrapeButton = New CustomScrapeButtonSpecification
+        DisplayMissingEpisodes = True
+        InfoPanelState = 2
+        TVEpisodeMediaListSorting = New MediaListSortingSpecification
+        TVEpisodeMediaListSorting.SetDefaults(Enums.ContentType.Movie, True)
+        TVSeasonMediaListSorting = New MediaListSortingSpecification
+        TVSeasonMediaListSorting.SetDefaults(Enums.ContentType.TVSeason, True)
+        TVShowMediaListSorting = New MediaListSortingSpecification
+        TVShowMediaListSorting.SetDefaults(Enums.ContentType.TVShow, True)
     End Sub
 
 #End Region 'Methods
 
 End Class
 
+<Serializable()>
 Public Class MediaListSortingSpecification
     Inherits List(Of MediaListSortingItemSpecification)
 
@@ -481,6 +558,7 @@ Public Class MediaListSortingSpecification
 
 End Class
 
+<Serializable()>
 Public Class MediaListSortingItemSpecification
 
 #Region "Properties"
@@ -620,8 +698,8 @@ Public Class SettingsContainer_Movie
 
 #Region "Properties"
 
-    Public Property Filter() As New FilterSettings(Enums.ContentType.Movie)
-    Public Property GUI() As New GUISettings
+    Public Property Filter() As New FilterSettings()
+    Public Property GUI() As New GUISettings_Movie
 
 #End Region 'Properties
 
@@ -639,8 +717,9 @@ Public Class SettingsContainer_Movie
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        Filter = New FilterSettings(Enums.ContentType.Movie)
-        GUI = New GUISettings
+        Filter = New FilterSettings()
+        Filter.SetDefaults(Enums.ContentType.Movie)
+        GUI = New GUISettings_Movie
     End Sub
 
 #End Region 'Methods
@@ -652,8 +731,8 @@ Public Class SettingsContainer_Movieset
 
 #Region "Properties"
 
-    Public Property Filter() As New FilterSettings(Enums.ContentType.Movieset)
-    Public Property GUI() As New GUISettings
+    Public Property Filter() As New FilterSettings()
+    Public Property GUI() As New GUISettings_Movieset
 
 #End Region 'Properties
 
@@ -671,8 +750,9 @@ Public Class SettingsContainer_Movieset
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        Filter = New FilterSettings(Enums.ContentType.Movieset)
-        GUI = New GUISettings
+        Filter = New FilterSettings()
+        Filter.SetDefaults(Enums.ContentType.Movieset)
+        GUI = New GUISettings_Movieset
     End Sub
 
 #End Region 'Methods
@@ -721,8 +801,8 @@ Public Class SettingsContainer_TVEpisode
 
 #Region "Properties"
 
-    Public Property Filter() As New FilterSettings(Enums.ContentType.TVEpisode)
-    Public Property GUI() As New GUISettings
+    Public Property Filter() As New FilterSettings()
+    Public Property GUI() As New GUISettings_Movie
 
 #End Region 'Properties
 
@@ -740,8 +820,9 @@ Public Class SettingsContainer_TVEpisode
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        Filter = New FilterSettings(Enums.ContentType.TVEpisode)
-        GUI = New GUISettings
+        Filter = New FilterSettings()
+        Filter.SetDefaults(Enums.ContentType.TVEpisode)
+        GUI = New GUISettings_Movie
     End Sub
 
 #End Region 'Methods
@@ -753,8 +834,8 @@ Public Class SettingsContainer_TVSeason
 
 #Region "Properties"
 
-    Public Property Filter() As New FilterSettings(Enums.ContentType.TVSeason)
-    Public Property GUI() As New GUISettings
+    Public Property Filter() As New FilterSettings()
+    Public Property GUI() As New GUISettings_Movie
 
 #End Region 'Properties
 
@@ -772,8 +853,9 @@ Public Class SettingsContainer_TVSeason
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        Filter = New FilterSettings(Enums.ContentType.TVSeason)
-        GUI = New GUISettings
+        Filter = New FilterSettings()
+        Filter.SetDefaults(Enums.ContentType.TVSeason)
+        GUI = New GUISettings_Movie
     End Sub
 
 #End Region 'Methods
@@ -785,8 +867,8 @@ Public Class SettingsContainer_TVShow
 
 #Region "Properties"
 
-    Public Property Filter() As New FilterSettings(Enums.ContentType.TVShow)
-    Public Property GUI() As New GUISettings
+    Public Property Filter() As New FilterSettings()
+    Public Property GUI() As New GUISettings_Movie
 
 #End Region 'Properties
 
@@ -804,8 +886,9 @@ Public Class SettingsContainer_TVShow
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        Filter = New FilterSettings(Enums.ContentType.TVShow)
-        GUI = New GUISettings
+        Filter = New FilterSettings()
+        Filter.SetDefaults(Enums.ContentType.TVShow)
+        GUI = New GUISettings_Movie
     End Sub
 
 #End Region 'Methods

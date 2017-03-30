@@ -504,9 +504,9 @@ Public Class dlgSettings
             With Master.eSettings.TV.DataSettings.TVSeason
                 chkTVLockSeasonPlot.Checked = .Plot.Locked
                 chkTVLockSeasonTitle.Checked = .Title.Locked
-                chkTVScraperSeasonAired.Checked = .Aired.Locked
-                chkTVScraperSeasonPlot.Checked = .Plot.Locked
-                chkTVScraperSeasonTitle.Checked = .Title.Locked
+                chkTVScraperSeasonAired.Checked = .Aired.Enabled
+                chkTVScraperSeasonPlot.Checked = .Plot.Enabled
+                chkTVScraperSeasonTitle.Checked = .Title.Enabled
             End With
             With Master.eSettings.TV.DataSettings.TVShow
                 chkTVScraperCleanFields.Checked = .ClearDisabledFields

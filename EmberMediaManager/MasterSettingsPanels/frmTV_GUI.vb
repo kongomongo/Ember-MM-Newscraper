@@ -35,9 +35,9 @@ Public Class frmTV_GUI
     Dim _strName As String = "TV_GUI"
     Dim _strTitle As String = "GUI"
 
-    Private TVGeneralEpisodeListSorting As New List(Of Settings.ListSorting)
-    Private TVGeneralSeasonListSorting As New List(Of Settings.ListSorting)
-    Private TVGeneralShowListSorting As New List(Of Settings.ListSorting)
+    Private TVGeneralEpisodeListSorting As New MediaListSortingSpecification
+    Private TVGeneralSeasonListSorting As New MediaListSortingSpecification
+    Private TVGeneralShowListSorting As New MediaListSortingSpecification
 
 #End Region 'Fields
 
@@ -142,52 +142,47 @@ Public Class frmTV_GUI
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            cbTVGeneralCustomScrapeButtonModifierType.SelectedValue = .TVGeneralCustomScrapeButtonModifierType
-            cbTVGeneralCustomScrapeButtonScrapeType.SelectedValue = .TVGeneralCustomScrapeButtonScrapeType
+        With Manager.mSettings.TV.GUI
+            cbTVGeneralCustomScrapeButtonModifierType.SelectedValue = .CustomScrapeButton.ModifierType
+            cbTVGeneralCustomScrapeButtonScrapeType.SelectedValue = .CustomScrapeButton.ScrapeType
 
             chkTVGeneralClickScrapeAsk.Enabled = chkTVGeneralClickScrape.Checked
-            chkTVDisplayMissingEpisodes.Checked = .TVDisplayMissingEpisodes
-            chkTVGeneralClickScrape.Checked = .TVGeneralClickScrape
-            chkTVGeneralClickScrapeAsk.Checked = .TVGeneralClickScrapeask
-            If .TVGeneralCustomScrapeButtonEnabled Then
+            chkTVDisplayMissingEpisodes.Checked = .DisplayMissingEpisodes
+            chkTVGeneralClickScrape.Checked = .ClickScrape
+            chkTVGeneralClickScrapeAsk.Checked = .ClickScrapeAsk
+            If .CustomScrapeButton.Enabled Then
                 rbTVGeneralCustomScrapeButtonEnabled.Checked = True
             Else
                 rbTVGeneralCustomScrapeButtonDisabled.Checked = True
             End If
-            cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.TVGeneralFlagLang), Master.eLang.Disabled, .TVGeneralFlagLang)
+            cbTVLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.BestAudioStreamOfLanguage), Master.eLang.Disabled, .BestAudioStreamOfLanguage)
 
-            TVGeneralEpisodeListSorting.AddRange(.TVGeneralEpisodeListSorting)
+            TVGeneralEpisodeListSorting.AddRange(.TVEpisodeMediaListSorting)
             LoadListSorting(Enums.ContentType.TVEpisode)
 
-            TVGeneralSeasonListSorting.AddRange(.TVGeneralSeasonListSorting)
+            TVGeneralSeasonListSorting.AddRange(.TVSeasonMediaListSorting)
             LoadListSorting(Enums.ContentType.TVSeason)
 
-            TVGeneralShowListSorting.AddRange(.TVGeneralShowListSorting)
+            TVGeneralShowListSorting.AddRange(.TVShowMediaListSorting)
             LoadListSorting(Enums.ContentType.TVShow)
-
-            RefreshTVSortTokens()
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .TVDisplayMissingEpisodes = chkTVDisplayMissingEpisodes.Checked
-            .TVGeneralEpisodeListSorting.Clear()
-            .TVGeneralEpisodeListSorting.AddRange(TVGeneralEpisodeListSorting)
-            .TVGeneralClickScrape = chkTVGeneralClickScrape.Checked
-            .TVGeneralClickScrapeask = chkTVGeneralClickScrapeAsk.Checked
-            .TVGeneralCustomScrapeButtonEnabled = rbTVGeneralCustomScrapeButtonEnabled.Checked
-            .TVGeneralCustomScrapeButtonModifierType = CType(cbTVGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
-            .TVGeneralCustomScrapeButtonScrapeType = CType(cbTVGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
-            .TVGeneralSeasonListSorting.Clear()
-            .TVGeneralSeasonListSorting.AddRange(TVGeneralSeasonListSorting)
-            .TVGeneralShowListSorting.Clear()
-            .TVGeneralShowListSorting.AddRange(TVGeneralShowListSorting)
-            .TVGeneralFlagLang = If(cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbTVLanguageOverlay.Text)
-            .TVSortTokens.Clear()
-            .TVSortTokens.AddRange(lstTVSortTokens.Items.OfType(Of String).ToList)
-            If .TVSortTokens.Count <= 0 Then .TVSortTokensIsEmpty = True
+        With Manager.mSettings.TV.GUI
+            .DisplayMissingEpisodes = chkTVDisplayMissingEpisodes.Checked
+            .TVEpisodeMediaListSorting.Clear()
+            .TVEpisodeMediaListSorting.AddRange(TVGeneralEpisodeListSorting)
+            .ClickScrape = chkTVGeneralClickScrape.Checked
+            .ClickScrapeAsk = chkTVGeneralClickScrapeAsk.Checked
+            .CustomScrapeButton.Enabled = rbTVGeneralCustomScrapeButtonEnabled.Checked
+            .CustomScrapeButton.ModifierType = CType(cbTVGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
+            .CustomScrapeButton.ScrapeType = CType(cbTVGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
+            .TVSeasonMediaListSorting.Clear()
+            .TVSeasonMediaListSorting.AddRange(TVGeneralSeasonListSorting)
+            .TVShowMediaListSorting.Clear()
+            .TVShowMediaListSorting.AddRange(TVGeneralShowListSorting)
+            .BestAudioStreamOfLanguage = If(cbTVLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbTVLanguageOverlay.Text)
         End With
     End Sub
 
@@ -202,7 +197,7 @@ Public Class frmTV_GUI
 
     Private Sub LoadListSorting(ByVal tContentType As Enums.ContentType)
         Dim lvItem As ListViewItem
-        Dim nListSorting As New List(Of Settings.ListSorting)
+        Dim nListSorting As New MediaListSortingSpecification
         Dim nListView As New ListView
 
         Select Case tContentType
@@ -218,7 +213,7 @@ Public Class frmTV_GUI
         End Select
 
         nListView.Items.Clear()
-        For Each rColumn As Settings.ListSorting In nListSorting.OrderBy(Function(f) f.DisplayIndex)
+        For Each rColumn As MediaListSortingItemSpecification In nListSorting.OrderBy(Function(f) f.DisplayIndex)
             lvItem = New ListViewItem(rColumn.DisplayIndex.ToString)
             lvItem.SubItems.Add(rColumn.Column)
             lvItem.SubItems.Add(Master.eLang.GetString(rColumn.LabelID, rColumn.LabelText))
@@ -278,38 +273,7 @@ Public Class frmTV_GUI
         cbTVGeneralCustomScrapeButtonScrapeType.ValueMember = "Value"
     End Sub
 
-    Private Sub lsttvSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstTVSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveTVSortToken()
-    End Sub
-
-    Private Sub btnTVSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtTVSortToken.Text) Then
-            If Not lstTVSortTokens.Items.Contains(txtTVSortToken.Text) Then
-                lstTVSortTokens.Items.Add(txtTVSortToken.Text)
-                Handle_NeedsReload_TVShow()
-                EnableApplyButton()
-                txtTVSortToken.Text = String.Empty
-                txtTVSortToken.Focus()
-            End If
-        End If
-    End Sub
-
-    Private Sub RefreshTVSortTokens()
-        lstTVSortTokens.Items.Clear()
-        lstTVSortTokens.Items.AddRange(Master.eSettings.TVSortTokens.ToArray)
-    End Sub
-
-    Private Sub RemoveTVSortToken()
-        If lstTVSortTokens.Items.Count > 0 AndAlso lstTVSortTokens.SelectedItems.Count > 0 Then
-            While lstTVSortTokens.SelectedItems.Count > 0
-                lstTVSortTokens.Items.Remove(lstTVSortTokens.SelectedItems(0))
-            End While
-            Handle_NeedsReload_TVShow()
-            EnableApplyButton()
-        End If
-    End Sub
-
-    Private Sub RenumberMediaListSorting(ByVal lstListSorting As List(Of Settings.ListSorting))
+    Private Sub RenumberMediaListSorting(ByVal lstListSorting As MediaListSortingSpecification)
         For i As Integer = 0 To lstListSorting.Count - 1
             lstListSorting(i).DisplayIndex = i
         Next
@@ -318,7 +282,7 @@ Public Class frmTV_GUI
     Private Sub btnTVGeneralEpisodeListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingUp.Click
         Try
             If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralEpisodeListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
+                Dim selItem = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVGeneralEpisodeListSorting.SuspendLayout()
@@ -348,7 +312,7 @@ Public Class frmTV_GUI
     Private Sub btnTVGeneralSeasonListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingUp.Click
         Try
             If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralSeasonListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
+                Dim selItem = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVGeneralSeasonListSorting.SuspendLayout()
@@ -378,7 +342,7 @@ Public Class frmTV_GUI
     Private Sub btnTVGeneralShowListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingUp.Click
         Try
             If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso Not lvTVGeneralShowListSorting.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
+                Dim selItem = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVGeneralShowListSorting.SuspendLayout()
@@ -408,7 +372,7 @@ Public Class frmTV_GUI
     Private Sub btnTVGeneralEpisodeListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingDown.Click
         Try
             If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems(0).Index < (lvTVGeneralEpisodeListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
+                Dim selItem = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVGeneralEpisodeListSorting.SuspendLayout()
@@ -438,7 +402,7 @@ Public Class frmTV_GUI
     Private Sub btnTVGeneralSeasonListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingDown.Click
         Try
             If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems(0).Index < (lvTVGeneralSeasonListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
+                Dim selItem = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVGeneralSeasonListSorting.SuspendLayout()
@@ -468,7 +432,7 @@ Public Class frmTV_GUI
     Private Sub btnTVGeneralShowListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingDown.Click
         Try
             If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems(0).Index < (lvTVGeneralShowListSorting.Items.Count - 1) Then
-                Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
+                Dim selItem = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVGeneralShowListSorting.SuspendLayout()
@@ -497,7 +461,7 @@ Public Class frmTV_GUI
 
     Private Sub lvTVGeneralEpisodeListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralEpisodeListSorting.MouseDoubleClick
         If lvTVGeneralEpisodeListSorting.Items.Count > 0 AndAlso lvTVGeneralEpisodeListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
+            Dim selItem = TVGeneralEpisodeListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralEpisodeListSorting.SelectedItems(0).Text))
 
             If selItem IsNot Nothing Then
                 lvTVGeneralEpisodeListSorting.SuspendLayout()
@@ -519,7 +483,7 @@ Public Class frmTV_GUI
 
     Private Sub lvTVGeneralSeasonListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralSeasonListSorting.MouseDoubleClick
         If lvTVGeneralSeasonListSorting.Items.Count > 0 AndAlso lvTVGeneralSeasonListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
+            Dim selItem = TVGeneralSeasonListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralSeasonListSorting.SelectedItems(0).Text))
 
             If selItem IsNot Nothing Then
                 lvTVGeneralSeasonListSorting.SuspendLayout()
@@ -541,7 +505,7 @@ Public Class frmTV_GUI
 
     Private Sub lvTVGeneralShowListSorting_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvTVGeneralShowListSorting.MouseDoubleClick
         If lvTVGeneralShowListSorting.Items.Count > 0 AndAlso lvTVGeneralShowListSorting.SelectedItems.Count > 0 Then
-            Dim selItem As Settings.ListSorting = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
+            Dim selItem = TVGeneralShowListSorting.FirstOrDefault(Function(r) r.DisplayIndex = Convert.ToInt32(lvTVGeneralShowListSorting.SelectedItems(0).Text))
 
             If selItem IsNot Nothing Then
                 lvTVGeneralShowListSorting.SuspendLayout()
@@ -562,37 +526,26 @@ Public Class frmTV_GUI
     End Sub
 
     Private Sub btnTVEpisodeGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralEpisodeListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVEpisodeListSorting, True)
+        Manager.mSettings.TV.GUI.TVEpisodeMediaListSorting.SetDefaults(Enums.ContentType.TVEpisode, True)
         TVGeneralEpisodeListSorting.Clear()
-        TVGeneralEpisodeListSorting.AddRange(Master.eSettings.TVGeneralEpisodeListSorting)
+        TVGeneralEpisodeListSorting.AddRange(Manager.mSettings.TV.GUI.TVEpisodeMediaListSorting)
         LoadListSorting(Enums.ContentType.TVEpisode)
         EnableApplyButton()
     End Sub
 
     Private Sub btnTVSeasonGeneralMediaListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralSeasonListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSeasonListSorting, True)
+        Manager.mSettings.TV.GUI.TVSeasonMediaListSorting.SetDefaults(Enums.ContentType.TVEpisode, True)
         TVGeneralSeasonListSorting.Clear()
-        TVGeneralSeasonListSorting.AddRange(Master.eSettings.TVGeneralSeasonListSorting)
+        TVGeneralSeasonListSorting.AddRange(Manager.mSettings.TV.GUI.TVSeasonMediaListSorting)
         LoadListSorting(Enums.ContentType.TVSeason)
         EnableApplyButton()
     End Sub
 
     Private Sub btnTVGeneralShowListSortingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVGeneralShowListSortingReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowListSorting, True)
+        Manager.mSettings.TV.GUI.TVShowMediaListSorting.SetDefaults(Enums.ContentType.TVEpisode, True)
         TVGeneralShowListSorting.Clear()
-        TVGeneralShowListSorting.AddRange(Master.eSettings.TVGeneralShowListSorting)
+        TVGeneralShowListSorting.AddRange(Manager.mSettings.TV.GUI.TVShowMediaListSorting)
         LoadListSorting(Enums.ContentType.TVShow)
-        EnableApplyButton()
-    End Sub
-
-    Private Sub btnTVSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenRemove.Click
-        RemoveTVSortToken()
-    End Sub
-
-    Private Sub btnTVSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVSortTokens, True)
-        RefreshTVSortTokens()
-        Handle_NeedsReload_TVShow()
         EnableApplyButton()
     End Sub
 
@@ -633,7 +586,6 @@ Public Class frmTV_GUI
         gbTVGeneralMiscOpts.Text = Master.eLang.GetString(429, "Miscellaneous")
         gbTVGeneralSeasonListSortingOpts.Text = Master.eLang.GetString(493, "Season List Sorting")
         gbTVGeneralShowListSortingOpts.Text = Master.eLang.GetString(492, "Show List Sorting")
-        gbTVGeneralMediaListSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         chkTVDisplayMissingEpisodes.Text = Master.eLang.GetString(733, "Display Missing Episodes")
         chkTVGeneralClickScrapeAsk.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
 

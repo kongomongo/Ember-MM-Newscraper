@@ -164,7 +164,7 @@ Public Class TaskManager
                             While SQLReader_GetMovies.Read
                                 Dim bLevFail_OldValue = CBool(SQLReader_GetMovies("OutOfTolerance"))
 
-                                If Master.eSettings.MovieLevTolerance > 0 Then
+                                If Master.eSettings.Movie.SourceSettings.LevTolerance > 0 Then
                                     Dim bIsSingle As Boolean = False
                                     Dim bLevFail_NewValue As Boolean = False
                                     Dim bUseFolderName As Boolean = False
@@ -183,7 +183,7 @@ Public Class TaskManager
                                         End Using
                                     End Using
 
-                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(New FileItem(SQLReader_GetMovies("MoviePath").ToString), bIsSingle, bUseFolderName)) > Master.eSettings.MovieLevTolerance
+                                    bLevFail_NewValue = StringUtils.ComputeLevenshtein(SQLReader_GetMovies("Title").ToString, StringUtils.FilterTitleFromPath_Movie(New FileItem(SQLReader_GetMovies("MoviePath").ToString), bIsSingle, bUseFolderName)) > Master.eSettings.Movie.SourceSettings.LevTolerance
 
                                     If Not bLevFail_OldValue = bLevFail_NewValue Then
                                         par_OutOfTolerance.Value = bLevFail_NewValue

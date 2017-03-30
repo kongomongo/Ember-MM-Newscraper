@@ -140,6 +140,8 @@ Public Class frmOption_FileSystem
     Public Sub LoadSettings()
         With Master.eSettings.Options.Filesystem
             lstFileSystemNoStackExts.Items.AddRange(.NoStackExts.ToArray)
+            cbVirtualDriveDriveLetter.SelectedItem = .VirtualDriveDriveLetter
+            txtVirtualDriveAppPath.Text = .VirtualDriveAppPath
         End With
 
         RefreshFileSystemExcludeDirs()
@@ -158,6 +160,8 @@ Public Class frmOption_FileSystem
             .ValidThemeExts.AddRange(lstFileSystemValidThemeExts.Items.OfType(Of String).ToList)
             .ValidVideoExts.Clear()
             .ValidVideoExts.AddRange(lstFileSystemValidVideoExts.Items.OfType(Of String).ToList)
+            .VirtualDriveAppPath = txtVirtualDriveAppPath.Text
+            .VirtualDriveDriveLetter = cbVirtualDriveDriveLetter.Text
         End With
     End Sub
 
@@ -210,6 +214,22 @@ Public Class frmOption_FileSystem
             RemoveExcludeDir()
             RefreshFileSystemExcludeDirs()
         End If
+    End Sub
+
+    Private Sub btnVirtualDriveAppPathBrowse_Click(sender As Object, e As EventArgs) Handles btnVirtualDriveAppPathBrowse.Click
+        Try
+            With fileBrowse
+                .Filter = "Virtual Drive|DTAgent.exe;VCDMount.exe"
+                If .ShowDialog = DialogResult.OK Then
+                    If Not String.IsNullOrEmpty(.FileName) Then
+                        txtVirtualDriveAppPath.Text = .FileName
+                        EnableApplyButton()
+                    End If
+                End If
+            End With
+        Catch ex As Exception
+            logger.Error(ex, New StackFrame().GetMethod().Name)
+        End Try
     End Sub
 
     Private Sub RemoveExcludeDir()
@@ -302,7 +322,7 @@ Public Class frmOption_FileSystem
 
     Private Sub btnFileSystemValidVideoExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidVideoExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(843, "Are you sure you want to reset to the default list of valid video extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidExts, True)
+            Master.eSettings.Options.Filesystem.SetDefaults(Enums.DefaultSettingType.ValidVideoExts, True)
             RefreshFileSystemValidVideoExts()
             EnableApplyButton()
         End If
@@ -310,7 +330,7 @@ Public Class frmOption_FileSystem
 
     Private Sub btnFileSystemValidSubtitlesExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidSubtitlesExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1283, "Are you sure you want to reset to the default list of valid subtitle extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidSubtitleExts, True)
+            Master.eSettings.Options.Filesystem.SetDefaults(Enums.DefaultSettingType.ValidSubtitleExts, True)
             RefreshFileSystemValidSubtitlesExts()
             EnableApplyButton()
         End If
@@ -318,7 +338,7 @@ Public Class frmOption_FileSystem
 
     Private Sub btnFileSystemValidThemeExtsReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFileSystemValidThemeExtsReset.Click
         If MessageBox.Show(Master.eLang.GetString(1080, "Are you sure you want to reset to the default list of valid theme extensions?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ValidThemeExts, True)
+            Master.eSettings.Options.Filesystem.SetDefaults(Enums.DefaultSettingType.ValidThemeExts, True)
             RefreshFileSystemValidThemeExts()
             EnableApplyButton()
         End If
@@ -431,6 +451,9 @@ Public Class frmOption_FileSystem
         gbFileSystemValidVideoExts.Text = Master.eLang.GetString(534, "Valid Video Extensions")
         gbFileSystemValidSubtitleExts.Text = Master.eLang.GetString(1284, "Valid Subtitle Extensions")
         gbFileSystemValidThemeExts.Text = Master.eLang.GetString(1081, "Valid Theme Extensions")
+        gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
+        lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
+        lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTAgent.exe/VCDMount.exe")
     End Sub
 
 #End Region 'Methods

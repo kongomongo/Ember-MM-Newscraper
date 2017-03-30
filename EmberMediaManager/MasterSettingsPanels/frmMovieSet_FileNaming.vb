@@ -139,9 +139,12 @@ Public Class frmMovieSet_FileNaming
     End Function
 
     Public Sub LoadSettings()
+        With Master.eSettings.Movieset.SourceSettings
+            chkMovieSetCleanDB.Checked = .CleanDB
+            chkMovieSetCleanFiles.Checked = .RemoveFiles
+        End With
+
         With Master.eSettings
-            chkMovieSetCleanDB.Checked = .MovieSetCleanDB
-            chkMovieSetCleanFiles.Checked = .MovieSetCleanFiles
 
             '********* Kodi Extended Images settings ***********
             chkMovieSetUseExtended.Checked = .MovieSetUseExtended
@@ -181,9 +184,12 @@ Public Class frmMovieSet_FileNaming
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
+        With Master.eSettings.Movieset.SourceSettings
+            .CleanDB = chkMovieSetCleanDB.Checked
+            .RemoveFiles = chkMovieSetCleanFiles.Checked
+        End With
+
         With Master.eSettings
-            .MovieSetCleanDB = chkMovieSetCleanDB.Checked
-            .MovieSetCleanFiles = chkMovieSetCleanFiles.Checked
 
             '**************** XBMC MSAA settings ***************
             .MovieSetUseMSAA = chkMovieSetUseMSAA.Checked

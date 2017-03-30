@@ -178,15 +178,15 @@ Public Class frmMovie_Image
             chkMovieFanartPrefSizeOnly.Checked = .Fanart.PrefSizeOnly
             txtMovieFanartHeight.Text = .Fanart.MaxHeight.ToString
             txtMovieFanartWidth.Text = .Fanart.MaxWidth.ToString
-            chkMovieImagesCacheEnabled.Checked = .ImagesCacheEnabled
-            chkMovieImagesDisplayImageSelect.Checked = .ImagesDisplayImageSelect
+            chkMovieImagesCacheEnabled.Checked = .CacheEnabled
+            chkMovieImagesDisplayImageSelect.Checked = .DisplayImageSelectDialog
             chkMovieImagesForceLanguage.Checked = .Language.ForceLanguage
             If .Language.GetMediaLanguageOnly Then
                 chkMovieImagesMediaLanguageOnly.Checked = True
                 chkMovieImagesGetBlankImages.Checked = .Language.GetBlankImages
                 chkMovieImagesGetEnglishImages.Checked = .Language.GetEnglishImages
             End If
-            chkMovieImagesNotSaveURLToNfo.Checked = .ImagesNotSaveURLToNfo
+            chkMovieImagesNotSaveURLToNfo.Checked = .NotSaveURLToNfo
             chkMovieLandscapeKeepExisting.Checked = .Landscape.KeepExisting
             chkMovieLandscapePrefSizeOnly.Checked = .Landscape.PrefSizeOnly
             chkMoviePosterKeepExisting.Checked = .Poster.KeepExisting
@@ -262,8 +262,8 @@ Public Class frmMovie_Image
             .Fanart.PrefSize = CType(cbMovieFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
             .Fanart.PrefSizeOnly = chkMovieFanartPrefSizeOnly.Checked
             .Fanart.MaxWidth = If(Not String.IsNullOrEmpty(txtMovieFanartWidth.Text), Convert.ToInt32(txtMovieFanartWidth.Text), 0)
-            .ImagesCacheEnabled = chkMovieImagesCacheEnabled.Checked
-            .ImagesDisplayImageSelect = chkMovieImagesDisplayImageSelect.Checked
+            .CacheEnabled = chkMovieImagesCacheEnabled.Checked
+            .DisplayImageSelectDialog = chkMovieImagesDisplayImageSelect.Checked
             If Not String.IsNullOrEmpty(cbMovieImagesForcedLanguage.Text) Then
                 .Language.ForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieImagesForcedLanguage.Text).Abbrevation_MainLanguage
             End If
@@ -271,7 +271,7 @@ Public Class frmMovie_Image
             .Language.GetBlankImages = chkMovieImagesGetBlankImages.Checked
             .Language.GetEnglishImages = chkMovieImagesGetEnglishImages.Checked
             .Language.GetMediaLanguageOnly = chkMovieImagesMediaLanguageOnly.Checked
-            .ImagesNotSaveURLToNfo = chkMovieImagesNotSaveURLToNfo.Checked
+            .NotSaveURLToNfo = chkMovieImagesNotSaveURLToNfo.Checked
             .Landscape.KeepExisting = chkMovieLandscapeKeepExisting.Checked
             .Landscape.PrefSize = CType(cbMovieLandscapePrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
             .Landscape.PrefSizeOnly = chkMovieLandscapePrefSizeOnly.Checked

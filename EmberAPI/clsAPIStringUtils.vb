@@ -79,7 +79,7 @@ Public Class StringUtils
     ''' <c>String.Empty</c> is returned if the name is empty or Nothing.
     ''' The value of <paramref name="name"/> is returned if no filter is passed</returns>
     ''' <remarks></remarks>
-    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As List(Of String)) As String
+    Public Shared Function ApplyFilters(ByVal name As String, ByRef filters As TitleFilterSpecification) As String
         If String.IsNullOrEmpty(name) Then Return String.Empty
         If filters Is Nothing OrElse filters.Count = 0 Then Return name
         Dim newName As String = name
@@ -416,10 +416,10 @@ Public Class StringUtils
         End If
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.MovieFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.Movie.SourceSettings.TitleFilter)
 
         'Convert String To Proper Case
-        If Master.eSettings.MovieProperCase Then
+        If Master.eSettings.Movie.SourceSettings.TitleProperCase Then
             strTitle = ConvertToProperCase(strTitle)
         End If
 
@@ -447,13 +447,13 @@ Public Class StringUtils
         Dim strRawTitle As String = Path.GetFileNameWithoutExtension(strPath)
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVEpisodeFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TV.SourceSettings.TVEpisode.TitleFilter)
 
         'remove the tv show name from the episode title
         If Not String.IsNullOrEmpty(strTVShowName) Then strTitle = strTitle.Replace(strTVShowName.Trim, String.Empty).Trim
 
         'Convert String To Proper Case
-        If Master.eSettings.TVEpisodeProperCase Then
+        If Master.eSettings.TV.SourceSettings.TVEpisode.TitleProperCase Then
             strTitle = ConvertToProperCase(strTitle)
         End If
 
@@ -477,10 +477,10 @@ Public Class StringUtils
         Dim strRawTitle As String = FileUtils.Common.GetDirectory(strPath)
 
         'filter raw title by filter list
-        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TVShowFilterCustom)
+        Dim strTitle As String = ApplyFilters(strRawTitle, Master.eSettings.TV.SourceSettings.TVShow.TitleFilter)
 
         'Convert String To Proper Case
-        If Master.eSettings.TVShowProperCase Then
+        If Master.eSettings.TV.SourceSettings.TVShow.TitleProperCase Then
             strTitle = ConvertToProperCase(strTitle)
         End If
 
@@ -745,13 +745,13 @@ Public Class StringUtils
         If String.IsNullOrEmpty(strTitle) Then Return String.Empty
         Dim newTitle As String = strTitle
 
-        If Master.eSettings.MovieSortTokens.Count > 0 Then
+        If Not String.IsNullOrEmpty(Master.eSettings.Options.Global.SortTokens) Then
             Dim tokenContents As String
             Dim onlyTokenFromTitle As Match
             Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.MovieSortTokens
+            For Each sToken As String In Master.eSettings.Options.Global.SortTokens.Split(CChar(","))
                 Try
-                    If Regex.IsMatch(strTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
+                    If Regex.IsMatch(strTitle, String.Concat("^", sToken, "[\W_]"), RegexOptions.IgnoreCase) Then
                         tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
 
                         onlyTokenFromTitle = Regex.Match(strTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
@@ -793,13 +793,13 @@ Public Class StringUtils
         If String.IsNullOrEmpty(strTitle) Then Return String.Empty
         Dim newTitle As String = strTitle
 
-        If Master.eSettings.MovieSetSortTokens.Count > 0 Then
+        If Not String.IsNullOrEmpty(Master.eSettings.Options.Global.SortTokens) Then
             Dim tokenContents As String
             Dim onlyTokenFromTitle As Match
             Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.MovieSetSortTokens
+            For Each sToken As String In Master.eSettings.Options.Global.SortTokens.Split(CChar(","))
                 Try
-                    If Regex.IsMatch(strTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
+                    If Regex.IsMatch(strTitle, String.Concat("^", sToken, "[\W_]"), RegexOptions.IgnoreCase) Then
                         tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
 
                         onlyTokenFromTitle = Regex.Match(strTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)
@@ -841,13 +841,13 @@ Public Class StringUtils
         If String.IsNullOrEmpty(strTitle) Then Return String.Empty
         Dim newTitle As String = strTitle
 
-        If Master.eSettings.TVSortTokens.Count > 0 Then
+        If Not String.IsNullOrEmpty(Master.eSettings.Options.Global.SortTokens) Then
             Dim tokenContents As String
             Dim onlyTokenFromTitle As Match
             Dim titleWithoutToken As String
-            For Each sToken As String In Master.eSettings.TVSortTokens
+            For Each sToken As String In Master.eSettings.Options.Global.SortTokens.Split(CChar(","))
                 Try
-                    If Regex.IsMatch(strTitle, String.Concat("^", sToken), RegexOptions.IgnoreCase) Then
+                    If Regex.IsMatch(strTitle, String.Concat("^", sToken, "[\W_]"), RegexOptions.IgnoreCase) Then
                         tokenContents = Regex.Replace(sToken, "\[(.*?)\]", String.Empty)
 
                         onlyTokenFromTitle = Regex.Match(strTitle, String.Concat("^", tokenContents), RegexOptions.IgnoreCase)

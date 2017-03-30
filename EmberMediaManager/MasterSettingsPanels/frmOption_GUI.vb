@@ -139,24 +139,28 @@ Public Class frmOption_GUI
     End Function
 
     Public Sub LoadSettings()
+        With Master.eSettings.Options.Global
+            chkGeneralDateAddedIgnoreNFO.Checked = .DateAddedIgnoreNFO
+            cbGeneralDateTime.SelectedValue = .DateAdded
+            cbGeneralLanguage.SelectedItem = .Language
+            chkGeneralCheckUpdates.Checked = .CheckForUpdates
+            chkGeneralDigitGrpSymbolVotes.Checked = .DigitGrpSymbolVotes
+            chkGeneralOverwriteNfo.Checked = .OverwriteNFO
+            chkGeneralImageFilter.Checked = .ImageFilter.Enabled
+            chkGeneralImageFilterAutoscraper.Checked = .ImageFilter.AutoScraper
+            chkGeneralImageFilterFanart.Checked = .ImageFilter.Fanart
+            chkGeneralImageFilterImagedialog.Checked = .ImageFilter.ImageSelectDialog
+            chkGeneralImageFilterPoster.Checked = .ImageFilter.Poster
+            txtGeneralImageFilterPosterMatchRate.Text = .ImageFilter.PosterMatchTolerance.ToString
+            txtGeneralImageFilterFanartMatchRate.Text = .ImageFilter.FanartMatchTolerance.ToString
+            txtSortTokens.Text = .SortTokens
+        End With
+
         With Manager.mSettings.General
-            cbGeneralDaemonDrive.SelectedItem = .GeneralDaemonDrive
-            cbGeneralDateTime.SelectedValue = .GeneralDateTime
-            cbGeneralLanguage.SelectedItem = .GeneralLanguage
             cbGeneralMovieTheme.SelectedItem = .ThemeMovie
             cbGeneralMovieSetTheme.SelectedItem = .ThemeMovieset
             cbGeneralTVEpisodeTheme.SelectedItem = .ThemeTVEpisode
             cbGeneralTVShowTheme.SelectedItem = .ThemeTVShow
-            chkGeneralCheckUpdates.Checked = .GeneralCheckUpdates
-            chkGeneralDateAddedIgnoreNFO.Checked = .GeneralDateAddedIgnoreNFO
-            chkGeneralDigitGrpSymbolVotes.Checked = .GeneralDigitGrpSymbolVotes
-            chkGeneralImageFilter.Checked = .GeneralImageFilter
-            chkGeneralImageFilterAutoscraper.Checked = .GeneralImageFilterAutoscraper
-            txtGeneralImageFilterFanartMatchRate.Enabled = .GeneralImageFilterFanart
-            chkGeneralImageFilterFanart.Checked = .GeneralImageFilterFanart
-            chkGeneralImageFilterImagedialog.Checked = .GeneralImageFilterImagedialog
-            chkGeneralImageFilterPoster.Checked = .GeneralImageFilterPoster
-            txtGeneralImageFilterPosterMatchRate.Enabled = .GeneralImageFilterPoster
             chkGeneralDoubleClickScrape.Checked = .DoubleClickScrape
             chkGeneralDisplayBanner.Checked = .DisplayBanner
             chkGeneralDisplayCharacterArt.Checked = .DisplayCharacterArt
@@ -167,27 +171,41 @@ Public Class frmOption_GUI
             chkGeneralDisplayFanartSmall.Checked = .DisplayFanartSmall
             chkGeneralDisplayLandscape.Checked = .DisplayLandscape
             chkGeneralDisplayPoster.Checked = .DisplayPoster
-            chkGeneralOverwriteNfo.Checked = .GeneralOverwriteNfo
             chkGeneralDisplayGenresText.Checked = .DisplayGenreText
             chkGeneralDisplayLangFlags.Checked = .DisplayLanguageFlags
             chkGeneralDisplayImgDims.Checked = .DisplayImageDimensions
             chkGeneralDisplayImgNames.Checked = .DisplayImageNames
-            chkGeneralSourceFromFolder.Checked = .GeneralSourceFromFolder
-            txtGeneralImageFilterPosterMatchRate.Text = .GeneralImageFilterPosterMatchTolerance.ToString
-            txtGeneralImageFilterFanartMatchRate.Text = .GeneralImageFilterFanartMatchTolerance.ToString
-            txtGeneralDaemonPath.Text = .GeneralDaemonPath.ToString
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
+        With Master.eSettings.Options.Global
+            .CheckForUpdates = chkGeneralCheckUpdates.Checked
+            .DateAddedIgnoreNFO = chkGeneralDateAddedIgnoreNFO.Checked
+            .DigitGrpSymbolVotes = chkGeneralDigitGrpSymbolVotes.Checked
+            .DateAdded = CType(cbGeneralDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTime)).Value
+            .Language = cbGeneralLanguage.Text
+            .OverwriteNFO = chkGeneralOverwriteNfo.Checked
+            .ImageFilter.Enabled = chkGeneralImageFilter.Checked
+            .ImageFilter.AutoScraper = chkGeneralImageFilterAutoscraper.Checked
+            .ImageFilter.Fanart = chkGeneralImageFilterFanart.Checked
+            .ImageFilter.ImageSelectDialog = chkGeneralImageFilterImagedialog.Checked
+            .ImageFilter.Poster = chkGeneralImageFilterPoster.Checked
+            If Not String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterFanartMatchRate.Text, 4) Then
+                .ImageFilter.FanartMatchTolerance = Convert.ToInt32(txtGeneralImageFilterFanartMatchRate.Text)
+            Else
+                .ImageFilter.FanartMatchTolerance = 4
+            End If
+            If Not String.IsNullOrEmpty(txtGeneralImageFilterPosterMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterPosterMatchRate.Text, 1) Then
+                .ImageFilter.PosterMatchTolerance = Convert.ToInt32(txtGeneralImageFilterPosterMatchRate.Text)
+            Else
+                .ImageFilter.PosterMatchTolerance = 1
+            End If
+            .SortTokens = txtSortTokens.Text.Trim
+        End With
+
         With Manager.mSettings.General
-            .GeneralCheckUpdates = chkGeneralCheckUpdates.Checked
-            .GeneralDateAddedIgnoreNFO = chkGeneralDateAddedIgnoreNFO.Checked
-            .GeneralDigitGrpSymbolVotes = chkGeneralDigitGrpSymbolVotes.Checked
-            .GeneralDateTime = CType(cbGeneralDateTime.SelectedItem, KeyValuePair(Of String, Enums.DateTime)).Value
             .DoubleClickScrape = chkGeneralDoubleClickScrape.Checked
-            .GeneralDaemonDrive = cbGeneralDaemonDrive.Text
-            .GeneralDaemonPath = txtGeneralDaemonPath.Text
             .DisplayBanner = chkGeneralDisplayBanner.Checked
             .DisplayCharacterArt = chkGeneralDisplayCharacterArt.Checked
             .DisplayClearArt = chkGeneralDisplayClearArt.Checked
@@ -197,30 +215,12 @@ Public Class frmOption_GUI
             .DisplayFanartSmall = chkGeneralDisplayFanartSmall.Checked
             .DisplayLandscape = chkGeneralDisplayLandscape.Checked
             .DisplayPoster = chkGeneralDisplayPoster.Checked
-            .GeneralImageFilter = chkGeneralImageFilter.Checked
-            .GeneralImageFilterAutoscraper = chkGeneralImageFilterAutoscraper.Checked
-            .GeneralImageFilterFanart = chkGeneralImageFilterFanart.Checked
-            .GeneralImageFilterImagedialog = chkGeneralImageFilterImagedialog.Checked
-            .GeneralImageFilterPoster = chkGeneralImageFilterPoster.Checked
-            If Not String.IsNullOrEmpty(txtGeneralImageFilterFanartMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterFanartMatchRate.Text, 4) Then
-                .GeneralImageFilterFanartMatchTolerance = Convert.ToInt32(txtGeneralImageFilterFanartMatchRate.Text)
-            Else
-                .GeneralImageFilterFanartMatchTolerance = 4
-            End If
-            If Not String.IsNullOrEmpty(txtGeneralImageFilterPosterMatchRate.Text) AndAlso Integer.TryParse(txtGeneralImageFilterPosterMatchRate.Text, 1) Then
-                .GeneralImageFilterPosterMatchTolerance = Convert.ToInt32(txtGeneralImageFilterPosterMatchRate.Text)
-            Else
-                .GeneralImageFilterPosterMatchTolerance = 1
-            End If
-            .GeneralLanguage = cbGeneralLanguage.Text
             .ThemeMovie = cbGeneralMovieTheme.Text
             .ThemeMovieset = cbGeneralMovieSetTheme.Text
-            .GeneralOverwriteNfo = chkGeneralOverwriteNfo.Checked
             .DisplayGenreText = chkGeneralDisplayGenresText.Checked
             .DisplayLanguageFlags = chkGeneralDisplayLangFlags.Checked
             .DisplayImageDimensions = chkGeneralDisplayImgDims.Checked
             .DisplayImageNames = chkGeneralDisplayImgNames.Checked
-            .GeneralSourceFromFolder = chkGeneralSourceFromFolder.Checked
             .ThemeTVEpisode = cbGeneralTVEpisodeTheme.Text
             .ThemeTVShow = cbGeneralTVShowTheme.Text
 
@@ -289,22 +289,6 @@ Public Class frmOption_GUI
         End If
     End Sub
 
-    Private Sub btnGeneralDaemonPathBrowse_Click(sender As Object, e As EventArgs) Handles btnGeneralDaemonPathBrowse.Click
-        Try
-            With fileBrowse
-                .Filter = "Virtual Drive|DTAgent.exe;VCDMount.exe"
-                If .ShowDialog = DialogResult.OK Then
-                    If Not String.IsNullOrEmpty(.FileName) Then
-                        txtGeneralDaemonPath.Text = .FileName
-                        EnableApplyButton()
-                    End If
-                End If
-            End With
-        Catch ex As Exception
-            logger.Error(ex, New StackFrame().GetMethod().Name)
-        End Try
-    End Sub
-
     Private Sub btnGeneralDigitGrpSymbolSettings_Click(sender As Object, e As EventArgs) Handles btnGeneralDigitGrpSymbolSettings.Click
         Try
             Process.Start("INTL.CPL")
@@ -314,7 +298,7 @@ Public Class frmOption_GUI
     End Sub
 
     Private Sub cbGeneralLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cbGeneralLanguage.SelectedIndexChanged
-        If Not cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.GeneralLanguage Then
+        If Not cbGeneralLanguage.SelectedItem.ToString = Master.eSettings.Options.Global.Language Then
             Handle_NeedsRestart()
         End If
         EnableApplyButton()
@@ -398,11 +382,13 @@ Public Class frmOption_GUI
             chkGeneralImageFilterFanart.Enabled = True
         End If
     End Sub
+
     Private Sub chkGeneralImageFilterPoster_CheckedChanged(sender As Object, e As EventArgs)
         EnableApplyButton()
         lblGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilterPoster.Checked
         txtGeneralImageFilterPosterMatchRate.Enabled = chkGeneralImageFilterPoster.Checked
     End Sub
+
     Private Sub chkGeneralImageFilterFanart_CheckedChanged(sender As Object, e As EventArgs)
         EnableApplyButton()
         lblGeneralImageFilterFanartMatchRate.Enabled = chkGeneralImageFilterFanart.Checked
@@ -462,15 +448,11 @@ Public Class frmOption_GUI
         chkGeneralOverwriteNfo.Text = Master.eLang.GetString(433, "Overwrite Non-conforming nfos")
         chkGeneralDisplayGenresText.Text = Master.eLang.GetString(453, "Always Display Genre Text")
         chkGeneralDisplayLangFlags.Text = Master.eLang.GetString(489, "Display Language Flags")
-        chkGeneralDisplayImgDims.Text = Master.eLang.GetString(457, "Display Image Dimensions")
+        chkGeneralDisplayImgDims.Text = Master.eLang.GetString(457, "Display Image Resolution")
         chkGeneralDisplayImgNames.Text = Master.eLang.GetString(1255, "Display Image Names")
-        chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
-        gbGeneralDaemon.Text = Master.eLang.GetString(1261, "Configuration ISO Filescanning")
         gbGeneralDateAdded.Text = Master.eLang.GetString(792, "Adding Date")
         gbGeneralInterface.Text = Master.eLang.GetString(795, "Interface")
         gbGeneralThemes.Text = Master.eLang.GetString(629, "GUI Themes")
-        lblGeneralDaemonDrive.Text = Master.eLang.GetString(989, "Driveletter")
-        lblGeneralDaemonPath.Text = Master.eLang.GetString(990, "Path to DTAgent.exe/VCDMount.exe")
         lblGeneralImageFilterPosterMatchRate.Text = Master.eLang.GetString(148, "Poster") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralImageFilterFanartMatchRate.Text = Master.eLang.GetString(149, "Fanart") & " " & Master.eLang.GetString(461, "Mismatch Tolerance:")
         lblGeneralMovieSetTheme.Text = String.Concat(Master.eLang.GetString(1155, "MovieSet Theme"), ":")
@@ -479,6 +461,7 @@ Public Class frmOption_GUI
         lblGeneralTVEpisodeTheme.Text = String.Concat(Master.eLang.GetString(667, "Episode Theme"), ":")
         lblGeneralTVShowTheme.Text = String.Concat(Master.eLang.GetString(666, "TV Show Theme"), ":")
         lblGeneralntLang.Text = Master.eLang.GetString(430, "Interface Language:")
+        gbSortTokens.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
 
         LoadGeneralDateTime()
         LoadIntLangs()

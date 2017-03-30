@@ -35,7 +35,7 @@ Public Class frmTV_Source
     Dim _strName As String = "TV_Source"
     Dim _strTitle As String = Master.eLang.GetString(555, "Sources")
 
-    Private TVShowMatching As New List(Of Settings.regexp)
+    Private TVShowMatching As New List(Of RegexEpisodeItemSpecification)
 
 #End Region 'Fields
 
@@ -140,29 +140,29 @@ Public Class frmTV_Source
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            cbTVScraperOptionsOrdering.SelectedValue = .TVScraperOptionsOrdering
-            chkTVCleanDB.Checked = .TVCleanDB
-            chkTVGeneralIgnoreLastScan.Checked = .TVGeneralIgnoreLastScan
-            chkTVScanOrderModify.Checked = .TVScanOrderModify
-            txtTVSourcesRegexMultiPartMatching.Text = .TVMultiPartMatching
-            txtTVSkipLessThan.Text = .TVSkipLessThan.ToString
-            chkTVEpisodeNoFilter.Checked = .TVEpisodeNoFilter
-            chkTVEpisodeProperCase.Checked = .TVEpisodeProperCase
-            chkTVShowProperCase.Checked = .TVShowProperCase
-            chkTVGeneralMarkNewEpisodes.Checked = .TVGeneralMarkNewEpisodes
-            chkTVGeneralMarkNewShows.Checked = .TVGeneralMarkNewShows
+        With Master.eSettings.TV.SourceSettings
+            cbTVScraperOptionsOrdering.SelectedValue = .DefaultEpisodeOrdering
+            chkTVCleanDB.Checked = .CleanDB
+            chkTVGeneralIgnoreLastScan.Checked = .IgnoreLastScan
+            chkTVScanOrderModify.Checked = .ScanOrderModify
+            txtTVSourcesRegexMultiPartMatching.Text = .MultiPartMatching
+            txtTVSkipLessThan.Text = .SkipLessThan.ToString
+            chkTVEpisodeNoFilter.Checked = .TVEpisode.TitleFilterIsDisabled
+            chkTVEpisodeProperCase.Checked = .TVEpisode.TitleProperCase
+            chkTVShowProperCase.Checked = .TVShow.TitleProperCase
+            chkTVGeneralMarkNewEpisodes.Checked = .TVEpisode.MarkNew
+            chkTVGeneralMarkNewShows.Checked = .TVShow.MarkNew
 
             Try
                 cbTVGeneralLang.Items.Clear()
                 cbTVGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
                 If cbTVGeneralLang.Items.Count > 0 Then
-                    If Not String.IsNullOrEmpty(.TVGeneralLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .TVGeneralLanguage)
+                    If Not String.IsNullOrEmpty(.DefaultLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .DefaultLanguage)
                         If tLanguage IsNot Nothing AndAlso tLanguage.Description IsNot Nothing AndAlso Not String.IsNullOrEmpty(tLanguage.Description) Then
                             cbTVGeneralLang.Text = tLanguage.Description
                         Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.TVGeneralLanguage))
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.DefaultLanguage))
                             If tLanguage IsNot Nothing Then
                                 cbTVGeneralLang.Text = tLanguage.Description
                             Else
@@ -186,33 +186,33 @@ Public Class frmTV_Source
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .TVCleanDB = chkTVCleanDB.Checked
-            .TVGeneralIgnoreLastScan = chkTVGeneralIgnoreLastScan.Checked
+        With Master.eSettings.TV.SourceSettings
+            .CleanDB = chkTVCleanDB.Checked
+            .IgnoreLastScan = chkTVGeneralIgnoreLastScan.Checked
             If Not String.IsNullOrEmpty(cbTVGeneralLang.Text) Then
-                .TVGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
+                .DefaultLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbTVGeneralLang.Text).Abbreviation
             End If
-            .TVMultiPartMatching = txtTVSourcesRegexMultiPartMatching.Text
-            .TVScanOrderModify = chkTVScanOrderModify.Checked
-            .TVScraperOptionsOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
+            .MultiPartMatching = txtTVSourcesRegexMultiPartMatching.Text
+            .ScanOrderModify = chkTVScanOrderModify.Checked
+            .DefaultEpisodeOrdering = CType(cbTVScraperOptionsOrdering.SelectedItem, KeyValuePair(Of String, Enums.EpisodeOrdering)).Value
             If Not String.IsNullOrEmpty(txtTVSkipLessThan.Text) AndAlso Integer.TryParse(txtTVSkipLessThan.Text, 0) Then
-                .TVSkipLessThan = Convert.ToInt32(txtTVSkipLessThan.Text)
+                .SkipLessThan = Convert.ToInt32(txtTVSkipLessThan.Text)
             Else
-                .TVSkipLessThan = 0
+                .SkipLessThan = 0
             End If
             .TVShowMatching.Clear()
             .TVShowMatching.AddRange(TVShowMatching)
-            .TVEpisodeFilterCustom.Clear()
-            .TVEpisodeFilterCustom.AddRange(lstTVEpisodeFilter.Items.OfType(Of String).ToList)
-            If .TVEpisodeFilterCustom.Count <= 0 Then .TVEpisodeFilterCustomIsEmpty = True
-            .TVEpisodeNoFilter = chkTVEpisodeNoFilter.Checked
-            .TVEpisodeProperCase = chkTVEpisodeProperCase.Checked
-            .TVShowFilterCustom.Clear()
-            .TVShowFilterCustom.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
-            If .TVShowFilterCustom.Count <= 0 Then .TVShowFilterCustomIsEmpty = True
-            .TVShowProperCase = chkTVShowProperCase.Checked
-            .TVGeneralMarkNewEpisodes = chkTVGeneralMarkNewEpisodes.Checked
-            .TVGeneralMarkNewShows = chkTVGeneralMarkNewShows.Checked
+            .TVEpisode.TitleFilter.Clear()
+            .TVEpisode.TitleFilter.AddRange(lstTVEpisodeFilter.Items.OfType(Of String).ToList)
+            If .TVEpisode.TitleFilter.Count <= 0 Then .TVEpisode.TitleFilterIsEmpty = True
+            .TVEpisode.TitleFilterIsDisabled = chkTVEpisodeNoFilter.Checked
+            .TVEpisode.TitleProperCase = chkTVEpisodeProperCase.Checked
+            .TVShow.TitleFilter.Clear()
+            .TVShow.TitleFilter.AddRange(lstTVShowFilter.Items.OfType(Of String).ToList)
+            If .TVShow.TitleFilter.Count <= 0 Then .TVShow.TitleFilterIsEmpty = True
+            .TVShow.TitleProperCase = chkTVShowProperCase.Checked
+            .TVEpisode.MarkNew = chkTVGeneralMarkNewEpisodes.Checked
+            .TVShow.MarkNew = chkTVGeneralMarkNewShows.Checked
         End With
     End Sub
 
@@ -347,9 +347,9 @@ Public Class frmTV_Source
 
     Private Sub btnTVSourcesRegexTVShowMatchingReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingReset.Click
         If MessageBox.Show(Master.eLang.GetString(844, "Are you sure you want to reset to the default list of show regex?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.TVShowMatching, True)
+            Master.eSettings.TV.SourceSettings.TVShowMatching.SetDefaults
             TVShowMatching.Clear()
-            TVShowMatching.AddRange(Master.eSettings.TVShowMatching)
+            TVShowMatching.AddRange(Master.eSettings.TV.SourceSettings.TVShowMatching)
             LoadTVShowMatching()
             EnableApplyButton()
         End If
@@ -371,17 +371,17 @@ Public Class frmTV_Source
 
     Private Sub btnTVSourcesRegexTVShowMatchingAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingAdd.Click
         If String.IsNullOrEmpty(btnTVSourcesRegexTVShowMatchingAdd.Tag.ToString) Then
-            Dim lID = (From lRegex As Settings.regexp In TVShowMatching Select lRegex.ID).Max
-            TVShowMatching.Add(New Settings.regexp With {.ID = Convert.ToInt32(lID) + 1,
+            Dim lID = (From lRegex As RegexEpisodeItemSpecification In TVShowMatching Select lRegex.ID).Max
+            TVShowMatching.Add(New RegexEpisodeItemSpecification With {.ID = Convert.ToInt32(lID) + 1,
                                                             .Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text,
-                                                            .defaultSeason = If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0), -1, CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)),
-                                                            .byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked})
+                                                            .DefaultSeason = If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text) OrElse Not Integer.TryParse(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text, 0), -1, CInt(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text)),
+                                                            .ByDate = chkTVSourcesRegexTVShowMatchingByDate.Checked})
         Else
-            Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = Convert.ToInt32(btnTVSourcesRegexTVShowMatchingAdd.Tag)
+            Dim selRex = From lRegex As RegexEpisodeItemSpecification In TVShowMatching Where lRegex.ID = Convert.ToInt32(btnTVSourcesRegexTVShowMatchingAdd.Tag)
             If selRex.Count > 0 Then
                 selRex(0).Regexp = txtTVSourcesRegexTVShowMatchingRegex.Text
-                selRex(0).defaultSeason = CInt(If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-1", txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
-                selRex(0).byDate = chkTVSourcesRegexTVShowMatchingByDate.Checked
+                selRex(0).DefaultSeason = CInt(If(String.IsNullOrEmpty(txtTVSourcesRegexTVShowMatchingDefaultSeason.Text), "-1", txtTVSourcesRegexTVShowMatchingDefaultSeason.Text))
+                selRex(0).ByDate = chkTVSourcesRegexTVShowMatchingByDate.Checked
             End If
         End If
 
@@ -409,7 +409,7 @@ Public Class frmTV_Source
     Private Sub btnTVSourcesRegexTVShowMatchingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingUp.Click
         Try
             If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso Not lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index = 0 Then
-                Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
+                Dim selItem As RegexEpisodeItemSpecification = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVSourcesRegexTVShowMatching.SuspendLayout()
@@ -435,7 +435,7 @@ Public Class frmTV_Source
 
     Private Sub btnTVShowFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVShowFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(840, "Are you sure you want to reset to the default list of show filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.ShowFilters, True)
+            Master.eSettings.TV.SourceSettings.TVShow.TitleFilter.SetDefaults(Enums.ContentType.TVShow, True)
             RefreshTVShowFilters()
             EnableApplyButton()
         End If
@@ -451,7 +451,7 @@ Public Class frmTV_Source
 
     Private Sub btnTVEpisodeFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVEpisodeFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(841, "Are you sure you want to reset to the default list of episode filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.EpFilters, True)
+            Master.eSettings.TV.SourceSettings.TVEpisode.TitleFilter.SetDefaults(Enums.ContentType.TVEpisode, True)
             RefreshTVEpisodeFilters()
             EnableApplyButton()
         End If
@@ -460,7 +460,7 @@ Public Class frmTV_Source
     Private Sub btnTVSourcesRegexTVShowMatchingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnTVSourcesRegexTVShowMatchingDown.Click
         Try
             If lvTVSourcesRegexTVShowMatching.Items.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems.Count > 0 AndAlso lvTVSourcesRegexTVShowMatching.SelectedItems(0).Index < (lvTVSourcesRegexTVShowMatching.Items.Count - 1) Then
-                Dim selItem As Settings.regexp = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
+                Dim selItem As RegexEpisodeItemSpecification = TVShowMatching.FirstOrDefault(Function(r) r.ID = Convert.ToInt32(lvTVSourcesRegexTVShowMatching.SelectedItems(0).Text))
 
                 If selItem IsNot Nothing Then
                     lvTVSourcesRegexTVShowMatching.SuspendLayout()
@@ -521,11 +521,11 @@ Public Class frmTV_Source
     Private Sub LoadTVShowMatching()
         Dim lvItem As ListViewItem
         lvTVSourcesRegexTVShowMatching.Items.Clear()
-        For Each rShow As Settings.regexp In TVShowMatching
+        For Each rShow As RegexEpisodeItemSpecification In TVShowMatching
             lvItem = New ListViewItem(rShow.ID.ToString)
             lvItem.SubItems.Add(rShow.Regexp)
-            lvItem.SubItems.Add(If(Not rShow.defaultSeason.ToString = "-1", rShow.defaultSeason.ToString, String.Empty))
-            lvItem.SubItems.Add(If(rShow.byDate, "Yes", "No"))
+            lvItem.SubItems.Add(If(Not rShow.DefaultSeason.ToString = "-1", rShow.DefaultSeason.ToString, String.Empty))
+            lvItem.SubItems.Add(If(rShow.ByDate, "Yes", "No"))
             lvTVSourcesRegexTVShowMatching.Items.Add(lvItem)
         Next
     End Sub
@@ -592,7 +592,7 @@ Public Class frmTV_Source
 
     Private Sub RefreshTVShowFilters()
         lstTVShowFilter.Items.Clear()
-        lstTVShowFilter.Items.AddRange(Master.eSettings.TVShowFilterCustom.ToArray)
+        lstTVShowFilter.Items.AddRange(Master.eSettings.TV.SourceSettings.TVShow.TitleFilter.ToArray)
     End Sub
 
     Private Sub RemoveTVEpisodeFilter()
@@ -619,7 +619,7 @@ Public Class frmTV_Source
         Dim ID As Integer
         For Each lItem As ListViewItem In lvTVSourcesRegexTVShowMatching.SelectedItems
             ID = Convert.ToInt32(lItem.Text)
-            Dim selRex = From lRegex As Settings.regexp In TVShowMatching Where lRegex.ID = ID
+            Dim selRex = From lRegex As RegexEpisodeItemSpecification In TVShowMatching Where lRegex.ID = ID
             If selRex.Count > 0 Then
                 TVShowMatching.Remove(selRex(0))
                 EnableApplyButton()
@@ -630,7 +630,7 @@ Public Class frmTV_Source
 
     Private Sub RefreshTVEpisodeFilters()
         lstTVEpisodeFilter.Items.Clear()
-        lstTVEpisodeFilter.Items.AddRange(Master.eSettings.TVEpisodeFilterCustom.ToArray)
+        lstTVEpisodeFilter.Items.AddRange(Master.eSettings.TV.SourceSettings.TVEpisode.TitleFilter.ToArray)
     End Sub
 
     Private Sub RemoveTVSource()

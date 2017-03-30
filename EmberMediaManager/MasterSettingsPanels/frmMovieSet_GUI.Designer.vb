@@ -33,6 +33,11 @@ Partial Class frmMovieSet_GUI
         Me.txtMovieSetGeneralCustomScrapeButtonModifierType = New System.Windows.Forms.Label()
         Me.rbMovieSetGeneralCustomScrapeButtonEnabled = New System.Windows.Forms.RadioButton()
         Me.rbMovieSetGeneralCustomScrapeButtonDisabled = New System.Windows.Forms.RadioButton()
+        Me.gbMovieSetGeneralMiscOpts = New System.Windows.Forms.GroupBox()
+        Me.tblMovieSetGeneralMiscOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.chkMovieSetClickScrapeAsk = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetClickScrape = New System.Windows.Forms.CheckBox()
+        Me.chkMovieSetGeneralMarkNew = New System.Windows.Forms.CheckBox()
         Me.gbMovieSetGeneralMediaListSorting = New System.Windows.Forms.GroupBox()
         Me.tblMovieSetGeneralMediaListSorting = New System.Windows.Forms.TableLayoutPanel()
         Me.btnMovieSetGeneralMediaListSortingDown = New System.Windows.Forms.Button()
@@ -43,28 +48,14 @@ Partial Class frmMovieSet_GUI
         Me.colMovieSetGeneralMediaListSortingLabel = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colMovieSetGeneralMediaListSortingHide = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnMovieSetGeneralMediaListSortingReset = New System.Windows.Forms.Button()
-        Me.gbMovieSetGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
-        Me.tblMovieSetGeneralSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnMovieSetSortTokenReset = New System.Windows.Forms.Button()
-        Me.btnMovieSetSortTokenRemove = New System.Windows.Forms.Button()
-        Me.lstMovieSetSortTokens = New System.Windows.Forms.ListBox()
-        Me.btnMovieSetSortTokenAdd = New System.Windows.Forms.Button()
-        Me.txtMovieSetSortToken = New System.Windows.Forms.TextBox()
-        Me.gbMovieSetGeneralMiscOpts = New System.Windows.Forms.GroupBox()
-        Me.tblMovieSetGeneralMiscOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.chkMovieSetClickScrapeAsk = New System.Windows.Forms.CheckBox()
-        Me.chkMovieSetClickScrape = New System.Windows.Forms.CheckBox()
-        Me.chkMovieSetGeneralMarkNew = New System.Windows.Forms.CheckBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.gbMovieSetGeneralCustomScrapeButton.SuspendLayout()
         Me.tblMovieSetGeneralCustomScrapeButton.SuspendLayout()
-        Me.gbMovieSetGeneralMediaListSorting.SuspendLayout()
-        Me.tblMovieSetGeneralMediaListSorting.SuspendLayout()
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.SuspendLayout()
-        Me.tblMovieSetGeneralSortTokensOpts.SuspendLayout()
         Me.gbMovieSetGeneralMiscOpts.SuspendLayout()
         Me.tblMovieSetGeneralMiscOpts.SuspendLayout()
+        Me.gbMovieSetGeneralMediaListSorting.SuspendLayout()
+        Me.tblMovieSetGeneralMediaListSorting.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -90,7 +81,6 @@ Partial Class frmMovieSet_GUI
         Me.tblSettings.Controls.Add(Me.gbMovieSetGeneralCustomScrapeButton, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbMovieSetGeneralMiscOpts, 0, 0)
         Me.tblSettings.Controls.Add(Me.gbMovieSetGeneralMediaListSorting, 0, 2)
-        Me.tblSettings.Controls.Add(Me.gbMovieSetGeneralMediaListSortTokensOpts, 1, 2)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
@@ -214,6 +204,76 @@ Partial Class frmMovieSet_GUI
         Me.rbMovieSetGeneralCustomScrapeButtonDisabled.Text = "Open Drop Down Menu"
         Me.rbMovieSetGeneralCustomScrapeButtonDisabled.UseVisualStyleBackColor = True
         '
+        'gbMovieSetGeneralMiscOpts
+        '
+        Me.gbMovieSetGeneralMiscOpts.AutoSize = True
+        Me.tblSettings.SetColumnSpan(Me.gbMovieSetGeneralMiscOpts, 2)
+        Me.gbMovieSetGeneralMiscOpts.Controls.Add(Me.tblMovieSetGeneralMiscOpts)
+        Me.gbMovieSetGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbMovieSetGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.gbMovieSetGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
+        Me.gbMovieSetGeneralMiscOpts.Name = "gbMovieSetGeneralMiscOpts"
+        Me.gbMovieSetGeneralMiscOpts.Size = New System.Drawing.Size(497, 90)
+        Me.gbMovieSetGeneralMiscOpts.TabIndex = 1
+        Me.gbMovieSetGeneralMiscOpts.TabStop = False
+        Me.gbMovieSetGeneralMiscOpts.Text = "Miscellaneous"
+        '
+        'tblMovieSetGeneralMiscOpts
+        '
+        Me.tblMovieSetGeneralMiscOpts.AutoSize = True
+        Me.tblMovieSetGeneralMiscOpts.ColumnCount = 2
+        Me.tblMovieSetGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieSetGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetClickScrapeAsk, 0, 2)
+        Me.tblMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetClickScrape, 0, 1)
+        Me.tblMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetGeneralMarkNew, 0, 0)
+        Me.tblMovieSetGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblMovieSetGeneralMiscOpts.Location = New System.Drawing.Point(3, 18)
+        Me.tblMovieSetGeneralMiscOpts.Name = "tblMovieSetGeneralMiscOpts"
+        Me.tblMovieSetGeneralMiscOpts.RowCount = 4
+        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblMovieSetGeneralMiscOpts.Size = New System.Drawing.Size(491, 69)
+        Me.tblMovieSetGeneralMiscOpts.TabIndex = 7
+        '
+        'chkMovieSetClickScrapeAsk
+        '
+        Me.chkMovieSetClickScrapeAsk.AutoSize = True
+        Me.chkMovieSetClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMovieSetClickScrapeAsk.Location = New System.Drawing.Point(3, 49)
+        Me.chkMovieSetClickScrapeAsk.Name = "chkMovieSetClickScrapeAsk"
+        Me.chkMovieSetClickScrapeAsk.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
+        Me.chkMovieSetClickScrapeAsk.Size = New System.Drawing.Size(147, 17)
+        Me.chkMovieSetClickScrapeAsk.TabIndex = 64
+        Me.chkMovieSetClickScrapeAsk.Text = "Ask On Click Scrape"
+        Me.chkMovieSetClickScrapeAsk.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetClickScrape
+        '
+        Me.chkMovieSetClickScrape.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieSetClickScrape.AutoSize = True
+        Me.chkMovieSetClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.chkMovieSetClickScrape.Location = New System.Drawing.Point(3, 26)
+        Me.chkMovieSetClickScrape.Name = "chkMovieSetClickScrape"
+        Me.chkMovieSetClickScrape.Size = New System.Drawing.Size(125, 17)
+        Me.chkMovieSetClickScrape.TabIndex = 65
+        Me.chkMovieSetClickScrape.Text = "Enable Click Scrape"
+        Me.chkMovieSetClickScrape.UseVisualStyleBackColor = True
+        '
+        'chkMovieSetGeneralMarkNew
+        '
+        Me.chkMovieSetGeneralMarkNew.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkMovieSetGeneralMarkNew.AutoSize = True
+        Me.chkMovieSetGeneralMarkNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkMovieSetGeneralMarkNew.Location = New System.Drawing.Point(3, 3)
+        Me.chkMovieSetGeneralMarkNew.Name = "chkMovieSetGeneralMarkNew"
+        Me.chkMovieSetGeneralMarkNew.Size = New System.Drawing.Size(133, 17)
+        Me.chkMovieSetGeneralMarkNew.TabIndex = 66
+        Me.chkMovieSetGeneralMarkNew.Text = "Mark New MovieSets"
+        Me.chkMovieSetGeneralMarkNew.UseVisualStyleBackColor = True
+        '
         'gbMovieSetGeneralMediaListSorting
         '
         Me.gbMovieSetGeneralMediaListSorting.AutoSize = True
@@ -316,164 +376,6 @@ Partial Class frmMovieSet_GUI
         Me.btnMovieSetGeneralMediaListSortingReset.TabIndex = 11
         Me.btnMovieSetGeneralMediaListSortingReset.UseVisualStyleBackColor = True
         '
-        'gbMovieSetGeneralMediaListSortTokensOpts
-        '
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.AutoSize = True
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Controls.Add(Me.tblMovieSetGeneralSortTokensOpts)
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Location = New System.Drawing.Point(221, 203)
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Name = "gbMovieSetGeneralMediaListSortTokensOpts"
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(279, 151)
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.TabIndex = 83
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.TabStop = False
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.Text = "Sort Tokens to Ignore"
-        '
-        'tblMovieSetGeneralSortTokensOpts
-        '
-        Me.tblMovieSetGeneralSortTokensOpts.AutoSize = True
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnCount = 5
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenReset, 3, 1)
-        Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenRemove, 2, 1)
-        Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.lstMovieSetSortTokens, 0, 0)
-        Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.btnMovieSetSortTokenAdd, 1, 1)
-        Me.tblMovieSetGeneralSortTokensOpts.Controls.Add(Me.txtMovieSetSortToken, 0, 1)
-        Me.tblMovieSetGeneralSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMovieSetGeneralSortTokensOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblMovieSetGeneralSortTokensOpts.Name = "tblMovieSetGeneralSortTokensOpts"
-        Me.tblMovieSetGeneralSortTokensOpts.RowCount = 3
-        Me.tblMovieSetGeneralSortTokensOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralSortTokensOpts.Size = New System.Drawing.Size(273, 130)
-        Me.tblMovieSetGeneralSortTokensOpts.TabIndex = 8
-        '
-        'btnMovieSetSortTokenReset
-        '
-        Me.btnMovieSetSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieSetSortTokenReset.Image = CType(resources.GetObject("btnMovieSetSortTokenReset.Image"), System.Drawing.Image)
-        Me.btnMovieSetSortTokenReset.Location = New System.Drawing.Point(180, 104)
-        Me.btnMovieSetSortTokenReset.Name = "btnMovieSetSortTokenReset"
-        Me.btnMovieSetSortTokenReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieSetSortTokenReset.TabIndex = 10
-        Me.btnMovieSetSortTokenReset.UseVisualStyleBackColor = True
-        '
-        'btnMovieSetSortTokenRemove
-        '
-        Me.btnMovieSetSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnMovieSetSortTokenRemove.Image = CType(resources.GetObject("btnMovieSetSortTokenRemove.Image"), System.Drawing.Image)
-        Me.btnMovieSetSortTokenRemove.Location = New System.Drawing.Point(99, 104)
-        Me.btnMovieSetSortTokenRemove.Name = "btnMovieSetSortTokenRemove"
-        Me.btnMovieSetSortTokenRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieSetSortTokenRemove.TabIndex = 3
-        Me.btnMovieSetSortTokenRemove.UseVisualStyleBackColor = True
-        '
-        'lstMovieSetSortTokens
-        '
-        Me.tblMovieSetGeneralSortTokensOpts.SetColumnSpan(Me.lstMovieSetSortTokens, 4)
-        Me.lstMovieSetSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstMovieSetSortTokens.FormattingEnabled = True
-        Me.lstMovieSetSortTokens.Location = New System.Drawing.Point(3, 3)
-        Me.lstMovieSetSortTokens.Name = "lstMovieSetSortTokens"
-        Me.lstMovieSetSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstMovieSetSortTokens.Size = New System.Drawing.Size(200, 95)
-        Me.lstMovieSetSortTokens.Sorted = True
-        Me.lstMovieSetSortTokens.TabIndex = 0
-        '
-        'btnMovieSetSortTokenAdd
-        '
-        Me.btnMovieSetSortTokenAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnMovieSetSortTokenAdd.Image = CType(resources.GetObject("btnMovieSetSortTokenAdd.Image"), System.Drawing.Image)
-        Me.btnMovieSetSortTokenAdd.Location = New System.Drawing.Point(70, 104)
-        Me.btnMovieSetSortTokenAdd.Name = "btnMovieSetSortTokenAdd"
-        Me.btnMovieSetSortTokenAdd.Size = New System.Drawing.Size(23, 23)
-        Me.btnMovieSetSortTokenAdd.TabIndex = 2
-        Me.btnMovieSetSortTokenAdd.UseVisualStyleBackColor = True
-        '
-        'txtMovieSetSortToken
-        '
-        Me.txtMovieSetSortToken.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtMovieSetSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtMovieSetSortToken.Location = New System.Drawing.Point(3, 104)
-        Me.txtMovieSetSortToken.Name = "txtMovieSetSortToken"
-        Me.txtMovieSetSortToken.Size = New System.Drawing.Size(61, 22)
-        Me.txtMovieSetSortToken.TabIndex = 1
-        '
-        'gbMovieSetGeneralMiscOpts
-        '
-        Me.gbMovieSetGeneralMiscOpts.AutoSize = True
-        Me.tblSettings.SetColumnSpan(Me.gbMovieSetGeneralMiscOpts, 2)
-        Me.gbMovieSetGeneralMiscOpts.Controls.Add(Me.tblMovieSetGeneralMiscOpts)
-        Me.gbMovieSetGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbMovieSetGeneralMiscOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbMovieSetGeneralMiscOpts.Location = New System.Drawing.Point(3, 3)
-        Me.gbMovieSetGeneralMiscOpts.Name = "gbMovieSetGeneralMiscOpts"
-        Me.gbMovieSetGeneralMiscOpts.Size = New System.Drawing.Size(497, 90)
-        Me.gbMovieSetGeneralMiscOpts.TabIndex = 1
-        Me.gbMovieSetGeneralMiscOpts.TabStop = False
-        Me.gbMovieSetGeneralMiscOpts.Text = "Miscellaneous"
-        '
-        'tblMovieSetGeneralMiscOpts
-        '
-        Me.tblMovieSetGeneralMiscOpts.AutoSize = True
-        Me.tblMovieSetGeneralMiscOpts.ColumnCount = 2
-        Me.tblMovieSetGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralMiscOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetClickScrapeAsk, 0, 2)
-        Me.tblMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetClickScrape, 0, 1)
-        Me.tblMovieSetGeneralMiscOpts.Controls.Add(Me.chkMovieSetGeneralMarkNew, 0, 0)
-        Me.tblMovieSetGeneralMiscOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblMovieSetGeneralMiscOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblMovieSetGeneralMiscOpts.Name = "tblMovieSetGeneralMiscOpts"
-        Me.tblMovieSetGeneralMiscOpts.RowCount = 4
-        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralMiscOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblMovieSetGeneralMiscOpts.Size = New System.Drawing.Size(491, 69)
-        Me.tblMovieSetGeneralMiscOpts.TabIndex = 7
-        '
-        'chkMovieSetClickScrapeAsk
-        '
-        Me.chkMovieSetClickScrapeAsk.AutoSize = True
-        Me.chkMovieSetClickScrapeAsk.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieSetClickScrapeAsk.Location = New System.Drawing.Point(3, 49)
-        Me.chkMovieSetClickScrapeAsk.Name = "chkMovieSetClickScrapeAsk"
-        Me.chkMovieSetClickScrapeAsk.Padding = New System.Windows.Forms.Padding(20, 0, 0, 0)
-        Me.chkMovieSetClickScrapeAsk.Size = New System.Drawing.Size(147, 17)
-        Me.chkMovieSetClickScrapeAsk.TabIndex = 64
-        Me.chkMovieSetClickScrapeAsk.Text = "Ask On Click Scrape"
-        Me.chkMovieSetClickScrapeAsk.UseVisualStyleBackColor = True
-        '
-        'chkMovieSetClickScrape
-        '
-        Me.chkMovieSetClickScrape.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetClickScrape.AutoSize = True
-        Me.chkMovieSetClickScrape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.chkMovieSetClickScrape.Location = New System.Drawing.Point(3, 26)
-        Me.chkMovieSetClickScrape.Name = "chkMovieSetClickScrape"
-        Me.chkMovieSetClickScrape.Size = New System.Drawing.Size(125, 17)
-        Me.chkMovieSetClickScrape.TabIndex = 65
-        Me.chkMovieSetClickScrape.Text = "Enable Click Scrape"
-        Me.chkMovieSetClickScrape.UseVisualStyleBackColor = True
-        '
-        'chkMovieSetGeneralMarkNew
-        '
-        Me.chkMovieSetGeneralMarkNew.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkMovieSetGeneralMarkNew.AutoSize = True
-        Me.chkMovieSetGeneralMarkNew.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkMovieSetGeneralMarkNew.Location = New System.Drawing.Point(3, 3)
-        Me.chkMovieSetGeneralMarkNew.Name = "chkMovieSetGeneralMarkNew"
-        Me.chkMovieSetGeneralMarkNew.Size = New System.Drawing.Size(133, 17)
-        Me.chkMovieSetGeneralMarkNew.TabIndex = 66
-        Me.chkMovieSetGeneralMarkNew.Text = "Mark New MovieSets"
-        Me.chkMovieSetGeneralMarkNew.UseVisualStyleBackColor = True
-        '
         'frmMovieSet_GUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -490,17 +392,13 @@ Partial Class frmMovieSet_GUI
         Me.gbMovieSetGeneralCustomScrapeButton.PerformLayout()
         Me.tblMovieSetGeneralCustomScrapeButton.ResumeLayout(False)
         Me.tblMovieSetGeneralCustomScrapeButton.PerformLayout()
-        Me.gbMovieSetGeneralMediaListSorting.ResumeLayout(False)
-        Me.gbMovieSetGeneralMediaListSorting.PerformLayout()
-        Me.tblMovieSetGeneralMediaListSorting.ResumeLayout(False)
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.ResumeLayout(False)
-        Me.gbMovieSetGeneralMediaListSortTokensOpts.PerformLayout()
-        Me.tblMovieSetGeneralSortTokensOpts.ResumeLayout(False)
-        Me.tblMovieSetGeneralSortTokensOpts.PerformLayout()
         Me.gbMovieSetGeneralMiscOpts.ResumeLayout(False)
         Me.gbMovieSetGeneralMiscOpts.PerformLayout()
         Me.tblMovieSetGeneralMiscOpts.ResumeLayout(False)
         Me.tblMovieSetGeneralMiscOpts.PerformLayout()
+        Me.gbMovieSetGeneralMediaListSorting.ResumeLayout(False)
+        Me.gbMovieSetGeneralMediaListSorting.PerformLayout()
+        Me.tblMovieSetGeneralMediaListSorting.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -526,13 +424,6 @@ Partial Class frmMovieSet_GUI
     Friend WithEvents colMovieSetGeneralMediaListSortingLabel As Windows.Forms.ColumnHeader
     Friend WithEvents colMovieSetGeneralMediaListSortingHide As Windows.Forms.ColumnHeader
     Friend WithEvents btnMovieSetGeneralMediaListSortingReset As Windows.Forms.Button
-    Friend WithEvents gbMovieSetGeneralMediaListSortTokensOpts As Windows.Forms.GroupBox
-    Friend WithEvents tblMovieSetGeneralSortTokensOpts As Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnMovieSetSortTokenReset As Windows.Forms.Button
-    Friend WithEvents btnMovieSetSortTokenRemove As Windows.Forms.Button
-    Friend WithEvents lstMovieSetSortTokens As Windows.Forms.ListBox
-    Friend WithEvents btnMovieSetSortTokenAdd As Windows.Forms.Button
-    Friend WithEvents txtMovieSetSortToken As Windows.Forms.TextBox
     Friend WithEvents gbMovieSetGeneralMiscOpts As Windows.Forms.GroupBox
     Friend WithEvents tblMovieSetGeneralMiscOpts As Windows.Forms.TableLayoutPanel
     Friend WithEvents chkMovieSetClickScrapeAsk As Windows.Forms.CheckBox

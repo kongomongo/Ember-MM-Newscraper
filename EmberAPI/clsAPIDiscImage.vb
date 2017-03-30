@@ -66,9 +66,9 @@ Public Class DiscImage
 
     Public Sub Mount(ByVal strPath As String)
         'ISO-File Scanning using either DAIMON Tools / VCDMount.exe to mount and read file!
-        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F"
+        Dim driveletter As String = Master.eSettings.Options.Filesystem.VirtualDriveDriveLetter ' i.e. "F"
         'Toolpath either VCDMOUNT.exe or DTLite.exe!
-        Dim strToolPath As String = Master.eSettings.GeneralDaemonPath
+        Dim strToolPath As String = Master.eSettings.Options.Filesystem.VirtualDriveAppPath
 
         'Now only use DAEMON Tools to mount ISO if installed on user system
         If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(strToolPath) Then
@@ -98,7 +98,7 @@ Public Class DiscImage
 
     Public Sub Unmount()
         If Not String.IsNullOrEmpty(_strcommandunmount) Then
-            Functions.Run_Process(Master.eSettings.GeneralDaemonPath, _strcommandunmount, False, True)
+            Functions.Run_Process(Master.eSettings.Options.Filesystem.VirtualDriveAppPath, _strcommandunmount, False, True)
             _strDriveLetter = String.Empty
         End If
     End Sub

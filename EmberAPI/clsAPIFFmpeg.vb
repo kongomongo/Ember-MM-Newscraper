@@ -632,9 +632,9 @@ Namespace FFmpeg
                         'filename points to largest VOB  file
                         videofilepath = FileUtils.Common.GetLongestFromRip(DBElement.FileItem.FirstStackedPath)
                     ElseIf videofileExt = ".iso" OrElse videofileExt = ".bin" Then
-                        Dim driveletter As String = Master.eSettings.GeneralDaemonDrive ' i.e. "F:\"
+                        Dim driveletter As String = Master.eSettings.Options.Filesystem.VirtualDriveDriveLetter  ' i.e. "F:\"
                         'Toolpath either VCDMOUNT.exe or DTLite.exe!
-                        Dim ToolPath As String = Master.eSettings.GeneralDaemonPath
+                        Dim ToolPath As String = Master.eSettings.Options.Filesystem.VirtualDriveAppPath
                         'Now only use DAEMON Tools to mount ISO if installed on user system
                         If Not String.IsNullOrEmpty(driveletter) AndAlso Not String.IsNullOrEmpty(ToolPath) Then
                             'Either DAEMONToolsLite or VirtualCloneDrive (http://www.slysoft.com/en/virtual-clonedrive.html)

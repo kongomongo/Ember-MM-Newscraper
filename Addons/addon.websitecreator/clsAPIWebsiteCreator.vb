@@ -212,7 +212,7 @@ Public Class clsAPIWebsiteCreator
         FileUtils.Delete.DeleteDirectory(_strBuildPath)
         Directory.CreateDirectory(_strBuildPath)
 
-        Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.GeneralLanguage, ".html"))
+        Dim htmlPath As String = Path.Combine(strTemplatePath, String.Concat(Master.eSettings.Options.Global.Language, ".html"))
         If Not File.Exists(htmlPath) Then
             htmlPath = Path.Combine(strTemplatePath, String.Concat("English_(en_US).html"))
         End If

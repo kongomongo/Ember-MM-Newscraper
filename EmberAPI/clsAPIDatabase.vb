@@ -497,11 +497,11 @@ Public Class Database
                                 Master.ExcludedDirs.Exists(Function(s) SQLReader("MoviePath").ToString.ToLower.StartsWith(s.ToLower)) Then
                                 MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                 Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
-                            ElseIf Master.eSettings.MovieSkipLessThan > 0 Then
+                            ElseIf Master.eSettings.Movie.SourceSettings.SkipLessThan > 0 Then
                                 fInfo = New FileInfo(SQLReader("MoviePath").ToString)
-                                If ((Not Master.eSettings.MovieSkipStackedSizeCheck OrElse
+                                If ((Not Master.eSettings.Movie.SourceSettings.SkipStackedSizeCheck OrElse
                                     Not FileUtils.Common.isStacked(fInfo.FullName)) AndAlso
-                                    fInfo.Length < Master.eSettings.MovieSkipLessThan * 1048576) Then
+                                    fInfo.Length < Master.eSettings.Movie.SourceSettings.SkipLessThan * 1048576) Then
                                     MoviePaths.Remove(SQLReader("MoviePath").ToString)
                                     Master.DB.Delete_Movie(Convert.ToInt64(SQLReader("idMovie")), True)
                                 End If
@@ -1022,7 +1022,7 @@ Public Class Database
             End If
 
             'delete all movieset images and if this setting is enabled
-            If Master.eSettings.MovieSetCleanFiles Then
+            If Master.eSettings.Movieset.SourceSettings.RemoveFiles Then
                 Dim MovieSet As DBElement = Master.DB.Load_MovieSet(lngID)
                 Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainBanner)
                 Images.Delete_MovieSet(MovieSet, Enums.ScrapeModifierType.MainClearArt)
@@ -1765,7 +1765,7 @@ Public Class Database
                         If Not DBNull.Value.Equals(SQLreader("Runtime")) Then .Runtime = SQLreader("Runtime").ToString
                         If Not DBNull.Value.Equals(SQLreader("ReleaseDate")) Then .ReleaseDate = SQLreader("ReleaseDate").ToString
                         If Not DBNull.Value.Equals(SQLreader("PlayCount")) Then .PlayCount = Convert.ToInt32(SQLreader("PlayCount"))
-                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
+                        If Not DBNull.Value.Equals(SQLreader("FanartURL")) AndAlso Not Master.eSettings.Movie.ImageSettings.NotSaveURLToNfo Then .Fanart.URL = SQLreader("FanartURL").ToString
                         If Not DBNull.Value.Equals(SQLreader("VideoSource")) Then .VideoSource = SQLreader("VideoSource").ToString
                         If Not DBNull.Value.Equals(SQLreader("TMDB")) Then .TMDB = Convert.ToInt32(SQLreader("TMDB"))
                         If Not DBNull.Value.Equals(SQLreader("TMDBColID")) Then .TMDBColID = Convert.ToInt32(SQLreader("TMDBColID"))
@@ -3735,11 +3735,11 @@ Public Class Database
 
             'DateAdded
             Try
-                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.DateAdded) Then
+                If Not Master.eSettings.Options.Global.DateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.DateAdded) Then
                     Dim DateTimeAdded As Date = Date.ParseExact(tDBElement.MainDetails.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     par_movie_DateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
-                    Select Case Master.eSettings.GeneralDateTime
+                    Select Case Master.eSettings.Options.Global.DateAdded
                         Case Enums.DateTime.Now
                             par_movie_DateAdded.Value = If(Not tDBElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), tDBElement.DateAdded)
                         Case Enums.DateTime.ctime
@@ -3842,7 +3842,7 @@ Public Class Database
             par_movie_ThemePath.Value = If(Not String.IsNullOrEmpty(tDBElement.Theme.LocalFilePath), tDBElement.Theme.LocalFilePath, String.Empty)
             par_movie_TrailerPath.Value = If(Not String.IsNullOrEmpty(tDBElement.Trailer.LocalFilePath), tDBElement.Trailer.LocalFilePath, String.Empty)
 
-            If Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo Then
+            If Not Master.eSettings.Movie.ImageSettings.NotSaveURLToNfo Then
                 par_movie_FanartURL.Value = tDBElement.MainDetails.Fanart.URL
             Else
                 par_movie_FanartURL.Value = String.Empty
@@ -3901,7 +3901,7 @@ Public Class Database
             par_movie_idSource.Value = tDBElement.Source.ID
 
             If Not tDBElement.IDSpecified Then
-                If Master.eSettings.MovieGeneralMarkNew Then
+                If Master.eSettings.Movie.SourceSettings.MarkNew Then
                     par_movie_Mark.Value = True
                     tDBElement.IsMark = True
                 End If
@@ -4237,7 +4237,7 @@ Public Class Database
                                     par_sets_SortMethod.Value = Enums.SortMethod_MovieSet.Year
                                     par_sets_Language.Value = tDBElement.Language
 
-                                    If Master.eSettings.MovieSetGeneralMarkNew Then
+                                    If Master.eSettings.Movieset.SourceSettings.MarkNew Then
                                         par_sets_Mark.Value = True
                                     Else
                                         par_sets_Mark.Value = False
@@ -4378,7 +4378,7 @@ Public Class Database
             parPlot.Value = tDBElement.MainDetails.Plot
 
             If Not tDBElement.IDSpecified Then
-                If Master.eSettings.MovieSetGeneralMarkNew Then
+                If Master.eSettings.Movieset.SourceSettings.MarkNew Then
                     parMark.Value = True
                     tDBElement.IsMark = True
                 End If
@@ -4696,11 +4696,11 @@ Public Class Database
 
             'DateAdded
             Try
-                If Not Master.eSettings.GeneralDateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.DateAdded) Then
+                If Not Master.eSettings.Options.Global.DateAddedIgnoreNFO AndAlso Not String.IsNullOrEmpty(tDBElement.MainDetails.DateAdded) Then
                     Dim DateTimeAdded As Date = Date.ParseExact(tDBElement.MainDetails.DateAdded, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
                     parDateAdded.Value = Functions.ConvertToUnixTimestamp(DateTimeAdded)
                 Else
-                    Select Case Master.eSettings.GeneralDateTime
+                    Select Case Master.eSettings.Options.Global.DateAdded
                         Case Enums.DateTime.Now
                             parDateAdded.Value = If(Not tDBElement.IDSpecified, Functions.ConvertToUnixTimestamp(Date.Now), tDBElement.DateAdded)
                         Case Enums.DateTime.ctime
@@ -4824,7 +4824,7 @@ Public Class Database
             End With
 
             If Not tDBElement.IDSpecified Then
-                If Master.eSettings.TVGeneralMarkNewEpisodes Then
+                If Master.eSettings.TV.SourceSettings.TVEpisode.MarkNew Then
                     parMark.Value = True
                     tDBElement.IsMark = True
                 End If
@@ -5254,7 +5254,7 @@ Public Class Database
             par_iEpisodeSorting.Value = tDBElement.EpisodeSorting
 
             If Not tDBElement.IDSpecified Then
-                If Master.eSettings.TVGeneralMarkNewShows Then
+                If Master.eSettings.TV.SourceSettings.TVShow.MarkNew Then
                     par_bMark.Value = True
                     tDBElement.IsMark = True
                 End If

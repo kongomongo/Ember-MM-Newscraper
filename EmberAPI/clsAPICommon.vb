@@ -636,17 +636,9 @@ Public Class Enums
 
     Public Enum DefaultSettingType As Integer
         All = 0
-        MovieFilters = 1
-        ShowFilters = 2
-        EpFilters = 3
-        ValidExts = 4
-        TVShowMatching = 5
-        TrailerCodec = 6
-        ValidThemeExts = 7
         ValidSubtitleExts = 8
-        MovieSortTokens = 14
-        MoviesetSortTokens = 15
-        TVSortTokens = 16
+        ValidThemeExts = 7
+        ValidVideoExts = 4
     End Enum
 
     Public Enum DiscType As Integer

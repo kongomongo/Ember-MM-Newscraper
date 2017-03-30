@@ -2133,11 +2133,11 @@ Public Class dlgEdit
 
         Select Case _tmpDBElement.ContentType
             Case Enums.ContentType.Movie
-                If Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
-                If Not Master.eSettings.Movie.ImageSettings.ImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
+                If Not Master.eSettings.Movie.ImageSettings.NotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
+                If Not Master.eSettings.Movie.ImageSettings.NotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
             Case Enums.ContentType.TVShow
-                If Not Master.eSettings.TV.ImageSettings.ImagesNotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
-                If Not Master.eSettings.TV.ImageSettings.ImagesNotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
+                If Not Master.eSettings.TV.ImageSettings.NotSaveURLToNfo AndAlso pResults.Posters.Count > 0 Then _tmpDBElement.MainDetails.Thumb = pResults.Posters
+                If Not Master.eSettings.TV.ImageSettings.NotSaveURLToNfo AndAlso fResults.Fanart.Thumb.Count > 0 Then _tmpDBElement.MainDetails.Fanart = pResults.Fanart
         End Select
 
         Dim removeSubtitles As New List(Of MediaContainers.Subtitle)

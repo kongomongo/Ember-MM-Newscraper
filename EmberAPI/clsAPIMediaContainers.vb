@@ -3590,11 +3590,11 @@ Namespace MediaContainers
 
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    doCache = Master.eSettings.Movie.ImageSettings.ImagesCacheEnabled
+                    doCache = Master.eSettings.Movie.ImageSettings.CacheEnabled
                 Case Enums.ContentType.Movieset
-                    doCache = Master.eSettings.Movieset.ImageSettings.ImagesCacheEnabled
+                    doCache = Master.eSettings.Movieset.ImageSettings.CacheEnabled
                 Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                    doCache = Master.eSettings.TVImagesCacheEnabled
+                    doCache = Master.eSettings.TV.ImageSettings.CacheEnabled
             End Select
 
             If Not ((ImageOriginal.HasMemoryStream OrElse (ImageThumb.HasMemoryStream AndAlso Not needFullsize)) AndAlso Not LoadBitmap) Then

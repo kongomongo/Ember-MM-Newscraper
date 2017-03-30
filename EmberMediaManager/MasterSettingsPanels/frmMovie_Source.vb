@@ -137,32 +137,33 @@ Public Class frmMovie_Source
     End Function
 
     Public Sub LoadSettings()
-        With Master.eSettings
-            chkMovieGeneralMarkNew.Checked = .MovieGeneralMarkNew
-            chkMovieProperCase.Checked = .MovieProperCase
-            chkMovieCleanDB.Checked = .MovieCleanDB
-            chkMovieGeneralIgnoreLastScan.Checked = .MovieGeneralIgnoreLastScan
-            chkMovieScanOrderModify.Checked = .MovieScanOrderModify
-            chkMovieSkipStackedSizeCheck.Checked = .MovieSkipStackedSizeCheck
-            chkMovieSortBeforeScan.Checked = .MovieSortBeforeScan
-            txtMovieSkipLessThan.Text = .MovieSkipLessThan.ToString
+        With Master.eSettings.Movie.SourceSettings
+            chkMovieGeneralMarkNew.Checked = .MarkNew
+            chkMovieProperCase.Checked = .TitleProperCase
+            chkMovieCleanDB.Checked = .CleanDB
+            chkMovieGeneralIgnoreLastScan.Checked = .IgnoreLastScan
+            chkMovieScanOrderModify.Checked = .ScanOrderModify
+            chkMovieSkipStackedSizeCheck.Checked = .SkipStackedSizeCheck
+            chkMovieSortBeforeScan.Checked = .SortBeforeScan
+            txtMovieSkipLessThan.Text = .SkipLessThan.ToString
+            chkGeneralSourceFromFolder.Checked = .VideoSourceFromFolder
 
-            If .MovieLevTolerance > 0 Then
+            If .LevTolerance > 0 Then
                 chkMovieLevTolerance.Checked = True
                 txtMovieLevTolerance.Enabled = True
-                txtMovieLevTolerance.Text = .MovieLevTolerance.ToString
+                txtMovieLevTolerance.Text = .LevTolerance.ToString
             End If
 
             Try
                 cbMovieGeneralLang.Items.Clear()
                 cbMovieGeneralLang.Items.AddRange((From lLang In APIXML.ScraperLanguagesXML.Languages Select lLang.Description).ToArray)
                 If cbMovieGeneralLang.Items.Count > 0 Then
-                    If Not String.IsNullOrEmpty(.MovieGeneralLanguage) Then
-                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .MovieGeneralLanguage)
+                    If Not String.IsNullOrEmpty(.DefaultLanguage) Then
+                        Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = .DefaultLanguage)
                         If tLanguage IsNot Nothing Then
                             cbMovieGeneralLang.Text = tLanguage.Description
                         Else
-                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.MovieGeneralLanguage))
+                            tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(.DefaultLanguage))
                             If tLanguage IsNot Nothing Then
                                 cbMovieGeneralLang.Text = tLanguage.Description
                             Else
@@ -184,27 +185,27 @@ Public Class frmMovie_Source
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings
-            .MovieFilterCustom.Clear()
-            .MovieFilterCustom.AddRange(lstMovieFilters.Items.OfType(Of String).ToList)
-            If .MovieFilterCustom.Count <= 0 Then .MovieFilterCustomIsEmpty = True
-            .MovieGeneralMarkNew = chkMovieGeneralMarkNew.Checked
-            .MovieLevTolerance = If(Not String.IsNullOrEmpty(txtMovieLevTolerance.Text), Convert.ToInt32(txtMovieLevTolerance.Text), 0)
-            .MovieProperCase = chkMovieProperCase.Checked
-            .MovieCleanDB = chkMovieCleanDB.Checked
-            .MovieGeneralIgnoreLastScan = chkMovieGeneralIgnoreLastScan.Checked
+        With Master.eSettings.Movie.SourceSettings
+            .TitleFilter.Clear()
+            .TitleFilter.AddRange(lstMovieFilters.Items.OfType(Of String).ToList)
+            If .TitleFilter.Count <= 0 Then .TitleFilterIsEmpty = True
+            .MarkNew = chkMovieGeneralMarkNew.Checked
+            .LevTolerance = If(Not String.IsNullOrEmpty(txtMovieLevTolerance.Text), Convert.ToInt32(txtMovieLevTolerance.Text), 0)
+            .TitleProperCase = chkMovieProperCase.Checked
+            .CleanDB = chkMovieCleanDB.Checked
+            .IgnoreLastScan = chkMovieGeneralIgnoreLastScan.Checked
             If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
-                .MovieGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
+                .DefaultLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
             End If
             If Not String.IsNullOrEmpty(txtMovieSkipLessThan.Text) AndAlso Integer.TryParse(txtMovieSkipLessThan.Text, 0) Then
-                .MovieSkipLessThan = Convert.ToInt32(txtMovieSkipLessThan.Text)
+                .SkipLessThan = Convert.ToInt32(txtMovieSkipLessThan.Text)
             Else
-                .MovieSkipLessThan = 0
+                .SkipLessThan = 0
             End If
-            .MovieSkipStackedSizeCheck = chkMovieSkipStackedSizeCheck.Checked
-            .MovieSortBeforeScan = chkMovieSortBeforeScan.Checked
-            .MovieScanOrderModify = chkMovieScanOrderModify.Checked
-
+            .SkipStackedSizeCheck = chkMovieSkipStackedSizeCheck.Checked
+            .SortBeforeScan = chkMovieSortBeforeScan.Checked
+            .ScanOrderModify = chkMovieScanOrderModify.Checked
+            .VideoSourceFromFolder = chkGeneralSourceFromFolder.Checked
         End With
     End Sub
 
@@ -269,7 +270,7 @@ Public Class frmMovie_Source
 
     Private Sub btnMovieFilterReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieFilterReset.Click
         If MessageBox.Show(Master.eLang.GetString(842, "Are you sure you want to reset to the default list of movie filters?"), Master.eLang.GetString(104, "Are You Sure?"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.Yes Then
-            Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieFilters, True)
+            Master.eSettings.Movie.SourceSettings.TitleFilter.SetDefaults(Enums.ContentType.Movie, True)
             RefreshMovieFilters()
             EnableApplyButton()
         End If
@@ -296,7 +297,7 @@ Public Class frmMovie_Source
 
     Private Sub cbMovieGeneralLang_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbMovieGeneralLang.SelectedIndexChanged
         If Not String.IsNullOrEmpty(cbMovieGeneralLang.Text) Then
-            Master.eSettings.MovieGeneralLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
+            Master.eSettings.Movie.SourceSettings.DefaultLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Description = cbMovieGeneralLang.Text).Abbreviation
         End If
     End Sub
 
@@ -312,7 +313,8 @@ Public Class frmMovie_Source
         Handle_NeedsReload_Movie()
     End Sub
 
-    Private Sub EnableApplyButton()
+    Private Sub EnableApplyButton() Handles _
+            chkGeneralSourceFromFolder.CheckedChanged
 
         Handle_SettingsChanged()
     End Sub
@@ -343,7 +345,7 @@ Public Class frmMovie_Source
 
     Private Sub RefreshMovieFilters()
         lstMovieFilters.Items.Clear()
-        lstMovieFilters.Items.AddRange(Master.eSettings.MovieFilterCustom.ToArray)
+        lstMovieFilters.Items.AddRange(Master.eSettings.Movie.SourceSettings.TitleFilter.ToArray)
     End Sub
 
     Private Sub RefreshMovieSources()
@@ -430,6 +432,7 @@ Public Class frmMovie_Source
         chkMovieSortBeforeScan.Text = Master.eLang.GetString(712, "Sort files into folder before each library update")
         lblMovieSkipLessThan.Text = Master.eLang.GetString(540, "Skip files smaller than:")
         lblMovieSkipLessThanMB.Text = Master.eLang.GetString(539, "MB")
+        chkGeneralSourceFromFolder.Text = Master.eLang.GetString(711, "Include Folder Name in Source Type Check")
 
         lvMovieSources.ListViewItemSorter = New ListViewItemComparer(1)
     End Sub

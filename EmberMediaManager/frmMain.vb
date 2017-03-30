@@ -1924,7 +1924,7 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     bwMovieScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
                     If AddonsManager.Instance.ScrapeImage_Movie(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers, Args.ScrapeList.Count = 1) Then
-                        If tScrapeItem.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.Movie.ImageSettings.ImagesDisplayImageSelect Then
+                        If tScrapeItem.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.Movie.ImageSettings.DisplayImageSelectDialog Then
                             Using dImgSelect As New dlgImgSelect
                                 If dImgSelect.ShowDialog(DBScrapeMovie, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
                                     Images.SetPreferredImages(DBScrapeMovie, dImgSelect.Result)
@@ -2135,7 +2135,7 @@ Public Class frmMain
                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                     bwMovieSetScraper.ReportProgress(-3, String.Concat(Master.eLang.GetString(254, "Scraping Images"), ":"))
                     If AddonsManager.Instance.ScrapeImage_MovieSet(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers) Then
-                        If tScrapeItem.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.Movie.ImageSettings.ImagesDisplayImageSelect Then
+                        If tScrapeItem.ScrapeType = Enums.ScrapeType.SingleScrape AndAlso Master.eSettings.Movie.ImageSettings.DisplayImageSelectDialog Then
                             Using dImgSelect As New dlgImgSelect
                                 If dImgSelect.ShowDialog(DBScrapeMovieSet, SearchResultsContainer, tScrapeItem.ScrapeModifiers) = DialogResult.OK Then
                                     Images.SetPreferredImages(DBScrapeMovieSet, dImgSelect.Result)
@@ -6223,7 +6223,7 @@ Public Class frmMain
             Return
         End If
 
-        If Master.eSettings.MovieSetClickScrape AndAlso
+        If Manager.mSettings.Movieset.GUI.ClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "ClearArtPath" OrElse colName = "ClearLogoPath" OrElse colName = "DiscArtPath" OrElse
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso Not bwMovieSetScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvMovieSets.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -6250,7 +6250,7 @@ Public Class frmMain
                 Case "PosterPath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainPoster, True)
             End Select
-            If Master.eSettings.MovieSetClickScrapeAsk Then
+            If Manager.mSettings.Movieset.GUI.ClickScrapeAsk Then
                 CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_MovieSet, ScrapeModifiers)
             Else
                 CreateScrapeList_MovieSet(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_MovieSet, ScrapeModifiers)
@@ -6300,7 +6300,7 @@ Public Class frmMain
              colName = "FanartPath" OrElse colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             dgvMovieSets.ShowCellToolTips = False
 
-            If Master.eSettings.MovieSetClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
+            If Manager.mSettings.Movieset.GUI.ClickScrape AndAlso Not bwMovieSetScraper.IsBusy Then
                 oldStatus = GetStatus()
                 Dim movieSetName As String = dgvMovieSets.Rows(e.RowIndex).Cells("SetName").Value.ToString
                 Dim scrapeFor As String = String.Empty
@@ -6323,7 +6323,7 @@ Public Class frmMain
                     Case "PosterPath"
                         scrapeFor = Master.eLang.GetString(72, "Poster Only")
                 End Select
-                If Master.eSettings.MovieSetClickScrapeAsk Then
+                If Manager.mSettings.Movieset.GUI.ClickScrapeAsk Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -6678,7 +6678,7 @@ Public Class frmMain
             CreateTask(Enums.ContentType.TVEpisode, Enums.SelectionType.Selected, Enums.TaskManagerType.SetWatchedState, If(Not String.IsNullOrEmpty(dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString) AndAlso
                                       Not dgvTVEpisodes.Rows(e.RowIndex).Cells("Playcount").Value.ToString = "0", False, True), String.Empty)
 
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
+        ElseIf Manager.mSettings.TV.GUI.ClickScrape AndAlso
             (colName = "FanartPath" OrElse colName = "NfoPath" OrElse colName = "PosterPath") AndAlso
             Not bwTVEpisodeScraper.IsBusy Then
             Dim objCell As DataGridViewCell = dgvTVEpisodes.Rows(e.RowIndex).Cells(e.ColumnIndex)
@@ -6702,7 +6702,7 @@ Public Class frmMain
                 Case "MetaData" 'Metadata - need to add this column to the view.
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.EpisodeMeta, True)
             End Select
-            If Master.eSettings.TVGeneralClickScrapeask Then
+            If Manager.mSettings.TV.GUI.ClickScrapeAsk Then
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
             Else
                 CreateScrapeList_TVEpisode(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -6756,7 +6756,7 @@ Public Class frmMain
             colName = "PosterPath" OrElse colName = "HasSub") AndAlso e.RowIndex >= 0 Then
             dgvTVEpisodes.ShowCellToolTips = False
 
-            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVEpisodeScraper.IsBusy Then
+            If Manager.mSettings.TV.GUI.ClickScrape AndAlso Not bwTVEpisodeScraper.IsBusy Then
                 oldStatus = GetStatus()
                 Dim episodeTitle As String = dgvTVEpisodes.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Dim scrapeFor As String = String.Empty
@@ -6774,7 +6774,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(1355, "Subtitles Only")
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeask Then
+                If Manager.mSettings.TV.GUI.ClickScrapeAsk Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -7152,7 +7152,7 @@ Public Class frmMain
                            String.Empty)
             End If
 
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
+        ElseIf Manager.mSettings.TV.GUI.ClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "FanartPath" OrElse
              colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso
             Not bwTVSeasonScraper.IsBusy Then
@@ -7175,7 +7175,7 @@ Public Class frmMain
                 Case "PosterPath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.SeasonPoster, True)
             End Select
-            If Master.eSettings.TVGeneralClickScrapeask Then
+            If Manager.mSettings.TV.GUI.ClickScrapeAsk Then
                 CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
             Else
                 CreateScrapeList_TVSeason(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -7228,7 +7228,7 @@ Public Class frmMain
             colName = "LandscapePath" OrElse colName = "PosterPath") AndAlso e.RowIndex >= 0 Then
             dgvTVSeasons.ShowCellToolTips = False
 
-            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
+            If Manager.mSettings.TV.GUI.ClickScrape AndAlso Not bwTVSeasonScraper.IsBusy Then
                 oldStatus = GetStatus()
                 Dim seasonTitle As String = dgvTVSeasons.Rows(e.RowIndex).Cells("SeasonText").Value.ToString
                 Dim scrapeFor As String = String.Empty
@@ -7244,7 +7244,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(72, "Poster Only")
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeask Then
+                If Manager.mSettings.TV.GUI.ClickScrapeAsk Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -7546,7 +7546,7 @@ Public Class frmMain
                        If(CBool(dgvTVShows.Rows(e.RowIndex).Cells("HasWatched").Value), False, True),
                        String.Empty)
 
-        ElseIf Master.eSettings.TVGeneralClickScrape AndAlso
+        ElseIf Manager.mSettings.TV.GUI.ClickScrape AndAlso
             (colName = "BannerPath" OrElse colName = "CharacterArtPath" OrElse colName = "ClearArtPath" OrElse
             colName = "ClearLogoPath" OrElse colName = "EFanartsPath" OrElse colName = "FanartPath" OrElse
             colName = "LandscapePath" OrElse colName = "NfoPath" OrElse colName = "PosterPath" OrElse
@@ -7582,7 +7582,7 @@ Public Class frmMain
                 Case "ThemePath"
                     Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ScrapeModifierType.MainTheme, True)
             End Select
-            If Master.eSettings.TVGeneralClickScrapeask Then
+            If Manager.mSettings.TV.GUI.ClickScrapeAsk Then
                 CreateScrapeList_TV(Enums.ScrapeType.SelectedAsk, Master.DefaultOptions_TV, ScrapeModifiers)
             Else
                 CreateScrapeList_TV(Enums.ScrapeType.SelectedAuto, Master.DefaultOptions_TV, ScrapeModifiers)
@@ -7637,7 +7637,7 @@ Public Class frmMain
             colName = "ThemePath") AndAlso e.RowIndex >= 0 Then
             dgvTVShows.ShowCellToolTips = False
 
-            If Master.eSettings.TVGeneralClickScrape AndAlso Not bwTVScraper.IsBusy Then
+            If Manager.mSettings.TV.GUI.ClickScrape AndAlso Not bwTVScraper.IsBusy Then
                 oldStatus = GetStatus()
                 Dim tvshowTitle As String = dgvTVShows.Rows(e.RowIndex).Cells("Title").Value.ToString
                 Dim scrapeFor As String = String.Empty
@@ -7665,7 +7665,7 @@ Public Class frmMain
                         scrapeFor = Master.eLang.GetString(1125, "Theme Only")
                 End Select
 
-                If Master.eSettings.TVGeneralClickScrapeask Then
+                If Manager.mSettings.TV.GUI.ClickScrapeAsk Then
                     scrapeType = Master.eLang.GetString(77, "Ask (Require Input If No Exact Match)")
                 Else
                     scrapeType = Master.eLang.GetString(69, "Automatic (Force Best Match)")
@@ -8288,7 +8288,7 @@ Public Class frmMain
         chkFilterMarkCustom4_Movies.Enabled = isEnabled
         chkFilterMissing_Movies.Enabled = If(Manager.mSettings.Movie.Filter.Missing.AnyEnabled, isEnabled, False)
         chkFilterNew_Movies.Enabled = isEnabled
-        chkFilterTolerance_Movies.Enabled = If(Master.eSettings.MovieLevTolerance > 0, isEnabled, False)
+        chkFilterTolerance_Movies.Enabled = Master.eSettings.Movie.SourceSettings.LevToleranceSpecified
         pnlFilterMissingItems_Movies.Visible = If(Not isEnabled, False, pnlFilterMissingItems_Movies.Visible)
         rbFilterAnd_Movies.Enabled = isEnabled
         rbFilterOr_Movies.Enabled = isEnabled
@@ -8888,7 +8888,7 @@ Public Class frmMain
         bsTVEpisodes.DataSource = Nothing
         dgvTVEpisodes.DataSource = Nothing
 
-        If Master.eSettings.TVDisplayMissingEpisodes Then
+        If Manager.mSettings.TV.GUI.DisplayMissingEpisodes Then
             Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT * FROM seasonslist WHERE idShow = ", ShowID, " ORDER BY Season;"))
         Else
             Master.DB.FillDataTable(dtTVSeasons, String.Concat("SELECT DISTINCT seasonslist.* ",
@@ -8994,9 +8994,9 @@ Public Class frmMain
         dgvTVEpisodes.Enabled = False
 
         If Season = 999 Then
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
+            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, If(Manager.mSettings.TV.GUI.DisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Season, Episode;"))
         Else
-            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Master.eSettings.TVDisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
+            Master.DB.FillDataTable(dtTVEpisodes, String.Concat("SELECT * FROM episodelist WHERE idShow = ", ShowID, " AND Season = ", Season, If(Manager.mSettings.TV.GUI.DisplayMissingEpisodes, String.Empty, " AND Missing = 0"), " ORDER BY Episode;"))
         End If
 
         bsTVEpisodes.DataSource = dtTVEpisodes
@@ -9918,6 +9918,7 @@ Public Class frmMain
             End If
 
             Master.eSettings.Version = String.Format("r{0}", My.Application.Info.Version.Revision)
+            Master.eSettings.Save()
 
             If Not Master.isCL AndAlso Not WindowState = FormWindowState.Minimized Then
                 'disable filters to proper save TV Show/Season SplitterDistance
@@ -9941,8 +9942,8 @@ Public Class frmMain
                     End If
                     .General.WindowState = WindowState
                 End With
-                Master.eSettings.Save()
             End If
+            Manager.mSettings.Save()
 
         Catch ex As Exception
             ' If we got here, then some of the above not run. Application.Exit can not be used. 
@@ -16305,8 +16306,8 @@ Public Class frmMain
                         End While
                         Dim DBCleaner As New Structures.ScanOrClean
                         'it's not necessary to clean the DB if we clean it anyway after DB update
-                        DBCleaner.Movies = dresult.NeedsDBClean_Movie AndAlso Not (dresult.NeedsDBUpdate_Movie AndAlso Master.eSettings.MovieCleanDB)
-                        DBCleaner.TV = dresult.NeedsDBClean_TV AndAlso Not (dresult.NeedsDBUpdate_TV AndAlso Master.eSettings.TVCleanDB)
+                        DBCleaner.Movies = dresult.NeedsDBClean_Movie AndAlso Not (dresult.NeedsDBUpdate_Movie AndAlso Master.eSettings.Movie.SourceSettings.CleanDB)
+                        DBCleaner.TV = dresult.NeedsDBClean_TV AndAlso Not (dresult.NeedsDBUpdate_TV AndAlso Master.eSettings.TV.SourceSettings.CleanDB)
                         CleanDB(DBCleaner)
                     End If
                 End If
@@ -16824,7 +16825,7 @@ Public Class frmMain
         btnFilterSortYear_Movies.Text = Master.eLang.GetString(278, "Year")
         chkFilterDuplicates_Movies.Text = Master.eLang.GetString(41, "Duplicates")
         chkFilterEmpty_MovieSets.Text = Master.eLang.GetString(1275, "Empty")
-        With Manager.mSettings.Movieset.GUI
+        With Manager.mSettings.Movie.GUI
             chkFilterMarkCustom1_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker1.Name), .CustomMarker1.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #1"))
             chkFilterMarkCustom2_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker2.Name), .CustomMarker2.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #2"))
             chkFilterMarkCustom3_Movies.Text = If(Not String.IsNullOrEmpty(.CustomMarker3.Name), .CustomMarker3.Name, String.Concat(Master.eLang.GetString(1191, "Custom"), " #3"))

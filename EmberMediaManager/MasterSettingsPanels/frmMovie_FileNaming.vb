@@ -591,7 +591,6 @@ Public Class frmMovie_FileNaming
         chkMovieNFOFrodo.Enabled = chkMovieUseFrodo.Checked
         chkMoviePosterFrodo.Enabled = chkMovieUseFrodo.Checked
         chkMovieTrailerFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkProtectVTSBDMV.Enabled = chkMovieUseFrodo.Checked AndAlso Not chkMovieUseEden.Checked
 
         If Not chkMovieUseFrodo.Checked Then
             chkMovieActorThumbsFrodo.Checked = False
@@ -601,7 +600,6 @@ Public Class frmMovie_FileNaming
             chkMovieNFOFrodo.Checked = False
             chkMoviePosterFrodo.Checked = False
             chkMovieTrailerFrodo.Checked = False
-            chkProtectVTSBDMV.Checked = False
         Else
             chkMovieActorThumbsFrodo.Checked = True
             chkMovieExtrafanartsFrodo.Checked = True
@@ -623,7 +621,6 @@ Public Class frmMovie_FileNaming
         chkMovieNFOEden.Enabled = chkMovieUseEden.Checked
         chkMoviePosterEden.Enabled = chkMovieUseEden.Checked
         chkMovieTrailerEden.Enabled = chkMovieUseEden.Checked
-        chkProtectVTSBDMV.Enabled = Not chkMovieUseEden.Checked AndAlso chkMovieUseFrodo.Checked
 
         If Not chkMovieUseEden.Checked Then
             chkMovieActorThumbsEden.Checked = False
@@ -641,7 +638,6 @@ Public Class frmMovie_FileNaming
             chkMovieNFOEden.Checked = True
             chkMoviePosterEden.Checked = True
             chkMovieTrailerEden.Checked = True
-            chkProtectVTSBDMV.Checked = False
         End If
     End Sub
 
@@ -1143,10 +1139,6 @@ Public Class frmMovie_FileNaming
         Else
             chkMovieSourcesBackdropsAuto.Enabled = True
         End If
-    End Sub
-
-    Private Sub EnableApplyButton(sender As Object, e As EventArgs) Handles txtMovieYAMJWatchedFolder.TextChanged, txtMovieTrailerExpertVTS.TextChanged, txtMovieTrailerExpertSingle.TextChanged, txtMovieTrailerExpertMulti.TextChanged, txtMovieTrailerExpertBDMV.TextChanged, txtMovieThemeTvTunesSubDir.TextChanged, txtMovieThemeTvTunesCustomPath.TextChanged, txtMoviePosterExpertVTS.TextChanged, txtMoviePosterExpertSingle.TextChanged, txtMoviePosterExpertMulti.TextChanged, txtMoviePosterExpertBDMV.TextChanged, txtMovieNFOExpertVTS.TextChanged, txtMovieNFOExpertSingle.TextChanged, txtMovieNFOExpertMulti.TextChanged, txtMovieNFOExpertBDMV.TextChanged, txtMovieLandscapeExpertVTS.TextChanged, txtMovieLandscapeExpertSingle.TextChanged, txtMovieLandscapeExpertMulti.TextChanged, txtMovieLandscapeExpertBDMV.TextChanged, txtMovieFanartExpertVTS.TextChanged, txtMovieFanartExpertSingle.TextChanged, txtMovieFanartExpertMulti.TextChanged, txtMovieFanartExpertBDMV.TextChanged, txtMovieDiscArtExpertVTS.TextChanged, txtMovieDiscArtExpertSingle.TextChanged, txtMovieDiscArtExpertMulti.TextChanged, txtMovieDiscArtExpertBDMV.TextChanged, txtMovieClearLogoExpertVTS.TextChanged, txtMovieClearLogoExpertSingle.TextChanged, txtMovieClearLogoExpertMulti.TextChanged, txtMovieClearLogoExpertBDMV.TextChanged, txtMovieClearArtExpertVTS.TextChanged, txtMovieClearArtExpertSingle.TextChanged, txtMovieClearArtExpertMulti.TextChanged, txtMovieClearArtExpertBDMV.TextChanged, txtMovieBannerExpertVTS.TextChanged, txtMovieBannerExpertSingle.TextChanged, txtMovieBannerExpertMulti.TextChanged, txtMovieBannerExpertBDMV.TextChanged, txtMovieActorThumbsExtExpertVTS.TextChanged, txtMovieActorThumbsExtExpertSingle.TextChanged, txtMovieActorThumbsExtExpertMulti.TextChanged, txtMovieActorThumbsExtExpertBDMV.TextChanged, chkProtectVTSBDMV.CheckedChanged, chkMovieUnstackExpertSingle.CheckedChanged, chkMovieUnstackExpertMulti.CheckedChanged, chkMovieTrailerYAMJ.CheckStateChanged, chkMovieTrailerNMJ.CheckStateChanged, chkMovieTrailerFrodo.CheckedChanged, chkMovieTrailerEden.CheckedChanged, chkMovieRecognizeVTSExpertVTS.CheckedChanged, chkMoviePosterYAMJ.CheckStateChanged, chkMoviePosterNMJ.CheckStateChanged, chkMoviePosterFrodo.CheckedChanged, chkMoviePosterEden.CheckedChanged, chkMoviePosterBoxee.CheckedChanged, chkMovieNFOYAMJ.CheckStateChanged, chkMovieNFONMJ.CheckStateChanged, chkMovieNFOFrodo.CheckedChanged, chkMovieNFOEden.CheckedChanged, chkMovieNFOBoxee.CheckedChanged, chkMovieLandscapeExtended.CheckedChanged, chkMovieLandscapeAD.CheckedChanged, chkMovieFanartYAMJ.CheckStateChanged, chkMovieFanartNMJ.CheckStateChanged, chkMovieFanartFrodo.CheckedChanged, chkMovieFanartEden.CheckedChanged, chkMovieFanartBoxee.CheckedChanged, chkMovieExtrathumbsFrodo.CheckedChanged, chkMovieExtrathumbsExpertVTS.CheckedChanged, chkMovieExtrathumbsExpertSingle.CheckedChanged, chkMovieExtrathumbsExpertBDMV.CheckedChanged, chkMovieExtrathumbsEden.CheckedChanged, chkMovieExtrafanartsFrodo.CheckedChanged, chkMovieExtrafanartsExpertVTS.CheckedChanged, chkMovieExtrafanartsExpertSingle.CheckedChanged, chkMovieExtrafanartsExpertBDMV.CheckedChanged, chkMovieExtrafanartsEden.CheckedChanged, chkMovieDiscArtExtended.CheckedChanged, chkMovieDiscArtAD.CheckedChanged, chkMovieClearLogoExtended.CheckedChanged, chkMovieClearLogoAD.CheckedChanged, chkMovieClearArtExtended.CheckedChanged, chkMovieClearArtAD.CheckedChanged, chkMovieBannerYAMJ.CheckStateChanged, chkMovieBannerNMJ.CheckStateChanged, chkMovieBannerExtended.CheckedChanged, chkMovieBannerAD.CheckedChanged, chkMovieActorThumbsFrodo.CheckedChanged, chkMovieActorThumbsExpertVTS.CheckedChanged, chkMovieActorThumbsExpertSingle.CheckedChanged, chkMovieActorThumbsExpertMulti.CheckedChanged, chkMovieActorThumbsExpertBDMV.CheckedChanged, chkMovieActorThumbsEden.CheckedChanged, chkMovieFanartAD.CheckedChanged, chkMoviePosterAD.CheckedChanged
-
     End Sub
 
 #End Region 'Methods

@@ -289,9 +289,9 @@ Public Class FileItemList
         Dim intSkipLessThan As Integer = 0
         Select Case tContentType
             Case Enums.ContentType.Movie
-                intSkipLessThan = Master.eSettings.MovieSkipLessThan
+                intSkipLessThan = Master.eSettings.Movie.SourceSettings.SkipLessThan
             Case Enums.ContentType.TV, Enums.ContentType.TVEpisode, Enums.ContentType.TVSeason, Enums.ContentType.TVShow
-                intSkipLessThan = Master.eSettings.TVSkipLessThan
+                intSkipLessThan = Master.eSettings.TV.SourceSettings.SkipLessThan
         End Select
 
         Dim diPath As DirectoryInfo = New DirectoryInfo(strPath)

@@ -204,11 +204,11 @@ Public Class dlgSourceMovie
             End If
         Else
             If cbSourceLanguage.Items.Count > 0 Then
-                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.MovieGeneralLanguage)
+                Dim tLanguage As languageProperty = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation = Master.eSettings.Movie.SourceSettings.DefaultLanguage)
                 If tLanguage IsNot Nothing Then
                     cbSourceLanguage.Text = tLanguage.Description
                 Else
-                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.MovieGeneralLanguage))
+                    tLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Abbreviation.StartsWith(Master.eSettings.Movie.SourceSettings.DefaultLanguage))
                     If tLanguage IsNot Nothing Then
                         cbSourceLanguage.Text = tLanguage.Description
                     Else

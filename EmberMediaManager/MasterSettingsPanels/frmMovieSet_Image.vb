@@ -162,8 +162,8 @@ Public Class frmMovieSet_Image
             chkFanartPrefSizeOnly.Checked = .Fanart.PrefSizeOnly
             txtFanartHeight.Text = .Fanart.MaxHeight.ToString
             txtFanartWidth.Text = .Fanart.MaxWidth.ToString
-            chkMovieSetImagesCacheEnabled.Checked = .ImagesCacheEnabled
-            chkMovieSetImagesDisplayImageSelect.Checked = .ImagesDisplayImageSelect
+            chkMovieSetImagesCacheEnabled.Checked = .CacheEnabled
+            chkMovieSetImagesDisplayImageSelect.Checked = .DisplayImageSelectDialog
             chkMovieSetImagesForceLanguage.Checked = .Language.ForceLanguage
             If .Language.GetMediaLanguageOnly Then
                 chkMovieSetImagesMediaLanguageOnly.Checked = True
@@ -224,8 +224,8 @@ Public Class frmMovieSet_Image
             .Fanart.PrefSize = CType(cbFanartPrefSize.SelectedItem, KeyValuePair(Of String, Enums.ImageSize)).Value
             .Fanart.PrefSizeOnly = chkFanartPrefSizeOnly.Checked
             .Fanart.MaxWidth = If(Not String.IsNullOrEmpty(txtFanartWidth.Text), Convert.ToInt32(txtFanartWidth.Text), 0)
-            .ImagesCacheEnabled = chkMovieSetImagesCacheEnabled.Checked
-            .ImagesDisplayImageSelect = chkMovieSetImagesDisplayImageSelect.Checked
+            .CacheEnabled = chkMovieSetImagesCacheEnabled.Checked
+            .DisplayImageSelectDialog = chkMovieSetImagesDisplayImageSelect.Checked
             If Not String.IsNullOrEmpty(cbMovieSetImagesForcedLanguage.Text) Then
                 .Language.ForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbMovieSetImagesForcedLanguage.Text).Abbrevation_MainLanguage
             End If

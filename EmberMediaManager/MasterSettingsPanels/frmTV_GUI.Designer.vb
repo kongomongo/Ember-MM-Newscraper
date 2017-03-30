@@ -35,8 +35,21 @@ Partial Class frmTV_GUI
         Me.rbTVGeneralCustomScrapeButtonDisabled = New System.Windows.Forms.RadioButton()
         Me.gbTVGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblTVGeneralMiscOpts = New System.Windows.Forms.TableLayoutPanel()
+        Me.cbTVLanguageOverlay = New System.Windows.Forms.ComboBox()
+        Me.lblTVLanguageOverlay = New System.Windows.Forms.Label()
         Me.chkTVGeneralClickScrape = New System.Windows.Forms.CheckBox()
+        Me.chkTVDisplayMissingEpisodes = New System.Windows.Forms.CheckBox()
         Me.chkTVGeneralClickScrapeAsk = New System.Windows.Forms.CheckBox()
+        Me.gbTVGeneralShowListSortingOpts = New System.Windows.Forms.GroupBox()
+        Me.tblTVGeneralShowListSorting = New System.Windows.Forms.TableLayoutPanel()
+        Me.btnTVGeneralShowListSortingDown = New System.Windows.Forms.Button()
+        Me.btnTVGeneralShowListSortingUp = New System.Windows.Forms.Button()
+        Me.lvTVGeneralShowListSorting = New System.Windows.Forms.ListView()
+        Me.colTVGeneralShowListSortingDisplayIndex = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colTVGeneralShowListSortingColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colTVGeneralShowListSortingLabel = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.colTVGeneralShowListSortingHide = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnTVGeneralShowListSortingReset = New System.Windows.Forms.Button()
         Me.gbTVGeneralEpisodeListSorting = New System.Windows.Forms.GroupBox()
         Me.tblTVGeneralEpisodeListSorting = New System.Windows.Forms.TableLayoutPanel()
         Me.btnTVGeneralEpisodeListSortingDown = New System.Windows.Forms.Button()
@@ -57,40 +70,18 @@ Partial Class frmTV_GUI
         Me.colTVGeneralSeasonListSortingLabel = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colTVGeneralSeasonListSortingHide = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnTVGeneralSeasonListSortingReset = New System.Windows.Forms.Button()
-        Me.gbTVGeneralShowListSortingOpts = New System.Windows.Forms.GroupBox()
-        Me.tblTVGeneralShowListSorting = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnTVGeneralShowListSortingDown = New System.Windows.Forms.Button()
-        Me.btnTVGeneralShowListSortingUp = New System.Windows.Forms.Button()
-        Me.lvTVGeneralShowListSorting = New System.Windows.Forms.ListView()
-        Me.colTVGeneralShowListSortingDisplayIndex = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colTVGeneralShowListSortingColumn = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colTVGeneralShowListSortingLabel = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.colTVGeneralShowListSortingHide = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.btnTVGeneralShowListSortingReset = New System.Windows.Forms.Button()
-        Me.chkTVDisplayMissingEpisodes = New System.Windows.Forms.CheckBox()
-        Me.gbTVGeneralMediaListSortTokensOpts = New System.Windows.Forms.GroupBox()
-        Me.tblTVGeneralMediaListSortTokensOpts = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnTVSortTokenReset = New System.Windows.Forms.Button()
-        Me.btnTVSortTokenRemove = New System.Windows.Forms.Button()
-        Me.lstTVSortTokens = New System.Windows.Forms.ListBox()
-        Me.btnTVSortTokenAdd = New System.Windows.Forms.Button()
-        Me.txtTVSortToken = New System.Windows.Forms.TextBox()
-        Me.lblTVLanguageOverlay = New System.Windows.Forms.Label()
-        Me.cbTVLanguageOverlay = New System.Windows.Forms.ComboBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
         Me.gbTVGeneralCustomScrapeButton.SuspendLayout()
         Me.tblTVGeneralCustomScrapeButton.SuspendLayout()
         Me.gbTVGeneralMiscOpts.SuspendLayout()
         Me.tblTVGeneralMiscOpts.SuspendLayout()
+        Me.gbTVGeneralShowListSortingOpts.SuspendLayout()
+        Me.tblTVGeneralShowListSorting.SuspendLayout()
         Me.gbTVGeneralEpisodeListSorting.SuspendLayout()
         Me.tblTVGeneralEpisodeListSorting.SuspendLayout()
         Me.gbTVGeneralSeasonListSortingOpts.SuspendLayout()
         Me.tblTVGeneralSeasonListSorting.SuspendLayout()
-        Me.gbTVGeneralShowListSortingOpts.SuspendLayout()
-        Me.tblTVGeneralShowListSorting.SuspendLayout()
-        Me.gbTVGeneralMediaListSortTokensOpts.SuspendLayout()
-        Me.tblTVGeneralMediaListSortTokensOpts.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -101,7 +92,7 @@ Partial Class frmTV_GUI
         Me.pnlSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlSettings.Location = New System.Drawing.Point(0, 0)
         Me.pnlSettings.Name = "pnlSettings"
-        Me.pnlSettings.Size = New System.Drawing.Size(1050, 605)
+        Me.pnlSettings.Size = New System.Drawing.Size(1050, 727)
         Me.pnlSettings.TabIndex = 21
         Me.pnlSettings.Visible = False
         '
@@ -117,20 +108,20 @@ Partial Class frmTV_GUI
         Me.tblSettings.Controls.Add(Me.gbTVGeneralCustomScrapeButton, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbTVGeneralMiscOpts, 0, 0)
         Me.tblSettings.Controls.Add(Me.gbTVGeneralShowListSortingOpts, 0, 3)
-        Me.tblSettings.Controls.Add(Me.gbTVGeneralMediaListSortTokensOpts, 1, 3)
         Me.tblSettings.Controls.Add(Me.gbTVGeneralEpisodeListSorting, 1, 5)
         Me.tblSettings.Controls.Add(Me.gbTVGeneralSeasonListSortingOpts, 1, 4)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
-        Me.tblSettings.RowCount = 6
+        Me.tblSettings.RowCount = 7
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblSettings.Size = New System.Drawing.Size(1050, 605)
+        Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSettings.Size = New System.Drawing.Size(1050, 727)
         Me.tblSettings.TabIndex = 5
         '
         'gbTVGeneralCustomScrapeButton
@@ -282,6 +273,29 @@ Partial Class frmTV_GUI
         Me.tblTVGeneralMiscOpts.Size = New System.Drawing.Size(491, 96)
         Me.tblTVGeneralMiscOpts.TabIndex = 74
         '
+        'cbTVLanguageOverlay
+        '
+        Me.cbTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.cbTVLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cbTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.cbTVLanguageOverlay.FormattingEnabled = True
+        Me.cbTVLanguageOverlay.Location = New System.Drawing.Point(306, 3)
+        Me.cbTVLanguageOverlay.Name = "cbTVLanguageOverlay"
+        Me.cbTVLanguageOverlay.Size = New System.Drawing.Size(174, 21)
+        Me.cbTVLanguageOverlay.Sorted = True
+        Me.cbTVLanguageOverlay.TabIndex = 2
+        '
+        'lblTVLanguageOverlay
+        '
+        Me.lblTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.lblTVLanguageOverlay.AutoSize = True
+        Me.lblTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTVLanguageOverlay.Location = New System.Drawing.Point(3, 7)
+        Me.lblTVLanguageOverlay.Name = "lblTVLanguageOverlay"
+        Me.lblTVLanguageOverlay.Size = New System.Drawing.Size(297, 13)
+        Me.lblTVLanguageOverlay.TabIndex = 1
+        Me.lblTVLanguageOverlay.Text = "Display best Audio Stream with the following Language:"
+        '
         'chkTVGeneralClickScrape
         '
         Me.chkTVGeneralClickScrape.Anchor = System.Windows.Forms.AnchorStyles.Left
@@ -293,6 +307,18 @@ Partial Class frmTV_GUI
         Me.chkTVGeneralClickScrape.TabIndex = 66
         Me.chkTVGeneralClickScrape.Text = "Enable Click Scrape"
         Me.chkTVGeneralClickScrape.UseVisualStyleBackColor = True
+        '
+        'chkTVDisplayMissingEpisodes
+        '
+        Me.chkTVDisplayMissingEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkTVDisplayMissingEpisodes.AutoSize = True
+        Me.chkTVDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkTVDisplayMissingEpisodes.Location = New System.Drawing.Point(3, 30)
+        Me.chkTVDisplayMissingEpisodes.Name = "chkTVDisplayMissingEpisodes"
+        Me.chkTVDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
+        Me.chkTVDisplayMissingEpisodes.TabIndex = 3
+        Me.chkTVDisplayMissingEpisodes.Text = "Display Missing Episodes"
+        Me.chkTVDisplayMissingEpisodes.UseVisualStyleBackColor = True
         '
         'chkTVGeneralClickScrapeAsk
         '
@@ -307,15 +333,117 @@ Partial Class frmTV_GUI
         Me.chkTVGeneralClickScrapeAsk.Text = "Ask On Click Scrape"
         Me.chkTVGeneralClickScrapeAsk.UseVisualStyleBackColor = True
         '
+        'gbTVGeneralShowListSortingOpts
+        '
+        Me.gbTVGeneralShowListSortingOpts.AutoSize = True
+        Me.gbTVGeneralShowListSortingOpts.Controls.Add(Me.tblTVGeneralShowListSorting)
+        Me.gbTVGeneralShowListSortingOpts.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbTVGeneralShowListSortingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbTVGeneralShowListSortingOpts.Location = New System.Drawing.Point(3, 230)
+        Me.gbTVGeneralShowListSortingOpts.Name = "gbTVGeneralShowListSortingOpts"
+        Me.tblSettings.SetRowSpan(Me.gbTVGeneralShowListSortingOpts, 3)
+        Me.gbTVGeneralShowListSortingOpts.Size = New System.Drawing.Size(212, 368)
+        Me.gbTVGeneralShowListSortingOpts.TabIndex = 74
+        Me.gbTVGeneralShowListSortingOpts.TabStop = False
+        Me.gbTVGeneralShowListSortingOpts.Text = "Show List Sorting"
+        '
+        'tblTVGeneralShowListSorting
+        '
+        Me.tblTVGeneralShowListSorting.AutoSize = True
+        Me.tblTVGeneralShowListSorting.ColumnCount = 6
+        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblTVGeneralShowListSorting.Controls.Add(Me.btnTVGeneralShowListSortingDown, 2, 1)
+        Me.tblTVGeneralShowListSorting.Controls.Add(Me.btnTVGeneralShowListSortingUp, 1, 1)
+        Me.tblTVGeneralShowListSorting.Controls.Add(Me.lvTVGeneralShowListSorting, 0, 0)
+        Me.tblTVGeneralShowListSorting.Controls.Add(Me.btnTVGeneralShowListSortingReset, 4, 1)
+        Me.tblTVGeneralShowListSorting.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblTVGeneralShowListSorting.Location = New System.Drawing.Point(3, 18)
+        Me.tblTVGeneralShowListSorting.Name = "tblTVGeneralShowListSorting"
+        Me.tblTVGeneralShowListSorting.RowCount = 3
+        Me.tblTVGeneralShowListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVGeneralShowListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVGeneralShowListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblTVGeneralShowListSorting.Size = New System.Drawing.Size(206, 347)
+        Me.tblTVGeneralShowListSorting.TabIndex = 0
+        '
+        'btnTVGeneralShowListSortingDown
+        '
+        Me.btnTVGeneralShowListSortingDown.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnTVGeneralShowListSortingDown.Image = CType(resources.GetObject("btnTVGeneralShowListSortingDown.Image"), System.Drawing.Image)
+        Me.btnTVGeneralShowListSortingDown.Location = New System.Drawing.Point(91, 321)
+        Me.btnTVGeneralShowListSortingDown.Name = "btnTVGeneralShowListSortingDown"
+        Me.btnTVGeneralShowListSortingDown.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVGeneralShowListSortingDown.TabIndex = 12
+        Me.btnTVGeneralShowListSortingDown.UseVisualStyleBackColor = True
+        '
+        'btnTVGeneralShowListSortingUp
+        '
+        Me.btnTVGeneralShowListSortingUp.Anchor = System.Windows.Forms.AnchorStyles.None
+        Me.btnTVGeneralShowListSortingUp.Image = CType(resources.GetObject("btnTVGeneralShowListSortingUp.Image"), System.Drawing.Image)
+        Me.btnTVGeneralShowListSortingUp.Location = New System.Drawing.Point(62, 321)
+        Me.btnTVGeneralShowListSortingUp.Name = "btnTVGeneralShowListSortingUp"
+        Me.btnTVGeneralShowListSortingUp.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVGeneralShowListSortingUp.TabIndex = 13
+        Me.btnTVGeneralShowListSortingUp.UseVisualStyleBackColor = True
+        '
+        'lvTVGeneralShowListSorting
+        '
+        Me.lvTVGeneralShowListSorting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVGeneralShowListSortingDisplayIndex, Me.colTVGeneralShowListSortingColumn, Me.colTVGeneralShowListSortingLabel, Me.colTVGeneralShowListSortingHide})
+        Me.tblTVGeneralShowListSorting.SetColumnSpan(Me.lvTVGeneralShowListSorting, 5)
+        Me.lvTVGeneralShowListSorting.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.lvTVGeneralShowListSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.lvTVGeneralShowListSorting.FullRowSelect = True
+        Me.lvTVGeneralShowListSorting.HideSelection = False
+        Me.lvTVGeneralShowListSorting.Location = New System.Drawing.Point(3, 3)
+        Me.lvTVGeneralShowListSorting.Name = "lvTVGeneralShowListSorting"
+        Me.lvTVGeneralShowListSorting.Size = New System.Drawing.Size(200, 312)
+        Me.lvTVGeneralShowListSorting.TabIndex = 10
+        Me.lvTVGeneralShowListSorting.UseCompatibleStateImageBehavior = False
+        Me.lvTVGeneralShowListSorting.View = System.Windows.Forms.View.Details
+        '
+        'colTVGeneralShowListSortingDisplayIndex
+        '
+        Me.colTVGeneralShowListSortingDisplayIndex.Text = "DisplayIndex"
+        Me.colTVGeneralShowListSortingDisplayIndex.Width = 0
+        '
+        'colTVGeneralShowListSortingColumn
+        '
+        Me.colTVGeneralShowListSortingColumn.Text = "DBName"
+        Me.colTVGeneralShowListSortingColumn.Width = 0
+        '
+        'colTVGeneralShowListSortingLabel
+        '
+        Me.colTVGeneralShowListSortingLabel.Text = "Column"
+        Me.colTVGeneralShowListSortingLabel.Width = 110
+        '
+        'colTVGeneralShowListSortingHide
+        '
+        Me.colTVGeneralShowListSortingHide.Text = "Hide"
+        '
+        'btnTVGeneralShowListSortingReset
+        '
+        Me.btnTVGeneralShowListSortingReset.Anchor = System.Windows.Forms.AnchorStyles.Right
+        Me.btnTVGeneralShowListSortingReset.Image = CType(resources.GetObject("btnTVGeneralShowListSortingReset.Image"), System.Drawing.Image)
+        Me.btnTVGeneralShowListSortingReset.Location = New System.Drawing.Point(180, 321)
+        Me.btnTVGeneralShowListSortingReset.Name = "btnTVGeneralShowListSortingReset"
+        Me.btnTVGeneralShowListSortingReset.Size = New System.Drawing.Size(23, 23)
+        Me.btnTVGeneralShowListSortingReset.TabIndex = 11
+        Me.btnTVGeneralShowListSortingReset.UseVisualStyleBackColor = True
+        '
         'gbTVGeneralEpisodeListSorting
         '
         Me.gbTVGeneralEpisodeListSorting.AutoSize = True
         Me.gbTVGeneralEpisodeListSorting.Controls.Add(Me.tblTVGeneralEpisodeListSorting)
         Me.gbTVGeneralEpisodeListSorting.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVGeneralEpisodeListSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbTVGeneralEpisodeListSorting.Location = New System.Drawing.Point(221, 522)
+        Me.gbTVGeneralEpisodeListSorting.Location = New System.Drawing.Point(221, 417)
         Me.gbTVGeneralEpisodeListSorting.Name = "gbTVGeneralEpisodeListSorting"
-        Me.gbTVGeneralEpisodeListSorting.Size = New System.Drawing.Size(279, 353)
+        Me.gbTVGeneralEpisodeListSorting.Size = New System.Drawing.Size(279, 181)
         Me.gbTVGeneralEpisodeListSorting.TabIndex = 76
         Me.gbTVGeneralEpisodeListSorting.TabStop = False
         Me.gbTVGeneralEpisodeListSorting.Text = "Episode List Sorting"
@@ -341,7 +469,7 @@ Partial Class frmTV_GUI
         Me.tblTVGeneralEpisodeListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralEpisodeListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVGeneralEpisodeListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralEpisodeListSorting.Size = New System.Drawing.Size(273, 332)
+        Me.tblTVGeneralEpisodeListSorting.Size = New System.Drawing.Size(273, 160)
         Me.tblTVGeneralEpisodeListSorting.TabIndex = 0
         '
         'btnTVGeneralEpisodeListSortingDown
@@ -414,7 +542,7 @@ Partial Class frmTV_GUI
         Me.gbTVGeneralSeasonListSortingOpts.Controls.Add(Me.tblTVGeneralSeasonListSorting)
         Me.gbTVGeneralSeasonListSortingOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.gbTVGeneralSeasonListSortingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbTVGeneralSeasonListSortingOpts.Location = New System.Drawing.Point(221, 335)
+        Me.gbTVGeneralSeasonListSortingOpts.Location = New System.Drawing.Point(221, 230)
         Me.gbTVGeneralSeasonListSortingOpts.Name = "gbTVGeneralSeasonListSortingOpts"
         Me.gbTVGeneralSeasonListSortingOpts.Size = New System.Drawing.Size(279, 181)
         Me.gbTVGeneralSeasonListSortingOpts.TabIndex = 75
@@ -509,237 +637,11 @@ Partial Class frmTV_GUI
         Me.btnTVGeneralSeasonListSortingReset.TabIndex = 11
         Me.btnTVGeneralSeasonListSortingReset.UseVisualStyleBackColor = True
         '
-        'gbTVGeneralShowListSortingOpts
-        '
-        Me.gbTVGeneralShowListSortingOpts.AutoSize = True
-        Me.gbTVGeneralShowListSortingOpts.Controls.Add(Me.tblTVGeneralShowListSorting)
-        Me.gbTVGeneralShowListSortingOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVGeneralShowListSortingOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
-        Me.gbTVGeneralShowListSortingOpts.Location = New System.Drawing.Point(3, 230)
-        Me.gbTVGeneralShowListSortingOpts.Name = "gbTVGeneralShowListSortingOpts"
-        Me.tblSettings.SetRowSpan(Me.gbTVGeneralShowListSortingOpts, 3)
-        Me.gbTVGeneralShowListSortingOpts.Size = New System.Drawing.Size(212, 645)
-        Me.gbTVGeneralShowListSortingOpts.TabIndex = 74
-        Me.gbTVGeneralShowListSortingOpts.TabStop = False
-        Me.gbTVGeneralShowListSortingOpts.Text = "Show List Sorting"
-        '
-        'tblTVGeneralShowListSorting
-        '
-        Me.tblTVGeneralShowListSorting.AutoSize = True
-        Me.tblTVGeneralShowListSorting.ColumnCount = 6
-        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralShowListSorting.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralShowListSorting.Controls.Add(Me.btnTVGeneralShowListSortingDown, 2, 1)
-        Me.tblTVGeneralShowListSorting.Controls.Add(Me.btnTVGeneralShowListSortingUp, 1, 1)
-        Me.tblTVGeneralShowListSorting.Controls.Add(Me.lvTVGeneralShowListSorting, 0, 0)
-        Me.tblTVGeneralShowListSorting.Controls.Add(Me.btnTVGeneralShowListSortingReset, 4, 1)
-        Me.tblTVGeneralShowListSorting.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVGeneralShowListSorting.Location = New System.Drawing.Point(3, 18)
-        Me.tblTVGeneralShowListSorting.Name = "tblTVGeneralShowListSorting"
-        Me.tblTVGeneralShowListSorting.RowCount = 3
-        Me.tblTVGeneralShowListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralShowListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralShowListSorting.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralShowListSorting.Size = New System.Drawing.Size(206, 624)
-        Me.tblTVGeneralShowListSorting.TabIndex = 0
-        '
-        'btnTVGeneralShowListSortingDown
-        '
-        Me.btnTVGeneralShowListSortingDown.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnTVGeneralShowListSortingDown.Image = CType(resources.GetObject("btnTVGeneralShowListSortingDown.Image"), System.Drawing.Image)
-        Me.btnTVGeneralShowListSortingDown.Location = New System.Drawing.Point(91, 321)
-        Me.btnTVGeneralShowListSortingDown.Name = "btnTVGeneralShowListSortingDown"
-        Me.btnTVGeneralShowListSortingDown.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVGeneralShowListSortingDown.TabIndex = 12
-        Me.btnTVGeneralShowListSortingDown.UseVisualStyleBackColor = True
-        '
-        'btnTVGeneralShowListSortingUp
-        '
-        Me.btnTVGeneralShowListSortingUp.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.btnTVGeneralShowListSortingUp.Image = CType(resources.GetObject("btnTVGeneralShowListSortingUp.Image"), System.Drawing.Image)
-        Me.btnTVGeneralShowListSortingUp.Location = New System.Drawing.Point(62, 321)
-        Me.btnTVGeneralShowListSortingUp.Name = "btnTVGeneralShowListSortingUp"
-        Me.btnTVGeneralShowListSortingUp.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVGeneralShowListSortingUp.TabIndex = 13
-        Me.btnTVGeneralShowListSortingUp.UseVisualStyleBackColor = True
-        '
-        'lvTVGeneralShowListSorting
-        '
-        Me.lvTVGeneralShowListSorting.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colTVGeneralShowListSortingDisplayIndex, Me.colTVGeneralShowListSortingColumn, Me.colTVGeneralShowListSortingLabel, Me.colTVGeneralShowListSortingHide})
-        Me.tblTVGeneralShowListSorting.SetColumnSpan(Me.lvTVGeneralShowListSorting, 5)
-        Me.lvTVGeneralShowListSorting.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lvTVGeneralShowListSorting.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lvTVGeneralShowListSorting.FullRowSelect = True
-        Me.lvTVGeneralShowListSorting.HideSelection = False
-        Me.lvTVGeneralShowListSorting.Location = New System.Drawing.Point(3, 3)
-        Me.lvTVGeneralShowListSorting.Name = "lvTVGeneralShowListSorting"
-        Me.lvTVGeneralShowListSorting.Size = New System.Drawing.Size(200, 312)
-        Me.lvTVGeneralShowListSorting.TabIndex = 10
-        Me.lvTVGeneralShowListSorting.UseCompatibleStateImageBehavior = False
-        Me.lvTVGeneralShowListSorting.View = System.Windows.Forms.View.Details
-        '
-        'colTVGeneralShowListSortingDisplayIndex
-        '
-        Me.colTVGeneralShowListSortingDisplayIndex.Text = "DisplayIndex"
-        Me.colTVGeneralShowListSortingDisplayIndex.Width = 0
-        '
-        'colTVGeneralShowListSortingColumn
-        '
-        Me.colTVGeneralShowListSortingColumn.Text = "DBName"
-        Me.colTVGeneralShowListSortingColumn.Width = 0
-        '
-        'colTVGeneralShowListSortingLabel
-        '
-        Me.colTVGeneralShowListSortingLabel.Text = "Column"
-        Me.colTVGeneralShowListSortingLabel.Width = 110
-        '
-        'colTVGeneralShowListSortingHide
-        '
-        Me.colTVGeneralShowListSortingHide.Text = "Hide"
-        '
-        'btnTVGeneralShowListSortingReset
-        '
-        Me.btnTVGeneralShowListSortingReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVGeneralShowListSortingReset.Image = CType(resources.GetObject("btnTVGeneralShowListSortingReset.Image"), System.Drawing.Image)
-        Me.btnTVGeneralShowListSortingReset.Location = New System.Drawing.Point(180, 321)
-        Me.btnTVGeneralShowListSortingReset.Name = "btnTVGeneralShowListSortingReset"
-        Me.btnTVGeneralShowListSortingReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVGeneralShowListSortingReset.TabIndex = 11
-        Me.btnTVGeneralShowListSortingReset.UseVisualStyleBackColor = True
-        '
-        'chkTVDisplayMissingEpisodes
-        '
-        Me.chkTVDisplayMissingEpisodes.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkTVDisplayMissingEpisodes.AutoSize = True
-        Me.chkTVDisplayMissingEpisodes.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTVDisplayMissingEpisodes.Location = New System.Drawing.Point(3, 30)
-        Me.chkTVDisplayMissingEpisodes.Name = "chkTVDisplayMissingEpisodes"
-        Me.chkTVDisplayMissingEpisodes.Size = New System.Drawing.Size(155, 17)
-        Me.chkTVDisplayMissingEpisodes.TabIndex = 3
-        Me.chkTVDisplayMissingEpisodes.Text = "Display Missing Episodes"
-        Me.chkTVDisplayMissingEpisodes.UseVisualStyleBackColor = True
-        '
-        'gbTVGeneralMediaListSortTokensOpts
-        '
-        Me.gbTVGeneralMediaListSortTokensOpts.AutoSize = True
-        Me.gbTVGeneralMediaListSortTokensOpts.Controls.Add(Me.tblTVGeneralMediaListSortTokensOpts)
-        Me.gbTVGeneralMediaListSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbTVGeneralMediaListSortTokensOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.gbTVGeneralMediaListSortTokensOpts.Location = New System.Drawing.Point(221, 230)
-        Me.gbTVGeneralMediaListSortTokensOpts.Name = "gbTVGeneralMediaListSortTokensOpts"
-        Me.gbTVGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(279, 99)
-        Me.gbTVGeneralMediaListSortTokensOpts.TabIndex = 72
-        Me.gbTVGeneralMediaListSortTokensOpts.TabStop = False
-        Me.gbTVGeneralMediaListSortTokensOpts.Text = "Sort Tokens to Ignore"
-        '
-        'tblTVGeneralMediaListSortTokensOpts
-        '
-        Me.tblTVGeneralMediaListSortTokensOpts.AutoSize = True
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnCount = 5
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.btnTVSortTokenReset, 3, 1)
-        Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.btnTVSortTokenRemove, 2, 1)
-        Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.lstTVSortTokens, 0, 0)
-        Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.btnTVSortTokenAdd, 1, 1)
-        Me.tblTVGeneralMediaListSortTokensOpts.Controls.Add(Me.txtTVSortToken, 0, 1)
-        Me.tblTVGeneralMediaListSortTokensOpts.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblTVGeneralMediaListSortTokensOpts.Location = New System.Drawing.Point(3, 18)
-        Me.tblTVGeneralMediaListSortTokensOpts.Name = "tblTVGeneralMediaListSortTokensOpts"
-        Me.tblTVGeneralMediaListSortTokensOpts.RowCount = 3
-        Me.tblTVGeneralMediaListSortTokensOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVGeneralMediaListSortTokensOpts.Size = New System.Drawing.Size(273, 78)
-        Me.tblTVGeneralMediaListSortTokensOpts.TabIndex = 74
-        '
-        'btnTVSortTokenReset
-        '
-        Me.btnTVSortTokenReset.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVSortTokenReset.Image = CType(resources.GetObject("btnTVSortTokenReset.Image"), System.Drawing.Image)
-        Me.btnTVSortTokenReset.Location = New System.Drawing.Point(180, 52)
-        Me.btnTVSortTokenReset.Name = "btnTVSortTokenReset"
-        Me.btnTVSortTokenReset.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVSortTokenReset.TabIndex = 11
-        Me.btnTVSortTokenReset.UseVisualStyleBackColor = True
-        '
-        'btnTVSortTokenRemove
-        '
-        Me.btnTVSortTokenRemove.Anchor = System.Windows.Forms.AnchorStyles.Right
-        Me.btnTVSortTokenRemove.Image = CType(resources.GetObject("btnTVSortTokenRemove.Image"), System.Drawing.Image)
-        Me.btnTVSortTokenRemove.Location = New System.Drawing.Point(128, 52)
-        Me.btnTVSortTokenRemove.Name = "btnTVSortTokenRemove"
-        Me.btnTVSortTokenRemove.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVSortTokenRemove.TabIndex = 3
-        Me.btnTVSortTokenRemove.UseVisualStyleBackColor = True
-        '
-        'lstTVSortTokens
-        '
-        Me.tblTVGeneralMediaListSortTokensOpts.SetColumnSpan(Me.lstTVSortTokens, 4)
-        Me.lstTVSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.lstTVSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lstTVSortTokens.FormattingEnabled = True
-        Me.lstTVSortTokens.Location = New System.Drawing.Point(3, 3)
-        Me.lstTVSortTokens.Name = "lstTVSortTokens"
-        Me.lstTVSortTokens.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended
-        Me.lstTVSortTokens.Size = New System.Drawing.Size(200, 43)
-        Me.lstTVSortTokens.Sorted = True
-        Me.lstTVSortTokens.TabIndex = 0
-        '
-        'btnTVSortTokenAdd
-        '
-        Me.btnTVSortTokenAdd.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnTVSortTokenAdd.Image = CType(resources.GetObject("btnTVSortTokenAdd.Image"), System.Drawing.Image)
-        Me.btnTVSortTokenAdd.Location = New System.Drawing.Point(99, 52)
-        Me.btnTVSortTokenAdd.Name = "btnTVSortTokenAdd"
-        Me.btnTVSortTokenAdd.Size = New System.Drawing.Size(23, 23)
-        Me.btnTVSortTokenAdd.TabIndex = 2
-        Me.btnTVSortTokenAdd.UseVisualStyleBackColor = True
-        '
-        'txtTVSortToken
-        '
-        Me.txtTVSortToken.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtTVSortToken.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTVSortToken.Location = New System.Drawing.Point(3, 52)
-        Me.txtTVSortToken.Name = "txtTVSortToken"
-        Me.txtTVSortToken.Size = New System.Drawing.Size(90, 22)
-        Me.txtTVSortToken.TabIndex = 1
-        '
-        'lblTVLanguageOverlay
-        '
-        Me.lblTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblTVLanguageOverlay.AutoSize = True
-        Me.lblTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVLanguageOverlay.Location = New System.Drawing.Point(3, 7)
-        Me.lblTVLanguageOverlay.Name = "lblTVLanguageOverlay"
-        Me.lblTVLanguageOverlay.Size = New System.Drawing.Size(297, 13)
-        Me.lblTVLanguageOverlay.TabIndex = 1
-        Me.lblTVLanguageOverlay.Text = "Display best Audio Stream with the following Language:"
-        '
-        'cbTVLanguageOverlay
-        '
-        Me.cbTVLanguageOverlay.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.cbTVLanguageOverlay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbTVLanguageOverlay.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbTVLanguageOverlay.FormattingEnabled = True
-        Me.cbTVLanguageOverlay.Location = New System.Drawing.Point(306, 3)
-        Me.cbTVLanguageOverlay.Name = "cbTVLanguageOverlay"
-        Me.cbTVLanguageOverlay.Size = New System.Drawing.Size(174, 21)
-        Me.cbTVLanguageOverlay.Sorted = True
-        Me.cbTVLanguageOverlay.TabIndex = 2
-        '
         'frmTV_GUI
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1050, 605)
+        Me.ClientSize = New System.Drawing.Size(1050, 727)
         Me.Controls.Add(Me.pnlSettings)
         Me.Name = "frmTV_GUI"
         Me.Text = "frmTV_GUI"
@@ -755,19 +657,15 @@ Partial Class frmTV_GUI
         Me.gbTVGeneralMiscOpts.PerformLayout()
         Me.tblTVGeneralMiscOpts.ResumeLayout(False)
         Me.tblTVGeneralMiscOpts.PerformLayout()
+        Me.gbTVGeneralShowListSortingOpts.ResumeLayout(False)
+        Me.gbTVGeneralShowListSortingOpts.PerformLayout()
+        Me.tblTVGeneralShowListSorting.ResumeLayout(False)
         Me.gbTVGeneralEpisodeListSorting.ResumeLayout(False)
         Me.gbTVGeneralEpisodeListSorting.PerformLayout()
         Me.tblTVGeneralEpisodeListSorting.ResumeLayout(False)
         Me.gbTVGeneralSeasonListSortingOpts.ResumeLayout(False)
         Me.gbTVGeneralSeasonListSortingOpts.PerformLayout()
         Me.tblTVGeneralSeasonListSorting.ResumeLayout(False)
-        Me.gbTVGeneralShowListSortingOpts.ResumeLayout(False)
-        Me.gbTVGeneralShowListSortingOpts.PerformLayout()
-        Me.tblTVGeneralShowListSorting.ResumeLayout(False)
-        Me.gbTVGeneralMediaListSortTokensOpts.ResumeLayout(False)
-        Me.gbTVGeneralMediaListSortTokensOpts.PerformLayout()
-        Me.tblTVGeneralMediaListSortTokensOpts.ResumeLayout(False)
-        Me.tblTVGeneralMediaListSortTokensOpts.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -818,13 +716,6 @@ Partial Class frmTV_GUI
     Friend WithEvents colTVGeneralShowListSortingHide As Windows.Forms.ColumnHeader
     Friend WithEvents btnTVGeneralShowListSortingReset As Windows.Forms.Button
     Friend WithEvents chkTVDisplayMissingEpisodes As Windows.Forms.CheckBox
-    Friend WithEvents gbTVGeneralMediaListSortTokensOpts As Windows.Forms.GroupBox
-    Friend WithEvents tblTVGeneralMediaListSortTokensOpts As Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnTVSortTokenReset As Windows.Forms.Button
-    Friend WithEvents btnTVSortTokenRemove As Windows.Forms.Button
-    Friend WithEvents lstTVSortTokens As Windows.Forms.ListBox
-    Friend WithEvents btnTVSortTokenAdd As Windows.Forms.Button
-    Friend WithEvents txtTVSortToken As Windows.Forms.TextBox
     Friend WithEvents lblTVLanguageOverlay As Windows.Forms.Label
     Friend WithEvents cbTVLanguageOverlay As Windows.Forms.ComboBox
 End Class

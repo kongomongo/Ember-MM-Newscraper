@@ -146,7 +146,7 @@ Public Class frmMovie_GUI
             btnMovieGeneralCustomMarker4.BackColor = Color.FromArgb(.CustomMarker4.Color)
             cbMovieGeneralCustomScrapeButtonModifierType.SelectedValue = .CustomScrapeButton.ModifierType
             cbMovieGeneralCustomScrapeButtonScrapeType.SelectedValue = .CustomScrapeButton.ScrapeType
-            cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.MovieGeneralFlagLang), Master.eLang.Disabled, .MovieGeneralFlagLang)
+            cbMovieLanguageOverlay.SelectedItem = If(String.IsNullOrEmpty(.BestAudioStreamOfLanguage), Master.eLang.Disabled, .BestAudioStreamOfLanguage)
             chkMovieClickScrape.Checked = .ClickScrape
             chkMovieClickScrapeAsk.Checked = .ClickScrapeAsk
             If .CustomScrapeButton.Enabled Then
@@ -180,30 +180,15 @@ Public Class frmMovie_GUI
             .CustomScrapeButton.Enabled = rbMovieGeneralCustomScrapeButtonEnabled.Checked
             .CustomScrapeButton.ModifierType = CType(cbMovieGeneralCustomScrapeButtonModifierType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeModifierType)).Value
             .CustomScrapeButton.ScrapeType = CType(cbMovieGeneralCustomScrapeButtonScrapeType.SelectedItem, KeyValuePair(Of String, Enums.ScrapeType)).Value
-            .MovieGeneralFlagLang = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
+            .BestAudioStreamOfLanguage = If(cbMovieLanguageOverlay.Text = Master.eLang.Disabled, String.Empty, cbMovieLanguageOverlay.Text)
             .MediaListSorting.Clear()
             .MediaListSorting.AddRange(_medialistsorting)
-            .MovieSortTokens.Clear()
-            .MovieSortTokens.AddRange(lstMovieSortTokens.Items.OfType(Of String).ToList)
-            If .MovieSortTokens.Count <= 0 Then .MovieSortTokensIsEmpty = True
         End With
     End Sub
 
 #End Region 'Interface Methods
 
 #Region "Methods"
-
-    Private Sub btnMovieSortTokenAdd_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenAdd.Click
-        If Not String.IsNullOrEmpty(txtMovieSortToken.Text) Then
-            If Not lstMovieSortTokens.Items.Contains(txtMovieSortToken.Text) Then
-                lstMovieSortTokens.Items.Add(txtMovieSortToken.Text)
-                Handle_NeedsReload_Movie()
-                EnableApplyButton()
-                txtMovieSortToken.Text = String.Empty
-                txtMovieSortToken.Focus()
-            End If
-        End If
-    End Sub
 
     Private Sub btnMovieGeneralCustomMarker1_Click(sender As Object, e As EventArgs) Handles btnMovieGeneralCustomMarker1.Click
         With cdColor
@@ -257,13 +242,6 @@ Public Class frmMovie_GUI
         EnableApplyButton()
     End Sub
 
-    Private Sub btnMovieSortTokenReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenReset.Click
-        Master.eSettings.SetDefaultsForLists(Enums.DefaultSettingType.MovieSortTokens, True)
-        RefreshMovieSortTokens()
-        Handle_NeedsReload_Movie()
-        EnableApplyButton()
-    End Sub
-
     Private Sub btnMovieGeneralMediaListSortingUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingUp.Click
         Try
             If lvMovieGeneralMediaListSorting.Items.Count > 0 AndAlso lvMovieGeneralMediaListSorting.SelectedItems.Count > 0 AndAlso Not lvMovieGeneralMediaListSorting.SelectedItems(0).Index = 0 Then
@@ -292,10 +270,6 @@ Public Class frmMovie_GUI
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
-    End Sub
-
-    Private Sub btnMovieSortTokenRemove_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieSortTokenRemove.Click
-        RemoveMovieSortToken()
     End Sub
 
     Private Sub btnMovieGeneralMediaListSortingDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnMovieGeneralMediaListSortingDown.Click
@@ -431,24 +405,10 @@ Public Class frmMovie_GUI
         End If
     End Sub
 
-    Private Sub RemoveMovieSortToken()
-        If lstMovieSortTokens.Items.Count > 0 AndAlso lstMovieSortTokens.SelectedItems.Count > 0 Then
-            While lstMovieSortTokens.SelectedItems.Count > 0
-                lstMovieSortTokens.Items.Remove(lstMovieSortTokens.SelectedItems(0))
-            End While
-            Handle_NeedsReload_Movie()
-            EnableApplyButton()
-        End If
-    End Sub
-
     Private Sub RenumberMovieGeneralMediaListSorting()
         For i As Integer = 0 To _medialistsorting.Count - 1
             _medialistsorting(i).DisplayIndex = i
         Next
-    End Sub
-
-    Private Sub lstMovieSortTokens_KeyDown(ByVal sender As Object, ByVal e As KeyEventArgs) Handles lstMovieSortTokens.KeyDown
-        If e.KeyCode = Keys.Delete Then RemoveMovieSortToken()
     End Sub
 
     Private Sub rbMovieGeneralCustomScrapeButtonDisabled_CheckedChanged(sender As Object, e As EventArgs) Handles rbMovieGeneralCustomScrapeButtonDisabled.CheckedChanged
@@ -471,11 +431,6 @@ Public Class frmMovie_GUI
         EnableApplyButton()
     End Sub
 
-    Private Sub RefreshMovieSortTokens()
-        lstMovieSortTokens.Items.Clear()
-        lstMovieSortTokens.Items.AddRange(Master.eSettings.MovieSortTokens.ToArray)
-    End Sub
-
     Private Sub SetUp()
         chkMovieClickScrapeAsk.Text = Master.eLang.GetString(852, "Ask On Click Scrape")
         colMovieGeneralMediaListSortingLabel.Text = Master.eLang.GetString(1331, "Column")
@@ -484,7 +439,6 @@ Public Class frmMovie_GUI
         colMovieGeneralMediaListSortingHide.Text = Master.eLang.GetString(465, "Hide")
         gbMovieGeneralMiscOpts.Text = Master.eLang.GetString(429, "Miscellaneous")
         gbMovieGeneralMediaListSorting.Text = Master.eLang.GetString(490, "Movie List Sorting")
-        gbMovieGeneralMediaListSortTokensOpts.Text = Master.eLang.GetString(463, "Sort Tokens to Ignore")
         gbMovieGeneralCustomMarker.Text = Master.eLang.GetString(1190, "Custom Marker")
         lblMovieGeneralCustomMarker1.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #1")
         lblMovieGeneralCustomMarker2.Text = String.Concat(Master.eLang.GetString(1191, "Custom"), " #2")
@@ -493,7 +447,6 @@ Public Class frmMovie_GUI
 
         LoadCustomScraperButtonModifierTypes_Movie()
         LoadCustomScraperButtonScrapeTypes()
-        RefreshMovieSortTokens()
         LoadLangs()
     End Sub
 

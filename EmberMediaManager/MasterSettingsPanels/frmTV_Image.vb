@@ -239,8 +239,8 @@ Public Class frmTV_Image
         End With
 
         With Master.eSettings.TV.ImageSettings
-            chkTVImagesCacheEnabled.Checked = .TVShow.ImagesCacheEnabled
-            chkTVImagesDisplayImageSelect.Checked = .ImagesDisplayImageSelect
+            chkTVImagesCacheEnabled.Checked = .TVShow.CacheEnabled
+            chkTVImagesDisplayImageSelect.Checked = .DisplayImageSelectDialog
             chkTVImagesForceLanguage.Checked = .Language.ForceLanguage
             If .Language.GetMediaLanguageOnly Then
                 chkTVImagesMediaLanguageOnly.Checked = True
@@ -375,8 +375,8 @@ Public Class frmTV_Image
         End With
 
         With Master.eSettings.TV.ImageSettings
-            .ImagesCacheEnabled = chkTVImagesCacheEnabled.Checked
-            .ImagesDisplayImageSelect = chkTVImagesDisplayImageSelect.Checked
+            .CacheEnabled = chkTVImagesCacheEnabled.Checked
+            .DisplayImageSelectDialog = chkTVImagesDisplayImageSelect.Checked
             If Not String.IsNullOrEmpty(cbTVImagesForcedLanguage.Text) Then
                 .Language.ForcedLanguage = APIXML.ScraperLanguagesXML.Languages.FirstOrDefault(Function(l) l.Name = cbTVImagesForcedLanguage.Text).Abbrevation_MainLanguage
             End If

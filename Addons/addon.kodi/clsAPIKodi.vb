@@ -1011,7 +1011,7 @@ Namespace Kodi
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.MainDetails.Votes), mDBElement.MainDetails.Votes, Nothing)
-                    If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                    If Master.eSettings.Options.Global.DigitGrpSymbolVotes Then
                         If mDBElement.MainDetails.VotesSpecified Then
                             Dim vote As String = Double.Parse(mDBElement.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
@@ -1281,7 +1281,7 @@ Namespace Kodi
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.MainDetails.Votes), mDBElement.MainDetails.Votes, Nothing)
-                    If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                    If Master.eSettings.Options.Global.DigitGrpSymbolVotes Then
                         If mDBElement.MainDetails.VotesSpecified Then
                             Dim vote As String = Double.Parse(mDBElement.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then
@@ -1516,7 +1516,7 @@ Namespace Kodi
 
                     'digit grouping symbol for Votes count
                     Dim mVotes As String = If(Not String.IsNullOrEmpty(mDBElement.MainDetails.Votes), mDBElement.MainDetails.Votes, Nothing)
-                    If Master.eSettings.GeneralDigitGrpSymbolVotes Then
+                    If Master.eSettings.Options.Global.DigitGrpSymbolVotes Then
                         If mDBElement.MainDetails.VotesSpecified Then
                             Dim vote As String = Double.Parse(mDBElement.MainDetails.Votes, Globalization.CultureInfo.InvariantCulture).ToString("N0", Globalization.CultureInfo.CurrentCulture)
                             If vote IsNot Nothing Then

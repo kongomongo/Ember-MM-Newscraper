@@ -2642,7 +2642,10 @@ Public Class Images
 
         Dim DoCalculateDuplicaImages As Boolean = False
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If Master.eSettings.Options.Global.ImageFilter.Enabled AndAlso
+            Master.eSettings.Options.Global.ImageFilter.Fanart AndAlso
+            ((IsAutoScraper AndAlso Master.eSettings.Options.Global.ImageFilter.AutoScraper) OrElse
+            (Not IsAutoScraper AndAlso Master.eSettings.Options.Global.ImageFilter.ImageSelectDialog)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -2683,7 +2686,11 @@ Public Class Images
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
             Dim lsttmpCurrentMovieFanarts As New List(Of MediaContainers.Image)
             lsttmpCurrentMovieFanarts.Add(CurrentMovieFanart)
-            FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImageList:=lsttmpCurrentMovieFanarts, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
+            FindDuplicateImages(imgResultList,
+                                Enums.ContentType.Movie,
+                                CurrentImageList:=lsttmpCurrentMovieFanarts,
+                                MatchTolerance:=Master.eSettings.Options.Global.ImageFilter.FanartMatchTolerance,
+                                Limit:=iLimit)
         End If
 
         'If Master.eSettings.MovieFanartPrefSize = Enums.MovieFanartSize.Any Then
@@ -2724,7 +2731,10 @@ Public Class Images
         If tImageList.Count = 0 Then Return False
         Dim DoCalculateDuplicaImages As Boolean = False
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If Master.eSettings.Options.Global.ImageFilter.Enabled AndAlso
+            Master.eSettings.Options.Global.ImageFilter.Fanart AndAlso
+            ((IsAutoScraper AndAlso Master.eSettings.Options.Global.ImageFilter.AutoScraper) OrElse
+            (Not IsAutoScraper AndAlso Master.eSettings.Options.Global.ImageFilter.ImageSelectDialog)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -2766,7 +2776,11 @@ Public Class Images
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
             Dim lsttmpCurrentMovieFanarts As New List(Of MediaContainers.Image)
             lsttmpCurrentMovieFanarts.Add(CurrentMovieFanart)
-            FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImageList:=lsttmpCurrentMovieFanarts, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
+            FindDuplicateImages(imgResultList,
+                                Enums.ContentType.Movie,
+                                CurrentImageList:=lsttmpCurrentMovieFanarts,
+                                MatchTolerance:=Master.eSettings.Options.Global.ImageFilter.FanartMatchTolerance,
+                                Limit:=iLimit)
         End If
 
         If imgResultList IsNot Nothing AndAlso imgResultList.Count > 0 Then
@@ -3125,7 +3139,10 @@ Public Class Images
 
         Dim DoCalculateDuplicaImages As Boolean = False
 
-        If Master.eSettings.GeneralImageFilter = True AndAlso Master.eSettings.GeneralImageFilterFanart = True AndAlso ((IsAutoScraper = True AndAlso Master.eSettings.GeneralImageFilterAutoscraper = True) OrElse (IsAutoScraper = False AndAlso Master.eSettings.GeneralImageFilterImagedialog = True)) Then
+        If Master.eSettings.Options.Global.ImageFilter.Enabled AndAlso
+            Master.eSettings.Options.Global.ImageFilter.Fanart AndAlso
+            ((IsAutoScraper AndAlso Master.eSettings.Options.Global.ImageFilter.AutoScraper) OrElse
+            (Not IsAutoScraper AndAlso Master.eSettings.Options.Global.ImageFilter.ImageSelectDialog)) Then
             DoCalculateDuplicaImages = True
         End If
 
@@ -3166,7 +3183,11 @@ Public Class Images
 
         If DoCalculateDuplicaImages = True Then
             'make sure that extraimages is not the same as main image of movie (i.e. fanart.jpg of movie should not be part of extrafanart)
-            FindDuplicateImages(imgResultList, Enums.ContentType.Movie, CurrentImageList:=lsttmpCurrentTVSowFanarts, MatchTolerance:=Master.eSettings.GeneralImageFilterFanartMatchTolerance, Limit:=iLimit)
+            FindDuplicateImages(imgResultList,
+                                Enums.ContentType.Movie,
+                                CurrentImageList:=lsttmpCurrentTVSowFanarts,
+                                MatchTolerance:=Master.eSettings.Options.Global.ImageFilter.FanartMatchTolerance,
+                                Limit:=iLimit)
         End If
 
         If imgResultList IsNot Nothing AndAlso imgResultList.Count > 0 Then

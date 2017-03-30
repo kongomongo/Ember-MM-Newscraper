@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmOption_GUI
     Inherits System.Windows.Forms.Form
 
     'Das Formular überschreibt den Löschvorgang, um die Komponentenliste zu bereinigen.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,17 +20,10 @@ Partial Class frmOption_GUI
     'Hinweis: Die folgende Prozedur ist für den Windows Form-Designer erforderlich.
     'Das Bearbeiten ist mit dem Windows Form-Designer möglich.  
     'Das Bearbeiten mit dem Code-Editor ist nicht möglich.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.pnlSettings = New System.Windows.Forms.Panel()
         Me.tblSettings = New System.Windows.Forms.TableLayoutPanel()
-        Me.gbGeneralDaemon = New System.Windows.Forms.GroupBox()
-        Me.tblGeneralDaemon = New System.Windows.Forms.TableLayoutPanel()
-        Me.btnGeneralDaemonPathBrowse = New System.Windows.Forms.Button()
-        Me.lblGeneralDaemonDrive = New System.Windows.Forms.Label()
-        Me.txtGeneralDaemonPath = New System.Windows.Forms.TextBox()
-        Me.cbGeneralDaemonDrive = New System.Windows.Forms.ComboBox()
-        Me.lblGeneralDaemonPath = New System.Windows.Forms.Label()
         Me.gbGeneralInterface = New System.Windows.Forms.GroupBox()
         Me.tblGeneralInterface = New System.Windows.Forms.TableLayoutPanel()
         Me.gbGeneralThemes = New System.Windows.Forms.GroupBox()
@@ -62,15 +55,14 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayBanner = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayCharacterArt = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayGenresText = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralDisplayLangFlags = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayLandscape = New System.Windows.Forms.CheckBox()
         Me.chkGeneralDisplayPoster = New System.Windows.Forms.CheckBox()
+        Me.chkGeneralDisplayLangFlags = New System.Windows.Forms.CheckBox()
         Me.gbGeneralMiscOpts = New System.Windows.Forms.GroupBox()
         Me.tblGeneralMisc = New System.Windows.Forms.TableLayoutPanel()
         Me.chkGeneralImageFilterAutoscraper = New System.Windows.Forms.CheckBox()
         Me.chkGeneralImageFilterImagedialog = New System.Windows.Forms.CheckBox()
         Me.chkGeneralImageFilter = New System.Windows.Forms.CheckBox()
-        Me.chkGeneralSourceFromFolder = New System.Windows.Forms.CheckBox()
         Me.chkGeneralCheckUpdates = New System.Windows.Forms.CheckBox()
         Me.lblGeneralOverwriteNfo = New System.Windows.Forms.Label()
         Me.chkGeneralOverwriteNfo = New System.Windows.Forms.CheckBox()
@@ -82,12 +74,11 @@ Partial Class frmOption_GUI
         Me.txtGeneralImageFilterFanartMatchRate = New System.Windows.Forms.TextBox()
         Me.lblGeneralImageFilterFanartMatchRate = New System.Windows.Forms.Label()
         Me.chkGeneralImageFilterFanart = New System.Windows.Forms.CheckBox()
-        Me.fbdBrowse = New System.Windows.Forms.FolderBrowserDialog()
-        Me.fileBrowse = New System.Windows.Forms.OpenFileDialog()
+        Me.gbSortTokens = New System.Windows.Forms.GroupBox()
+        Me.tblSortTokens = New System.Windows.Forms.TableLayoutPanel()
+        Me.txtSortTokens = New System.Windows.Forms.TextBox()
         Me.pnlSettings.SuspendLayout()
         Me.tblSettings.SuspendLayout()
-        Me.gbGeneralDaemon.SuspendLayout()
-        Me.tblGeneralDaemon.SuspendLayout()
         Me.gbGeneralInterface.SuspendLayout()
         Me.tblGeneralInterface.SuspendLayout()
         Me.gbGeneralThemes.SuspendLayout()
@@ -98,6 +89,8 @@ Partial Class frmOption_GUI
         Me.tblGeneralMainWindow.SuspendLayout()
         Me.gbGeneralMiscOpts.SuspendLayout()
         Me.tblGeneralMisc.SuspendLayout()
+        Me.gbSortTokens.SuspendLayout()
+        Me.tblSortTokens.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlSettings
@@ -120,11 +113,11 @@ Partial Class frmOption_GUI
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblSettings.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblSettings.Controls.Add(Me.gbGeneralDaemon, 0, 3)
         Me.tblSettings.Controls.Add(Me.gbGeneralInterface, 0, 0)
         Me.tblSettings.Controls.Add(Me.gbGeneralDateAdded, 0, 1)
         Me.tblSettings.Controls.Add(Me.gbGeneralMainWindowOpts, 1, 0)
         Me.tblSettings.Controls.Add(Me.gbGeneralMiscOpts, 1, 1)
+        Me.tblSettings.Controls.Add(Me.gbSortTokens, 1, 3)
         Me.tblSettings.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblSettings.Location = New System.Drawing.Point(0, 0)
         Me.tblSettings.Name = "tblSettings"
@@ -136,97 +129,6 @@ Partial Class frmOption_GUI
         Me.tblSettings.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblSettings.Size = New System.Drawing.Size(668, 664)
         Me.tblSettings.TabIndex = 17
-        '
-        'gbGeneralDaemon
-        '
-        Me.gbGeneralDaemon.AutoSize = True
-        Me.tblSettings.SetColumnSpan(Me.gbGeneralDaemon, 2)
-        Me.gbGeneralDaemon.Controls.Add(Me.tblGeneralDaemon)
-        Me.gbGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.gbGeneralDaemon.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.gbGeneralDaemon.Location = New System.Drawing.Point(3, 554)
-        Me.gbGeneralDaemon.Name = "gbGeneralDaemon"
-        Me.gbGeneralDaemon.Size = New System.Drawing.Size(611, 70)
-        Me.gbGeneralDaemon.TabIndex = 17
-        Me.gbGeneralDaemon.TabStop = False
-        Me.gbGeneralDaemon.Text = "Configuration ISO Filescanning"
-        '
-        'tblGeneralDaemon
-        '
-        Me.tblGeneralDaemon.AutoSize = True
-        Me.tblGeneralDaemon.ColumnCount = 3
-        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDaemon.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblGeneralDaemon.Controls.Add(Me.btnGeneralDaemonPathBrowse, 2, 1)
-        Me.tblGeneralDaemon.Controls.Add(Me.lblGeneralDaemonDrive, 0, 0)
-        Me.tblGeneralDaemon.Controls.Add(Me.txtGeneralDaemonPath, 1, 1)
-        Me.tblGeneralDaemon.Controls.Add(Me.cbGeneralDaemonDrive, 0, 1)
-        Me.tblGeneralDaemon.Controls.Add(Me.lblGeneralDaemonPath, 1, 0)
-        Me.tblGeneralDaemon.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.tblGeneralDaemon.Location = New System.Drawing.Point(3, 18)
-        Me.tblGeneralDaemon.Name = "tblGeneralDaemon"
-        Me.tblGeneralDaemon.RowCount = 3
-        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
-        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDaemon.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralDaemon.Size = New System.Drawing.Size(605, 49)
-        Me.tblGeneralDaemon.TabIndex = 17
-        '
-        'btnGeneralDaemonPathBrowse
-        '
-        Me.btnGeneralDaemonPathBrowse.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.btnGeneralDaemonPathBrowse.Location = New System.Drawing.Point(568, 23)
-        Me.btnGeneralDaemonPathBrowse.Name = "btnGeneralDaemonPathBrowse"
-        Me.btnGeneralDaemonPathBrowse.Size = New System.Drawing.Size(25, 23)
-        Me.btnGeneralDaemonPathBrowse.TabIndex = 4
-        Me.btnGeneralDaemonPathBrowse.Text = "..."
-        Me.btnGeneralDaemonPathBrowse.UseVisualStyleBackColor = True
-        '
-        'lblGeneralDaemonDrive
-        '
-        Me.lblGeneralDaemonDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralDaemonDrive.AutoSize = True
-        Me.lblGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.lblGeneralDaemonDrive.Location = New System.Drawing.Point(3, 3)
-        Me.lblGeneralDaemonDrive.Name = "lblGeneralDaemonDrive"
-        Me.lblGeneralDaemonDrive.Size = New System.Drawing.Size(63, 13)
-        Me.lblGeneralDaemonDrive.TabIndex = 6
-        Me.lblGeneralDaemonDrive.Text = "Driveletter:"
-        '
-        'txtGeneralDaemonPath
-        '
-        Me.txtGeneralDaemonPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.txtGeneralDaemonPath.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.txtGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtGeneralDaemonPath.Location = New System.Drawing.Point(82, 23)
-        Me.txtGeneralDaemonPath.Name = "txtGeneralDaemonPath"
-        Me.txtGeneralDaemonPath.Size = New System.Drawing.Size(480, 22)
-        Me.txtGeneralDaemonPath.TabIndex = 3
-        '
-        'cbGeneralDaemonDrive
-        '
-        Me.cbGeneralDaemonDrive.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.cbGeneralDaemonDrive.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cbGeneralDaemonDrive.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.cbGeneralDaemonDrive.FormattingEnabled = True
-        Me.cbGeneralDaemonDrive.Items.AddRange(New Object() {"", "A", "B", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"})
-        Me.cbGeneralDaemonDrive.Location = New System.Drawing.Point(3, 24)
-        Me.cbGeneralDaemonDrive.Name = "cbGeneralDaemonDrive"
-        Me.cbGeneralDaemonDrive.Size = New System.Drawing.Size(73, 21)
-        Me.cbGeneralDaemonDrive.TabIndex = 7
-        '
-        'lblGeneralDaemonPath
-        '
-        Me.lblGeneralDaemonPath.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblGeneralDaemonPath.AutoSize = True
-        Me.tblGeneralDaemon.SetColumnSpan(Me.lblGeneralDaemonPath, 2)
-        Me.lblGeneralDaemonPath.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralDaemonPath.Location = New System.Drawing.Point(82, 3)
-        Me.lblGeneralDaemonPath.Name = "lblGeneralDaemonPath"
-        Me.lblGeneralDaemonPath.Size = New System.Drawing.Size(191, 13)
-        Me.lblGeneralDaemonPath.TabIndex = 2
-        Me.lblGeneralDaemonPath.Text = "Path to DTAgent.exe/VCDMount.exe"
         '
         'gbGeneralInterface
         '
@@ -489,24 +391,23 @@ Partial Class frmOption_GUI
         Me.tblGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralMainWindow.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayImgDims, 0, 2)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayFanartSmall, 1, 5)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayDiscArt, 0, 8)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayFanartSmall, 1, 4)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayDiscArt, 0, 7)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayImgNames, 1, 2)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayFanart, 1, 4)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayClearArt, 0, 6)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayFanart, 1, 3)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayClearArt, 0, 5)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDoubleClickScrape, 0, 0)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayClearLogo, 0, 7)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayBanner, 0, 4)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayCharacterArt, 0, 5)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayClearLogo, 0, 6)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayBanner, 0, 3)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayCharacterArt, 0, 4)
         Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayGenresText, 0, 1)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayLangFlags, 0, 3)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayLandscape, 1, 6)
-        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayPoster, 1, 7)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayLandscape, 1, 5)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayPoster, 1, 6)
+        Me.tblGeneralMainWindow.Controls.Add(Me.chkGeneralDisplayLangFlags, 1, 1)
         Me.tblGeneralMainWindow.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblGeneralMainWindow.Location = New System.Drawing.Point(3, 18)
         Me.tblGeneralMainWindow.Name = "tblGeneralMainWindow"
-        Me.tblGeneralMainWindow.RowCount = 10
-        Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblGeneralMainWindow.RowCount = 9
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMainWindow.RowStyles.Add(New System.Windows.Forms.RowStyle())
@@ -526,9 +427,9 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayImgDims.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkGeneralDisplayImgDims.Location = New System.Drawing.Point(3, 49)
         Me.chkGeneralDisplayImgDims.Name = "chkGeneralDisplayImgDims"
-        Me.chkGeneralDisplayImgDims.Size = New System.Drawing.Size(160, 17)
+        Me.chkGeneralDisplayImgDims.Size = New System.Drawing.Size(156, 17)
         Me.chkGeneralDisplayImgDims.TabIndex = 8
-        Me.chkGeneralDisplayImgDims.Text = "Display Image Dimensions"
+        Me.chkGeneralDisplayImgDims.Text = "Display Image Resolution"
         Me.chkGeneralDisplayImgDims.UseVisualStyleBackColor = True
         '
         'chkGeneralDisplayFanartSmall
@@ -536,7 +437,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayFanartSmall.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayFanartSmall.AutoSize = True
         Me.chkGeneralDisplayFanartSmall.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayFanartSmall.Location = New System.Drawing.Point(174, 118)
+        Me.chkGeneralDisplayFanartSmall.Location = New System.Drawing.Point(174, 95)
         Me.chkGeneralDisplayFanartSmall.Name = "chkGeneralDisplayFanartSmall"
         Me.chkGeneralDisplayFanartSmall.Size = New System.Drawing.Size(129, 17)
         Me.chkGeneralDisplayFanartSmall.TabIndex = 11
@@ -548,7 +449,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayDiscArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayDiscArt.AutoSize = True
         Me.chkGeneralDisplayDiscArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayDiscArt.Location = New System.Drawing.Point(3, 187)
+        Me.chkGeneralDisplayDiscArt.Location = New System.Drawing.Point(3, 164)
         Me.chkGeneralDisplayDiscArt.Name = "chkGeneralDisplayDiscArt"
         Me.chkGeneralDisplayDiscArt.Size = New System.Drawing.Size(102, 17)
         Me.chkGeneralDisplayDiscArt.TabIndex = 17
@@ -572,7 +473,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayFanart.AutoSize = True
         Me.chkGeneralDisplayFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayFanart.Location = New System.Drawing.Point(174, 95)
+        Me.chkGeneralDisplayFanart.Location = New System.Drawing.Point(174, 72)
         Me.chkGeneralDisplayFanart.Name = "chkGeneralDisplayFanart"
         Me.chkGeneralDisplayFanart.Size = New System.Drawing.Size(99, 17)
         Me.chkGeneralDisplayFanart.TabIndex = 7
@@ -584,7 +485,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayClearArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayClearArt.AutoSize = True
         Me.chkGeneralDisplayClearArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayClearArt.Location = New System.Drawing.Point(3, 141)
+        Me.chkGeneralDisplayClearArt.Location = New System.Drawing.Point(3, 118)
         Me.chkGeneralDisplayClearArt.Name = "chkGeneralDisplayClearArt"
         Me.chkGeneralDisplayClearArt.Size = New System.Drawing.Size(107, 17)
         Me.chkGeneralDisplayClearArt.TabIndex = 14
@@ -609,7 +510,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayClearLogo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayClearLogo.AutoSize = True
         Me.chkGeneralDisplayClearLogo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayClearLogo.Location = New System.Drawing.Point(3, 164)
+        Me.chkGeneralDisplayClearLogo.Location = New System.Drawing.Point(3, 141)
         Me.chkGeneralDisplayClearLogo.Name = "chkGeneralDisplayClearLogo"
         Me.chkGeneralDisplayClearLogo.Size = New System.Drawing.Size(118, 17)
         Me.chkGeneralDisplayClearLogo.TabIndex = 16
@@ -621,7 +522,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayBanner.AutoSize = True
         Me.chkGeneralDisplayBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayBanner.Location = New System.Drawing.Point(3, 95)
+        Me.chkGeneralDisplayBanner.Location = New System.Drawing.Point(3, 72)
         Me.chkGeneralDisplayBanner.Name = "chkGeneralDisplayBanner"
         Me.chkGeneralDisplayBanner.Size = New System.Drawing.Size(103, 17)
         Me.chkGeneralDisplayBanner.TabIndex = 13
@@ -633,7 +534,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayCharacterArt.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayCharacterArt.AutoSize = True
         Me.chkGeneralDisplayCharacterArt.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayCharacterArt.Location = New System.Drawing.Point(3, 118)
+        Me.chkGeneralDisplayCharacterArt.Location = New System.Drawing.Point(3, 95)
         Me.chkGeneralDisplayCharacterArt.Name = "chkGeneralDisplayCharacterArt"
         Me.chkGeneralDisplayCharacterArt.Size = New System.Drawing.Size(130, 17)
         Me.chkGeneralDisplayCharacterArt.TabIndex = 15
@@ -652,24 +553,12 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayGenresText.Text = "Allways Display Genres Text"
         Me.chkGeneralDisplayGenresText.UseVisualStyleBackColor = True
         '
-        'chkGeneralDisplayLangFlags
-        '
-        Me.chkGeneralDisplayLangFlags.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralDisplayLangFlags.AutoSize = True
-        Me.chkGeneralDisplayLangFlags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayLangFlags.Location = New System.Drawing.Point(3, 72)
-        Me.chkGeneralDisplayLangFlags.Name = "chkGeneralDisplayLangFlags"
-        Me.chkGeneralDisplayLangFlags.Size = New System.Drawing.Size(147, 17)
-        Me.chkGeneralDisplayLangFlags.TabIndex = 8
-        Me.chkGeneralDisplayLangFlags.Text = "Display Language Flags"
-        Me.chkGeneralDisplayLangFlags.UseVisualStyleBackColor = True
-        '
         'chkGeneralDisplayLandscape
         '
         Me.chkGeneralDisplayLandscape.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayLandscape.AutoSize = True
         Me.chkGeneralDisplayLandscape.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayLandscape.Location = New System.Drawing.Point(174, 141)
+        Me.chkGeneralDisplayLandscape.Location = New System.Drawing.Point(174, 118)
         Me.chkGeneralDisplayLandscape.Name = "chkGeneralDisplayLandscape"
         Me.chkGeneralDisplayLandscape.Size = New System.Drawing.Size(120, 17)
         Me.chkGeneralDisplayLandscape.TabIndex = 18
@@ -681,12 +570,24 @@ Partial Class frmOption_GUI
         Me.chkGeneralDisplayPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.chkGeneralDisplayPoster.AutoSize = True
         Me.chkGeneralDisplayPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralDisplayPoster.Location = New System.Drawing.Point(174, 164)
+        Me.chkGeneralDisplayPoster.Location = New System.Drawing.Point(174, 141)
         Me.chkGeneralDisplayPoster.Name = "chkGeneralDisplayPoster"
         Me.chkGeneralDisplayPoster.Size = New System.Drawing.Size(98, 17)
         Me.chkGeneralDisplayPoster.TabIndex = 6
         Me.chkGeneralDisplayPoster.Text = "Display Poster"
         Me.chkGeneralDisplayPoster.UseVisualStyleBackColor = True
+        '
+        'chkGeneralDisplayLangFlags
+        '
+        Me.chkGeneralDisplayLangFlags.Anchor = System.Windows.Forms.AnchorStyles.Left
+        Me.chkGeneralDisplayLangFlags.AutoSize = True
+        Me.chkGeneralDisplayLangFlags.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkGeneralDisplayLangFlags.Location = New System.Drawing.Point(174, 26)
+        Me.chkGeneralDisplayLangFlags.Name = "chkGeneralDisplayLangFlags"
+        Me.chkGeneralDisplayLangFlags.Size = New System.Drawing.Size(147, 17)
+        Me.chkGeneralDisplayLangFlags.TabIndex = 8
+        Me.chkGeneralDisplayLangFlags.Text = "Display Language Flags"
+        Me.chkGeneralDisplayLangFlags.UseVisualStyleBackColor = True
         '
         'gbGeneralMiscOpts
         '
@@ -697,7 +598,7 @@ Partial Class frmOption_GUI
         Me.gbGeneralMiscOpts.Location = New System.Drawing.Point(247, 292)
         Me.gbGeneralMiscOpts.Name = "gbGeneralMiscOpts"
         Me.tblSettings.SetRowSpan(Me.gbGeneralMiscOpts, 2)
-        Me.gbGeneralMiscOpts.Size = New System.Drawing.Size(367, 256)
+        Me.gbGeneralMiscOpts.Size = New System.Drawing.Size(367, 233)
         Me.gbGeneralMiscOpts.TabIndex = 1
         Me.gbGeneralMiscOpts.TabStop = False
         Me.gbGeneralMiscOpts.Text = "Miscellaneous"
@@ -713,7 +614,6 @@ Partial Class frmOption_GUI
         Me.tblGeneralMisc.Controls.Add(Me.chkGeneralImageFilterAutoscraper, 1, 7)
         Me.tblGeneralMisc.Controls.Add(Me.chkGeneralImageFilterImagedialog, 1, 8)
         Me.tblGeneralMisc.Controls.Add(Me.chkGeneralImageFilter, 0, 6)
-        Me.tblGeneralMisc.Controls.Add(Me.chkGeneralSourceFromFolder, 0, 3)
         Me.tblGeneralMisc.Controls.Add(Me.chkGeneralCheckUpdates, 0, 0)
         Me.tblGeneralMisc.Controls.Add(Me.lblGeneralOverwriteNfo, 0, 2)
         Me.tblGeneralMisc.Controls.Add(Me.chkGeneralOverwriteNfo, 0, 1)
@@ -742,7 +642,7 @@ Partial Class frmOption_GUI
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblGeneralMisc.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblGeneralMisc.Size = New System.Drawing.Size(361, 235)
+        Me.tblGeneralMisc.Size = New System.Drawing.Size(361, 212)
         Me.tblGeneralMisc.TabIndex = 17
         '
         'chkGeneralImageFilterAutoscraper
@@ -750,7 +650,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralImageFilterAutoscraper.AutoSize = True
         Me.chkGeneralImageFilterAutoscraper.Enabled = False
         Me.chkGeneralImageFilterAutoscraper.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralImageFilterAutoscraper.Location = New System.Drawing.Point(23, 136)
+        Me.chkGeneralImageFilterAutoscraper.Location = New System.Drawing.Point(23, 113)
         Me.chkGeneralImageFilterAutoscraper.Name = "chkGeneralImageFilterAutoscraper"
         Me.chkGeneralImageFilterAutoscraper.Size = New System.Drawing.Size(88, 17)
         Me.chkGeneralImageFilterAutoscraper.TabIndex = 10
@@ -762,7 +662,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralImageFilterImagedialog.AutoSize = True
         Me.chkGeneralImageFilterImagedialog.Enabled = False
         Me.chkGeneralImageFilterImagedialog.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralImageFilterImagedialog.Location = New System.Drawing.Point(23, 159)
+        Me.chkGeneralImageFilterImagedialog.Location = New System.Drawing.Point(23, 136)
         Me.chkGeneralImageFilterImagedialog.Name = "chkGeneralImageFilterImagedialog"
         Me.chkGeneralImageFilterImagedialog.Size = New System.Drawing.Size(90, 17)
         Me.chkGeneralImageFilterImagedialog.TabIndex = 8
@@ -775,26 +675,12 @@ Partial Class frmOption_GUI
         Me.chkGeneralImageFilter.AutoSize = True
         Me.tblGeneralMisc.SetColumnSpan(Me.chkGeneralImageFilter, 4)
         Me.chkGeneralImageFilter.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralImageFilter.Location = New System.Drawing.Point(3, 113)
+        Me.chkGeneralImageFilter.Location = New System.Drawing.Point(3, 90)
         Me.chkGeneralImageFilter.Name = "chkGeneralImageFilter"
         Me.chkGeneralImageFilter.Size = New System.Drawing.Size(261, 17)
         Me.chkGeneralImageFilter.TabIndex = 8
         Me.chkGeneralImageFilter.Text = "Activate ImageFilter to avoid duplicate images"
         Me.chkGeneralImageFilter.UseVisualStyleBackColor = True
-        '
-        'chkGeneralSourceFromFolder
-        '
-        Me.chkGeneralSourceFromFolder.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.chkGeneralSourceFromFolder.AutoSize = True
-        Me.chkGeneralSourceFromFolder.CheckAlign = System.Drawing.ContentAlignment.TopLeft
-        Me.tblGeneralMisc.SetColumnSpan(Me.chkGeneralSourceFromFolder, 4)
-        Me.chkGeneralSourceFromFolder.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralSourceFromFolder.Location = New System.Drawing.Point(3, 61)
-        Me.chkGeneralSourceFromFolder.Name = "chkGeneralSourceFromFolder"
-        Me.chkGeneralSourceFromFolder.Size = New System.Drawing.Size(242, 17)
-        Me.chkGeneralSourceFromFolder.TabIndex = 5
-        Me.chkGeneralSourceFromFolder.Text = "Include Folder Name in Source Type Check"
-        Me.chkGeneralSourceFromFolder.UseVisualStyleBackColor = True
         '
         'chkGeneralCheckUpdates
         '
@@ -841,7 +727,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralDigitGrpSymbolVotes.AutoSize = True
         Me.tblGeneralMisc.SetColumnSpan(Me.chkGeneralDigitGrpSymbolVotes, 3)
         Me.chkGeneralDigitGrpSymbolVotes.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.chkGeneralDigitGrpSymbolVotes.Location = New System.Drawing.Point(3, 87)
+        Me.chkGeneralDigitGrpSymbolVotes.Location = New System.Drawing.Point(3, 64)
         Me.chkGeneralDigitGrpSymbolVotes.Name = "chkGeneralDigitGrpSymbolVotes"
         Me.chkGeneralDigitGrpSymbolVotes.Size = New System.Drawing.Size(245, 17)
         Me.chkGeneralDigitGrpSymbolVotes.TabIndex = 6
@@ -852,7 +738,7 @@ Partial Class frmOption_GUI
         '
         Me.btnGeneralDigitGrpSymbolSettings.AutoSize = True
         Me.btnGeneralDigitGrpSymbolSettings.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.btnGeneralDigitGrpSymbolSettings.Location = New System.Drawing.Point(283, 84)
+        Me.btnGeneralDigitGrpSymbolSettings.Location = New System.Drawing.Point(283, 61)
         Me.btnGeneralDigitGrpSymbolSettings.Name = "btnGeneralDigitGrpSymbolSettings"
         Me.btnGeneralDigitGrpSymbolSettings.Size = New System.Drawing.Size(75, 23)
         Me.btnGeneralDigitGrpSymbolSettings.TabIndex = 7
@@ -863,7 +749,7 @@ Partial Class frmOption_GUI
         '
         Me.txtGeneralImageFilterPosterMatchRate.Enabled = False
         Me.txtGeneralImageFilterPosterMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtGeneralImageFilterPosterMatchRate.Location = New System.Drawing.Point(283, 182)
+        Me.txtGeneralImageFilterPosterMatchRate.Location = New System.Drawing.Point(283, 159)
         Me.txtGeneralImageFilterPosterMatchRate.Name = "txtGeneralImageFilterPosterMatchRate"
         Me.txtGeneralImageFilterPosterMatchRate.Size = New System.Drawing.Size(44, 22)
         Me.txtGeneralImageFilterPosterMatchRate.TabIndex = 13
@@ -874,7 +760,7 @@ Partial Class frmOption_GUI
         Me.lblGeneralImageFilterPosterMatchRate.AutoSize = True
         Me.lblGeneralImageFilterPosterMatchRate.Enabled = False
         Me.lblGeneralImageFilterPosterMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralImageFilterPosterMatchRate.Location = New System.Drawing.Point(123, 186)
+        Me.lblGeneralImageFilterPosterMatchRate.Location = New System.Drawing.Point(123, 163)
         Me.lblGeneralImageFilterPosterMatchRate.Name = "lblGeneralImageFilterPosterMatchRate"
         Me.lblGeneralImageFilterPosterMatchRate.Size = New System.Drawing.Size(145, 13)
         Me.lblGeneralImageFilterPosterMatchRate.TabIndex = 14
@@ -886,7 +772,7 @@ Partial Class frmOption_GUI
         Me.chkGeneralImageFilterPoster.CheckAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.chkGeneralImageFilterPoster.Enabled = False
         Me.chkGeneralImageFilterPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralImageFilterPoster.Location = New System.Drawing.Point(23, 182)
+        Me.chkGeneralImageFilterPoster.Location = New System.Drawing.Point(23, 159)
         Me.chkGeneralImageFilterPoster.Name = "chkGeneralImageFilterPoster"
         Me.chkGeneralImageFilterPoster.Size = New System.Drawing.Size(58, 17)
         Me.chkGeneralImageFilterPoster.TabIndex = 17
@@ -898,7 +784,7 @@ Partial Class frmOption_GUI
         '
         Me.txtGeneralImageFilterFanartMatchRate.Enabled = False
         Me.txtGeneralImageFilterFanartMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.txtGeneralImageFilterFanartMatchRate.Location = New System.Drawing.Point(283, 210)
+        Me.txtGeneralImageFilterFanartMatchRate.Location = New System.Drawing.Point(283, 187)
         Me.txtGeneralImageFilterFanartMatchRate.Name = "txtGeneralImageFilterFanartMatchRate"
         Me.txtGeneralImageFilterFanartMatchRate.Size = New System.Drawing.Size(44, 22)
         Me.txtGeneralImageFilterFanartMatchRate.TabIndex = 15
@@ -909,7 +795,7 @@ Partial Class frmOption_GUI
         Me.lblGeneralImageFilterFanartMatchRate.AutoSize = True
         Me.lblGeneralImageFilterFanartMatchRate.Enabled = False
         Me.lblGeneralImageFilterFanartMatchRate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGeneralImageFilterFanartMatchRate.Location = New System.Drawing.Point(123, 214)
+        Me.lblGeneralImageFilterFanartMatchRate.Location = New System.Drawing.Point(123, 191)
         Me.lblGeneralImageFilterFanartMatchRate.Name = "lblGeneralImageFilterFanartMatchRate"
         Me.lblGeneralImageFilterFanartMatchRate.Size = New System.Drawing.Size(146, 13)
         Me.lblGeneralImageFilterFanartMatchRate.TabIndex = 16
@@ -921,13 +807,51 @@ Partial Class frmOption_GUI
         Me.chkGeneralImageFilterFanart.CheckAlign = System.Drawing.ContentAlignment.BottomLeft
         Me.chkGeneralImageFilterFanart.Enabled = False
         Me.chkGeneralImageFilterFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkGeneralImageFilterFanart.Location = New System.Drawing.Point(23, 210)
+        Me.chkGeneralImageFilterFanart.Location = New System.Drawing.Point(23, 187)
         Me.chkGeneralImageFilterFanart.Name = "chkGeneralImageFilterFanart"
         Me.chkGeneralImageFilterFanart.Size = New System.Drawing.Size(59, 17)
         Me.chkGeneralImageFilterFanart.TabIndex = 18
         Me.chkGeneralImageFilterFanart.Text = "Fanart"
         Me.chkGeneralImageFilterFanart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.chkGeneralImageFilterFanart.UseVisualStyleBackColor = True
+        '
+        'gbSortTokens
+        '
+        Me.gbSortTokens.AutoSize = True
+        Me.gbSortTokens.Controls.Add(Me.tblSortTokens)
+        Me.gbSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.gbSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold)
+        Me.gbSortTokens.Location = New System.Drawing.Point(247, 531)
+        Me.gbSortTokens.Name = "gbSortTokens"
+        Me.gbSortTokens.Size = New System.Drawing.Size(367, 49)
+        Me.gbSortTokens.TabIndex = 17
+        Me.gbSortTokens.TabStop = False
+        Me.gbSortTokens.Text = "Sort Tokens to Ignore"
+        '
+        'tblSortTokens
+        '
+        Me.tblSortTokens.AutoSize = True
+        Me.tblSortTokens.ColumnCount = 1
+        Me.tblSortTokens.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
+        Me.tblSortTokens.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
+        Me.tblSortTokens.Controls.Add(Me.txtSortTokens, 0, 0)
+        Me.tblSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.tblSortTokens.Location = New System.Drawing.Point(3, 18)
+        Me.tblSortTokens.Name = "tblSortTokens"
+        Me.tblSortTokens.RowCount = 1
+        Me.tblSortTokens.RowStyles.Add(New System.Windows.Forms.RowStyle())
+        Me.tblSortTokens.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28.0!))
+        Me.tblSortTokens.Size = New System.Drawing.Size(361, 28)
+        Me.tblSortTokens.TabIndex = 1
+        '
+        'txtSortTokens
+        '
+        Me.txtSortTokens.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtSortTokens.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSortTokens.Location = New System.Drawing.Point(3, 3)
+        Me.txtSortTokens.Name = "txtSortTokens"
+        Me.txtSortTokens.Size = New System.Drawing.Size(355, 22)
+        Me.txtSortTokens.TabIndex = 0
         '
         'frmOption_GUI
         '
@@ -941,10 +865,6 @@ Partial Class frmOption_GUI
         Me.pnlSettings.PerformLayout()
         Me.tblSettings.ResumeLayout(False)
         Me.tblSettings.PerformLayout()
-        Me.gbGeneralDaemon.ResumeLayout(False)
-        Me.gbGeneralDaemon.PerformLayout()
-        Me.tblGeneralDaemon.ResumeLayout(False)
-        Me.tblGeneralDaemon.PerformLayout()
         Me.gbGeneralInterface.ResumeLayout(False)
         Me.gbGeneralInterface.PerformLayout()
         Me.tblGeneralInterface.ResumeLayout(False)
@@ -965,6 +885,10 @@ Partial Class frmOption_GUI
         Me.gbGeneralMiscOpts.PerformLayout()
         Me.tblGeneralMisc.ResumeLayout(False)
         Me.tblGeneralMisc.PerformLayout()
+        Me.gbSortTokens.ResumeLayout(False)
+        Me.gbSortTokens.PerformLayout()
+        Me.tblSortTokens.ResumeLayout(False)
+        Me.tblSortTokens.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -972,13 +896,6 @@ Partial Class frmOption_GUI
 
     Friend WithEvents pnlSettings As Windows.Forms.Panel
     Friend WithEvents tblSettings As Windows.Forms.TableLayoutPanel
-    Friend WithEvents gbGeneralDaemon As Windows.Forms.GroupBox
-    Friend WithEvents tblGeneralDaemon As Windows.Forms.TableLayoutPanel
-    Friend WithEvents btnGeneralDaemonPathBrowse As Windows.Forms.Button
-    Friend WithEvents lblGeneralDaemonDrive As Windows.Forms.Label
-    Friend WithEvents txtGeneralDaemonPath As Windows.Forms.TextBox
-    Friend WithEvents cbGeneralDaemonDrive As Windows.Forms.ComboBox
-    Friend WithEvents lblGeneralDaemonPath As Windows.Forms.Label
     Friend WithEvents gbGeneralInterface As Windows.Forms.GroupBox
     Friend WithEvents tblGeneralInterface As Windows.Forms.TableLayoutPanel
     Friend WithEvents gbGeneralThemes As Windows.Forms.GroupBox
@@ -1018,7 +935,6 @@ Partial Class frmOption_GUI
     Friend WithEvents chkGeneralImageFilterAutoscraper As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralImageFilterImagedialog As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralImageFilter As Windows.Forms.CheckBox
-    Friend WithEvents chkGeneralSourceFromFolder As Windows.Forms.CheckBox
     Friend WithEvents chkGeneralCheckUpdates As Windows.Forms.CheckBox
     Friend WithEvents lblGeneralOverwriteNfo As Windows.Forms.Label
     Friend WithEvents chkGeneralOverwriteNfo As Windows.Forms.CheckBox
@@ -1030,6 +946,7 @@ Partial Class frmOption_GUI
     Friend WithEvents txtGeneralImageFilterFanartMatchRate As Windows.Forms.TextBox
     Friend WithEvents lblGeneralImageFilterFanartMatchRate As Windows.Forms.Label
     Friend WithEvents chkGeneralImageFilterFanart As Windows.Forms.CheckBox
-    Friend WithEvents fbdBrowse As Windows.Forms.FolderBrowserDialog
-    Friend WithEvents fileBrowse As Windows.Forms.OpenFileDialog
+    Friend WithEvents gbSortTokens As GroupBox
+    Friend WithEvents tblSortTokens As TableLayoutPanel
+    Friend WithEvents txtSortTokens As TextBox
 End Class

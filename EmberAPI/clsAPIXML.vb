@@ -288,7 +288,7 @@ Public Class APIXML
                     End If
                 End If
 
-                If Master.eSettings.GeneralShowLangFlags Then
+                If True Then 'TODO: Master.eSettings.ShowLangFlags
                     'Audio Language Flags has range iReturn(5) to iReturn(11)
                     Dim aIcon As Integer = 5
                     Dim hasMoreA As Boolean = tFileInfo.StreamDetails.Audio.Count > 7
@@ -416,7 +416,7 @@ Public Class APIXML
     End Function
 
     Public Shared Function GetVideoSource(ByVal tFileItem As FileItem, ByVal isTV As Boolean) As String
-        Dim sourceCheck As String = String.Empty
+        Dim strName As String = String.Empty
 
         If tFileItem.bIsBDMV Then
             Return "bluray"
@@ -426,15 +426,15 @@ Public Class APIXML
             Return "dvd"
         Else
             If isTV Then
-                sourceCheck = Path.GetFileName(tFileItem.FirstStackedPath).ToLower
+                strName = Path.GetFileName(tFileItem.FirstStackedPath).ToLower
             Else
-                sourceCheck = If(Master.eSettings.GeneralSourceFromFolder, String.Concat(Directory.GetParent(tFileItem.FirstStackedPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(tFileItem.FirstStackedPath).ToLower), Path.GetFileName(tFileItem.FirstStackedPath).ToLower)
+                strName = If(Master.eSettings.Movie.SourceSettings.VideoSourceFromFolder, String.Concat(Directory.GetParent(tFileItem.FirstStackedPath).Name.ToLower, Path.DirectorySeparatorChar, Path.GetFileName(tFileItem.FirstStackedPath).ToLower), Path.GetFileName(tFileItem.FirstStackedPath).ToLower)
             End If
             Dim mySources As New List(Of AdvancedSettingsComplexSettingsTableItem)
             mySources = clsXMLAdvancedSettings.GetComplexSetting("MovieSources")
             If Not mySources Is Nothing Then
                 For Each k In mySources
-                    If Regex.IsMatch(sourceCheck, k.Name) Then
+                    If Regex.IsMatch(strName, k.Name) Then
                         Return k.Value
                     End If
                 Next

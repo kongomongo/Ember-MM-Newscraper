@@ -1138,7 +1138,7 @@ Public Class Scanner
     Public Shared Function RegexGetTVEpisode(ByVal strPath As String, ByVal lngShowID As Long) As List(Of EpisodeItem)
         Dim retEpisodeItemsList As New List(Of EpisodeItem)
 
-        For Each rShow As Settings.regexp In Master.eSettings.TVShowMatching
+        For Each rShow As RegexEpisodeItemSpecification In Master.eSettings.TV.SourceSettings.TVShowMatching
             Dim reg As Regex = New Regex(rShow.Regexp, RegexOptions.IgnoreCase)
 
             Dim regexppos As Integer
@@ -1146,10 +1146,10 @@ Public Class Scanner
 
             If reg.IsMatch(strPath.ToLower) Then
                 Dim eItem As New EpisodeItem
-                Dim defaultSeason As Integer = rShow.defaultSeason
+                Dim defaultSeason As Integer = rShow.DefaultSeason
                 Dim sMatch As Match = reg.Match(strPath.ToLower)
 
-                If rShow.byDate Then
+                If rShow.ByDate Then
                     If Not RegexGetAiredDate(sMatch, eItem) Then Continue For
                     retEpisodeItemsList.Add(eItem)
                     logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Found date based match {0} ({1}) [{2}]", strPath, eItem.Aired, rShow.Regexp))
@@ -1163,11 +1163,11 @@ Public Class Scanner
                 ' as second run might modify or empty it.
                 Dim remainder As String = sMatch.Groups(3).Value.ToString
 
-                If Not String.IsNullOrEmpty(Master.eSettings.TVMultiPartMatching) Then
-                    Dim reg2 As Regex = New Regex(Master.eSettings.TVMultiPartMatching, RegexOptions.IgnoreCase)
+                If Not String.IsNullOrEmpty(Master.eSettings.TV.SourceSettings.MultiPartMatching) Then
+                    Dim reg2 As Regex = New Regex(Master.eSettings.TV.SourceSettings.MultiPartMatching, RegexOptions.IgnoreCase)
 
                     ' check the remainder of the string for any further episodes.
-                    If Not rShow.byDate Then
+                    If Not rShow.ByDate Then
                         ' we want "long circuit" OR below so that both offsets are evaluated
                         While reg2.IsMatch(remainder) OrElse reg.IsMatch(remainder)
                             regexppos = If(reg.IsMatch(remainder), reg.Match(remainder).Index, -1)
@@ -1201,7 +1201,7 @@ Public Class Scanner
                                 End If
 
                                 retEpisodeItemsList.Add(eItem)
-                                logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TVMultiPartMatching))
+                                logger.Info(String.Format("[Scanner] [RegexGetTVEpisode] Adding multipart episode {0} [{1}]", eItem.Episode, Master.eSettings.TV.SourceSettings.MultiPartMatching))
                                 remainder = remainder.Substring(reg2.Match(remainder).Length)
                             End If
                         End While
@@ -1368,10 +1368,10 @@ Public Class Scanner
                     currShowContainer.Source = tDBSource
                     ScanForFiles_TV(currShowContainer, dInfo.FullName)
 
-                    If Master.eSettings.TVScanOrderModify Then
+                    If Master.eSettings.TV.SourceSettings.ScanOrderModify Then
                         Try
                             inList = dInfo.GetDirectories.Where(Function(d) _
-                                                                    (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
+                                                                    (Master.eSettings.TV.SourceSettings.IgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
                                                                     FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.LastWriteTime
                                                                     )
                         Catch ex As Exception
@@ -1380,7 +1380,7 @@ Public Class Scanner
                     Else
                         Try
                             inList = dInfo.GetDirectories.Where(Function(d) _
-                                                                    (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
+                                                                    (Master.eSettings.TV.SourceSettings.IgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
                                                                     FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name
                                                                     )
                         Catch ex As Exception
@@ -1520,7 +1520,7 @@ Public Class Scanner
                             Dim inList As IEnumerable(Of DirectoryInfo) = Nothing
                             Try
                                 inList = inInfo.GetDirectories.Where(Function(d) _
-                                                                         (Master.eSettings.TVGeneralIgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
+                                                                         (Master.eSettings.TV.SourceSettings.IgnoreLastScan OrElse d.LastWriteTime > _SourceLastScan) AndAlso
                                                                          FileUtils.Common.IsValidDir(d, Enums.ContentType.TVShow)).OrderBy(Function(d) d.Name
                                                                          )
                             Catch
@@ -1571,13 +1571,13 @@ Public Class Scanner
                                 Catch ex As Exception
                                     _SourceLastScan = Date.Now
                                 End Try
-                                If sSource.Recursive OrElse (Master.eSettings.MovieGeneralIgnoreLastScan OrElse Directory.GetLastWriteTime(sSource.Path) > _SourceLastScan) Then
+                                If sSource.Recursive OrElse (Master.eSettings.Movie.SourceSettings.IgnoreLastScan OrElse Directory.GetLastWriteTime(sSource.Path) > _SourceLastScan) Then
                                     'save the scan time back to the db
                                     parLastScan.Value = Date.Now
                                     parID.Value = sSource.ID
                                     SQLUpdatecommand.ExecuteNonQuery()
                                     Try
-                                        If Master.eSettings.MovieSortBeforeScan OrElse sSource.IsSingle Then
+                                        If Master.eSettings.Movie.SourceSettings.SortBeforeScan OrElse sSource.IsSingle Then
                                             FileUtils.SortFiles(SQLreader("strPath").ToString)
                                         End If
                                     Catch ex As Exception
@@ -1639,15 +1639,15 @@ Public Class Scanner
         End If
 
         'no separate MovieSet scanning possible, so we clean MovieSets when movies were scanned
-        If (Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies) OrElse
-            (Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.Movies) OrElse
-            (Master.eSettings.TVCleanDB AndAlso Args.Scan.TV) Then
+        If (Master.eSettings.Movie.SourceSettings.CleanDB AndAlso Args.Scan.Movies) OrElse
+            (Master.eSettings.Movieset.SourceSettings.CleanDB AndAlso Args.Scan.Movies) OrElse
+            (Master.eSettings.TV.SourceSettings.CleanDB AndAlso Args.Scan.TV) Then
             bwPrelim.ReportProgress(-1, New ProgressValue With {.EventType = Enums.ScannerEventType.CleaningDatabase, .Message = String.Empty})
             'remove any db entries that no longer exist
             Master.DB.Clean(
-                Master.eSettings.MovieCleanDB AndAlso Args.Scan.Movies,
-                Master.eSettings.MovieSetCleanDB AndAlso Args.Scan.MovieSets,
-                Master.eSettings.TVCleanDB AndAlso Args.Scan.TV, Args.SourceID
+                Master.eSettings.Movie.SourceSettings.CleanDB AndAlso Args.Scan.Movies,
+                Master.eSettings.Movieset.SourceSettings.CleanDB AndAlso Args.Scan.MovieSets,
+                Master.eSettings.TV.SourceSettings.CleanDB AndAlso Args.Scan.TV, Args.SourceID
                 )
         End If
 
