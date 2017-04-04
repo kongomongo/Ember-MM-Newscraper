@@ -772,30 +772,32 @@ Public Class dlgCustomScraper
                     gbSeasonScrapeOptions.Visible = False
                     gbSpecialScrapeModifiers.Visible = False
 
-                    mEpisodeActorThumbsAllowed = False
-                    mEpisodeFanartAllowed = False
-                    mEpisodeMetaDataAllowed = False
-                    mEpisodeNFOAllowed = False
-                    mEpisodePosterAllowed = False
-                    mMainActorThumbsAllowed = False
-                    mMainBannerAllowed = .FilenameAnyEnabled_MovieSet_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainBanner)
-                    mMainCharacterArtAllowed = False
-                    mMainClearArtAllowed = .FilenameAnyEnabled_MovieSet_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainClearArt)
-                    mMainClearLogoAllowed = .FilenameAnyEnabled_MovieSet_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainClearLogo)
-                    mMainDiscArtAllowed = .FilenameAnyEnabled_MovieSet_DiscArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainDiscArt)
-                    mMainExtrafanartsAllowed = False
-                    mMainExtrathumbsAllowed = False
-                    mMainFanartAllowed = .FilenameAnyEnabled_MovieSet_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainFanart)
-                    mMainLandscapeAllowed = .FilenameAnyEnabled_MovieSet_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainLandscape)
-                    mMainMetaDataAllowed = False
-                    mMainNFOAllowed = .FilenameAnyEnabled_MovieSet_NFO
-                    mMainPosterAllowed = .FilenameAnyEnabled_MovieSet_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainPoster)
-                    mMainThemeAllowed = False
-                    mMainTrailerAllowed = False
-                    mSeasonBannerAllowed = False
-                    mSeasonFanartAllowed = False
-                    mSeasonLandscapeAllowed = False
-                    mSeasonPosterAllowed = False
+                    With Master.eSettings.Movieset.Filenaming
+                        mEpisodeActorThumbsAllowed = False
+                        mEpisodeFanartAllowed = False
+                        mEpisodeMetaDataAllowed = False
+                        mEpisodeNFOAllowed = False
+                        mEpisodePosterAllowed = False
+                        mMainActorThumbsAllowed = False
+                        mMainBannerAllowed = .FilenameAnyEnabled_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainBanner)
+                        mMainCharacterArtAllowed = False
+                        mMainClearArtAllowed = .FilenameAnyEnabled_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainClearArt)
+                        mMainClearLogoAllowed = .FilenameAnyEnabled_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainClearLogo)
+                        mMainDiscArtAllowed = .FilenameAnyEnabled_DiscArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainDiscArt)
+                        mMainExtrafanartsAllowed = False
+                        mMainExtrathumbsAllowed = False
+                        mMainFanartAllowed = .FilenameAnyEnabled_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainFanart)
+                        mMainLandscapeAllowed = .FilenameAnyEnabled_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainLandscape)
+                        mMainMetaDataAllowed = False
+                        mMainNFOAllowed = .FilenameAnyEnabled_NFO
+                        mMainPosterAllowed = .FilenameAnyEnabled_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_MovieSet(Enums.ScrapeModifierType.MainPoster)
+                        mMainThemeAllowed = False
+                        mMainTrailerAllowed = False
+                        mSeasonBannerAllowed = False
+                        mSeasonFanartAllowed = False
+                        mSeasonLandscapeAllowed = False
+                        mSeasonPosterAllowed = False
+                    End With
 
                     With Master.eSettings.Movieset.DataSettings
                         oEpisodeActorsAllowed = False
@@ -856,21 +858,23 @@ Public Class dlgCustomScraper
                     mEpisodeMetaDataAllowed = Master.eSettings.TV.DataSettings.MetaDataScan
                     mEpisodeNFOAllowed = .FilenameAnyEnabled_TVEpisode_NFO
                     mEpisodePosterAllowed = .FilenameAnyEnabled_TVEpisode_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.EpisodePoster)
-                    mMainActorThumbsAllowed = .FilenameAnyEnabled_TVShow_ActorTumbs
-                    mMainBannerAllowed = .FilenameAnyEnabled_TVShow_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainBanner)
-                    mMainCharacterArtAllowed = .FilenameAnyEnabled_TVShow_CharacterArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainCharacterArt)
-                    mMainClearArtAllowed = .FilenameAnyEnabled_TVShow_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearArt)
-                    mMainClearLogoAllowed = .FilenameAnyEnabled_TVShow_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearLogo)
-                    mMainDiscArtAllowed = False
-                    mMainExtrafanartsAllowed = .FilenameAnyEnabled_TVShow_Extrafanarts AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart)
-                    mMainExtrathumbsAllowed = False
-                    mMainFanartAllowed = .FilenameAnyEnabled_TVShow_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart)
-                    mMainLandscapeAllowed = .FilenameAnyEnabled_TVShow_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainLandscape)
-                    mMainMetaDataAllowed = False
-                    mMainNFOAllowed = .FilenameAnyEnabled_TVShow_NFO
-                    mMainPosterAllowed = .FilenameAnyEnabled_TVShow_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainPoster)
-                    mMainThemeAllowed = .FilenameAnyEnabled_TVShow_Theme AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ScrapeModifierType.MainTheme)
-                    mMainTrailerAllowed = False
+                    With Master.eSettings.TV.Filenaming.TVShow
+                        mMainActorThumbsAllowed = .FilenameAnyEnabled_Actorthumbs
+                        mMainBannerAllowed = .FilenameAnyEnabled_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainBanner)
+                        mMainCharacterArtAllowed = .FilenameAnyEnabled_CharacterArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainCharacterArt)
+                        mMainClearArtAllowed = .FilenameAnyEnabled_ClearArt AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearArt)
+                        mMainClearLogoAllowed = .FilenameAnyEnabled_ClearLogo AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainClearLogo)
+                        mMainDiscArtAllowed = False
+                        mMainExtrafanartsAllowed = .FilenameAnyEnabled_Extrafanarts AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart)
+                        mMainExtrathumbsAllowed = False
+                        mMainFanartAllowed = .FilenameAnyEnabled_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainFanart)
+                        mMainLandscapeAllowed = .FilenameAnyEnabled_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainLandscape)
+                        mMainMetaDataAllowed = False
+                        mMainNFOAllowed = .FilenameAnyEnabled_NFO
+                        mMainPosterAllowed = .FilenameAnyEnabled_Poster AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.MainPoster)
+                        mMainThemeAllowed = .FilenameAnyEnabled_Theme AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Theme_TV(Enums.ScrapeModifierType.MainTheme)
+                        mMainTrailerAllowed = False
+                    End With
                     mSeasonBannerAllowed = .FilenameAnyEnabled_TVSeason_Banner AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.SeasonBanner)
                     mSeasonFanartAllowed = . FilenameAnyEnabled_TVSeason_Fanart AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.SeasonFanart)
                     mSeasonLandscapeAllowed = .FilenameAnyEnabled_TVSeason_Landscape AndAlso AddonsManager.Instance.ScraperWithCapabilityAnyEnabled_Image_TV(Enums.ScrapeModifierType.SeasonLandscape)

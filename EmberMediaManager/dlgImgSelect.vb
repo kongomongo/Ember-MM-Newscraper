@@ -2250,13 +2250,15 @@ Public Class dlgImgSelect
                     If DoMainExtrafanarts OrElse DoMainExtrathumbs Then noSubImages = False
                 End With
             Case Enums.ContentType.Movieset
-                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Banner
-                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearArt
-                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearLogo
-                DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_DiscArt
-                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Fanart
-                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Landscape
-                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Poster
+                With Master.eSettings.Movieset.Filenaming
+                    DoMainBanner = tScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainDiscArt = tScrapeModifiers.MainDiscArt AndAlso .FilenameAnyEnabled_DiscArt
+                    DoMainFanart = tScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = tScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
             Case Enums.ContentType.TV
                 DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner
                 DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart

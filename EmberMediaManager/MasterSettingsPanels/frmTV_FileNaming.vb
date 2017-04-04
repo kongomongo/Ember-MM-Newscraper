@@ -136,9 +136,17 @@ Public Class frmTV_FileNaming
     End Function
 
     Public Sub LoadSettings()
+        With Master.eSettings.TV.Filenaming.TVShow
+            '************* XBMC TvTunes settings *************** 
+            chkTVShowThemeTvTunesCustom.Checked = .TvTunes.Custom
+            chkTVShowThemeTvTunesShowPath.Checked = .TvTunes.TVShowPath
+            chkTVShowThemeTvTunesSub.Checked = .TvTunes.Subdirectory
+            txtTVShowThemeTvTunesCustomPath.Text = .TvTunes.CustomPath
+            txtTVShowThemeTvTunesSubDir.Text = .TvTunes.SubdirectoryPath
+        End With
+
         With Master.eSettings
-            '*************** XBMC Frodo settings ***************
-            chkTVUseFrodo.Checked = .TVUseFrodo
+            '*************** XBMC Frodo settings *************** 
             chkTVEpisodeActorThumbsFrodo.Checked = .TVEpisodeActorThumbsFrodo
             chkTVEpisodeNFOFrodo.Checked = .TVEpisodeNFOFrodo
             chkTVEpisodePosterFrodo.Checked = .TVEpisodePosterFrodo
@@ -154,29 +162,20 @@ Public Class frmTV_FileNaming
 
             '*************** XBMC Eden settings ****************
 
-            '******** XBMC ArtworkDownloader settings **********
-            chkTVUseAD.Checked = .TVUseAD
+            '******** XBMC ArtworkDownloader settings ********** 
             chkTVSeasonLandscapeAD.Checked = .TVSeasonLandscapeAD
             chkTVShowCharacterArtAD.Checked = .TVShowCharacterArtAD
             chkTVShowClearArtAD.Checked = .TVShowClearArtAD
             chkTVShowClearLogoAD.Checked = .TVShowClearLogoAD
             chkTVShowLandscapeAD.Checked = .TVShowLandscapeAD
 
-            '********* XBMC Extended Images settings ***********
-            chkTVUseExtended.Checked = .TVUseExtended
+            '********* XBMC Extended Images settings *********** 
             chkTVSeasonLandscapeExtended.Checked = .TVSeasonLandscapeExtended
             chkTVShowCharacterArtExtended.Checked = .TVShowCharacterArtExtended
             chkTVShowClearArtExtended.Checked = .TVShowClearArtExtended
             chkTVShowClearLogoExtended.Checked = .TVShowClearLogoExtended
             chkTVShowLandscapeExtended.Checked = .TVShowLandscapeExtended
 
-            '************* XBMC TvTunes settings ***************
-            chkTVShowThemeTvTunesEnabled.Checked = .TVShowThemeTvTunesEnable
-            chkTVShowThemeTvTunesCustom.Checked = .TVShowThemeTvTunesCustom
-            chkTVShowThemeTvTunesShowPath.Checked = .TVShowThemeTvTunesShowPath
-            chkTVShowThemeTvTunesSub.Checked = .TVShowThemeTvTunesSub
-            txtTVShowThemeTvTunesCustomPath.Text = .TVShowThemeTvTunesCustomPath
-            txtTVShowThemeTvTunesSubDir.Text = .TVShowThemeTvTunesSubDir
 
             '****************** YAMJ settings ******************
             chkTVUseYAMJ.Checked = .TVUseYAMJ
@@ -194,8 +193,7 @@ Public Class frmTV_FileNaming
 
             '************** NMT optional settings **************
 
-            '***************** Boxee settings ******************
-            chkTVUseBoxee.Checked = .TVUseBoxee
+            '***************** Boxee settings ****************** 
             chkTVEpisodeNFOBoxee.Checked = .TVEpisodeNFOBoxee
             chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
             chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
@@ -242,9 +240,18 @@ Public Class frmTV_FileNaming
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
+        With Master.eSettings.TV.Filenaming.TVShow
+
+            '************** XBMC TvTunes settings ************** 
+            .TvTunes.Custom = chkTVShowThemeTvTunesCustom.Checked
+            .TvTunes.CustomPath = txtTVShowThemeTvTunesCustomPath.Text
+            .TvTunes.TVShowPath = chkTVShowThemeTvTunesShowPath.Checked
+            .TvTunes.Subdirectory = chkTVShowThemeTvTunesSub.Checked
+            .TvTunes.SubdirectoryPath = txtTVShowThemeTvTunesSubDir.Text
+        End With
+
         With Master.eSettings
-            '*************** XBMC Frodo settings ***************
-            .TVUseFrodo = chkTVUseFrodo.Checked
+            '*************** XBMC Frodo settings *************** 
             .TVEpisodeActorThumbsFrodo = chkTVEpisodeActorThumbsFrodo.Checked
             .TVEpisodeNFOFrodo = chkTVEpisodeNFOFrodo.Checked
             .TVEpisodePosterFrodo = chkTVEpisodePosterFrodo.Checked
@@ -260,24 +267,14 @@ Public Class frmTV_FileNaming
 
             '*************** XBMC Eden settings ****************
 
-            '************* XBMC ArtworkDownloader settings **************
-            .TVUseAD = chkTVUseAD.Checked
+            '************* XBMC ArtworkDownloader settings ************** 
             .TVSeasonLandscapeAD = chkTVSeasonLandscapeAD.Checked
             .TVShowCharacterArtAD = chkTVShowCharacterArtAD.Checked
             .TVShowClearArtAD = chkTVShowClearArtAD.Checked
             .TVShowClearLogoAD = chkTVShowClearLogoAD.Checked
             .TVShowLandscapeAD = chkTVShowLandscapeAD.Checked
 
-            '************** XBMC TvTunes settings **************
-            .TVShowThemeTvTunesEnable = chkTVShowThemeTvTunesEnabled.Checked
-            .TVShowThemeTvTunesCustom = chkTVShowThemeTvTunesCustom.Checked
-            .TVShowThemeTvTunesCustomPath = txtTVShowThemeTvTunesCustomPath.Text
-            .TVShowThemeTvTunesShowPath = chkTVShowThemeTvTunesShowPath.Checked
-            .TVShowThemeTvTunesSub = chkTVShowThemeTvTunesSub.Checked
-            .TVShowThemeTvTunesSubDir = txtTVShowThemeTvTunesSubDir.Text
-
-            '********* XBMC Extended Images settings ***********
-            .TVUseExtended = chkTVUseExtended.Checked
+            '********* XBMC Extended Images settings *********** 
             .TVSeasonLandscapeExtended = chkTVSeasonLandscapeExtended.Checked
             .TVShowCharacterArtExtended = chkTVShowCharacterArtExtended.Checked
             .TVShowClearArtExtended = chkTVShowClearArtExtended.Checked
@@ -300,8 +297,7 @@ Public Class frmTV_FileNaming
 
             '************** NMT optional settings **************
 
-            '***************** Boxee settings ******************
-            .TVUseBoxee = chkTVUseBoxee.Checked
+            '***************** Boxee settings ****************** 
             .TVEpisodeNFOBoxee = chkTVEpisodeNFOBoxee.Checked
             .TVEpisodePosterBoxee = chkTVEpisodePosterBoxee.Checked
             .TVSeasonPosterBoxee = chkTVSeasonPosterBoxee.Checked
@@ -362,166 +358,7 @@ Public Class frmTV_FileNaming
         End With
     End Sub
 
-    Private Sub chkTVUseBoxee_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        EnableApplyButton()
-
-        chkTVEpisodeNFOBoxee.Enabled = chkTVUseBoxee.Checked
-        chkTVEpisodePosterBoxee.Enabled = chkTVUseBoxee.Checked
-        chkTVSeasonPosterBoxee.Enabled = chkTVUseBoxee.Checked
-        chkTVShowBannerBoxee.Enabled = chkTVUseBoxee.Checked
-        chkTVShowFanartBoxee.Enabled = chkTVUseBoxee.Checked
-        chkTVShowNFOBoxee.Enabled = chkTVUseBoxee.Checked
-        chkTVShowPosterBoxee.Enabled = chkTVUseBoxee.Checked
-
-        If Not chkTVUseBoxee.Checked Then
-            chkTVEpisodeNFOBoxee.Checked = False
-            chkTVEpisodePosterBoxee.Checked = False
-            chkTVSeasonPosterBoxee.Checked = False
-            chkTVShowBannerBoxee.Checked = False
-            chkTVShowFanartBoxee.Checked = False
-            chkTVShowNFOBoxee.Checked = False
-            chkTVShowPosterBoxee.Checked = False
-        Else
-            chkTVEpisodeNFOBoxee.Checked = True
-            chkTVEpisodePosterBoxee.Checked = True
-            chkTVSeasonPosterBoxee.Checked = True
-            chkTVShowBannerBoxee.Checked = True
-            chkTVShowFanartBoxee.Checked = True
-            chkTVShowNFOBoxee.Checked = True
-            chkTVShowPosterBoxee.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkTVUseAD_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        EnableApplyButton()
-
-        chkTVSeasonLandscapeAD.Enabled = chkTVUseAD.Checked
-        chkTVShowCharacterArtAD.Enabled = chkTVUseAD.Checked
-        chkTVShowClearArtAD.Enabled = chkTVUseAD.Checked
-        chkTVShowClearLogoAD.Enabled = chkTVUseAD.Checked
-        chkTVShowLandscapeAD.Enabled = chkTVUseAD.Checked
-
-        If Not chkTVUseAD.Checked Then
-            chkTVSeasonLandscapeAD.Checked = False
-            chkTVShowCharacterArtAD.Checked = False
-            chkTVShowClearArtAD.Checked = False
-            chkTVShowClearLogoAD.Checked = False
-            chkTVShowLandscapeAD.Checked = False
-        Else
-            chkTVSeasonLandscapeAD.Checked = True
-            chkTVShowCharacterArtAD.Checked = True
-            chkTVShowClearArtAD.Checked = True
-            chkTVShowClearLogoAD.Checked = True
-            chkTVShowLandscapeAD.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkTVUseExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        EnableApplyButton()
-
-        chkTVSeasonLandscapeExtended.Enabled = chkTVUseExtended.Checked
-        chkTVShowCharacterArtExtended.Enabled = chkTVUseExtended.Checked
-        chkTVShowClearArtExtended.Enabled = chkTVUseExtended.Checked
-        chkTVShowClearLogoExtended.Enabled = chkTVUseExtended.Checked
-        chkTVShowLandscapeExtended.Enabled = chkTVUseExtended.Checked
-
-        If Not chkTVUseExtended.Checked Then
-            chkTVSeasonLandscapeExtended.Checked = False
-            chkTVShowCharacterArtExtended.Checked = False
-            chkTVShowClearArtExtended.Checked = False
-            chkTVShowClearLogoExtended.Checked = False
-            chkTVShowLandscapeExtended.Checked = False
-        Else
-            chkTVSeasonLandscapeExtended.Checked = True
-            chkTVShowCharacterArtExtended.Checked = True
-            chkTVShowClearArtExtended.Checked = True
-            chkTVShowClearLogoExtended.Checked = True
-            chkTVShowLandscapeExtended.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkTVUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        EnableApplyButton()
-
-        chkTVEpisodeActorThumbsFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVEpisodeNFOFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVEpisodePosterFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVSeasonBannerFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVSeasonFanartFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVSeasonPosterFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVShowActorThumbsFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVShowBannerFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVShowExtrafanartsFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVShowFanartFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVShowNFOFrodo.Enabled = chkTVUseFrodo.Checked
-        chkTVShowPosterFrodo.Enabled = chkTVUseFrodo.Checked
-
-        If Not chkTVUseFrodo.Checked Then
-            chkTVEpisodeActorThumbsFrodo.Checked = False
-            chkTVEpisodeNFOFrodo.Checked = False
-            chkTVEpisodePosterFrodo.Checked = False
-            chkTVSeasonBannerFrodo.Checked = False
-            chkTVSeasonFanartFrodo.Checked = False
-            chkTVSeasonPosterFrodo.Checked = False
-            chkTVShowActorThumbsFrodo.Checked = False
-            chkTVShowBannerFrodo.Checked = False
-            chkTVShowExtrafanartsFrodo.Checked = False
-            chkTVShowFanartFrodo.Checked = False
-            chkTVShowNFOFrodo.Checked = False
-            chkTVShowPosterFrodo.Checked = False
-        Else
-            chkTVEpisodeActorThumbsFrodo.Checked = True
-            chkTVEpisodeNFOFrodo.Checked = True
-            chkTVEpisodePosterFrodo.Checked = True
-            chkTVSeasonBannerFrodo.Checked = True
-            chkTVSeasonFanartFrodo.Checked = True
-            chkTVSeasonPosterFrodo.Checked = True
-            chkTVShowActorThumbsFrodo.Checked = True
-            chkTVShowBannerFrodo.Checked = True
-            chkTVShowExtrafanartsFrodo.Checked = True
-            chkTVShowFanartFrodo.Checked = True
-            chkTVShowNFOFrodo.Checked = True
-            chkTVShowPosterFrodo.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkTVUseYAMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        EnableApplyButton()
-
-        chkTVEpisodeNFOYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVEpisodePosterYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVSeasonBannerYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVSeasonFanartYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVSeasonPosterYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVShowBannerYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVShowFanartYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVShowNFOYAMJ.Enabled = chkTVUseYAMJ.Checked
-        chkTVShowPosterYAMJ.Enabled = chkTVUseYAMJ.Checked
-
-        If Not chkTVUseYAMJ.Checked Then
-            chkTVEpisodeNFOYAMJ.Checked = False
-            chkTVEpisodePosterYAMJ.Checked = False
-            chkTVSeasonBannerYAMJ.Checked = False
-            chkTVSeasonFanartYAMJ.Checked = False
-            chkTVSeasonPosterYAMJ.Checked = False
-            chkTVShowBannerYAMJ.Checked = False
-            chkTVShowFanartYAMJ.Checked = False
-            chkTVShowNFOYAMJ.Checked = False
-            chkTVShowPosterYAMJ.Checked = False
-        Else
-            chkTVEpisodeNFOYAMJ.Checked = True
-            chkTVEpisodePosterYAMJ.Checked = True
-            chkTVSeasonBannerYAMJ.Checked = True
-            chkTVSeasonFanartYAMJ.Checked = True
-            chkTVSeasonPosterYAMJ.Checked = True
-            chkTVShowBannerYAMJ.Checked = True
-            chkTVShowFanartYAMJ.Checked = True
-            chkTVShowNFOYAMJ.Checked = True
-            chkTVShowPosterYAMJ.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkTVUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVUseExpert_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVUseExpert.CheckedChanged
         EnableApplyButton()
 
         chkTVEpisodeActorThumbsExpert.Enabled = chkTVUseExpert.Checked
@@ -550,7 +387,7 @@ Public Class frmTV_FileNaming
         txtTVShowPosterExpert.Enabled = chkTVUseExpert.Checked
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesCustom_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVShowThemeTvTunesCustom_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesCustom.CheckedChanged
         EnableApplyButton()
 
         txtTVShowThemeTvTunesCustomPath.Enabled = chkTVShowThemeTvTunesCustom.Checked
@@ -569,7 +406,7 @@ Public Class frmTV_FileNaming
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVShowThemeTvTunesEnabled_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesEnabled.CheckedChanged
         EnableApplyButton()
 
         chkTVShowThemeTvTunesCustom.Enabled = chkTVShowThemeTvTunesEnabled.Checked
@@ -585,7 +422,7 @@ Public Class frmTV_FileNaming
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesTVShowPath_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVShowThemeTvTunesTVShowPath_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesShowPath.CheckedChanged
         EnableApplyButton()
 
         If chkTVShowThemeTvTunesShowPath.Checked Then
@@ -601,7 +438,7 @@ Public Class frmTV_FileNaming
         End If
     End Sub
 
-    Private Sub chkTVShowThemeTvTunesSub_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Private Sub chkTVShowThemeTvTunesSub_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkTVShowThemeTvTunesSub.CheckedChanged
         EnableApplyButton()
 
         txtTVShowThemeTvTunesSubDir.Enabled = chkTVShowThemeTvTunesSub.Checked
@@ -624,7 +461,7 @@ Public Class frmTV_FileNaming
         Handle_SettingsChanged()
     End Sub
 
-    Private Sub pbTVSourcesADInfo_Click(sender As Object, e As EventArgs)
+    Private Sub pbTVSourcesADInfo_Click(sender As Object, e As EventArgs) Handles pbTVSourcesADInfo.Click
         If Master.isWindows Then
             Process.Start("http://kodi.wiki/view/Add-on:Artwork_Downloader#Filenaming")
         Else
@@ -636,7 +473,7 @@ Public Class frmTV_FileNaming
         End If
     End Sub
 
-    Private Sub pbTVSourcesTvTunesInfo_Click(sender As Object, e As EventArgs)
+    Private Sub pbTVSourcesTvTunesInfo_Click(sender As Object, e As EventArgs) Handles pbTVSourcesTvTunesInfo.Click
         If Master.isWindows Then
             Process.Start("http://kodi.wiki/view/Add-on:TvTunes")
         Else
@@ -699,10 +536,6 @@ Public Class frmTV_FileNaming
 
         'Enabled
         Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
-        lblTVSourcesFilenamingBoxeeDefaultsEnabled.Text = strEnabled
-        lblTVSourcesFilenamingKodiADEnabled.Text = strEnabled
-        lblTVSourcesFilenamingKodiDefaultsEnabled.Text = strEnabled
-        lblTVSourcesFilenamingKodiExtendedEnabled.Text = strEnabled
         lblTVSourcesFilenamingNMTDefaultsEnabled.Text = strEnabled
         chkTVShowThemeTvTunesEnabled.Text = strEnabled
         chkTVUseExpert.Text = strEnabled

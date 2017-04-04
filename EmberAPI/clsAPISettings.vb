@@ -51,7 +51,6 @@ Public Class Settings
     Private _ommmediastubtagline As String
     Private _sortpath As String
     Private _tvepisodenofilter As Boolean
-    Private _tvimagesdisplayimageselect As Boolean
     Private _tvmetadataperfiletype As List(Of MetadataPerType)
     Private _tvscraperepisodecastwithimgonly As Boolean
     Private _tvscraperepisodegueststarstoactors As Boolean
@@ -61,67 +60,15 @@ Public Class Settings
 
 
     '***************************************************
-    '***************** MovieSet Part *******************
-    '***************************************************
-
-    '*************** Kodi Extended settings ***************
-    Private _moviesetuseextended As Boolean
-    Private _moviesetbannerextended As Boolean
-    Private _moviesetclearartextended As Boolean
-    Private _moviesetclearlogoextended As Boolean
-    Private _moviesetdiscartextended As Boolean
-    Private _moviesetfanartextended As Boolean
-    Private _moviesetlandscapeextended As Boolean
-    Private _moviesetpathextended As String
-    Private _moviesetposterextended As Boolean
-
-    '*************** Kodi MSAA settings ***************
-    Private _moviesetusemsaa As Boolean
-    Private _moviesetbannermsaa As Boolean
-    Private _moviesetclearartmsaa As Boolean
-    Private _moviesetclearlogomsaa As Boolean
-    Private _moviesetfanartmsaa As Boolean
-    Private _moviesetlandscapemsaa As Boolean
-    Private _moviesetpathmsaa As String
-    Private _moviesetpostermsaa As Boolean
-
-    '***************** Expert settings *****************
-    Private _moviesetuseexpert As Boolean
-    Private _moviesetbannerexpertsingle As String
-    Private _moviesetclearartexpertsingle As String
-    Private _moviesetclearlogoexpertsingle As String
-    Private _moviesetdiscartexpertsingle As String
-    Private _moviesetfanartexpertsingle As String
-    Private _moviesetlandscapeexpertsingle As String
-    Private _moviesetnfoexpertsingle As String
-    Private _moviesetpathexpertsingle As String
-    Private _moviesetposterexpertsingle As String
-
-
-    '***************************************************
     '****************** TV Show Part *******************
     '***************************************************
 
     '*************** Kodi Frodo settings ***************
-    Private _tvusefrodo As Boolean
-    Private _tvepisodeactorthumbsfrodo As Boolean
-    Private _tvepisodenfofrodo As Boolean
-    Private _tvepisodeposterfrodo As Boolean
     Private _tvseasonbannerfrodo As Boolean
     Private _tvseasonfanartfrodo As Boolean
     Private _tvseasonposterfrodo As Boolean
-    Private _tvshowactorthumbsfrodo As Boolean
-    Private _tvshowbannerfrodo As Boolean
-    Private _tvshowextrafanartsfrodo As Boolean
-    Private _tvshowfanartfrodo As Boolean
-    Private _tvshownfofrodo As Boolean
-    Private _tvshowposterfrodo As Boolean
-
-    '*************** Kodi Eden settings ****************
-    Private _tvuseeden As Boolean
 
     '******** Kodi ArtworkDownloader settings **********
-    Private _tvusead As Boolean
     Private _tvseasonlandscapead As Boolean
     Private _tvshowcharacterartad As Boolean
     Private _tvshowclearartad As Boolean
@@ -129,25 +76,9 @@ Public Class Settings
     Private _tvshowlandscapead As Boolean
 
     '********* Kodi Extended Images settings **********
-    Private _tvuseextended As Boolean
     Private _tvseasonlandscapeextended As Boolean
-    Private _tvshowcharacterartextended As Boolean
-    Private _tvshowclearartextended As Boolean
-    Private _tvshowclearlogoextended As Boolean
-    Private _tvshowlandscapeextended As Boolean
-
-    '*************** Kodi TvTunes settings ***************
-    Private _tvshowthemetvtunesenable As Boolean
-    Private _tvshowthemetvtunescustom As Boolean
-    Private _tvshowthemetvtunescustompath As String
-    Private _tvshowthemetvtunesshowpath As Boolean
-    Private _tvshowthemetvtunessub As Boolean
-    Private _tvshowthemetvtunessubdir As String
 
     '****************** YAMJ settings ******************
-    Private _tvuseyamj As Boolean
-    Private _tvepisodenfoyamj As Boolean
-    Private _tvepisodeposteryamj As Boolean
     Private _tvseasonbanneryamj As Boolean
     Private _tvseasonfanartyamj As Boolean
     Private _tvseasonposteryamj As Boolean
@@ -156,22 +87,8 @@ Public Class Settings
     Private _tvshownfoyamj As Boolean
     Private _tvshowposteryamj As Boolean
 
-    '****************** NMJ settings *******************
-
-    '************** NMT optional settings **************
-
     '***************** Boxee settings ******************
-    Private _tvuseboxee As Boolean
-    Private _tvepisodenfoboxee As Boolean
-    Private _tvepisodeposterboxee As Boolean
     Private _tvseasonposterboxee As Boolean
-    Private _tvshowbannerboxee As Boolean
-    Private _tvshowfanartboxee As Boolean
-    Private _tvshownfoboxee As Boolean
-    Private _tvshowposterboxee As Boolean
-
-    '***************** Expert settings *****************
-    Private _tvuseexpert As Boolean
 
     '***************** Expert AllSeasons ***************
     Private _tvallseasonsbannerexpert As String
@@ -179,31 +96,11 @@ Public Class Settings
     Private _tvallseasonslandscapeexpert As String
     Private _tvallseasonsposterexpert As String
 
-    '***************** Expert Episode ******************
-    Private _tvepisodeactorthumbsexpert As Boolean
-    Private _tvepisodeactorthumbsextexpert As String
-    Private _tvepisodefanartexpert As String
-    Private _tvepisodenfoexpert As String
-    Private _tvepisodeposterexpert As String
-
     '***************** Expert Season *******************
     Private _tvseasonbannerexpert As String
     Private _tvseasonfanartexpert As String
     Private _tvseasonlandscapeexpert As String
     Private _tvseasonposterexpert As String
-
-    '***************** Expert Show *********************
-    Private _tvshowactorthumbsexpert As Boolean
-    Private _tvshowactorthumbsextexpert As String
-    Private _tvshowbannerexpert As String
-    Private _tvshowcharacterartexpert As String
-    Private _tvshowclearartexpert As String
-    Private _tvshowclearlogoexpert As String
-    Private _tvshowextrafanartsexpert As Boolean
-    Private _tvshowfanartexpert As String
-    Private _tvshowlandscapeexpert As String
-    Private _tvshownfoexpert As String
-    Private _tvshowposterexpert As String
 
 #End Region 'Fields
 
@@ -260,15 +157,6 @@ Public Class Settings
         End Get
         Set(ByVal value As Boolean)
             _tvscraperepisodecastwithimgonly = value
-        End Set
-    End Property
-
-    Public Property TVImagesDisplayImageSelect() As Boolean
-        Get
-            Return _tvimagesdisplayimageselect
-        End Get
-        Set(ByVal value As Boolean)
-            _tvimagesdisplayimageselect = value
         End Set
     End Property
 
@@ -427,420 +315,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property MovieSetBannerExtended() As Boolean
-        Get
-            Return _moviesetbannerextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetbannerextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtExtended() As Boolean
-        Get
-            Return _moviesetclearartextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearartextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoExtended() As Boolean
-        Get
-            Return _moviesetclearlogoextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearlogoextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetDiscArtExtended() As Boolean
-        Get
-            Return _moviesetdiscartextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetdiscartextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartExtended() As Boolean
-        Get
-            Return _moviesetfanartextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetfanartextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapeExtended() As Boolean
-        Get
-            Return _moviesetlandscapeextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetlandscapeextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetPathExtended() As String
-        Get
-            Return _moviesetpathextended
-        End Get
-        Set(ByVal value As String)
-            _moviesetpathextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterExtended() As Boolean
-        Get
-            Return _moviesetposterextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetposterextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetUseExtended() As Boolean
-        Get
-            Return _moviesetuseextended
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetuseextended = value
-        End Set
-    End Property
-
-    Public Property MovieSetUseMSAA() As Boolean
-        Get
-            Return _moviesetusemsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetusemsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerMSAA() As Boolean
-        Get
-            Return _moviesetbannermsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetbannermsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtMSAA() As Boolean
-        Get
-            Return _moviesetclearartmsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearartmsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoMSAA() As Boolean
-        Get
-            Return _moviesetclearlogomsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetclearlogomsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartMSAA() As Boolean
-        Get
-            Return _moviesetfanartmsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetfanartmsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapeMSAA() As Boolean
-        Get
-            Return _moviesetlandscapemsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetlandscapemsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetPathMSAA() As String
-        Get
-            Return _moviesetpathmsaa
-        End Get
-        Set(ByVal value As String)
-            _moviesetpathmsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterMSAA() As Boolean
-        Get
-            Return _moviesetpostermsaa
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetpostermsaa = value
-        End Set
-    End Property
-
-    Public Property MovieSetUseExpert() As Boolean
-        Get
-            Return _moviesetuseexpert
-        End Get
-        Set(ByVal value As Boolean)
-            _moviesetuseexpert = value
-        End Set
-    End Property
-
-    Public Property MovieSetBannerExpertSingle() As String
-        Get
-            Return _moviesetbannerexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetbannerexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearArtExpertSingle() As String
-        Get
-            Return _moviesetclearartexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetclearartexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetClearLogoExpertSingle() As String
-        Get
-            Return _moviesetclearlogoexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetclearlogoexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetDiscArtExpertSingle() As String
-        Get
-            Return _moviesetdiscartexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetdiscartexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetFanartExpertSingle() As String
-        Get
-            Return _moviesetfanartexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetfanartexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetLandscapeExpertSingle() As String
-        Get
-            Return _moviesetlandscapeexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetlandscapeexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetNFOExpertSingle() As String
-        Get
-            Return _moviesetnfoexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetnfoexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetPathExpertSingle() As String
-        Get
-            Return _moviesetpathexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetpathexpertsingle = value
-        End Set
-    End Property
-
-    Public Property MovieSetPosterExpertSingle() As String
-        Get
-            Return _moviesetposterexpertsingle
-        End Get
-        Set(ByVal value As String)
-            _moviesetposterexpertsingle = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeTvTunesEnable() As Boolean
-        Get
-            Return _tvshowthemetvtunesenable
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowthemetvtunesenable = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeTvTunesCustom() As Boolean
-        Get
-            Return _tvshowthemetvtunescustom
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowthemetvtunescustom = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeTvTunesCustomPath() As String
-        Get
-            Return _tvshowthemetvtunescustompath
-        End Get
-        Set(ByVal value As String)
-            _tvshowthemetvtunescustompath = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeTvTunesShowPath() As Boolean
-        Get
-            Return _tvshowthemetvtunesshowpath
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowthemetvtunesshowpath = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeTvTunesSub() As Boolean
-        Get
-            Return _tvshowthemetvtunessub
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowthemetvtunessub = value
-        End Set
-    End Property
-
-    Public Property TVShowThemeTvTunesSubDir() As String
-        Get
-            Return _tvshowthemetvtunessubdir
-        End Get
-        Set(ByVal value As String)
-            _tvshowthemetvtunessubdir = value
-        End Set
-    End Property
-
-    Public Property TVUseBoxee() As Boolean
-        Get
-            Return _tvuseboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvuseboxee = value
-        End Set
-    End Property
-
-    Public Property TVUseEden() As Boolean
-        Get
-            Return _tvuseeden
-        End Get
-        Set(ByVal value As Boolean)
-            _tvuseeden = value
-        End Set
-    End Property
-
-    Public Property TVUseExpert() As Boolean
-        Get
-            Return _tvuseexpert
-        End Get
-        Set(ByVal value As Boolean)
-            _tvuseexpert = value
-        End Set
-    End Property
-
-    Public Property TVUseAD() As Boolean
-        Get
-            Return _tvusead
-        End Get
-        Set(ByVal value As Boolean)
-            _tvusead = value
-        End Set
-    End Property
-
-    Public Property TVUseExtended() As Boolean
-        Get
-            Return _tvuseextended
-        End Get
-        Set(ByVal value As Boolean)
-            _tvuseextended = value
-        End Set
-    End Property
-
-    Public Property TVUseFrodo() As Boolean
-        Get
-            Return _tvusefrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvusefrodo = value
-        End Set
-    End Property
-
-    Public Property TVUseYAMJ() As Boolean
-        Get
-            Return _tvuseyamj
-        End Get
-        Set(ByVal value As Boolean)
-            _tvuseyamj = value
-        End Set
-    End Property
-
-    Public Property TVShowActorThumbsExpert() As Boolean
-        Get
-            Return _tvshowactorthumbsexpert
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowactorthumbsexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowActorThumbsExtExpert() As String
-        Get
-            Return _tvshowactorthumbsextexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowactorthumbsextexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowActorThumbsFrodo() As Boolean
-        Get
-            Return _tvshowactorthumbsfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowactorthumbsfrodo = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerBoxee() As Boolean
-        Get
-            Return _tvshowbannerboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowbannerboxee = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerExpert() As String
-        Get
-            Return _tvshowbannerexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowbannerexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowBannerFrodo() As Boolean
-        Get
-            Return _tvshowbannerfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowbannerfrodo = value
-        End Set
-    End Property
-
     Public Property TVShowBannerYAMJ() As Boolean
         Get
             Return _tvshowbanneryamj
@@ -850,147 +324,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowCharacterArtExpert() As String
-        Get
-            Return _tvshowcharacterartexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowcharacterartexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowClearArtExpert() As String
-        Get
-            Return _tvshowclearartexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowclearartexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowClearLogoExpert() As String
-        Get
-            Return _tvshowclearlogoexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowclearlogoexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsExpert() As Boolean
-        Get
-            Return _tvshowextrafanartsexpert
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowextrafanartsexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowExtrafanartsFrodo() As Boolean
-        Get
-            Return _tvshowextrafanartsfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowextrafanartsfrodo = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartBoxee() As Boolean
-        Get
-            Return _tvshowfanartboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowfanartboxee = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartExpert() As String
-        Get
-            Return _tvshowfanartexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowfanartexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowFanartFrodo() As Boolean
-        Get
-            Return _tvshowfanartfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowfanartfrodo = value
-        End Set
-    End Property
-
     Public Property TVShowFanartYAMJ() As Boolean
         Get
             Return _tvshowfanartyamj
         End Get
         Set(ByVal value As Boolean)
             _tvshowfanartyamj = value
-        End Set
-    End Property
-
-    Public Property TVShowLandscapeExpert() As String
-        Get
-            Return _tvshowlandscapeexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowlandscapeexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowNFOExpert() As String
-        Get
-            Return _tvshownfoexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshownfoexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowNFOBoxee() As Boolean
-        Get
-            Return _tvshownfoboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshownfoboxee = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterBoxee() As Boolean
-        Get
-            Return _tvshowposterboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowposterboxee = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterExpert() As String
-        Get
-            Return _tvshowposterexpert
-        End Get
-        Set(ByVal value As String)
-            _tvshowposterexpert = value
-        End Set
-    End Property
-
-    Public Property TVShowNFOFrodo() As Boolean
-        Get
-            Return _tvshownfofrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshownfofrodo = value
-        End Set
-    End Property
-
-    Public Property TVShowPosterFrodo() As Boolean
-        Get
-            Return _tvshowposterfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowposterfrodo = value
         End Set
     End Property
 
@@ -1147,129 +486,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVEpisodeActorThumbsExpert() As Boolean
-        Get
-            Return _tvepisodeactorthumbsexpert
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodeactorthumbsexpert = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeActorThumbsExtExpert() As String
-        Get
-            Return _tvepisodeactorthumbsextexpert
-        End Get
-        Set(ByVal value As String)
-            _tvepisodeactorthumbsextexpert = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeActorThumbsFrodo() As Boolean
-        Get
-            Return _tvepisodeactorthumbsfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodeactorthumbsfrodo = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeFanartExpert() As String
-        Get
-            Return _tvepisodefanartexpert
-        End Get
-        Set(ByVal value As String)
-            _tvepisodefanartexpert = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeNFOExpert() As String
-        Get
-            Return _tvepisodenfoexpert
-        End Get
-        Set(ByVal value As String)
-            _tvepisodenfoexpert = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeNFOBoxee() As Boolean
-        Get
-            Return _tvepisodenfoboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodenfoboxee = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterBoxee() As Boolean
-        Get
-            Return _tvepisodeposterboxee
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodeposterboxee = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterExpert() As String
-        Get
-            Return _tvepisodeposterexpert
-        End Get
-        Set(ByVal value As String)
-            _tvepisodeposterexpert = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeNFOFrodo() As Boolean
-        Get
-            Return _tvepisodenfofrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodenfofrodo = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterFrodo() As Boolean
-        Get
-            Return _tvepisodeposterfrodo
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodeposterfrodo = value
-        End Set
-    End Property
-
-    Public Property TVEpisodeNFOYAMJ() As Boolean
-        Get
-            Return _tvepisodenfoyamj
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodenfoyamj = value
-        End Set
-    End Property
-
-    Public Property TVEpisodePosterYAMJ() As Boolean
-        Get
-            Return _tvepisodeposteryamj
-        End Get
-        Set(ByVal value As Boolean)
-            _tvepisodeposteryamj = value
-        End Set
-    End Property
-
     Public Property TVShowClearLogoAD() As Boolean
         Get
             Return _tvshowclearlogoad
         End Get
         Set(ByVal value As Boolean)
             _tvshowclearlogoad = value
-        End Set
-    End Property
-
-    Public Property TVShowClearLogoExtended() As Boolean
-        Get
-            Return _tvshowclearlogoextended
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowclearlogoextended = value
         End Set
     End Property
 
@@ -1282,15 +504,6 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowClearArtExtended() As Boolean
-        Get
-            Return _tvshowclearartextended
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowclearartextended = value
-        End Set
-    End Property
-
     Public Property TVShowCharacterArtAD() As Boolean
         Get
             Return _tvshowcharacterartad
@@ -1300,30 +513,12 @@ Public Class Settings
         End Set
     End Property
 
-    Public Property TVShowCharacterArtExtended() As Boolean
-        Get
-            Return _tvshowcharacterartextended
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowcharacterartextended = value
-        End Set
-    End Property
-
     Public Property TVShowLandscapeAD() As Boolean
         Get
             Return _tvshowlandscapead
         End Get
         Set(ByVal value As Boolean)
             _tvshowlandscapead = value
-        End Set
-    End Property
-
-    Public Property TVShowLandscapeExtended() As Boolean
-        Get
-            Return _tvshowlandscapeextended
-        End Get
-        Set(ByVal value As Boolean)
-            _tvshowlandscapeextended = value
         End Set
     End Property
 
@@ -1365,8 +560,7 @@ Public Class Settings
                 Dim objStreamReader As New StreamReader(strXMLpath)
                 Dim xXMLSettings As New XmlSerializer([GetType])
 
-                'Master.eSettings = CType(xXMLSettings.Deserialize(objStreamReader), Settings)
-                Dim test = CType(xXMLSettings.Deserialize(objStreamReader), Settings)
+                Master.eSettings = CType(xXMLSettings.Deserialize(objStreamReader), Settings)
                 objStreamReader.Close()
             End If
         Catch ex As Exception
@@ -1434,26 +628,14 @@ Public Class Settings
         OMMDummyUseOverlay = True
         OMMMediaStubTagline = String.Empty
         SortPath = String.Empty
-        TVEpisodeActorThumbsExtExpert = ".jpg"
         TVEpisodeNoFilter = True
-        TVImagesDisplayImageSelect = True
         TVMetadataPerFileType = New List(Of MetadataPerType)
         TVScraperEpisodeCastWithImgOnly = False
         TVScraperEpisodeGuestStarsToActors = False
         TVScraperUseDisplaySeasonEpisode = True
         TVScraperUseSRuntimeForEp = True
-        TVShowActorThumbsExtExpert = ".jpg"
         Version = String.Empty
     End Sub
-
-    Public Function GetMovieSetsArtworkPaths() As List(Of String)
-        Dim Paths As New List(Of String)
-        If Not String.IsNullOrEmpty(MovieSetPathExpertSingle) Then Paths.Add(MovieSetPathExpertSingle)
-        If Not String.IsNullOrEmpty(MovieSetPathExtended) Then Paths.Add(MovieSetPathExtended)
-        If Not String.IsNullOrEmpty(MovieSetPathMSAA) Then Paths.Add(MovieSetPathMSAA)
-        Paths = Paths.Distinct().ToList() 'remove double entries
-        Return Paths
-    End Function
 
     Public Function FilenameAnyEnabled(ByVal tContentType As Enums.ContentType, ByVal tImageType As Enums.ScrapeModifierType) As Boolean
         Dim bResult As Boolean
@@ -1490,290 +672,89 @@ Public Class Settings
                     End Select
                 End With
             Case Enums.ContentType.Movieset
-                Select Case tImageType
-                    Case Enums.ScrapeModifierType.MainBanner
-                        Return FilenameAnyEnabled_MovieSet_Banner()
-                    Case Enums.ScrapeModifierType.MainClearArt
-                        Return FilenameAnyEnabled_MovieSet_ClearArt()
-                    Case Enums.ScrapeModifierType.MainClearLogo
-                        Return FilenameAnyEnabled_MovieSet_ClearLogo()
-                    Case Enums.ScrapeModifierType.MainDiscArt
-                        Return FilenameAnyEnabled_MovieSet_DiscArt()
-                    Case Enums.ScrapeModifierType.MainFanart
-                        Return FilenameAnyEnabled_MovieSet_Fanart()
-                    Case Enums.ScrapeModifierType.MainLandscape
-                        Return FilenameAnyEnabled_MovieSet_Landscape()
-                    Case Enums.ScrapeModifierType.MainNFO
-                        Return FilenameAnyEnabled_MovieSet_NFO()
-                    Case Enums.ScrapeModifierType.MainPoster
-                        Return FilenameAnyEnabled_MovieSet_Poster()
-                End Select
+                With Master.eSettings.Movieset.Filenaming
+                    Select Case tImageType
+                        Case Enums.ScrapeModifierType.MainBanner
+                            Return .FilenameAnyEnabled_Banner()
+                        Case Enums.ScrapeModifierType.MainClearArt
+                            Return .FilenameAnyEnabled_ClearArt()
+                        Case Enums.ScrapeModifierType.MainClearLogo
+                            Return .FilenameAnyEnabled_ClearLogo()
+                        Case Enums.ScrapeModifierType.MainDiscArt
+                            Return .FilenameAnyEnabled_DiscArt()
+                        Case Enums.ScrapeModifierType.MainFanart
+                            Return .FilenameAnyEnabled_Fanart()
+                        Case Enums.ScrapeModifierType.MainLandscape
+                            Return .FilenameAnyEnabled_Landscape()
+                        Case Enums.ScrapeModifierType.MainNFO
+                            Return .FilenameAnyEnabled_NFO()
+                        Case Enums.ScrapeModifierType.MainPoster
+                            Return .FilenameAnyEnabled_Poster()
+                    End Select
+                End With
             Case Enums.ContentType.TVEpisode
-                Select Case tImageType
-                    Case Enums.ScrapeModifierType.EpisodeActorThumbs
-                        Return FilenameAnyEnabled_TVEpisode_ActorThumbs()
-                    Case Enums.ScrapeModifierType.EpisodeFanart
-                        Return FilenameAnyEnabled_TVEpisode_Fanart()
-                    Case Enums.ScrapeModifierType.EpisodeNFO
-                        Return FilenameAnyEnabled_TVEpisode_NFO()
-                    Case Enums.ScrapeModifierType.EpisodePoster
-                        Return FilenameAnyEnabled_TVEpisode_Poster()
-                End Select
+                With Master.eSettings.TV.Filenaming.TVEpisode
+                    Select Case tImageType
+                        Case Enums.ScrapeModifierType.EpisodeActorThumbs
+                            Return .FilenameAnyEnabled_Actorthumbs()
+                        Case Enums.ScrapeModifierType.EpisodeFanart
+                            Return .FilenameAnyEnabled_Fanart()
+                        Case Enums.ScrapeModifierType.EpisodeNFO
+                            Return .FilenameAnyEnabled_NFO()
+                        Case Enums.ScrapeModifierType.EpisodePoster
+                            Return .FilenameAnyEnabled_Poster()
+                    End Select
+                End With
             Case Enums.ContentType.TVSeason
-                Select Case tImageType
-                    Case Enums.ScrapeModifierType.AllSeasonsBanner
-                        Return FilenameAnyEnabled_TVAllSeasons_Banner()
-                    Case Enums.ScrapeModifierType.AllSeasonsFanart
-                        Return FilenameAnyEnabled_TVAllSeasons_Fanart()
-                    Case Enums.ScrapeModifierType.AllSeasonsLandscape
-                        Return FilenameAnyEnabled_TVAllSeasons_Landscape()
-                    Case Enums.ScrapeModifierType.AllSeasonsPoster
-                        Return FilenameAnyEnabled_TVAllSeasons_Poster()
-                    Case Enums.ScrapeModifierType.SeasonBanner
-                        Return FilenameAnyEnabled_TVSeason_Banner()
-                    Case Enums.ScrapeModifierType.SeasonFanart
-                        Return FilenameAnyEnabled_TVSeason_Fanart()
-                    Case Enums.ScrapeModifierType.SeasonLandscape
-                        Return FilenameAnyEnabled_TVSeason_Landscape()
-                    Case Enums.ScrapeModifierType.SeasonPoster
-                        Return FilenameAnyEnabled_TVSeason_Poster()
-                End Select
+                With Master.eSettings.TV.Filenaming.TVShow
+                    Select Case tImageType
+                        Case Enums.ScrapeModifierType.AllSeasonsBanner
+                            Return .FilenameAnyEnabled_Banner_AllSeasons()
+                        Case Enums.ScrapeModifierType.AllSeasonsFanart
+                            Return .FilenameAnyEnabled_Fanart_AllSeasons()
+                        Case Enums.ScrapeModifierType.AllSeasonsLandscape
+                            Return .FilenameAnyEnabled_Landscape_AllSeasons()
+                        Case Enums.ScrapeModifierType.AllSeasonsPoster
+                            Return .FilenameAnyEnabled_Poster_AllSeasons()
+                        Case Enums.ScrapeModifierType.SeasonBanner
+                            Return .FilenameAnyEnabled_Banner()
+                        Case Enums.ScrapeModifierType.SeasonFanart
+                            Return .FilenameAnyEnabled_Fanart()
+                        Case Enums.ScrapeModifierType.SeasonLandscape
+                            Return .FilenameAnyEnabled_Landscape()
+                        Case Enums.ScrapeModifierType.SeasonPoster
+                            Return .FilenameAnyEnabled_Poster()
+                    End Select
+                End With
             Case Enums.ContentType.TVShow
-                Select Case tImageType
-                    Case Enums.ScrapeModifierType.MainActorThumbs
-                        Return FilenameAnyEnabled_TVShow_ActorTumbs()
-                    Case Enums.ScrapeModifierType.MainBanner
-                        Return FilenameAnyEnabled_TVShow_Banner()
-                    Case Enums.ScrapeModifierType.MainCharacterArt
-                        Return FilenameAnyEnabled_TVShow_CharacterArt()
-                    Case Enums.ScrapeModifierType.MainClearArt
-                        Return FilenameAnyEnabled_TVShow_ClearArt()
-                    Case Enums.ScrapeModifierType.MainClearLogo
-                        Return FilenameAnyEnabled_TVShow_ClearLogo()
-                    Case Enums.ScrapeModifierType.MainExtrafanarts
-                        Return FilenameAnyEnabled_TVShow_Extrafanarts()
-                    Case Enums.ScrapeModifierType.MainFanart
-                        Return FilenameAnyEnabled_TVShow_Fanart()
-                    Case Enums.ScrapeModifierType.MainLandscape
-                        Return FilenameAnyEnabled_TVShow_Landscape()
-                    Case Enums.ScrapeModifierType.MainNFO
-                        Return FilenameAnyEnabled_TVShow_NFO()
-                    Case Enums.ScrapeModifierType.MainPoster
-                        Return FilenameAnyEnabled_TVShow_Poster()
-                    Case Enums.ScrapeModifierType.MainTheme
-                        Return FilenameAnyEnabled_TVShow_Theme()
-                End Select
+                With Master.eSettings.TV.Filenaming.TVShow
+                    Select Case tImageType
+                        Case Enums.ScrapeModifierType.MainActorThumbs
+                            Return .FilenameAnyEnabled_Actorthumbs
+                        Case Enums.ScrapeModifierType.MainBanner
+                            Return .FilenameAnyEnabled_Banner()
+                        Case Enums.ScrapeModifierType.MainCharacterArt
+                            Return .FilenameAnyEnabled_CharacterArt()
+                        Case Enums.ScrapeModifierType.MainClearArt
+                            Return .FilenameAnyEnabled_ClearArt()
+                        Case Enums.ScrapeModifierType.MainClearLogo
+                            Return .FilenameAnyEnabled_ClearLogo()
+                        Case Enums.ScrapeModifierType.MainExtrafanarts
+                            Return .FilenameAnyEnabled_Extrafanarts()
+                        Case Enums.ScrapeModifierType.MainFanart
+                            Return .FilenameAnyEnabled_Fanart()
+                        Case Enums.ScrapeModifierType.MainLandscape
+                            Return .FilenameAnyEnabled_Landscape()
+                        Case Enums.ScrapeModifierType.MainNFO
+                            Return .FilenameAnyEnabled_NFO()
+                        Case Enums.ScrapeModifierType.MainPoster
+                            Return .FilenameAnyEnabled_Poster()
+                        Case Enums.ScrapeModifierType.MainTheme
+                            Return .FilenameAnyEnabled_Theme()
+                    End Select
+                End With
         End Select
         Return bResult
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_Banner() As Boolean
-        Return _
-            (MovieSetBannerExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetBannerMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_ClearArt() As Boolean
-        Return _
-            (MovieSetClearArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetClearArtMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearArtExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_ClearLogo() As Boolean
-        Return _
-            (MovieSetClearLogoExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetClearLogoMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetClearLogoExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_DiscArt() As Boolean
-        Return _
-            (MovieSetDiscArtExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetDiscArtExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_Fanart() As Boolean
-        Return _
-            (MovieSetFanartExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetFanartMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetFanartExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_Landscape() As Boolean
-        Return _
-            (MovieSetLandscapeExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetLandscapeMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetLandscapeExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_NFO() As Boolean
-        Return _
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetNFOExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_MovieSet_Poster() As Boolean
-        Return _
-            (MovieSetPosterExtended AndAlso Not String.IsNullOrEmpty(MovieSetPathExtended)) OrElse
-            (MovieSetPosterMSAA AndAlso Not String.IsNullOrEmpty(MovieSetPathMSAA)) OrElse
-            (MovieSetUseExpert AndAlso (Not String.IsNullOrEmpty(MovieSetPathExpertSingle) AndAlso Not String.IsNullOrEmpty(MovieSetPosterExpertSingle)))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVAllSeasons_Banner() As Boolean
-        Return _
-            TVSeasonBannerFrodo OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsBannerExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVAllSeasons_Fanart() As Boolean
-        Return _
-            TVSeasonFanartFrodo OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsFanartExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVAllSeasons_Landscape() As Boolean
-        Return _
-            TVSeasonLandscapeAD OrElse
-            TVSeasonLandscapeExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsLandscapeExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVAllSeasons_Poster() As Boolean
-        Return _
-            TVSeasonPosterFrodo OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVAllSeasonsPosterExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVEpisode_ActorThumbs() As Boolean
-        Return _
-            TVEpisodeActorThumbsFrodo OrElse
-            (TVUseExpert AndAlso TVEpisodeActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeActorThumbsExtExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVEpisode_Fanart() As Boolean
-        Return (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeFanartExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVEpisode_NFO() As Boolean
-        Return _
-            TVEpisodeNFOBoxee OrElse
-            TVEpisodeNFOFrodo OrElse
-            TVEpisodeNFOYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodeNFOExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVEpisode_Poster() As Boolean
-        Return _
-            TVEpisodePosterBoxee OrElse
-            TVEpisodePosterFrodo OrElse
-            TVEpisodePosterYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVEpisodePosterExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVSeason_Banner() As Boolean
-        Return _
-            TVSeasonBannerFrodo OrElse
-            TVSeasonBannerYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonBannerExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVSeason_Fanart() As Boolean
-        Return _
-            TVSeasonFanartFrodo OrElse
-            TVSeasonFanartYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonFanartExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVSeason_Landscape() As Boolean
-        Return _
-            TVSeasonLandscapeAD OrElse
-            TVSeasonLandscapeExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonLandscapeExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVSeason_Poster() As Boolean
-        Return _
-            TVSeasonPosterBoxee OrElse
-            TVSeasonPosterFrodo OrElse
-            TVSeasonPosterYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVSeasonPosterExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_ActorTumbs() As Boolean
-        Return _
-            TVShowActorThumbsFrodo OrElse
-            (TVUseExpert AndAlso TVShowActorThumbsExpert AndAlso Not String.IsNullOrEmpty(TVShowActorThumbsExtExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_Banner() As Boolean
-        Return _
-            TVShowBannerBoxee OrElse
-            TVShowBannerFrodo OrElse
-            TVShowBannerYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowBannerExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_CharacterArt() As Boolean
-        Return _
-            TVShowCharacterArtAD OrElse
-            TVShowCharacterArtExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowCharacterArtExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_ClearArt() As Boolean
-        Return _
-            TVShowClearArtAD OrElse
-            TVShowClearArtExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearArtExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_ClearLogo() As Boolean
-        Return _
-            TVShowClearLogoAD OrElse
-            TVShowClearLogoExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowClearLogoExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_Extrafanarts() As Boolean
-        Return _
-            TVShowExtrafanartsFrodo OrElse
-            (TVUseExpert AndAlso TVShowExtrafanartsExpert)
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_Fanart() As Boolean
-        Return _
-            TVShowFanartBoxee OrElse
-            TVShowFanartFrodo OrElse
-            TVShowFanartYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowFanartExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_Landscape() As Boolean
-        Return _
-            TVShowLandscapeAD OrElse
-            TVShowLandscapeExtended OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowLandscapeExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_NFO() As Boolean
-        Return _
-            TVShowNFOBoxee OrElse
-            TVShowNFOFrodo OrElse
-            TVShowNFOYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowNFOExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_Poster() As Boolean
-        Return _
-            TVShowPosterBoxee OrElse
-            TVShowPosterFrodo OrElse
-            TVShowPosterYAMJ OrElse
-            (TVUseExpert AndAlso Not String.IsNullOrEmpty(TVShowPosterExpert))
-    End Function
-
-    Public Function FilenameAnyEnabled_TVShow_Theme() As Boolean
-        Return TVShowThemeTvTunesEnable AndAlso (TVShowThemeTvTunesShowPath OrElse (TVShowThemeTvTunesCustom AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesCustomPath) OrElse (TVShowThemeTvTunesSub AndAlso Not String.IsNullOrEmpty(TVShowThemeTvTunesSubDir))))
     End Function
 
 #End Region 'Methods
@@ -1972,7 +953,7 @@ Public Class Movie
 
 #Region "Properties"
 
-    Public Property DataSettings() As DataSettings
+    Public Property DataSettings() As DataSettings_Movie
     Public Property Filenaming As FilenamingSettings_Movie
     Public Property ImageSettings() As ImageSettings_Movie
     Public Property SourceSettings As SourceSettings_Movie
@@ -1995,7 +976,7 @@ Public Class Movie
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        DataSettings = New DataSettings
+        DataSettings = New DataSettings_Movie
         Filenaming = New FilenamingSettings_Movie
         ImageSettings = New ImageSettings_Movie
         SourceSettings = New SourceSettings_Movie
@@ -2012,7 +993,8 @@ Public Class Movieset
 
 #Region "Properties"
 
-    Public Property DataSettings As DataSettings
+    Public Property DataSettings As DataSettings_Movieset
+    Public Property Filenaming As FilenamingSettings_Movieset
     Public Property ImageSettings() As ImageSettings_Movieset
     Public Property SourceSettings As SourceSettings_Movieset
 
@@ -2032,7 +1014,8 @@ Public Class Movieset
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
-        DataSettings = New DataSettings
+        DataSettings = New DataSettings_Movieset
+        Filenaming = New FilenamingSettings_Movieset
         ImageSettings = New ImageSettings_Movieset
         SourceSettings = New SourceSettings_Movieset
     End Sub
@@ -2043,12 +1026,11 @@ End Class
 
 
 <Serializable()>
-Public Class DataSettings
+Public Class DataSettings_Movie
 
 #Region "Properties"
 
-    Public Property Actors() As DataSpecification
-    Public Property ActorsWithImageOnly As Boolean
+    Public Property Actors() As DataSpecification_WithImageOnly
     Public Property Certifications() As DataSpecification
     Public Property CertificationsForMPAA() As Boolean
     Public Property CertificationsForMPAAFallback() As Boolean
@@ -2086,7 +1068,6 @@ Public Class DataSettings
     Public Property ReleaseDate() As DataSpecification
     Public Property Runtime() As DataSpecification
     Public Property Studios() As DataSpecification
-    Public Property StudiosWithImageOnly As Boolean
     Public Property Tagline() As DataSpecification
     Public Property Tags() As DataSpecification
     Public Property Title() As DataSpecification
@@ -2112,7 +1093,7 @@ Public Class DataSettings
     ''' </summary>
     ''' <remarks></remarks>
     Public Overloads Sub SetDefaults()
-        Actors = New DataSpecification
+        Actors = New DataSpecification_WithImageOnly
         Certifications = New DataSpecification
         CleanPlotAndOutline = False
         Collection = New DataSpecification
@@ -2147,6 +1128,41 @@ Public Class DataSettings
         TrailerKodiFormat = True
         UserRating = New DataSpecification
         Year = New DataSpecification
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+
+<Serializable()>
+Public Class DataSettings_Movieset
+
+#Region "Properties"
+
+    Public Property ClearDisabledFields As Boolean
+    Public Property Plot() As DataSpecification
+    Public Property Title() As DataSpecification
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Overloads Sub SetDefaults()
+        ClearDisabledFields = False
+        Plot = New DataSpecification
+        Title = New DataSpecification
     End Sub
 
 #End Region 'Methods
@@ -2199,11 +1215,11 @@ Public Class DataSettings_TVEpisode
 
 #Region "Properties"
 
-    Public Property Actors() As DataSpecification
+    Public Property Actors() As DataSpecification_WithImageOnly
     Public Property Aired() As DataSpecification
     Public Property Credits() As DataSpecification
     Public Property Directors() As DataSpecification
-    Public Property GuestStars() As DataSpecification
+    Public Property GuestStars() As DataSpecification_WithImageOnly
     Public Property LockAudioLanguage As Boolean
     Public Property LockVideoLanguage As Boolean
     Public Property Plot() As DataSpecification
@@ -2228,11 +1244,11 @@ Public Class DataSettings_TVEpisode
     ''' </summary>
     ''' <remarks></remarks>
     Public Overloads Sub SetDefaults()
-        Actors = New DataSpecification
+        Actors = New DataSpecification_WithImageOnly
         Aired = New DataSpecification
         Credits = New DataSpecification
         Directors = New DataSpecification
-        GuestStars = New DataSpecification
+        GuestStars = New DataSpecification_WithImageOnly
         LockAudioLanguage = False
         LockVideoLanguage = False
         Plot = New DataSpecification
@@ -2287,8 +1303,7 @@ Public Class DataSettings_TVShow
 
 #Region "Properties"
 
-    Public Property Actors() As DataSpecification
-    Public Property ActorsWithImageOnly As Boolean
+    Public Property Actors() As DataSpecification_WithImageOnly
     Public Property Certifications() As DataSpecification
     Public Property CertificationsForMPAA() As Boolean
     Public Property CertificationsForMPAAFallback() As Boolean
@@ -2313,7 +1328,6 @@ Public Class DataSettings_TVShow
     Public Property Runtime() As DataSpecification
     Public Property Status As DataSpecification
     Public Property Studios() As DataSpecification
-    Public Property StudiosWithImageOnly As Boolean
     Public Property Tags() As DataSpecification
     Public Property Title() As DataSpecification
     Public Property UserRating() As DataSpecification
@@ -2334,7 +1348,7 @@ Public Class DataSettings_TVShow
     ''' </summary>
     ''' <remarks></remarks>
     Public Overloads Sub SetDefaults()
-        Actors = New DataSpecification
+        Actors = New DataSpecification_WithImageOnly
         Certifications = New DataSpecification
         Countries = New DataSpecification
         Creators = New DataSpecification
@@ -2399,6 +1413,41 @@ Public Class DataSpecification
         Filter = String.Empty
         Limit = 0
         Locked = False
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+<Serializable()>
+Public Class DataSpecification_WithImageOnly
+    Inherits DataSpecification
+
+#Region "Properties"
+
+    Public Property WithImageOnly() As Boolean
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Overloads Sub SetDefaults()
+        Enabled = True
+        Filter = String.Empty
+        Limit = 0
+        Locked = False
+        WithImageOnly = False
     End Sub
 
 #End Region 'Methods
@@ -2581,14 +1630,10 @@ Public Class FilenamingSettings_Movie
     Public ReadOnly Property FilenameAnyEnabled_Theme() As Boolean
         Get
             Return _
-                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.BDMV.Trailer)) OrElse
-                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Multi.Trailer)) OrElse
-                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.Trailer)) OrElse
-                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.VideoTS.Trailer)) OrElse
-                Kodi.Trailer OrElse
-                NMJ.Trailer OrElse
-                XBMC.Trailer OrElse
-                YAMJ.Trailer
+                TvTunes.Enabled AndAlso
+                (TvTunes.Custom AndAlso Not String.IsNullOrEmpty(TvTunes.CustomPath)) OrElse
+                TvTunes.MoviePath OrElse
+                (TvTunes.Subdirectory AndAlso Not String.IsNullOrEmpty(TvTunes.SubdirectoryPath))
         End Get
     End Property
 
@@ -2646,7 +1691,6 @@ Public Class FilenamingSettings_Movie
 
 #Region "Properties"
 
-        Public Property Enabled As Boolean
         Public Property Banner As Boolean
         Public Property ClearArt As Boolean
         Public Property ClearLogo As Boolean
@@ -2675,7 +1719,6 @@ Public Class FilenamingSettings_Movie
             ClearArt = False
             ClearLogo = False
             DiscArt = False
-            Enabled = False
             Extrafanarts = False
             Extrathumbs = False
             Fanart = False
@@ -2691,7 +1734,6 @@ Public Class FilenamingSettings_Movie
 
 #Region "Properties"
 
-        Public Property Enabled As Boolean
         Public Property Fanart As Boolean
         Public Property NFO As Boolean
         Public Property Poster As Boolean
@@ -2710,7 +1752,6 @@ Public Class FilenamingSettings_Movie
 #Region "Methods"
 
         Public Sub SetDefaults()
-            Enabled = False
             Fanart = False
             NFO = False
             Poster = False
@@ -2973,7 +2014,6 @@ Public Class FilenamingSettings_Movie
 
 #Region "Properties"
 
-        Public Property Enabled As Boolean
         Public Property Actorthumbs As Boolean
         Public Property Extrafanarts As Boolean
         Public Property Extrathumbs As Boolean
@@ -2997,7 +2037,6 @@ Public Class FilenamingSettings_Movie
 
         Public Sub SetDefaults()
             Actorthumbs = False
-            Enabled = False
             Extrafanarts = False
             Extrathumbs = False
             Fanart = False
@@ -3013,7 +2052,7 @@ Public Class FilenamingSettings_Movie
     Public Class KodiExtendedSpecifications
 
 #Region "Properties"
-        Public Property Enabled As Boolean
+
         Public Property Banner As Boolean
         Public Property ClearArt As Boolean
         Public Property ClearLogo As Boolean
@@ -3038,7 +2077,6 @@ Public Class FilenamingSettings_Movie
             ClearArt = False
             ClearLogo = False
             DiscArt = False
-            Enabled = False
             Landscape = False
         End Sub
 
@@ -3050,7 +2088,6 @@ Public Class FilenamingSettings_Movie
 
 #Region "Properties"
 
-        Public Property Enabled As Boolean
         Public Property Banner As Boolean
         Public Property Fanart As Boolean
         Public Property NFO As Boolean
@@ -3072,7 +2109,6 @@ Public Class FilenamingSettings_Movie
 
         Public Sub SetDefaults()
             Banner = False
-            Enabled = False
             Fanart = False
             NFO = False
             Poster = False
@@ -3108,9 +2144,9 @@ Public Class FilenamingSettings_Movie
 #Region "Methods"
 
         Public Sub SetDefaults()
+            Enabled = False
             Custom = False
             CustomPath = String.Empty
-            Enabled = False
             MoviePath = False
             Subdirectory = False
             SubdirectoryPath = String.Empty
@@ -3124,7 +2160,6 @@ Public Class FilenamingSettings_Movie
 
 #Region "Properties"
 
-        Public Property Enabled As Boolean
         Public Property Actorthumbs As Boolean
         Public Property Extrafanarts As Boolean
         Public Property Extrathumbs As Boolean
@@ -3148,7 +2183,6 @@ Public Class FilenamingSettings_Movie
 
         Public Sub SetDefaults()
             Actorthumbs = False
-            Enabled = False
             Extrafanarts = False
             Extrathumbs = False
             Fanart = False
@@ -3165,7 +2199,6 @@ Public Class FilenamingSettings_Movie
 
 #Region "Properties"
 
-        Public Property Enabled As Boolean
         Public Property Banner As Boolean
         Public Property Fanart As Boolean
         Public Property NFO As Boolean
@@ -3173,6 +2206,11 @@ Public Class FilenamingSettings_Movie
         Public Property Trailer As Boolean
         Public Property WatchedFile As Boolean
         Public Property WatchedFilePath As String
+        Public ReadOnly Property WatchedFileSpecified As Boolean
+            Get
+                Return WatchedFile AndAlso Not String.IsNullOrEmpty(WatchedFilePath)
+            End Get
+        End Property
 
 
 #End Region 'Properties
@@ -3189,7 +2227,6 @@ Public Class FilenamingSettings_Movie
 
         Public Sub SetDefaults()
             Banner = False
-            Enabled = False
             Fanart = False
             NFO = False
             Poster = False
@@ -3206,6 +2243,1365 @@ Public Class FilenamingSettings_Movie
 
 End Class
 
+
+<Serializable()>
+Public Class FilenamingSettings_Movieset
+
+#Region "Properties"
+
+    Public Property Expert As ExpertSpecifications_Movieset
+    Public Property KodiExtended As KodiExtendedSpecifications_Movieset
+    Public Property MovieSetArtworkAutomator As MovieSetArtworkAutomatorSpecifications
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Banner() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.Banner)) OrElse
+                KodiExtended.Banner OrElse
+                MovieSetArtworkAutomator.Banner
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_ClearArt() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.ClearArt)) OrElse
+                KodiExtended.ClearArt OrElse
+                MovieSetArtworkAutomator.ClearArt
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_ClearLogo() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.ClearLogo)) OrElse
+                KodiExtended.ClearLogo OrElse
+                MovieSetArtworkAutomator.ClearLogo
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_DiscArt() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.DiscArt)) OrElse
+                KodiExtended.DiscArt
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Fanart() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.Fanart)) OrElse
+                KodiExtended.Fanart OrElse
+                MovieSetArtworkAutomator.Fanart
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Landscape() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.Landscape)) OrElse
+                KodiExtended.Landscape OrElse
+                MovieSetArtworkAutomator.Landscape
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_NFO() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.NFO))
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Poster() As Boolean
+        Get
+            Return _
+                (Expert.Enabled AndAlso Not String.IsNullOrEmpty(Expert.Single.Poster)) OrElse
+                KodiExtended.Poster OrElse
+                MovieSetArtworkAutomator.Poster
+        End Get
+    End Property
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+    Public Function GetAllPaths() As List(Of String)
+        Dim lstPaths As New List(Of String)
+        If Not String.IsNullOrEmpty(Expert.Single.Path) Then lstPaths.Add(Expert.Single.Path)
+        If Not String.IsNullOrEmpty(KodiExtended.Path) Then lstPaths.Add(KodiExtended.Path)
+        If Not String.IsNullOrEmpty(MovieSetArtworkAutomator.Path) Then lstPaths.Add(MovieSetArtworkAutomator.Path)
+        lstPaths = lstPaths.Distinct().ToList() 'remove double entries
+        Return lstPaths
+    End Function
+
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        Expert = New ExpertSpecifications_Movieset
+        KodiExtended = New KodiExtendedSpecifications_Movieset
+        MovieSetArtworkAutomator = New MovieSetArtworkAutomatorSpecifications
+    End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+    Public Class MovieSetArtworkAutomatorSpecifications
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property ClearArt As Boolean
+        Public Property ClearLogo As Boolean
+        Public Property Fanart As Boolean
+        Public Property Landscape As Boolean
+        Public Property Path As String
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            ClearArt = False
+            ClearLogo = False
+            Fanart = False
+            Landscape = False
+            Path = String.Empty
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ExpertSpecifications_Movieset
+
+#Region "Properties"
+
+        Public Property Enabled As Boolean
+        Public Property [Single] As SingleSpecifications_Movieset
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Enabled = False
+            [Single] = New SingleSpecifications_Movieset
+        End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+        Public Class SingleSpecifications_Movieset
+
+#Region "Properties"
+
+            Public Property Banner As String
+            Public Property ClearArt As String
+            Public Property ClearLogo As String
+            Public Property DiscArt As String
+            Public Property Fanart As String
+            Public Property Landscape As String
+            Public Property NFO As String
+            Public Property Path As String
+            Public Property Poster As String
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+            Public Sub New()
+                SetDefaults()
+            End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+            Public Sub SetDefaults()
+                Banner = String.Empty
+                ClearArt = String.Empty
+                ClearLogo = String.Empty
+                DiscArt = String.Empty
+                Fanart = String.Empty
+                Landscape = String.Empty
+                NFO = String.Empty
+                Path = String.Empty
+                Poster = String.Empty
+            End Sub
+
+#End Region 'Methods
+
+        End Class
+
+#End Region 'Nested Types
+
+    End Class
+
+    Public Class KodiExtendedSpecifications_Movieset
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property ClearArt As Boolean
+        Public Property ClearLogo As Boolean
+        Public Property DiscArt As Boolean
+        Public Property Fanart As Boolean
+        Public Property Landscape As Boolean
+        Public Property Path As String
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            ClearArt = False
+            ClearLogo = False
+            DiscArt = False
+            Fanart = False
+            Landscape = False
+            Path = String.Empty
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+#End Region 'Nested Types
+
+End Class
+
+<Serializable()>
+Public Class FilenamingSettings_TV
+
+#Region "Properties"
+
+    Public Property BackdropsAuto As Boolean
+    Public Property BackdropsPath As String
+    Public Property ProtectVTSandBDMVStructure As Boolean
+    Public Property TVEpisode As FilenamingSettings_TVEpisode
+    Public Property TVSeason As FilenamingSettings_TVSeason
+    Public Property TVShow As FilenamingSettings_TVShow
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        BackdropsAuto = False
+        BackdropsPath = String.Empty
+        ProtectVTSandBDMVStructure = False
+        TVEpisode = New FilenamingSettings_TVEpisode
+        TVSeason = New FilenamingSettings_TVSeason
+        TVShow = New FilenamingSettings_TVShow
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+<Serializable()>
+Public Class FilenamingSettings_TVEpisode
+
+#Region "Properties"
+
+    Public Property Boxee As BoxeeSpecifications_TVEpisode
+    Public Property Expert As ExpertSpecifications_TVEpisode
+    Public Property Kodi As KodiSpecifications_TVEpisode
+    Public Property KodiExtended As KodiExtendedSpecifications_TVEpisode
+    Public Property NMJ As NMJSpecifications_TVEpisode
+    Public Property YAMJ As YAMJSpecifications_TVEpisode
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Actorthumbs() As Boolean
+        Get
+            Return _
+                (Expert.Actorthumbs AndAlso Not String.IsNullOrEmpty(Expert.ActorthumbsExt)) OrElse
+                Kodi.Actorthumbs
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Fanart() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Fanart) OrElse
+                KodiExtended.Fanart
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_NFO() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.NFO) OrElse
+                Boxee.NFO OrElse
+                Kodi.NFO OrElse
+                NMJ.NFO OrElse
+                YAMJ.NFO
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Poster() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Poster) OrElse
+                Boxee.Poster OrElse
+                Kodi.Poster OrElse
+                NMJ.Poster OrElse
+                YAMJ.Poster
+        End Get
+    End Property
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        Boxee = New BoxeeSpecifications_TVEpisode
+        Expert = New ExpertSpecifications_TVEpisode
+        Kodi = New KodiSpecifications_TVEpisode
+        KodiExtended = New KodiExtendedSpecifications_TVEpisode
+        NMJ = New NMJSpecifications_TVEpisode
+        YAMJ = New YAMJSpecifications_TVEpisode
+    End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+    Public Class BoxeeSpecifications_TVEpisode
+
+#Region "Properties"
+
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ExpertSpecifications_TVEpisode
+
+#Region "Properties"
+
+        Public Property Actorthumbs As Boolean
+        Public Property ActorthumbsExt As String
+        Public Property Fanart As String
+        Public Property NFO As String
+        Public Property Poster As String
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Actorthumbs = False
+            ActorthumbsExt = ".jpg"
+            Fanart = String.Empty
+            NFO = String.Empty
+            Poster = String.Empty
+        End Sub
+
+#End Region 'Methods 
+
+    End Class
+
+    Public Class KodiSpecifications_TVEpisode
+
+#Region "Properties"
+
+        Public Property Actorthumbs As Boolean
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Actorthumbs = False
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class KodiExtendedSpecifications_TVEpisode
+
+#Region "Properties"
+
+        Public Property Fanart As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Fanart = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class NMJSpecifications_TVEpisode
+
+#Region "Properties"
+
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class YAMJSpecifications_TVEpisode
+
+#Region "Properties"
+
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+#End Region 'Nested Types
+
+End Class
+
+<Serializable()>
+Public Class FilenamingSettings_TVSeason
+
+#Region "Properties"
+
+    Public Property ArtworkDownloader As ArtworkDownloaderSpecifications_TVSeason
+    Public Property Boxee As BoxeeSpecifications_TVSeason
+    Public Property Expert As ExpertSpecifications_TVSeason
+    Public Property Kodi As KodiSpecifications_TVSeason
+    Public Property KodiExtended As KodiExtendedSpecifications_TVSeason
+    Public Property NMJ As NMJSpecifications_TVSeason
+    Public Property YAMJ As YAMJSpecifications_TVSeason
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Banner() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Banner) OrElse
+                Boxee.Poster OrElse
+                Kodi.Banner OrElse
+                NMJ.Banner OrElse
+                YAMJ.Banner
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Fanart() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Fanart) OrElse
+                NMJ.Fanart OrElse
+                Kodi.Fanart OrElse
+                YAMJ.Fanart
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Landscape() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Landscape) OrElse
+                ArtworkDownloader.Landscape OrElse
+                KodiExtended.Landscape
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Poster() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Poster) OrElse
+                Boxee.Poster OrElse
+                Kodi.Poster OrElse
+                NMJ.Poster OrElse
+                YAMJ.Poster
+        End Get
+    End Property
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        Boxee = New BoxeeSpecifications_TVSeason
+        Expert = New ExpertSpecifications_TVSeason
+        Kodi = New KodiSpecifications_TVSeason
+        KodiExtended = New KodiExtendedSpecifications_TVSeason
+        NMJ = New NMJSpecifications_TVSeason
+        YAMJ = New YAMJSpecifications_TVSeason
+    End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+    Public Class ArtworkDownloaderSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Landscape As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Landscape = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class BoxeeSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ExpertSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Banner As String
+        Public Property Fanart As String
+        Public Property Landscape As String
+        Public Property Poster As String
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = String.Empty
+            Fanart = String.Empty
+            Landscape = String.Empty
+            Poster = String.Empty
+        End Sub
+
+#End Region 'Methods 
+
+    End Class
+
+    Public Class KodiSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property Fanart As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            Fanart = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class KodiExtendedSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Landscape As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Landscape = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class NMJSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property Fanart As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            Fanart = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class YAMJSpecifications_TVSeason
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property Fanart As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            Fanart = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+#End Region 'Nested Types
+
+End Class
+
+<Serializable()>
+Public Class FilenamingSettings_TVShow
+
+#Region "Properties"
+
+    Public Property ArtworkDownloader As ArtworkDownloaderSpecifications_TVShow
+    Public Property Boxee As BoxeeSpecifications_TVShow
+    Public Property Expert As ExpertSpecifications_TVShow
+    Public Property Kodi As KodiSpecifications_TVShow
+    Public Property KodiExtended As KodiExtendedSpecifications_TVShow
+    Public Property NMJ As NMJSpecifications_TVShow
+    Public Property TvTunes As TvTunesSpecifications_TVShow
+    Public Property YAMJ As YAMJSpecifications_TVShow
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Actorthumbs() As Boolean
+        Get
+            Return _
+                (Expert.Actorthumbs AndAlso Not String.IsNullOrEmpty(Expert.ActorthumbsExt)) OrElse
+                Kodi.Actorthumbs
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Banner() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Banner) OrElse
+                ArtworkDownloader.Banner OrElse
+                Kodi.Banner OrElse
+                NMJ.Banner OrElse
+                YAMJ.Banner
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_CharacterArt() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.CharacterArt) OrElse
+                ArtworkDownloader.CharacterArt OrElse
+                KodiExtended.CharacterArt
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_ClearArt() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.ClearArt) OrElse
+                ArtworkDownloader.ClearArt OrElse
+                KodiExtended.ClearArt
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_ClearLogo() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.ClearLogo) OrElse
+                ArtworkDownloader.ClearLogo OrElse
+                KodiExtended.ClearLogo
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Extrafanarts() As Boolean
+        Get
+            Return _
+                Expert.Extrafanarts OrElse
+                Kodi.Extrafanarts
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Fanart() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Fanart) OrElse
+                ArtworkDownloader.Fanart OrElse
+                Boxee.Fanart OrElse
+                Kodi.Fanart OrElse
+                NMJ.Fanart OrElse
+                YAMJ.Fanart
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Landscape() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Landscape) OrElse
+                ArtworkDownloader.Landscape OrElse
+                KodiExtended.Landscape
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_NFO() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.NFO) OrElse
+                Boxee.NFO OrElse
+                Kodi.NFO OrElse
+                NMJ.NFO OrElse
+                YAMJ.NFO
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Poster() As Boolean
+        Get
+            Return _
+                Not String.IsNullOrEmpty(Expert.Poster) OrElse
+                ArtworkDownloader.Poster OrElse
+                Boxee.Poster OrElse
+                Kodi.Poster OrElse
+                NMJ.Poster OrElse
+                YAMJ.Poster
+        End Get
+    End Property
+
+    <XmlIgnore()>
+    Public ReadOnly Property FilenameAnyEnabled_Theme() As Boolean
+        Get
+            Return _
+                TvTunes.Enabled AndAlso
+                (TvTunes.Custom AndAlso Not String.IsNullOrEmpty(TvTunes.CustomPath)) OrElse
+                TvTunes.TVShowPath OrElse
+                (TvTunes.Subdirectory AndAlso Not String.IsNullOrEmpty(TvTunes.SubdirectoryPath))
+        End Get
+    End Property
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        ArtworkDownloader = New ArtworkDownloaderSpecifications_TVShow
+        Boxee = New BoxeeSpecifications_TVShow
+        Expert = New ExpertSpecifications_TVShow
+        Kodi = New KodiSpecifications_TVShow
+        KodiExtended = New KodiExtendedSpecifications_TVShow
+        NMJ = New NMJSpecifications_TVShow
+        TvTunes = New TvTunesSpecifications_TVShow
+        YAMJ = New YAMJSpecifications_TVShow
+    End Sub
+
+#End Region 'Methods
+
+#Region "Nested Types"
+
+    Public Class ArtworkDownloaderSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property CharacterArt As Boolean
+        Public Property ClearArt As Boolean
+        Public Property ClearLogo As Boolean
+        Public Property Extrafanarts As Boolean
+        Public Property Fanart As Boolean
+        Public Property Landscape As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            CharacterArt = False
+            ClearArt = False
+            ClearLogo = False
+            Extrafanarts = False
+            Fanart = False
+            Landscape = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class BoxeeSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property Fanart As Boolean
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            Fanart = False
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class ExpertSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Actorthumbs As Boolean
+        Public Property ActorthumbsExt As String
+        Public Property AllSeasonsBanner As String
+        Public Property AllSeasonsFanart As String
+        Public Property AllSeasonsLandscape As String
+        Public Property AllSeasonsPoster As String
+        Public Property Banner As String
+        Public Property CharacterArt As String
+        Public Property ClearArt As String
+        Public Property ClearLogo As String
+        Public Property Extrafanarts As Boolean
+        Public Property Fanart As String
+        Public Property Landscape As String
+        Public Property NFO As String
+        Public Property Poster As String
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Actorthumbs = False
+            ActorthumbsExt = ".jpg"
+            AllSeasonsBanner = String.Empty
+            AllSeasonsFanart = String.Empty
+            AllSeasonsLandscape = String.Empty
+            AllSeasonsPoster = String.Empty
+            Banner = String.Empty
+            CharacterArt = String.Empty
+            ClearArt = String.Empty
+            ClearLogo = String.Empty
+            Extrafanarts = False
+            Fanart = String.Empty
+            Landscape = String.Empty
+            NFO = String.Empty
+            Poster = String.Empty
+        End Sub
+
+#End Region 'Methods 
+
+    End Class
+
+    Public Class KodiSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Actorthumbs As Boolean
+        Public Property Banner As Boolean
+        Public Property Extrafanarts As Boolean
+        Public Property Fanart As Boolean
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Actorthumbs = False
+            Banner = False
+            Extrafanarts = False
+            Fanart = False
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class KodiExtendedSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property CharacterArt As Boolean
+        Public Property ClearArt As Boolean
+        Public Property ClearLogo As Boolean
+        Public Property Landscape As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            CharacterArt = False
+            ClearArt = False
+            ClearLogo = False
+            Landscape = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class NMJSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property Fanart As Boolean
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+        Public Property Trailer As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            Fanart = False
+            NFO = False
+            Poster = False
+            Trailer = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class TvTunesSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Enabled As Boolean
+        Public Property Custom As Boolean
+        Public Property CustomPath As String
+        Public Property Subdirectory As Boolean
+        Public Property SubdirectoryPath As String
+        Public Property TVShowPath As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Enabled = False
+            Custom = False
+            CustomPath = String.Empty
+            Subdirectory = False
+            SubdirectoryPath = String.Empty
+            TVShowPath = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    Public Class YAMJSpecifications_TVShow
+
+#Region "Properties"
+
+        Public Property Banner As Boolean
+        Public Property Fanart As Boolean
+        Public Property NFO As Boolean
+        Public Property Poster As Boolean
+
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+        Public Sub New()
+            SetDefaults()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+
+        Public Sub SetDefaults()
+            Banner = False
+            Fanart = False
+            NFO = False
+            Poster = False
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+#End Region 'Nested Types
+
+End Class
 
 <Serializable()>
 Public Class FilesystemSettings
@@ -4417,6 +4813,7 @@ Public Class TV
 #Region "Properties"
 
     Public Property DataSettings As DataSettings_TV
+    Public Property Filenaming As FilenamingSettings_TV
     Public Property ImageSettings() As ImageSettings_TV
     Public Property SourceSettings As SourceSettings_TV
     Public Property ThemeSettings() As ThemeSettings
@@ -4438,6 +4835,7 @@ Public Class TV
     ''' <remarks></remarks>
     Public Sub SetDefaults()
         DataSettings = New DataSettings_TV
+        Filenaming = New FilenamingSettings_TV
         ImageSettings = New ImageSettings_TV
         SourceSettings = New SourceSettings_TV
         ThemeSettings = New ThemeSettings

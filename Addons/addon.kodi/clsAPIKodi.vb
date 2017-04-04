@@ -516,7 +516,7 @@ Namespace Kodi
             Dim RemotePath As String = String.Empty
             Dim RemoteIsUNC As Boolean = False
 
-            For Each Source In Master.eSettings.GetMovieSetsArtworkPaths()
+            For Each Source In Master.eSettings.Movieset.Filenaming.GetAllPaths
                 Dim tLocalSource As String = String.Empty
                 'add a directory separator at the end of the path to distinguish between
                 'D:\MovieSetsArtwork

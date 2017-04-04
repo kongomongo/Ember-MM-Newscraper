@@ -4278,14 +4278,14 @@ Public Class Database
         End Using
 
         'YAMJ watched file
-        If tDBElement.MainDetails.PlayCountSpecified AndAlso Master.eSettings.Movie.Filenaming.YAMJ.Enabled AndAlso Master.eSettings.Movie.Filenaming.YAMJ.WatchedFile Then
+        If tDBElement.MainDetails.PlayCountSpecified AndAlso Master.eSettings.Movie.Filenaming.YAMJ.WatchedFileSpecified Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainWatchedFile)
                 If Not File.Exists(a) Then
                     Dim fs As FileStream = File.Create(a)
                     fs.Close()
                 End If
             Next
-        ElseIf Not tDBElement.MainDetails.PlayCountSpecified AndAlso Master.eSettings.Movie.Filenaming.YAMJ.Enabled AndAlso Master.eSettings.Movie.Filenaming.YAMJ.WatchedFile Then
+        ElseIf Not tDBElement.MainDetails.PlayCountSpecified AndAlso Master.eSettings.Movie.Filenaming.YAMJ.WatchedFileSpecified Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainWatchedFile)
                 If File.Exists(a) Then
                     File.Delete(a)

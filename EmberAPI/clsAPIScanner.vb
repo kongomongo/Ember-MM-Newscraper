@@ -99,9 +99,9 @@ Public Class Scanner
             Try
                 fList.AddRange(Directory.GetFiles(Directory.GetParent(tDBElement.FileItem.FirstStackedPath).FullName))
                 fList.AddRange(Directory.GetFiles(strMainPath))
-                If Master.eSettings.Movie.Filenaming.NMJ.Enabled Then
-                    fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
-                End If
+                'If Master.eSettings.Movie.Filenaming.NMJ.Enabled Then 'TODO: why?
+                fList.AddRange(Directory.GetFiles(Directory.GetParent(strMainPath).FullName))
+                'End If
             Catch ex As Exception
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
@@ -614,7 +614,7 @@ Public Class Scanner
         'ListTitle
         tDBElement.ListTitle = StringUtils.SortTokens_Movie(tDBElement.MainDetails.Title)
 
-        If Master.eSettings.Movie.Filenaming.YAMJ.Enabled AndAlso Master.eSettings.Movie.Filenaming.YAMJ.WatchedFile Then
+        If Master.eSettings.Movie.Filenaming.YAMJ.WatchedFileSpecified Then
             For Each a In FileUtils.GetFilenameList.Movie(tDBElement, Enums.ScrapeModifierType.MainWatchedFile)
                 If tDBElement.MainDetails.PlayCountSpecified Then
                     If Not File.Exists(a) Then
@@ -775,8 +775,8 @@ Public Class Scanner
             If isNew AndAlso cEpisode.TVShowDetails.AnyUniqueIDSpecified AndAlso cEpisode.ShowIDSpecified Then
                 Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                 Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart Then ScrapeModifiers.EpisodeFanart = True
-                If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster Then ScrapeModifiers.EpisodePoster = True
+                If Not cEpisode.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TV.Filenaming.TVEpisode.FilenameAnyEnabled_Fanart Then ScrapeModifiers.EpisodeFanart = True
+                If Not cEpisode.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.TV.Filenaming.TVEpisode.FilenameAnyEnabled_Poster Then ScrapeModifiers.EpisodePoster = True
                 If ScrapeModifiers.EpisodeFanart OrElse ScrapeModifiers.EpisodePoster Then
                     If AddonsManager.Instance.ScrapeImage_TV(cEpisode, SearchResultsContainer, ScrapeModifiers, False) Then
                         Images.SetPreferredImages(cEpisode, SearchResultsContainer, ScrapeModifiers)
@@ -998,10 +998,10 @@ Public Class Scanner
                                 If isNew AndAlso tmpSeason.TVShowDetails.AnyUniqueIDSpecified AndAlso tmpSeason.ShowIDSpecified Then
                                     Dim SearchResultsContainer As New MediaContainers.SearchResultsContainer
                                     Dim ScrapeModifiers As New Structures.ScrapeModifiers
-                                    If Not tmpSeason.ImagesContainer.Banner.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner Then ScrapeModifiers.SeasonBanner = True
-                                    If Not tmpSeason.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart Then ScrapeModifiers.SeasonFanart = True
-                                    If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape Then ScrapeModifiers.SeasonLandscape = True
-                                    If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster Then ScrapeModifiers.SeasonPoster = True
+                                    If Not tmpSeason.ImagesContainer.Banner.LocalFilePathSpecified AndAlso Master.eSettings.TV.Filenaming.TVSeason.FilenameAnyEnabled_Banner Then ScrapeModifiers.SeasonBanner = True
+                                    If Not tmpSeason.ImagesContainer.Fanart.LocalFilePathSpecified AndAlso Master.eSettings.TV.Filenaming.TVSeason.FilenameAnyEnabled_Fanart Then ScrapeModifiers.SeasonFanart = True
+                                    If Not tmpSeason.ImagesContainer.Landscape.LocalFilePathSpecified AndAlso Master.eSettings.TV.Filenaming.TVSeason.FilenameAnyEnabled_Landscape Then ScrapeModifiers.SeasonLandscape = True
+                                    If Not tmpSeason.ImagesContainer.Poster.LocalFilePathSpecified AndAlso Master.eSettings.TV.Filenaming.TVSeason.FilenameAnyEnabled_Poster Then ScrapeModifiers.SeasonPoster = True
                                     If ScrapeModifiers.SeasonBanner OrElse ScrapeModifiers.SeasonFanart OrElse ScrapeModifiers.SeasonLandscape OrElse ScrapeModifiers.SeasonPoster Then
                                         If AddonsManager.Instance.ScrapeImage_TV(tmpSeason, SearchResultsContainer, ScrapeModifiers, False) Then
                                             Images.SetPreferredImages(tmpSeason, SearchResultsContainer, ScrapeModifiers)

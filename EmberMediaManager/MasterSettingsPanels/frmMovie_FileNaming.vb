@@ -143,7 +143,6 @@ Public Class frmMovie_FileNaming
 
         '*********** ArtworkDownloader settings *************
         With Master.eSettings.Movie.Filenaming.ArtworkDownloader
-            chkMovieUseAD.Checked = .Enabled
             chkMovieBannerAD.Checked = .Banner
             chkMovieClearArtAD.Checked = .ClearArt
             chkMovieClearLogoAD.Checked = .ClearLogo
@@ -153,7 +152,6 @@ Public Class frmMovie_FileNaming
 
         '***************** Boxee settings ******************
         With Master.eSettings.Movie.Filenaming.Boxee
-            chkMovieUseBoxee.Checked = .Enabled
             chkMovieFanartBoxee.Checked = .Fanart
             chkMovieNFOBoxee.Checked = .NFO
             chkMoviePosterBoxee.Checked = .Poster
@@ -161,7 +159,6 @@ Public Class frmMovie_FileNaming
 
         '*************** Kodi Frodo settings ***************
         With Master.eSettings.Movie.Filenaming.Kodi
-            chkMovieUseFrodo.Checked = .Enabled
             chkMovieActorThumbsFrodo.Checked = .Actorthumbs
             chkMovieExtrafanartsFrodo.Checked = .Extrafanarts
             chkMovieExtrathumbsFrodo.Checked = .Extrathumbs
@@ -173,7 +170,6 @@ Public Class frmMovie_FileNaming
 
         '********* Kodi Extended Images settings ***********
         With Master.eSettings.Movie.Filenaming.KodiExtended
-            chkMovieUseExtended.Checked = .Enabled
             chkMovieBannerExtended.Checked = .Banner
             chkMovieClearArtExtended.Checked = .ClearArt
             chkMovieClearLogoExtended.Checked = .ClearLogo
@@ -183,7 +179,6 @@ Public Class frmMovie_FileNaming
 
         '****************** NMJ settings ******************
         With Master.eSettings.Movie.Filenaming.NMJ
-            chkMovieUseNMJ.Checked = .Enabled
             chkMovieBannerNMJ.Checked = .Banner
             chkMovieFanartNMJ.Checked = .Fanart
             chkMovieNFONMJ.Checked = .NFO
@@ -203,7 +198,6 @@ Public Class frmMovie_FileNaming
 
         '*************** XBMC Eden settings ****************
         With Master.eSettings.Movie.Filenaming.XBMC
-            chkMovieUseEden.Checked = .Enabled
             chkMovieActorThumbsEden.Checked = .Actorthumbs
             chkMovieExtrafanartsEden.Checked = .Extrafanarts
             chkMovieExtrathumbsEden.Checked = .Extrathumbs
@@ -215,7 +209,6 @@ Public Class frmMovie_FileNaming
 
         '****************** YAMJ settings ******************
         With Master.eSettings.Movie.Filenaming.YAMJ
-            chkMovieUseYAMJ.Checked = .Enabled
             chkMovieBannerYAMJ.Checked = .Banner
             chkMovieFanartYAMJ.Checked = .Fanart
             chkMovieNFOYAMJ.Checked = .NFO
@@ -313,7 +306,6 @@ Public Class frmMovie_FileNaming
 
         '*************** Kodi Frodo settings ***************
         With Master.eSettings.Movie.Filenaming.Kodi
-            .Enabled = chkMovieUseFrodo.Checked
             .Actorthumbs = chkMovieActorThumbsFrodo.Checked
             .Extrafanarts = chkMovieExtrafanartsFrodo.Checked
             .Extrathumbs = chkMovieExtrathumbsFrodo.Checked
@@ -325,7 +317,6 @@ Public Class frmMovie_FileNaming
 
         '*************** XBMC Eden settings ***************
         With Master.eSettings.Movie.Filenaming.XBMC
-            .Enabled = chkMovieUseEden.Checked
             .Actorthumbs = chkMovieActorThumbsEden.Checked
             .Extrafanarts = chkMovieExtrafanartsEden.Checked
             .Extrathumbs = chkMovieExtrathumbsEden.Checked
@@ -337,7 +328,6 @@ Public Class frmMovie_FileNaming
 
         '******** XBMC ArtworkDownloader settings **********
         With Master.eSettings.Movie.Filenaming.ArtworkDownloader
-            .Enabled = chkMovieUseAD.Checked
             .Banner = chkMovieBannerAD.Checked
             .ClearArt = chkMovieClearArtAD.Checked
             .ClearArt = chkMovieClearLogoAD.Checked
@@ -349,7 +339,6 @@ Public Class frmMovie_FileNaming
 
         '********* Kodi Extended Images settings ***********
         With Master.eSettings.Movie.Filenaming.KodiExtended
-            .Enabled = chkMovieUseExtended.Checked
             .Banner = chkMovieBannerExtended.Checked
             .ClearArt = chkMovieClearArtExtended.Checked
             .ClearLogo = chkMovieClearLogoExtended.Checked
@@ -369,7 +358,6 @@ Public Class frmMovie_FileNaming
 
         '****************** YAMJ settings *****************
         With Master.eSettings.Movie.Filenaming.YAMJ
-            .Enabled = chkMovieUseYAMJ.Checked
             .Banner = chkMovieBannerYAMJ.Checked
             .Fanart = chkMovieFanartYAMJ.Checked
             .NFO = chkMovieNFOYAMJ.Checked
@@ -381,7 +369,6 @@ Public Class frmMovie_FileNaming
 
         '****************** NMJ settings *****************
         With Master.eSettings.Movie.Filenaming.NMJ
-            .Enabled = chkMovieUseNMJ.Checked
             .Banner = chkMovieBannerNMJ.Checked
             .Fanart = chkMovieFanartNMJ.Checked
             .NFO = chkMovieNFONMJ.Checked
@@ -391,7 +378,6 @@ Public Class frmMovie_FileNaming
 
         '***************** Boxee settings *****************
         With Master.eSettings.Movie.Filenaming.Boxee
-            .Enabled = chkMovieUseBoxee.Checked
             .Fanart = chkMovieFanartBoxee.Checked
             .NFO = chkMovieNFOBoxee.Checked
             .Poster = chkMoviePosterBoxee.Checked
@@ -507,188 +493,6 @@ Public Class frmMovie_FileNaming
                 End If
             End If
         End With
-    End Sub
-
-    Private Sub chkMovieUseAD_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseAD.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieBannerAD.Enabled = chkMovieUseAD.Checked
-        chkMovieClearArtAD.Enabled = chkMovieUseAD.Checked
-        chkMovieClearLogoAD.Enabled = chkMovieUseAD.Checked
-        chkMovieDiscArtAD.Enabled = chkMovieUseAD.Checked
-        chkMovieFanartAD.Enabled = chkMovieUseAD.Checked
-        chkMovieLandscapeAD.Enabled = chkMovieUseAD.Checked
-        chkMoviePosterAD.Enabled = chkMovieUseAD.Checked
-
-        If Not chkMovieUseAD.Checked Then
-            chkMovieBannerAD.Checked = False
-            chkMovieClearArtAD.Checked = False
-            chkMovieClearLogoAD.Checked = False
-            chkMovieDiscArtAD.Checked = False
-            chkMovieFanartAD.Checked = False
-            chkMovieLandscapeAD.Checked = False
-            chkMoviePosterAD.Checked = False
-        Else
-            chkMovieBannerAD.Checked = True
-            chkMovieClearArtAD.Checked = True
-            chkMovieClearLogoAD.Checked = True
-            chkMovieDiscArtAD.Checked = True
-            chkMovieFanartAD.Checked = True
-            chkMovieLandscapeAD.Checked = True
-            chkMoviePosterAD.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieUseBoxee_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseBoxee.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieFanartBoxee.Enabled = chkMovieUseBoxee.Checked
-        chkMovieNFOBoxee.Enabled = chkMovieUseBoxee.Checked
-        chkMoviePosterBoxee.Enabled = chkMovieUseBoxee.Checked
-
-        If Not chkMovieUseBoxee.Checked Then
-            chkMovieFanartBoxee.Checked = False
-            chkMovieNFOBoxee.Checked = False
-            chkMoviePosterBoxee.Checked = False
-        Else
-            chkMovieFanartBoxee.Checked = True
-            chkMovieNFOBoxee.Checked = True
-            chkMoviePosterBoxee.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieUseKodiExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseExtended.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieBannerExtended.Enabled = chkMovieUseExtended.Checked
-        chkMovieClearArtExtended.Enabled = chkMovieUseExtended.Checked
-        chkMovieClearLogoExtended.Enabled = chkMovieUseExtended.Checked
-        chkMovieDiscArtExtended.Enabled = chkMovieUseExtended.Checked
-        chkMovieLandscapeExtended.Enabled = chkMovieUseExtended.Checked
-
-        If Not chkMovieUseExtended.Checked Then
-            chkMovieBannerExtended.Checked = False
-            chkMovieClearArtExtended.Checked = False
-            chkMovieClearLogoExtended.Checked = False
-            chkMovieDiscArtExtended.Checked = False
-            chkMovieLandscapeExtended.Checked = False
-        Else
-            chkMovieBannerExtended.Checked = True
-            chkMovieClearArtExtended.Checked = True
-            chkMovieClearLogoExtended.Checked = True
-            chkMovieDiscArtExtended.Checked = True
-            chkMovieLandscapeExtended.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieUseFrodo_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseFrodo.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieActorThumbsFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkMovieExtrafanartsFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkMovieExtrathumbsFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkMovieFanartFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkMovieNFOFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkMoviePosterFrodo.Enabled = chkMovieUseFrodo.Checked
-        chkMovieTrailerFrodo.Enabled = chkMovieUseFrodo.Checked
-
-        If Not chkMovieUseFrodo.Checked Then
-            chkMovieActorThumbsFrodo.Checked = False
-            chkMovieExtrafanartsFrodo.Checked = False
-            chkMovieExtrathumbsFrodo.Checked = False
-            chkMovieFanartFrodo.Checked = False
-            chkMovieNFOFrodo.Checked = False
-            chkMoviePosterFrodo.Checked = False
-            chkMovieTrailerFrodo.Checked = False
-        Else
-            chkMovieActorThumbsFrodo.Checked = True
-            chkMovieExtrafanartsFrodo.Checked = True
-            chkMovieExtrathumbsFrodo.Checked = True
-            chkMovieFanartFrodo.Checked = True
-            chkMovieNFOFrodo.Checked = True
-            chkMoviePosterFrodo.Checked = True
-            chkMovieTrailerFrodo.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieUseEden_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseEden.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieActorThumbsEden.Enabled = chkMovieUseEden.Checked
-        chkMovieExtrafanartsEden.Enabled = chkMovieUseEden.Checked
-        chkMovieExtrathumbsEden.Enabled = chkMovieUseEden.Checked
-        chkMovieFanartEden.Enabled = chkMovieUseEden.Checked
-        chkMovieNFOEden.Enabled = chkMovieUseEden.Checked
-        chkMoviePosterEden.Enabled = chkMovieUseEden.Checked
-        chkMovieTrailerEden.Enabled = chkMovieUseEden.Checked
-
-        If Not chkMovieUseEden.Checked Then
-            chkMovieActorThumbsEden.Checked = False
-            chkMovieExtrafanartsEden.Checked = False
-            chkMovieExtrathumbsEden.Checked = False
-            chkMovieFanartEden.Checked = False
-            chkMovieNFOEden.Checked = False
-            chkMoviePosterEden.Checked = False
-            chkMovieTrailerEden.Checked = False
-        Else
-            chkMovieActorThumbsEden.Checked = True
-            chkMovieExtrafanartsEden.Checked = True
-            chkMovieExtrathumbsEden.Checked = True
-            chkMovieFanartEden.Checked = True
-            chkMovieNFOEden.Checked = True
-            chkMoviePosterEden.Checked = True
-            chkMovieTrailerEden.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieUseYAMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseYAMJ.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieBannerYAMJ.Enabled = chkMovieUseYAMJ.Checked
-        chkMovieFanartYAMJ.Enabled = chkMovieUseYAMJ.Checked
-        chkMovieNFOYAMJ.Enabled = chkMovieUseYAMJ.Checked
-        chkMoviePosterYAMJ.Enabled = chkMovieUseYAMJ.Checked
-        chkMovieTrailerYAMJ.Enabled = chkMovieUseYAMJ.Checked
-        chkMovieYAMJWatchedFile.Enabled = chkMovieUseYAMJ.Checked
-
-        If Not chkMovieUseYAMJ.Checked Then
-            chkMovieBannerYAMJ.Checked = False
-            chkMovieFanartYAMJ.Checked = False
-            chkMovieNFOYAMJ.Checked = False
-            chkMoviePosterYAMJ.Checked = False
-            chkMovieTrailerYAMJ.Checked = False
-            chkMovieYAMJWatchedFile.Checked = False
-        Else
-            chkMovieBannerYAMJ.Checked = True
-            chkMovieFanartYAMJ.Checked = True
-            chkMovieNFOYAMJ.Checked = True
-            chkMoviePosterYAMJ.Checked = True
-            chkMovieTrailerYAMJ.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieUseNMJ_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieUseNMJ.CheckedChanged
-        EnableApplyButton()
-
-        chkMovieBannerNMJ.Enabled = chkMovieUseNMJ.Checked
-        chkMovieFanartNMJ.Enabled = chkMovieUseNMJ.Checked
-        chkMovieNFONMJ.Enabled = chkMovieUseNMJ.Checked
-        chkMoviePosterNMJ.Enabled = chkMovieUseNMJ.Checked
-        chkMovieTrailerNMJ.Enabled = chkMovieUseNMJ.Checked
-
-        If Not chkMovieUseNMJ.Checked Then
-            chkMovieBannerNMJ.Checked = False
-            chkMovieFanartNMJ.Checked = False
-            chkMovieNFONMJ.Checked = False
-            chkMoviePosterNMJ.Checked = False
-            chkMovieTrailerNMJ.Checked = False
-        Else
-            chkMovieBannerNMJ.Checked = True
-            chkMovieFanartNMJ.Checked = True
-            chkMovieNFONMJ.Checked = True
-            chkMoviePosterNMJ.Checked = True
-            chkMovieTrailerNMJ.Checked = True
-        End If
     End Sub
 
     Private Sub chkMovieThemeTvTunesCustom_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieThemeTvTunesCustom.CheckedChanged
@@ -1023,11 +827,6 @@ Public Class frmMovie_FileNaming
 
         'Enabled
         Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
-        lblMovieSourcesFilenamingBoxeeDefaultsEnabled.Text = strEnabled
-        lblMovieSourcesFilenamingKodiADEnabled.Text = strEnabled
-        lblMovieSourcesFilenamingKodiDefaultsEnabled.Text = strEnabled
-        lblMovieSourcesFilenamingKodiExtendedEnabled.Text = strEnabled
-        lblMovieSourcesFilenamingNMTDefaultsEnabled.Text = strEnabled
         chkMovieUseExpert.Text = strEnabled
         chkMovieThemeTvTunesEnabled.Text = strEnabled
 

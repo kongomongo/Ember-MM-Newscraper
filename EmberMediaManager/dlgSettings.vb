@@ -541,7 +541,7 @@ Public Class dlgSettings
                 chkTVScraperShowCertForMPAA.Checked = .CertificationsForMPAA
                 chkTVScraperShowCertForMPAAFallback.Checked = .CertificationsForMPAAFallback
                 chkTVScraperShowCertOnlyValue.Checked = .CertificationsOnlyValue
-                chkTVScraperCastWithImg.Checked = .ActorsWithImageOnly
+                chkTVScraperCastWithImg.Checked = .Actors.WithImageOnly
 
                 Try
                     cbTVScraperShowCertLang.Items.Clear()
@@ -796,7 +796,7 @@ Public Class dlgSettings
         With Master.eSettings.TV.DataSettings.TVShow
             .ClearDisabledFields = chkTVScraperCleanFields.Checked
             .Actors.Enabled = chkTVScraperShowActors.Checked
-            .ActorsWithImageOnly = chkTVScraperCastWithImg.Checked
+            .Actors.WithImageOnly = chkTVScraperCastWithImg.Checked
             .Certifications.Enabled = chkTVScraperShowCert.Checked
             .Certifications.Locked = chkTVLockShowCert.Checked
             If Not String.IsNullOrEmpty(cbTVScraperShowCertLang.Text) Then

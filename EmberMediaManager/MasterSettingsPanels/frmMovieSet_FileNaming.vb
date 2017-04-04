@@ -144,42 +144,40 @@ Public Class frmMovieSet_FileNaming
             chkMovieSetCleanFiles.Checked = .RemoveFiles
         End With
 
-        With Master.eSettings
+        With Master.eSettings.Movieset.Filenaming
 
             '********* Kodi Extended Images settings ***********
-            chkMovieSetUseExtended.Checked = .MovieSetUseExtended
-            chkMovieSetBannerExtended.Checked = .MovieSetBannerExtended
-            chkMovieSetClearArtExtended.Checked = .MovieSetClearArtExtended
-            chkMovieSetClearLogoExtended.Checked = .MovieSetClearLogoExtended
-            chkMovieSetDiscArtExtended.Checked = .MovieSetDiscArtExtended
-            chkMovieSetFanartExtended.Checked = .MovieSetFanartExtended
-            chkMovieSetLandscapeExtended.Checked = .MovieSetLandscapeExtended
-            chkMovieSetPosterExtended.Checked = .MovieSetPosterExtended
-            txtMovieSetPathExtended.Text = .MovieSetPathExtended
+            chkMovieSetBannerExtended.Checked = .KodiExtended.Banner
+            chkMovieSetClearArtExtended.Checked = .KodiExtended.ClearArt
+            chkMovieSetClearLogoExtended.Checked = .KodiExtended.ClearLogo
+            chkMovieSetDiscArtExtended.Checked = .KodiExtended.DiscArt
+            chkMovieSetFanartExtended.Checked = .KodiExtended.Fanart
+            chkMovieSetLandscapeExtended.Checked = .KodiExtended.Landscape
+            chkMovieSetPosterExtended.Checked = .KodiExtended.Poster
+            txtMovieSetPathExtended.Text = .KodiExtended.Path
 
-            '**************** XBMC MSAA settings ***************
-            chkMovieSetUseMSAA.Checked = .MovieSetUseMSAA
-            chkMovieSetBannerMSAA.Checked = .MovieSetBannerMSAA
-            chkMovieSetClearArtMSAA.Checked = .MovieSetClearArtMSAA
-            chkMovieSetClearLogoMSAA.Checked = .MovieSetClearLogoMSAA
-            chkMovieSetFanartMSAA.Checked = .MovieSetFanartMSAA
-            chkMovieSetLandscapeMSAA.Checked = .MovieSetLandscapeMSAA
-            chkMovieSetPosterMSAA.Checked = .MovieSetPosterMSAA
-            txtMovieSetPathMSAA.Text = .MovieSetPathMSAA
+            '**************** Kodi MSAA settings ***************
+            chkMovieSetBannerMSAA.Checked = .MovieSetArtworkAutomator.Banner
+            chkMovieSetClearArtMSAA.Checked = .MovieSetArtworkAutomator.ClearArt
+            chkMovieSetClearLogoMSAA.Checked = .MovieSetArtworkAutomator.ClearLogo
+            chkMovieSetFanartMSAA.Checked = .MovieSetArtworkAutomator.Fanart
+            chkMovieSetLandscapeMSAA.Checked = .MovieSetArtworkAutomator.Landscape
+            chkMovieSetPosterMSAA.Checked = .MovieSetArtworkAutomator.Poster
+            txtMovieSetPathMSAA.Text = .MovieSetArtworkAutomator.Path
 
             '***************** Expert settings *****************
-            chkMovieSetUseExpert.Checked = .MovieSetUseExpert
+            chkMovieSetUseExpert.Checked = .Expert.Enabled
 
             '***************** Expert Single ******************
-            txtMovieSetBannerExpertSingle.Text = .MovieSetBannerExpertSingle
-            txtMovieSetClearArtExpertSingle.Text = .MovieSetClearArtExpertSingle
-            txtMovieSetClearLogoExpertSingle.Text = .MovieSetClearLogoExpertSingle
-            txtMovieSetDiscArtExpertSingle.Text = .MovieSetDiscArtExpertSingle
-            txtMovieSetFanartExpertSingle.Text = .MovieSetFanartExpertSingle
-            txtMovieSetLandscapeExpertSingle.Text = .MovieSetLandscapeExpertSingle
-            txtMovieSetNFOExpertSingle.Text = .MovieSetNFOExpertSingle
-            txtMovieSetPathExpertSingle.Text = .MovieSetPathExpertSingle
-            txtMovieSetPosterExpertSingle.Text = .MovieSetPosterExpertSingle
+            txtMovieSetBannerExpertSingle.Text = .Expert.Single.Banner
+            txtMovieSetClearArtExpertSingle.Text = .Expert.Single.ClearArt
+            txtMovieSetClearLogoExpertSingle.Text = .Expert.Single.ClearLogo
+            txtMovieSetDiscArtExpertSingle.Text = .Expert.Single.DiscArt
+            txtMovieSetFanartExpertSingle.Text = .Expert.Single.Fanart
+            txtMovieSetLandscapeExpertSingle.Text = .Expert.Single.Landscape
+            txtMovieSetNFOExpertSingle.Text = .Expert.Single.NFO
+            txtMovieSetPathExpertSingle.Text = .Expert.Single.Path
+            txtMovieSetPosterExpertSingle.Text = .Expert.Single.Poster
         End With
     End Sub
 
@@ -189,42 +187,40 @@ Public Class frmMovieSet_FileNaming
             .RemoveFiles = chkMovieSetCleanFiles.Checked
         End With
 
-        With Master.eSettings
+        With Master.eSettings.Movieset.Filenaming
 
-            '**************** XBMC MSAA settings ***************
-            .MovieSetUseMSAA = chkMovieSetUseMSAA.Checked
-            .MovieSetBannerMSAA = chkMovieSetBannerMSAA.Checked
-            .MovieSetClearArtMSAA = chkMovieSetClearArtMSAA.Checked
-            .MovieSetClearLogoMSAA = chkMovieSetClearLogoMSAA.Checked
-            .MovieSetFanartMSAA = chkMovieSetFanartMSAA.Checked
-            .MovieSetLandscapeMSAA = chkMovieSetLandscapeMSAA.Checked
-            .MovieSetPathMSAA = txtMovieSetPathMSAA.Text
-            .MovieSetPosterMSAA = chkMovieSetPosterMSAA.Checked
+            '**************** Kodi MSAA settings ***************
+            .MovieSetArtworkAutomator.Banner = chkMovieSetBannerMSAA.Checked
+            .MovieSetArtworkAutomator.ClearArt = chkMovieSetClearArtMSAA.Checked
+            .MovieSetArtworkAutomator.ClearLogo = chkMovieSetClearLogoMSAA.Checked
+            .MovieSetArtworkAutomator.Fanart = chkMovieSetFanartMSAA.Checked
+            .MovieSetArtworkAutomator.Landscape = chkMovieSetLandscapeMSAA.Checked
+            .MovieSetArtworkAutomator.Path = txtMovieSetPathMSAA.Text
+            .MovieSetArtworkAutomator.Poster = chkMovieSetPosterMSAA.Checked
 
             '********* XBMC Extended Images settings ***********
-            .MovieSetUseExtended = chkMovieSetUseExtended.Checked
-            .MovieSetBannerExtended = chkMovieSetBannerExtended.Checked
-            .MovieSetClearArtExtended = chkMovieSetClearArtExtended.Checked
-            .MovieSetClearLogoExtended = chkMovieSetClearLogoExtended.Checked
-            .MovieSetDiscArtExtended = chkMovieSetDiscArtExtended.Checked
-            .MovieSetFanartExtended = chkMovieSetFanartExtended.Checked
-            .MovieSetLandscapeExtended = chkMovieSetLandscapeExtended.Checked
-            .MovieSetPathExtended = txtMovieSetPathExtended.Text
-            .MovieSetPosterExtended = chkMovieSetPosterExtended.Checked
+            .KodiExtended.Banner = chkMovieSetBannerExtended.Checked
+            .KodiExtended.ClearArt = chkMovieSetClearArtExtended.Checked
+            .KodiExtended.ClearLogo = chkMovieSetClearLogoExtended.Checked
+            .KodiExtended.DiscArt = chkMovieSetDiscArtExtended.Checked
+            .KodiExtended.Fanart = chkMovieSetFanartExtended.Checked
+            .KodiExtended.Landscape = chkMovieSetLandscapeExtended.Checked
+            .KodiExtended.Path = txtMovieSetPathExtended.Text
+            .KodiExtended.Poster = chkMovieSetPosterExtended.Checked
 
             '***************** Expert settings ****************
-            .MovieSetUseExpert = chkMovieSetUseExpert.Checked
+            .Expert.Enabled = chkMovieSetUseExpert.Checked
 
             '***************** Expert Single ******************
-            .MovieSetBannerExpertSingle = txtMovieSetBannerExpertSingle.Text
-            .MovieSetClearArtExpertSingle = txtMovieSetClearArtExpertSingle.Text
-            .MovieSetClearLogoExpertSingle = txtMovieSetClearLogoExpertSingle.Text
-            .MovieSetDiscArtExpertSingle = txtMovieSetDiscArtExpertSingle.Text
-            .MovieSetFanartExpertSingle = txtMovieSetFanartExpertSingle.Text
-            .MovieSetLandscapeExpertSingle = txtMovieSetLandscapeExpertSingle.Text
-            .MovieSetNFOExpertSingle = txtMovieSetNFOExpertSingle.Text
-            .MovieSetPathExpertSingle = txtMovieSetPathExpertSingle.Text
-            .MovieSetPosterExpertSingle = txtMovieSetPosterExpertSingle.Text
+            .Expert.Single.Banner = txtMovieSetBannerExpertSingle.Text
+            .Expert.Single.ClearArt = txtMovieSetClearArtExpertSingle.Text
+            .Expert.Single.ClearLogo = txtMovieSetClearLogoExpertSingle.Text
+            .Expert.Single.DiscArt = txtMovieSetDiscArtExpertSingle.Text
+            .Expert.Single.Fanart = txtMovieSetFanartExpertSingle.Text
+            .Expert.Single.Landscape = txtMovieSetLandscapeExpertSingle.Text
+            .Expert.Single.NFO = txtMovieSetNFOExpertSingle.Text
+            .Expert.Single.Path = txtMovieSetPathExpertSingle.Text
+            .Expert.Single.Poster = txtMovieSetPosterExpertSingle.Text
         End With
     End Sub
 
@@ -292,67 +288,6 @@ Public Class frmMovieSet_FileNaming
         txtMovieSetPosterExpertSingle.Enabled = chkMovieSetUseExpert.Checked
     End Sub
 
-    Private Sub chkMovieSetUseExtended_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetUseExtended.CheckedChanged
-        EnableApplyButton()
-
-        btnMovieSetPathExtendedBrowse.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetBannerExtended.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetClearArtExtended.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetClearLogoExtended.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetDiscArtExtended.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetFanartExtended.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetLandscapeExtended.Enabled = chkMovieSetUseExtended.Checked
-        chkMovieSetPosterExtended.Enabled = chkMovieSetUseExtended.Checked
-        txtMovieSetPathExtended.Enabled = chkMovieSetUseExtended.Checked
-
-        If Not chkMovieSetUseExtended.Checked Then
-            chkMovieSetBannerExtended.Checked = False
-            chkMovieSetClearArtExtended.Checked = False
-            chkMovieSetClearLogoExtended.Checked = False
-            chkMovieSetDiscArtExtended.Checked = False
-            chkMovieSetFanartExtended.Checked = False
-            chkMovieSetLandscapeExtended.Checked = False
-            chkMovieSetPosterExtended.Checked = False
-        Else
-            chkMovieSetBannerExtended.Checked = True
-            chkMovieSetClearArtExtended.Checked = True
-            chkMovieSetClearLogoExtended.Checked = True
-            chkMovieSetDiscArtExtended.Checked = True
-            chkMovieSetFanartExtended.Checked = True
-            chkMovieSetLandscapeExtended.Checked = True
-            chkMovieSetPosterExtended.Checked = True
-        End If
-    End Sub
-
-    Private Sub chkMovieSetUseMSAA_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieSetUseMSAA.CheckedChanged
-        EnableApplyButton()
-
-        btnMovieSetPathMSAABrowse.Enabled = chkMovieSetUseMSAA.Checked
-        chkMovieSetBannerMSAA.Enabled = chkMovieSetUseMSAA.Checked
-        chkMovieSetClearArtMSAA.Enabled = chkMovieSetUseMSAA.Checked
-        chkMovieSetClearLogoMSAA.Enabled = chkMovieSetUseMSAA.Checked
-        chkMovieSetFanartMSAA.Enabled = chkMovieSetUseMSAA.Checked
-        chkMovieSetLandscapeMSAA.Enabled = chkMovieSetUseMSAA.Checked
-        chkMovieSetPosterMSAA.Enabled = chkMovieSetUseMSAA.Checked
-        txtMovieSetPathMSAA.Enabled = chkMovieSetUseMSAA.Checked
-
-        If Not chkMovieSetUseMSAA.Checked Then
-            chkMovieSetBannerMSAA.Checked = False
-            chkMovieSetClearArtMSAA.Checked = False
-            chkMovieSetClearLogoMSAA.Checked = False
-            chkMovieSetFanartMSAA.Checked = False
-            chkMovieSetLandscapeMSAA.Checked = False
-            chkMovieSetPosterMSAA.Checked = False
-        Else
-            chkMovieSetBannerMSAA.Checked = True
-            chkMovieSetClearArtMSAA.Checked = True
-            chkMovieSetClearLogoMSAA.Checked = True
-            chkMovieSetFanartMSAA.Checked = True
-            chkMovieSetLandscapeMSAA.Checked = True
-            chkMovieSetPosterMSAA.Checked = True
-        End If
-    End Sub
-
     Private Sub EnableApplyButton()
 
         Handle_SettingsChanged()
@@ -379,6 +314,7 @@ Public Class frmMovieSet_FileNaming
         chkMovieSetCleanFiles.Text = Master.eLang.GetString(1276, "Remove Images and NFOs with MovieSets")
         tpMovieSetFilenamingExpertSingle.Text = Master.eLang.GetString(879, "Single Folder")
         chkMovieSetCleanDB.Text = Master.eLang.GetString(668, "Clean database after updating library")
+        chkMovieSetUseExpert.Text = Master.eLang.GetString(774, "Enabled")
 
         'Banner
         Dim strBanner As String = Master.eLang.GetString(838, "Banner")
@@ -402,12 +338,6 @@ Public Class frmMovieSet_FileNaming
         Dim strDiscArt As String = Master.eLang.GetString(1098, "DiscArt")
         lblMovieSetSourcesFilenamingExpertSingleDiscArt.Text = strDiscArt
         lblMovieSetSourcesFilenamingKodiExtendedDiscArt.Text = strDiscArt
-
-        'Enabled
-        Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
-        lblMovieSetSourcesFilenamingKodiExtendedEnabled.Text = strEnabled
-        lblMovieSetSourcesFilenamingKodiMSAAEnabled.Text = strEnabled
-        chkMovieSetUseExpert.Text = strEnabled
 
         'Fanart
         Dim strFanart As String = Master.eLang.GetString(149, "Fanart")

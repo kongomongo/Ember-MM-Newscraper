@@ -87,7 +87,7 @@ Public Class NFO
                     scrapedmovie.ActorsSpecified AndAlso
                     .Actors.Enabled AndAlso
                     Not new_Actors Then
-                    If .ActorsWithImageOnly Then
+                    If .Actors.WithImageOnly Then
                         For i = scrapedmovie.Actors.Count - 1 To 0 Step -1
                             If Not scrapedmovie.Actors(i).URLOriginalSpecified Then
                                 scrapedmovie.Actors.RemoveAt(i)
@@ -344,14 +344,6 @@ Public Class NFO
 
                     Dim _studios As New List(Of String)
                     _studios.AddRange(scrapedmovie.Studios)
-
-                    If .StudiosWithImageOnly Then
-                        For i = _studios.Count - 1 To 0 Step -1
-                            If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-                                _studios.RemoveAt(i)
-                            End If
-                        Next
-                    End If
 
                     If .Studios.LimitSpecified AndAlso
                         .Studios.Limit < _studios.Count AndAlso
@@ -640,7 +632,7 @@ Public Class NFO
                 scrapedshow.ActorsSpecified AndAlso
                  .Actors.Enabled AndAlso
                 Not new_Actors Then
-                    If .ActorsWithImageOnly Then
+                    If .Actors.WithImageOnly Then
                         For i = scrapedshow.Actors.Count - 1 To 0 Step -1
                             If Not scrapedshow.Actors(i).URLOriginalSpecified Then
                                 scrapedshow.Actors.RemoveAt(i)
@@ -867,14 +859,6 @@ Public Class NFO
 
                     Dim _studios As New List(Of String)
                     _studios.AddRange(scrapedshow.Studios)
-
-                    If .StudiosWithImageOnly Then
-                        For i = _studios.Count - 1 To 0 Step -1
-                            If APIXML.dStudios.ContainsKey(_studios.Item(i).ToLower) = False Then
-                                _studios.RemoveAt(i)
-                            End If
-                        Next
-                    End If
 
                     If .Studios.LimitSpecified AndAlso
                      .Studios.Limit < _studios.Count AndAlso
@@ -1606,7 +1590,7 @@ Public Class NFO
             End If
 
             'Boxee support
-            If Master.eSettings.TVUseBoxee Then
+            If Master.eSettings.TV.Filenaming.TVShow.Boxee.NFO Then
                 If mNFO.BoxeeTvDbSpecified AndAlso Not mNFO.TVDBSpecified Then
                     mNFO.TVDB = CInt(mNFO.BoxeeTvDb)
                     mNFO.BlankBoxeeId()
@@ -2497,7 +2481,7 @@ Public Class NFO
                 Dim fAttWritable As Boolean = True
 
                 'YAMJ support
-                If Master.eSettings.Movie.Filenaming.YAMJ.Enabled AndAlso Master.eSettings.Movie.Filenaming.YAMJ.NFO Then
+                If Master.eSettings.Movie.Filenaming.YAMJ.NFO Then
                     If tMovie.TMDBSpecified Then
                         tMovie.TMDB = -1
                     End If
@@ -2706,7 +2690,7 @@ Public Class NFO
                 Dim fAttWritable As Boolean = True
 
                 'Boxee support
-                If Master.eSettings.TVUseBoxee Then
+                If Master.eSettings.TV.Filenaming.TVShow.Boxee.NFO Then
                     If tTVShow.TVDBSpecified() Then
                         tTVShow.BoxeeTvDb = CStr(tTVShow.TVDB)
                         tTVShow.BlankId()

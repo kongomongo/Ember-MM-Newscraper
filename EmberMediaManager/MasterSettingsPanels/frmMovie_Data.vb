@@ -168,7 +168,7 @@ Public Class frmMovie_Data
             chkMovieLockCredits.Checked = .Credits.Locked
             chkMovieLockYear.Checked = .Year.Locked
             chkMovieScraperCast.Checked = .Actors.Enabled
-            chkMovieScraperCastWithImg.Checked = .ActorsWithImageOnly
+            chkMovieScraperCastWithImg.Checked = .Actors.WithImageOnly
             chkMovieScraperCert.Checked = .Certifications.Enabled
             chkMovieScraperCertForMPAA.Checked = .CertificationsForMPAA
             chkMovieScraperCertForMPAAFallback.Checked = .CertificationsForMPAAFallback
@@ -194,7 +194,6 @@ Public Class frmMovie_Data
             chkMovieScraperRelease.Checked = .ReleaseDate.Enabled
             chkMovieScraperRuntime.Checked = .Runtime.Enabled
             chkMovieScraperStudio.Checked = .Studios.Enabled
-            chkMovieScraperStudioWithImg.Checked = .StudiosWithImageOnly
             chkMovieScraperTagline.Checked = .Tagline.Enabled
             chkMovieScraperTitle.Checked = .Title.Enabled
             chkMovieScraperTop250.Checked = .Top250.Enabled
@@ -273,7 +272,7 @@ Public Class frmMovie_Data
             Else
                 .Actors.Limit = 0
             End If
-            .ActorsWithImageOnly = chkMovieScraperCastWithImg.Checked
+            .Actors.WithImageOnly = chkMovieScraperCastWithImg.Checked
             .Certifications.Enabled = chkMovieScraperCert.Checked
             .CertificationsForMPAA = chkMovieScraperCertForMPAA.Checked
             .CertificationsForMPAAFallback = chkMovieScraperCertForMPAAFallback.Checked
@@ -317,7 +316,6 @@ Public Class frmMovie_Data
             .ReleaseDate.Enabled = chkMovieScraperRelease.Checked
             .Runtime.Enabled = chkMovieScraperRuntime.Checked
             .Studios.Enabled = chkMovieScraperStudio.Checked
-            .StudiosWithImageOnly = chkMovieScraperStudioWithImg.Checked
             If Not String.IsNullOrEmpty(txtMovieScraperStudioLimit.Text) Then
                 .Studios.Limit = Convert.ToInt32(txtMovieScraperStudioLimit.Text)
             Else
@@ -388,10 +386,8 @@ Public Class frmMovie_Data
 
     Private Sub chkMovieScraperStudio_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles chkMovieScraperStudio.CheckedChanged
         EnableApplyButton()
-        chkMovieScraperStudioWithImg.Enabled = chkMovieScraperStudio.Checked
         txtMovieScraperStudioLimit.Enabled = chkMovieScraperStudio.Checked
         If Not chkMovieScraperStudio.Checked Then
-            chkMovieScraperStudioWithImg.Checked = False
             txtMovieScraperStudioLimit.Text = "0"
         End If
     End Sub
@@ -592,7 +588,6 @@ Public Class frmMovie_Data
         chkMovieScraperMetaDataScan.Text = Master.eLang.GetString(517, "Scan Meta Data")
         chkMovieScraperPlotForOutline.Text = Master.eLang.GetString(965, "Use Plot for Plot Outline")
         chkMovieScraperPlotForOutlineIfEmpty.Text = Master.eLang.GetString(958, "Only if Plot Outline is empty")
-        chkMovieScraperStudioWithImg.Text = Master.eLang.GetString(1280, "Scrape Only Studios With Images")
         chkDurationForRuntime.Text = Master.eLang.GetString(516, "Use Duration for Runtime")
         chkMovieScraperTrailerKodiFormat.Text = Master.eLang.GetString(1187, "Save YouTube-Trailer-Links in XBMC compatible format")
         chkMovieScraperCollectionsYAMJCompatibleSets.Text = Master.eLang.GetString(561, "Save YAMJ Compatible Sets to NFO")

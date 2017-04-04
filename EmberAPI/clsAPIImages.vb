@@ -1118,36 +1118,48 @@ Public Class Images
                     DoMainPoster = ScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
                 End With
             Case Enums.ContentType.Movieset
-                DoMainBanner = ScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Banner
-                DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearArt
-                DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_ClearLogo
-                DoMainDiscArt = ScrapeModifiers.MainDiscArt AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_DiscArt
-                DoMainFanart = ScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Fanart
-                DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Landscape
-                DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_MovieSet_Poster
+                With Master.eSettings.Movieset.Filenaming
+                    DoMainBanner = ScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainDiscArt = ScrapeModifiers.MainDiscArt AndAlso .FilenameAnyEnabled_DiscArt
+                    DoMainFanart = ScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = ScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
             Case Enums.ContentType.TVEpisode
-                DoMainFanart = ScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart
-                DoMainPoster = ScrapeModifiers.EpisodePoster AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster
+                With Master.eSettings.TV.Filenaming.TVEpisode
+                    DoMainFanart = ScrapeModifiers.EpisodeFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainPoster = ScrapeModifiers.EpisodePoster AndAlso .FilenameAnyEnabled_Poster
+                End With
             Case Enums.ContentType.TVSeason
-                DoMainBanner = (ScrapeModifiers.SeasonBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner) OrElse (ScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner)
-                DoMainFanart = (ScrapeModifiers.SeasonFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart) OrElse (ScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart)
-                DoMainLandscape = (ScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape) OrElse (ScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape)
-                DoMainPoster = (ScrapeModifiers.SeasonPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster) OrElse (ScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster)
+                With Master.eSettings.TV.Filenaming.TVSeason
+                    DoMainBanner = (ScrapeModifiers.SeasonBanner AndAlso .FilenameAnyEnabled_Banner) OrElse (ScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner)
+                    DoMainFanart = (ScrapeModifiers.SeasonFanart AndAlso .FilenameAnyEnabled_Fanart) OrElse (ScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart)
+                    DoMainLandscape = (ScrapeModifiers.SeasonLandscape AndAlso .FilenameAnyEnabled_Landscape) OrElse (ScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape)
+                    DoMainPoster = (ScrapeModifiers.SeasonPoster AndAlso .FilenameAnyEnabled_Poster) OrElse (ScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster)
+                End With
             Case Enums.ContentType.TVShow
-                DoEpisodeFanart = ScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart
-                DoEpisodePoster = ScrapeModifiers.EpisodePoster AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster
-                DoMainBanner = ScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Banner
-                DoMainCharacterArt = ScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt
-                DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt
-                DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo
-                DoMainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Extrafanarts
-                DoMainFanart = ScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Fanart
-                DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Landscape
-                DoMainPoster = ScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Poster
-                DoSeasonBanner = ScrapeModifiers.SeasonBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner
-                DoSeasonFanart = ScrapeModifiers.SeasonFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Fanart
-                DoSeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape
-                DoSeasonPoster = ScrapeModifiers.SeasonPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster
+                With Master.eSettings.TV.Filenaming.TVEpisode
+                    DoEpisodeFanart = ScrapeModifiers.EpisodeFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoEpisodePoster = ScrapeModifiers.EpisodePoster AndAlso .FilenameAnyEnabled_Poster
+                End With
+                With Master.eSettings.TV.Filenaming.TVShow
+                    DoMainBanner = ScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainCharacterArt = ScrapeModifiers.MainCharacterArt AndAlso .FilenameAnyEnabled_CharacterArt
+                    DoMainClearArt = ScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = ScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainExtrafanarts = ScrapeModifiers.MainExtrafanarts AndAlso .FilenameAnyEnabled_Extrafanarts
+                    DoMainFanart = ScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = ScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = ScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
+                With Master.eSettings.TV.Filenaming.TVSeason
+                    DoSeasonBanner = ScrapeModifiers.SeasonBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoSeasonFanart = ScrapeModifiers.SeasonFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoSeasonLandscape = ScrapeModifiers.SeasonLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoSeasonPoster = ScrapeModifiers.SeasonPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
         End Select
 
         'Main Banner

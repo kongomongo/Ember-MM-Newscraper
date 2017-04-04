@@ -1840,7 +1840,7 @@ Namespace MediaContainers
                         DBElement.ActorThumbs.Clear()
                     End If
                 Case Enums.ContentType.TVShow
-                    If ActorsSpecified AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ActorTumbs Then
+                    If ActorsSpecified AndAlso Master.eSettings.TV.Filenaming.TVShow.FilenameAnyEnabled_Actorthumbs Then
                         Images.SaveTVShowActorThumbs(DBElement)
                     Else
                         Images.Delete_TVShow(DBElement, Enums.ScrapeModifierType.MainActorThumbs)
@@ -2074,6 +2074,7 @@ Namespace MediaContainers
 
         Private _id As Long
         Private _imdb As String
+        Private _isgueststar As Boolean
         Private _name As String
         Private _order As Integer
         Private _role As String
@@ -2101,6 +2102,23 @@ Namespace MediaContainers
             Set(ByVal Value As Long)
                 _id = Value
             End Set
+        End Property
+
+        <XmlAttribute("isgueststar")>
+        Public Property IsGuestStar() As Boolean
+            Get
+                Return _isgueststar
+            End Get
+            Set(ByVal Value As Boolean)
+                _isgueststar = Value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property IsGuestStarSpecified() As Boolean
+            Get
+                Return _isgueststar
+            End Get
         End Property
 
         <XmlElement("name")>
@@ -2256,6 +2274,7 @@ Namespace MediaContainers
         Public Sub Clean()
             _id = -1
             _imdb = String.Empty
+            _isgueststar = False
             _name = String.Empty
             _order = -1
             _role = String.Empty
