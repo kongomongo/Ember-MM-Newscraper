@@ -1134,10 +1134,10 @@ Public Class Images
                 End With
             Case Enums.ContentType.TVSeason
                 With Master.eSettings.TV.Filenaming.TVSeason
-                    DoMainBanner = (ScrapeModifiers.SeasonBanner AndAlso .FilenameAnyEnabled_Banner) OrElse (ScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner)
-                    DoMainFanart = (ScrapeModifiers.SeasonFanart AndAlso .FilenameAnyEnabled_Fanart) OrElse (ScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart)
-                    DoMainLandscape = (ScrapeModifiers.SeasonLandscape AndAlso .FilenameAnyEnabled_Landscape) OrElse (ScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape)
-                    DoMainPoster = (ScrapeModifiers.SeasonPoster AndAlso .FilenameAnyEnabled_Poster) OrElse (ScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster)
+                    DoMainBanner = (ScrapeModifiers.SeasonBanner AndAlso .FilenameAnyEnabled_Banner) OrElse (ScrapeModifiers.AllSeasonsBanner AndAlso .FilenameAnyEnabled_AllSeasonsBanner)
+                    DoMainFanart = (ScrapeModifiers.SeasonFanart AndAlso .FilenameAnyEnabled_Fanart) OrElse (ScrapeModifiers.AllSeasonsFanart AndAlso .FilenameAnyEnabled_AllSeasonsFanart)
+                    DoMainLandscape = (ScrapeModifiers.SeasonLandscape AndAlso .FilenameAnyEnabled_Landscape) OrElse (ScrapeModifiers.AllSeasonsLandscape AndAlso .FilenameAnyEnabled_AllSeasonsLandscape)
+                    DoMainPoster = (ScrapeModifiers.SeasonPoster AndAlso .FilenameAnyEnabled_Poster) OrElse (ScrapeModifiers.AllSeasonsPoster AndAlso .FilenameAnyEnabled_AllSeasonsPoster)
                 End With
             Case Enums.ContentType.TVShow
                 With Master.eSettings.TV.Filenaming.TVEpisode

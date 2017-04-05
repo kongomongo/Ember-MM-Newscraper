@@ -136,210 +136,226 @@ Public Class frmTV_FileNaming
     End Function
 
     Public Sub LoadSettings()
+        With Master.eSettings.TV.Filenaming.TVEpisode
+            '***************** Boxee settings ****************** 
+            chkTVEpisodeNFOBoxee.Checked = .Boxee.NFO
+            chkTVEpisodePosterBoxee.Checked = .Boxee.Poster
+
+            '***************** Expert Episode *******************
+            chkTVEpisodeActorThumbsExpert.Checked = .Expert.Actorthumbs
+            txtTVEpisodeActorThumbsExtExpert.Text = .Expert.ActorthumbsExt
+            txtTVEpisodeFanartExpert.Text = .Expert.Fanart
+            txtTVEpisodeNFOExpert.Text = .Expert.NFO
+            txtTVEpisodePosterExpert.Text = .Expert.Poster
+
+            '*************** Kodi settings *************** 
+            chkTVEpisodeActorThumbsFrodo.Checked = .Kodi.Actorthumbs
+            chkTVEpisodeNFOFrodo.Checked = .Kodi.NFO
+            chkTVEpisodePosterFrodo.Checked = .Kodi.Poster
+
+            '****************** YAMJ settings ******************
+            chkTVEpisodeNFOYAMJ.Checked = .YAMJ.NFO
+            chkTVEpisodePosterYAMJ.Checked = .YAMJ.Poster
+        End With
+
+        With Master.eSettings.TV.Filenaming.TVSeason
+            '******** ArtworkDownloader settings ********** 
+            chkTVSeasonLandscapeAD.Checked = .ArtworkDownloader.Landscape
+
+            '***************** Boxee settings ****************** 
+            chkTVSeasonPosterBoxee.Checked = .Boxee.Poster
+
+            '***************** Expert AllSeasons ****************
+            txtTVAllSeasonsBannerExpert.Text = .Expert.AllSeasonsBanner
+            txtTVAllSeasonsFanartExpert.Text = .Expert.AllSeasonsFanart
+            txtTVAllSeasonsLandscapeExpert.Text = .Expert.AllSeasonsLandscape
+            txtTVAllSeasonsPosterExpert.Text = .Expert.AllSeasonsPoster
+
+            '***************** Expert Season *******************
+            txtTVSeasonBannerExpert.Text = .Expert.Banner
+            txtTVSeasonFanartExpert.Text = .Expert.Fanart
+            txtTVSeasonLandscapeExpert.Text = .Expert.Landscape
+            txtTVSeasonPosterExpert.Text = .Expert.Poster
+
+            '*************** Kodi settings *************** 
+            chkTVSeasonBannerFrodo.Checked = .Kodi.Banner
+            chkTVSeasonFanartFrodo.Checked = .Kodi.Fanart
+            chkTVSeasonPosterFrodo.Checked = .Kodi.Poster
+
+            '********* Kodi Extended Images settings *********** 
+            chkTVSeasonLandscapeExtended.Checked = .KodiExtended.Landscape
+
+            '****************** YAMJ settings ******************
+            chkTVSeasonBannerYAMJ.Checked = .YAMJ.Banner
+            chkTVSeasonFanartYAMJ.Checked = .YAMJ.Fanart
+            chkTVSeasonPosterYAMJ.Checked = .YAMJ.Poster
+        End With
+
         With Master.eSettings.TV.Filenaming.TVShow
-            '************* XBMC TvTunes settings *************** 
+            '******** ArtworkDownloader settings ********** 
+            chkTVShowCharacterArtAD.Checked = .ArtworkDownloader.CharacterArt
+            chkTVShowClearArtAD.Checked = .ArtworkDownloader.ClearArt
+            chkTVShowClearLogoAD.Checked = .ArtworkDownloader.ClearLogo
+            chkTVShowLandscapeAD.Checked = .ArtworkDownloader.Landscape
+
+            '***************** Boxee settings ****************** 
+            chkTVShowBannerBoxee.Checked = .Boxee.Banner
+            chkTVShowFanartBoxee.Checked = .Boxee.Fanart
+            chkTVShowNFOBoxee.Checked = .Boxee.NFO
+            chkTVShowPosterBoxee.Checked = .Boxee.Poster
+
+            '***************** Expert Show *********************
+            chkTVShowActorThumbsExpert.Checked = .Expert.Actorthumbs
+            txtTVShowActorThumbsExtExpert.Text = .Expert.ActorthumbsExt
+            txtTVShowBannerExpert.Text = .Expert.Banner
+            txtTVShowCharacterArtExpert.Text = .Expert.CharacterArt
+            txtTVShowClearArtExpert.Text = .Expert.ClearArt
+            txtTVShowClearLogoExpert.Text = .Expert.ClearLogo
+            chkTVShowExtrafanartsExpert.Checked = .Expert.Extrafanarts
+            txtTVShowFanartExpert.Text = .Expert.Fanart
+            txtTVShowLandscapeExpert.Text = .Expert.Landscape
+            txtTVShowNFOExpert.Text = .Expert.NFO
+            txtTVShowPosterExpert.Text = .Expert.Poster
+
+            '*************** Kodi settings *************** 
+            chkTVShowActorThumbsFrodo.Checked = .Kodi.Actorthumbs
+            chkTVShowBannerFrodo.Checked = .Kodi.Banner
+            chkTVShowExtrafanartsFrodo.Checked = .Kodi.Extrafanarts
+            chkTVShowFanartFrodo.Checked = .Kodi.Fanart
+            chkTVShowNFOFrodo.Checked = .Kodi.NFO
+            chkTVShowPosterFrodo.Checked = .Kodi.Poster
+
+            '********* Kodi Extended Images settings *********** 
+            chkTVShowCharacterArtExtended.Checked = .KodiExtended.CharacterArt
+            chkTVShowClearArtExtended.Checked = .KodiExtended.ClearArt
+            chkTVShowClearLogoExtended.Checked = .KodiExtended.ClearLogo
+            chkTVShowLandscapeExtended.Checked = .KodiExtended.Landscape
+
+            '************* TvTunes settings *************** 
             chkTVShowThemeTvTunesCustom.Checked = .TvTunes.Custom
             chkTVShowThemeTvTunesShowPath.Checked = .TvTunes.TVShowPath
             chkTVShowThemeTvTunesSub.Checked = .TvTunes.Subdirectory
             txtTVShowThemeTvTunesCustomPath.Text = .TvTunes.CustomPath
             txtTVShowThemeTvTunesSubDir.Text = .TvTunes.SubdirectoryPath
-        End With
-
-        With Master.eSettings
-            '*************** XBMC Frodo settings *************** 
-            chkTVEpisodeActorThumbsFrodo.Checked = .TVEpisodeActorThumbsFrodo
-            chkTVEpisodeNFOFrodo.Checked = .TVEpisodeNFOFrodo
-            chkTVEpisodePosterFrodo.Checked = .TVEpisodePosterFrodo
-            chkTVSeasonBannerFrodo.Checked = .TVSeasonBannerFrodo
-            chkTVSeasonFanartFrodo.Checked = .TVSeasonFanartFrodo
-            chkTVSeasonPosterFrodo.Checked = .TVSeasonPosterFrodo
-            chkTVShowActorThumbsFrodo.Checked = .TVShowActorThumbsFrodo
-            chkTVShowBannerFrodo.Checked = .TVShowBannerFrodo
-            chkTVShowExtrafanartsFrodo.Checked = .TVShowExtrafanartsFrodo
-            chkTVShowFanartFrodo.Checked = .TVShowFanartFrodo
-            chkTVShowNFOFrodo.Checked = .TVShowNFOFrodo
-            chkTVShowPosterFrodo.Checked = .TVShowPosterFrodo
-
-            '*************** XBMC Eden settings ****************
-
-            '******** XBMC ArtworkDownloader settings ********** 
-            chkTVSeasonLandscapeAD.Checked = .TVSeasonLandscapeAD
-            chkTVShowCharacterArtAD.Checked = .TVShowCharacterArtAD
-            chkTVShowClearArtAD.Checked = .TVShowClearArtAD
-            chkTVShowClearLogoAD.Checked = .TVShowClearLogoAD
-            chkTVShowLandscapeAD.Checked = .TVShowLandscapeAD
-
-            '********* XBMC Extended Images settings *********** 
-            chkTVSeasonLandscapeExtended.Checked = .TVSeasonLandscapeExtended
-            chkTVShowCharacterArtExtended.Checked = .TVShowCharacterArtExtended
-            chkTVShowClearArtExtended.Checked = .TVShowClearArtExtended
-            chkTVShowClearLogoExtended.Checked = .TVShowClearLogoExtended
-            chkTVShowLandscapeExtended.Checked = .TVShowLandscapeExtended
-
 
             '****************** YAMJ settings ******************
-            chkTVUseYAMJ.Checked = .TVUseYAMJ
-            chkTVEpisodeNFOYAMJ.Checked = .TVEpisodeNFOYAMJ
-            chkTVEpisodePosterYAMJ.Checked = .TVEpisodePosterYAMJ
-            chkTVSeasonBannerYAMJ.Checked = .TVSeasonBannerYAMJ
-            chkTVSeasonFanartYAMJ.Checked = .TVSeasonFanartYAMJ
-            chkTVSeasonPosterYAMJ.Checked = .TVSeasonPosterYAMJ
-            chkTVShowBannerYAMJ.Checked = .TVShowBannerYAMJ
-            chkTVShowFanartYAMJ.Checked = .TVShowFanartYAMJ
-            chkTVShowNFOYAMJ.Checked = .TVShowNFOYAMJ
-            chkTVShowPosterYAMJ.Checked = .TVShowPosterYAMJ
-
-            '****************** NMJ settings *******************
-
-            '************** NMT optional settings **************
-
-            '***************** Boxee settings ****************** 
-            chkTVEpisodeNFOBoxee.Checked = .TVEpisodeNFOBoxee
-            chkTVEpisodePosterBoxee.Checked = .TVEpisodePosterBoxee
-            chkTVSeasonPosterBoxee.Checked = .TVSeasonPosterBoxee
-            chkTVShowBannerBoxee.Checked = .TVShowBannerBoxee
-            chkTVShowFanartBoxee.Checked = .TVShowFanartBoxee
-            chkTVShowNFOBoxee.Checked = .TVShowNFOBoxee
-            chkTVShowPosterBoxee.Checked = .TVShowPosterBoxee
-
-            '***************** Expert settings ******************
-            chkTVUseExpert.Checked = .TVUseExpert
-
-            '***************** Expert AllSeasons ****************
-            txtTVAllSeasonsBannerExpert.Text = .TVAllSeasonsBannerExpert
-            txtTVAllSeasonsFanartExpert.Text = .TVAllSeasonsFanartExpert
-            txtTVAllSeasonsLandscapeExpert.Text = .TVAllSeasonsLandscapeExpert
-            txtTVAllSeasonsPosterExpert.Text = .TVAllSeasonsPosterExpert
-
-            '***************** Expert Episode *******************
-            chkTVEpisodeActorThumbsExpert.Checked = .TVEpisodeActorThumbsExpert
-            txtTVEpisodeActorThumbsExtExpert.Text = .TVEpisodeActorThumbsExtExpert
-            txtTVEpisodeFanartExpert.Text = .TVEpisodeFanartExpert
-            txtTVEpisodeNFOExpert.Text = .TVEpisodeNFOExpert
-            txtTVEpisodePosterExpert.Text = .TVEpisodePosterExpert
-
-            '***************** Expert Season *******************
-            txtTVSeasonBannerExpert.Text = .TVSeasonBannerExpert
-            txtTVSeasonFanartExpert.Text = .TVSeasonFanartExpert
-            txtTVSeasonLandscapeExpert.Text = .TVSeasonLandscapeExpert
-            txtTVSeasonPosterExpert.Text = .TVSeasonPosterExpert
-
-            '***************** Expert Show *********************
-            chkTVShowActorThumbsExpert.Checked = .TVShowActorThumbsExpert
-            txtTVShowActorThumbsExtExpert.Text = .TVShowActorThumbsExtExpert
-            txtTVShowBannerExpert.Text = .TVShowBannerExpert
-            txtTVShowCharacterArtExpert.Text = .TVShowCharacterArtExpert
-            txtTVShowClearArtExpert.Text = .TVShowClearArtExpert
-            txtTVShowClearLogoExpert.Text = .TVShowClearLogoExpert
-            chkTVShowExtrafanartsExpert.Checked = .TVShowExtrafanartsExpert
-            txtTVShowFanartExpert.Text = .TVShowFanartExpert
-            txtTVShowLandscapeExpert.Text = .TVShowLandscapeExpert
-            txtTVShowNFOExpert.Text = .TVShowNFOExpert
-            txtTVShowPosterExpert.Text = .TVShowPosterExpert
+            chkTVShowBannerYAMJ.Checked = .YAMJ.Banner
+            chkTVShowFanartYAMJ.Checked = .YAMJ.Fanart
+            chkTVShowNFOYAMJ.Checked = .YAMJ.NFO
+            chkTVShowPosterYAMJ.Checked = .YAMJ.Poster
         End With
     End Sub
 
     Public Sub SaveSetup() Implements Interfaces.MasterSettingsPanel.SaveSetup
-        With Master.eSettings.TV.Filenaming.TVShow
+        With Master.eSettings.TV.Filenaming.TVEpisode
+            '***************** Boxee settings ****************** 
+            .Boxee.NFO = chkTVEpisodeNFOBoxee.Checked
+            .Boxee.Poster = chkTVEpisodePosterBoxee.Checked
 
-            '************** XBMC TvTunes settings ************** 
+            '***************** Expert Episode *******************
+            .Expert.Actorthumbs = chkTVEpisodeActorThumbsExpert.Checked
+            .Expert.ActorthumbsExt = txtTVEpisodeActorThumbsExtExpert.Text
+            .Expert.Fanart = txtTVEpisodeFanartExpert.Text
+            .Expert.NFO = txtTVEpisodeNFOExpert.Text
+            .Expert.Poster = txtTVEpisodePosterExpert.Text
+
+            '*************** Kodi settings *************** 
+            .Kodi.Actorthumbs = chkTVEpisodeActorThumbsFrodo.Checked
+            .Kodi.NFO = chkTVEpisodeNFOFrodo.Checked
+            .Kodi.Poster = chkTVEpisodePosterFrodo.Checked
+
+            '****************** YAMJ settings ****************** 
+            .YAMJ.NFO = chkTVEpisodeNFOYAMJ.Checked
+            .YAMJ.Poster = chkTVEpisodePosterYAMJ.Checked
+
+        End With
+
+        With Master.eSettings.TV.Filenaming.TVSeason
+            '************* ArtworkDownloader settings ************** 
+            .ArtworkDownloader.Landscape = chkTVSeasonLandscapeAD.Checked
+
+            '***************** Boxee settings ****************** 
+            .Boxee.Poster = chkTVSeasonPosterBoxee.Checked
+
+            '***************** Expert AllSeasons ****************
+            .Expert.AllSeasonsBanner = txtTVAllSeasonsBannerExpert.Text
+            .Expert.AllSeasonsFanart = txtTVAllSeasonsFanartExpert.Text
+            .Expert.AllSeasonsLandscape = txtTVAllSeasonsLandscapeExpert.Text
+            .Expert.AllSeasonsPoster = txtTVAllSeasonsPosterExpert.Text
+
+            '***************** Expert Season ********************
+            .Expert.Banner = txtTVSeasonBannerExpert.Text
+            .Expert.Fanart = txtTVSeasonFanartExpert.Text
+            .Expert.Landscape = txtTVSeasonLandscapeExpert.Text
+            .Expert.Poster = txtTVSeasonPosterExpert.Text
+
+            '*************** Kodi settings *************** 
+            .Kodi.Banner = chkTVSeasonBannerFrodo.Checked
+            .Kodi.Fanart = chkTVSeasonFanartFrodo.Checked
+            .Kodi.Poster = chkTVSeasonPosterFrodo.Checked
+
+            '********* Kodi Extended Images settings *********** 
+            .KodiExtended.Landscape = chkTVSeasonLandscapeExtended.Checked
+
+            '****************** YAMJ settings ****************** 
+            .YAMJ.Banner = chkTVSeasonBannerYAMJ.Checked
+            .YAMJ.Fanart = chkTVSeasonFanartYAMJ.Checked
+            .YAMJ.Poster = chkTVSeasonPosterYAMJ.Checked
+
+        End With
+
+        With Master.eSettings.TV.Filenaming.TVShow
+            '************* ArtworkDownloader settings ************** 
+            .ArtworkDownloader.CharacterArt = chkTVShowCharacterArtAD.Checked
+            .ArtworkDownloader.ClearArt = chkTVShowClearArtAD.Checked
+            .ArtworkDownloader.ClearLogo = chkTVShowClearLogoAD.Checked
+            .ArtworkDownloader.Landscape = chkTVShowLandscapeAD.Checked
+
+            '***************** Boxee settings ****************** 
+            .Boxee.Banner = chkTVShowBannerBoxee.Checked
+            .Boxee.Fanart = chkTVShowFanartBoxee.Checked
+            .Boxee.NFO = chkTVShowNFOBoxee.Checked
+            .Boxee.Poster = chkTVShowPosterBoxee.Checked
+
+            '***************** Expert Show **********************
+            .Expert.Actorthumbs = chkTVShowActorThumbsExpert.Checked
+            .Expert.ActorthumbsExt = txtTVShowActorThumbsExtExpert.Text
+            .Expert.Banner = txtTVShowBannerExpert.Text
+            .Expert.CharacterArt = txtTVShowCharacterArtExpert.Text
+            .Expert.ClearArt = txtTVShowClearArtExpert.Text
+            .Expert.ClearLogo = txtTVShowClearLogoExpert.Text
+            .Expert.Extrafanarts = chkTVShowExtrafanartsExpert.Checked
+            .Expert.Fanart = txtTVShowFanartExpert.Text
+            .Expert.Landscape = txtTVShowLandscapeExpert.Text
+            .Expert.NFO = txtTVShowNFOExpert.Text
+            .Expert.Poster = txtTVShowPosterExpert.Text
+
+            '*************** Kodi settings *************** 
+            .Kodi.Actorthumbs = chkTVShowActorThumbsFrodo.Checked
+            .Kodi.Banner = chkTVShowBannerFrodo.Checked
+            .Kodi.Extrafanarts = chkTVShowExtrafanartsFrodo.Checked
+            .Kodi.Fanart = chkTVShowFanartFrodo.Checked
+            .Kodi.NFO = chkTVShowNFOFrodo.Checked
+            .Kodi.Poster = chkTVShowPosterFrodo.Checked
+
+            '********* Kodi Extended Images settings *********** 
+            .KodiExtended.CharacterArt = chkTVShowCharacterArtExtended.Checked
+            .KodiExtended.ClearArt = chkTVShowClearArtExtended.Checked
+            .KodiExtended.ClearLogo = chkTVShowClearLogoExtended.Checked
+            .KodiExtended.Landscape = chkTVShowLandscapeExtended.Checked
+
+            '************** TvTunes settings ************** 
             .TvTunes.Custom = chkTVShowThemeTvTunesCustom.Checked
             .TvTunes.CustomPath = txtTVShowThemeTvTunesCustomPath.Text
             .TvTunes.TVShowPath = chkTVShowThemeTvTunesShowPath.Checked
             .TvTunes.Subdirectory = chkTVShowThemeTvTunesSub.Checked
             .TvTunes.SubdirectoryPath = txtTVShowThemeTvTunesSubDir.Text
-        End With
 
-        With Master.eSettings
-            '*************** XBMC Frodo settings *************** 
-            .TVEpisodeActorThumbsFrodo = chkTVEpisodeActorThumbsFrodo.Checked
-            .TVEpisodeNFOFrodo = chkTVEpisodeNFOFrodo.Checked
-            .TVEpisodePosterFrodo = chkTVEpisodePosterFrodo.Checked
-            .TVSeasonBannerFrodo = chkTVSeasonBannerFrodo.Checked
-            .TVSeasonFanartFrodo = chkTVSeasonFanartFrodo.Checked
-            .TVSeasonPosterFrodo = chkTVSeasonPosterFrodo.Checked
-            .TVShowActorThumbsFrodo = chkTVShowActorThumbsFrodo.Checked
-            .TVShowBannerFrodo = chkTVShowBannerFrodo.Checked
-            .TVShowExtrafanartsFrodo = chkTVShowExtrafanartsFrodo.Checked
-            .TVShowFanartFrodo = chkTVShowFanartFrodo.Checked
-            .TVShowNFOFrodo = chkTVShowNFOFrodo.Checked
-            .TVShowPosterFrodo = chkTVShowPosterFrodo.Checked
-
-            '*************** XBMC Eden settings ****************
-
-            '************* XBMC ArtworkDownloader settings ************** 
-            .TVSeasonLandscapeAD = chkTVSeasonLandscapeAD.Checked
-            .TVShowCharacterArtAD = chkTVShowCharacterArtAD.Checked
-            .TVShowClearArtAD = chkTVShowClearArtAD.Checked
-            .TVShowClearLogoAD = chkTVShowClearLogoAD.Checked
-            .TVShowLandscapeAD = chkTVShowLandscapeAD.Checked
-
-            '********* XBMC Extended Images settings *********** 
-            .TVSeasonLandscapeExtended = chkTVSeasonLandscapeExtended.Checked
-            .TVShowCharacterArtExtended = chkTVShowCharacterArtExtended.Checked
-            .TVShowClearArtExtended = chkTVShowClearArtExtended.Checked
-            .TVShowClearLogoExtended = chkTVShowClearLogoExtended.Checked
-            .TVShowLandscapeExtended = chkTVShowLandscapeExtended.Checked
-
-            '****************** YAMJ settings ******************
-            .TVUseYAMJ = chkTVUseYAMJ.Checked
-            .TVEpisodeNFOYAMJ = chkTVEpisodeNFOYAMJ.Checked
-            .TVEpisodePosterYAMJ = chkTVEpisodePosterYAMJ.Checked
-            .TVSeasonBannerYAMJ = chkTVSeasonBannerYAMJ.Checked
-            .TVSeasonFanartYAMJ = chkTVSeasonFanartYAMJ.Checked
-            .TVSeasonPosterYAMJ = chkTVSeasonPosterYAMJ.Checked
-            .TVShowBannerYAMJ = chkTVShowBannerYAMJ.Checked
-            .TVShowFanartYAMJ = chkTVShowFanartYAMJ.Checked
-            .TVShowNFOYAMJ = chkTVShowNFOYAMJ.Checked
-            .TVShowPosterYAMJ = chkTVShowPosterYAMJ.Checked
-
-            '****************** NMJ settings *******************
-
-            '************** NMT optional settings **************
-
-            '***************** Boxee settings ****************** 
-            .TVEpisodeNFOBoxee = chkTVEpisodeNFOBoxee.Checked
-            .TVEpisodePosterBoxee = chkTVEpisodePosterBoxee.Checked
-            .TVSeasonPosterBoxee = chkTVSeasonPosterBoxee.Checked
-            .TVShowBannerBoxee = chkTVShowBannerBoxee.Checked
-            .TVShowFanartBoxee = chkTVShowFanartBoxee.Checked
-            .TVShowNFOBoxee = chkTVShowNFOBoxee.Checked
-            .TVShowPosterBoxee = chkTVShowPosterBoxee.Checked
-
-            '***************** Expert settings ******************
-            .TVUseExpert = chkTVUseExpert.Checked
-
-            '***************** Expert AllSeasons ****************
-            .TVAllSeasonsBannerExpert = txtTVAllSeasonsBannerExpert.Text
-            .TVAllSeasonsFanartExpert = txtTVAllSeasonsFanartExpert.Text
-            .TVAllSeasonsLandscapeExpert = txtTVAllSeasonsLandscapeExpert.Text
-            .TVAllSeasonsPosterExpert = txtTVAllSeasonsPosterExpert.Text
-
-            '***************** Expert Episode *******************
-            .TVEpisodeActorThumbsExpert = chkTVEpisodeActorThumbsExpert.Checked
-            .TVEpisodeActorThumbsExtExpert = txtTVEpisodeActorThumbsExtExpert.Text
-            .TVEpisodeFanartExpert = txtTVEpisodeFanartExpert.Text
-            .TVEpisodeNFOExpert = txtTVEpisodeNFOExpert.Text
-            .TVEpisodePosterExpert = txtTVEpisodePosterExpert.Text
-
-            '***************** Expert Season ********************
-            .TVSeasonBannerExpert = txtTVSeasonBannerExpert.Text
-            .TVSeasonFanartExpert = txtTVSeasonFanartExpert.Text
-            .TVSeasonLandscapeExpert = txtTVSeasonLandscapeExpert.Text
-            .TVSeasonPosterExpert = txtTVSeasonPosterExpert.Text
-
-            '***************** Expert Show **********************
-            .TVShowActorThumbsExpert = chkTVShowActorThumbsExpert.Checked
-            .TVShowActorThumbsExtExpert = txtTVShowActorThumbsExtExpert.Text
-            .TVShowBannerExpert = txtTVShowBannerExpert.Text
-            .TVShowCharacterArtExpert = txtTVShowCharacterArtExpert.Text
-            .TVShowClearArtExpert = txtTVShowClearArtExpert.Text
-            .TVShowClearLogoExpert = txtTVShowClearLogoExpert.Text
-            .TVShowExtrafanartsExpert = chkTVShowExtrafanartsExpert.Checked
-            .TVShowFanartExpert = txtTVShowFanartExpert.Text
-            .TVShowLandscapeExpert = txtTVShowLandscapeExpert.Text
-            .TVShowNFOExpert = txtTVShowNFOExpert.Text
-            .TVShowPosterExpert = txtTVShowPosterExpert.Text
+            '****************** YAMJ settings ****************** 
+            .YAMJ.Banner = chkTVShowBannerYAMJ.Checked
+            .YAMJ.Fanart = chkTVShowFanartYAMJ.Checked
+            .YAMJ.NFO = chkTVShowNFOYAMJ.Checked
+            .YAMJ.Poster = chkTVShowPosterYAMJ.Checked
         End With
     End Sub
 
@@ -347,7 +363,7 @@ Public Class frmTV_FileNaming
 
 #Region "Methods"
 
-    Private Sub btnTVShowThemeTvTunesCustomPathBrowse_Click(sender As Object, e As EventArgs)
+    Private Sub btnTVShowThemeTvTunesCustomPathBrowse_Click(sender As Object, e As EventArgs) Handles btnTVShowThemeTvTunesCustomPathBrowse.Click
         With fbdBrowse
             fbdBrowse.Description = Master.eLang.GetString(1077, "Select the folder where you wish to store your themes...")
             If .ShowDialog = DialogResult.OK Then
@@ -536,7 +552,6 @@ Public Class frmTV_FileNaming
 
         'Enabled
         Dim strEnabled As String = Master.eLang.GetString(774, "Enabled")
-        lblTVSourcesFilenamingNMTDefaultsEnabled.Text = strEnabled
         chkTVShowThemeTvTunesEnabled.Text = strEnabled
         chkTVUseExpert.Text = strEnabled
 

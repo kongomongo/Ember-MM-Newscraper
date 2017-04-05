@@ -104,7 +104,6 @@ Partial Class frmTV_FileNaming
         Me.chkTVSeasonBannerNMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVSeasonPosterYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVEpisodePosterNMJ = New System.Windows.Forms.CheckBox()
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled = New System.Windows.Forms.Label()
         Me.chkTVSeasonFanartYAMJ = New System.Windows.Forms.CheckBox()
         Me.chkTVShowBannerYAMJ = New System.Windows.Forms.CheckBox()
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode = New System.Windows.Forms.Label()
@@ -118,8 +117,6 @@ Partial Class frmTV_FileNaming
         Me.lblTVSourcesFilenamingNMTDefaultsBanner = New System.Windows.Forms.Label()
         Me.lblTVSourcesFilenamingNMTDefaultsFanart = New System.Windows.Forms.Label()
         Me.lblTVSourcesFilenamingNMTDefaultsPoster = New System.Windows.Forms.Label()
-        Me.chkTVUseYAMJ = New System.Windows.Forms.CheckBox()
-        Me.chkTVUseNMJ = New System.Windows.Forms.CheckBox()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ = New System.Windows.Forms.Label()
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ = New System.Windows.Forms.Label()
         Me.lblTVSourcesFilenamingNMTDefaultsNFO = New System.Windows.Forms.Label()
@@ -1153,7 +1150,7 @@ Partial Class frmTV_FileNaming
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 3)
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Name = "gbTVSourcesFilenamingNMTDefaultsOpts"
-        Me.gbTVSourcesFilenamingNMTDefaultsOpts.Size = New System.Drawing.Size(383, 161)
+        Me.gbTVSourcesFilenamingNMTDefaultsOpts.Size = New System.Drawing.Size(378, 141)
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.TabIndex = 18
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.TabStop = False
         Me.gbTVSourcesFilenamingNMTDefaultsOpts.Text = "Defaults"
@@ -1170,59 +1167,55 @@ Partial Class frmTV_FileNaming
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowPosterNMJ, 6, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowFanartNMJ, 6, 4)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowBannerNMJ, 6, 3)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonPosterNMJ, 5, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodePosterYAMJ, 1, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonBannerYAMJ, 2, 3)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonFanartNMJ, 5, 4)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonBannerNMJ, 5, 3)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonPosterYAMJ, 2, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodePosterNMJ, 4, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsEnabled, 0, 1)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonFanartYAMJ, 2, 4)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowBannerYAMJ, 3, 3)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode, 1, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason, 2, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow, 3, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowFanartYAMJ, 3, 4)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode, 4, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowPosterYAMJ, 3, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason, 5, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow, 6, 2)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsBanner, 0, 3)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsFanart, 0, 4)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsPoster, 0, 6)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVUseYAMJ, 2, 1)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVUseNMJ, 5, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowPosterNMJ, 6, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowFanartNMJ, 6, 3)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowBannerNMJ, 6, 2)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonPosterNMJ, 5, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodePosterYAMJ, 1, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonBannerYAMJ, 2, 2)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonFanartNMJ, 5, 3)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonBannerNMJ, 5, 2)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonPosterYAMJ, 2, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodePosterNMJ, 4, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVSeasonFanartYAMJ, 2, 3)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowBannerYAMJ, 3, 2)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode, 1, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason, 2, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow, 3, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowFanartYAMJ, 3, 3)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode, 4, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowPosterYAMJ, 3, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason, 5, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow, 6, 1)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsBanner, 0, 2)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsFanart, 0, 3)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsPoster, 0, 5)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ, 2, 0)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ, 5, 0)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsNFO, 0, 5)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodeNFOYAMJ, 1, 5)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowNFOYAMJ, 3, 5)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodeNFONMJ, 4, 5)
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowNFONMJ, 6, 5)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.lblTVSourcesFilenamingNMTDefaultsNFO, 0, 4)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodeNFOYAMJ, 1, 4)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowNFOYAMJ, 3, 4)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVEpisodeNFONMJ, 4, 4)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Controls.Add(Me.chkTVShowNFONMJ, 6, 4)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Location = New System.Drawing.Point(3, 18)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.Name = "tblTVSourcesFileNamingNMTDefaultsOpts"
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowCount = 8
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowCount = 7
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.RowStyles.Add(New System.Windows.Forms.RowStyle())
-        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(377, 140)
+        Me.tblTVSourcesFileNamingNMTDefaultsOpts.Size = New System.Drawing.Size(372, 120)
         Me.tblTVSourcesFileNamingNMTDefaultsOpts.TabIndex = 20
         '
         'chkTVShowPosterNMJ
         '
         Me.chkTVShowPosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowPosterNMJ.AutoSize = True
-        Me.chkTVShowPosterNMJ.Location = New System.Drawing.Point(341, 123)
+        Me.chkTVShowPosterNMJ.Location = New System.Drawing.Point(336, 103)
         Me.chkTVShowPosterNMJ.Name = "chkTVShowPosterNMJ"
         Me.chkTVShowPosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowPosterNMJ.TabIndex = 17
@@ -1232,7 +1225,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowFanartNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowFanartNMJ.AutoSize = True
-        Me.chkTVShowFanartNMJ.Location = New System.Drawing.Point(341, 83)
+        Me.chkTVShowFanartNMJ.Location = New System.Drawing.Point(336, 63)
         Me.chkTVShowFanartNMJ.Name = "chkTVShowFanartNMJ"
         Me.chkTVShowFanartNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowFanartNMJ.TabIndex = 18
@@ -1242,7 +1235,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowBannerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowBannerNMJ.AutoSize = True
-        Me.chkTVShowBannerNMJ.Location = New System.Drawing.Point(341, 63)
+        Me.chkTVShowBannerNMJ.Location = New System.Drawing.Point(336, 43)
         Me.chkTVShowBannerNMJ.Name = "chkTVShowBannerNMJ"
         Me.chkTVShowBannerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowBannerNMJ.TabIndex = 25
@@ -1252,7 +1245,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVSeasonPosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVSeasonPosterNMJ.AutoSize = True
-        Me.chkTVSeasonPosterNMJ.Location = New System.Drawing.Point(287, 123)
+        Me.chkTVSeasonPosterNMJ.Location = New System.Drawing.Point(282, 103)
         Me.chkTVSeasonPosterNMJ.Name = "chkTVSeasonPosterNMJ"
         Me.chkTVSeasonPosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonPosterNMJ.TabIndex = 26
@@ -1262,7 +1255,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVEpisodePosterYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVEpisodePosterYAMJ.AutoSize = True
-        Me.chkTVEpisodePosterYAMJ.Location = New System.Drawing.Point(74, 123)
+        Me.chkTVEpisodePosterYAMJ.Location = New System.Drawing.Point(69, 103)
         Me.chkTVEpisodePosterYAMJ.Name = "chkTVEpisodePosterYAMJ"
         Me.chkTVEpisodePosterYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodePosterYAMJ.TabIndex = 21
@@ -1272,7 +1265,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVSeasonBannerYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVSeasonBannerYAMJ.AutoSize = True
-        Me.chkTVSeasonBannerYAMJ.Location = New System.Drawing.Point(126, 63)
+        Me.chkTVSeasonBannerYAMJ.Location = New System.Drawing.Point(121, 43)
         Me.chkTVSeasonBannerYAMJ.Name = "chkTVSeasonBannerYAMJ"
         Me.chkTVSeasonBannerYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonBannerYAMJ.TabIndex = 23
@@ -1282,7 +1275,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVSeasonFanartNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVSeasonFanartNMJ.AutoSize = True
-        Me.chkTVSeasonFanartNMJ.Location = New System.Drawing.Point(287, 83)
+        Me.chkTVSeasonFanartNMJ.Location = New System.Drawing.Point(282, 63)
         Me.chkTVSeasonFanartNMJ.Name = "chkTVSeasonFanartNMJ"
         Me.chkTVSeasonFanartNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonFanartNMJ.TabIndex = 19
@@ -1292,7 +1285,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVSeasonBannerNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVSeasonBannerNMJ.AutoSize = True
-        Me.chkTVSeasonBannerNMJ.Location = New System.Drawing.Point(287, 63)
+        Me.chkTVSeasonBannerNMJ.Location = New System.Drawing.Point(282, 43)
         Me.chkTVSeasonBannerNMJ.Name = "chkTVSeasonBannerNMJ"
         Me.chkTVSeasonBannerNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonBannerNMJ.TabIndex = 23
@@ -1302,7 +1295,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVSeasonPosterYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVSeasonPosterYAMJ.AutoSize = True
-        Me.chkTVSeasonPosterYAMJ.Location = New System.Drawing.Point(126, 123)
+        Me.chkTVSeasonPosterYAMJ.Location = New System.Drawing.Point(121, 103)
         Me.chkTVSeasonPosterYAMJ.Name = "chkTVSeasonPosterYAMJ"
         Me.chkTVSeasonPosterYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonPosterYAMJ.TabIndex = 26
@@ -1312,28 +1305,17 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVEpisodePosterNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVEpisodePosterNMJ.AutoSize = True
-        Me.chkTVEpisodePosterNMJ.Location = New System.Drawing.Point(235, 123)
+        Me.chkTVEpisodePosterNMJ.Location = New System.Drawing.Point(230, 103)
         Me.chkTVEpisodePosterNMJ.Name = "chkTVEpisodePosterNMJ"
         Me.chkTVEpisodePosterNMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodePosterNMJ.TabIndex = 21
         Me.chkTVEpisodePosterNMJ.UseVisualStyleBackColor = True
         '
-        'lblTVSourcesFilenamingNMTDefaultsEnabled
-        '
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.Location = New System.Drawing.Point(3, 23)
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.Name = "lblTVSourcesFilenamingNMTDefaultsEnabled"
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.Size = New System.Drawing.Size(49, 13)
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.TabIndex = 2
-        Me.lblTVSourcesFilenamingNMTDefaultsEnabled.Text = "Enabled"
-        '
         'chkTVSeasonFanartYAMJ
         '
         Me.chkTVSeasonFanartYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVSeasonFanartYAMJ.AutoSize = True
-        Me.chkTVSeasonFanartYAMJ.Location = New System.Drawing.Point(126, 83)
+        Me.chkTVSeasonFanartYAMJ.Location = New System.Drawing.Point(121, 63)
         Me.chkTVSeasonFanartYAMJ.Name = "chkTVSeasonFanartYAMJ"
         Me.chkTVSeasonFanartYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVSeasonFanartYAMJ.TabIndex = 19
@@ -1343,7 +1325,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowBannerYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowBannerYAMJ.AutoSize = True
-        Me.chkTVShowBannerYAMJ.Location = New System.Drawing.Point(180, 63)
+        Me.chkTVShowBannerYAMJ.Location = New System.Drawing.Point(175, 43)
         Me.chkTVShowBannerYAMJ.Name = "chkTVShowBannerYAMJ"
         Me.chkTVShowBannerYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowBannerYAMJ.TabIndex = 25
@@ -1353,7 +1335,7 @@ Partial Class frmTV_FileNaming
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Location = New System.Drawing.Point(58, 43)
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Location = New System.Drawing.Point(53, 23)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.Size = New System.Drawing.Size(48, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode.TabIndex = 5
@@ -1363,7 +1345,7 @@ Partial Class frmTV_FileNaming
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Location = New System.Drawing.Point(112, 43)
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Location = New System.Drawing.Point(107, 23)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJSeason.TabIndex = 3
@@ -1373,7 +1355,7 @@ Partial Class frmTV_FileNaming
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Location = New System.Drawing.Point(162, 43)
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Location = New System.Drawing.Point(157, 23)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.Size = New System.Drawing.Size(51, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderYAMJTVShow.TabIndex = 4
@@ -1383,7 +1365,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowFanartYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowFanartYAMJ.AutoSize = True
-        Me.chkTVShowFanartYAMJ.Location = New System.Drawing.Point(180, 83)
+        Me.chkTVShowFanartYAMJ.Location = New System.Drawing.Point(175, 63)
         Me.chkTVShowFanartYAMJ.Name = "chkTVShowFanartYAMJ"
         Me.chkTVShowFanartYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowFanartYAMJ.TabIndex = 18
@@ -1393,7 +1375,7 @@ Partial Class frmTV_FileNaming
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Location = New System.Drawing.Point(219, 43)
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Location = New System.Drawing.Point(214, 23)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.Size = New System.Drawing.Size(48, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJEpisode.TabIndex = 5
@@ -1403,7 +1385,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowPosterYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowPosterYAMJ.AutoSize = True
-        Me.chkTVShowPosterYAMJ.Location = New System.Drawing.Point(180, 123)
+        Me.chkTVShowPosterYAMJ.Location = New System.Drawing.Point(175, 103)
         Me.chkTVShowPosterYAMJ.Name = "chkTVShowPosterYAMJ"
         Me.chkTVShowPosterYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowPosterYAMJ.TabIndex = 17
@@ -1413,7 +1395,7 @@ Partial Class frmTV_FileNaming
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Location = New System.Drawing.Point(273, 43)
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Location = New System.Drawing.Point(268, 23)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJSeason.TabIndex = 3
@@ -1423,7 +1405,7 @@ Partial Class frmTV_FileNaming
         '
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.AutoSize = True
-        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Location = New System.Drawing.Point(323, 43)
+        Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Location = New System.Drawing.Point(318, 23)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Name = "lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow"
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.Size = New System.Drawing.Size(51, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsHeaderNMJTVShow.TabIndex = 4
@@ -1434,7 +1416,7 @@ Partial Class frmTV_FileNaming
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTVSourcesFilenamingNMTDefaultsBanner.Location = New System.Drawing.Point(3, 63)
+        Me.lblTVSourcesFilenamingNMTDefaultsBanner.Location = New System.Drawing.Point(3, 43)
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.Name = "lblTVSourcesFilenamingNMTDefaultsBanner"
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.Size = New System.Drawing.Size(44, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsBanner.TabIndex = 6
@@ -1445,7 +1427,7 @@ Partial Class frmTV_FileNaming
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTVSourcesFilenamingNMTDefaultsFanart.Location = New System.Drawing.Point(3, 83)
+        Me.lblTVSourcesFilenamingNMTDefaultsFanart.Location = New System.Drawing.Point(3, 63)
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.Name = "lblTVSourcesFilenamingNMTDefaultsFanart"
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.Size = New System.Drawing.Size(40, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsFanart.TabIndex = 6
@@ -1456,39 +1438,18 @@ Partial Class frmTV_FileNaming
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTVSourcesFilenamingNMTDefaultsPoster.Location = New System.Drawing.Point(3, 123)
+        Me.lblTVSourcesFilenamingNMTDefaultsPoster.Location = New System.Drawing.Point(3, 103)
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Name = "lblTVSourcesFilenamingNMTDefaultsPoster"
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Size = New System.Drawing.Size(39, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.TabIndex = 6
         Me.lblTVSourcesFilenamingNMTDefaultsPoster.Text = "Poster"
-        '
-        'chkTVUseYAMJ
-        '
-        Me.chkTVUseYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseYAMJ.AutoSize = True
-        Me.chkTVUseYAMJ.Location = New System.Drawing.Point(126, 23)
-        Me.chkTVUseYAMJ.Name = "chkTVUseYAMJ"
-        Me.chkTVUseYAMJ.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVUseYAMJ.TabIndex = 16
-        Me.chkTVUseYAMJ.UseVisualStyleBackColor = True
-        '
-        'chkTVUseNMJ
-        '
-        Me.chkTVUseNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.chkTVUseNMJ.AutoSize = True
-        Me.chkTVUseNMJ.Enabled = False
-        Me.chkTVUseNMJ.Location = New System.Drawing.Point(287, 23)
-        Me.chkTVUseNMJ.Name = "chkTVUseNMJ"
-        Me.chkTVUseNMJ.Size = New System.Drawing.Size(15, 14)
-        Me.chkTVUseNMJ.TabIndex = 16
-        Me.chkTVUseNMJ.UseVisualStyleBackColor = True
         '
         'lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ
         '
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.AutoSize = True
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(115, 3)
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Location = New System.Drawing.Point(110, 3)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.Size = New System.Drawing.Size(37, 13)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ.TabIndex = 0
@@ -1499,7 +1460,7 @@ Partial Class frmTV_FileNaming
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.AutoSize = True
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(279, 3)
+        Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Location = New System.Drawing.Point(274, 3)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Name = "lblTVSourcesFileNamingNMTDefaultsHeaderNMJ"
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.Size = New System.Drawing.Size(32, 13)
         Me.lblTVSourcesFileNamingNMTDefaultsHeaderNMJ.TabIndex = 0
@@ -1510,7 +1471,7 @@ Partial Class frmTV_FileNaming
         Me.lblTVSourcesFilenamingNMTDefaultsNFO.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblTVSourcesFilenamingNMTDefaultsNFO.AutoSize = True
         Me.lblTVSourcesFilenamingNMTDefaultsNFO.Font = New System.Drawing.Font("Segoe UI", 8.25!)
-        Me.lblTVSourcesFilenamingNMTDefaultsNFO.Location = New System.Drawing.Point(3, 103)
+        Me.lblTVSourcesFilenamingNMTDefaultsNFO.Location = New System.Drawing.Point(3, 83)
         Me.lblTVSourcesFilenamingNMTDefaultsNFO.Name = "lblTVSourcesFilenamingNMTDefaultsNFO"
         Me.lblTVSourcesFilenamingNMTDefaultsNFO.Size = New System.Drawing.Size(30, 13)
         Me.lblTVSourcesFilenamingNMTDefaultsNFO.TabIndex = 6
@@ -1520,7 +1481,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVEpisodeNFOYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVEpisodeNFOYAMJ.AutoSize = True
-        Me.chkTVEpisodeNFOYAMJ.Location = New System.Drawing.Point(74, 103)
+        Me.chkTVEpisodeNFOYAMJ.Location = New System.Drawing.Point(69, 83)
         Me.chkTVEpisodeNFOYAMJ.Name = "chkTVEpisodeNFOYAMJ"
         Me.chkTVEpisodeNFOYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodeNFOYAMJ.TabIndex = 21
@@ -1530,7 +1491,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowNFOYAMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowNFOYAMJ.AutoSize = True
-        Me.chkTVShowNFOYAMJ.Location = New System.Drawing.Point(180, 103)
+        Me.chkTVShowNFOYAMJ.Location = New System.Drawing.Point(175, 83)
         Me.chkTVShowNFOYAMJ.Name = "chkTVShowNFOYAMJ"
         Me.chkTVShowNFOYAMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowNFOYAMJ.TabIndex = 17
@@ -1540,7 +1501,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVEpisodeNFONMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVEpisodeNFONMJ.AutoSize = True
-        Me.chkTVEpisodeNFONMJ.Location = New System.Drawing.Point(235, 103)
+        Me.chkTVEpisodeNFONMJ.Location = New System.Drawing.Point(230, 83)
         Me.chkTVEpisodeNFONMJ.Name = "chkTVEpisodeNFONMJ"
         Me.chkTVEpisodeNFONMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVEpisodeNFONMJ.TabIndex = 21
@@ -1550,7 +1511,7 @@ Partial Class frmTV_FileNaming
         '
         Me.chkTVShowNFONMJ.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.chkTVShowNFONMJ.AutoSize = True
-        Me.chkTVShowNFONMJ.Location = New System.Drawing.Point(341, 103)
+        Me.chkTVShowNFONMJ.Location = New System.Drawing.Point(336, 83)
         Me.chkTVShowNFONMJ.Name = "chkTVShowNFONMJ"
         Me.chkTVShowNFONMJ.Size = New System.Drawing.Size(15, 14)
         Me.chkTVShowNFONMJ.TabIndex = 17
@@ -3053,7 +3014,6 @@ Partial Class frmTV_FileNaming
     Friend WithEvents chkTVSeasonBannerNMJ As Windows.Forms.CheckBox
     Friend WithEvents chkTVSeasonPosterYAMJ As Windows.Forms.CheckBox
     Friend WithEvents chkTVEpisodePosterNMJ As Windows.Forms.CheckBox
-    Friend WithEvents lblTVSourcesFilenamingNMTDefaultsEnabled As Windows.Forms.Label
     Friend WithEvents chkTVSeasonFanartYAMJ As Windows.Forms.CheckBox
     Friend WithEvents chkTVShowBannerYAMJ As Windows.Forms.CheckBox
     Friend WithEvents lblTVSourcesFilenamingNMTDefaultsHeaderYAMJEpisode As Windows.Forms.Label
@@ -3067,8 +3027,6 @@ Partial Class frmTV_FileNaming
     Friend WithEvents lblTVSourcesFilenamingNMTDefaultsBanner As Windows.Forms.Label
     Friend WithEvents lblTVSourcesFilenamingNMTDefaultsFanart As Windows.Forms.Label
     Friend WithEvents lblTVSourcesFilenamingNMTDefaultsPoster As Windows.Forms.Label
-    Friend WithEvents chkTVUseYAMJ As Windows.Forms.CheckBox
-    Friend WithEvents chkTVUseNMJ As Windows.Forms.CheckBox
     Friend WithEvents lblTVSourcesFileNamingNMTDefaultsHeaderYAMJ As Windows.Forms.Label
     Friend WithEvents lblTVSourcesFileNamingNMTDefaultsHeaderNMJ As Windows.Forms.Label
     Friend WithEvents lblTVSourcesFilenamingNMTDefaultsNFO As Windows.Forms.Label

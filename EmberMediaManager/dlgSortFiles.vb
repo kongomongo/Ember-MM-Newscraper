@@ -61,7 +61,7 @@ Public Class dlgSortFiles
                 lblStatus.Text = "Done!"
                 pbStatus.Value = 0
 
-                Master.eSettings.SortPath = txtPath.Text
+                Master.eSettings.Options.Filesystem.SortPath = txtPath.Text
             End If
         Else
             MessageBox.Show(Master.eLang.GetString(221, "The folder you entered does not exist. Please enter a valid path."), Master.eLang.GetString(222, "Directory Not Found"), MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
@@ -78,7 +78,7 @@ Public Class dlgSortFiles
         AddHandler FileUtils.FileSorter.ProgressUpdated, AddressOf UpdateProgress
         pbStatus.Maximum = 100
         SetUp()
-        txtPath.Text = Master.eSettings.SortPath
+        txtPath.Text = Master.eSettings.Options.Filesystem.SortPath
     End Sub
 
     Private Sub dlgSortFiles_Shown(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Shown

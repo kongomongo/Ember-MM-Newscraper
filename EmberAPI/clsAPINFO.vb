@@ -1238,7 +1238,7 @@ Public Class NFO
                     .Actors.Enabled AndAlso
                     Not new_Actors Then
 
-                    If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
+                    If .Actors.WithImageOnly Then
                         For i = scrapedepisode.Actors.Count - 1 To 0 Step -1
                             If Not scrapedepisode.Actors(i).URLOriginalSpecified Then
                                 scrapedepisode.Actors.RemoveAt(i)
@@ -1316,7 +1316,7 @@ Public Class NFO
                     .GuestStars.Enabled AndAlso
                     Not new_GuestStars Then
 
-                    If Master.eSettings.TVScraperEpisodeCastWithImgOnly Then
+                    If .GuestStars.WithImageOnly Then
                         For i = scrapedepisode.GuestStars.Count - 1 To 0 Step -1
                             If Not scrapedepisode.GuestStars(i).URLOriginalSpecified Then
                                 scrapedepisode.GuestStars.RemoveAt(i)

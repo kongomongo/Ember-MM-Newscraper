@@ -2155,7 +2155,10 @@ Namespace FileUtils
 
             'get first episode of season (YAMJ need that for episodes without separate season folders)
             Try
-                If Master.eSettings.TVUseYAMJ AndAlso Not bInside Then
+                If Not bInside AndAlso
+                    (Master.eSettings.TV.Filenaming.TVSeason.YAMJ.Banner OrElse
+                    Master.eSettings.TV.Filenaming.TVSeason.YAMJ.Fanart OrElse
+                    Master.eSettings.TV.Filenaming.TVSeason.YAMJ.Poster) Then
                     Dim dtEpisodes As New DataTable
                     Master.DB.FillDataTable(dtEpisodes, String.Concat("SELECT * FROM episode INNER JOIN files ON (files.idFile = episode.idFile) WHERE idShow = ", DBElement.ShowID, " AND Season = ", DBElement.MainDetails.Season, " ORDER BY Episode;"))
                     If dtEpisodes.Rows.Count > 0 Then
@@ -2169,15 +2172,15 @@ Namespace FileUtils
                 logger.Error(ex, New StackFrame().GetMethod().Name)
             End Try
 
-            Select Case mType
-                Case Enums.ScrapeModifierType.SeasonBanner
-                    With Master.eSettings
+            With Master.eSettings.TV.Filenaming.TVSeason
+                Select Case mType
+                    Case Enums.ScrapeModifierType.SeasonBanner
                         If DBElement.MainDetails.Season = 0 Then 'season specials
-                            If .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-banner.jpg"))
-                            If .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
-                            If .TVSeasonBannerYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonBannerExpert) Then
-                                For Each a In .TVSeasonBannerExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .Kodi.Banner Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-banner.jpg"))
+                            If .YAMJ.Banner AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
+                            If .YAMJ.Banner AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Banner) Then
+                                For Each a In .Expert.Banner.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2186,11 +2189,11 @@ Namespace FileUtils
                                 Next
                             End If
                         Else
-                            If .TVSeasonBannerFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-banner.jpg", sSeason)))
-                            If .TVSeasonBannerYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
-                            If .TVSeasonBannerYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonBannerExpert) Then
-                                For Each a In .TVSeasonBannerExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .Kodi.Banner Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-banner.jpg", sSeason)))
+                            If .YAMJ.Banner AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".banner.jpg")))
+                            If .YAMJ.Banner AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".banner.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Banner) Then
+                                For Each a In .Expert.Banner.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2199,16 +2202,14 @@ Namespace FileUtils
                                 Next
                             End If
                         End If
-                    End With
 
-                Case Enums.ScrapeModifierType.SeasonFanart
-                    With Master.eSettings
+                    Case Enums.ScrapeModifierType.SeasonFanart
                         If DBElement.MainDetails.Season = 0 Then 'season specials
-                            If .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-fanart.jpg"))
-                            If .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
-                            If .TVSeasonFanartYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonFanartExpert) Then
-                                For Each a In .TVSeasonFanartExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .Kodi.Fanart Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-fanart.jpg"))
+                            If .YAMJ.Fanart AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
+                            If .YAMJ.Fanart AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Fanart) Then
+                                For Each a In .Expert.Fanart.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2217,11 +2218,11 @@ Namespace FileUtils
                                 Next
                             End If
                         Else
-                            If .TVSeasonFanartFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-fanart.jpg", sSeason)))
-                            If .TVSeasonFanartYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
-                            If .TVSeasonFanartYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonFanartExpert) Then
-                                For Each a In .TVSeasonFanartExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .Kodi.Fanart Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-fanart.jpg", sSeason)))
+                            If .YAMJ.Fanart AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".fanart.jpg")))
+                            If .YAMJ.Fanart AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".fanart.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Fanart) Then
+                                For Each a In .Expert.Fanart.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2230,15 +2231,13 @@ Namespace FileUtils
                                 Next
                             End If
                         End If
-                    End With
 
-                Case Enums.ScrapeModifierType.SeasonLandscape
-                    With Master.eSettings
+                    Case Enums.ScrapeModifierType.SeasonLandscape
                         If DBElement.MainDetails.Season = 0 Then 'season specials
-                            If .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
-                            If .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
-                                For Each a In .TVSeasonLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .KodiExtended.Landscape Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
+                            If .ArtworkDownloader.Landscape Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-landscape.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Landscape) Then
+                                For Each a In .Expert.Landscape.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2247,10 +2246,10 @@ Namespace FileUtils
                                 Next
                             End If
                         Else
-                            If .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
-                            If .TVSeasonLandscapeExtended Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
-                            If Not String.IsNullOrEmpty(.TVSeasonLandscapeExpert) Then
-                                For Each a In .TVSeasonLandscapeExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .KodiExtended.Landscape Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If .ArtworkDownloader.Landscape Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-landscape.jpg", sSeason)))
+                            If Not String.IsNullOrEmpty(.Expert.Landscape) Then
+                                For Each a In .Expert.Landscape.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2259,17 +2258,15 @@ Namespace FileUtils
                                 Next
                             End If
                         End If
-                    End With
 
-                Case Enums.ScrapeModifierType.SeasonPoster
-                    With Master.eSettings
+                    Case Enums.ScrapeModifierType.SeasonPoster
                         If DBElement.MainDetails.Season = 0 Then 'season specials
-                            If .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
-                            If .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-poster.jpg"))
-                            If .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
-                            If .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonPosterExpert) Then
-                                For Each a In .TVSeasonPosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .Kodi.Poster Then FilenameList.Add(Path.Combine(fShowPath, "season-specials-poster.jpg"))
+                            If .Boxee.Poster AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
+                            If .YAMJ.Poster AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
+                            If .YAMJ.Poster AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Poster) Then
+                                For Each a In .Expert.Poster.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2278,12 +2275,12 @@ Namespace FileUtils
                                 Next
                             End If
                         Else
-                            If .TVSeasonPosterBoxee AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
-                            If .TVSeasonPosterFrodo Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))
-                            If .TVSeasonPosterYAMJ AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
-                            If .TVSeasonPosterYAMJ AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
-                            If Not String.IsNullOrEmpty(.TVSeasonPosterExpert) Then
-                                For Each a In .TVSeasonPosterExpert.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                            If .Kodi.Poster Then FilenameList.Add(Path.Combine(fShowPath, String.Format("season{0}-poster.jpg", sSeason)))
+                            If .Boxee.Poster AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, "poster.jpg"))
+                            If .YAMJ.Poster AndAlso bInside Then FilenameList.Add(Path.Combine(fSeasonPath, String.Concat(fSeasonFolder, ".jpg")))
+                            If .YAMJ.Poster AndAlso Not bInside AndAlso Not String.IsNullOrEmpty(fEpisodePath) Then FilenameList.Add(String.Concat(fEpisodePath, ".jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.Poster) Then
+                                For Each a In .Expert.Poster.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
                                     If Not (a.Contains("<seasonpath>") AndAlso Not bInside) Then
                                         Dim sPath As String = a.Replace("<seasonpath>", fSeasonPath)
                                         sPath = String.Format(sPath, sSeason, DBElement.MainDetails.Season, sSeason) 'Season# padding: {0} = 01; {1} = 1; {2} = 01
@@ -2292,8 +2289,8 @@ Namespace FileUtils
                                 Next
                             End If
                         End If
-                    End With
-            End Select
+                End Select
+            End With
 
             FilenameList = FilenameList.Distinct().ToList() 'remove double entries
             Return FilenameList
@@ -2316,37 +2313,48 @@ Namespace FileUtils
                         End If
 
                     Case Enums.ScrapeModifierType.AllSeasonsBanner
-                        If .Kodi.AllSeasonsBanner Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
-                        If Not String.IsNullOrEmpty(.Expert.AllSeasonsBanner) Then
-                            For Each a In .Expert.AllSeasonsBanner.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a))
-                            Next
-                        End If
+                        With Master.eSettings.TV.Filenaming.TVSeason
+                            If .Kodi.Banner Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
+                            If .ArtworkDownloader.Banner Then FilenameList.Add(Path.Combine(fShowPath, "season-all-banner.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.AllSeasonsBanner) Then
+                                For Each a In .Expert.AllSeasonsBanner.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(fShowPath, a))
+                                Next
+                            End If
+                        End With
 
                     Case Enums.ScrapeModifierType.AllSeasonsFanart
-                        If .Kodi.AllSeasonsFanart Then FilenameList.Add(Path.Combine(fShowPath, "season-all-fanart.jpg"))
-                        If Not String.IsNullOrEmpty(.Expert.AllSeasonsFanart) Then
-                            For Each a In .Expert.AllSeasonsFanart.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a))
-                            Next
-                        End If
+                        With Master.eSettings.TV.Filenaming.TVSeason
+                            If .Kodi.Fanart Then FilenameList.Add(Path.Combine(fShowPath, "season-all-fanart.jpg"))
+                            If .ArtworkDownloader.Fanart Then FilenameList.Add(Path.Combine(fShowPath, "season-all-fanart.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.AllSeasonsFanart) Then
+                                For Each a In .Expert.AllSeasonsFanart.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(fShowPath, a))
+                                Next
+                            End If
+                        End With
 
                     Case Enums.ScrapeModifierType.AllSeasonsLandscape
-                        If .KodiExtended.AllSeasonsLandscape Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
-                        If .TVSeasonLandscapeAD Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
-                        If Not String.IsNullOrEmpty(.Expert.AllSeasonsLandscape) Then
-                            For Each a In .Expert.AllSeasonsLandscape.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a))
-                            Next
-                        End If
+                        With Master.eSettings.TV.Filenaming.TVSeason
+                            If .KodiExtended.Landscape Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
+                            If .ArtworkDownloader.Landscape Then FilenameList.Add(Path.Combine(fShowPath, "season-all-landscape.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.AllSeasonsLandscape) Then
+                                For Each a In .Expert.AllSeasonsLandscape.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(fShowPath, a))
+                                Next
+                            End If
+                        End With
 
                     Case Enums.ScrapeModifierType.AllSeasonsPoster
-                        If .Kodi.AllSeasonsPoster Then FilenameList.Add(Path.Combine(fShowPath, "season-all-poster.jpg"))
-                        If Not String.IsNullOrEmpty(.Expert.AllSeasonsPoster) Then
-                            For Each a In .Expert.AllSeasonsPoster.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
-                                FilenameList.Add(Path.Combine(fShowPath, a))
-                            Next
-                        End If
+                        With Master.eSettings.TV.Filenaming.TVSeason
+                            If .Kodi.Poster Then FilenameList.Add(Path.Combine(fShowPath, "season-all-poster.jpg"))
+                            If .ArtworkDownloader.Poster Then FilenameList.Add(Path.Combine(fShowPath, "season-all-poster.jpg"))
+                            If Not String.IsNullOrEmpty(.Expert.AllSeasonsPoster) Then
+                                For Each a In .Expert.AllSeasonsPoster.Split(New String() {","c}, StringSplitOptions.RemoveEmptyEntries)
+                                    FilenameList.Add(Path.Combine(fShowPath, a))
+                                Next
+                            End If
+                        End With
 
                     Case Enums.ScrapeModifierType.MainBanner
                         If .Kodi.Banner Then FilenameList.Add(Path.Combine(fShowPath, "banner.jpg"))

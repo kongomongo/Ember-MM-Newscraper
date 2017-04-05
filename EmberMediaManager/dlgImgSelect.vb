@@ -2260,47 +2260,59 @@ Public Class dlgImgSelect
                     DoMainPoster = tScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
                 End With
             Case Enums.ContentType.TV
-                DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner
-                DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart
-                DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape
-                DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster
+                With Master.eSettings.TV.Filenaming.TVSeason
+                    DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso .FilenameAnyEnabled_AllSeasonsBanner
+                    DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso .FilenameAnyEnabled_AllSeasonsFanart
+                    DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso .FilenameAnyEnabled_AllSeasonsLandscape
+                    DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso .FilenameAnyEnabled_AllSeasonsPoster
+                End With
                 'DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.TVEpisodeFanartAnyEnabled
                 'DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.TVEpisodePosterAnyEnabled
-                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Banner
-                DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt
-                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt
-                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo
-                DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Extrafanarts
-                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Fanart
-                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Landscape
-                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Poster
-                DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner
-                DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart
-                DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape
-                DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster
+                With Master.eSettings.TV.Filenaming.TVShow
+                    DoMainBanner = tScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso .FilenameAnyEnabled_CharacterArt
+                    DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso .FilenameAnyEnabled_Extrafanarts
+                    DoMainFanart = tScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = tScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
+                With Master.eSettings.TV.Filenaming.TVSeason
+                    DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
                 If DoMainExtrafanarts OrElse DoSeasonBanner OrElse DoSeasonFanart OrElse DoSeasonLandscape OrElse DoSeasonPoster Then noSubImages = False
             Case Enums.ContentType.TVShow
-                DoMainBanner = tScrapeModifiers.MainBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Banner
-                DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_CharacterArt
-                DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ClearArt
-                DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_ClearLogo
-                DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Extrafanarts
-                DoMainFanart = tScrapeModifiers.MainFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Fanart
-                DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Landscape
-                DoMainPoster = tScrapeModifiers.MainPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVShow_Poster
+                With Master.eSettings.TV.Filenaming.TVShow
+                    DoMainBanner = tScrapeModifiers.MainBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoMainCharacterArt = tScrapeModifiers.MainCharacterArt AndAlso .FilenameAnyEnabled_CharacterArt
+                    DoMainClearArt = tScrapeModifiers.MainClearArt AndAlso .FilenameAnyEnabled_ClearArt
+                    DoMainClearLogo = tScrapeModifiers.MainClearLogo AndAlso .FilenameAnyEnabled_ClearLogo
+                    DoMainExtrafanarts = tScrapeModifiers.MainExtrafanarts AndAlso .FilenameAnyEnabled_Extrafanarts
+                    DoMainFanart = tScrapeModifiers.MainFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoMainLandscape = tScrapeModifiers.MainLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoMainPoster = tScrapeModifiers.MainPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
                 If DoMainExtrafanarts Then noSubImages = False
             Case Enums.ContentType.TVEpisode
-                DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Fanart
-                DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso Master.eSettings.FilenameAnyEnabled_TVEpisode_Poster
+                With Master.eSettings.TV.Filenaming.TVEpisode
+                    DoEpisodeFanart = tScrapeModifiers.EpisodeFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoEpisodePoster = tScrapeModifiers.EpisodePoster AndAlso .FilenameAnyEnabled_Poster
+                End With
             Case Enums.ContentType.TVSeason
-                DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Banner
-                DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Fanart
-                DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Landscape
-                DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVAllSeasons_Poster
-                DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Banner
-                DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso Master.eSettings. FilenameAnyEnabled_TVSeason_Fanart
-                DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Landscape
-                DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso Master.eSettings.FilenameAnyEnabled_TVSeason_Poster
+                With Master.eSettings.TV.Filenaming.TVSeason
+                    DoAllSeasonsBanner = tScrapeModifiers.AllSeasonsBanner AndAlso .FilenameAnyEnabled_AllSeasonsBanner
+                    DoAllSeasonsFanart = tScrapeModifiers.AllSeasonsFanart AndAlso .FilenameAnyEnabled_AllSeasonsFanart
+                    DoAllSeasonsLandscape = tScrapeModifiers.AllSeasonsLandscape AndAlso .FilenameAnyEnabled_AllSeasonsLandscape
+                    DoAllSeasonsPoster = tScrapeModifiers.AllSeasonsPoster AndAlso .FilenameAnyEnabled_AllSeasonsPoster
+                    DoSeasonBanner = tScrapeModifiers.SeasonBanner AndAlso .FilenameAnyEnabled_Banner
+                    DoSeasonFanart = tScrapeModifiers.SeasonFanart AndAlso .FilenameAnyEnabled_Fanart
+                    DoSeasonLandscape = tScrapeModifiers.SeasonLandscape AndAlso .FilenameAnyEnabled_Landscape
+                    DoSeasonPoster = tScrapeModifiers.SeasonPoster AndAlso .FilenameAnyEnabled_Poster
+                End With
         End Select
 
         'If we don't have any SubImage we can hide the panel
