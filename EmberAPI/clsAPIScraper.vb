@@ -57,7 +57,7 @@ Public Class Scraper
                 If Not nScrapeResults.bCancelled AndAlso Not nScrapeResults.bError Then
 
                     'If "Use Preview Datascraperresults" option is enabled, a preview window which displays all datascraperresults will be opened before showing the Edit Movie page!
-                    If (tDBElement.ScrapeType = Enums.ScrapeType.SingleScrape OrElse tDBElement.ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.MovieScraperUseDetailView AndAlso nScrapeResults.lstData.Count > 0 Then
+                    If (tDBElement.ScrapeType = Enums.ScrapeType.SingleScrape OrElse tDBElement.ScrapeType = Enums.ScrapeType.SingleField) AndAlso Master.eSettings.Movie.DataSettings.DetailedView AndAlso nScrapeResults.lstData.Count > 0 Then
                         PreviewDataScraperResults_Movie(nScrapeResults.lstData)
                     End If
 

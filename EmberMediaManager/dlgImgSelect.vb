@@ -1958,10 +1958,10 @@ Public Class dlgImgSelect
         With Master.eSettings
             Select Case tContentType
                 Case Enums.ContentType.Movie
-                    If .Movie.ImageSettings.ExtrafanartsPreselect OrElse .Movie.ImageSettings.Extrafanarts.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
-                    If .Movie.ImageSettings.ExtrathumbsPreselect OrElse .Movie.ImageSettings.Extrathumbs.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrathumbs.AddRange(tPreferredImagesContainer.ImagesContainer.Extrathumbs)
+                    If .Movie.ImageSettings.Extrafanarts.Preselect OrElse .Movie.ImageSettings.Extrafanarts.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
+                    If .Movie.ImageSettings.Extrathumbs.Preselect OrElse .Movie.ImageSettings.Extrathumbs.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrathumbs.AddRange(tPreferredImagesContainer.ImagesContainer.Extrathumbs)
                 Case Enums.ContentType.TV, Enums.ContentType.TVShow
-                    If .TV.ImageSettings.ExtrafanartsPreselect OrElse .TV.ImageSettings.TVShow.Extrafanarts.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
+                    If .TV.ImageSettings.Extrafanarts.Preselect OrElse .TV.ImageSettings.TVShow.Extrafanarts.KeepExisting Then tResultImagesContainer.ImagesContainer.Extrafanarts.AddRange(tPreferredImagesContainer.ImagesContainer.Extrafanarts)
             End Select
         End With
         tResultImagesContainer.ImagesContainer.Fanart = tPreferredImagesContainer.ImagesContainer.Fanart

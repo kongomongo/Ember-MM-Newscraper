@@ -37,11 +37,10 @@ Public Class Settings
     Private _movieset As Movieset
     Private _options As Options
     Private _tv As TV
-
     Private _addons As List(Of AddonsManager._XMLAddonClass)
+
     Private _moviedatascrapersettings As List(Of ScraperSettings)
     Private _moviemetadataperfiletype As List(Of MetadataPerType)
-    Private _moviescraperusedetailview As Boolean
     Private _ommdummyformat As Integer
     Private _ommdummytagline As String
     Private _ommdummytop As String
@@ -113,15 +112,6 @@ Public Class Settings
         End Get
         Set(ByVal value As List(Of AddonsManager._XMLAddonClass))
             _addons = value
-        End Set
-    End Property
-
-    Public Property MovieScraperUseDetailView() As Boolean
-        Get
-            Return _moviescraperusedetailview
-        End Get
-        Set(ByVal value As Boolean)
-            _moviescraperusedetailview = value
         End Set
     End Property
 
@@ -330,7 +320,6 @@ Public Class Settings
         Addons = New List(Of AddonsManager._XMLAddonClass)
         MovieDataScraperSettings = New List(Of ScraperSettings)
         MovieMetadataPerFileType = New List(Of MetadataPerType)
-        MovieScraperUseDetailView = False
         OMMDummyFormat = 0
         OMMDummyTagline = String.Empty
         OMMDummyTop = String.Empty
@@ -752,6 +741,7 @@ Public Class DataSettings_Movie
     Public Property CollectionYAMJCompatible As Boolean
     Public Property Countries() As DataSpecification
     Public Property Credits() As DataSpecification
+    Public Property DetailedView As Boolean
     Public Property Directors() As DataSpecification
     Public Property DurationForRuntime As Boolean
     Public Property DurationFormat As String
@@ -811,6 +801,7 @@ Public Class DataSettings_Movie
         CollectionID = New DataSpecification
         Countries = New DataSpecification
         Credits = New DataSpecification
+        DetailedView = False
         Directors = New DataSpecification
         DurationFormat = "<m>"
         DurationForRuntime = True
@@ -821,6 +812,7 @@ Public Class DataSettings_Movie
         MPAA = New DataSpecification
         OriginalTitle = New DataSpecification
         Outline = New DataSpecification
+        Outline.Limit = 350
         Plot = New DataSpecification
         PlotForOutline = False
         PlotForOutlineAsFallback = False
@@ -2655,6 +2647,7 @@ Public Class FilenamingSettings_TVSeason
     ''' </summary>
     ''' <remarks></remarks>
     Public Sub SetDefaults()
+        ArtworkDownloader = New ArtworkDownloaderSpecifications_TVSeason
         Boxee = New BoxeeSpecifications_TVSeason
         Expert = New ExpertSpecifications_TVSeason
         Kodi = New KodiSpecifications_TVSeason
@@ -3519,70 +3512,7 @@ End Class
 
 
 <Serializable()>
-Public Class ImageSettings
-
-#Region "Properties"
-
-    Public Property CacheEnabled() As Boolean
-    Public Property DisplayImageSelectDialog() As Boolean
-    Public Property NotSaveURLToNfo() As Boolean
-
-    Public Property Language As ImageSettings_Language
-
-    Public Property ActorThumbsKeepExisting() As Boolean
-    Public Property Banner() As ImageSpecification_Resize
-    Public Property ClearArt() As ImageSpecification
-    Public Property ClearLogo() As ImageSpecification
-    Public Property Extrafanarts() As ImageSpecification_Extra
-    Public Property ExtrafanartsLimit() As Integer
-    Public Property ExtrafanartsPreselect() As Boolean
-    Public Property ExtrathumbsCreatorUseETasFA() As Boolean
-    Public Property ExtrathumbsPreselect() As Boolean
-    Public Property Fanart() As ImageSpecification_Resize
-    Public Property Landscape() As ImageSpecification_Resize
-    Public Property Poster() As ImageSpecification_Resize
-
-#End Region 'Properties
-
-#Region "Constructors"
-
-    Public Sub New()
-        SetDefaults()
-    End Sub
-
-#End Region 'Constructors
-
-#Region "Methods"
-    ''' <summary>
-    ''' Defines all default settings for a new installation
-    ''' </summary>
-    ''' <remarks></remarks>
-    Public Sub SetDefaults()
-        CacheEnabled = False
-        DisplayImageSelectDialog = True
-        NotSaveURLToNfo = False
-
-        Language = New ImageSettings_Language
-
-        ActorThumbsKeepExisting = False
-        Banner = New ImageSpecification_Resize
-        ClearArt = New ImageSpecification
-        ClearLogo = New ImageSpecification
-        Extrafanarts = New ImageSpecification_Extra
-        ExtrafanartsPreselect = True
-        ExtrathumbsPreselect = True
-        Fanart = New ImageSpecification_Resize
-        Landscape = New ImageSpecification_Resize
-        Poster = New ImageSpecification_Resize
-    End Sub
-
-#End Region 'Methods
-
-End Class
-
-
-<Serializable()>
-Public Class ImageSettings_Language
+Public Class ImageLanguageSpecification
 
 #Region "Properties"
 
@@ -3628,6 +3558,63 @@ End Class
 
 
 <Serializable()>
+Public Class ImageSettings
+
+#Region "Properties"
+
+    Public Property CacheEnabled() As Boolean
+    Public Property DisplayImageSelectDialog() As Boolean
+    Public Property NotSaveURLToNfo() As Boolean
+
+    Public Property Language As ImageLanguageSpecification
+
+    Public Property Actorthumbs() As ImageSpecification_Resize
+    Public Property Banner() As ImageSpecification_Resize
+    Public Property ClearArt() As ImageSpecification
+    Public Property ClearLogo() As ImageSpecification
+    Public Property Extrafanarts() As ImageSpecification_Extra
+    Public Property Fanart() As ImageSpecification_Extra
+    Public Property Landscape() As ImageSpecification_Resize
+    Public Property Poster() As ImageSpecification_Resize
+
+#End Region 'Properties
+
+#Region "Constructors"
+
+    Public Sub New()
+        SetDefaults()
+    End Sub
+
+#End Region 'Constructors
+
+#Region "Methods"
+    ''' <summary>
+    ''' Defines all default settings for a new installation
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public Sub SetDefaults()
+        CacheEnabled = False
+        DisplayImageSelectDialog = True
+        NotSaveURLToNfo = False
+
+        Language = New ImageLanguageSpecification
+
+        Actorthumbs = New ImageSpecification_Resize
+        Banner = New ImageSpecification_Resize
+        ClearArt = New ImageSpecification
+        ClearLogo = New ImageSpecification
+        Extrafanarts = New ImageSpecification_Extra
+        Fanart = New ImageSpecification_Extra
+        Landscape = New ImageSpecification_Resize
+        Poster = New ImageSpecification_Resize
+    End Sub
+
+#End Region 'Methods
+
+End Class
+
+
+<Serializable()>
 Public Class ImageSettings_Movie
     Inherits ImageSettings
 
@@ -3655,19 +3642,16 @@ Public Class ImageSettings_Movie
         CacheEnabled = False
         DisplayImageSelectDialog = True
         NotSaveURLToNfo = False
-        Language = New ImageSettings_Language
+        Language = New ImageLanguageSpecification
 
-        ActorThumbsKeepExisting = False
+        Actorthumbs = New ImageSpecification_Resize
         Banner = New ImageSpecification_Resize
         ClearArt = New ImageSpecification
         ClearLogo = New ImageSpecification
         DiscArt = New ImageSpecification
         Extrafanarts = New ImageSpecification_Extra
-        ExtrafanartsPreselect = True
         Extrathumbs = New ImageSpecification_Extra
-        ExtrathumbsCreatorUseETasFA = False
-        ExtrathumbsPreselect = True
-        Fanart = New ImageSpecification_Resize
+        Fanart = New ImageSpecification_Extra
         Landscape = New ImageSpecification_Resize
         Poster = New ImageSpecification_Resize
     End Sub
@@ -3704,18 +3688,15 @@ Public Class ImageSettings_Movieset
         CacheEnabled = False
         DisplayImageSelectDialog = True
         NotSaveURLToNfo = False
-        Language = New ImageSettings_Language
+        Language = New ImageLanguageSpecification
 
-        ActorThumbsKeepExisting = False
+        Actorthumbs = New ImageSpecification_Resize
         Banner = New ImageSpecification_Resize
         ClearArt = New ImageSpecification
         ClearLogo = New ImageSpecification
         DiscArt = New ImageSpecification
         Extrafanarts = New ImageSpecification_Extra
-        ExtrafanartsPreselect = True
-        ExtrathumbsCreatorUseETasFA = False
-        ExtrathumbsPreselect = True
-        Fanart = New ImageSpecification_Resize
+        Fanart = New ImageSpecification_Extra
         Landscape = New ImageSpecification_Resize
         Poster = New ImageSpecification_Resize
     End Sub
@@ -3761,16 +3742,14 @@ Public Class ImageSettings_TV
         DisplayImageSelectDialog = True
         NotSaveURLToNfo = False
 
-        Language = New ImageSettings_Language
+        Language = New ImageLanguageSpecification
 
-        ActorThumbsKeepExisting = False
+        Actorthumbs = New ImageSpecification_Resize
         Banner = New ImageSpecification_Resize
         ClearArt = New ImageSpecification
         ClearLogo = New ImageSpecification
         Extrafanarts = New ImageSpecification_Extra
-        ExtrafanartsPreselect = True
-        ExtrathumbsPreselect = True
-        Fanart = New ImageSpecification_Resize
+        Fanart = New ImageSpecification_Extra
         Landscape = New ImageSpecification_Resize
         Poster = New ImageSpecification_Resize
     End Sub
@@ -3876,16 +3855,13 @@ Public Class ImageSettings_TVShow
     ''' </summary>
     ''' <remarks></remarks>
     Public Overloads Sub SetDefaults()
-        ActorThumbsKeepExisting = False
+        Actorthumbs = New ImageSpecification_Resize
         Banner = New ImageSpecification_Resize
         CharacterArt = New ImageSpecification
         ClearArt = New ImageSpecification
         ClearLogo = New ImageSpecification
         Extrafanarts = New ImageSpecification_Extra
-        ExtrafanartsLimit = 4
-        ExtrafanartsPreselect = True
-        ExtrathumbsPreselect = True
-        Fanart = New ImageSpecification_Resize
+        Fanart = New ImageSpecification_Extra
         Landscape = New ImageSpecification_Resize
         Poster = New ImageSpecification_Resize
     End Sub
@@ -3930,28 +3906,21 @@ End Class
 
 <Serializable()>
 Public Class ImageSpecification_Extra
-    Inherits ImageSpecification
+    Inherits ImageSpecification_Resize
 
 #Region "Properties"
 
-    Public Property CreatorAuto() As Boolean
-    Public Property CreatorNoBlackBars() As Boolean
-    Public Property CreatorNoSpoilers() As Boolean
-    Public Property Limit() As Integer
-    Public Property MaxHeight() As Integer
-    Public Property MaxWidth() As Integer
+    Public Property Creator As Boolean
+    Public Property CreatorAsFallback As Boolean
+    Public Property CreatorNoBlackBars As Boolean
+    Public Property CreatorNoSpoilers As Boolean
+    Public Property Limit As Integer
+    Public Property Preselect As Boolean
 
     <XmlIgnore()>
     Public ReadOnly Property LimitSpecified() As Boolean
         Get
             Return Limit > 0
-        End Get
-    End Property
-
-    <XmlIgnore()>
-    Public ReadOnly Property ResizeSpecified() As Boolean
-        Get
-            Return MaxHeight > 0 OrElse MaxWidth > 0
         End Get
     End Property
 
@@ -3971,15 +3940,18 @@ Public Class ImageSpecification_Extra
     ''' </summary>
     ''' <remarks></remarks>
     Public Overloads Sub SetDefaults()
-        CreatorAuto = False
+        Creator = False
+        CreatorAsFallback = True
         CreatorNoBlackBars = True
         CreatorNoSpoilers = True
+        FixedSize = False
         Limit = 4
         MaxHeight = 0
         MaxWidth = 0
         KeepExisting = False
         PrefSize = Enums.ImageSize.Any
         PrefSizeOnly = False
+        Preselect = True
     End Sub
 
 #End Region 'Methods
@@ -3991,8 +3963,10 @@ Public Class ImageSpecification_Resize
     Inherits ImageSpecification
 
 #Region "Properties"
-    Public Property MaxHeight() As Integer
-    Public Property MaxWidth() As Integer
+
+    Public Property FixedSize As Boolean
+    Public Property MaxHeight As Integer
+    Public Property MaxWidth As Integer
 
     <XmlIgnore()>
     Public ReadOnly Property ResizeSpecified() As Boolean
@@ -4017,6 +3991,7 @@ Public Class ImageSpecification_Resize
     ''' </summary>
     ''' <remarks></remarks>
     Public Overloads Sub SetDefaults()
+        FixedSize = False
         MaxHeight = 0
         MaxWidth = 0
         KeepExisting = False

@@ -185,7 +185,7 @@ Public Class frmMovie_Data
             chkMovieScraperMetaDataScan.Checked = .MetaDataScan
             chkMovieScraperMPAA.Checked = .MPAA.Enabled
             chkMovieScraperOriginalTitle.Checked = .OriginalTitle.Enabled
-            chkMovieScraperDetailView.Checked = Master.eSettings.MovieScraperUseDetailView
+            chkMovieScraperDetailView.Checked = .DetailedView
             chkMovieScraperOutline.Checked = .Outline.Enabled
             chkMovieScraperPlot.Checked = .Plot.Enabled
             chkMovieScraperPlotForOutline.Checked = .PlotForOutline
@@ -325,7 +325,7 @@ Public Class frmMovie_Data
             .Title.Enabled = chkMovieScraperTitle.Checked
             .Top250.Enabled = chkMovieScraperTop250.Checked
             .Trailer.Enabled = chkMovieScraperTrailer.Checked
-            Master.eSettings.MovieScraperUseDetailView = chkMovieScraperDetailView.Checked
+            .DetailedView = chkMovieScraperDetailView.Checked
             .DurationForRuntime = chkDurationForRuntime.Checked
             .UserRating.Enabled = chkMovieScraperUserRating.Checked
             .Credits.Enabled = chkMovieScraperCredits.Checked

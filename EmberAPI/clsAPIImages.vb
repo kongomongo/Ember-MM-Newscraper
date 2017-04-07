@@ -1351,7 +1351,7 @@ Public Class Images
             Select Case tContentType
                 Case Enums.ContentType.Movie
                     bKeepExisting = Master.eSettings.Movie.ImageSettings.Extrafanarts.KeepExisting
-                    iLimit = Master.eSettings.Movie.ImageSettings.ExtrafanartsLimit
+                    iLimit = Master.eSettings.Movie.ImageSettings.Extrafanarts.Limit
                 Case Enums.ContentType.TVShow
                     bKeepExisting = Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.KeepExisting
                     iLimit = Master.eSettings.TV.ImageSettings.TVShow.Extrafanarts.Limit
@@ -2732,7 +2732,7 @@ Public Class Images
     Public Shared Function GetPreferredMovieExtrathumbs(ByRef tImageList As List(Of MediaContainers.Image), ByRef imgResultList As List(Of MediaContainers.Image), ByVal iLimit As Integer, ByVal CurrentMovieFanart As MediaContainers.Image, ByVal DBElement As Database.DBElement, Optional ByVal IsAutoScraper As Boolean = False) As Boolean
 
         'Generate thumbnails?
-        If (Master.eSettings.Movie.ImageSettings.Extrathumbs.CreatorAuto OrElse (Master.eSettings.Movie.ImageSettings.ExtrathumbsCreatorUseETasFA AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
+        If (Master.eSettings.Movie.ImageSettings.Extrathumbs.Creator OrElse (Master.eSettings.Movie.ImageSettings.Extrathumbs.CreatorAsFallback AndAlso imgResultList.Count = 0)) AndAlso iLimit > 0 Then
             imgResultList.Clear()
             imgResultList = FFmpeg.FFmpeg.GenerateThumbnailsWithoutBars(DBElement, ThumbCount:=iLimit, NoSpoilers:=Master.eSettings.Movie.ImageSettings.Extrathumbs.CreatorNoSpoilers, Timeout:=30000)
             'dont't care about the following extrathumb PrefQuality setting(s) of scrapers since it doesn't make sense for frame extraction (we only respect the Keep and Limit setting and Resize options for extracted frames)
