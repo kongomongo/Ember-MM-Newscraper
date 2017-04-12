@@ -338,6 +338,7 @@ Namespace MediaContainers
         Private _top250 As Integer
         Private _trailer As String
         Private _tvdb As Integer
+        Private _uniqueids As New List(Of Uniqueid)
         Private _userrating As Integer
         Private _videosource As String
         Private _votes As String
@@ -1440,6 +1441,27 @@ Namespace MediaContainers
             End Set
         End Property
 
+        <XmlElement("uniqueid")>
+        Public Property Uniqueids() As List(Of Uniqueid)
+            Get
+                Return _uniqueids
+            End Get
+            Set(ByVal value As List(Of Uniqueid))
+                If value Is Nothing Then
+                    _uniqueids.Clear()
+                Else
+                    _uniqueids = value
+                End If
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property UniqueidsSpecified() As Boolean
+            Get
+                Return _uniqueids.Count > 0
+            End Get
+        End Property
+
 #End Region 'Properties
 
 #Region "Methods"
@@ -1703,6 +1725,7 @@ Namespace MediaContainers
             _top250 = 0
             _trailer = String.Empty
             _tvdb = -1
+            _uniqueids.Clear()
             _userrating = 0
             _videosource = String.Empty
             _votes = String.Empty
@@ -5722,6 +5745,90 @@ Namespace MediaContainers
                         End If
                 End Select
             End With
+        End Sub
+
+#End Region 'Methods
+
+    End Class
+
+    <Serializable()>
+    Public Class Uniqueid
+
+#Region "Fields"
+
+        Private _id As Long
+        Private _isdefault As Boolean
+        Private _type As String
+        Private _value As String
+
+#End Region 'Fields
+
+#Region "Constructors"
+
+        Public Sub New()
+            Clean()
+        End Sub
+
+#End Region 'Constructors
+
+#Region "Properties"
+
+        <XmlIgnore()>
+        Public Property ID() As Long
+            Get
+                Return _id
+            End Get
+            Set(ByVal Value As Long)
+                _id = Value
+            End Set
+        End Property
+
+        <XmlAttribute("type")>
+        Public Property Type() As String
+            Get
+                Return _type
+            End Get
+            Set(ByVal Value As String)
+                _type = Value
+            End Set
+        End Property
+
+        <XmlIgnore()>
+        Public ReadOnly Property TypeSpecified() As Boolean
+            Get
+                Return Not String.IsNullOrEmpty(_type)
+            End Get
+        End Property
+
+        <XmlAttribute("default")>
+        Public Property IsDefault() As Boolean
+            Get
+                Return _isdefault
+            End Get
+            Set(ByVal Value As Boolean)
+                _isdefault = Value
+            End Set
+        End Property
+
+        <XmlText()>
+        Public Property Value() As String
+            Get
+                Return _value
+            End Get
+            Set(ByVal Value As String)
+                _value = Value
+            End Set
+        End Property
+
+#End Region 'Properties
+
+#Region "Methods"
+
+        Public Sub Clean()
+            _id = -1
+            _isdefault = False
+            _type = "unknown"
+            _value = String.Empty
         End Sub
 
 #End Region 'Methods

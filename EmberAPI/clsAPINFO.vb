@@ -2476,6 +2476,12 @@ Public Class NFO
                 'Create a clone of MediaContainer to prevent changes on database data that only needed in NFO
                 Dim tMovie As MediaContainers.MainDetails = CType(tDBElement.MainDetails.CloneDeep, MediaContainers.MainDetails)
 
+                '*******************
+                tMovie.Uniqueids.Add(New MediaContainers.Uniqueid With {.Value = tMovie.TMDB.ToString, .Type = "tmdb"})
+                tMovie.Uniqueids.Add(New MediaContainers.Uniqueid With {.Value = tMovie.IMDB, .Type = "imdb", .IsDefault = True})
+                '*******************
+
+
                 Dim doesExist As Boolean = False
                 Dim fAtt As New FileAttributes
                 Dim fAttWritable As Boolean = True
