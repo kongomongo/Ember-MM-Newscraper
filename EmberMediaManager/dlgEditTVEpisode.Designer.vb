@@ -56,7 +56,7 @@ Partial Class dlgEditTVEpisode
         Me.btnManual = New System.Windows.Forms.Button()
         Me.btnActorRemove = New System.Windows.Forms.Button()
         Me.lblActors = New System.Windows.Forms.Label()
-        Me.lvActors = New System.Windows.Forms.ListView()
+        Me.lvActorsGuestStars = New System.Windows.Forms.ListView()
         Me.colID = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colName = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.colRole = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -232,7 +232,7 @@ Partial Class dlgEditTVEpisode
         Me.tpDetails.Controls.Add(Me.btnManual)
         Me.tpDetails.Controls.Add(Me.btnActorRemove)
         Me.tpDetails.Controls.Add(Me.lblActors)
-        Me.tpDetails.Controls.Add(Me.lvActors)
+        Me.tpDetails.Controls.Add(Me.lvActorsGuestStars)
         Me.tpDetails.Controls.Add(Me.lblDirectors)
         Me.tpDetails.Controls.Add(Me.txtDirectors)
         Me.tpDetails.Controls.Add(Me.lblPlot)
@@ -480,15 +480,15 @@ Partial Class dlgEditTVEpisode
         '
         'lvActors
         '
-        Me.lvActors.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
-        Me.lvActors.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lvActors.FullRowSelect = True
-        Me.lvActors.Location = New System.Drawing.Point(7, 204)
-        Me.lvActors.Name = "lvActors"
-        Me.lvActors.Size = New System.Drawing.Size(618, 213)
-        Me.lvActors.TabIndex = 16
-        Me.lvActors.UseCompatibleStateImageBehavior = False
-        Me.lvActors.View = System.Windows.Forms.View.Details
+        Me.lvActorsGuestStars.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.colID, Me.colName, Me.colRole, Me.colThumb})
+        Me.lvActorsGuestStars.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvActorsGuestStars.FullRowSelect = True
+        Me.lvActorsGuestStars.Location = New System.Drawing.Point(7, 204)
+        Me.lvActorsGuestStars.Name = "lvActors"
+        Me.lvActorsGuestStars.Size = New System.Drawing.Size(618, 213)
+        Me.lvActorsGuestStars.TabIndex = 16
+        Me.lvActorsGuestStars.UseCompatibleStateImageBehavior = False
+        Me.lvActorsGuestStars.View = System.Windows.Forms.View.Details
         '
         'colID
         '
@@ -1106,7 +1106,7 @@ Partial Class dlgEditTVEpisode
     Friend WithEvents btnManual As System.Windows.Forms.Button
     Friend WithEvents btnActorRemove As System.Windows.Forms.Button
     Friend WithEvents lblActors As System.Windows.Forms.Label
-    Friend WithEvents lvActors As System.Windows.Forms.ListView
+    Friend WithEvents lvActorsGuestStars As System.Windows.Forms.ListView
     Friend WithEvents colName As System.Windows.Forms.ColumnHeader
     Friend WithEvents colRole As System.Windows.Forms.ColumnHeader
     Friend WithEvents colThumb As System.Windows.Forms.ColumnHeader

@@ -72,7 +72,7 @@ Public Class dlgEditTVShow
             Dim lvwItem As ListViewItem = lvActors.SelectedItems(0)
             Dim eActor As MediaContainers.Person = DirectCast(lvwItem.Tag, MediaContainers.Person)
             Using dAddEditActor As New dlgAddEditActor
-                If dAddEditActor.ShowDialog(eActor) = DialogResult.OK Then
+                If dAddEditActor.ShowDialog(Enums.ContentType.TVShow, False, eActor) = DialogResult.OK Then
                     eActor = dAddEditActor.Result
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.Tag = eActor

@@ -62,7 +62,12 @@ Public Class dlgAddEditActor
         lblThumb.Text = Master.eLang.GetString(156, "Actor Thumb (URL):")
     End Sub
 
-    Public Overloads Function ShowDialog(Optional ByVal inActor As MediaContainers.Person = Nothing) As DialogResult
+    Public Overloads Function ShowDialog(ByVal tContentType As Enums.ContentType, ByVal bIsGuestStar As Boolean, Optional ByVal inActor As MediaContainers.Person = Nothing) As DialogResult
+        If tContentType = Enums.ContentType.TVEpisode Then
+            rbActor.Enabled = True
+            rbGuestStar.Enabled = True
+            rbGuestStar.Checked = bIsGuestStar
+        End If
         isNew = inActor Is Nothing
         If isNew Then
             tmpActor = New MediaContainers.Person

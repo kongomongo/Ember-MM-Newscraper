@@ -62,11 +62,12 @@ Public Class dlgEditTVEpisode
     End Function
 
     Private Sub ActorEdit()
-        If lvActors.SelectedItems.Count > 0 Then
-            Dim lvwItem As ListViewItem = lvActors.SelectedItems(0)
+        If lvActorsGuestStars.SelectedItems.Count > 0 Then
+            Dim lvwItem As ListViewItem = lvActorsGuestStars.SelectedItems(0)
+            Dim bIsGuestStar As Boolean = lvwItem.Group.Name = "gueststar"
             Dim eActor As MediaContainers.Person = DirectCast(lvwItem.Tag, MediaContainers.Person)
             Using dAddEditActor As New dlgAddEditActor
-                If dAddEditActor.ShowDialog(eActor) = DialogResult.OK Then
+                If dAddEditActor.ShowDialog(Enums.ContentType.TVEpisode, bIsGuestStar, eActor) = DialogResult.OK Then
                     eActor = dAddEditActor.Result
                     lvwItem.Text = eActor.ID.ToString
                     lvwItem.Tag = eActor
@@ -81,9 +82,9 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub ActorRemove()
-        If lvActors.Items.Count > 0 Then
-            While lvActors.SelectedItems.Count > 0
-                lvActors.Items.Remove(lvActors.SelectedItems(0))
+        If lvActorsGuestStars.Items.Count > 0 Then
+            While lvActorsGuestStars.SelectedItems.Count > 0
+                lvActorsGuestStars.Items.Remove(lvActorsGuestStars.SelectedItems(0))
             End While
         End If
     End Sub
@@ -92,7 +93,7 @@ Public Class dlgEditTVEpisode
         Using dAddEditActor As New dlgAddEditActor
             If dAddEditActor.ShowDialog() = DialogResult.OK Then
                 Dim nActor As MediaContainers.Person = dAddEditActor.Result
-                Dim lvItem As ListViewItem = lvActors.Items.Add(nActor.ID.ToString)
+                Dim lvItem As ListViewItem = lvActorsGuestStars.Items.Add(nActor.ID.ToString)
                 lvItem.Tag = nActor
                 lvItem.SubItems.Add(nActor.Name)
                 lvItem.SubItems.Add(nActor.Role)
@@ -102,12 +103,12 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub btnActorDown_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorDown.Click
-        If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) < (lvActors.Items.Count - 1) Then
-            Dim iIndex As Integer = lvActors.SelectedIndices(0)
-            lvActors.Items.Insert(iIndex + 2, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
-            lvActors.Items.RemoveAt(iIndex)
-            lvActors.Items(iIndex + 1).Selected = True
-            lvActors.Select()
+        If lvActorsGuestStars.SelectedItems.Count > 0 AndAlso lvActorsGuestStars.SelectedItems(0) IsNot Nothing AndAlso lvActorsGuestStars.SelectedIndices(0) < (lvActorsGuestStars.Items.Count - 1) Then
+            Dim iIndex As Integer = lvActorsGuestStars.SelectedIndices(0)
+            lvActorsGuestStars.Items.Insert(iIndex + 2, DirectCast(lvActorsGuestStars.SelectedItems(0).Clone, ListViewItem))
+            lvActorsGuestStars.Items.RemoveAt(iIndex)
+            lvActorsGuestStars.Items(iIndex + 1).Selected = True
+            lvActorsGuestStars.Select()
         End If
     End Sub
 
@@ -120,12 +121,12 @@ Public Class dlgEditTVEpisode
     End Sub
 
     Private Sub btnActorUp_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnActorUp.Click
-        If lvActors.SelectedItems.Count > 0 AndAlso lvActors.SelectedItems(0) IsNot Nothing AndAlso lvActors.SelectedIndices(0) > 0 Then
-            Dim iIndex As Integer = lvActors.SelectedIndices(0)
-            lvActors.Items.Insert(iIndex - 1, DirectCast(lvActors.SelectedItems(0).Clone, ListViewItem))
-            lvActors.Items.RemoveAt(iIndex + 1)
-            lvActors.Items(iIndex - 1).Selected = True
-            lvActors.Select()
+        If lvActorsGuestStars.SelectedItems.Count > 0 AndAlso lvActorsGuestStars.SelectedItems(0) IsNot Nothing AndAlso lvActorsGuestStars.SelectedIndices(0) > 0 Then
+            Dim iIndex As Integer = lvActorsGuestStars.SelectedIndices(0)
+            lvActorsGuestStars.Items.Insert(iIndex - 1, DirectCast(lvActorsGuestStars.SelectedItems(0).Clone, ListViewItem))
+            lvActorsGuestStars.Items.RemoveAt(iIndex + 1)
+            lvActorsGuestStars.Items(iIndex - 1).Selected = True
+            lvActorsGuestStars.Select()
         End If
     End Sub
 
@@ -439,7 +440,7 @@ Public Class dlgEditTVEpisode
             SetUp()
 
             lvwActorSorter = New ListViewColumnSorter()
-            lvActors.ListViewItemSorter = lvwActorSorter
+            lvActorsGuestStars.ListViewItemSorter = lvwActorSorter
 
             Dim iBackground As New Bitmap(pnlTop.Width, pnlTop.Height)
             Using g As Graphics = Graphics.FromImage(iBackground)
@@ -491,13 +492,34 @@ Public Class dlgEditTVEpisode
 
         'Actors
         Dim lvItem As ListViewItem
-        lvActors.Items.Clear()
-        For Each tActor As MediaContainers.Person In tmpDBElement.TVEpisode.Actors
-            lvItem = lvActors.Items.Add(tActor.ID.ToString)
-            lvItem.Tag = tActor
-            lvItem.SubItems.Add(tActor.Name)
-            lvItem.SubItems.Add(tActor.Role)
-            lvItem.SubItems.Add(tActor.URLOriginal)
+        Dim lvGroup As ListViewGroup
+        lvActorsGuestStars.Items.Clear()
+        lvActorsGuestStars.Groups.Clear()
+
+        lvGroup = New ListViewGroup With {.Header = Master.eLang.GetString(231, "Actors"), .Name = "actors"}
+        lvActorsGuestStars.Groups.Add(lvGroup)
+        For Each tPerson As MediaContainers.Person In tmpDBElement.TVEpisode.Actors
+            lvItem = New ListViewItem
+            lvItem.Text = tPerson.ID.ToString
+            lvItem.Tag = tPerson
+            lvItem.SubItems.Add(tPerson.Name)
+            lvItem.SubItems.Add(tPerson.Role)
+            lvItem.SubItems.Add(tPerson.URLOriginal)
+            lvGroup.Items.Add(lvItem)
+            lvActorsGuestStars.Items.Add(lvItem)
+        Next
+
+        lvGroup = New ListViewGroup With {.Header = Master.eLang.GetString(508, "Guest Stars"), .Name = "gueststars"}
+        lvActorsGuestStars.Groups.Add(lvGroup)
+        For Each tPerson As MediaContainers.Person In tmpDBElement.TVEpisode.GuestStars
+            lvItem = New ListViewItem
+            lvItem.Text = tPerson.ID.ToString
+            lvItem.Tag = tPerson
+            lvItem.SubItems.Add(tPerson.Name)
+            lvItem.SubItems.Add(tPerson.Role)
+            lvItem.SubItems.Add(tPerson.URLOriginal)
+            lvGroup.Items.Add(lvItem)
+            lvActorsGuestStars.Items.Add(lvItem)
         Next
 
         Dim tRating As Single = NumUtils.ConvertToSingle(tmpDBElement.TVEpisode.Rating)
@@ -571,7 +593,7 @@ Public Class dlgEditTVEpisode
         LoadSubtitles()
     End Sub
 
-    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles lvActors.ColumnClick
+    Private Sub lvActors_ColumnClick(ByVal sender As Object, ByVal e As ColumnClickEventArgs) Handles lvActorsGuestStars.ColumnClick
         ' Determine if the clicked column is already the column that is
         ' being sorted.
         Try
@@ -589,13 +611,13 @@ Public Class dlgEditTVEpisode
             End If
 
             ' Perform the sort with these new sort options.
-            lvActors.Sort()
+            lvActorsGuestStars.Sort()
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
         End Try
     End Sub
 
-    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvActors.DoubleClick
+    Private Sub lvActors_DoubleClick(ByVal sender As Object, ByVal e As EventArgs) Handles lvActorsGuestStars.DoubleClick
         ActorEdit()
     End Sub
 
@@ -940,13 +962,25 @@ Public Class dlgEditTVEpisode
 
         'Actors
         tmpDBElement.TVEpisode.Actors.Clear()
-        If lvActors.Items.Count > 0 Then
+        tmpDBElement.TVEpisode.GuestStars.Clear()
+        If lvActorsGuestStars.Items.Count > 0 Then
             Dim iOrder As Integer = 0
-            For Each lviActor As ListViewItem In lvActors.Items
-                Dim addActor As MediaContainers.Person = DirectCast(lviActor.Tag, MediaContainers.Person)
-                addActor.Order = iOrder
-                iOrder += 1
-                tmpDBElement.TVEpisode.Actors.Add(addActor)
+            For Each tPerson As ListViewItem In lvActorsGuestStars.Items
+                If tPerson.Group.Name = "actors" Then
+                    Dim addActor As MediaContainers.Person = DirectCast(tPerson.Tag, MediaContainers.Person)
+                    addActor.Order = iOrder
+                    iOrder += 1
+                    tmpDBElement.TVEpisode.Actors.Add(addActor)
+                End If
+            Next
+            For Each tPerson As ListViewItem In lvActorsGuestStars.Items
+                iOrder = 0
+                If tPerson.Group.Name = "gueststars" Then
+                    Dim addActor As MediaContainers.Person = DirectCast(tPerson.Tag, MediaContainers.Person)
+                    addActor.Order = iOrder
+                    iOrder += 1
+                    tmpDBElement.TVEpisode.GuestStars.Add(addActor)
+                End If
             Next
         End If
 
