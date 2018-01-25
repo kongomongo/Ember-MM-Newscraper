@@ -45,7 +45,7 @@ Public Class Database
 
 #Region "Events"
 
-    Public Event GenericEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
+    Public Event DatabaseEvent(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object))
 
 #End Region 'Events
 
@@ -950,7 +950,7 @@ Public Class Database
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idMovie", "Value must be >= 0, was given: " & ID)
 
         Dim _movieDB As DBElement = Load_Movie(ID)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_Movie, Nothing, Nothing, False, _movieDB)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Removed_Movie, Nothing, Nothing, False, _movieDB)
 
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -961,7 +961,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.Remove_Movie, New List(Of Object)(New Object() {_movieDB.ID}))
+            RaiseEvent DatabaseEvent(Enums.ModuleEventType.Removed_Movie, New List(Of Object)(New Object() {_movieDB.ID}))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
@@ -1000,7 +1000,6 @@ Public Class Database
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, movie)
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, movie)
                     Save_Movie(movie, BatchMode, True, False, True, False)
-                    RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {movie.ID}))
                 Next
             End If
 
@@ -1106,7 +1105,7 @@ Public Class Database
         Dim bHasRemoved As Boolean = False
 
         Dim _tvepisodeDB As Database.DBElement = Load_TVEpisode(lTVEpisodeID, True)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Removed_TVEpisode, Nothing, Nothing, False, _tvepisodeDB)
 
         If Not BatchMode Then SQLtransaction = _myvideosDBConn.BeginTransaction()
         Using SQLcommand As SQLiteCommand = _myvideosDBConn.CreateCommand()
@@ -1254,7 +1253,7 @@ Public Class Database
         If ID < 0 Then Throw New ArgumentOutOfRangeException("idShow", "Value must be >= 0, was given: " & ID)
 
         Dim _tvshowDB As Database.DBElement = Load_TVShow_Full(ID)
-        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Remove_TVShow, Nothing, Nothing, False, _tvshowDB)
+        ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Removed_TVShow, Nothing, Nothing, False, _tvshowDB)
 
         Try
             Dim SQLtransaction As SQLiteTransaction = Nothing
@@ -1265,7 +1264,7 @@ Public Class Database
             End Using
             If Not BatchMode Then SQLtransaction.Commit()
 
-            RaiseEvent GenericEvent(Enums.ModuleEventType.Remove_TVShow, New List(Of Object)(New Object() {_tvshowDB.ID}))
+            RaiseEvent DatabaseEvent(Enums.ModuleEventType.Removed_TVShow, New List(Of Object)(New Object() {_tvshowDB.ID}))
         Catch ex As Exception
             logger.Error(ex, New StackFrame().GetMethod().Name)
             Return False
@@ -4282,6 +4281,8 @@ Public Class Database
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Sync_Movie, Nothing, Nothing, False, _movieDB)
         End If
 
+        RaiseEvent DatabaseEvent(Enums.ModuleEventType.Saved_Movie, New List(Of Object)(New Object() {_movieDB.ID}))
+
         Return _movieDB
     End Function
     ''' <summary>
@@ -4382,7 +4383,6 @@ Public Class Database
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie.DBMovie)
             Save_Movie(tMovie.DBMovie, True, True, False, True, False)
-            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.DBMovie.ID}))
         Next
 
         'remove set-information from movies which are no longer assigned to this set
@@ -4399,7 +4399,6 @@ Public Class Database
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.BeforeEdit_Movie, Nothing, Nothing, False, tMovie)
                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_Movie, Nothing, Nothing, False, tMovie)
                         Save_Movie(tMovie, True, True, False, True, False)
-                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {tMovie.ID}))
                     End If
                 End While
             End Using

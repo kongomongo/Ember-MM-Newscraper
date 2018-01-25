@@ -2181,7 +2181,7 @@ Public Class frmMain
         If e.ProgressPercentage = -1 Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviescraped", 3, Master.eLang.GetString(813, "Movie Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
-            RefreshRow_Movie(CLng(e.UserState))
+            AddOrRefreshRow_Movie(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
             tslLoading.Text = e.UserState.ToString
         Else
@@ -2339,7 +2339,7 @@ Public Class frmMain
         If e.ProgressPercentage = -1 Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"moviesetscraped", 3, Master.eLang.GetString(1204, "MovieSet Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
-            RefreshRow_MovieSet(CLng(e.UserState))
+            AddOrRefreshRow_MovieSet(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
             tslLoading.Text = e.UserState.ToString
         Else
@@ -2507,7 +2507,7 @@ Public Class frmMain
         If e.ProgressPercentage = -1 Then
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"tvshowscraped", 3, Master.eLang.GetString(248, "Show Scraped"), e.UserState.ToString, Nothing}))
         ElseIf e.ProgressPercentage = -2 Then
-            RefreshRow_TVShow(CLng(e.UserState))
+            AddOrRefreshRow_TVShow(CLng(e.UserState))
         ElseIf e.ProgressPercentage = -3 Then
             tslLoading.Text = e.UserState.ToString
         Else
@@ -2816,7 +2816,7 @@ Public Class frmMain
 
     Private Sub bwReload_Movies_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwReload_Movies.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            RefreshRow_Movie(CLng(e.UserState))
+            AddOrRefreshRow_Movie(CLng(e.UserState))
         Else
             SetStatus(e.UserState.ToString)
             tspbLoading.Value = e.ProgressPercentage
@@ -2865,7 +2865,7 @@ Public Class frmMain
 
     Private Sub bwReload_MovieSets_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwReload_MovieSets.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            RefreshRow_MovieSet(CLng(e.UserState))
+            AddOrRefreshRow_MovieSet(CLng(e.UserState))
         Else
             SetStatus(e.UserState.ToString)
             tspbLoading.Value = e.ProgressPercentage
@@ -2915,7 +2915,7 @@ Public Class frmMain
 
     Private Sub bwReload_TVShows_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bwReload_TVShows.ProgressChanged
         If e.ProgressPercentage = -1 Then
-            RefreshRow_TVShow(CLng(e.UserState))
+            AddOrRefreshRow_TVShow(CLng(e.UserState))
         Else
             SetStatus(e.UserState.ToString)
             tspbLoading.Value = e.ProgressPercentage
@@ -4329,7 +4329,7 @@ Public Class frmMain
             End If
         End If
 
-        RefreshRow_TVShow(ShowID, True)
+        AddOrRefreshRow_TVShow(ShowID, True)
 
         SetControlsEnabled(True)
     End Sub
@@ -5064,7 +5064,7 @@ Public Class frmMain
         Using dEditMeta As New dlgFileInfo(DBElement, False)
             Select Case dEditMeta.ShowDialog()
                 Case DialogResult.OK
-                    RefreshRow_Movie(ID)
+                    AddOrRefreshRow_Movie(ID)
             End Select
         End Using
     End Sub
@@ -5082,7 +5082,7 @@ Public Class frmMain
                 If Reload_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value), True, showMessages) Then
                     doFill = True
                 Else
-                    RefreshRow_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
+                    AddOrRefreshRow_Movie(Convert.ToInt64(sRow.Cells("idMovie").Value))
                 End If
             Next
             SQLtransaction.Commit()
@@ -5116,7 +5116,7 @@ Public Class frmMain
         Using dNewSet As New dlgNewSet()
             If dNewSet.ShowDialog(tmpDBMovieSet) = DialogResult.OK Then
                 tmpDBMovieSet = Master.DB.Save_MovieSet(dNewSet.Result, False, False, False, False)
-                Dim iNewRowIndex = AddRow_MovieSet(tmpDBMovieSet.ID)
+                Dim iNewRowIndex = AddOrRefreshRow_MovieSet(tmpDBMovieSet.ID)
                 If Not iNewRowIndex = -1 Then
                     dgvMovieSets.Rows(iNewRowIndex).Selected = True
                 End If
@@ -5137,7 +5137,7 @@ Public Class frmMain
                 If Reload_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value), True) Then
                     doFill = True
                 Else
-                    RefreshRow_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
+                    AddOrRefreshRow_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
                 End If
             Next
             SQLtransaction.Commit()
@@ -5307,7 +5307,7 @@ Public Class frmMain
                     If Reload_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, dgvTVShows.SelectedRows.Count = 1, False) Then
                         doFill = True
                     Else
-                        RefreshRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
+                        AddOrRefreshRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
                     End If
                 Next
                 SQLtransaction.Commit()
@@ -5319,7 +5319,7 @@ Public Class frmMain
             If Reload_TVShow(Convert.ToInt64(dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, False) Then
                 doFill = True
             Else
-                RefreshRow_TVShow(Convert.ToInt64(dgvTVShows.SelectedRows(0).Cells("idShow").Value))
+                AddOrRefreshRow_TVShow(Convert.ToInt64(dgvTVShows.SelectedRows(0).Cells("idShow").Value))
             End If
         End If
 
@@ -5355,7 +5355,7 @@ Public Class frmMain
                     If Reload_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value), True, dgvTVShows.SelectedRows.Count = 1, True) Then
                         doFill = True
                     Else
-                        RefreshRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
+                        AddOrRefreshRow_TVShow(Convert.ToInt64(sRow.Cells("idShow").Value))
                     End If
                 Next
                 SQLtransaction.Commit()
@@ -5367,7 +5367,7 @@ Public Class frmMain
             If Reload_TVShow(Convert.ToInt64(dgvTVShows.SelectedRows(0).Cells("idShow").Value), False, True, True) Then
                 doFill = True
             Else
-                RefreshRow_TVShow(Convert.ToInt64(dgvTVShows.SelectedRows(0).Cells("idShow").Value))
+                AddOrRefreshRow_TVShow(Convert.ToInt64(dgvTVShows.SelectedRows(0).Cells("idShow").Value))
             End If
         End If
 
@@ -5430,7 +5430,7 @@ Public Class frmMain
             For Each iSeason In SeasonsList
                 RefreshRow_TVSeason(idShow, iSeason)
             Next
-            RefreshRow_TVShow(idShow)
+            AddOrRefreshRow_TVShow(idShow)
 
             SQLtransaction.Commit()
         End Using
@@ -8315,7 +8315,6 @@ Public Class frmMain
                         ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBMovie)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.Save_Movie(DBMovie, False, True, True, True, False)
-                        RefreshRow_Movie(DBMovie.ID)
                     Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -8346,7 +8345,7 @@ Public Class frmMain
                     ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.AfterEdit_MovieSet, Nothing, Nothing, False, DBMovieSet)
                     tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                     Master.DB.Save_MovieSet(DBMovieSet, False, True, True, True)
-                    RefreshRow_MovieSet(DBMovieSet.ID)
+                    AddOrRefreshRow_MovieSet(DBMovieSet.ID)
                 Case DialogResult.Retry
                     Dim ScrapeModifier As New Structures.ScrapeModifiers
                     Functions.SetScrapeModifiers(ScrapeModifier, Enums.ModifierType.All, True)
@@ -8420,7 +8419,7 @@ Public Class frmMain
                         ModulesManager.Instance.RunGeneric(EventType, Nothing, Nothing, False, DBTVShow)
                         tslLoading.Text = String.Concat(Master.eLang.GetString(399, "Downloading and Saving Contents into Database"), ":")
                         Master.DB.Save_TVShow(DBTVShow, False, True, True, True)
-                        RefreshRow_TVShow(DBTVShow.ID)
+                        AddOrRefreshRow_TVShow(DBTVShow.ID)
                     Case DialogResult.Retry
                         Dim ScrapeModifiers As New Structures.ScrapeModifiers
                         Functions.SetScrapeModifiers(ScrapeModifiers, Enums.ModifierType.All, True)
@@ -10255,7 +10254,7 @@ Public Class frmMain
         AddHandler fScanner.ProgressUpdate, AddressOf ScannerProgressUpdate
         AddHandler fTaskManager.ProgressUpdate, AddressOf TaskManagerProgressUpdate
         AddHandler ModulesManager.Instance.GenericEvent, AddressOf GenericRunCallBack
-        AddHandler Master.DB.GenericEvent, AddressOf GenericRunCallBack
+        AddHandler Master.DB.DatabaseEvent, AddressOf GenericRunCallBack
 
         Functions.DGVDoubleBuffer(dgvMovies)
         Functions.DGVDoubleBuffer(dgvMovieSets)
@@ -10609,29 +10608,29 @@ Public Class frmMain
                         Activate()
                 End Select
 
-            Case Enums.ModuleEventType.AfterEdit_Movie
-                RefreshRow_Movie(Convert.ToInt64(_params(0)))
-
-            Case Enums.ModuleEventType.AfterEdit_TVEpisode
-                RefreshRow_TVEpisode(Convert.ToInt64(_params(0)))
-
-            Case Enums.ModuleEventType.AfterEdit_TVShow
-                RefreshRow_TVShow(Convert.ToInt64(_params(0)))
-
-            Case Enums.ModuleEventType.Remove_Movie
+            Case Enums.ModuleEventType.Removed_Movie
                 RemoveRow_Movie(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_MovieSet
+            Case Enums.ModuleEventType.Removed_MovieSet
                 RemoveRow_MovieSet(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_TVEpisode
+            Case Enums.ModuleEventType.Removed_TVEpisode
                 RemoveRow_TVEpisode(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_TVSeason
+            Case Enums.ModuleEventType.Removed_TVSeason
                 RemoveRow_TVSeason(Convert.ToInt64(_params(0)))
 
-            Case Enums.ModuleEventType.Remove_TVShow
+            Case Enums.ModuleEventType.Removed_TVShow
                 RemoveRow_TVShow(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Saved_Movie
+                AddOrRefreshRow_Movie(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Saved_TVEpisode
+                RefreshRow_TVEpisode(Convert.ToInt64(_params(0)))
+
+            Case Enums.ModuleEventType.Saved_TVShow
+                AddOrRefreshRow_TVShow(Convert.ToInt64(_params(0)))
 
             Case Else
                 logger.Warn("Callback for <{0}> with no handler.", mType)
@@ -10644,15 +10643,15 @@ Public Class frmMain
             Case Enums.TaskManagerEventType.RefreshRow
                 Select Case eProgressValue.ContentType
                     Case Enums.ContentType.Movie
-                        RefreshRow_Movie(eProgressValue.ID)
+                        AddOrRefreshRow_Movie(eProgressValue.ID)
                     Case Enums.ContentType.MovieSet
-                        RefreshRow_MovieSet(eProgressValue.ID)
+                        AddOrRefreshRow_MovieSet(eProgressValue.ID)
                     Case Enums.ContentType.TVEpisode
                         RefreshRow_TVEpisode(eProgressValue.ID)
                     Case Enums.ContentType.TVSeason
                         RefreshRow_TVSeason(eProgressValue.ID)
                     Case Enums.ContentType.TVShow
-                        RefreshRow_TVShow(eProgressValue.ID)
+                        AddOrRefreshRow_TVShow(eProgressValue.ID)
                 End Select
 
             Case Enums.TaskManagerEventType.SimpleMessage
@@ -10715,7 +10714,7 @@ Public Class frmMain
                             If Not tmpDBElement.Movie.Genres.Contains(strGenre) Then
                                 tmpDBElement.Movie.Genres.Add(strGenre)
                                 Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                                RefreshRow_Movie(tmpDBElement.ID)
+                                AddOrRefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
                     Case "tvshow"
@@ -10724,7 +10723,7 @@ Public Class frmMain
                             If Not tmpDBElement.TVShow.Genres.Contains(strGenre) Then
                                 tmpDBElement.TVShow.Genres.Add(strGenre)
                                 Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
-                                RefreshRow_TVShow(tmpDBElement.ID)
+                                AddOrRefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
                 End Select
@@ -10796,7 +10795,7 @@ Public Class frmMain
                             If tmpDBElement.Movie.Genres.Contains(strGenre) Then
                                 tmpDBElement.Movie.Genres.Remove(strGenre)
                                 Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                                RefreshRow_Movie(tmpDBElement.ID)
+                                AddOrRefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
                     Case "tvshow"
@@ -10805,7 +10804,7 @@ Public Class frmMain
                             If tmpDBElement.TVShow.Genres.Contains(strGenre) Then
                                 tmpDBElement.TVShow.Genres.Remove(strGenre)
                                 Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
-                                RefreshRow_TVShow(tmpDBElement.ID)
+                                AddOrRefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
                 End Select
@@ -10831,7 +10830,7 @@ Public Class frmMain
                             tmpDBElement.Movie.Genres.Clear()
                             tmpDBElement.Movie.Genres.Add(strGenre)
                             Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                            RefreshRow_Movie(tmpDBElement.ID)
+                            AddOrRefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "tvshow"
                         For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
@@ -10839,7 +10838,7 @@ Public Class frmMain
                             tmpDBElement.TVShow.Genres.Clear()
                             tmpDBElement.TVShow.Genres.Add(strGenre)
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
-                            RefreshRow_TVShow(tmpDBElement.ID)
+                            AddOrRefreshRow_TVShow(tmpDBElement.ID)
                         Next
                 End Select
                 SQLtransaction.Commit()
@@ -10945,7 +10944,7 @@ Public Class frmMain
                             If Not tmpDBElement.Movie.Tags.Contains(strTag) Then
                                 tmpDBElement.Movie.Tags.Add(strTag)
                                 Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                                RefreshRow_Movie(tmpDBElement.ID)
+                                AddOrRefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
                     Case "tvshow"
@@ -10954,7 +10953,7 @@ Public Class frmMain
                             If Not tmpDBElement.TVShow.Tags.Contains(strTag) Then
                                 tmpDBElement.TVShow.Tags.Add(strTag)
                                 Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
-                                RefreshRow_TVShow(tmpDBElement.ID)
+                                AddOrRefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
                 End Select
@@ -10999,7 +10998,7 @@ Public Class frmMain
                             If tmpDBElement.Movie.Tags.Contains(strTag) Then
                                 tmpDBElement.Movie.Tags.Remove(strTag)
                                 Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                                RefreshRow_Movie(tmpDBElement.ID)
+                                AddOrRefreshRow_Movie(tmpDBElement.ID)
                             End If
                         Next
                     Case "tvshow"
@@ -11008,7 +11007,7 @@ Public Class frmMain
                             If tmpDBElement.TVShow.Tags.Contains(strTag) Then
                                 tmpDBElement.TVShow.Tags.Remove(strTag)
                                 Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
-                                RefreshRow_TVShow(tmpDBElement.ID)
+                                AddOrRefreshRow_TVShow(tmpDBElement.ID)
                             End If
                         Next
                 End Select
@@ -11034,7 +11033,7 @@ Public Class frmMain
                             tmpDBElement.Movie.Tags.Clear()
                             tmpDBElement.Movie.Tags.Add(strTag)
                             Master.DB.Save_Movie(tmpDBElement, True, True, False, True, False)
-                            RefreshRow_Movie(tmpDBElement.ID)
+                            AddOrRefreshRow_Movie(tmpDBElement.ID)
                         Next
                     Case "tvshow"
                         For Each sRow As DataGridViewRow In dgvTVShows.SelectedRows
@@ -11042,7 +11041,7 @@ Public Class frmMain
                             tmpDBElement.TVShow.Tags.Clear()
                             tmpDBElement.TVShow.Tags.Add(strTag)
                             Master.DB.Save_TVShow(tmpDBElement, True, True, False, False)
-                            RefreshRow_TVShow(tmpDBElement.ID)
+                            AddOrRefreshRow_TVShow(tmpDBElement.ID)
                         Next
                 End Select
                 SQLtransaction.Commit()
@@ -13508,7 +13507,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13533,7 +13532,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                     Master.DB.Save_MovieSet(tmpDBElement, False, True, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13560,7 +13559,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Banner = dlgImgS.Result.ImagesContainer.Banner
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(1363, "No Banners found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13646,7 +13645,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.CharacterArt = dlgImgS.Result.ImagesContainer.CharacterArt
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13699,7 +13698,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13724,7 +13723,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                     Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13751,7 +13750,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearArt = dlgImgS.Result.ImagesContainer.ClearArt
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(1102, "No ClearArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13804,7 +13803,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13829,7 +13828,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                     Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13856,7 +13855,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.ClearLogo = dlgImgS.Result.ImagesContainer.ClearLogo
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(1103, "No ClearLogos found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13909,7 +13908,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -13934,7 +13933,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.DiscArt = dlgImgS.Result.ImagesContainer.DiscArt
                                     Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1104, "No DiscArts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14000,7 +13999,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14025,7 +14024,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                     Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14052,7 +14051,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Fanart = dlgImgS.Result.ImagesContainer.Fanart
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(970, "No Fanarts found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14155,7 +14154,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14180,7 +14179,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                     Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14207,7 +14206,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Landscape = dlgImgS.Result.ImagesContainer.Landscape
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(1197, "No Landscapes found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14287,7 +14286,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                     Master.DB.Save_Movie(tmpDBElement, False, False, True, True, False)
-                                    RefreshRow_Movie(ID)
+                                    AddOrRefreshRow_Movie(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14312,7 +14311,7 @@ Public Class frmMain
                                 If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                     tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                     Master.DB.Save_MovieSet(tmpDBElement, False, False, True, True)
-                                    RefreshRow_MovieSet(ID)
+                                    AddOrRefreshRow_MovieSet(ID)
                                 End If
                             Else
                                 MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14339,7 +14338,7 @@ Public Class frmMain
                                     If dlgImgS.ShowDialog(tmpDBElement, aContainer, ScrapeModifiers) = DialogResult.OK Then
                                         tmpDBElement.ImagesContainer.Poster = dlgImgS.Result.ImagesContainer.Poster
                                         Master.DB.Save_TVShow(tmpDBElement, False, False, True, False)
-                                        RefreshRow_TVShow(ID)
+                                        AddOrRefreshRow_TVShow(ID)
                                     End If
                                 Else
                                     MessageBox.Show(Master.eLang.GetString(972, "No Posters found"), String.Empty, MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -14948,60 +14947,82 @@ Public Class frmMain
         End If
     End Sub
     ''' <summary>
-    ''' Adds a new single Movie row with informations from DB
+    ''' Adds or refresh a single Movie row with informations from DB
     ''' </summary>
-    ''' <param name="lngID"></param>
+    ''' <param name="id"></param>
     ''' <remarks></remarks>
-    Private Sub AddRow_Movie(ByVal lngID As Long)
-        If lngID = -1 Then Return
+    Private Sub AddOrRefreshRow_Movie(ByVal id As Long)
+        If id = -1 Then Return
 
-        Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
-        Dim newRow As DataRow = Nothing
-        Dim newTable As New DataTable
+        Dim dgUpdateRow As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
+        Dim dgAddRow As New Delegate_dtListAddRow(AddressOf dtListAddRow)
+        Dim newDRow As DataRow = Nothing
+        Dim newDTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", lngID))
-        If newTable.Rows.Count = 1 Then
-            newRow = newTable.Rows.Item(0)
+        Master.DB.FillDataTable(newDTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", id))
+        If newDTable.Rows.Count = 1 Then
+            newDRow = newDTable.Rows.Item(0)
         End If
 
-        Dim dRow = dtMovies.NewRow()
-        dRow.ItemArray = newRow.ItemArray
+        Dim oldDRow As DataRow = dtMovies.Select(String.Format("idMovie = {0}", id.ToString)).FirstOrDefault()
 
-        If newRow IsNot Nothing Then
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(dgUpdateRow, New Object() {oldDRow, newDRow})
+            Else
+                oldDRow.ItemArray = newDRow.ItemArray
+            End If
+        ElseIf newDRow IsNot Nothing Then
+            Dim dRow = dtMovies.NewRow()
+            dRow.ItemArray = newDRow.ItemArray
             RemoveHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
             If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dtMovies, dRow})
+                Invoke(dgAddRow, New Object() {dtMovies, dRow})
             Else
                 dtMovies.Rows.Add(dRow)
             End If
             AddHandler dgvMovies.CellEnter, AddressOf dgvMovies_CellEnter
             currRow_Movie = -1
         End If
+
+        If dgvMovies.Visible AndAlso dgvMovies.SelectedRows.Count > 0 AndAlso CInt(dgvMovies.SelectedRows(0).Cells("idMovie").Value) = id Then
+            SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
+        End If
+
+        dgvMovies.Invalidate()
     End Sub
     ''' <summary>
     ''' Adds a new single MovieSet row with informations from DB
     ''' </summary>
-    ''' <param name="lngID"></param>
+    ''' <param name="id"></param>
     ''' <remarks></remarks>
-    Private Function AddRow_MovieSet(ByVal lngID As Long) As Integer
-        If lngID = -1 Then Return -1
+    Private Function AddOrRefreshRow_MovieSet(ByVal id As Long) As Integer
+        If id = -1 Then Return -1
 
-        Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
-        Dim newRow As DataRow = Nothing
-        Dim newTable As New DataTable
+        Dim dgUpdateRow As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
+        Dim dgAddRow As New Delegate_dtListAddRow(AddressOf dtListAddRow)
+        Dim newDRow As DataRow = Nothing
+        Dim newDTable As New DataTable
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", lngID))
-        If newTable.Rows.Count = 1 Then
-            newRow = newTable.Rows.Item(0)
+        Master.DB.FillDataTable(newDTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", id))
+        If newDTable.Rows.Count = 1 Then
+            newDRow = newDTable.Rows.Item(0)
         End If
 
-        Dim dRow = dtMovieSets.NewRow()
-        dRow.ItemArray = newRow.ItemArray
+        Dim oldDRow As DataRow = dtMovieSets.Select(String.Format("idSet = {0}", id.ToString)).FirstOrDefault()
 
-        If newRow IsNot Nothing Then
+        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
+            If InvokeRequired Then
+                Invoke(dgUpdateRow, New Object() {oldDRow, newDRow})
+            Else
+                oldDRow.ItemArray = newDRow.ItemArray
+            End If
+        ElseIf newDRow IsNot Nothing Then
+            Dim dRow = dtMovieSets.NewRow()
+            dRow.ItemArray = newDRow.ItemArray
             RemoveHandler dgvMovieSets.CellEnter, AddressOf dgvMovieSets_CellEnter
             If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dtMovieSets, dRow})
+                Invoke(dgAddRow, New Object() {dtMovieSets, dRow})
             Else
                 dtMovieSets.Rows.Add(dRow)
             End If
@@ -15009,103 +15030,14 @@ Public Class frmMain
             currRow_MovieSet = -1
         End If
 
-        Return bsMovieSets.Find("idSet", lngID)
-    End Function
-    ''' <summary>
-    ''' Adds a new single TV Show row with informations from DB
-    ''' </summary>
-    ''' <param name="lngID"></param>
-    ''' <remarks></remarks>
-    Private Sub AddRow_TVShow(ByVal lngID As Long)
-        If lngID = -1 Then Return
-
-        Dim myDelegate As New Delegate_dtListAddRow(AddressOf dtListAddRow)
-        Dim newRow As DataRow = Nothing
-        Dim newTable As New DataTable
-
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", lngID))
-        If newTable.Rows.Count = 1 Then
-            newRow = newTable.Rows.Item(0)
-        End If
-
-        Dim dRow = dtTVShows.NewRow()
-        dRow.ItemArray = newRow.ItemArray
-
-        If newRow IsNot Nothing Then
-            RemoveHandler dgvTVShows.CellEnter, AddressOf dgvTVShows_CellEnter
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {dtTVShows, dRow})
-            Else
-                dtTVShows.Rows.Add(dRow)
-            End If
-            AddHandler dgvTVShows.CellEnter, AddressOf dgvTVShows_CellEnter
-            currRow_TVShow = -1
-        End If
-    End Sub
-    ''' <summary>
-    ''' Refresh a single Movie row with informations from DB
-    ''' </summary>
-    ''' <param name="MovieID"></param>
-    ''' <remarks></remarks>
-    Private Sub RefreshRow_Movie(ByVal MovieID As Long)
-        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
-
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM movielist WHERE idMovie={0}", MovieID))
-        If newTable.Rows.Count > 0 Then
-            newDRow = newTable.Rows.Item(0)
-        End If
-
-        Dim oldDRow As DataRow = dtMovies.Select(String.Format("idMovie = {0}", MovieID.ToString)).FirstOrDefault()
-
-        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {oldDRow, newDRow})
-            Else
-                oldDRow.ItemArray = newDRow.ItemArray
-            End If
-        End If
-
-        If dgvMovies.Visible AndAlso dgvMovies.SelectedRows.Count > 0 AndAlso CInt(dgvMovies.SelectedRows(0).Cells("idMovie").Value) = MovieID Then
-            SelectRow_Movie(dgvMovies.SelectedRows(0).Index)
-        End If
-
-        dgvMovies.Invalidate()
-    End Sub
-    ''' <summary>
-    ''' Refresh a single MovieSet row with informations from DB
-    ''' </summary>
-    ''' <param name="MovieSetID"></param>
-    ''' <remarks></remarks>
-    Private Sub RefreshRow_MovieSet(ByVal MovieSetID As Long)
-        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
-
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM setslist WHERE idSet={0}", MovieSetID))
-        If newTable.Rows.Count > 0 Then
-            newDRow = newTable.Rows.Item(0)
-        End If
-
-        Dim oldDRow As DataRow = dtMovieSets.Select(String.Format("idSet = {0}", MovieSetID.ToString)).FirstOrDefault()
-
-        If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
-            If InvokeRequired Then
-                Invoke(myDelegate, New Object() {oldDRow, newDRow})
-            Else
-                oldDRow.ItemArray = newDRow.ItemArray
-            End If
-        End If
-
-        If dgvMovieSets.Visible AndAlso dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells("idSet").Value) = MovieSetID Then
+        If dgvMovieSets.Visible AndAlso dgvMovieSets.SelectedRows.Count > 0 AndAlso CInt(dgvMovieSets.SelectedRows(0).Cells("idSet").Value) = id Then
             SelectRow_MovieSet(dgvMovieSets.SelectedRows(0).Index)
         End If
 
-        dgvMovieSets.Invalidate()
-    End Sub
+        Return bsMovieSets.Find("idSet", id)
+    End Function
     ''' <summary>
-    ''' Refresh a single TVEpsiode row with informations from DB
+    ''' Adds or refresh a single TVEpsiode row with informations from DB
     ''' </summary>
     ''' <param name="EpisodeID"></param>
     ''' <remarks></remarks>
@@ -15140,7 +15072,7 @@ Public Class frmMain
         dgvTVEpisodes.Invalidate()
     End Sub
     ''' <summary>
-    ''' Refresh a single TVSeason row with informations from DB
+    ''' Adds or refresh a single TVSeason row with informations from DB
     ''' </summary>
     ''' <param name="SeasonID"></param>
     ''' <remarks></remarks>
@@ -15174,7 +15106,11 @@ Public Class frmMain
 
         dgvTVSeasons.Invalidate()
     End Sub
-
+    ''' <summary>
+    ''' Adds or refresh a single TVSeason row with informations from DB
+    ''' </summary>
+    ''' <param name="ShowID"></param>
+    ''' <param name="iSeason"></param>
     Private Sub RefreshRow_TVSeason(ByVal ShowID As Long, ByVal iSeason As Integer)
         Using SQLNewcommand As SQLite.SQLiteCommand = Master.DB.MyVideosDBConn.CreateCommand()
             SQLNewcommand.CommandText = String.Concat("SELECT idSeason FROM seasons WHERE idShow = ", ShowID, " AND Season = ", iSeason, ";")
@@ -15187,31 +15123,45 @@ Public Class frmMain
         End Using
     End Sub
     ''' <summary>
-    ''' Refresh a single TVShow row with informations from DB
+    ''' Adds a new single TV Show row with informations from DB
     ''' </summary>
-    ''' <param name="ShowID"></param>
+    ''' <param name="id"></param>
     ''' <remarks></remarks>
-    Private Sub RefreshRow_TVShow(ByVal ShowID As Long, Optional ByVal Force As Boolean = False)
-        Dim myDelegate As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
-        Dim newDRow As DataRow = Nothing
-        Dim newTable As New DataTable
+    Private Sub AddOrRefreshRow_TVShow(ByVal id As Long, Optional ByVal force As Boolean = False)
+        If id = -1 Then Return
 
-        Master.DB.FillDataTable(newTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", ShowID))
-        If newTable.Rows.Count > 0 Then
-            newDRow = newTable.Rows.Item(0)
+        Dim dgUpdateRow As New Delegate_dtListUpdateRow(AddressOf dtListUpdateRow)
+        Dim dgAddRow As New Delegate_dtListAddRow(AddressOf dtListAddRow)
+        Dim newDRow As DataRow = Nothing
+        Dim newDTable As New DataTable
+
+        Master.DB.FillDataTable(newDTable, String.Format("SELECT * FROM tvshowlist WHERE idShow={0}", id))
+        If newDTable.Rows.Count = 1 Then
+            newDRow = newDTable.Rows.Item(0)
         End If
 
-        Dim oldDRow As DataRow = dtTVShows.Select(String.Format("idShow = {0}", ShowID.ToString)).FirstOrDefault()
+        Dim oldDRow As DataRow = dtTVShows.Select(String.Format("idShow = {0}", id.ToString)).FirstOrDefault()
 
         If oldDRow IsNot Nothing AndAlso newDRow IsNot Nothing Then
             If InvokeRequired Then
-                Invoke(myDelegate, New Object() {oldDRow, newDRow})
+                Invoke(dgUpdateRow, New Object() {oldDRow, newDRow})
             Else
                 oldDRow.ItemArray = newDRow.ItemArray
             End If
+        ElseIf newDRow IsNot Nothing Then
+            Dim dRow = dtTVShows.NewRow()
+            dRow.ItemArray = newDRow.ItemArray
+            RemoveHandler dgvTVShows.CellEnter, AddressOf dgvTVShows_CellEnter
+            If InvokeRequired Then
+                Invoke(dgAddRow, New Object() {dtTVShows, dRow})
+            Else
+                dgvTVShows.Rows.Add(dRow)
+            End If
+            AddHandler dgvTVShows.CellEnter, AddressOf dgvTVShows_CellEnter
+            currRow_Movie = -1
         End If
 
-        If dgvTVShows.Visible AndAlso dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells("idShow").Value) = ShowID AndAlso (currList = 0 OrElse Force) Then
+        If dgvTVShows.Visible AndAlso dgvTVShows.SelectedRows.Count > 0 AndAlso CInt(dgvTVShows.SelectedRows(0).Cells("idShow").Value) = id AndAlso (currList = 0 OrElse force) Then
             SelectRow_TVShow(dgvTVShows.SelectedRows(0).Index)
         End If
 
@@ -15229,7 +15179,7 @@ Public Class frmMain
 
         If DBMovie.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_Movie(DBMovie, Not showMessage) Then
             fScanner.Load_Movie(DBMovie, BatchMode)
-            If Not BatchMode Then RefreshRow_Movie(DBMovie.ID)
+            If Not BatchMode Then AddOrRefreshRow_Movie(DBMovie.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(587, "This file is no longer available"), ".", Environment.NewLine,
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
@@ -15259,7 +15209,7 @@ Public Class frmMain
         Dim DBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(ID)
 
         fScanner.Load_MovieSet(DBMovieSet, BatchMode)
-        If Not BatchMode Then RefreshRow_MovieSet(DBMovieSet.ID)
+        If Not BatchMode Then AddOrRefreshRow_MovieSet(DBMovieSet.ID)
 
         Return False
     End Function
@@ -15325,7 +15275,7 @@ Public Class frmMain
 
         If DBTVShow.IsOnline OrElse FileUtils.Common.CheckOnlineStatus_TVShow(DBTVShow, showMessage) Then
             fScanner.Load_TVShow(DBTVShow, False, BatchMode, False)
-            If Not BatchMode Then RefreshRow_TVShow(DBTVShow.ID)
+            If Not BatchMode Then AddOrRefreshRow_TVShow(DBTVShow.ID)
         Else
             If showMessage AndAlso MessageBox.Show(String.Concat(Master.eLang.GetString(719, "This path is no longer available"), ".", Environment.NewLine,
                                                          Master.eLang.GetString(703, "Whould you like to remove it from the library?")),
@@ -15847,12 +15797,11 @@ Public Class frmMain
         Select Case eProgressValue.EventType
             Case Enums.ScannerEventType.Added_Movie
                 SetStatus(String.Concat(String.Concat(Master.eLang.GetString(815, "Added Movie"), ":"), " ", eProgressValue.Message))
-                AddRow_Movie(eProgressValue.ID)
             Case Enums.ScannerEventType.Added_TVEpisode
                 SetStatus(String.Concat(String.Concat(Master.eLang.GetString(814, "Added Episode"), ":"), " ", eProgressValue.Message))
             Case Enums.ScannerEventType.Added_TVShow
                 SetStatus(String.Concat(String.Concat(Master.eLang.GetString(1089, "Added TV Show"), ":"), " ", eProgressValue.Message))
-                AddRow_TVShow(eProgressValue.ID)
+                AddOrRefreshRow_TVShow(eProgressValue.ID)
             Case Enums.ScannerEventType.CleaningDatabase
                 SetStatus(Master.eLang.GetString(644, "Cleaning Database..."))
             Case Enums.ScannerEventType.CurrentSource
@@ -15860,7 +15809,7 @@ Public Class frmMain
             Case Enums.ScannerEventType.PreliminaryTasks
                 SetStatus(Master.eLang.GetString(116, "Performing Preliminary Tasks (Gathering Data)..."))
             Case Enums.ScannerEventType.Refresh_TVShow
-                RefreshRow_TVShow(eProgressValue.ID, True)
+                AddOrRefreshRow_TVShow(eProgressValue.ID, True)
             Case Enums.ScannerEventType.ScannerEnded
                 If Not Master.isCL Then
                     SetStatus(String.Empty)
@@ -16256,7 +16205,7 @@ Public Class frmMain
                 Dim tmpDBMovieSet As Database.DBElement = Master.DB.Load_MovieSet(Convert.ToInt64(sRow.Cells("idSet").Value))
                 tmpDBMovieSet.SortMethod = CType(cmnuMovieSetEditSortMethodMethods.ComboBox.SelectedValue, Enums.SortMethod_MovieSet)
                 Master.DB.Save_MovieSet(tmpDBMovieSet, True, True, False, False)
-                RefreshRow_MovieSet(tmpDBMovieSet.ID)
+                AddOrRefreshRow_MovieSet(tmpDBMovieSet.ID)
             Next
             SQLtransaction.Commit()
         End Using

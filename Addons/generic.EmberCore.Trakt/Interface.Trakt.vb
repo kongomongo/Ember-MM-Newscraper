@@ -70,10 +70,10 @@ Public Class TraktInterface
                                                       Enums.ModuleEventType.BeforeEdit_TVShow,
                                                       Enums.ModuleEventType.CommandLine,
                                                       Enums.ModuleEventType.Generic,
-                                                      Enums.ModuleEventType.Remove_Movie,
-                                                      Enums.ModuleEventType.Remove_TVEpisode,
-                                                      Enums.ModuleEventType.Remove_TVSeason,
-                                                      Enums.ModuleEventType.Remove_TVShow,
+                                                      Enums.ModuleEventType.Removed_Movie,
+                                                      Enums.ModuleEventType.Removed_TVEpisode,
+                                                      Enums.ModuleEventType.Removed_TVSeason,
+                                                      Enums.ModuleEventType.Removed_TVShow,
                                                       Enums.ModuleEventType.ScraperMulti_Movie,
                                                       Enums.ModuleEventType.ScraperMulti_TVEpisode,
                                                       Enums.ModuleEventType.ScraperMulti_TVSeason,
@@ -138,7 +138,7 @@ Public Class TraktInterface
                 If _SpecialSettings.GetWatchedState AndAlso _SpecialSettings.GetWatchedStateScraperMulti_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.SetWatchedState_Movie(_dbelement)
                 End If
-            Case Enums.ModuleEventType.Remove_Movie
+            Case Enums.ModuleEventType.Removed_Movie
                 If _SpecialSettings.CollectionRemove_Movie AndAlso _dbelement IsNot Nothing Then
                     _TraktAPI.RemoveFromCollection_Movie(_dbelement)
                 End If

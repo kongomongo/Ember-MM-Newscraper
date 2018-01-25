@@ -106,9 +106,9 @@ Public Class KodiInterface
             Return New List(Of Enums.ModuleEventType)(New Enums.ModuleEventType() {
                                                       Enums.ModuleEventType.BeforeEdit_Movie,
                                                       Enums.ModuleEventType.BeforeEdit_TVEpisode,
-                                                      Enums.ModuleEventType.Remove_Movie,
-                                                      Enums.ModuleEventType.Remove_TVEpisode,
-                                                      Enums.ModuleEventType.Remove_TVShow,
+                                                      Enums.ModuleEventType.Removed_Movie,
+                                                      Enums.ModuleEventType.Removed_TVEpisode,
+                                                      Enums.ModuleEventType.Removed_TVShow,
                                                       Enums.ModuleEventType.ScraperMulti_Movie,
                                                       Enums.ModuleEventType.ScraperMulti_TVEpisode,
                                                       Enums.ModuleEventType.ScraperMulti_TVSeason,
@@ -177,9 +177,9 @@ Public Class KodiInterface
     ''' </remarks>
     Public Function RunGeneric(ByVal mType As Enums.ModuleEventType, ByRef _params As List(Of Object), ByRef _singleobjekt As Object, ByRef _dbelement As Database.DBElement) As Interfaces.ModuleResult Implements Interfaces.GenericModule.RunGeneric
         If Not Master.isCL AndAlso (
-                mType = Enums.ModuleEventType.Remove_Movie OrElse
-                mType = Enums.ModuleEventType.Remove_TVEpisode OrElse
-                mType = Enums.ModuleEventType.Remove_TVShow OrElse
+                mType = Enums.ModuleEventType.Removed_Movie OrElse
+                mType = Enums.ModuleEventType.Removed_TVEpisode OrElse
+                mType = Enums.ModuleEventType.Removed_TVShow OrElse
                 mType = Enums.ModuleEventType.Sync_Movie OrElse
                 mType = Enums.ModuleEventType.Sync_MovieSet OrElse
                 mType = Enums.ModuleEventType.Sync_TVEpisode OrElse
@@ -419,7 +419,7 @@ Public Class KodiInterface
                     End If
 
                 'Remove Movie
-                Case Enums.ModuleEventType.Remove_Movie
+                Case Enums.ModuleEventType.Removed_Movie
                     If mDBElement.FilenameSpecified Then
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -461,7 +461,7 @@ Public Class KodiInterface
                     End If
 
                 'Remove TVEpisode
-                Case Enums.ModuleEventType.Remove_TVEpisode
+                Case Enums.ModuleEventType.Removed_TVEpisode
                     If mDBElement.FilenameSpecified Then
 
                         If mHost IsNot Nothing Then
@@ -504,7 +504,7 @@ Public Class KodiInterface
                     End If
 
                     'Remove TVShow
-                Case Enums.ModuleEventType.Remove_TVShow
+                Case Enums.ModuleEventType.Removed_TVShow
                     If mDBElement.ShowPathSpecified Then
                         If mHost IsNot Nothing Then
                             Dim _APIKodi As New Kodi.APIKodi(mHost)
@@ -808,7 +808,6 @@ Public Class KodiInterface
                                                             mDBElement.Movie.LastPlayed = Result.LastPlayed
                                                             mDBElement.Movie.PlayCount = Result.PlayCount
                                                             Master.DB.Save_Movie(mDBElement, False, True, False, True, False)
-                                                            RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {mDBElement.ID}))
                                                         End If
                                                         ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", Nothing, "Kodi Interface", String.Concat(mHost.Label, " | ", Master.eLang.GetString(1444, "Sync OK"), ": ", mDBElement.Movie.Title), New Bitmap(My.Resources.logo)}))
                                                     End If
@@ -909,7 +908,6 @@ Public Class KodiInterface
                                                                         nDBElement.Movie.LastPlayed = nMovieToSync.lastplayed
                                                                         nDBElement.Movie.PlayCount = nMovieToSync.playcount
                                                                         Master.DB.Save_Movie(nDBElement, True, True, False, True, False)
-                                                                        RaiseEvent GenericEvent(Enums.ModuleEventType.AfterEdit_Movie, New List(Of Object)(New Object() {nDBElement.ID}))
                                                                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies: ""{1}"" | Synced to Ember", mHost.Label, SQLreader("Title").ToString))
                                                                     Else
                                                                         logger.Trace(String.Format("[APIKodi] [{0}] GetPlaycount_AllMovies: ""{1}"" | Nothing to sync", mHost.Label, SQLreader("Title").ToString))
@@ -1631,7 +1629,7 @@ Public Class KodiInterface
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idMovie").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_Movie(ID)
                 'add job to tasklist and get everything done
-                AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Remove_Movie})
+                AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Removed_Movie})
             Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
@@ -1650,7 +1648,7 @@ Public Class KodiInterface
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idEpisode").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVEpisode(ID, True)
                 'add job to tasklist and get everything done
-                AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Remove_TVEpisode})
+                AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Removed_TVEpisode})
             Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))
@@ -1669,7 +1667,7 @@ Public Class KodiInterface
                 Dim ID As Long = Convert.ToInt64(sRow.Cells("idShow").Value)
                 Dim DBElement As Database.DBElement = Master.DB.Load_TVShow(ID, False, False)
                 'add job to tasklist and get everything done
-                AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Remove_TVShow})
+                AddTask(New KodiTask With {.mDBElement = DBElement, .mHost = Host, .mType = Enums.ModuleEventType.Removed_TVShow})
             Next
         Else
             ModulesManager.Instance.RunGeneric(Enums.ModuleEventType.Notification, New List(Of Object)(New Object() {"info", 1, Master.eLang.GetString(1422, "Kodi Interface"), Master.eLang.GetString(1447, "No Host Configured!"), Nothing}))

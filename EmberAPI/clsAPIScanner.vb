@@ -715,12 +715,7 @@ Public Class Scanner
                 DBMovie.VideoSource = DBMovie.Movie.VideoSource
             End If
 
-            'Do the Save
-            If ToNfo AndAlso DBMovie.NfoPathSpecified Then
-                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, True, False, True, False)
-            Else
-                DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, False, False, True, False)
-            End If
+            DBMovie = Master.DB.Save_Movie(DBMovie, Batchmode, ToNfo AndAlso DBMovie.NfoPathSpecified, False, True, False)
         End If
     End Sub
 
