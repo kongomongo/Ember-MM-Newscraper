@@ -6280,6 +6280,15 @@ Namespace MediaContainers
             End Get
         End Property
 
+        <XmlElement("format3d")>
+        Public Property Format3D() As String
+            Get
+                Return MediaInfo.ConvertVStereoModeToFormat3D(_width, _height, _stereomode)
+            End Get
+            Set()
+            End Set
+        End Property
+
         <XmlElement("height")>
         Public Property Height() As String
             Get
@@ -6385,7 +6394,7 @@ Namespace MediaContainers
         <XmlIgnore>
         Public ReadOnly Property ShortStereoMode() As String
             Get
-                Return ConvertVStereoToShort(_stereomode).Trim()
+                Return MediaInfo.ConvertVStereoModeToShortStereoMode(_stereomode).Trim()
             End Get
         End Property
 
@@ -6446,28 +6455,6 @@ Namespace MediaContainers
         End Property
 
 #End Region 'Properties
-
-#Region "Methods"
-
-        Public Shared Function ConvertVStereoToShort(ByVal sFormat As String) As String
-            If Not String.IsNullOrEmpty(sFormat) Then
-                Dim tFormat As String = String.Empty
-                Select Case sFormat.ToLower
-                    Case "bottom_top"
-                        tFormat = "tab"
-                    Case "left_right", "right_left"
-                        tFormat = "sbs"
-                    Case Else
-                        tFormat = "unknown"
-                End Select
-
-                Return tFormat
-            Else
-                Return String.Empty
-            End If
-        End Function
-
-#End Region 'Methods
 
     End Class
 

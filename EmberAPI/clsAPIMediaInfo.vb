@@ -497,59 +497,81 @@ Public Class MediaInfo
         End If
     End Function
 
-    Public Shared Function ConvertVStereoMode(ByVal sFormat As String) As String
-        If Not String.IsNullOrEmpty(sFormat) Then
-            Dim tFormat As String = String.Empty
-            Select Case sFormat.ToLower
-                Case "side by side (left eye first)"
-                    tFormat = "left_right"
-                Case "top-bottom (right eye first)"
-                    tFormat = "bottom_top"
-                Case "top-bottom (left eye first)"
-                    tFormat = "bottom_top"
-                Case "checkboard (right eye first)"
-                    tFormat = "checkerboard_rl"
-                Case "checkboard (left eye first)"
-                    tFormat = "checkerboard_lr"
-                Case "row interleaved (right eye first)"
-                    tFormat = "row_interleaved_rl"
-                Case "row interleaved (left eye first)"
-                    tFormat = "row_interleaved_lr"
-                Case "column interleaved (right eye first)"
-                    tFormat = "col_interleaved_rl"
-                Case "column interleaved (left eye first)"
-                    tFormat = "col_interleaved_lr"
-                Case "anaglyph (cyan/red)"
-                    tFormat = "anaglyph_cyan_red"
-                Case "side by side (right eye first)"
-                    tFormat = "right_left"
-                Case "anaglyph (green/magenta)"
-                    tFormat = "anaglyph_green_magenta"
-                Case "both eyes laced in one block (left eye first)"
-                    tFormat = "block_lr"
-                Case "both eyes laced in one block (right eye first)"
-                    tFormat = "block_rl"
-            End Select
-
-            Return tFormat
-        Else
-            Return String.Empty
-        End If
+    Public Shared Function ConvertVMultiViewLayoutToStereoMode(ByVal sFormat As String) As String
+        Select Case sFormat.ToLower
+            Case "side by side (left eye first)"
+                Return "left_right"
+            Case "top-bottom (right eye first)"
+                Return "bottom_top"
+            Case "top-bottom (left eye first)"
+                Return "bottom_top"
+            Case "checkboard (right eye first)"
+                Return "checkerboard_rl"
+            Case "checkboard (left eye first)"
+                Return "checkerboard_lr"
+            Case "row interleaved (right eye first)"
+                Return "row_interleaved_rl"
+            Case "row interleaved (left eye first)"
+                Return "row_interleaved_lr"
+            Case "column interleaved (right eye first)"
+                Return "col_interleaved_rl"
+            Case "column interleaved (left eye first)"
+                Return "col_interleaved_lr"
+            Case "anaglyph (cyan/red)"
+                Return "anaglyph_cyan_red"
+            Case "side by side (right eye first)"
+                Return "right_left"
+            Case "anaglyph (green/magenta)"
+                Return "anaglyph_green_magenta"
+            Case "both eyes laced in one block (left eye first)"
+                Return "block_lr"
+            Case "both eyes laced in one block (right eye first)"
+                Return "block_rl"
+            Case Else
+                Return String.Empty
+        End Select
     End Function
 
-    Public Shared Function ConvertVStereoToShort(ByVal sFormat As String) As String
+    Public Shared Function ConvertVStereoModeToFormat3D(ByVal width As String, ByVal height As String, ByVal stereomode As String) As String
+        If Not String.IsNullOrEmpty(width) AndAlso Not String.IsNullOrEmpty(height) AndAlso Not String.IsNullOrEmpty(stereomode) Then
+            Dim iHeight As Integer
+            Dim iWidth As Integer
+            If Integer.TryParse(height, iHeight) AndAlso Integer.TryParse(width, iWidth) Then
+                Select Case stereomode.ToLower
+                    Case "bottom_top"
+                        If iWidth < iHeight Then
+                            'e.g. 1920x2160 (1920x2*1080)
+                            Return "FTAB"
+                        Else
+                            'e.g. 1920x1080
+                            Return "HTAB"
+                        End If
+                    Case "left_right", "right_left"
+                        If iWidth / 2 > iHeight Then
+                            'e.g. 3840x1080 (2*1920x1080)
+                            Return "FSBS"
+                        Else
+                            'e.g. 1920x1080
+                            Return "HSBS"
+                        End If
+                    Case "block_lr", "block_rl"
+                        Return "MVC"
+                End Select
+            End If
+        End If
+        Return String.Empty
+    End Function
+
+    Public Shared Function ConvertVStereoModeToShortStereoMode(ByVal sFormat As String) As String
         If Not String.IsNullOrEmpty(sFormat) Then
-            Dim tFormat As String = String.Empty
             Select Case sFormat.ToLower
                 Case "bottom_top"
-                    tFormat = "tab"
+                    Return "tab"
                 Case "left_right", "right_left"
-                    tFormat = "sbs"
+                    Return "sbs"
                 Case Else
-                    tFormat = "unknown"
+                    Return "unknown"
             End Select
-
-            Return tFormat
         Else
             Return String.Empty
         End If
@@ -836,7 +858,7 @@ Public Class MediaInfo
                     'Encoder-settings
                     'miVideo.EncodedSettings = Me.Get_(StreamKind.Visual, v, "Encoded_Library_Settings")
                     'cocotus end
-                    miVideo.StereoMode = ConvertVStereoMode(miVideo.MultiViewLayout)
+                    miVideo.StereoMode = ConvertVMultiViewLayoutToStereoMode(miVideo.MultiViewLayout)
 
                     miVideo.Width = Get_(StreamKind.Visual, v, "Width")
                     miVideo.Height = Get_(StreamKind.Visual, v, "Height")
